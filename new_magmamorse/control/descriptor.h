@@ -1,0 +1,188 @@
+/**
+ *
+ * @copyright (c) 2009-2014 The University of Tennessee and The University 
+ *                          of Tennessee Research Foundation. 
+ *                          All rights reserved.
+ * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2014 IPB. All rights reserved. 
+ *
+ **/
+
+/**
+ *
+ * @file descriptor.h
+ *
+ *  MORSE auxiliary routines
+ *  MORSE is a software package provided by Univ. of Tennessee,
+ *  Univ. of California Berkeley and Univ. of Colorado Denver
+ *
+ * @version 1.1.0
+ * @author Jakub Kurzak
+ * @author Mathieu Faverge
+ * @author Cedric Castagnede
+ * @date 2012-09-15
+ *
+ **/
+#ifndef _MORSE_DESCRIPTOR_H_
+#define _MORSE_DESCRIPTOR_H_
+
+#include <assert.h>
+#include "morse_struct.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/*******************************************************************************
+ *  Internal routines
+ **/
+inline static void* morse_geteltaddr(const MORSE_desc_t *A, int m, int n, int eltsize);
+inline static void* morse_getaddr_cm    (const MORSE_desc_t *A, int m, int n);
+inline static void* morse_getaddr_ccrb  (const MORSE_desc_t *A, int m, int n);
+inline static int   morse_getblkldd_cm  (const MORSE_desc_t *A, int m);
+inline static int   morse_getblkldd_ccrb(const MORSE_desc_t *A, int m);
+
+/*****************************************************************
+ *  Data distributions
+ */
+inline static int   morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n);
+
+MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
+                             int lm, int ln, int i, int j, int m, int n, int p, int q);
+MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
+                                  int lm, int ln, int i, int j,
+                                  int m,  int n,  int p, int q,
+                                  void* (*get_blkaddr)( const MORSE_desc_t*, int, int ),
+                                  int (*get_blkldd)( const MORSE_desc_t*, int ),
+                                  int (*get_rankof)( const MORSE_desc_t*, int, int ));
+MORSE_desc_t* morse_desc_submatrix(MORSE_desc_t *descA, int i, int j, int m, int n);
+
+int morse_desc_check    (MORSE_desc_t *desc);
+int morse_desc_mat_alloc(MORSE_desc_t *desc);
+int morse_desc_mat_free (MORSE_desc_t *desc);
+
+#define BLKLDD(A, k) A->get_blkldd( A,k )
+
+/*******************************************************************************
+ *  Internal function to return address of block (m,n)
+ **/
+inline static void* morse_getaddr_ccrb(const MORSE_desc_t *A, int m, int n)
+{
+    size_t mm = m + A->i / A->mb;
+    size_t nn = n + A->j / A->nb;
+    size_t eltsize = morse_element_size(A->dtyp);
+    size_t offset = 0;
+
+#if defined(MAGMAMORSE_USE_MPI)
+    assert( A->myrank == A->get_rankof( A, mm, nn) );
+    mm = mm / A->p;
+    nn = nn / A->q;
+#endif
+
+    if (mm < (size_t)(A->llm1)) {
+        if (nn < (size_t)(A->lln1))
+            offset = (size_t)(A->bsiz) * (mm + (size_t)(A->llm1) * nn);
+        else
+            offset = A->A12 + ((size_t)(A->mb * (A->lln%A->nb)) * mm);
+    }
+    else {
+        if (nn < (size_t)(A->lln1))
+            offset = A->A21 + ((size_t)((A->llm%A->mb) * A->nb) * nn);
+        else
+            offset = A->A22;
+    }
+
+    return (void*)((intptr_t)A->mat + (offset*eltsize) );
+}
+
+/*******************************************************************************
+ *  Internal function to return address of block (m,n)
+ **/
+inline static void *morse_getaddr_cm(const MORSE_desc_t *A, int m, int n)
+{
+    size_t mm = m + A->i / A->mb;
+    size_t nn = n + A->j / A->nb;
+    size_t eltsize = morse_element_size(A->dtyp);
+    size_t offset = 0;
+
+#if defined(MAGMAMORSE_USE_MPI)
+    assert( A->myrank == A->get_rankof( A, mm, nn) );
+    mm = mm / A->p;
+    nn = nn / A->q;
+#endif
+
+    offset = (size_t)(A->llm * A->nb) * nn + (size_t)(A->mb) * mm;
+    return (void*)((intptr_t)A->mat + (offset*eltsize) );
+}
+
+/*******************************************************************************
+ *  Internal function to return address of element A(m,n)
+ **/
+inline static void* morse_geteltaddr(const MORSE_desc_t *A, int m, int n, int eltsize)
+{
+    size_t mm = (m + A->i)/A->mb;
+    size_t nn = (n + A->j)/A->nb;
+    size_t offset = 0;
+
+#if defined(MAGMAMORSE_USE_MPI)
+    assert( A->myrank == A->get_rankof( A, mm, nn) );
+    mm = mm / A->p;
+    nn = nn / A->q;
+#endif
+
+    if (mm < (size_t)(A->llm1)) {
+        if (nn < (size_t)(A->lln1))
+            offset = A->bsiz*(mm+A->llm1*nn) + m%A->mb + A->mb*(n%A->nb);
+        else
+            offset = A->A12 + (A->mb*(A->lln%A->nb)*mm) + m%A->mb + A->mb*(n%A->nb);
+    }
+    else {
+        if (nn < (size_t)(A->lln1))
+            offset = A->A21 + ((A->llm%A->mb)*A->nb*nn) + m%A->mb + (A->llm%A->mb)*(n%A->nb);
+        else
+            offset = A->A22 + m%A->mb  + (A->llm%A->mb)*(n%A->nb);
+    }
+    return (void*)((intptr_t)A->mat + (offset*eltsize) );
+}
+
+/*******************************************************************************
+ *  Internal function to return the leading dimension of element A(m,*)
+ **/
+inline static int morse_getblkldd_ccrb(const MORSE_desc_t *A, int m)
+{
+    int mm = m + A->i / A->mb;
+    return ( ((mm+1) == A->lmt) && ((A->lm % A->mb) != 0)) ? A->lm % A->mb : A->mb;
+}
+
+inline static int morse_getblkldd_cm(const MORSE_desc_t *A, int m) {
+    (void)m;
+    return A->llm;
+}
+
+
+/*******************************************************************************
+ *  Internal function to return MPI rank of element A(m,n)
+ **/
+inline static int morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n)
+{
+    return (m % desc->p) * desc->q + (n % desc->q);
+}
+
+/*******************************************************************************
+ * Detect if the tile is local or not
+ **/
+inline static int morse_desc_islocal( const MORSE_desc_t *A, int m, int n )
+{
+#if defined(MAGMAMORSE_USE_MPI)
+    return (A->myrank == A->get_rankof(A, m, n));
+#else
+    (void)A; (void)m; (void)n;
+    return 1;
+#endif /* defined(MAGMAMORSE_USE_MPI) */
+}
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

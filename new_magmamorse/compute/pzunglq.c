@@ -1,0 +1,148 @@
+/**
+ *
+ * @copyright (c) 2009-2014 The University of Tennessee and The University 
+ *                          of Tennessee Research Foundation. 
+ *                          All rights reserved.
+ * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2014 IPB. All rights reserved. 
+ *
+ **/
+
+/**
+ *
+ * @file pzunglq.c
+ *
+ *  MORSE auxiliary routines
+ *  MORSE is a software package provided by Univ. of Tennessee,
+ *  Univ. of California Berkeley and Univ. of Colorado Denver
+ *
+ * @version 2.5.0
+ * @comment This file has been automatically generated
+ *          from Plasma 2.5.0 for MORSE 1.0.0
+ * @author Hatem Ltaief
+ * @author Jakub Kurzak
+ * @author Mathieu Faverge
+ * @author Emmanuel Agullo
+ * @author Cedric Castagnede
+ * @date 2010-11-15
+ * @precisions normal z -> s d c
+ *
+ **/
+#include "common.h"
+
+#define A(m,n) A,  m,  n
+#define Q(m,n) Q,  m,  n
+#define T(m,n) T,  m,  n
+#if defined(MAGMAMORSE_USE_MAGMA)
+#define DIAG(k) DIAG, k, 0
+#else
+#define DIAG(k) A, k, k
+#endif
+/***************************************************************************//**
+ *  Parallel construction of Q using tile V (application to identity) - dynamic scheduling
+ **/
+void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
+                   MORSE_sequence_t *sequence, MORSE_request_t *request)
+{
+    MORSE_context_t *morse;
+    MORSE_option_t options;
+    size_t ws_worker = 0;
+    size_t ws_host = 0;
+    MORSE_desc_t *DIAG = NULL;
+
+    int k, m, n;
+    int ldak, ldqm;
+    int tempnn, tempmm, tempkmin, tempkn;
+    int tempAkm, tempAkn;
+    int ib, minMT;
+
+    morse = morse_context_self();
+    if (sequence->status != MORSE_SUCCESS)
+        return;
+    RUNTIME_options_init(&options, morse, sequence, request);
+
+    ib = MORSE_IB;
+
+    if (A->m > A->n) {
+        minMT = A->nt;
+    } else {
+        minMT = A->mt;
+    }
+
+    /*
+     * zunmlq = A->nb * ib
+     * ztsmlq = A->nb * ib
+     */
+    ws_worker = A->nb * ib;
+
+    /* Allocation of temporary (scratch) working space */
+#if defined(MAGMAMORSE_USE_MAGMA)
+    DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+    morse_zdesc_alloc2(*DIAG, A->mb, A->nb, minMT*A->mb, A->nb, 0, 0, minMT*A->mb, A->nb);
+    /* Worker space
+     *
+     * zunmlq = A->nb * ib
+     * ztsmlq = 2 * A->nb * ib
+     */
+    ws_worker = max( ws_worker, ib * A->nb * 2 );
+#endif
+
+    ws_worker *= sizeof(MORSE_Complex64_t);
+    ws_host   *= sizeof(MORSE_Complex64_t);
+
+    RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
+
+    for (k = min(A->mt, A->nt)-1; k >= 0; k--) {
+        tempAkm  = k == A->mt-1 ? A->m-k*A->mb : A->mb;
+        tempAkn  = k == A->nt-1 ? A->n-k*A->nb : A->nb;
+        tempkmin = min( tempAkn, tempAkm );
+        tempkn   = k == Q->nt-1 ? Q->n-k*Q->nb : Q->nb;
+        ldak = BLKLDD(A, k);
+        for (n = Q->nt-1; n > k; n--) {
+            tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
+            for (m = 0; m < Q->mt; m++) {
+                tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
+                ldqm = BLKLDD(Q, m);
+                MORSE_TASK_ztsmlq(
+                    &options,
+                    MorseRight, MorseNoTrans,
+                    tempmm, Q->nb, tempmm, tempnn, tempAkm, ib, T->nb,
+                    Q(m, k), ldqm,
+                    Q(m, n), ldqm,
+                    A(k, n), ldak,
+                    T(k, n), T->mb);
+            }
+        }
+#if defined(MAGMAMORSE_USE_MAGMA)
+        MORSE_TASK_zlacpy(
+            &options,
+            MorseUpper, tempkmin, tempkn, A->nb,
+            A(k, k), ldak,
+            DIAG(k), A->mb );
+        MORSE_TASK_zlaset(
+            &options,
+            MorseLower, tempkmin, tempkn,
+            0., 1.,
+            DIAG(k), A->mb );
+#endif
+        for (m = 0; m < Q->mt; m++) {
+            tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
+            ldqm = BLKLDD(Q, m);
+            MORSE_TASK_zunmlq(
+                &options,
+                MorseRight, MorseNoTrans,
+                tempmm, tempkn, tempkmin, ib, T->nb,
+                DIAG(k), A->mb,
+                T(k, k), T->mb,
+                Q(m, k), ldqm);
+        }
+    }
+    RUNTIME_options_ws_free(&options);
+    RUNTIME_options_finalize(&options, morse);
+    MORSE_TASK_dataflush_all();
+
+#if defined(MAGMAMORSE_USE_MAGMA)
+    morse_desc_mat_free(DIAG);
+    free(DIAG);
+#endif
+}

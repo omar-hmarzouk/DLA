@@ -1,0 +1,84 @@
+###
+#
+# @copyright (c) 2009-2014 The University of Tennessee and The University
+#                          of Tennessee Research Foundation.
+#                          All rights reserved.
+# @copyright (c) 2012-2014 Inria. All rights reserved.
+# @copyright (c) 2012-2014 IPB. All rights reserved.
+#
+###
+#
+#  @file CMakeLists.txt
+#
+#  @project MORSE
+#  MORSE is a software package provided by:
+#     Inria Bordeaux - Sud-Ouest,
+#     Univ. of Tennessee,
+#     King Abdullah Univesity of Science and Technology
+#     Univ. of California Berkeley,
+#     Univ. of Colorado Denver.
+#
+#  @version 1.1.0
+#  @author Cedric Castagnede
+#  @author Emmanuel Agullo
+#  @author Mathieu Faverge
+#  @date 13-07-2012
+#
+###
+
+
+# Generate the morse headers for all possible precisions
+# ------------------------------------------------------
+set(MAGMAMORSE_HDRS_GENERATED "")
+set(ZHDR
+    morse_z.h
+    morse_zc.h
+    runtime_z.h
+    runtime_zc.h
+)
+
+precisions_rules_py(MAGMAMORSE_HDRS_GENERATED "${ZHDR}"
+                    PRECISIONS "z;c;d;s;zc;ds")
+
+# Define the list of headers
+# --------------------------
+set(MAGMAMORSE_HDRS
+    morse_constants.h
+    morse_kernels.h
+    morse_simulate.h
+    morse_struct.h
+    morse_types.h
+    morse.h
+    runtime.h
+    ${MAGMAMORSE_HDRS_GENERATED}
+    )
+    
+foreach(_prec ${MAGMAMORSE_PRECISION})
+    set_source_files_properties(runtime.h PROPERTIES COMPILE_FLAGS "-DPRECISION_${_prec}")
+endforeach()
+
+# Force generation of headers
+# ---------------------------
+add_custom_target(magmamorse_include ALL SOURCES ${MAGMAMORSE_HDRS})
+
+set(HDR_INSTALL
+    morse_constants.h
+    morse_kernels.h
+    morse_simulate.h
+    morse_struct.h
+    morse_types.h
+    morse.h
+    runtime.h
+    )
+foreach( hdr_file ${MAGMAMORSE_HDRS_GENERATED} )
+    list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
+endforeach()
+
+# installation
+# ------------
+install(FILES ${HDR_INSTALL}
+        DESTINATION include)
+
+###
+### END CMakeLists.txt
+###
