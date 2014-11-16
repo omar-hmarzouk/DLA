@@ -20,7 +20,7 @@
  *  based on the GKK algorithm by Gustavson, Karlsson, Kagstrom 
  *  and its fortran implementation.
  *
- * @version 1.1.0
+ * @version 0.9.0
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2010-11-15

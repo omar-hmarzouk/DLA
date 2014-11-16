@@ -35,8 +35,8 @@
 #include <cblas.h>
 #include <lapacke.h>
 
-#define CHAMELEON_VERSION_MAJOR 1
-#define CHAMELEON_VERSION_MINOR 1
+#define CHAMELEON_VERSION_MAJOR 0
+#define CHAMELEON_VERSION_MINOR 9
 #define CHAMELEON_VERSION_MICRO 0
 
 /* Integer parameters for step0 */

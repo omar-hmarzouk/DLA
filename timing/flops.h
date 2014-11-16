@@ -14,7 +14,7 @@
  *
  *  File provided by Univ. of Tennessee,
  *
- * @version 1.1.0
+ * @version 0.9.0
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2010-12-20

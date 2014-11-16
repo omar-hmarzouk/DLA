@@ -18,7 +18,7 @@
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver.
 #
-#  @version 1.1.0
+#  @version 0.9.0
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
@@ -37,8 +37,8 @@ if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 endif()
 
 # set project version number
-set(CHAMELEON_VERSION_MAJOR 1)
-set(CHAMELEON_VERSION_MINOR 1)
+set(CHAMELEON_VERSION_MAJOR 0)
+set(CHAMELEON_VERSION_MINOR 9)
 set(CHAMELEON_VERSION_PATCH 0)
 
 # Add extra cmake module path and initialize morse cmake modules

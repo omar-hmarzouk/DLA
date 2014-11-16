@@ -17,7 +17,7 @@
  *  Univ. of California Berkeley and Univ. of Colorado Denver,
  *  and INRIA Bordeaux Sud-Ouest
  *
- *  @version 1.1.0
+ *  @version 0.9.0
  *  @author Mathieu Faverge
  *  @author Cedric Augonnet
  *  @author Cedric Castagnede
@@ -28,11 +28,11 @@
 #define _MORSE_H_
 
 #define MORSE_VERSION_MAJOR 1
-#define MORSE_VERSION_MINOR 1
+#define MORSE_VERSION_MINOR 0
 #define MORSE_VERSION_MICRO 0
 
-#define CHAMELEON_VERSION_MAJOR 1
-#define CHAMELEON_VERSION_MINOR 1
+#define CHAMELEON_VERSION_MAJOR 0
+#define CHAMELEON_VERSION_MINOR 9
 #define CHAMELEON_VERSION_MICRO 0
 
 
