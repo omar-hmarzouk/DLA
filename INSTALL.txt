@@ -2,6 +2,9 @@
    Some instructions about CHAMELEON usage   
 **********************************************
 
+This is a brief discussion about CHAMELEON usage.
+For more information, please read the document users_guide.
+
 Compilation of CHAMELEON libraries and executables are done with CMake 
 (http://www.cmake.org/). This version has been tested with CMake 2.8.8.
 
