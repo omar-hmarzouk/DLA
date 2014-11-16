@@ -127,7 +127,7 @@ static void print_header(char *prog_name, int * iparam) {
 #endif
 
     printf( "#\n"
-            "# MORSE %d.%d.%d, %s\n"
+            "# CHAMELEON %d.%d.%d, %s\n"
             "# Nb threads: %d\n"
             "# Nb gpus:    %d\n"
             "# Nb mpi:     %d\n"

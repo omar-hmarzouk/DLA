@@ -219,7 +219,7 @@ int testing_zposv(int argc, char **argv)
     MORSE_zlacpy( MorseUpperLower, N, NRHS, B1, LDB, B2, LDB );
 
     printf("\n");
-    printf("------ TESTS FOR MORSE ZPOSV ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON ZPOSV ROUTINE -------  \n");
     printf("            Size of the Matrix %d by %d\n", N, N);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");
@@ -262,7 +262,7 @@ int testing_zposv(int argc, char **argv)
     MORSE_zpotrs(uplo, N, NRHS, A2, LDA, B2, LDB);
 
     printf("\n");
-    printf("------ TESTS FOR MORSE ZPOTRF + ZPOTRS ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON ZPOTRF + ZPOTRS ROUTINE -------  \n");
     printf("            Size of the Matrix %d by %d\n", N, N);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");
@@ -305,7 +305,7 @@ int testing_zposv(int argc, char **argv)
                  N, NRHS, 1.0, A2, LDA, B2, LDB);
 
     printf("\n");
-    printf("------ TESTS FOR MORSE ZPOTRF + ZTRSM + ZTRSM  ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON ZPOTRF + ZTRSM + ZTRSM  ROUTINE -------  \n");
     printf("            Size of the Matrix %d by %d\n", N, N);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");

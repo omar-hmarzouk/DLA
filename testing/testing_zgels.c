@@ -306,7 +306,7 @@ int testing_zgels(int argc, char **argv)
        MORSE_zunglq(M, N, K, A2, LDA, T, Q, LDA);
 
     printf("\n");
-    printf("------ TESTS FOR MORSE ZGELS ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON ZGELS ROUTINE -------  \n");
     printf("            Size of the Matrix %d by %d\n", M, N);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");
@@ -353,7 +353,7 @@ int testing_zgels(int argc, char **argv)
 
     if (M >= N) {
         printf("\n");
-        printf("------ TESTS FOR MORSE ZGEQRF + ZGEQRS ROUTINE -------  \n");
+        printf("------ TESTS FOR CHAMELEON ZGEQRF + ZGEQRS ROUTINE -------  \n");
         printf("            Size of the Matrix %d by %d\n", M, N);
         printf("\n");
         printf(" The matrix A is randomly generated for each test.\n");
@@ -384,7 +384,7 @@ int testing_zgels(int argc, char **argv)
     }
     else  {
         printf("\n");
-        printf("------ TESTS FOR MORSE ZGELQF + ZGELQS ROUTINE -------  \n");
+        printf("------ TESTS FOR CHAMELEON ZGELQF + ZGELQS ROUTINE -------  \n");
         printf("            Size of the Matrix %d by %d\n", M, N);
         printf("\n");
         printf(" The matrix A is randomly generated for each test.\n");
@@ -438,7 +438,7 @@ int testing_zgels(int argc, char **argv)
 
     if (M >= N) {
         printf("\n");
-        printf("------ TESTS FOR MORSE ZGEQRF + ZUNMQR + ZTRSM  ROUTINE -------  \n");
+        printf("------ TESTS FOR CHAMELEON ZGEQRF + ZUNMQR + ZTRSM  ROUTINE -------  \n");
         printf("            Size of the Matrix %d by %d\n", M, N);
         printf("\n");
         printf(" The matrix A is randomly generated for each test.\n");
@@ -453,7 +453,7 @@ int testing_zgels(int argc, char **argv)
     }
     else {
         printf("\n");
-        printf("------ TESTS FOR MORSE ZGELQF + ZUNMLQ + ZTRSM  ROUTINE -------  \n");
+        printf("------ TESTS FOR CHAMELEON ZGELQF + ZUNMLQ + ZTRSM  ROUTINE -------  \n");
         printf("            Size of the Matrix %d by %d\n", M, N);
         printf("\n");
         printf(" The matrix A is randomly generated for each test.\n");

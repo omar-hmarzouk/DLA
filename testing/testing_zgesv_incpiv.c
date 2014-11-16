@@ -224,7 +224,7 @@ int testing_zgesv_incpiv(int argc, char **argv)
     MORSE_zgesv_incpiv(N, NRHS, A2, LDA, L, IPIV, B2, LDB);
 
     printf("\n");
-    printf("------ TESTS FOR MORSE INCPIV ZGESV ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON INCPIV ZGESV ROUTINE -------  \n");
     printf("            Size of the Matrix %d by %d\n", N, N);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");
@@ -267,7 +267,7 @@ int testing_zgesv_incpiv(int argc, char **argv)
     MORSE_zgetrs_incpiv(MorseNoTrans, N, NRHS, A2, LDA, L, IPIV, B2, LDB);
 
     printf("\n");
-    printf("------ TESTS FOR MORSE ZGETRF + ZGETRS ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON ZGETRF + ZGETRS ROUTINE -------  \n");
     printf("            Size of the Matrix %d by %d\n", N, N);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");
@@ -312,7 +312,7 @@ int testing_zgesv_incpiv(int argc, char **argv)
                  N, NRHS, 1.0, A2, LDA, B2, LDB);
 
     printf("\n");
-    printf("------ TESTS FOR MORSE INCPIV ZGETRF + ZTRSMPL + ZTRSM  ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON INCPIV ZGETRF + ZTRSMPL + ZTRSM  ROUTINE -------  \n");
     printf("            Size of the Matrix %d by %d\n", N, N);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");

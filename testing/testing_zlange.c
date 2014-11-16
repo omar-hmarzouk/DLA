@@ -65,7 +65,7 @@ int testing_zlange(int argc, char **argv)
     eps = LAPACKE_dlamch_work('e');
 
     printf("\n");
-    printf("------ TESTS FOR MORSE ZLANGE ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON ZLANGE ROUTINE -------  \n");
     printf("            Size of the Matrix %d by %d\n", M, N);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");
@@ -84,7 +84,7 @@ int testing_zlange(int argc, char **argv)
     for(n=0; n<4; n++) {
         normmorse  = MORSE_zlange(norm[n], M, N, A, LDA);
         normlapack = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(norm[n]), M, N, A, LDA, work);
-        printf("%d: Lapack %e, Morse %e\n", MORSE_My_Mpi_Rank(), normlapack, normmorse);
+        printf("LAPACK %e, CHAMELEON %e\n", normlapack, normmorse);
         result = fabs(normmorse - normlapack) / (normlapack * eps);
 
         switch(norm[n]) {
@@ -125,7 +125,7 @@ int testing_zlange(int argc, char **argv)
                     normmorse = MORSE_zlantr(norm[n], uplo[u], diag[d], M, N, A, LDA);
                     normlapack = LAPACKE_zlantr_work(LAPACK_COL_MAJOR, lapack_const(norm[n]), lapack_const(uplo[u]),
                                                      lapack_const(diag[d]), M, N, A, LDA, work);
-                    printf("Lapack %e, Morse %e\n", normlapack, normmorse);
+                    printf("LAPACK %e, CHAMELEON %e\n", normlapack, normmorse);
 
                     result = fabs(normmorse - normlapack) / (normlapack * eps);
                     switch(norm[n]) {
@@ -166,7 +166,7 @@ int testing_zlange(int argc, char **argv)
         for(u=0; u<2; u++) {
             normmorse = MORSE_zlansy(norm[n], uplo[u], min(M,N), A, LDA);
             normlapack = LAPACKE_zlansy_work(LAPACK_COL_MAJOR, lapack_const(norm[n]), lapack_const(uplo[u]), min(M,N), A, LDA, work);
-            printf("Lapack %e, Morse %e\n", normlapack, normmorse);
+            printf("LAPACK %e, CHAMELEON %e\n", normlapack, normmorse);
 
             result = fabs(normmorse - normlapack) / (normlapack * eps);
             switch(norm[n]) {
@@ -211,7 +211,7 @@ int testing_zlange(int argc, char **argv)
             for(u=0; u<2; u++) {
                 normmorse = MORSE_zlanhe(norm[n], uplo[u], min(M,N), A, LDA);
                 normlapack = LAPACKE_zlanhe_work(LAPACK_COL_MAJOR, lapack_const(norm[n]), lapack_const(uplo[u]), min(M,N), A, LDA, work);
-                printf("Lapack %e, Morse %e\n", normlapack, normmorse);
+                printf("LAPACK %e, CHAMELEON %e\n", normlapack, normmorse);
 
                 result = fabs(normmorse - normlapack) / (normlapack * eps);
                 switch(norm[n]) {

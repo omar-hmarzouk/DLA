@@ -143,7 +143,7 @@ int testing_zpemv(int argc, char **argv)
     MORSE_zplrnt(n, 1, Y0, n,   573 );
 
     printf("\n");
-    printf("------ TESTS FOR MORSE ZPEMV ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON ZPEMV ROUTINE -------  \n");
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");
     printf(" The relative machine precision (eps) is %e \n",eps);

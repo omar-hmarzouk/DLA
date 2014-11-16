@@ -85,7 +85,7 @@ int testing_zherk(int argc, char **argv)
     eps = LAPACKE_dlamch_work('e');
 
     printf("\n");
-    printf("------ TESTS FOR MORSE ZHERK ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON ZHERK ROUTINE -------  \n");
     printf("            Size of the Matrix A %d by %d\n", N, K);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");

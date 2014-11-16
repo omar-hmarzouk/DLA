@@ -85,7 +85,7 @@ int testing_ztrmm(int argc, char **argv)
     eps = LAPACKE_dlamch_work('e');
 
     printf("\n");
-    printf("------ TESTS FOR MORSE ZTRMM ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON ZTRMM ROUTINE -------  \n");
     printf("            Size of the Matrix B : %d by %d\n", M, N);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");

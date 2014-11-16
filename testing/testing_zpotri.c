@@ -217,7 +217,7 @@ int testing_zpotri(int argc, char **argv)
     MORSE_zlacpy( MorseUpperLower, N, N, A1, LDA, A2, LDA );
 
     printf("\n");
-    printf("------ TESTS FOR MORSE ZPOTRI ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON ZPOTRI ROUTINE -------  \n");
     printf("            Size of the Matrix %d by %d\n", N, N);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");

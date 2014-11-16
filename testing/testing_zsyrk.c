@@ -85,7 +85,7 @@ int testing_zsyrk(int argc, char **argv)
     eps = LAPACKE_dlamch_work('e');
 
     printf("\n");
-    printf("------ TESTS FOR MORSE ZSYRK ROUTINE -------  \n");
+    printf("------ TESTS FOR CHAMELEON ZSYRK ROUTINE -------  \n");
     printf("            Size of the Matrix A %d by %d\n", N, K);
     printf("\n");
     printf(" The matrix A is randomly generated for each test.\n");

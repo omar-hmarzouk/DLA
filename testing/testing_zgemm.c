@@ -97,7 +97,7 @@ int testing_zgemm(int argc, char **argv)
 
     if (MORSE_My_Mpi_Rank() == 0){
         printf("\n");
-        printf("------ TESTS FOR MORSE ZGEMM ROUTINE -------  \n");
+        printf("------ TESTS FOR CHAMELEON ZGEMM ROUTINE -------  \n");
         printf("            Size of the Matrix %d by %d\n", M, N);
         printf("\n");
         printf(" The matrix A is randomly generated for each test.\n");
