@@ -51,7 +51,7 @@ include(GenPkgConfig)
 
 #############################################
 #                                           #
-#        Compilation of CHAMELEON          #
+#        Compilation of CHAMELEON           #
 #                                           #
 #############################################
 
