@@ -45,7 +45,7 @@ download from
 
 @menu
 * a BLAS implementation::
-* a CBLAS interface::
+* CBLAS::
 * a LAPACK implementation::
 * LAPACKE::
 * libtmg::
@@ -72,8 +72,8 @@ Fast implementations are also available as academic packages, such as ATLAS and
 Goto BLAS. 
 The standard interface to BLAS is the FORTRAN interface.
 
-@node a CBLAS interface
-@subsubsection a CBLAS inferface
+@node CBLAS
+@subsubsection CBLAS
 
 @uref{http://www.netlib.org/blas/#_cblas, CBLAS} is a C language interface to 
 BLAS.

@@ -372,7 +372,7 @@ evaluated formulas.
 Progress information can be centralized, replicated or distributed (currently 
 centralized).
 
-@center @image{trace_qr,13cm,6cm}
+@center @image{trace_qr,12cm,5cm}
 
 A trace of the tile QR factorization executing on eight cores without 
 any global synchronization points (kernel names for real arithmetics in single 

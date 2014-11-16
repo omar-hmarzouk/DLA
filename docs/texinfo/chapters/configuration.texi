@@ -289,7 +289,7 @@ By doing so, traces are generated after each execution of a program which uses
 StarPU in the directory pointed by the @env{STARPU_FXT_PREFIX} environment 
 variable. Example: 
 @example
-export @env{STARPU_FXT_PREFIX}=/home/toto/fxt_files/
+export @env{STARPU_FXT_PREFIX}=/home/yourname/fxt_files/
 @end example
 
 When executing a @command{./timing/...} CHAMELEON program, if it has been 

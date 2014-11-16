@@ -37,30 +37,29 @@ configure_file("users_guide.texi.in"
                "users_guide.texi"
                @ONLY)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/figures/tile_lu.pdf
-               ${CMAKE_CURRENT_BINARY_DIR}/tile_lu.pdf
-               COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/figures/tile_lu.jpg
-               ${CMAKE_CURRENT_BINARY_DIR}/tile_lu.jpg
-               COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/figures/tile_layout.pdf
-               ${CMAKE_CURRENT_BINARY_DIR}/tile_layout.pdf
-               COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/figures/tile_layout.jpg
-               ${CMAKE_CURRENT_BINARY_DIR}/tile_layout.jpg
-               COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/figures/trace_qr.pdf
-               ${CMAKE_CURRENT_BINARY_DIR}/trace_qr.pdf
-               COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/figures/trace_qr.jpg
-               ${CMAKE_CURRENT_BINARY_DIR}/trace_qr.jpg
-               COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/figures/potri_async.png
-               ${CMAKE_CURRENT_BINARY_DIR}/potri_async.png
-               COPYONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/figures/morse_header.png
-               ${CMAKE_CURRENT_BINARY_DIR}/morse_header.png
-               COPYONLY)
+set(FIGURES 
+    tile_lu.pdf
+    tile_lu.jpg
+    tile_layout.pdf
+    tile_layout.jpg
+    trace_qr.pdf
+    trace_qr.jpg
+    potri_async.png
+    morse_header.png
+    )
+set(FIGURES_HTML 
+    tile_lu.jpg
+    tile_layout.jpg
+    trace_qr.jpg
+    potri_async.png
+    morse_header.png
+    )
+    
+foreach(_fig ${FIGURES})
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/figures/${_fig}
+                   ${CMAKE_CURRENT_BINARY_DIR}/${_fig}
+                   COPYONLY)
+endforeach()
 
 # Looking which version we can compile
 # ------------------------------------
@@ -96,6 +95,10 @@ if(MAKEINFO_COMPILER)
             DESTINATION share/info)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/users_guide.html
             DESTINATION share/html)
+    foreach(_fig ${FIGURES_HTML})
+        install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_fig}
+                DESTINATION share/html)
+    endforeach()           
 
 else(MAKEINFO_COMPILER)
     message(STATUS "Looking for makeinfo - not found")

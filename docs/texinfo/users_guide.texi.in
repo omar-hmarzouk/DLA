@@ -59,7 +59,7 @@ advised of the possibility of such damage.
 @c @image{morse_header} 
 @c @end flushleft
 @title CHAMELEON User's Guide
-@subtitle sub-project of MORSE
+@subtitle Software of MORSE project
 
 @flushright
 @strong{A dense linear algebra software for heterogeneous architectures}
