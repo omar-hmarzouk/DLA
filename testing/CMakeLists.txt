@@ -98,38 +98,38 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 # Define what libraries we have to link with
 # ------------------------------------------
 unset(libs_for_tests)
-list(APPEND libs_for_tests magmamorse)
+list(APPEND libs_for_tests chameleon)
 
-if(MAGMAMORSE_SCHED_STARPU)
-    if ( MAGMAMORSE_USE_MPI )
+if(CHAMELEON_SCHED_STARPU)
+    if ( CHAMELEON_USE_MPI )
         list(APPEND libs_for_tests
-          magmamorse_starpu
+          chameleon_starpu
           ${STARPU_MPI_LIBRARIES}
         )
     else()
         list(APPEND libs_for_tests
-          magmamorse_starpu
+          chameleon_starpu
           ${STARPU_SHM_LIBRARIES}
         )
     endif()
     link_directories(${STARPU_LIBRARY_DIRS})
-elseif(MAGMAMORSE_SCHED_QUARK)
+elseif(CHAMELEON_SCHED_QUARK)
     list(APPEND libs_for_tests
-        magmamorse_quark
+        chameleon_quark
         ${QUARK_LIBRARIES}
       )
     link_directories(${QUARK_LIBRARY_DIRS})
 endif()
 
-if(NOT MAGMAMORSE_SIMULATION)
+if(NOT CHAMELEON_SIMULATION)
 
-    if(MAGMAMORSE_USE_CUDA)
+    if(CHAMELEON_USE_CUDA)
         list(APPEND libs_for_tests
         ${CUDA_LIBRARIES}
         )
         link_directories(${CUDA_LIBRARY_DIRS})
     endif()
-    if(MAGMAMORSE_USE_MAGMA)
+    if(CHAMELEON_USE_MAGMA)
         list(APPEND libs_for_tests
         ${MAGMA_LIBRARIES}
         )
@@ -178,14 +178,14 @@ link_directories(${HWLOC_LIBRARY_DIRS})
 
 # Create one testing per precision with all files
 # -----------------------------------------------
-foreach(_precision ${MAGMAMORSE_PRECISION} )
+foreach(_precision ${CHAMELEON_PRECISION} )
 
     precisions_rules_py(${_precision}SRC_GENERATED "${ZSRC}"
         PRECISIONS "${_precision}" )
 
     add_executable(${_precision}testing ${${_precision}SRC_GENERATED})
     add_dependencies(${_precision}testing
-        magmamorse_include
+        chameleon_include
         coreblas_include
         control_include
         testing_include
@@ -200,7 +200,7 @@ endforeach()
 
 # Add tests (C/CPP)
 # -----------------
-if(MAGMAMORSE_SCHED_STARPU)
+if(CHAMELEON_SCHED_STARPU)
     # Copy launcher
     add_custom_target(testing_launcher_starpu ALL
                      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/morse_testing_starpu.py
@@ -214,7 +214,7 @@ if(MAGMAMORSE_SCHED_STARPU)
             DESTINATION ${CMAKE_INSTALL_PREFIX}/testing)
 endif()
 
-if(MAGMAMORSE_SCHED_QUARK)
+if(CHAMELEON_SCHED_QUARK)
     # Copy launcher
     add_custom_target(testing_launcher_quark ALL
                      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/morse_testing_quark.py

@@ -109,7 +109,7 @@ typedef struct morse_context_s {
     int                nworkers;
     int                ncudas;
     int                nthreads_per_worker;
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     int                my_mpi_rank;
     int                mpi_comm_size;
 #endif
@@ -178,4 +178,4 @@ typedef struct morse_option_s {
 #include "morse_kernels.h"
 
 
-#endif /* __MAGMA_MORSE_H__ */
+#endif /* __CHAMELEON_H__ */

@@ -13,13 +13,13 @@ set(MPI_CMD_mpi mpirun -np 4)
 set(MPI_CMD_mpigpu mpirun -np 4)
 
 set( TEST_CATEGORIES shm )
-if (MAGMAMORSE_USE_CUDA AND HAVE_CUDA)
+if (CHAMELEON_USE_CUDA AND HAVE_CUDA)
    set( TEST_CATEGORIES ${TEST_CATEGORIES} shmgpu )
 endif()
 
-# if (MAGMAMORSE_USE_MPI AND HAVE_MPI)
+# if (CHAMELEON_USE_MPI AND HAVE_MPI)
 #    set( TEST_CATEGORIES ${TEST_CATEGORIES} mpi )
-#    if (MAGMAMORSE_USE_CUDA AND HAVE_CUDA)
+#    if (CHAMELEON_USE_CUDA AND HAVE_CUDA)
 #       set( TEST_CATEGORIES ${TEST_CATEGORIES} mpigpu )
 #    endif()
 # endif()
@@ -36,18 +36,18 @@ set(TESTLIST
     potri
     )
 
-set(MAGMAMORSE_PRECISIONS_ZC "c;z")
+set(CHAMELEON_PRECISIONS_ZC "c;z")
 set(TESTLIST_ZC
     sytrf
     )
 
 foreach(cat ${TEST_CATEGORIES})
-    foreach(prec ${RP_MAGMAMORSE_PRECISIONS})
+    foreach(prec ${RP_CHAMELEON_PRECISIONS})
         foreach(test ${TESTLIST})
             add_test(time_${cat}_${prec}${test} ${MPI_CMD_${cat}} ./time_${prec}${test}_tile ${TEST_CMD_${cat}} --check --nowarmup)
         endforeach()
     endforeach()
-    foreach(prec ${MAGMAMORSE_PRECISIONS_ZC})
+    foreach(prec ${CHAMELEON_PRECISIONS_ZC})
         foreach(test ${TESTLIST_ZC})
             add_test(time_${cat}_${prec}${test} ${MPI_CMD_${cat}} ./time_${prec}${test}_tile ${TEST_CMD_${cat}} --check --nowarmup)
         endforeach()

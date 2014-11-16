@@ -160,7 +160,7 @@ static void cl_ztsqrt_cpu_func(void *descr[], void *cl_arg)
 }
 
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 
 magma_int_t
 magma_ztsqrt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
@@ -358,7 +358,7 @@ static void cl_ztsqrt_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 CODELETS(ztsqrt, 4, cl_ztsqrt_cpu_func, cl_ztsqrt_cuda_func, 0)
 #else
 CODELETS_CPU(ztsqrt, 4, cl_ztsqrt_cpu_func)

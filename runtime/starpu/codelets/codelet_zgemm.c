@@ -104,7 +104,7 @@ static void cl_zgemm_cpu_func(void *descr[], void *cl_arg)
         CBLAS_SADDR(beta), C, ldc);
 }
 
-#ifdef MAGMAMORSE_USE_CUDA
+#ifdef CHAMELEON_USE_CUDA
 static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum transA;

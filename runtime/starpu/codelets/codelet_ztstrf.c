@@ -172,7 +172,7 @@ static void cl_ztstrf_cpu_func(void *descr[], void *cl_arg)
 
     CORE_ztstrf(m, n, ib, nb, U, ldu, A, lda, L, ldl, IPIV, WORK, ldwork, &info);
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     /*
      * L stores the following if enough place:
      *      L1     L2    L3     ...
@@ -200,7 +200,7 @@ static void cl_ztstrf_cpu_func(void *descr[], void *cl_arg)
  * Codelet GPU
  */
 /* TODO/WARNING: tstrf is not working on GPU for now */
-#if defined(MAGMAMORSE_USE_MAGMA) && 0
+#if defined(CHAMELEON_USE_MAGMA) && 0
 static void cl_ztstrf_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_starpu_ws_t *d_work;
@@ -262,7 +262,7 @@ static void cl_ztstrf_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(MAGMAMORSE_USE_MAGMA) && 0
+#if defined(CHAMELEON_USE_MAGMA) && 0
 CODELETS(ztstrf, 4, cl_ztstrf_cpu_func, cl_ztstrf_cuda_func, 0)
 #else
 CODELETS_CPU(ztstrf, 4, cl_ztstrf_cpu_func)

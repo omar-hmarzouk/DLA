@@ -28,9 +28,9 @@
 
 # Check for the subdirectories
 # ----------------------------
-if( MAGMAMORSE_SCHED_QUARK )
+if( CHAMELEON_SCHED_QUARK )
     add_subdirectory(quark)
-elseif( MAGMAMORSE_SCHED_STARPU )
+elseif( CHAMELEON_SCHED_STARPU )
     add_subdirectory(starpu)
 endif()
 

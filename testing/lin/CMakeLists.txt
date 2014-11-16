@@ -140,15 +140,15 @@ set(ZLINTST
 
 # Define what libraries we have to link with
 # ------------------------------------------
-set(libs_for_tests "magmamorse")
+set(libs_for_tests "chameleon")
 
-# TODO: Check for name of following libraries (it certainly changed between morse and new_magmamorse)
+# TODO: Check for name of following libraries (it certainly changed between morse and new_chameleon)
 if(MORSE_SCHED_STARPU)
-    list(APPEND libs_for_tests magmamorse_starpu)
+    list(APPEND libs_for_tests chameleon_starpu)
     list(APPEND libs_for_tests ${STARPU_LIBRARIES})
     list(APPEND libs_for_tests coreblas)
 elseif(MORSE_SCHED_QUARK)
-    list(APPEND libs_for_tests magmamorse_starpu)
+    list(APPEND libs_for_tests chameleon_starpu)
     list(APPEND libs_for_tests ${QUARK_LIBRARIES})
     list(APPEND libs_for_tests coreblas)
 endif()

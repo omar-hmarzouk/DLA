@@ -1,14 +1,14 @@
 **********************************************
-   Some instructions about MagmaMorse usage   
+   Some instructions about CHAMELEON usage   
 **********************************************
 
-Compilation of MagmaMorse libraries and executables are done with CMake 
+Compilation of CHAMELEON libraries and executables are done with CMake 
 (http://www.cmake.org/). This version has been tested with CMake 2.8.8.
 
-Usage: three steps are required to compile and install MagmaMorse 
+Usage: three steps are required to compile and install CHAMELEON 
 
 1) configure : 
-> cmake path/to/magmamorse -DOPTION1= -DOPTION2= ... 
+> cmake path/to/chameleon -DOPTION1= -DOPTION2= ... 
 see the "Options" section to get list of options
 see the "Dependencies detection" for details about libraries detection
 
@@ -19,11 +19,11 @@ do not hesitate to use -j[ncores] option to speedup the compilation
 3) install (optional) :
 > make install
 do not forget to specify the install directory with -DCMAKE_INSTALL_PREFIX at configure
-example : cmake /home/toto/magmamorse -DCMAKE_INSTALL_PREFIX=/home/toto/install
+example : cmake /home/toto/chameleon -DCMAKE_INSTALL_PREFIX=/home/toto/install
 
 
 -------------------------------------------
-* List of libraries MagmaMorse depends on *
+* List of libraries CHAMELEON depends on *
 -------------------------------------------
 
 threads : pthread
@@ -84,17 +84,17 @@ by specifying them directly at cmake configure. Different cases :
 
 You can optionally activate some options at cmake configure (like CUDA, MPI, ...) 
 invoking cmake path/to/your/CMakeLists.txt -DOPTION1= -DOPTION2= ...
-example: cmake /home/toto/magmamorse/ -DCMAKE_BUILD_TYPE=Debug \
+example: cmake /home/toto/chameleon/ -DCMAKE_BUILD_TYPE=Debug \
                                       -DCMAKE_INSTALL_PREFIX=/home/toto/install/ \
-                                      -DMAGMAMORSE_USE_CUDA=ON \ 
-                                      -DMAGMAMORSE_USE_MAGMA=ON \
-                                      -DMAGMAMORSE_USE_MPI=ON \
+                                      -DCHAMELEON_USE_CUDA=ON \ 
+                                      -DCHAMELEON_USE_MAGMA=ON \
+                                      -DCHAMELEON_USE_MPI=ON \
                                       -DBLA_VENDOR=Intel10_64lp \ 
                                       -DSTARPU_DIR=/home/toto/install/starpu-1.1/build/include/starpu/1.1/ \
-                                      -DMAGMAMORSE_USE_FXT=ON 
+                                      -DCHAMELEON_USE_FXT=ON 
 
 You can get the full list of options with -L[A][H] options of cmake command
-example: cmake -LH /home/toto/magmamorse/
+example: cmake -LH /home/toto/chameleon/
 
 You can also set the options thanks to ccmake interface
 
@@ -118,20 +118,20 @@ STARPU_LIBDIR=...
 # same idea can be used for some packages, replace STARPU by one of these:
 BLAS - CBLAS - FXT - HWLOC - LAPACK - LAPACKE - MAGMA - QUARK - TMG
 
-MagmaMorse specific:
+CHAMELEON specific:
 --------------------
-MAGMAMORSE_USE_MPI=ON|OFF (default OFF)
-MAGMAMORSE_USE_CUDA=ON|OFF (default OFF) 
-MAGMAMORSE_USE_MAGMA=ON|OFF (default OFF)
-MAGMAMORSE_USE_FXT=ON|OFF (default OFF)
-MAGMAMORSE_SCHED_STARPU=ON|OFF (default ON)
-MAGMAMORSE_SCHED_QUARK=ON|OFF (default OFF)
-MAGMAMORSE_SIMULATION=ON|OFF (default OFF)
+CHAMELEON_USE_MPI=ON|OFF (default OFF)
+CHAMELEON_USE_CUDA=ON|OFF (default OFF) 
+CHAMELEON_USE_MAGMA=ON|OFF (default OFF)
+CHAMELEON_USE_FXT=ON|OFF (default OFF)
+CHAMELEON_SCHED_STARPU=ON|OFF (default ON)
+CHAMELEON_SCHED_QUARK=ON|OFF (default OFF)
+CHAMELEON_SIMULATION=ON|OFF (default OFF)
 
 Libraries detected with an official cmake module (see module files in CMAKE_ROOT/Modules/):
 CUDA - MPI - Threads 
 
-Libraries detected with our cmake modules (see module files in cmake_modules/morse/find/ directory of MagmaMorse sources):
+Libraries detected with our cmake modules (see module files in cmake_modules/morse/find/ directory of CHAMELEON sources):
 BLAS - CBLAS - FXT - HWLOC - LAPACK - LAPACKE - MAGMA - QUARK - STARPU - TMG 
 
 
@@ -146,8 +146,8 @@ By doing so, traces are generated after each execution of a program which uses
 StarPU in the directory pointed by the STARPU_FXT_PREFIX environment variable.
 example: export STARPU_FXT_PREFIX=/home/toto/fxt_files/
 
-When executing a ./timing/... MagmaMorse program, if it has been enabled 
-(StarPU compiled with FxT and -DMAGMAMORSE_USE_FXT=ON), you can give the option --trace 
+When executing a ./timing/... CHAMELEON program, if it has been enabled 
+(StarPU compiled with FxT and -DCHAMELEON_USE_FXT=ON), you can give the option --trace 
 to tell the program to generate trace log files.
 
 Finally, to generate the trace file which can be opened with Vite program 
@@ -164,10 +164,10 @@ The trace file will be named paje.trace (use -o option to specify an output name
 -------------------------------------------
 * Use simulation mode with StarPU-SimGrid *
 -------------------------------------------
-Simulation mode can be activated by setting the cmake option MAGMAMORSE_SIMULATION to ON.
+Simulation mode can be activated by setting the cmake option CHAMELEON_SIMULATION to ON.
 This mode allows you to simulate execution of algorithms with StarPU compiled with SimGrid (http://simgrid.gforge.inria.fr/).
-To do so, we provide some perfmodels in the simucore/perfmodels/ directory of MagmaMorse sources.
-To use these perfmodels, please set your STARPU_HOME environment variable to path/to/your/magmamorse_sources/simucore/perfmodels.
+To do so, we provide some perfmodels in the simucore/perfmodels/ directory of CHAMELEON sources.
+To use these perfmodels, please set your STARPU_HOME environment variable to path/to/your/chameleon_sources/simucore/perfmodels.
 Finally, you need to set your STARPU_HOSTNAME environment variable to the name of the machine to simulate.
 For example: STARPU_HOSTNAME=mirage.
 Note that only POTRF kernels with block sizes of 320 or 960 (simple and double precision) on mirage machine are available for now.

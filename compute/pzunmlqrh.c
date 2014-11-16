@@ -35,7 +35,7 @@
 #define B(m,n) B,  (m),  (n)
 #define T(m,n) T,  (m),  (n)
 #define T2(m,n) T,  (m),  (n)+A->nt
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 #define DIAG(m,n) DIAG, ((n)/BS), 0
 #else
 #define DIAG(m,n) A, (m), (n)
@@ -75,7 +75,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
      */
     ws_worker = A->nb * ib;
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     {
         /* necessary to use UNMLQ on GPU */
         int nblk = ( A->nt + BS -1 ) / BS;
@@ -109,7 +109,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                     tempkmin = min(tempkm,tempNn);
                     ldaN = BLKLDD(A, N);
                     ldbN = BLKLDD(B, N);
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseUpper, tempkmin, tempNn, A->nb,
@@ -219,7 +219,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 T(k, m), T->mb);
                         }
                     }
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseUpper, tempkmin, tempNn, A->nb,
@@ -294,7 +294,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 T(k, n), T->mb);
                         }
                     }
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseUpper, tempkmin, tempNn, A->nb,
@@ -331,7 +331,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                     tempNn = N == A->nt-1 ? A->n-N*A->nb : A->nb;
                     tempkmin = min(tempkm,tempNn);
                     ldaN = BLKLDD(A, N);
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseUpper, tempkmin, tempNn, A->nb,
@@ -397,7 +397,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif

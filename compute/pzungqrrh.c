@@ -35,7 +35,7 @@
 #define Q(m,n) Q,  (m),  (n)
 #define T(m,n) T,  (m),  (n)
 #define T2(m,n) T,  (m),  (n)+(A->nt)
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 #define DIAG(m,n) DIAG, ((m)/BS), 0
 #else
 #define DIAG(m,n) A, (m), (n)
@@ -76,7 +76,7 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
      */
     ws_worker = A->nb * ib;
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     {
         int nblk = ( A->mt + BS -1 ) / BS;
         DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
@@ -145,7 +145,7 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                         T(m, k), T->mb);
                 }
             }
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
             MORSE_TASK_zlacpy(
                 &options,
                 MorseLower, tempMm, tempkmin, A->nb,
@@ -174,7 +174,7 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif

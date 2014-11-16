@@ -82,7 +82,7 @@ static void cl_zpotrf_cpu_func(void *descr[], void *cl_arg)
         n, A, lda);
 }
 
-#ifdef MAGMAMORSE_USE_MAGMA
+#ifdef CHAMELEON_USE_MAGMA
 static void cl_zpotrf_cuda_func(void *descr[], void *cl_arg)
 {
     cudaStream_t stream[2], currentt_stream;
@@ -129,7 +129,7 @@ static void cl_zpotrf_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#ifdef MAGMAMORSE_USE_MAGMA
+#ifdef CHAMELEON_USE_MAGMA
 CODELETS(zpotrf, 1, cl_zpotrf_cpu_func, cl_zpotrf_cuda_func, 0)
 #else
 CODELETS_CPU(zpotrf, 1, cl_zpotrf_cpu_func)

@@ -182,7 +182,7 @@ enum dparam_timing {
  * Synchro for distributed computations
  *
  */
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
 #define START_DISTRIBUTED()  MPI_Barrier(MPI_COMM_WORLD);
 #define STOP_DISTRIBUTED()   MPI_Barrier(MPI_COMM_WORLD);
 #else

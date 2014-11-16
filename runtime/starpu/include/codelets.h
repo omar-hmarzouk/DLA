@@ -81,19 +81,19 @@
 
 
 #define CODELETS_ALL_HEADER(name)                                       \
-     MAGMAMORSE_CL_CB_HEADER(name)					\
+     CHAMELEON_CL_CB_HEADER(name)					\
      void cl_##name##_load_fake_model(void);				\
      void cl_##name##_restore_model(void);				\
      extern struct starpu_codelet cl_##name;				\
      void cl_##name##_restrict_where(uint32_t where);			\
      void cl_##name##_restore_where(void);
 
-#if defined(MAGMAMORSE_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA)
 #define CODELETS(name, _nbuffers, cpu_func_name, cuda_func_name, cuda_flags) \
     CODELETS_GPU(name, _nbuffers, cpu_func_name, cuda_func_name, cuda_flags)
 
 #define CODELETS_HEADER(name)  CODELETS_ALL_HEADER(name)
-#elif defined(MAGMAMORSE_SIMULATION)
+#elif defined(CHAMELEON_SIMULATION)
 #define CODELETS(name, _nbuffers, cpu_func_name, cuda_func_name, cuda_flags) \
     CODELETS_GPU(name, _nbuffers, cpu_func_name, (starpu_cuda_func_t) 1, cuda_flags)
 

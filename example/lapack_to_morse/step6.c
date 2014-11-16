@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
     MORSE_Set(MORSE_TILE_SIZE,        iparam[IPARAM_NB] );
     MORSE_Set(MORSE_INNER_BLOCK_SIZE, iparam[IPARAM_IB] );
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     MPI_Comm_size( MPI_COMM_WORLD, &NMPIPROC );
     /* Check P */
     if ( (iparam[IPARAM_P] > 1) &&

@@ -4,7 +4,7 @@
 @c Copyright (C) 2014 Inria
 @c Copyright (C) 2014 The University of Tennessee
 @c Copyright (C) 2014 King Abdullah University of Science and Technology
-@c See the file ../magma_morse.texi for copying conditions.
+@c See the file ../chameleon.texi for copying conditions.
 
 @menu
 * Compilation configuration::
@@ -53,14 +53,14 @@ access to options through a user-friendly Qt interface (required
 
 Example of configuration using the command line 
 @example
-cmake ~/magmamorse/ -DCMAKE_BUILD_TYPE=Debug \
+cmake ~/chameleon/ -DCMAKE_BUILD_TYPE=Debug \
                     -DCMAKE_INSTALL_PREFIX=~/install \
-                    -DMAGMAMORSE_USE_CUDA=ON \
-                    -DMAGMAMORSE_USE_MAGMA=ON \
-                    -DMAGMAMORSE_USE_MPI=ON \
+                    -DCHAMELEON_USE_CUDA=ON \
+                    -DCHAMELEON_USE_MAGMA=ON \
+                    -DCHAMELEON_USE_MPI=ON \
                     -DBLA_VENDOR=Intel10_64lp \
                     -DSTARPU_DIR=~/install/starpu-1.1 \                
-                    -DMAGMAMORSE_USE_FXT=ON 
+                    -DCHAMELEON_USE_FXT=ON 
 @end example
 
 You can get the full list of options with @option{-L[A][H]} options of 
@@ -71,7 +71,7 @@ cmake -LH <path to source directory>
 
 @menu
 * General CMake options::
-* MAGMA_MORSE options::
+* CHAMELEON options::
 @end menu
 
 @node General CMake options
@@ -97,42 +97,42 @@ The possible values for @option{var} are:
 @end table
 
 @item -DBUILD_SHARED_LIBS=@option{trigger} (default:@option{OFF})
-Indicate wether or not CMake has to build MAGMA_MORSE static (@option{OFF}) or 
+Indicate wether or not CMake has to build CHAMELEON static (@option{OFF}) or 
 shared (@option{ON}) libraries.
 
 @end table
 
-@node MAGMA_MORSE options
-@subsection MAGMA_MORSE options
+@node CHAMELEON options
+@subsection CHAMELEON options
 
-List of MAGMA_MORSE options that can be enabled/disabled (value=@code{ON} 
+List of CHAMELEON options that can be enabled/disabled (value=@code{ON} 
 or @code{OFF}):
 @table @code
 
-@item @option{-DMAGMAMORSE_SCHED_STARPU}=@option{trigger} (default: @code{ON})
+@item @option{-DCHAMELEON_SCHED_STARPU}=@option{trigger} (default: @code{ON})
 to link with StarPU library (runtime system)
 
-@item @option{-DMAGMAMORSE_SCHED_QUARK}=@option{trigger} (default: @code{OFF})
+@item @option{-DCHAMELEON_SCHED_QUARK}=@option{trigger} (default: @code{OFF})
 to link with QUARK library (runtime system)
 
-@item @option{-DMAGMAMORSE_USE_CUDA}=@option{trigger} (default: @code{OFF})
+@item @option{-DCHAMELEON_USE_CUDA}=@option{trigger} (default: @code{OFF})
 to link with CUDA runtime (implementation paradigm for accelerated codes on 
 GPUs) and cuBLAS library (optimized BLAS kernels on GPUs), can only be used with 
 StarPU
-@item @option{-DMAGMAMORSE_USE_MAGMA}=@option{trigger} (default: @code{OFF})
+@item @option{-DCHAMELEON_USE_MAGMA}=@option{trigger} (default: @code{OFF})
 to link with MAGMA library (kernels on GPUs, higher level than cuBLAS), can only 
 be used with StarPU
 
-@item @option{-DMAGMAMORSE_USE_MPI}=@option{trigger} (default: @code{OFF})
+@item @option{-DCHAMELEON_USE_MPI}=@option{trigger} (default: @code{OFF})
 to link with MPI library (message passing implementation for use of multiple 
 nodes with distributed memory), can only be used with StarPU
 
-@item @option{-DMAGMAMORSE_USE_FXT}=@option{trigger} (default: @code{OFF})
+@item @option{-DCHAMELEON_USE_FXT}=@option{trigger} (default: @code{OFF})
 to link with FxT library (trace execution of kernels on workers), can only be 
 used with StarPU
 
-@item @option{-DMAGMAMORSE_SIMULATION=trigger} (default: @code{OFF})
-to enable simulation mode, means MAGMA_MORSE will not really execute tasks, 
+@item @option{-DCHAMELEON_SIMULATION=trigger} (default: @code{OFF})
+to enable simulation mode, means CHAMELEON will not really execute tasks, 
 see details in section @ref{Use simulation mode with StarPU-SimGrid}. 
 This option must be used with StarPU compiled with  
 @uref{http://simgrid.gforge.inria.fr/, SimGrid} allowing to guess the 
@@ -140,25 +140,25 @@ execution time on any architecture.
 This feature should be used to make experiments on the scheduler behaviors and 
 performances not to produce solutions of linear systems.
 
-@item @option{-DMAGMAMORSE_ENABLE_DOCS=trigger} (default: @code{ON})
+@item @option{-DCHAMELEON_ENABLE_DOCS=trigger} (default: @code{ON})
 to control build of the documentation contained in @file{docs/} sub-directory
-@item @option{-DMAGMAMORSE_ENABLE_EXAMPLE=trigger} (default: @code{ON})
+@item @option{-DCHAMELEON_ENABLE_EXAMPLE=trigger} (default: @code{ON})
 to control build of the examples executables (API usage) 
 contained in @file{example/} sub-directory
-@item @option{-DMAGMAMORSE_ENABLE_TESTING=trigger} (default: @code{ON})
+@item @option{-DCHAMELEON_ENABLE_TESTING=trigger} (default: @code{ON})
 to control build of testing executables (numerical check) contained in 
 @file{testing/} sub-directory
-@item @option{-DMAGMAMORSE_ENABLE_TIMING=trigger} (default: @code{ON})
+@item @option{-DCHAMELEON_ENABLE_TIMING=trigger} (default: @code{ON})
 to control build of timing executables (performances check) contained in 
 @file{timing/} sub-directory
 
-@item @option{-DMAGMAMORSE_PREC_S=trigger} (default: @code{ON})
+@item @option{-DCHAMELEON_PREC_S=trigger} (default: @code{ON})
 to enable the support of simple arithmetic precision (float in C)
-@item @option{-DMAGMAMORSE_PREC_D=trigger} (default: @code{ON})
+@item @option{-DCHAMELEON_PREC_D=trigger} (default: @code{ON})
 to enable the support of double arithmetic precision (double in C)
-@item @option{-DMAGMAMORSE_PREC_C=trigger} (default: @code{ON})
+@item @option{-DCHAMELEON_PREC_C=trigger} (default: @code{ON})
 to enable the support of complex arithmetic precision (complex in C)
-@item @option{-DMAGMAMORSE_PREC_Z=trigger} (default: @code{ON})
+@item @option{-DCHAMELEON_PREC_Z=trigger} (default: @code{ON})
 to enable the support of double complex arithmetic precision (double complex 
 in C)
 
@@ -169,7 +169,7 @@ to make LAPACK library discovery verbose (automatically enabled if
 @option{BLAS_VERBOSE=@code{ON}})
 @end table
 
-List of MAGMA_MORSE options that needs a specific value:
+List of CHAMELEON options that needs a specific value:
 @table @code
 @item @option{-DBLA_VENDOR=@option{var}} (default: @option{empty})
 The possible values for @option{var} are:
@@ -189,7 +189,7 @@ By default @option{BLA_VENDOR} is empty so that CMake tries to detect all
 possible BLAS vendor with a preference for Intel MKL.
 @end table
 
-List of MAGMA_MORSE options which requires to give a path:
+List of CHAMELEON options which requires to give a path:
 @table @code
 @item @option{-DLIBNAME_DIR=@option{path}} (default: empty)
 root directory of the LIBNAME library installation
@@ -210,8 +210,8 @@ Libraries detected with an official CMake module (see module files in
 @item Threads
 @end itemize
 
-Libraries detected with MAGMA_MORSE cmake modules (see module files in 
-@file{cmake_modules/morse/find/} directory of MAGMA_MORSE sources):
+Libraries detected with CHAMELEON cmake modules (see module files in 
+@file{cmake_modules/morse/find/} directory of CHAMELEON sources):
 @itemize @bullet
 @item BLAS
 @item CBLAS
@@ -292,8 +292,8 @@ variable. Example:
 export @env{STARPU_FXT_PREFIX}=/home/toto/fxt_files/
 @end example
 
-When executing a @command{./timing/...} MAGMA_MORSE program, if it has been 
-enabled (StarPU compiled with FxT and @option{-DMAGMAMORSE_USE_FXT=ON}), you 
+When executing a @command{./timing/...} CHAMELEON program, if it has been 
+enabled (StarPU compiled with FxT and @option{-DCHAMELEON_USE_FXT=ON}), you 
 can give the option @option{--trace} to tell the program to generate trace log 
 files.
 
@@ -319,11 +319,11 @@ name).
 @section Use simulation mode with StarPU-SimGrid
 
 Simulation mode can be enabled by setting the cmake option 
-@option{-DMAGMAMORSE_SIMULATION=ON}.
+@option{-DCHAMELEON_SIMULATION=ON}.
 This mode allows you to simulate execution of algorithms with StarPU compiled 
 with @uref{http://simgrid.gforge.inria.fr/, SimGrid}.
 To do so, we provide some perfmodels in the @file{simucore/perfmodels/} 
-directory of MAGMA_MORSE sources.
+directory of CHAMELEON sources.
 To use these perfmodels, please set the following
 @itemize @bullet
 @item @env{STARPU_HOME} environment variable to:

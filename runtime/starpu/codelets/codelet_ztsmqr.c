@@ -213,7 +213,7 @@ static void cl_ztsmqr_cpu_func(void *descr[], void *cl_arg)
 }
 
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 
 magma_int_t
 magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
@@ -626,7 +626,7 @@ static void cl_ztsmqr_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 CODELETS(ztsmqr, 5, cl_ztsmqr_cpu_func, cl_ztsmqr_cuda_func, STARPU_CUDA_ASYNC)
 #else
 CODELETS_CPU(ztsmqr, 5, cl_ztsmqr_cpu_func)

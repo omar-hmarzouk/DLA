@@ -55,18 +55,18 @@ set(ZSRC
    )
 
 precisions_rules_py(TIMING_AUX_SRCS_GENERATED "${ZSRC}"
-                    PRECISIONS "${MAGMAMORSE_PRECISION}")
+                    PRECISIONS "${CHAMELEON_PRECISION}")
 
 set(TIMING_SRCS
     auxiliary.c
     ${TIMING_AUX_SRCS_GENERATED}
    )
 
-# Create libmagmamorse_timing.a
+# Create libchameleon_timing.a
 # -----------------------------
-add_library(magmamorse_timing STATIC ${TIMING_SRCS})
-set_property(TARGET magmamorse_timing PROPERTY LINKER_LANGUAGE Fortran)
-add_dependencies(magmamorse_timing timing_include)
+add_library(chameleon_timing STATIC ${TIMING_SRCS})
+set_property(TARGET chameleon_timing PROPERTY LINKER_LANGUAGE Fortran)
+add_dependencies(chameleon_timing timing_include)
 
 # Generate the morse testing sources for all possible precisions
 # --------------------------------------------------------------
@@ -128,7 +128,7 @@ set(ZSRC
    )
 
 precisions_rules_py(TIMINGS "${ZSRC}"
-                    PRECISIONS "${MAGMAMORSE_PRECISION}")
+                    PRECISIONS "${CHAMELEON_PRECISION}")
 
 # Add include and link directories
 # --------------------------------
@@ -140,40 +140,40 @@ link_directories(${CMAKE_CURRENT_BINARY_DIR})
 # ------------------------------------------
 unset(libs_for_timings)
 list(APPEND libs_for_timings
-  magmamorse
-  magmamorse_timing
+  chameleon
+  chameleon_timing
 )
 
-if(MAGMAMORSE_SCHED_STARPU)
-    if ( MAGMAMORSE_USE_MPI )
+if(CHAMELEON_SCHED_STARPU)
+    if ( CHAMELEON_USE_MPI )
         list(APPEND libs_for_timings
-          magmamorse_starpu
+          chameleon_starpu
           ${STARPU_MPI_LIBRARIES}
         )
     else()
         list(APPEND libs_for_timings
-          magmamorse_starpu
+          chameleon_starpu
           ${STARPU_SHM_LIBRARIES}
         )
     endif()
     link_directories(${STARPU_LIBRARY_DIRS})
-elseif(MAGMAMORSE_SCHED_QUARK)
+elseif(CHAMELEON_SCHED_QUARK)
     list(APPEND libs_for_timings
-      magmamorse_quark
+      chameleon_quark
       ${QUARK_LIBRARIES}
       )
     link_directories(${QUARK_LIBRARY_DIRS})
 endif()
 
-if(NOT MAGMAMORSE_SIMULATION)
+if(NOT CHAMELEON_SIMULATION)
 
-    if(MAGMAMORSE_USE_CUDA)
+    if(CHAMELEON_USE_CUDA)
         list(APPEND libs_for_timings
         ${CUDA_LIBRARIES}
         )
         link_directories(${CUDA_LIBRARY_DIRS})
     endif()
-    if(MAGMAMORSE_USE_MAGMA)
+    if(CHAMELEON_USE_MAGMA)
         list(APPEND libs_for_timings
         ${MAGMA_LIBRARIES}
         )

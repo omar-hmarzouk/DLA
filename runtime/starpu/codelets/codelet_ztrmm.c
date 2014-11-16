@@ -96,7 +96,7 @@ static void cl_ztrmm_cpu_func(void *descr[], void *cl_arg)
         B, LDB);
 }
 
-#ifdef MAGMAMORSE_USE_CUDA
+#ifdef CHAMELEON_USE_CUDA
 static void cl_ztrmm_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;

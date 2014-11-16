@@ -53,7 +53,7 @@ void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A,
         return;
     RUNTIME_options_init(&options, morse, sequence, request);
 
-#ifdef MAGMAMORSE_USE_MAGMA
+#ifdef CHAMELEON_USE_MAGMA
     if (0) /* Disable the workspace as long as it is is not used*/
     {
         int nb = magma_get_zpotrf_nb(A->nb);

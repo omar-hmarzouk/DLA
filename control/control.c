@@ -117,7 +117,7 @@ int MORSE_InitPar(int nworkers, int ncudas, int nthreads_per_worker)
         (morse->group_size)--;
 #endif
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     {
       int flag = 0, provided = 0;
       MPI_Initialized( &flag );
@@ -126,7 +126,7 @@ int MORSE_InitPar(int nworkers, int ncudas, int nthreads_per_worker)
       }
     }
 #endif
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     magma_init();
 #endif
     RUNTIME_init_scheduler( morse, nworkers, ncudas, nthreads_per_worker );
@@ -154,11 +154,11 @@ int MORSE_Finalize(void)
     }
     MORSE_TASK_dataflush_all();
     RUNTIME_finalize_scheduler( morse );
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     magma_finalize();
 #endif
     morse_context_destroy();
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     MPI_Barrier(MPI_COMM_WORLD);
     MPI_Finalize();
 #endif
@@ -182,7 +182,7 @@ int MORSE_Finalize(void)
  ******************************************************************************/
 int MORSE_My_Mpi_Rank(void)
 {
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     MORSE_context_t *morse = morse_context_self();
     if (morse == NULL) {
         morse_error("MORSE_Finalize()", "MORSE not initialized");

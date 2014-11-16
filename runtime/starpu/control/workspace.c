@@ -33,7 +33,7 @@ static void RUNTIME_allocate_workspace_on_workers(void *arg)
 
     int id = starpu_worker_get_id();
 
-#ifdef MAGMAMORSE_USE_CUDA
+#ifdef CHAMELEON_USE_CUDA
     type = starpu_worker_get_type(id);
     if (type == STARPU_CUDA_WORKER)
     {
@@ -57,7 +57,7 @@ static void RUNTIME_allocate_workspace_on_workers(void *arg)
         /* This buffer should only be used within the CPU kernel, so
          * there is no point in using pinned memory here. */
         workspace->workspaces[id] = malloc(workspace->size);
-#ifdef MAGMAMORSE_USE_CUDA
+#ifdef CHAMELEON_USE_CUDA
     }
 #endif
 
@@ -72,7 +72,7 @@ static void RUNTIME_free_workspace_on_workers(void *arg)
     (void)type;
     int id = starpu_worker_get_id();
 
-#ifdef MAGMAMORSE_USE_CUDA
+#ifdef CHAMELEON_USE_CUDA
     type = starpu_worker_get_type(id);
     if (type == STARPU_CUDA_WORKER)
     {
@@ -90,7 +90,7 @@ static void RUNTIME_free_workspace_on_workers(void *arg)
     {
 #endif
         free(workspace->workspaces[id]);
-#ifdef MAGMAMORSE_USE_CUDA
+#ifdef CHAMELEON_USE_CUDA
     }
 #endif
 

@@ -26,7 +26,7 @@
 #define _MORSE_SIMULATE_H_
 
 /* we need this when starpu is compiled with simgrid enabled */
-#if defined(MAGMAMORSE_SCHED_STARPU) && defined(MAGMAMORSE_SIMULATION)
+#if defined(CHAMELEON_SCHED_STARPU) && defined(CHAMELEON_SIMULATION)
 #include <starpu_simgrid_wrap.h>
 #endif
 

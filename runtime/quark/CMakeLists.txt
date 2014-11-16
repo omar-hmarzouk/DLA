@@ -62,7 +62,7 @@ set(ZSRC
     )
 
 precisions_rules_py(RUNTIME_COMMON_GENERATED "${ZSRC}"
-                    PRECISIONS "${MAGMAMORSE_PRECISION}"
+                    PRECISIONS "${CHAMELEON_PRECISION}"
                     TARGETDIR "control")
 
 set(RUNTIME_COMMON
@@ -143,7 +143,7 @@ set(ZSRC
     )
 
 precisions_rules_py(RUNTIME_SRCS_GENERATED "${ZSRC}"
-                    PRECISIONS "${MAGMAMORSE_PRECISION}"
+                    PRECISIONS "${CHAMELEON_PRECISION}"
                     TARGETDIR "codelets")
 
 set(RUNTIME_SRCS
@@ -158,11 +158,11 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
 # Add library
 # -----------
-add_library(magmamorse_quark ${RUNTIME_SRCS})
-set_property(TARGET magmamorse_quark PROPERTY LINKER_LANGUAGE Fortran)
+add_library(chameleon_quark ${RUNTIME_SRCS})
+set_property(TARGET chameleon_quark PROPERTY LINKER_LANGUAGE Fortran)
 
-add_dependencies(magmamorse_quark
-  magmamorse_include
+add_dependencies(chameleon_quark
+  chameleon_include
   coreblas_include
   control_include
   runtime_quark_include
@@ -170,7 +170,7 @@ add_dependencies(magmamorse_quark
 
 # installation
 # ------------
-install(TARGETS magmamorse_quark
+install(TARGETS chameleon_quark
         DESTINATION lib)
 
 ###

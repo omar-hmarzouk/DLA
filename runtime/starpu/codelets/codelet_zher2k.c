@@ -96,7 +96,7 @@ static void cl_zher2k_cpu_func(void *descr[], void *cl_arg)
                  n, k, CBLAS_SADDR(alpha), A, lda, B, ldb, beta, C, ldc);
 }
 
-#ifdef MAGMAMORSE_USE_CUDA
+#ifdef CHAMELEON_USE_CUDA
 static void cl_zher2k_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;

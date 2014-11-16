@@ -10,8 +10,8 @@
 #
 #  @file CMakeLists.txt
 #
-#  @project MAGMAMORSE
-#  MAGMAMORSE is a software package provided by:
+#  @project CHAMELEON
+#  CHAMELEON is a software package provided by:
 #     Inria Bordeaux - Sud-Ouest,
 #     Univ. of Tennessee,
 #     King Abdullah Univesity of Science and Technology
@@ -28,7 +28,7 @@
 ###
 
 
-# check if magma_dgetrf_incpiv_gpu is accessible in libmagma and activate it in magmamorse
+# check if magma_dgetrf_incpiv_gpu is accessible in libmagma and activate it in chameleon
 if ( CBLAS_FOUND AND LAPACKE_FOUND AND LAPACK_FOUND AND CUDA_FOUND AND CUDA_CUBLAS_LIBRARIES AND MAGMA_FOUND )
     set(CMAKE_REQUIRED_LIBRARIES "${CBLAS_LIBRARIES};${LAPACKE_LIBRARIES};${LAPACK_SEQ_LIBRARIES};${CUDA_LIBRARIES};${CUDA_CUBLAS_LIBRARIES};${MAGMA_LIBRARIES};${COREBLAS_LIBRARIES}")
     unset(MAGMA_DGETRF_INCPIV_GPU_FOUND CACHE)
@@ -71,7 +71,7 @@ set(ZSRC
     )
 
 precisions_rules_py(RUNTIME_COMMON_GENERATED "${ZSRC}"
-                    PRECISIONS "${MAGMAMORSE_PRECISION}"
+                    PRECISIONS "${CHAMELEON_PRECISION}"
                     TARGETDIR "control")
 
 set(RUNTIME_COMMON
@@ -86,7 +86,7 @@ set(RUNTIME_COMMON
     ${RUNTIME_COMMON_GENERATED}
     )
     
-foreach(_prec ${MAGMAMORSE_PRECISION})
+foreach(_prec ${CHAMELEON_PRECISION})
     set_source_files_properties(control/profiling.c PROPERTIES COMPILE_FLAGS "-DPRECISION_${_prec}")
 endforeach()
 
@@ -159,7 +159,7 @@ set(ZSRC
 list(REMOVE_DUPLICATES ZSRC)    
 
 precisions_rules_py(RUNTIME_SRCS_GENERATED "${ZSRC}"
-                    PRECISIONS "${MAGMAMORSE_PRECISION}"
+                    PRECISIONS "${CHAMELEON_PRECISION}"
                     TARGETDIR "codelets")
 
 set(RUNTIME_SRCS
@@ -174,11 +174,11 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
 # Add library
 # -----------
-add_library(magmamorse_starpu ${RUNTIME_SRCS})
-set_property(TARGET magmamorse_starpu PROPERTY LINKER_LANGUAGE Fortran)
+add_library(chameleon_starpu ${RUNTIME_SRCS})
+set_property(TARGET chameleon_starpu PROPERTY LINKER_LANGUAGE Fortran)
 
-add_dependencies(magmamorse_starpu
-  magmamorse_include
+add_dependencies(chameleon_starpu
+  chameleon_include
   coreblas_include
   control_include
   runtime_starpu_include
@@ -186,7 +186,7 @@ add_dependencies(magmamorse_starpu
 
 # installation
 # ------------
-install(TARGETS magmamorse_starpu
+install(TARGETS chameleon_starpu
         DESTINATION lib)
 
 ###

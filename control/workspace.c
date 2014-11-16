@@ -126,7 +126,7 @@ int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **des
     NB = MORSE_NB;
     IB = MORSE_IB;
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 /*     IB *= 2; */
 #endif
 

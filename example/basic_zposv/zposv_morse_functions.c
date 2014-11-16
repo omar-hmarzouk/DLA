@@ -117,7 +117,7 @@ int main(int argc, char *argv[]) {
     double res = MORSE_zlange_Tile(MorseInfNorm, descB);
 
     /* check residual and print a message */
-    #if defined(MAGMAMORSE_SIMULATION)
+    #if defined(CHAMELEON_SIMULATION)
     double    eps = 0.;
     #else
     double    eps = LAPACKE_dlamch_work( 'e' );

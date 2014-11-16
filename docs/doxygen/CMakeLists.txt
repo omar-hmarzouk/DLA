@@ -35,38 +35,38 @@ find_package(Doxygen)
 # Generate documentation
 # ----------------------
 if(DOXYGEN_EXECUTABLE)
-    # Create file magma_morse.dox
+    # Create file chameleon.dox
     # ---------------------------
     if(MORSE_SCHED_STARPU)
         if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../../../scratch)
             configure_file("conf-dev-starpu.dox.in"
-                           "magma_morse.dox"
+                           "chameleon.dox"
                            @ONLY)
         else()
             configure_file("conf-usr-starpu.dox.in"
-                           "magma_morse.dox"
+                           "chameleon.dox"
                            @ONLY)
         endif()
 
     elseif(MORSE_SCHED_QUARK)
         if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../../../scratch)
             configure_file("conf-dev-quark.dox.in"
-                           "magma_morse.dox"
+                           "chameleon.dox"
                             @ONLY)
         else()
             configure_file("conf-usr-quark.dox.in"
-                           "magma_morse.dox"
+                           "chameleon.dox"
                            @ONLY)
         endif()
 
     else()
         if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../../../scratch)
             configure_file("conf-dev-starpu.dox.in"
-                           "magma_morse.dox"
+                           "chameleon.dox"
                            @ONLY)
         else()
             configure_file("conf-usr-starpu.dox.in"
-                           "magma_morse.dox"
+                           "chameleon.dox"
                            @ONLY)
         endif()
 
@@ -80,8 +80,8 @@ if(DOXYGEN_EXECUTABLE)
     # --------------------
     add_custom_command(OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/out
                        COMMAND ${DOXYGEN_EXECUTABLE}
-                       ARGS    ${CMAKE_CURRENT_BINARY_DIR}/magma_morse.dox
-                       DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/magma_morse.dox
+                       ARGS    ${CMAKE_CURRENT_BINARY_DIR}/chameleon.dox
+                       DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/chameleon.dox
                       )
     add_custom_target(doxygen-out ALL
                       DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/out)
@@ -102,7 +102,7 @@ if(DOXYGEN_EXECUTABLE)
                            ARGS              refman.pdf
                            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/out/latex
                            )
-        add_custom_target(doxygen-user_guide-magma_morse ALL
+        add_custom_target(doxygen-user_guide-chameleon ALL
                           DEPENDS refman.pdf ${CMAKE_CURRENT_BINARY_DIR}/out) 
 
         # Installation of produced pdf

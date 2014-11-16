@@ -73,7 +73,7 @@ inline static void* morse_getaddr_ccrb(const MORSE_desc_t *A, int m, int n)
     size_t eltsize = morse_element_size(A->dtyp);
     size_t offset = 0;
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     assert( A->myrank == A->get_rankof( A, mm, nn) );
     mm = mm / A->p;
     nn = nn / A->q;
@@ -105,7 +105,7 @@ inline static void *morse_getaddr_cm(const MORSE_desc_t *A, int m, int n)
     size_t eltsize = morse_element_size(A->dtyp);
     size_t offset = 0;
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     assert( A->myrank == A->get_rankof( A, mm, nn) );
     mm = mm / A->p;
     nn = nn / A->q;
@@ -124,7 +124,7 @@ inline static void* morse_geteltaddr(const MORSE_desc_t *A, int m, int n, int el
     size_t nn = (n + A->j)/A->nb;
     size_t offset = 0;
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     assert( A->myrank == A->get_rankof( A, mm, nn) );
     mm = mm / A->p;
     nn = nn / A->q;
@@ -173,12 +173,12 @@ inline static int morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n)
  **/
 inline static int morse_desc_islocal( const MORSE_desc_t *A, int m, int n )
 {
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     return (A->myrank == A->get_rankof(A, m, n));
 #else
     (void)A; (void)m; (void)n;
     return 1;
-#endif /* defined(MAGMAMORSE_USE_MPI) */
+#endif /* defined(CHAMELEON_USE_MPI) */
 }
 
 #ifdef __cplusplus

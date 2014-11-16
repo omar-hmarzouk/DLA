@@ -33,7 +33,7 @@
 #include "common.h"
 
 #define A(_m_,_n_) A, _m_, _n_
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 #define DIAG(_k_) DIAG, _k_, 0
 #else
 #define DIAG(_k_) A, _k_, _k_
@@ -64,7 +64,7 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
     RUNTIME_options_init(&options, morse, sequence, request);
 
     ib = MORSE_IB;
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
     morse_zdesc_alloc2(*DIAG, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb);
 
@@ -88,7 +88,7 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
             IPIV(k, k),
             k == A->mt-1, A->nb*k);
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
         if ( k < (minMNT-1) ) {
             MORSE_TASK_zlacpy(
                 &options,
@@ -137,7 +137,7 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif

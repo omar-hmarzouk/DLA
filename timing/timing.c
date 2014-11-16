@@ -53,7 +53,7 @@
 #include "timing.h"
 #include "auxiliary.h"
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
 #include <mpi.h>
 #endif
 
@@ -67,7 +67,7 @@ Test(int64_t n, int *iparam) {
     int      thrdnbr, niter;
     int64_t  M, N, K, NRHS;
     double  *t;
-#if defined(MAGMAMORSE_SIMULATION)
+#if defined(CHAMELEON_SIMULATION)
     _PREC    eps = 0.;
 #else
     _PREC    eps = _LAMCH( 'e' );
@@ -185,7 +185,7 @@ Test(int64_t n, int *iparam) {
         double upper_gflops = 0.0;
         double tmin = 0.0;
         double integer_tmin = 0.0;
-#if defined (MAGMAMORSE_SCHED_STARPU)
+#if defined (CHAMELEON_SCHED_STARPU)
         if (iparam[IPARAM_BOUND])
         {
 #if 0
@@ -390,7 +390,7 @@ print_header(char *prog_name, int * iparam) {
     const char *check_header   = iparam[IPARAM_CHECK]   ? "     ||Ax-b||       ||A||       ||x||       ||b|| ||Ax-b||/N/eps/(||A||||x||+||b||)  RETURN" : "";
     const char *inverse_header = iparam[IPARAM_INVERSE] ? " ||I-A*Ainv||       ||A||    ||Ainv||       ||Id - A*Ainv||/((||A|| ||Ainv||).N.eps)" : "";
     const char *peak_header    = iparam[IPARAM_PEAK]    ? "  (% of peak)  peak" : "";
-#if defined(MAGMAMORSE_SIMULATION)
+#if defined(CHAMELEON_SIMULATION)
     _PREC    eps = 0.;
 #else
     _PREC    eps = _LAMCH( 'e' );
@@ -404,9 +404,9 @@ print_header(char *prog_name, int * iparam) {
             "# IB:         %d\n"
             "# eps:        %e\n"
             "#\n",
-            MAGMA_MORSE_VERSION_MAJOR,
-            MAGMA_MORSE_VERSION_MINOR,
-            MAGMA_MORSE_VERSION_MICRO,
+            CHAMELEON_VERSION_MAJOR,
+            CHAMELEON_VERSION_MINOR,
+            CHAMELEON_VERSION_MICRO,
             prog_name,
             iparam[IPARAM_THRDNBR],
             iparam[IPARAM_NCUDAS],
@@ -613,7 +613,7 @@ main(int argc, char *argv[]) {
     if (iparam[IPARAM_PRINT_ERRORS] == 1)
         MORSE_Enable(MORSE_ERRORS);
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     MPI_Comm_size( MPI_COMM_WORLD, &nbnode );
     /* Check P */
     if ( (iparam[IPARAM_P] > 1) &&

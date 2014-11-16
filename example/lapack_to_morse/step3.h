@@ -93,7 +93,7 @@ static void read_args(int argc, char *argv[], int *iparam){
  * Print a header message to summarize main parameters
  */
 static void print_header(char *prog_name, int * iparam) {
-#if defined(MAGMAMORSE_SIMULATION)
+#if defined(CHAMELEON_SIMULATION)
     double    eps = 0.;
 #else
     double    eps = LAPACKE_dlamch_work( 'e' );
@@ -108,9 +108,9 @@ static void print_header(char *prog_name, int * iparam) {
             "# IB:         %d\n"
             "# eps:        %e\n"
             "#\n",
-            MAGMA_MORSE_VERSION_MAJOR,
-            MAGMA_MORSE_VERSION_MINOR,
-            MAGMA_MORSE_VERSION_MICRO,
+            CHAMELEON_VERSION_MAJOR,
+            CHAMELEON_VERSION_MINOR,
+            CHAMELEON_VERSION_MICRO,
             prog_name,
             iparam[IPARAM_THRDNBR],
             0,
@@ -175,7 +175,7 @@ inline static void* user_getaddr_arrayofpointers(const MORSE_desc_t *A, int m, i
     size_t nn = (size_t)n + (size_t)A->j / A->nb;
     size_t offset = 0;
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     assert( A->myrank == A->get_rankof( A, mm, nn) );
     mm = mm / A->p;
     nn = nn / A->q;

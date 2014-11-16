@@ -37,7 +37,7 @@ inline static void* user_getaddr_arrayofpointers(const MORSE_desc_t *A, int m, i
     size_t nn = n + A->j / A->nb;
     size_t offset = 0;
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     assert( A->myrank == A->get_rankof( A, mm, nn) );
     mm = mm / A->p;
     nn = nn / A->q;

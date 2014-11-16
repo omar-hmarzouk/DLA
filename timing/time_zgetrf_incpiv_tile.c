@@ -36,7 +36,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         check = 0;
     }
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     if ( iparam[IPARAM_NB]%iparam[IPARAM_IB] != 0 ) {
         fprintf(stderr, "NB must be a multiple of IB for LU on GPU\n");
         exit(-1);

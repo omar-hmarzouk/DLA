@@ -32,7 +32,7 @@
 
 
 # Some macros to print status when search for headers and libs
-# PrintFindStatus.cmake is in cmake_modules/morse/find directory of magmamorse
+# PrintFindStatus.cmake is in cmake_modules/morse/find directory of chameleon
 include(PrintFindStatus)
 
 # add a cache variable to let the user specify the BLAS vendor

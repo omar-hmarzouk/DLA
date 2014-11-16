@@ -52,7 +52,7 @@
 #include <morse.h>
 #include <coreblas.h>
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
 #include <mpi.h>
 #endif
 
@@ -221,7 +221,7 @@ static void print_header(char *prog_name, int * iparam) {
     const char *check_header   = iparam[IPARAM_CHECK]   ? "     ||Ax-b||       ||A||       ||x||       ||b|| ||Ax-b||/N/eps/(||A||||x||+||b||)  RETURN" : "";
     const char *inverse_header = iparam[IPARAM_INVERSE] ? " ||I-A*Ainv||       ||A||    ||Ainv||       ||Id - A*Ainv||/((||A|| ||Ainv||).N.eps)" : "";
     const char *peak_header    = iparam[IPARAM_PEAK]    ? "  (% of peak)  peak" : "";
-#if defined(MAGMAMORSE_SIMULATION)
+#if defined(CHAMELEON_SIMULATION)
     double    eps = 0.;
 #else
     double    eps = LAPACKE_dlamch_work( 'e' );
@@ -235,9 +235,9 @@ static void print_header(char *prog_name, int * iparam) {
             "# IB:         %d\n"
             "# eps:        %e\n"
             "#\n",
-            MAGMA_MORSE_VERSION_MAJOR,
-            MAGMA_MORSE_VERSION_MINOR,
-            MAGMA_MORSE_VERSION_MICRO,
+            CHAMELEON_VERSION_MAJOR,
+            CHAMELEON_VERSION_MINOR,
+            CHAMELEON_VERSION_MICRO,
             prog_name,
             iparam[IPARAM_THRDNBR],
             iparam[IPARAM_NCUDAS],

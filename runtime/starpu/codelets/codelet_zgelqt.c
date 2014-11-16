@@ -149,7 +149,7 @@ static void cl_zgelqt_cpu_func(void *descr[], void *cl_arg)
     CORE_zgelqt(m, n, ib, A, lda, T, ldt, TAU, WORK);
 }
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 magma_int_t
 magma_zgelqt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
                   magmaDoubleComplex *da, magma_int_t ldda,
@@ -336,7 +336,7 @@ static void cl_zgelqt_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 CODELETS(zgelqt, 3, cl_zgelqt_cpu_func, cl_zgelqt_cuda_func, 0)
 #else
 CODELETS_CPU(zgelqt, 3, cl_zgelqt_cpu_func)

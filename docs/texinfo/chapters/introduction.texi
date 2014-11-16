@@ -1,14 +1,14 @@
 @c -*-texinfo-*-
 
-@c This file is part of the MAGMA_MORSE User's Guide.
+@c This file is part of the CHAMELEON User's Guide.
 @c Copyright (C) 2014 Inria
 @c Copyright (C) 2014 The University of Tennessee
 @c Copyright (C) 2014 King Abdullah University of Science and Technology
-@c See the file ../magma_morse.texi for copying conditions.
+@c See the file ../chameleon.texi for copying conditions.
 
 @menu
 * MORSE project:: Discussion about MORSE project motivation
-* MAGMA_MORSE::   Outline of this specific MORSE subproject
+* CHAMELEON::   Outline of this specific MORSE subproject
 @end menu
 
 @node MORSE project
@@ -143,16 +143,16 @@ Research papers about MORSE can be found at
 @uref{http://icl.cs.utk.edu/projectsdev/morse/pubs/index.html}
 
 
-@node MAGMA_MORSE
-@section MAGMA_MORSE
+@node CHAMELEON
+@section CHAMELEON
 
 @menu
-* MAGMA_MORSE software::       content and objectives
+* CHAMELEON software::       content and objectives
 * PLASMA's design principles:: algorithmic and matrix layout
 @end menu
 
-@node MAGMA_MORSE software
-@subsection MAGMA_MORSE software
+@node CHAMELEON software
+@subsection CHAMELEON software
 
 The main purpose is to address the performance shortcomings of 
 the @uref{http://www.netlib.org/lapack/, LAPACK}
@@ -161,7 +161,7 @@ libraries on multicore processors and multi-socket systems of multicore
 processors and their inability to efficiently utilize accelerators such as 
 Graphics Processing Units (GPUs).
 
-MAGMA_MORSE is a framework written in C which provides routines to solve dense 
+CHAMELEON is a framework written in C which provides routines to solve dense 
 general systems of linear equations, symmetric positive definite systems of 
 linear equations and linear least squares problems, using LU, Cholesky, QR and 
 LQ factorizations.
@@ -170,16 +170,16 @@ and double precision.
 It supports Linux and Mac OS/X machines (only tested on Intel x86-64 
 architecture).
 
-MAGMA_MORSE is based on @uref{http://icl.cs.utk.edu/plasma/, PLASMA} source 
+CHAMELEON is based on @uref{http://icl.cs.utk.edu/plasma/, PLASMA} source 
 code but is not limited to shared-memory environment and can exploit 
 multiple GPUs.
-MAGMA_MORSE is interfaced in a generic way with both 
+CHAMELEON is interfaced in a generic way with both 
 @uref{http://icl.cs.utk.edu/quark/, QUARK} and 
 @uref{http://runtime.bordeaux.inria.fr/StarPU/, StarPU} runtime systems.
 This feature allows to analyze in a unified framework how sequential 
 task-based algorithms behave regarding different runtime systems 
 implementations. 
-Using MAGMA_MORSE with @uref{http://runtime.bordeaux.inria.fr/StarPU/, 
+Using CHAMELEON with @uref{http://runtime.bordeaux.inria.fr/StarPU/, 
 StarPU} runtime system allows to exploit GPUs through 
 kernels provided by @uref{https://developer.nvidia.com/cublas, cuBLAS} and 
 @uref{http://icl.cs.utk.edu/magma/, MAGMA} and clusters of interconnected 
@@ -195,7 +195,7 @@ MPI.
 @node PLASMA's design principles
 @subsection PLASMA's design principles
 
-MAGMA_MORSE is originally based on @uref{http://icl.cs.utk.edu/plasma/, 
+CHAMELEON is originally based on @uref{http://icl.cs.utk.edu/plasma/, 
 PLASMA} so that design principles are very similar. 
 The content of this section @ref{PLASMA's design principles} has been copied 
 from the @samp{Design principles} section of the PLASMA User's Guide.

@@ -32,7 +32,7 @@
 #ifndef _MORSE_STARPU_H_
 #define _MORSE_STARPU_H_
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
 #include <starpu_mpi.h>
 #else
 #include <starpu.h>
@@ -40,7 +40,7 @@
 
 #include <starpu_profiling.h>
 
-#if defined(MAGMAMORSE_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA)
 #include <starpu_scheduler.h>
 #include <starpu_cuda.h>
 #endif
@@ -58,7 +58,7 @@ typedef struct starpu_conf starpu_conf_t;
 /*
  * MPI Redefinitions
  */
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
 #undef STARPU_REDUX
 #define starpu_insert_task(...) starpu_mpi_insert_task(MPI_COMM_WORLD, __VA_ARGS__)
 #endif

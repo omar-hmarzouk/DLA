@@ -436,7 +436,7 @@ subs = {
     ('strsm',          'dtrsm',          'ctrsm',          'ztrsm'           ),
     ('strsv',          'dtrsv',          'ctrsv',          'ztrsv'           ),
 
-# ADD FOR NEW VERSION OF MAGMA_MORSE
+# ADD FOR NEW VERSION OF CHAMELEON
     ('sgeadd',         'dgeadd',         'cgeadd',         'zgeadd'          ),
     ('shbcpy',         'dhbcpy',         'chbcpy',         'zhbcpy'          ),
     ('ssyrbt',         'dsyrbt',         'cherbt',         'zherbt'          ),

@@ -8,19 +8,19 @@ set(TEST_CMD_shmgpu testing 4 1)
 # set(TEST_CMD_mpigpu testing 4 1)
 
 set( TEST_CATEGORIES shm )
-if (MAGMAMORSE_USE_CUDA AND HAVE_CUDA)
+if (CHAMELEON_USE_CUDA AND HAVE_CUDA)
    set( TEST_CATEGORIES ${TEST_CATEGORIES} shmgpu )
 endif()
 
-# if (MAGMAMORSE_USE_MPI AND HAVE_MPI)
+# if (CHAMELEON_USE_MPI AND HAVE_MPI)
 #    set( TEST_CATEGORIES ${TEST_CATEGORIES} mpi )
-#    if (MAGMAMORSE_USE_CUDA AND HAVE_CUDA)
+#    if (CHAMELEON_USE_CUDA AND HAVE_CUDA)
 #       set( TEST_CATEGORIES ${TEST_CATEGORIES} mpigpu )
 #    endif()
 # endif()
 
 foreach(cat  ${TEST_CATEGORIES})
-  foreach(prec ${RP_MAGMAMORSE_PRECISIONS})
+  foreach(prec ${RP_CHAMELEON_PRECISIONS})
 
     add_test(test_${cat}_${prec}gemm  ./${prec}${TEST_CMD_${cat}} GEMM  1.0 -2.0 600 500 550 650 625 700)
     add_test(test_${cat}_${prec}lange ./${prec}${TEST_CMD_${cat}} LANGE 600 500 600)
@@ -47,7 +47,7 @@ foreach(cat  ${TEST_CATEGORIES})
   endforeach()
 endforeach()
 
-#foreach(prec ${RP_MAGMAMORSE_PRECISIONS})
+#foreach(prec ${RP_CHAMELEON_PRECISIONS})
 #    add_test(test_mpi_${prec}lange mpirun -np 4 ./${prec}testing 1 0 LANGE 600 500 600 --p=2)
 #endforeach()
 

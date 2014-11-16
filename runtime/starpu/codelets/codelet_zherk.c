@@ -92,7 +92,7 @@ static void cl_zherk_cpu_func(void *descr[], void *cl_arg)
         beta, C, ldc);
 }
 
-#ifdef MAGMAMORSE_USE_CUDA
+#ifdef CHAMELEON_USE_CUDA
 static void cl_zherk_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;

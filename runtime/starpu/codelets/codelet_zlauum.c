@@ -73,7 +73,7 @@ static void cl_zlauum_cpu_func(void *descr[], void *cl_arg)
     LAPACKE_zlauum_work(LAPACK_COL_MAJOR, lapack_const(uplo), N, A, LDA);
 }
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 static void cl_zlauum_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;
@@ -99,7 +99,7 @@ static void cl_zlauum_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 CODELETS(zlauum, 1, cl_zlauum_cpu_func, cl_zlauum_cuda_func, 0)
 #else
 CODELETS_CPU(zlauum, 1, cl_zlauum_cpu_func)

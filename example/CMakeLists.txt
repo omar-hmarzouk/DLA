@@ -26,12 +26,12 @@
 
 add_subdirectory(basic_zposv)
 
-if (MAGMAMORSE_PREC_D)
+if (CHAMELEON_PREC_D)
     add_subdirectory(lapack_to_morse)
 else()
-    message(WARNING "MAGMAMORSE_PREC_D is set to OFF so that lapack_to_morse"
+    message(WARNING "CHAMELEON_PREC_D is set to OFF so that lapack_to_morse"
     "tutorial cannot be built (use only double arithmetic precision).\n"
-    "Please set MAGMAMORSE_PREC_D to ON if you want to build executables of"
+    "Please set CHAMELEON_PREC_D to ON if you want to build executables of"
     "this tutorial.")
 endif()
 

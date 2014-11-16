@@ -37,7 +37,7 @@ set(ZHDR
 )
 
 precisions_rules_py(QUARKBLAS_HEADERS_GENERATED "${ZHDR}"
-                    PRECISIONS "${MAGMA_MORSE_PRECISION}"
+                    PRECISIONS "${CHAMELEON_PRECISION}"
                     DICTIONARY "MORSE")
 
 # Define the list of headers

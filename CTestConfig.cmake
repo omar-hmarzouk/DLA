@@ -39,21 +39,21 @@ if(NOT BUILDNAME)
     endif(CMAKE_BUILD_TYPE)
 
     # Specific options of Magma-Morse
-    if(MAGMAMORSE_SCHED_QUARK)
+    if(CHAMELEON_SCHED_QUARK)
         set(BUILDNAME "${BUILDNAME}-Quark")
-    endif(MAGMAMORSE_SCHED_QUARK)
+    endif(CHAMELEON_SCHED_QUARK)
 
-    if(MAGMAMORSE_SCHED_STARPU)
+    if(CHAMELEON_SCHED_STARPU)
         set(BUILDNAME "${BUILDNAME}-StarPU")
-    endif(MAGMAMORSE_SCHED_STARPU)
+    endif(CHAMELEON_SCHED_STARPU)
 
-    if(MAGMAMORSE_USE_MPI)
+    if(CHAMELEON_USE_MPI)
         set(BUILDNAME "${BUILDNAME}-mpi")
-    endif(MAGMAMORSE_USE_MPI)
+    endif(CHAMELEON_USE_MPI)
 
-    if(MAGMAMORSE_USE_CUDA)
+    if(CHAMELEON_USE_CUDA)
         set(BUILDNAME "${BUILDNAME}-cuda")
-    endif(MAGMAMORSE_USE_CUDA)  
+    endif(CHAMELEON_USE_CUDA)  
     
 endif()
 

@@ -33,7 +33,7 @@ void RUNTIME_context_create( MORSE_context_t *morse )
 {
     starpu_conf_t *conf;
 
-    morse->scheduler = MAGMAMORSE_SCHED_STARPU;
+    morse->scheduler = CHAMELEON_SCHED_STARPU;
     morse->schedopt = (void*) malloc (sizeof(struct starpu_conf));
     conf = morse->schedopt;
 

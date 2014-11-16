@@ -66,7 +66,7 @@ MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.occurences = 0;
     desc.id = nbdesc; nbdesc++;
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     MPI_Comm_rank( MPI_COMM_WORLD, &(desc.myrank) );
 #else
     desc.myrank = 0;
@@ -155,7 +155,7 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.occurences = 0;
     desc.id = nbdesc; nbdesc++;
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     MPI_Comm_rank( MPI_COMM_WORLD, &(desc.myrank) );
 #else
     desc.myrank = 0;
@@ -313,7 +313,7 @@ int morse_desc_mat_free( MORSE_desc_t *desc )
     RUNTIME_desc_destroy( desc );
 
     if (desc->mat != NULL) {
-#ifndef MAGMAMORSE_SIMULATION
+#ifndef CHAMELEON_SIMULATION
         free(desc->mat);
 #endif
         desc->mat = NULL;
@@ -397,7 +397,7 @@ int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, i
 
     if (mat == NULL) {
 
-#ifdef MAGMAMORSE_SIMULATION
+#ifdef CHAMELEON_SIMULATION
         (**desc).mat = (void*) 1;
 #else
         /* TODO: a call to morse_desc_mat_alloc should be made, but require to
@@ -505,7 +505,7 @@ int MORSE_Desc_Create_User(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int 
 
     if (mat == NULL) {
 
-#ifdef MAGMAMORSE_SIMULATION
+#ifdef CHAMELEON_SIMULATION
         (**desc).mat = (void*) 1;
 #else
         /* TODO: a call to morse_desc_mat_alloc should be made, but require to

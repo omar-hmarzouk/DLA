@@ -4,19 +4,19 @@
 @c Copyright (C) 2014 Inria
 @c Copyright (C) 2014 The University of Tennessee
 @c Copyright (C) 2014 King Abdullah University of Science and Technology
-@c See the file ../magma_morse.texi for copying conditions.
+@c See the file ../chameleon.texi for copying conditions.
 
 @menu
-* Using MAGMA_MORSE executables::
-* Linking an external application with MAGMA_MORSE libraries::
-* MAGMA_MORSE API::
+* Using CHAMELEON executables::
+* Linking an external application with CHAMELEON libraries::
+* CHAMELEON API::
 @end menu
 
-@node Using MAGMA_MORSE executables
-@section Using MAGMA_MORSE executables
+@node Using CHAMELEON executables
+@section Using CHAMELEON executables
 
-MAGMA_MORSE provides several test executables that are compiled and link with 
-MAGMA_MORSE stack of dependencies.
+CHAMELEON provides several test executables that are compiled and link with 
+CHAMELEON stack of dependencies.
 Instructions about the arguments to give to executables are accessible thanks 
 to the option @option{-[-]help} or @option{-[-]h}.
 This set of binaries are separated into three categories and can be found in 
@@ -28,13 +28,13 @@ three different directories:
 
   contains examples of API usage and more specifically the 
   sub-directory lapack_to_morse/ provides a tutorial that explain how to use 
-  MAGMA_MORSE functionalities starting from a full LAPACK code, see 
-@ref{Tutorial LAPACK to MAGMA_MORSE}
+  CHAMELEON functionalities starting from a full LAPACK code, see 
+@ref{Tutorial LAPACK to CHAMELEON}
 
   @item testing
 
   contains testing drivers to check numerical correctness of 
-  MAGMA_MORSE linear algebra routines with a wide range of parameters
+  CHAMELEON linear algebra routines with a wide range of parameters
   @example
   ./testing/stesting 4 1 LANGE 600 100 700
   @end example
@@ -63,14 +63,14 @@ three different directories:
 
   @item timing
 
-  contains timing drivers to assess performances of MAGMA_MORSE routines.
+  contains timing drivers to assess performances of CHAMELEON routines.
   There are two sets of executables, those who do not use the tile interface 
 and those who do (with _tile in the name of the executable).
   Executables without tile interface allocates data following LAPACK 
-conventions and these data can be given as arguments to MAGMA_MORSE routines 
+conventions and these data can be given as arguments to CHAMELEON routines 
 as you would do with LAPACK.
   Executables with tile interface generate directly the data in the format 
-  MAGMA_MORSE tile algorithms used to submit tasks to the runtime system.
+  CHAMELEON tile algorithms used to submit tasks to the runtime system.
   Executables with tile interface should be more performant because no data 
 copy from LAPACK matrix layout to tile matrix layout are necessary.
   Calling example:
@@ -136,37 +136,37 @@ involving a general matrix using the QR or the LQ factorization
   
 @end itemize
 
-@node Linking an external application with MAGMA_MORSE libraries
-@section Linking an external application with MAGMA_MORSE libraries
+@node Linking an external application with CHAMELEON libraries
+@section Linking an external application with CHAMELEON libraries
 
-Compilation and link with MAGMA_MORSE libraries have been tested with 
+Compilation and link with CHAMELEON libraries have been tested with 
 @strong{gcc/gfortran 4.8.1} and @strong{icc/ifort 14.0.2}.
 
 @menu
 * Static linking in C::
 * Dynamic linking in C::
-* Build a Fortran program with MAGMA_MORSE::
+* Build a Fortran program with CHAMELEON::
 @end menu
 
 @node Static linking in C
 @subsection Static linking in C
 
-Lets imagine you have a file main.c that you want to link with MAGMA_MORSE 
+Lets imagine you have a file main.c that you want to link with CHAMELEON 
 static libraries.
-Lets consider @file{/home/yourname/install/magmamorse} is the install directory 
-of MAGMA_MORSE containing sub-directories @file{include/} and @file{lib/}.
+Lets consider @file{/home/yourname/install/chameleon} is the install directory 
+of CHAMELEON containing sub-directories @file{include/} and @file{lib/}.
 Here could be your compilation command with gcc compiler:
 @example
-gcc -I/home/yourname/install/magmamorse/include -o main.o -c main.c
+gcc -I/home/yourname/install/chameleon/include -o main.o -c main.c
 @end example
 
-Now if you want to link your application with MAGMA_MORSE static libraries, you 
+Now if you want to link your application with CHAMELEON static libraries, you 
 could do:
 @example
 gcc main.o -o main                                           \
-/home/yourname/install/magmamorse/lib/libmagmamorse.a        \
-/home/yourname/install/magmamorse/lib/libmagmamorse_starpu.a \
-/home/yourname/install/magmamorse/lib/libcoreblas.a          \
+/home/yourname/install/chameleon/lib/libchameleon.a        \
+/home/yourname/install/chameleon/lib/libchameleon_starpu.a \
+/home/yourname/install/chameleon/lib/libcoreblas.a          \
 -lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64             \
 -lmkl_sequential -lmkl_core -lpthread -lm -lrt
 @end example
@@ -174,10 +174,10 @@ As you can see in this example, we also link with dynamic libraries
 @option{starpu-1.1}, @option{Intel MKL} 
 libraries (for BLAS/LAPACK/CBLAS/LAPACKE), @option{pthread}, @option{m} (math) 
 and @option{rt}.
-These libraries will depend on the configuration of your MAGMA_MORSE build.
+These libraries will depend on the configuration of your CHAMELEON build.
 You can find these dependencies in .pc files we generate during compilation and 
 that are installed in the sub-directory @file{lib/pkgconfig} of your 
-MAGMA_MORSE install directory.
+CHAMELEON install directory.
 Note also that you could need to specify where to find these libraries with 
 @option{-L} option of your compiler/linker.
 Before to run your program, make sure that all dynamic libraries path are 
@@ -187,15 +187,15 @@ appended in the @env{LD_LIBRARY_PATH} (for Linux systems) environment variable
 @node Dynamic linking in C 
 @subsection Dynamic linking in C
 
-For dynamic linking (need to build MAGMA_MORSE with CMake 
+For dynamic linking (need to build CHAMELEON with CMake 
 option @option{BUILD_SHARED_LIBS=ON}) it is similar to static compilation/link 
 but instead of specifying path to your static libraries you indicate the path 
 to dynamic libraries with @option{-L} option and you give the name of libraries 
 with @option{-l} option like this:
 @example
 gcc main.o -o main                               \
--L/home/yourname/install/magmamorse/lib          \
--lmagmamorse -lmagmamorse_starpu -lcoreblas      \
+-L/home/yourname/install/chameleon/lib          \
+-lchameleon -lchameleon_starpu -lcoreblas      \
 -lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64 \
 -lmkl_sequential -lmkl_core -lpthread -lm -lrt
 @end example
@@ -203,13 +203,13 @@ Note that an update of your environment variable
 @env{LD_LIBRARY_PATH} (@env{DYLD_LIBRARY_PATH} on Mac, @env{LIB} on Windows) 
 with the path of the libraries is required before executing, example:
 @example
-export @env{LD_LIBRARY_PATH}=path/to/libs:path/to/magmamorse/lib 
+export @env{LD_LIBRARY_PATH}=path/to/libs:path/to/chameleon/lib 
 @end example
 
-@node Build a Fortran program with MAGMA_MORSE
-@subsection Build a Fortran program with MAGMA_MORSE
+@node Build a Fortran program with CHAMELEON
+@subsection Build a Fortran program with CHAMELEON
 
-MAGMA_MORSE provides a Fortran interface to user functions. Example:
+CHAMELEON provides a Fortran interface to user functions. Example:
 @example
 call morse_version(major, minor, patch) !or
 call MORSE_VERSION(major, minor, patch)
@@ -225,9 +225,9 @@ gfortran -o main.o -c main.c
 Static linking example:
 @example
 gfortran main.o -o main                                      \
-/home/yourname/install/magmamorse/lib/libmagmamorse.a        \
-/home/yourname/install/magmamorse/lib/libmagmamorse_starpu.a \
-/home/yourname/install/magmamorse/lib/libcoreblas.a          \
+/home/yourname/install/chameleon/lib/libchameleon.a        \
+/home/yourname/install/chameleon/lib/libchameleon_starpu.a \
+/home/yourname/install/chameleon/lib/libcoreblas.a          \
 -lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64             \
 -lmkl_sequential -lmkl_core -lpthread -lm -lrt
 @end example
@@ -235,16 +235,16 @@ gfortran main.o -o main                                      \
 Dynamic linking example:
 @example
 gfortran main.o -o main                          \
--L/home/yourname/install/magmamorse/lib          \
--lmagmamorse -lmagmamorse_starpu -lcoreblas      \
+-L/home/yourname/install/chameleon/lib          \
+-lchameleon -lchameleon_starpu -lcoreblas      \
 -lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64 \
 -lmkl_sequential -lmkl_core -lpthread -lm -lrt
 @end example
 
-@node MAGMA_MORSE API
-@section MAGMA_MORSE API
+@node CHAMELEON API
+@section CHAMELEON API
 
-MAGMA_MORSE provides routines to solve dense general systems of linear 
+CHAMELEON provides routines to solve dense general systems of linear 
 equations, symmetric positive definite systems of linear equations and linear 
 least squares problems, using LU, Cholesky, QR and LQ factorizations.
 Real arithmetic and complex arithmetic are supported in both single precision 
@@ -257,14 +257,14 @@ MORSE_name[_Tile[_Async]]
 @item all user routines are prefixed with @code{MORSE}
 @item @code{name} follows BLAS/LAPACK naming scheme for algorithms 
 (@emph{e.g.} sgemm for general matrix-matrix multiply simple precision)
-@item MAGMA_MORSE provides three interface levels
+@item CHAMELEON provides three interface levels
   @itemize @minus
   @item @code{MORSE_name}: simplest interface, very close to CBLAS and LAPACKE, 
 matrices are given following the LAPACK data layout (1-D array column-major). 
 It involves copy of data from LAPACK layout to tile layout and conversely (to 
 update LAPACK data), see @ref{Step1}.
   @item @code{MORSE_name_Tile}: the tile interface avoid copies between LAPACK 
-and tile layouts. It is the standard interface of MAGMA_MORSE and it should 
+and tile layouts. It is the standard interface of CHAMELEON and it should 
 achieved better performance than the previous simplest interface. The data are 
 given through a specific structure called a descriptor, see @ref{Step2}.
   @item @code{MORSE_name_Tile_Async}: similar to the tile interface, it avoids 
@@ -287,26 +287,26 @@ MORSE_Finalize();
 to free some data and finalize the runtime and/or MPI.
 
 @menu
-* Tutorial LAPACK to MAGMA_MORSE::
+* Tutorial LAPACK to CHAMELEON::
 * List of available routines::
 @end menu
 
-@node Tutorial LAPACK to MAGMA_MORSE
-@subsection Tutorial LAPACK to MAGMA_MORSE
+@node Tutorial LAPACK to CHAMELEON
+@subsection Tutorial LAPACK to CHAMELEON
 
-This tutorial is dedicated to the API usage of MAGMA_MORSE.
+This tutorial is dedicated to the API usage of CHAMELEON.
 The idea is to start from a simple code and step by step explain how to 
-use MAGMA_MORSE routines. 
-The first step is a full BLAS/LAPACK code without dependencies to MAGMA_MORSE, 
+use CHAMELEON routines. 
+The first step is a full BLAS/LAPACK code without dependencies to CHAMELEON, 
 a code that most users should easily understand.
-Then, the different interfaces MAGMA_MORSE provides are exposed, from the 
+Then, the different interfaces CHAMELEON provides are exposed, from the 
 simplest API (step1) to more complicated ones (until step4).
 The way some important parameters are set is discussed in step5.
 Finally step6 is an example about distributed computation with MPI.
 
 Source files can be found in the @file{example/lapack_to_morse/} 
 directory.
-If CMake option @option{MAGMAMORSE_ENABLE_EXAMPLE} is @option{ON} then source 
+If CMake option @option{CHAMELEON_ENABLE_EXAMPLE} is @option{ON} then source 
 files are compiled with the project libraries.
 The arithmetic precision is @code{double}.
 To execute a step @samp{X}, enter the following command:
@@ -376,10 +376,10 @@ cblas_dtrsm(
 @node Step1
 @subsubsection Step1
 
-It introduces the simplest MAGMA_MORSE interface which is equivalent to 
+It introduces the simplest CHAMELEON interface which is equivalent to 
 CBLAS/LAPACKE.
 The code is very similar to step0 but instead of calling CBLAS/LAPACKE 
-functions, we call MAGMA_MORSE equivalent functions. 
+functions, we call CHAMELEON equivalent functions. 
 The solving code becomes:
 @verbatim
 /* Factorization: */

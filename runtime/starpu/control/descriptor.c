@@ -26,7 +26,7 @@
 #include <stdlib.h>
 #include "morse_starpu.h"
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
 
 /* Take 24 bits for the tile id, and 7 bits for descriptor id */
 #define TAG_WIDTH_MIN 20
@@ -59,7 +59,7 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
     assert(desc->schedopt);
     tiles = (starpu_data_handle_t*)(desc->schedopt);
 
-#if defined(MAGMAMORSE_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA)
     /*
      * Register allocated memory as CUDA pinned memory
      */
@@ -76,7 +76,7 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
 #endif
 
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     /*
      * Check that we are not going over MPI tag limitations
      */
@@ -153,7 +153,7 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
                 handle++;
             }
 
-#if defined(MAGMAMORSE_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA)
         {
             int64_t eltsze = morse_element_size(desc->dtyp);
             size_t size = (size_t)(desc->llm) * (size_t)(desc->lln) * eltsze;
@@ -165,7 +165,7 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
                               "cudaHostUnregister failed to unregister the pinned memory associated to the matrix");
             }
         }
-#endif /* defined(MAGMAMORSE_USE_CUDA) */
+#endif /* defined(CHAMELEON_USE_CUDA) */
 
         free(desc->schedopt);
     }
@@ -279,9 +279,9 @@ void *RUNTIME_desc_getaddr( MORSE_desc_t *desc, int m, int n )
                                         BLKLDD(desc, m), tempmm, tempnn, eltsze);
         }
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
         starpu_mpi_data_register(*ptrtile, (desc->id << tag_sep) | (block_ind), owner);
-#endif /* defined(MAGMAMORSE_USE_MPI) */
+#endif /* defined(CHAMELEON_USE_MPI) */
     }
 
     return (void *)(*ptrtile);

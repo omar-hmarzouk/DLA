@@ -33,7 +33,7 @@
 #define Q(m,n) Q,  (m),  (n)
 #define T(m,n) T,  (m),  (n)
 #define T2(m,n) T,  (m),  (n)+(A->nt)
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 #define DIAG(m,n) DIAG, ((n)/BS), 0
 #else
 #define DIAG(m,n) A, (m), (n)
@@ -73,7 +73,7 @@ void morse_pzunglqrh(MORSE_desc_t *A, MORSE_desc_t *Q,
      */
     ws_worker = A->nb * ib;
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     {
         /* necessary to use UNMLQ on GPU */
         int nblk = ( A->nt + BS -1 ) / BS;
@@ -138,7 +138,7 @@ void morse_pzunglqrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                         T(k, n), T->mb);
                 }
             }
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
             MORSE_TASK_zlacpy(
                 &options,
                 MorseUpper, tempkmin, tempNn, A->nb,
@@ -168,7 +168,7 @@ void morse_pzunglqrh(MORSE_desc_t *A, MORSE_desc_t *Q,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif

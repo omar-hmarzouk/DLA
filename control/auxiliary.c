@@ -168,13 +168,13 @@ int MORSE_Version(int *ver_major, int *ver_minor, int *ver_micro)
         return  MORSE_ERR_ILLEGAL_VALUE;
 
     if (ver_major)
-        *ver_major = MAGMA_MORSE_VERSION_MAJOR;
+        *ver_major = CHAMELEON_VERSION_MAJOR;
 
     if (ver_minor)
-        *ver_minor = MAGMA_MORSE_VERSION_MINOR;
+        *ver_minor = CHAMELEON_VERSION_MINOR;
 
     if (ver_micro)
-        *ver_micro = MAGMA_MORSE_VERSION_MICRO;
+        *ver_micro = CHAMELEON_VERSION_MICRO;
 
     return MORSE_SUCCESS;
 }

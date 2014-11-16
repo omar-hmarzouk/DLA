@@ -31,7 +31,7 @@
 /* Specific includes for step 6 */
 #include <lapacke.h>
 #include <morse.h>
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
 #include <mpi.h>
 #endif
 
@@ -120,7 +120,7 @@ static void read_args(int argc, char *argv[], int *iparam){
  * Print a header message to summarize main parameters
  */
 static void print_header(char *prog_name, int * iparam) {
-#if defined(MAGMAMORSE_SIMULATION)
+#if defined(CHAMELEON_SIMULATION)
     double    eps = 0.;
 #else
     double    eps = LAPACKE_dlamch_work( 'e' );
@@ -137,9 +137,9 @@ static void print_header(char *prog_name, int * iparam) {
             "# IB:         %d\n"
             "# eps:        %e\n"
             "#\n",
-            MAGMA_MORSE_VERSION_MAJOR,
-            MAGMA_MORSE_VERSION_MINOR,
-            MAGMA_MORSE_VERSION_MICRO,
+            CHAMELEON_VERSION_MAJOR,
+            CHAMELEON_VERSION_MINOR,
+            CHAMELEON_VERSION_MICRO,
             prog_name,
             iparam[IPARAM_THRDNBR],
             iparam[IPARAM_NCUDAS],

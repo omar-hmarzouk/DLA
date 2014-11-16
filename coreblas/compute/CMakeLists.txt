@@ -87,7 +87,7 @@ set(ZSRC
     )
 
 precisions_rules_py(COREBLAS_SRCS_GENERATED "${ZSRC}"
-                    PRECISIONS "${MAGMAMORSE_PRECISION}")
+                    PRECISIONS "${CHAMELEON_PRECISION}")
 
 set(COREBLAS_SRCS
     global.c

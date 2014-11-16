@@ -59,7 +59,7 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
         return;
     RUNTIME_options_init(&options, morse, sequence, request);
 
-#ifdef MAGMAMORSE_USE_MAGMA
+#ifdef CHAMELEON_USE_MAGMA
     {
       int nb = magma_get_zpotrf_nb(A->nb);
       RUNTIME_options_ws_alloc( &options, nb*nb, 0 );
@@ -434,7 +434,7 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
         }
     }
 
-#ifdef MAGMAMORSE_USE_MAGMA
+#ifdef CHAMELEON_USE_MAGMA
     RUNTIME_options_ws_free(&options);
 #endif
     RUNTIME_options_finalize(&options, morse);

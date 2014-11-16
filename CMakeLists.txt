@@ -10,8 +10,8 @@
 #
 #  @file CMakeLists.txt
 #
-#  @project MAGMAMORSE
-#  MAGMAMORSE is a software package provided by:
+#  @project CHAMELEON
+#  CHAMELEON is a software package provided by:
 #     Inria Bordeaux - Sud-Ouest,
 #     Univ. of Tennessee,
 #     King Abdullah Univesity of Science and Technology
@@ -27,7 +27,7 @@
 #
 ###
 cmake_minimum_required(VERSION 2.8)
-project(MAGMAMORSE Fortran C CXX)
+project(CHAMELEON Fortran C CXX)
 
 # directly make an error if in-source build
 if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
@@ -37,9 +37,9 @@ if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 endif()
 
 # set project version number
-set(MAGMAMORSE_VERSION_MAJOR 1)
-set(MAGMAMORSE_VERSION_MINOR 1)
-set(MAGMAMORSE_VERSION_PATCH 0)
+set(CHAMELEON_VERSION_MAJOR 1)
+set(CHAMELEON_VERSION_MINOR 1)
+set(CHAMELEON_VERSION_PATCH 0)
 
 # Add extra cmake module path and initialize morse cmake modules
 # --------------------------------------------------------------
@@ -51,7 +51,7 @@ include(GenPkgConfig)
 
 #############################################
 #                                           #
-#        Compilation of MAGMAMORSE          #
+#        Compilation of CHAMELEON          #
 #                                           #
 #############################################
 
@@ -69,37 +69,37 @@ add_definitions(-DADD_)
 # ------------
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
-# Define precision supported by MAGMA_MORSE
+# Define precision supported by CHAMELEON
 # -----------------------------------------
-set( RP_MAGMAMORSE_DICTIONNARY ${MORSE_CMAKE_MODULE_PATH}/precision_generator/subs.py )
-set( RP_MAGMAMORSE_PRECISIONS  "s;d;c;z" )
+set( RP_CHAMELEON_DICTIONNARY ${MORSE_CMAKE_MODULE_PATH}/precision_generator/subs.py )
+set( RP_CHAMELEON_PRECISIONS  "s;d;c;z" )
 include(RulesPrecisions)
 
 # Options to select the runtime
 # -----------------------------
 
 # Create a list of possible runtime
-set(MAGMAMORSE_SCHED_list "STARPU" "QUARK")
+set(CHAMELEON_SCHED_list "STARPU" "QUARK")
 
 # Initially StarPU runtime is enabled
-option(MAGMAMORSE_SCHED_STARPU
+option(CHAMELEON_SCHED_STARPU
     "Enable StarPU scheduler as the default runtime
-    (Conflict with other MAGMAMORSE_SCHED_* options)" ON)
-option(MAGMAMORSE_SCHED_QUARK
+    (Conflict with other CHAMELEON_SCHED_* options)" ON)
+option(CHAMELEON_SCHED_QUARK
     "Enable Quark scheduler as the default runtime
-    (Conflict with other MAGMAMORSE_SCHED_* options)" OFF)
+    (Conflict with other CHAMELEON_SCHED_* options)" OFF)
 
-if (MAGMAMORSE_SCHED_QUARK)
-    set(MAGMAMORSE_SCHED_STARPU OFF)
-elseif (MAGMAMORSE_SCHED_STARPU)
-    set(MAGMAMORSE_SCHED_QUARK OFF)
+if (CHAMELEON_SCHED_QUARK)
+    set(CHAMELEON_SCHED_STARPU OFF)
+elseif (CHAMELEON_SCHED_STARPU)
+    set(CHAMELEON_SCHED_QUARK OFF)
 endif()
 
 # Check that one, and only one, SCHED option is set to ON
 # count number of runtime sets to ON
 math(EXPR number_of_active_runtime 0)
-foreach (runtime ${MAGMAMORSE_SCHED_list})
-    if (MAGMAMORSE_SCHED_${runtime})
+foreach (runtime ${CHAMELEON_SCHED_list})
+    if (CHAMELEON_SCHED_${runtime})
         math(EXPR number_of_active_runtime "${number_of_active_runtime}+1")
     endif()
 endforeach()
@@ -110,31 +110,31 @@ if (NOT number_of_active_runtime STREQUAL 1)
 endif()
 
 # Warning if not coherent options
-if (MAGMAMORSE_USE_MPI AND NOT MAGMAMORSE_SCHED_STARPU)
-    message(WARNING "You have activated MPI but MAGMAMORSE_SCHED_STARPU is OFF.\n"
+if (CHAMELEON_USE_MPI AND NOT CHAMELEON_SCHED_STARPU)
+    message(WARNING "You have activated MPI but CHAMELEON_SCHED_STARPU is OFF.\n"
     "You should use StarPU Runtime system if you want to benefit from MPI.\n"
-    "Use -DMAGMAMORSE_SCHED_QUARK=OFF -DMAGMAMORSE_SCHED_STARPU=ON at cmake \n"
+    "Use -DCHAMELEON_SCHED_QUARK=OFF -DCHAMELEON_SCHED_STARPU=ON at cmake \n"
     "configure to do so.")
 endif()
 
-if(MAGMAMORSE_USE_CUDA AND NOT MAGMAMORSE_SCHED_STARPU)
-    message(WARNING "You have activated CUDA but MAGMAMORSE_SCHED_STARPU is OFF.\n"
+if(CHAMELEON_USE_CUDA AND NOT CHAMELEON_SCHED_STARPU)
+    message(WARNING "You have activated CUDA but CHAMELEON_SCHED_STARPU is OFF.\n"
     "You should use StarPU Runtime system if you want to benefit from GPUs.\n"
-    "Use -DMAGMAMORSE_SCHED_QUARK=OFF -DMAGMAMORSE_SCHED_STARPU=ON at cmake \n"
+    "Use -DCHAMELEON_SCHED_QUARK=OFF -DCHAMELEON_SCHED_STARPU=ON at cmake \n"
     "configure to do so.")
 endif()
 
-if(MAGMAMORSE_USE_MAGMA AND NOT MAGMAMORSE_SCHED_STARPU)
-    message(WARNING "You have activated MAGMA but MAGMAMORSE_SCHED_STARPU is OFF.\n"
+if(CHAMELEON_USE_MAGMA AND NOT CHAMELEON_SCHED_STARPU)
+    message(WARNING "You have activated MAGMA but CHAMELEON_SCHED_STARPU is OFF.\n"
     "You should use StarPU Runtime system if you want to benefit from GPUs.\n"
-    "Use -DMAGMAMORSE_SCHED_QUARK=OFF -DMAGMAMORSE_SCHED_STARPU=ON at cmake \n"
+    "Use -DCHAMELEON_SCHED_QUARK=OFF -DCHAMELEON_SCHED_STARPU=ON at cmake \n"
     "configure to do so.")
 endif()
 
-if(MAGMAMORSE_USE_FXT AND NOT MAGMAMORSE_SCHED_STARPU)
-    message(WARNING "You have activated FXT but MAGMAMORSE_SCHED_STARPU is OFF.\n"
+if(CHAMELEON_USE_FXT AND NOT CHAMELEON_SCHED_STARPU)
+    message(WARNING "You have activated FXT but CHAMELEON_SCHED_STARPU is OFF.\n"
     "You should use StarPU Runtime system if you want to benefit from FxT.\n"
-    "Use -DMAGMAMORSE_SCHED_QUARK=OFF -DMAGMAMORSE_SCHED_STARPU=ON at cmake \n"
+    "Use -DCHAMELEON_SCHED_QUARK=OFF -DCHAMELEON_SCHED_STARPU=ON at cmake \n"
     "configure to do so.")
 endif()
         
@@ -143,42 +143,42 @@ endif()
 
 # Enable the distributed interface (allowed only when StarPU is enabled)
 # TODO: Default should be changed to ON/OFF when it will be ok
-cmake_dependent_option(MAGMAMORSE_USE_MPI
+cmake_dependent_option(CHAMELEON_USE_MPI
                     "Enable distributed memory through MPI" OFF
-                    "MAGMAMORSE_SCHED_STARPU" OFF)
+                    "CHAMELEON_SCHED_STARPU" OFF)
 
 # Enable Cuda kernels if StarPU (only if StarPU runtime is enabled)
 # TODO: Default should be changed to ON/OFF when it will be ok
-cmake_dependent_option(MAGMAMORSE_USE_CUDA
+cmake_dependent_option(CHAMELEON_USE_CUDA
                     "Enable CUDA kernels" OFF
-                    "MAGMAMORSE_SCHED_STARPU" OFF)
+                    "CHAMELEON_SCHED_STARPU" OFF)
 
 # Enable MAGMA advanced kernels if CUDA is enabled
-cmake_dependent_option(MAGMAMORSE_USE_MAGMA
+cmake_dependent_option(CHAMELEON_USE_MAGMA
                     "Enable MAGMA Cuda kernels" OFF
-                    "MAGMAMORSE_USE_CUDA" OFF)
+                    "CHAMELEON_USE_CUDA" OFF)
 
 # Enable FXT if StarPU (only if StarPU runtime is enabled)
-cmake_dependent_option(MAGMAMORSE_USE_FXT
+cmake_dependent_option(CHAMELEON_USE_FXT
                     "Enable FXT with STARPU" OFF
-                    "MAGMAMORSE_SCHED_STARPU" OFF)
+                    "CHAMELEON_SCHED_STARPU" OFF)
 
 # Options to enable/disable testings and timings
 # ----------------------------------------------
-option(MAGMAMORSE_ENABLE_DOCS     "Enable documentation build"  ON)
-option(MAGMAMORSE_ENABLE_EXAMPLE  "Enable examples build"       ON)
-option(MAGMAMORSE_ENABLE_TESTING  "Enable testings build"       ON)
-option(MAGMAMORSE_ENABLE_TIMING   "Enable timings build"        ON)
+option(CHAMELEON_ENABLE_DOCS     "Enable documentation build"  ON)
+option(CHAMELEON_ENABLE_EXAMPLE  "Enable examples build"       ON)
+option(CHAMELEON_ENABLE_TESTING  "Enable testings build"       ON)
+option(CHAMELEON_ENABLE_TIMING   "Enable timings build"        ON)
 
 # Option to activate or not simulation mode (use Simgrid through StarPU)
 # ----------------------------------------------------------------------
-if(MAGMAMORSE_SCHED_STARPU)
-    option(MAGMAMORSE_SIMULATION "Enable simulation mode using Simgrid through StarPU" OFF)
+if(CHAMELEON_SCHED_STARPU)
+    option(CHAMELEON_SIMULATION "Enable simulation mode using Simgrid through StarPU" OFF)
 endif()
 
 # Initially we need to generate files for different precisions
 # TODO: use this option to avoid generate multiple precisions each time we launch cmake
-#option(MAGMAMORSE_GEN_PREC "Generate source files precisions" ON)
+#option(CHAMELEON_GEN_PREC "Generate source files precisions" ON)
 #------------------------------------------------------------------------------
 
 
@@ -231,9 +231,9 @@ endif()
 
 # If simulation we don't enter in kernel functions so that we don't need to 
 # link with concerned libraries
-if(NOT MAGMAMORSE_SIMULATION)
+if(NOT CHAMELEON_SIMULATION)
 
-    # MAGMAMORSE depends on CBLAS
+    # CHAMELEON depends on CBLAS
     #----------------------------
     find_package(BLASEXT REQUIRED)
     set(HAVE_BLAS ${BLAS_FOUND})
@@ -245,7 +245,7 @@ if(NOT MAGMAMORSE_SIMULATION)
     endif()
 
     #---------------------------------------------
-    # MAGMAMORSE depends on LAPACKE (via coreblas)
+    # CHAMELEON depends on LAPACKE (via coreblas)
     find_package(LAPACKEXT REQUIRED)
     set(HAVE_LAPACK ${LAPACK_FOUND})
 
@@ -259,22 +259,22 @@ if(NOT MAGMAMORSE_SIMULATION)
         include_directories(${LAPACKE_INCLUDE_DIRS})
     endif()
 
-    # MAGMAMORSE depends on TMG
+    # CHAMELEON depends on TMG
     #--------------------------
-    if (MAGMAMORSE_ENABLE_TESTING OR MAGMAMORSE_ENABLE_TIMING)
+    if (CHAMELEON_ENABLE_TESTING OR CHAMELEON_ENABLE_TIMING)
         find_package(TMG REQUIRED)
         set(HAVE_TMG ${TMG_FOUND})
     endif()
 
-    # MAGMAMORSE depends on CUDA/CUBLAS
+    # CHAMELEON depends on CUDA/CUBLAS
     #----------------------------------
-    if (MAGMAMORSE_USE_CUDA)
+    if (CHAMELEON_USE_CUDA)
 
         find_package(CUDA REQUIRED)
 
         set(HAVE_CUDA ${CUDA_FOUND})
         if (CUDA_FOUND)
-            add_definitions(-DMAGMAMORSE_USE_CUDA)
+            add_definitions(-DCHAMELEON_USE_CUDA)
             if(CUDA_VERSION VERSION_LESS "3.0")
                 set(CUDA_HOST_COMPILATION_CPP OFF)
             endif(CUDA_VERSION VERSION_LESS "3.0")
@@ -295,29 +295,29 @@ if(NOT MAGMAMORSE_SIMULATION)
             set(CMAKE_REQUIRED_LIBRARIES "${saved_libs}")
         endif (CUDA_FOUND)
 
-        # MAGMAMORSE depends on MAGMA gpu kernels
+        # CHAMELEON depends on MAGMA gpu kernels
         # call our cmake module to test (in cmake_modules)
         # change this call position if not appropriated
         #----------------------------------------------
         if ( CUDA_FOUND )
-            if ( MAGMAMORSE_USE_MAGMA )
+            if ( CHAMELEON_USE_MAGMA )
                 find_package(MAGMA REQUIRED COMPONENTS CBLAS LAPACK CUDA)
 
                 set(HAVE_MAGMA ${MAGMA_FOUND})
                 if ( MAGMA_FOUND )
                     add_definitions(-DHAVE_CUBLAS)
-                    add_definitions(-DMAGMAMORSE_USE_MAGMA)
+                    add_definitions(-DCHAMELEON_USE_MAGMA)
                     list(APPEND EXTRA_LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
                     include_directories(${MAGMA_INCLUDE_DIRS})
                 endif( MAGMA_FOUND )
             endif()
         endif()
 
-    endif(MAGMAMORSE_USE_CUDA)
+    endif(CHAMELEON_USE_CUDA)
     
-    # MAGMAMORSE depends on MPI
+    # CHAMELEON depends on MPI
     #--------------------------
-    if (MAGMAMORSE_USE_MPI)
+    if (CHAMELEON_USE_MPI)
 
         # allows to use an external mpi compilation by setting compilers with
         # -DMPI_C_COMPILER=path/to/mpicc -DMPI_Fortran_COMPILER=path/to/mpif90
@@ -329,7 +329,7 @@ if(NOT MAGMAMORSE_SIMULATION)
 
         set(HAVE_MPI ${MPI_C_FOUND})
         if (MPI_C_FOUND)
-            add_definitions(-DMAGMAMORSE_USE_MPI)
+            add_definitions(-DCHAMELEON_USE_MPI)
             list(APPEND EXTRA_LIBRARIES ${MPI_C_LIBRARIES} )
             include_directories( ${MPI_C_INCLUDE_PATH} )
             # tests for intel mpi
@@ -337,13 +337,13 @@ if(NOT MAGMAMORSE_SIMULATION)
             #list(APPEND MPI_COMPILE_FLAGS "-mt_mpi")
         endif (MPI_C_FOUND)
 
-    endif (MAGMAMORSE_USE_MPI)
+    endif (CHAMELEON_USE_MPI)
     
-else (NOT MAGMAMORSE_SIMULATION)
+else (NOT CHAMELEON_SIMULATION)
 
-    message("${BoldBlue}Simulation mode of MAGMAMORSE is activated (MAGMAMORSE_SIMULATION=ON)."
+    message("${BoldBlue}Simulation mode of CHAMELEON is activated (CHAMELEON_SIMULATION=ON)."
         "\nThis mode allows you to simulate execution of algorithms with StarPU compiled with SimGrid."
-        "\nTo do so, we provide some perfmodels in the simucore/perfmodels/ directory of MAGMAMORSE sources."
+        "\nTo do so, we provide some perfmodels in the simucore/perfmodels/ directory of CHAMELEON sources."
         "\nThe resulting directory where to find perfmodels is: ${CMAKE_CURRENT_SOURCE_DIR}/simucore/perfmodels."
         "\nTo use these perfmodels, please set your STARPU_HOME environment variable to ${CMAKE_CURRENT_SOURCE_DIR}/simucore/perfmodels."
         "\nFinally, you need to set your STARPU_HOSTNAME environment variable to the name of the machine to simulate."
@@ -351,59 +351,59 @@ else (NOT MAGMAMORSE_SIMULATION)
         "\nNote that only POTRF kernels with block sizes of 320 or 960 (simple and double precision) on mirage machine are available for now."
         "\nDatabase of models is subject to change, it should be enrich in a near future.${ColourReset}")
 
-    if (MAGMAMORSE_USE_CUDA)
-        set(MAGMAMORSE_USE_CUDA OFF)
-        message("${BoldBlue}MAGMAMORSE_USE_CUDA is set to ON but we turn it OFF."
-        "Because we are compiling the simulation mode (MAGMAMORSE_SIMULATION=ON),"
+    if (CHAMELEON_USE_CUDA)
+        set(CHAMELEON_USE_CUDA OFF)
+        message("${BoldBlue}CHAMELEON_USE_CUDA is set to ON but we turn it OFF."
+        "Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
         "we do not need to link with CUDA.${ColourReset}")
     endif ()
-    if (MAGMAMORSE_USE_MAGMA)
-        set(MAGMAMORSE_USE_MAGMA OFF)
-        message("${BoldBlue}MAGMAMORSE_USE_MAGMA is set to ON but we turn it OFF."
-        "Because we are compiling the simulation mode (MAGMAMORSE_SIMULATION=ON),"
+    if (CHAMELEON_USE_MAGMA)
+        set(CHAMELEON_USE_MAGMA OFF)
+        message("${BoldBlue}CHAMELEON_USE_MAGMA is set to ON but we turn it OFF."
+        "Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
         "we do not need to link with MAGMA.${ColourReset}")
     endif ()
-    if (MAGMAMORSE_USE_MPI)
-        set(MAGMAMORSE_USE_MPI OFF)
-        message("${BoldBlue}MAGMAMORSE_USE_MPI is set to ON but we turn it OFF."
-        "Because we are compiling the simulation mode (MAGMAMORSE_SIMULATION=ON),"
+    if (CHAMELEON_USE_MPI)
+        set(CHAMELEON_USE_MPI OFF)
+        message("${BoldBlue}CHAMELEON_USE_MPI is set to ON but we turn it OFF."
+        "Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
         "we do not need to link with MPI.${ColourReset}")
     endif ()
-    if (MAGMAMORSE_ENABLE_TESTING)
-        set(MAGMAMORSE_ENABLE_TESTING OFF)
-        message("${BoldBlue}MAGMAMORSE_ENABLE_TESTING is set to ON but we turn it OFF."
-        "Because we are compiling the simulation mode (MAGMAMORSE_SIMULATION=ON),"
+    if (CHAMELEON_ENABLE_TESTING)
+        set(CHAMELEON_ENABLE_TESTING OFF)
+        message("${BoldBlue}CHAMELEON_ENABLE_TESTING is set to ON but we turn it OFF."
+        "Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
         "there is no sense in compiling testing drivers that are used to check"
         "numerical correctness of algorithms and kernels.${ColourReset}")
     endif ()
 
-endif(NOT MAGMAMORSE_SIMULATION)
+endif(NOT CHAMELEON_SIMULATION)
 
 
-# MAGMAMORSE depends on a runtime
+# CHAMELEON depends on a runtime
 # -------------------------------
 
 # TODO: discuss on this with Manu
 # try to find starpu runtime
-if( MAGMAMORSE_SCHED_STARPU )
+if( CHAMELEON_SCHED_STARPU )
 
-    set(MAGMAMORSE_STARPU_VERSION "1.1" CACHE STRING "oldest STARPU version desired")
+    set(CHAMELEON_STARPU_VERSION "1.1" CACHE STRING "oldest STARPU version desired")
 
     # create list of components in order to make a single call to find_package(starpu...)
-    if(NOT MAGMAMORSE_SIMULATION)
+    if(NOT CHAMELEON_SIMULATION)
         set(STARPU_COMPONENT_LIST "HWLOC")
-        if(MAGMAMORSE_USE_MPI)
+        if(CHAMELEON_USE_MPI)
             list(APPEND STARPU_COMPONENT_LIST "MPI")
         endif()
-        if(MAGMAMORSE_USE_CUDA)
+        if(CHAMELEON_USE_CUDA)
             list(APPEND STARPU_COMPONENT_LIST "CUDA")
         endif()
     endif()
-    if(MAGMAMORSE_USE_FXT)
+    if(CHAMELEON_USE_FXT)
         list(APPEND STARPU_COMPONENT_LIST "FXT")
     endif()
 
-    find_package(STARPU ${MAGMAMORSE_STARPU_VERSION} REQUIRED
+    find_package(STARPU ${CHAMELEON_STARPU_VERSION} REQUIRED
                  COMPONENTS ${STARPU_COMPONENT_LIST})
 
     # Is this useful??
@@ -411,15 +411,15 @@ if( MAGMAMORSE_SCHED_STARPU )
 
     # Add definition and include_dir if found
     if(STARPU_FOUND)
-        add_definitions(-DMAGMAMORSE_SCHED_STARPU) # TODO: remove that
+        add_definitions(-DCHAMELEON_SCHED_STARPU) # TODO: remove that
         include_directories(${STARPU_INCLUDE_DIRS})
         set(CMAKE_REQUIRED_INCLUDES "${STARPU_INCLUDE_DIRS}")
         foreach(libdir ${STARPU_LIBRARY_DIRS})
             list(APPEND CMAKE_REQUIRED_FLAGS "-L${libdir}")
         endforeach()
         string(REPLACE ";" " " CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS}")
-        if(MAGMAMORSE_USE_FXT)
-            # check if fxt profiling is accessible in starpu and activate it in magmamorse
+        if(CHAMELEON_USE_FXT)
+            # check if fxt profiling is accessible in starpu and activate it in chameleon
             set(CMAKE_REQUIRED_LIBRARIES "${STARPU_SHM_LIBRARIES}")
             unset(STARPU_FXT_START_PROFILING_FOUND CACHE)
             check_function_exists(starpu_fxt_start_profiling STARPU_FXT_START_PROFILING_FOUND)
@@ -428,7 +428,7 @@ if( MAGMAMORSE_SCHED_STARPU )
                 add_definitions(-DHAVE_STARPU_FXT_PROFILING)
             endif()
         endif()
-        if (MAGMAMORSE_USE_MPI AND STARPU_MPI_LIBRARIES)
+        if (CHAMELEON_USE_MPI AND STARPU_MPI_LIBRARIES)
             # Check if a specific function exist
             set(CMAKE_REQUIRED_LIBRARIES "${STARPU_MPI_LIBRARIES}")
             unset(STARPU_MPI_DATA_REGISTER_FOUND CACHE)
@@ -442,14 +442,14 @@ if( MAGMAMORSE_SCHED_STARPU )
 endif()
 
 # try to find quark runtime
-if( MAGMAMORSE_SCHED_QUARK )
+if( CHAMELEON_SCHED_QUARK )
 
     find_package(QUARK REQUIRED COMPONENTS HWLOC)
     set(HAVE_QUARK ${QUARK_FOUND})
 
     # Add definition and include_dir if found
     if(QUARK_FOUND)
-        add_definitions(-DMAGMAMORSE_SCHED_QUARK) # TODO: remove that
+        add_definitions(-DCHAMELEON_SCHED_QUARK) # TODO: remove that
         include_directories(${QUARK_INCLUDE_DIRS})
     endif()
 
@@ -457,41 +457,41 @@ endif()
 
 #------------------------------------------------------------------------------
 # Save all dependencies (all required links) 
-set(MAGMAMORSE_DEP -lmagmamorse)
-if(MAGMAMORSE_SCHED_STARPU)
-    if ( MAGMAMORSE_USE_MPI )
-        list(APPEND MAGMAMORSE_DEP
-          -lmagmamorse_starpu
+set(CHAMELEON_DEP -lchameleon)
+if(CHAMELEON_SCHED_STARPU)
+    if ( CHAMELEON_USE_MPI )
+        list(APPEND CHAMELEON_DEP
+          -lchameleon_starpu
           ${STARPU_MPI_LIBRARIES}
         )
     else()
-        list(APPEND MAGMAMORSE_DEP
-          -lmagmamorse_starpu
+        list(APPEND CHAMELEON_DEP
+          -lchameleon_starpu
           ${STARPU_SHM_LIBRARIES}
         )
     endif()
-elseif(MAGMAMORSE_SCHED_QUARK)
-    list(APPEND MAGMAMORSE_DEP
-      -lmagmamorse_quark
+elseif(CHAMELEON_SCHED_QUARK)
+    list(APPEND CHAMELEON_DEP
+      -lchameleon_quark
       ${QUARK_LIBRARIES}
       )
     link_directories(${QUARK_LIBRARY_DIRS})
 endif()
-if(NOT MAGMAMORSE_SIMULATION)
-    if(MAGMAMORSE_USE_CUDA)
-        list(APPEND MAGMAMORSE_DEP
+if(NOT CHAMELEON_SIMULATION)
+    if(CHAMELEON_USE_CUDA)
+        list(APPEND CHAMELEON_DEP
         ${CUDA_LIBRARIES}
         )
         link_directories(${CUDA_LIBRARY_DIRS})
     endif()
-    if(MAGMAMORSE_USE_MAGMA)
-        list(APPEND MAGMAMORSE_DEP
+    if(CHAMELEON_USE_MAGMA)
+        list(APPEND CHAMELEON_DEP
         ${MAGMA_LIBRARIES}
         )
         link_directories(${MAGMA_LIBRARY_DIRS})
     endif()
 
-    list(APPEND MAGMAMORSE_DEP
+    list(APPEND CHAMELEON_DEP
     -lcoreblas
     ${LAPACKE_LIBRARIES}
     ${CBLAS_LIBRARIES}    
@@ -501,7 +501,7 @@ if(NOT MAGMAMORSE_SIMULATION)
     ${EXTRA_LIBRARIES}
     )
 else()
-    list(APPEND MAGMAMORSE_DEP
+    list(APPEND CHAMELEON_DEP
     -lcoreblas
     -lsimulapacke    
     -lsimucblas
@@ -509,7 +509,7 @@ else()
     ${EXTRA_LIBRARIES}
     )
 endif()
-list(REMOVE_DUPLICATES MAGMAMORSE_DEP)
+list(REMOVE_DUPLICATES CHAMELEON_DEP)
 
 # Check for the subdirectories
 # ----------------------------
@@ -525,13 +525,13 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/coreblas/include)
 # simucore libraries #
 ######################
 
-if ( MAGMAMORSE_SIMULATION )
+if ( CHAMELEON_SIMULATION )
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/simucore/simucblas)
     include_directories(${CMAKE_CURRENT_BINARY_DIR}/simucore/simucblas)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/simucore/simulapacke)
     include_directories(${CMAKE_CURRENT_BINARY_DIR}/simucore/simulapacke)
     add_subdirectory(simucore)
-    add_definitions(-DMAGMAMORSE_SIMULATION)
+    add_definitions(-DCHAMELEON_SIMULATION)
 endif()
 #------------------------------------------------------------------------------
 
@@ -581,19 +581,19 @@ if(_match_ifort)
 endif(_match_ifort)
 
 # Testing executables
-if(MAGMAMORSE_ENABLE_EXAMPLE)
+if(CHAMELEON_ENABLE_EXAMPLE)
   add_subdirectory(example)
-endif(MAGMAMORSE_ENABLE_EXAMPLE)
+endif(CHAMELEON_ENABLE_EXAMPLE)
 
 # Testing executables
-if(MAGMAMORSE_ENABLE_TESTING)
+if(CHAMELEON_ENABLE_TESTING)
   add_subdirectory(testing)
-endif(MAGMAMORSE_ENABLE_TESTING)
+endif(CHAMELEON_ENABLE_TESTING)
 
 # Timing executables
-if(MAGMAMORSE_ENABLE_TIMING)
+if(CHAMELEON_ENABLE_TIMING)
   add_subdirectory(timing)
-endif(MAGMAMORSE_ENABLE_TIMING)
+endif(CHAMELEON_ENABLE_TIMING)
 #------------------------------------------------------------------------------
 
 
@@ -601,7 +601,7 @@ endif(MAGMAMORSE_ENABLE_TIMING)
 # Documentation #
 #################
 
-if(MAGMAMORSE_ENABLE_DOCS)
+if(CHAMELEON_ENABLE_DOCS)
     add_subdirectory(docs)
 endif()
 #------------------------------------------------------------------------------
@@ -613,14 +613,14 @@ endif()
 
 # Create file morse_starpu.pc
 # ---------------------------
-if(MAGMAMORSE_SCHED_STARPU)
-    generate_pkgconfig_file("${CMAKE_CURRENT_SOURCE_DIR}/lib/pkgconfig/magmamorse-starpu.pc.in")
+if(CHAMELEON_SCHED_STARPU)
+    generate_pkgconfig_file("${CMAKE_CURRENT_SOURCE_DIR}/lib/pkgconfig/chameleon-starpu.pc.in")
 endif()
 
 # # Create file morse_quark.pc
 # # --------------------------
-if(MAGMAMORSE_SCHED_QUARK)
-    generate_pkgconfig_file("${CMAKE_CURRENT_SOURCE_DIR}/lib/pkgconfig/magmamorse-quark.pc.in")
+if(CHAMELEON_SCHED_QUARK)
+    generate_pkgconfig_file("${CMAKE_CURRENT_SOURCE_DIR}/lib/pkgconfig/chameleon-quark.pc.in")
 endif()
 #------------------------------------------------------------------------------
 

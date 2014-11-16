@@ -29,7 +29,7 @@
 
 # Generate the morse headers for all possible precisions
 # ------------------------------------------------------
-set(MAGMAMORSE_HDRS_GENERATED "")
+set(CHAMELEON_HDRS_GENERATED "")
 set(ZHDR
     morse_z.h
     morse_zc.h
@@ -37,12 +37,12 @@ set(ZHDR
     runtime_zc.h
 )
 
-precisions_rules_py(MAGMAMORSE_HDRS_GENERATED "${ZHDR}"
+precisions_rules_py(CHAMELEON_HDRS_GENERATED "${ZHDR}"
                     PRECISIONS "z;c;d;s;zc;ds")
 
 # Define the list of headers
 # --------------------------
-set(MAGMAMORSE_HDRS
+set(CHAMELEON_HDRS
     morse_constants.h
     morse_kernels.h
     morse_simulate.h
@@ -50,16 +50,16 @@ set(MAGMAMORSE_HDRS
     morse_types.h
     morse.h
     runtime.h
-    ${MAGMAMORSE_HDRS_GENERATED}
+    ${CHAMELEON_HDRS_GENERATED}
     )
     
-foreach(_prec ${MAGMAMORSE_PRECISION})
+foreach(_prec ${CHAMELEON_PRECISION})
     set_source_files_properties(runtime.h PROPERTIES COMPILE_FLAGS "-DPRECISION_${_prec}")
 endforeach()
 
 # Force generation of headers
 # ---------------------------
-add_custom_target(magmamorse_include ALL SOURCES ${MAGMAMORSE_HDRS})
+add_custom_target(chameleon_include ALL SOURCES ${CHAMELEON_HDRS})
 
 set(HDR_INSTALL
     morse_constants.h
@@ -70,7 +70,7 @@ set(HDR_INSTALL
     morse.h
     runtime.h
     )
-foreach( hdr_file ${MAGMAMORSE_HDRS_GENERATED} )
+foreach( hdr_file ${CHAMELEON_HDRS_GENERATED} )
     list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
 endforeach()
 

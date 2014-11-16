@@ -32,7 +32,7 @@
 
 #define A(m,n) A,  m,  n
 #define T(m,n) T,  m,  n
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 #define DIAG(k) DIAG, k, 0
 #else
 #define DIAG(k) A, k, k
@@ -76,7 +76,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
     ws_worker = A->nb * (ib+1);
 
     /* Allocation of temporary (scratch) working space */
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     /* necessary to use UNMLQ on GPU */
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
     morse_zdesc_alloc2(*DIAG, A->mb, A->nb, (minMT-1)*A->mb, A->nb, 0, 0, (minMT-1)*A->mb, A->nb);
@@ -113,7 +113,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
             tempkm, tempkn, ib, T->nb,
             A(k, k), ldak,
             T(k, k), T->mb);
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
         if ( k < (A->mt-1) ) {
             MORSE_TASK_zlacpy(
                 &options,
@@ -164,7 +164,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif

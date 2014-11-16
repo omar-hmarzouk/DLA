@@ -120,4 +120,4 @@ extern double creal(MORSE_Complex64_t z);
 
 #endif /* MORSE_HAS_COMPLEX_H*/
 
-#endif /* __MAGMA_MORSE_H__ */
+#endif /* __CHAMELEON_H__ */

@@ -36,7 +36,7 @@ void MORSE_TASK_dataflush(MORSE_option_t *options,
      * compute the handle address in starpu.  We have to be careful with this if
      * something similar happen in Quark.
      */
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     {
         starpu_data_handle_t *ptrtile = (starpu_data_handle_t*)(A->schedopt);
         ptrtile += ((int64_t)(A->lmt) * (int64_t)An + (int64_t)Am);
@@ -49,7 +49,7 @@ void MORSE_TASK_dataflush(MORSE_option_t *options,
 
 void MORSE_TASK_dataflush_all()
 {
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     starpu_mpi_cache_flush_all_data(MPI_COMM_WORLD);
 #endif
 }

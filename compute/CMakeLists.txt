@@ -29,7 +29,7 @@
 
 # Define the list of sources
 # --------------------------
-set(MAGMAMORSE_CONTROL
+set(CHAMELEON_CONTROL
     ../control/async.c
     ../control/auxiliary.c
     ../control/context.c
@@ -42,13 +42,13 @@ set(MAGMAMORSE_CONTROL
 #    ../control/morsewinthread.c
    )
 
-foreach(_prec ${MAGMAMORSE_PRECISION})
+foreach(_prec ${CHAMELEON_PRECISION})
     set_source_files_properties(../control/tile.c PROPERTIES COMPILE_FLAGS "-DPRECISION_${_prec}")
 endforeach()
 
 # Generate the morse sources for all possible precisions
 # ------------------------------------------------------
-set(MAGMAMORSE_SRCS_GENERATED "")
+set(CHAMELEON_SRCS_GENERATED "")
 set(ZSRC
     ##################
     # BLAS 3
@@ -197,8 +197,8 @@ set(ZSRC
     ztile.c
     )
 
-precisions_rules_py(MAGMAMORSE_SRCS_GENERATED "${ZSRC}"
-                    PRECISIONS "${MAGMAMORSE_PRECISION}")
+precisions_rules_py(CHAMELEON_SRCS_GENERATED "${ZSRC}"
+                    PRECISIONS "${CHAMELEON_PRECISION}")
 
 set(CONTROL_SRCS_GENERATED "")
 set(ZSRC
@@ -207,51 +207,51 @@ set(ZSRC
 )
 
 precisions_rules_py(CONTROL_SRCS_GENERATED "${ZSRC}"
-                    PRECISIONS "${MAGMAMORSE_PRECISION}"
+                    PRECISIONS "${CHAMELEON_PRECISION}"
                     TARGETDIR "control" )
 
-set(MAGMAMORSE_SRCS
-    ${MAGMAMORSE_CONTROL}
-    ${MAGMAMORSE_SRCS_GENERATED}
+set(CHAMELEON_SRCS
+    ${CHAMELEON_CONTROL}
+    ${CHAMELEON_SRCS_GENERATED}
     ${CONTROL_SRCS_GENERATED}
    )
 
 # Generate the morse fortran sources for all possible precisions
 # --------------------------------------------------------------
 if(HAVE_ISO_C_BINDING)
-    set(MAGMAMORSE_SRCS_F_GENERATED "")
+    set(CHAMELEON_SRCS_F_GENERATED "")
     set(ZSRCF
         ../control/morse_zcf90.F90
         ../control/morse_zf90.F90
         ../control/morse_zf90_wrappers.F90
        )
-    precisions_rules_py(MAGMAMORSE_SRCS_F_GENERATED "${ZSRCF}"
-                        PRECISIONS "${MAGMAMORSE_PRECISION}"
+    precisions_rules_py(CHAMELEON_SRCS_F_GENERATED "${ZSRCF}"
+                        PRECISIONS "${CHAMELEON_PRECISION}"
                         TARGETDIR "control" )
 
-    set(MAGMAMORSE_SRCSF
+    set(CHAMELEON_SRCSF
         ../control/morse_f90.f90
-        ${MAGMAMORSE_SRCS_F_GENERATED}
+        ${CHAMELEON_SRCS_F_GENERATED}
        )
 endif(HAVE_ISO_C_BINDING)
 
 # Compile step
 # ------------
-add_library(magmamorse ${MAGMAMORSE_SRCS} ${MAGMAMORSE_SRCSF})
+add_library(chameleon ${CHAMELEON_SRCS} ${CHAMELEON_SRCSF})
 
-add_dependencies(magmamorse
-  magmamorse_include
+add_dependencies(chameleon
+  chameleon_include
   coreblas_include
   control_include
   runtime_starpu_include
 )
 
-set_property(TARGET magmamorse PROPERTY LINKER_LANGUAGE Fortran)
-set_property(TARGET magmamorse PROPERTY Fortran_MODULE_DIRECTORY "${CMAKE_BINARY_DIR}/include")
+set_property(TARGET chameleon PROPERTY LINKER_LANGUAGE Fortran)
+set_property(TARGET chameleon PROPERTY Fortran_MODULE_DIRECTORY "${CMAKE_BINARY_DIR}/include")
 
 # installation
 # ------------
-install(TARGETS magmamorse
+install(TARGETS chameleon
         DESTINATION lib)
 
 ###

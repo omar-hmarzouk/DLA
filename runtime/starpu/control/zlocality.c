@@ -28,7 +28,7 @@
 #include "morse_starpu.h"
 #include "codelet_z.h"
 
-#ifdef MAGMAMORSE_USE_CUDA
+#ifdef CHAMELEON_USE_CUDA
 /* Only codelets with multiple choices are present here */
 void RUNTIME_zlocality_allrestrict( uint32_t where )
 {

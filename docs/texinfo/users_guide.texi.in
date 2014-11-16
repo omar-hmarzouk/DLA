@@ -2,7 +2,7 @@
 
 @c %**start of header
 @setfilename users_guide.info
-@settitle MAGMA_MORSE User's Guide
+@settitle CHAMELEON User's Guide
 @c %**end of header
 
 @include version.texi
@@ -58,7 +58,7 @@ advised of the possibility of such damage.
 @c @flushleft 
 @c @image{morse_header} 
 @c @end flushleft
-@title MAGMA_MORSE User's Guide
+@title CHAMELEON User's Guide
 @subtitle sub-project of MORSE
 
 @flushright
@@ -84,7 +84,7 @@ advised of the possibility of such damage.
 @setchapternewpage odd
 @dircategory Development
 @direntry
-* MAGMA_MORSE: (magma_morse).             MAGMA_MORSE User's Guide
+* CHAMELEON: (chameleon).             CHAMELEON User's Guide
 @end direntry
 
 
@@ -96,7 +96,7 @@ advised of the possibility of such damage.
 @node Top
 @top Preface
 
-This manual documents the usage of MAGMA_MORSE version @value{VERSION}. 
+This manual documents the usage of CHAMELEON version @value{VERSION}. 
 It was last updated on @value{UPDATED}.
 
 @insertcopying
@@ -109,41 +109,41 @@ It was last updated on @value{UPDATED}.
 @comment
 @menu
 * Introduction::                Getting started
-* Installing MAGMA_MORSE::      How to configure, build and install MAGMA_MORSE
-* Configuring MAGMA_MORSE::     How to configure MAGMA_MORSE
-* Using MAGMA_MORSE::           How to run MAGMA_MORSE application
+* Installing CHAMELEON::      How to configure, build and install CHAMELEON
+* Configuring CHAMELEON::     How to configure CHAMELEON
+* Using CHAMELEON::           How to run CHAMELEON application
 @end menu
 
 @c ---------------------------------------------------------------------
-@c Introduction to MAGMA_MORSE
+@c Introduction to CHAMELEON
 @c ---------------------------------------------------------------------
 
 @node Introduction
-@chapter Introduction to MAGMA_MORSE
+@chapter Introduction to CHAMELEON
 @include @CMAKE_CURRENT_SOURCE_DIR@/chapters/introduction.texi
 
 @c ---------------------------------------------------------------------
-@c Installing MAGMA_MORSE
+@c Installing CHAMELEON
 @c ---------------------------------------------------------------------
 
-@node Installing MAGMA_MORSE
-@chapter Installing MAGMA_MORSE
+@node Installing CHAMELEON
+@chapter Installing CHAMELEON
 @include @CMAKE_CURRENT_SOURCE_DIR@/chapters/installing.texi
 
 @c ---------------------------------------------------------------------
 @c Configuration options
 @c ---------------------------------------------------------------------
 
-@node Configuring MAGMA_MORSE
-@chapter Configuring MAGMA_MORSE
+@node Configuring CHAMELEON
+@chapter Configuring CHAMELEON
 @include @CMAKE_CURRENT_SOURCE_DIR@/chapters/configuration.texi
 
 @c ---------------------------------------------------------------------
-@c Using MAGMA_MORSE
+@c Using CHAMELEON
 @c ---------------------------------------------------------------------
 
-@node Using MAGMA_MORSE
-@chapter Using MAGMA_MORSE
+@node Using CHAMELEON
+@chapter Using CHAMELEON
 @include @CMAKE_CURRENT_SOURCE_DIR@/chapters/using.texi
 
 

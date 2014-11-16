@@ -84,7 +84,7 @@ static void cl_ztrtri_cpu_func(void *descr[], void *cl_arg)
         N, A, LDA);
 }
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 static void cl_ztrtri_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;
@@ -114,7 +114,7 @@ static void cl_ztrtri_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 CODELETS(ztrtri, 1, cl_ztrtri_cpu_func, cl_ztrtri_cuda_func, 0)
 #else
 CODELETS_CPU(ztrtri, 1, cl_ztrtri_cpu_func)

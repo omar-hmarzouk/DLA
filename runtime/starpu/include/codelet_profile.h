@@ -28,7 +28,7 @@
 #ifndef __CODELET_PROFILE_H__
 #define __CODELET_PROFILE_H__
 
-#define MAGMAMORSE_CL_CB(name, _m, _n, _k, _nflops)			\
+#define CHAMELEON_CL_CB(name, _m, _n, _k, _nflops)			\
     static measure_t name##_perf[STARPU_NMAXWORKERS];                                          \
     void cl_##name##_callback()                                                                \
     {                                                                                          \
@@ -114,7 +114,7 @@
         *res_peak = peak;                                                                      \
     }                                                                                          \
 
-#define MAGMAMORSE_CL_CB_HEADER(name)                        \
+#define CHAMELEON_CL_CB_HEADER(name)                        \
     extern struct starpu_perfmodel*cl_##name##_save;    \
     extern struct starpu_perfmodel cl_##name##_fake;    \
     void cl_##name##_callback();                        \

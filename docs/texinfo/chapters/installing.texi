@@ -1,26 +1,26 @@
 @c -*-texinfo-*-
 
-@c This file is part of the MAGMA_MORSE Handbook.
+@c This file is part of the CHAMELEON Handbook.
 @c Copyright (C) 2014 Inria
 @c Copyright (C) 2014 The University of Tennessee
 @c Copyright (C) 2014 King Abdullah University of Science and Technology
-@c See the file ../magma_morse.texi for copying conditions.
+@c See the file ../chameleon.texi for copying conditions.
 
 @menu
-* Downloading MAGMA_MORSE::
-* Build process of MAGMA_MORSE::
+* Downloading CHAMELEON::
+* Build process of CHAMELEON::
 @end menu
 
-MAGMA_MORSE can be built and installed by the standard means of CMake 
+CHAMELEON can be built and installed by the standard means of CMake 
 (@uref{http://www.cmake.org/}).
 General information about CMake, as well as installation binaries and CMake 
 source code are available from 
 @uref{http://www.cmake.org/cmake/resources/software.html}.
 The following chapter is intended to briefly remind how these tools can be used 
-to install MAGMA_MORSE.
+to install CHAMELEON.
 
-@node Downloading MAGMA_MORSE
-@section Downloading MAGMA_MORSE
+@node Downloading CHAMELEON
+@section Downloading CHAMELEON
 
 @menu
 * Getting Sources::
@@ -31,7 +31,7 @@ to install MAGMA_MORSE.
 @node Getting Sources
 @subsection Getting Sources
 
-The latest official release tarballs of MAGMA_MORSE sources are available for 
+The latest official release tarballs of CHAMELEON sources are available for 
 download from 
 @uref{https://gforge.inria.fr/frs/download.php/file/31779/magma-morse-1.?.0
 .tar.gz, url to release (inria forge)}
@@ -87,7 +87,7 @@ Since GSL is implemented in C, it naturally provides CBLAS.
 
 @uref{http://www.netlib.org/lapack/, LAPACK} (Linear Algebra PACKage) is a 
 software library for numerical linear algebra, a successor of LINPACK and 
-EISPACK and a predecessor of MAGMA_MORSE. 
+EISPACK and a predecessor of CHAMELEON. 
 LAPACK provides routines for solving linear systems of equations, linear least 
 square problems, eigenvalue problems and singular value problems. 
 Most commercial and academic BLAS packages also provide some LAPACK routines.
@@ -99,7 +99,7 @@ Most commercial and academic BLAS packages also provide some LAPACK routines.
 LAPACK (or CLAPACK). 
 It is produced by Intel in coordination with the LAPACK team and is available 
 in source code from Netlib in its original version (Netlib LAPACKE) and from 
-MAGMA_MORSE website in an extended version (LAPACKE for MAGMA_MORSE). 
+CHAMELEON website in an extended version (LAPACKE for CHAMELEON). 
 In addition to implementing the C interface, LAPACKE also provides routines 
 which automatically handle workspace allocation, making the use of LAPACK much 
 more convenient.
@@ -123,7 +123,7 @@ One of QUARK or StarPU Runtime systems has to be enabled in order to schedule
 tasks on the architecture.
 If QUARK is enabled then StarPU is disabled and conversely.
 Note StarPU is enabled by default.
-When MAGMA_MORSE is linked with QUARK, it is not possible to exploit neither 
+When CHAMELEON is linked with QUARK, it is not possible to exploit neither 
 CUDA (for GPUs) nor MPI (distributed-memory environment).
 You can use StarPU to do so.
 
@@ -162,7 +162,7 @@ downloaded from @uref{http://www.open-mpi.org/software/hwloc}.
 @node pthread
 @subsubsection pthread
 
-POSIX threads library is required to run MAGMA_MORSE on Unix-like systems. 
+POSIX threads library is required to run CHAMELEON on Unix-like systems. 
 It is a standard component of any such system. 
 @comment  Windows threads are used on Microsoft Windows systems.
 
@@ -193,13 +193,13 @@ enabled.
 a 
 comprehensive development environment for C and C++ developers building 
 GPU-accelerated applications. 
-MAGMA_MORSE can use a set of low level optimized kernels coming from cuBLAS to 
+CHAMELEON can use a set of low level optimized kernels coming from cuBLAS to 
 accelerate computations on GPUs.
 The @uref{http://docs.nvidia.com/cuda/cublas/, cuBLAS} library is an 
 implementation of BLAS (Basic Linear Algebra Subprograms) on top of the Nvidia 
 CUDA runtime.
 cuBLAS is normaly distributed with Nvidia CUDA Toolkit.
-CUDA/cuBLAS can be enabled in MAGMA_MORSE only if the runtime system chosen 
+CUDA/cuBLAS can be enabled in CHAMELEON only if the runtime system chosen 
 is StarPU (default).
 To use CUDA through StarPU, it is necessary to compile StarPU with CUDA 
 enabled.
@@ -210,7 +210,7 @@ enabled.
 @uref{http://icl.cs.utk.edu/magma/, MAGMA} project aims to develop a dense 
 linear algebra library similar to LAPACK but for heterogeneous/hybrid 
 architectures, starting with current "Multicore+GPU" systems.
-MAGMA_MORSE can use a set of high level MAGMA routines to accelerate 
+CHAMELEON can use a set of high level MAGMA routines to accelerate 
 computations on GPUs.
 To fully benefit from GPUs, the user should enable MAGMA in addition to 
 CUDA/cuBLAS.
@@ -221,14 +221,14 @@ CUDA/cuBLAS.
 @uref{http://download.savannah.gnu.org/releases/fkt/, FxT} stands for both 
 FKT (Fast Kernel Tracing) and FUT (Fast User Tracing). 
 This library provides efficient support for recording traces.
-MAGMA_MORSE can trace kernels execution on the different workers and produce 
+CHAMELEON can trace kernels execution on the different workers and produce 
 .paje files if FxT is enabled. 
 FxT can only be used through StarPU and StarPU must be compiled with FxT 
 enabled, see how to use this feature here @ref{Use FxT profiling through 
 StarPU}.
 
-@node Build process of MAGMA_MORSE
-@section Build process of MAGMA_MORSE
+@node Build process of CHAMELEON
+@section Build process of CHAMELEON
 
 @menu
 * Setting up a build directory::
@@ -241,12 +241,12 @@ StarPU}.
 @node Setting up a build directory
 @subsection Setting up a build directory
 
-The MAGMA_MORSE build process requires CMake version 2.8.0 or higher and 
+The CHAMELEON build process requires CMake version 2.8.0 or higher and 
 working C and Fortran compilers.
-Compilation and link with MAGMA_MORSE libraries have been tested with 
+Compilation and link with CHAMELEON libraries have been tested with 
 @strong{gcc/gfortran 4.8.1} and @strong{icc/ifort 14.0.2}.
 On Unix-like operating systems, it also requires Make.
-The MAGMA_MORSE project can not be configured for an in-source build. 
+The CHAMELEON project can not be configured for an in-source build. 
 You will get an error message if you try to compile in-source. 
 Please clean the root of your project by deleting the generated 
 @file{CMakeCache.txt} file (and other CMake generated files).
@@ -258,7 +258,7 @@ cd build
 
 @quotation
 You can create a build directory from any location you would like. It can be a 
-sub-directory of the MAGMA_MORSE base source directory or anywhere else.
+sub-directory of the CHAMELEON base source directory or anywhere else.
 @end quotation
 
 @node Configuring the project with best efforts
@@ -267,7 +267,7 @@ sub-directory of the MAGMA_MORSE base source directory or anywhere else.
 @example
 cmake <path to SOURCE_DIR> -DOPTION1= -DOPTION2= ...
 @end example
-@file{<path to SOURCE_DIR>} represents the root of MAGMA_MORSE project where 
+@file{<path to SOURCE_DIR>} represents the root of CHAMELEON project where 
 stands 
 the main (parent) @file{CMakeLists.txt} file.
 Details about options that are useful to give to @command{cmake <path to 
@@ -284,7 +284,7 @@ do not hesitate to use @option{-j[ncores]} option to speedup the compilation
 @node Tests
 @subsection Tests
 
-In order to make sure that MAGMA_MORSE is working properly on the system, it is 
+In order to make sure that CHAMELEON is working properly on the system, it is 
 also possible to run a test suite.
 
 @example
@@ -298,7 +298,7 @@ ctest
 @node Installing
 @subsection Installing
 
-In order to install MAGMA_MORSE at the location that was specified during 
+In order to install CHAMELEON at the location that was specified during 
 configuration:
 
 @example
@@ -310,4 +310,4 @@ do not forget to specify the install directory with
 cmake <path to SOURCE_DIR> -DCMAKE_INSTALL_PREFIX=<path to INSTALL_DIR>
 @end example
 Note that the install process is optional.
-You are free to use MAGMA_MORSE binaries compiled in the build directory.
+You are free to use CHAMELEON binaries compiled in the build directory.

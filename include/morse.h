@@ -31,9 +31,9 @@
 #define MORSE_VERSION_MINOR 1
 #define MORSE_VERSION_MICRO 0
 
-#define MAGMA_MORSE_VERSION_MAJOR 1
-#define MAGMA_MORSE_VERSION_MINOR 1
-#define MAGMA_MORSE_VERSION_MICRO 0
+#define CHAMELEON_VERSION_MAJOR 1
+#define CHAMELEON_VERSION_MINOR 1
+#define CHAMELEON_VERSION_MICRO 0
 
 
 /** ****************************************************************************

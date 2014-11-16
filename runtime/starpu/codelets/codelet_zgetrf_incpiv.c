@@ -144,7 +144,7 @@ static void cl_zgetrf_incpiv_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &ldl, &IPIV, &check_info, &iinfo, &h_work);
     CORE_zgetrf_incpiv(m, n, ib, A, lda, IPIV, &info);
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     /*
      * L stores:
      *      L1     L2    L3     ...
@@ -173,7 +173,7 @@ static void cl_zgetrf_incpiv_cpu_func(void *descr[], void *cl_arg)
 /*
  * Codelet GPU
  */
-#if defined(MAGMAMORSE_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
+#if defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
 static void cl_zgetrf_incpiv_cuda_func(void *descr[], void *cl_arg)
 {
     int m;
@@ -229,7 +229,7 @@ static void cl_zgetrf_incpiv_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(MAGMAMORSE_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
+#if defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
 CODELETS(zgetrf_incpiv, 3, cl_zgetrf_incpiv_cpu_func, cl_zgetrf_incpiv_cuda_func, 0)
 #else
 CODELETS_CPU(zgetrf_incpiv, 3, cl_zgetrf_incpiv_cpu_func)

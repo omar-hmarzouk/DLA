@@ -46,18 +46,18 @@
 /** ****************************************************************************
  * Implementation headers
  **/
-#if defined(MAGMAMORSE_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA)
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <cuda_runtime_api.h>
 #include <cublas.h>
 #endif
 
-#if defined(MAGMAMORSE_USE_OPENCL)
+#if defined(CHAMELEON_USE_OPENCL)
 #include <OpenCL/cl.h>
 #endif
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
 #include <mpi.h>
 #endif
 
@@ -65,7 +65,7 @@
 /** ****************************************************************************
  * Linear Algebra headers
  **/
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 #include <magma.h>
 #endif
 
@@ -127,7 +127,7 @@
 #define MORSE_TRANSLATION morse->translation
 #define MORSE_PARALLEL    morse->parallel_enabled
 #define MORSE_PROFILING   morse->profiling_enabled
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
 #define MORSE_MPI_RANK    morse->my_mpi_rank
 #define MORSE_MPI_SIZE    morse->mpi_comm_size
 #endif

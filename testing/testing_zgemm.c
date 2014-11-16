@@ -36,7 +36,7 @@
 #include <lapacke.h>
 #include <coreblas.h>
 #include "testing_zauxiliary.h"
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
 #include <mpi.h>
 #endif
 

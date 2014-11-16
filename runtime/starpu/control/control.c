@@ -86,7 +86,7 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int nworkers, int ncudas, in
         morse->nthreads_per_worker = nthreads_per_worker;
     }
 
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     {
         int flag = 0;
         MPI_Initialized( &flag );
@@ -100,7 +100,7 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int nworkers, int ncudas, in
     starpu_fxt_stop_profiling();
 #endif
 
-#if defined(MAGMAMORSE_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA)
     starpu_cublas_init();
 #endif
 
@@ -113,10 +113,10 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int nworkers, int ncudas, in
 void RUNTIME_finalize_scheduler( MORSE_context_t *morse )
 {
     (void)morse;
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     starpu_mpi_shutdown();
 #endif
-#if defined(MAGMAMORSE_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA)
     starpu_cublas_shutdown();
 #endif
 
@@ -131,7 +131,7 @@ void RUNTIME_barrier( MORSE_context_t *morse )
 {
     (void)morse;
     starpu_task_wait_for_all();
-#if defined(MAGMAMORSE_USE_MPI)
+#if defined(CHAMELEON_USE_MPI)
     starpu_mpi_barrier(MPI_COMM_WORLD);
 #endif
 }

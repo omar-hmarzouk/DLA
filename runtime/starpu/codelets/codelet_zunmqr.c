@@ -184,7 +184,7 @@ static void cl_zunmqr_cpu_func(void *descr[], void *cl_arg)
                 A, lda, T, ldt, C, ldc, WORK, ldwork);
 }
 
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 
 magma_int_t
 magma_zunmqrt_gpu( magma_side_t side, magma_trans_t trans,
@@ -318,7 +318,7 @@ static void cl_zunmqr_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(MAGMAMORSE_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 CODELETS(zunmqr, 4, cl_zunmqr_cpu_func, cl_zunmqr_cuda_func, 0)
 #else
 CODELETS_CPU(zunmqr, 4, cl_zunmqr_cpu_func)

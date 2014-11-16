@@ -36,43 +36,43 @@ MACRO(GENERATE_PKGCONFIG_FILE _file)
     
     # The link flags specific to this package and any required libraries 
     # that don't support PkgConfig
-    set(MAGMAMORSE_PKGCONFIG_LIBS "")
+    set(CHAMELEON_PKGCONFIG_LIBS "")
     # The link flags for private libraries required by this package but not 
     # exposed to applications
-    set(MAGMAMORSE_PKGCONFIG_LIBS_PRIVATE "")
+    set(CHAMELEON_PKGCONFIG_LIBS_PRIVATE "")
     # A list of packages required by this package
-    set(MAGMAMORSE_PKGCONFIG_REQUIRED "")
+    set(CHAMELEON_PKGCONFIG_REQUIRED "")
     # A list of private packages required by this package but not exposed to 
     # applications
-    set(MAGMAMORSE_PKGCONFIG_REQUIRED_PRIVATE "")
+    set(CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE "")
     
-    list(APPEND MAGMAMORSE_PKGCONFIG_LIBS -lmagmamorse)
-    if(MAGMAMORSE_SCHED_STARPU)
-        list(APPEND MAGMAMORSE_PKGCONFIG_LIBS -lmagmamorse_starpu)
-        if ( MAGMAMORSE_USE_MPI )
-            list(APPEND MAGMAMORSE_PKGCONFIG_REQUIRED 
-            starpumpi-${MAGMAMORSE_STARPU_VERSION})
+    list(APPEND CHAMELEON_PKGCONFIG_LIBS -lchameleon)
+    if(CHAMELEON_SCHED_STARPU)
+        list(APPEND CHAMELEON_PKGCONFIG_LIBS -lchameleon_starpu)
+        if ( CHAMELEON_USE_MPI )
+            list(APPEND CHAMELEON_PKGCONFIG_REQUIRED 
+            starpumpi-${CHAMELEON_STARPU_VERSION})
         else()
-            list(APPEND MAGMAMORSE_PKGCONFIG_REQUIRED 
-            starpu-${MAGMAMORSE_STARPU_VERSION})        
+            list(APPEND CHAMELEON_PKGCONFIG_REQUIRED 
+            starpu-${CHAMELEON_STARPU_VERSION})        
         endif()
-    elseif(MAGMAMORSE_SCHED_QUARK)
-        list(APPEND MAGMAMORSE_PKGCONFIG_LIBS -lmagmamorse_quark)
-        list(APPEND MAGMAMORSE_PKGCONFIG_LIBS -lquark)
+    elseif(CHAMELEON_SCHED_QUARK)
+        list(APPEND CHAMELEON_PKGCONFIG_LIBS -lchameleon_quark)
+        list(APPEND CHAMELEON_PKGCONFIG_LIBS -lquark)
     endif()
     
     
-    if(NOT MAGMAMORSE_SIMULATION)
+    if(NOT CHAMELEON_SIMULATION)
     
-        if(MAGMAMORSE_USE_CUDA)
-            list(APPEND MAGMAMORSE_PKGCONFIG_LIBS ${CUDA_LIBRARIES})
+        if(CHAMELEON_USE_CUDA)
+            list(APPEND CHAMELEON_PKGCONFIG_LIBS ${CUDA_LIBRARIES})
         endif()
                
-        if(MAGMAMORSE_USE_MAGMA)
-            list(APPEND MAGMAMORSE_PKGCONFIG_REQUIRED magma)
+        if(CHAMELEON_USE_MAGMA)
+            list(APPEND CHAMELEON_PKGCONFIG_REQUIRED magma)
         endif()
         
-        list(APPEND MAGMAMORSE_PKGCONFIG_LIBS 
+        list(APPEND CHAMELEON_PKGCONFIG_LIBS 
         -lcoreblas
         ${LAPACKE_LIBRARIES}
         ${CBLAS_LIBRARIES}    
@@ -81,45 +81,45 @@ MACRO(GENERATE_PKGCONFIG_FILE _file)
         ${EXTRA_LIBRARIES}
         )
         
-        list(APPEND MAGMAMORSE_PKGCONFIG_REQUIRED hwloc)
+        list(APPEND CHAMELEON_PKGCONFIG_REQUIRED hwloc)
     
-    else(NOT MAGMAMORSE_SIMULATION)
+    else(NOT CHAMELEON_SIMULATION)
         
-        list(APPEND MAGMAMORSE_PKGCONFIG_LIBS 
+        list(APPEND CHAMELEON_PKGCONFIG_LIBS 
         -lcoreblas
         -lsimulapacke    
         -lsimucblas
         ${EXTRA_LIBRARIES}        
         )
         
-        list(APPEND MAGMAMORSE_PKGCONFIG_REQUIRED hwloc) 
+        list(APPEND CHAMELEON_PKGCONFIG_REQUIRED hwloc) 
                
-    endif(NOT MAGMAMORSE_SIMULATION)
+    endif(NOT CHAMELEON_SIMULATION)
     
-    list(REMOVE_DUPLICATES MAGMAMORSE_PKGCONFIG_LIBS)
-    list(REMOVE_DUPLICATES MAGMAMORSE_PKGCONFIG_LIBS_PRIVATE)
-    list(REMOVE_DUPLICATES MAGMAMORSE_PKGCONFIG_REQUIRED)
-    list(REMOVE_DUPLICATES MAGMAMORSE_PKGCONFIG_REQUIRED_PRIVATE)
+    list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_LIBS)
+    list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_LIBS_PRIVATE)
+    list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_REQUIRED)
+    list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE)
 
     
     # Define required package
     # -----------------------
-    set(MAGMAMORSE_PKGCONFIG_LIBS_CPY "${MAGMAMORSE_PKGCONFIG_LIBS}")
-    set(MAGMAMORSE_PKGCONFIG_LIBS "")
-    foreach(_dep ${MAGMAMORSE_PKGCONFIG_LIBS_CPY})
+    set(CHAMELEON_PKGCONFIG_LIBS_CPY "${CHAMELEON_PKGCONFIG_LIBS}")
+    set(CHAMELEON_PKGCONFIG_LIBS "")
+    foreach(_dep ${CHAMELEON_PKGCONFIG_LIBS_CPY})
         get_filename_component(dep_we ${_dep} NAME)
         STRING(REPLACE "lib"    "-l" dep_we "${dep_we}")
         STRING(REPLACE ".so"    ""   dep_we "${dep_we}")
         STRING(REPLACE ".a"     ""   dep_we "${dep_we}")
         STRING(REPLACE ".dylib" ""   dep_we "${dep_we}")
         STRING(REPLACE ".dll"   ""   dep_we "${dep_we}")
-        list(APPEND MAGMAMORSE_PKGCONFIG_LIBS ${dep_we})
+        list(APPEND CHAMELEON_PKGCONFIG_LIBS ${dep_we})
     endforeach()
     
-    STRING(REPLACE ";" " " MAGMAMORSE_PKGCONFIG_LIBS "${MAGMAMORSE_PKGCONFIG_LIBS}")
-    STRING(REPLACE ";" " " MAGMAMORSE_PKGCONFIG_LIBS_PRIVATE "${MAGMAMORSE_PKGCONFIG_LIBS_PRIVATE}")
-    STRING(REPLACE ";" " " MAGMAMORSE_PKGCONFIG_REQUIRED "${MAGMAMORSE_PKGCONFIG_REQUIRED}")
-    STRING(REPLACE ";" " " MAGMAMORSE_PKGCONFIG_REQUIRED_PRIVATE "${MAGMAMORSE_PKGCONFIG_REQUIRED_PRIVATE}")
+    STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_LIBS "${CHAMELEON_PKGCONFIG_LIBS}")
+    STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_LIBS_PRIVATE "${CHAMELEON_PKGCONFIG_LIBS_PRIVATE}")
+    STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_REQUIRED "${CHAMELEON_PKGCONFIG_REQUIRED}")
+    STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE "${CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE}")
       
     # Create .pc file
     # ---------------

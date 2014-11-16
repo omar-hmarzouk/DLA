@@ -135,7 +135,7 @@ static void cl_zgessm_cpu_func(void *descr[], void *cl_arg)
     CORE_zgessm(m, n, k, ib, IPIV, D, ldd, A, lda);
 }
 
-#if defined(MAGMAMORSE_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
+#if defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
 static void cl_zgessm_cuda_func(void *descr[], void *cl_arg)
 {
     int m;
@@ -182,7 +182,7 @@ static void cl_zgessm_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(MAGMAMORSE_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
+#if defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
 CODELETS(zgessm, 3, cl_zgessm_cpu_func, cl_zgessm_cuda_func, 0)
 #else
 CODELETS_CPU(zgessm, 3, cl_zgessm_cpu_func)

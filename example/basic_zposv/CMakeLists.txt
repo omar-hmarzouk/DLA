@@ -37,45 +37,45 @@ set(ZSRC
    )
 
 precisions_rules_py(EXAMPLES "${ZSRC}"
-                    PRECISIONS "${MAGMAMORSE_PRECISION}")                 
+                    PRECISIONS "${CHAMELEON_PRECISION}")                 
 
 # Define what libraries we have to link with
 # ------------------------------------------
 unset(libs_for_examples)
 list(APPEND libs_for_examples
-     magmamorse
+     chameleon
 )
 
-if(MAGMAMORSE_SCHED_STARPU)
-    if ( MAGMAMORSE_USE_MPI )
+if(CHAMELEON_SCHED_STARPU)
+    if ( CHAMELEON_USE_MPI )
         list(APPEND libs_for_examples
-             magmamorse_starpu
+             chameleon_starpu
              ${STARPU_MPI_LIBRARIES}
         )
     else()
         list(APPEND libs_for_examples
-             magmamorse_starpu
+             chameleon_starpu
              ${STARPU_SHM_LIBRARIES}
         )
     endif()
     link_directories(${STARPU_LIBRARY_DIRS})
-elseif(MAGMAMORSE_SCHED_QUARK)
+elseif(CHAMELEON_SCHED_QUARK)
     list(APPEND libs_for_examples
-         magmamorse_quark
+         chameleon_quark
          ${QUARK_LIBRARIES}
       )
     link_directories(${QUARK_LIBRARY_DIRS})
 endif()
 
-if(NOT MAGMAMORSE_SIMULATION)
+if(NOT CHAMELEON_SIMULATION)
 
-    if(MAGMAMORSE_USE_CUDA)
+    if(CHAMELEON_USE_CUDA)
         list(APPEND libs_for_examples
              ${CUDA_LIBRARIES}
         )
         link_directories(${CUDA_LIBRARY_DIRS})
     endif()
-    if(MAGMAMORSE_USE_MAGMA)
+    if(CHAMELEON_USE_MAGMA)
         list(APPEND libs_for_examples
              ${MAGMA_LIBRARIES}
         )
