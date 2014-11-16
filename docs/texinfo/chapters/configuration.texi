@@ -53,14 +53,14 @@ access to options through a user-friendly Qt interface (required
 
 Example of configuration using the command line 
 @example
-cmake ~/chameleon/ -DCMAKE_BUILD_TYPE=Debug \
-                    -DCMAKE_INSTALL_PREFIX=~/install \
-                    -DCHAMELEON_USE_CUDA=ON \
-                    -DCHAMELEON_USE_MAGMA=ON \
-                    -DCHAMELEON_USE_MPI=ON \
-                    -DBLA_VENDOR=Intel10_64lp \
-                    -DSTARPU_DIR=~/install/starpu-1.1 \                
-                    -DCHAMELEON_USE_FXT=ON 
+cmake ~/chameleon/ -DCMAKE_BUILD_TYPE=Debug          \
+                   -DCMAKE_INSTALL_PREFIX=~/install  \
+                   -DCHAMELEON_USE_CUDA=ON           \
+                   -DCHAMELEON_USE_MAGMA=ON          \
+                   -DCHAMELEON_USE_MPI=ON            \
+                   -DBLA_VENDOR=Intel10_64lp         \
+                   -DSTARPU_DIR=~/install/starpu-1.1 \                
+                   -DCHAMELEON_USE_FXT=ON 
 @end example
 
 You can get the full list of options with @option{-L[A][H]} options of 
@@ -262,7 +262,7 @@ where to find the header files of libraries
   @item it is also possible to specify headers and library directories 
 separately, example
   @example
-  cmake <path to SOURCE_DIR> \
+  cmake <path to SOURCE_DIR>                           \
   -DSTARPU_INCDIR=path/to/libstarpu/include/starpu/1.1 \
   -DSTARPU_LIBDIR=path/to/libstarpu/lib
   @end example

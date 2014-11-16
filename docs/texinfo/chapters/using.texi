@@ -163,11 +163,11 @@ gcc -I/home/yourname/install/chameleon/include -o main.o -c main.c
 Now if you want to link your application with CHAMELEON static libraries, you 
 could do:
 @example
-gcc main.o -o main                                           \
+gcc main.o -o main                                         \
 /home/yourname/install/chameleon/lib/libchameleon.a        \
 /home/yourname/install/chameleon/lib/libchameleon_starpu.a \
-/home/yourname/install/chameleon/lib/libcoreblas.a          \
--lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64             \
+/home/yourname/install/chameleon/lib/libcoreblas.a         \
+-lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64           \
 -lmkl_sequential -lmkl_core -lpthread -lm -lrt
 @end example
 As you can see in this example, we also link with dynamic libraries 
@@ -194,8 +194,8 @@ to dynamic libraries with @option{-L} option and you give the name of libraries
 with @option{-l} option like this:
 @example
 gcc main.o -o main                               \
--L/home/yourname/install/chameleon/lib          \
--lchameleon -lchameleon_starpu -lcoreblas      \
+-L/home/yourname/install/chameleon/lib           \
+-lchameleon -lchameleon_starpu -lcoreblas        \
 -lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64 \
 -lmkl_sequential -lmkl_core -lpthread -lm -lrt
 @end example
@@ -224,19 +224,19 @@ gfortran -o main.o -c main.c
 
 Static linking example:
 @example
-gfortran main.o -o main                                      \
+gfortran main.o -o main                                    \
 /home/yourname/install/chameleon/lib/libchameleon.a        \
 /home/yourname/install/chameleon/lib/libchameleon_starpu.a \
-/home/yourname/install/chameleon/lib/libcoreblas.a          \
--lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64             \
+/home/yourname/install/chameleon/lib/libcoreblas.a         \
+-lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64           \
 -lmkl_sequential -lmkl_core -lpthread -lm -lrt
 @end example
 
 Dynamic linking example:
 @example
 gfortran main.o -o main                          \
--L/home/yourname/install/chameleon/lib          \
--lchameleon -lchameleon_starpu -lcoreblas      \
+-L/home/yourname/install/chameleon/lib           \
+-lchameleon -lchameleon_starpu -lcoreblas        \
 -lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64 \
 -lmkl_sequential -lmkl_core -lpthread -lm -lrt
 @end example
