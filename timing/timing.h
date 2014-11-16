@@ -43,7 +43,7 @@ enum iparam_timing {
 
     IPARAM_INVERSE,
     IPARAM_NCUDAS,
-    IPARAM_NDOM,
+    IPARAM_NMPI,
     IPARAM_P,              /* Parameter for 2D cyclic distribution       */
     IPARAM_Q,              /* Parameter for 2D cyclic distribution       */
     /* Added for StarPU version */

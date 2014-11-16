@@ -117,7 +117,7 @@ enum iparam_examples {
 
     IPARAM_INVERSE,
     IPARAM_NCUDAS,
-    IPARAM_NDOM,
+    IPARAM_NMPI,
     IPARAM_P,              /* Parameter for 2D cyclic distribution       */
     IPARAM_Q,              /* Parameter for 2D cyclic distribution       */
     /* Added for StarPU version */
@@ -182,7 +182,7 @@ static void init_iparam(int iparam[IPARAM_SIZEOF]){
 
     iparam[IPARAM_INVERSE       ] = 0;
     iparam[IPARAM_NCUDAS        ] = 0;
-    iparam[IPARAM_NDOM          ] = 1;
+    iparam[IPARAM_NMPI          ] = 1;
     iparam[IPARAM_P             ] = 1;
     iparam[IPARAM_Q             ] = 1;
     iparam[IPARAM_PROFILE       ] = 0;

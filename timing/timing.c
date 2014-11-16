@@ -400,6 +400,10 @@ print_header(char *prog_name, int * iparam) {
             "# CHAMELEON %d.%d.%d, %s\n"
             "# Nb threads: %d\n"
             "# Nb GPUs:    %d\n"
+#if defined(CHAMELEON_USE_MPI)
+            "# Nb mpi:     %d\n"
+            "# PxQ:        %dx%d\n"
+#endif
             "# NB:         %d\n"
             "# IB:         %d\n"
             "# eps:        %e\n"
@@ -410,6 +414,10 @@ print_header(char *prog_name, int * iparam) {
             prog_name,
             iparam[IPARAM_THRDNBR],
             iparam[IPARAM_NCUDAS],
+#if defined(CHAMELEON_USE_MPI)
+            iparam[IPARAM_NMPI],
+            iparam[IPARAM_P], iparam[IPARAM_Q],
+#endif
             iparam[IPARAM_NB],
             iparam[IPARAM_IB],
             eps );
@@ -472,7 +480,7 @@ main(int argc, char *argv[]) {
 
     iparam[IPARAM_INVERSE       ] = 0;
     iparam[IPARAM_NCUDAS        ] = 0;
-    iparam[IPARAM_NDOM          ] = 1;
+    iparam[IPARAM_NMPI          ] = 1;
     iparam[IPARAM_P             ] = 1;
     iparam[IPARAM_Q             ] = 1;
     iparam[IPARAM_PROFILE       ] = 0;
@@ -615,6 +623,7 @@ main(int argc, char *argv[]) {
 
 #if defined(CHAMELEON_USE_MPI)
     MPI_Comm_size( MPI_COMM_WORLD, &nbnode );
+    iparam[IPARAM_NMPI] = nbnode;
     /* Check P */
     if ( (iparam[IPARAM_P] > 1) &&
          (nbnode % iparam[IPARAM_P] != 0) ) {
