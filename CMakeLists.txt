@@ -252,7 +252,7 @@ if(NOT CHAMELEON_SIMULATION)
     # standalone version of lapacke seems useless for now
     # let the comment in case we meet some problems of non existing lapacke 
     # functions in lapack library such as mkl, acml, ...
-    #set(LAPACKE_STANDALONE TRUE)
+    set(LAPACKE_STANDALONE TRUE)
     find_package(LAPACKE REQUIRED)
     set(HAVE_LAPACKE ${LAPACKE_FOUND})
     if(LAPACKE_FOUND)

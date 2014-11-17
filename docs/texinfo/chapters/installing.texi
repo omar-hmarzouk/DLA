@@ -33,8 +33,7 @@ to install CHAMELEON.
 
 The latest official release tarballs of CHAMELEON sources are available for 
 download from 
-@uref{https://gforge.inria.fr/frs/download.php/file/31779/magma-morse-1.?.0
-.tar.gz, url to release (inria forge)}
+@uref{http://morse.gforge.inria.fr/chameleon-0.9.tar.gz, chameleon-0.9}.
 
 @c The latest development snapshot is available from  
 @c @uref{http://hydra.bordeaux.inria.fr/job/hiepacs/morse-cmake/tarball/latest/

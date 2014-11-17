@@ -199,7 +199,7 @@ directory of the LIBNAME library headers installation
 directory of the LIBNAME libraries (.so, .a, .dylib, etc) installation
 @end table
 LIBNAME can be one of the following: BLAS - CBLAS - FXT - HWLOC - 
-LAPACK - LAPACKE - MAGMA - QUARK - STARPU - TMG
+LAPACK - LAPACKE - MAGMA - QUARK - STARPU - TMG.
 See paragraph about @ref{Dependencies detection} for details.
 
 Libraries detected with an official CMake module (see module files in 
