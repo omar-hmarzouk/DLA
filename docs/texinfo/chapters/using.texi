@@ -782,7 +782,7 @@ int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc);
 @node Options routines
 @subsubsection Options routines
 
-@c/* Options */ 
+@c /* Options */ 
 Enable MORSE feature.
 @verbatim
 int MORSE_Enable  (MORSE_enum option);
