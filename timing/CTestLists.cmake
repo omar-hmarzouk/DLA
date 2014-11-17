@@ -30,7 +30,6 @@ set(TESTLIST
     getrf_incpiv
     getrf_nopiv
     geqrf
-    lange
     posv
     potrf
     potri
