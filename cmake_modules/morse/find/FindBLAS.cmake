@@ -47,7 +47,7 @@
 #  License text for the above reference.)
 
 # Some macros to print status when search for headers and libs
-# PrintFindStatus.cmake is in cmake_modules/morse/find directory of chameleon
+# PrintFindStatus.cmake is in cmake_modules/morse/find directory
 include(PrintFindStatus)
 option(BLAS_VERBOSE "Print some additional information during BLAS 
 libraries detection" OFF)
