@@ -1,3 +1,13 @@
+###
+#
+# @copyright (c) 2009-2014 The University of Tennessee and The University
+#                          of Tennessee Research Foundation.
+#                          All rights reserved.
+# @copyright (c) 2012-2014 Inria. All rights reserved.
+# @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+#
+###
+#
 # - Find BLAS EXTENDED for MORSE projects: find include dirs and libraries
 #
 # This module allows to find BLAS libraries by calling the official FindBLAS module
