@@ -626,7 +626,7 @@ static void cl_ztsmqr_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION)
 CODELETS(ztsmqr, 5, cl_ztsmqr_cpu_func, cl_ztsmqr_cuda_func, STARPU_CUDA_ASYNC)
 #else
 CODELETS_CPU(ztsmqr, 5, cl_ztsmqr_cpu_func)

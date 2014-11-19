@@ -182,7 +182,7 @@ static void cl_zgessm_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
+#if (defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)) || defined(CHAMELEON_SIMULATION)
 CODELETS(zgessm, 3, cl_zgessm_cpu_func, cl_zgessm_cuda_func, 0)
 #else
 CODELETS_CPU(zgessm, 3, cl_zgessm_cpu_func)

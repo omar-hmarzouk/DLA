@@ -358,7 +358,7 @@ static void cl_ztsqrt_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION)
 CODELETS(ztsqrt, 4, cl_ztsqrt_cpu_func, cl_ztsqrt_cuda_func, 0)
 #else
 CODELETS_CPU(ztsqrt, 4, cl_ztsqrt_cpu_func)

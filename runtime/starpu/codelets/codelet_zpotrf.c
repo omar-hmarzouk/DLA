@@ -129,7 +129,7 @@ static void cl_zpotrf_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#ifdef CHAMELEON_USE_MAGMA
+#if defined CHAMELEON_USE_MAGMA || defined(CHAMELEON_SIMULATION)
 CODELETS(zpotrf, 1, cl_zpotrf_cpu_func, cl_zpotrf_cuda_func, 0)
 #else
 CODELETS_CPU(zpotrf, 1, cl_zpotrf_cpu_func)

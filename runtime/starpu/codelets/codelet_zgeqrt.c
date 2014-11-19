@@ -381,7 +381,7 @@ static void cl_zgeqrt_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION)
 CODELETS(zgeqrt, 3, cl_zgeqrt_cpu_func, cl_zgeqrt_cuda_func, 0)
 #else
 CODELETS_CPU(zgeqrt, 3, cl_zgeqrt_cpu_func)

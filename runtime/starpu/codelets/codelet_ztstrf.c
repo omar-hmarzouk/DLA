@@ -262,7 +262,7 @@ static void cl_ztstrf_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA) && 0
+#if (defined(CHAMELEON_USE_MAGMA) && 0) || defined(CHAMELEON_SIMULATION)
 CODELETS(ztstrf, 4, cl_ztstrf_cpu_func, cl_ztstrf_cuda_func, 0)
 #else
 CODELETS_CPU(ztstrf, 4, cl_ztstrf_cpu_func)

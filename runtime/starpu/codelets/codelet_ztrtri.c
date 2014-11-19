@@ -114,7 +114,7 @@ static void cl_ztrtri_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION)
 CODELETS(ztrtri, 1, cl_ztrtri_cpu_func, cl_ztrtri_cuda_func, 0)
 #else
 CODELETS_CPU(ztrtri, 1, cl_ztrtri_cpu_func)

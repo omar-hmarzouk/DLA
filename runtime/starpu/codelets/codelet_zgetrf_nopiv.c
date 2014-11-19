@@ -144,7 +144,7 @@ static void cl_zgetrf_nopiv_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION)
 CODELETS(zgetrf_nopiv, 1, cl_zgetrf_nopiv_cpu_func, cl_zgetrf_nopiv_cuda_func, 0)
 #else
 CODELETS_CPU(zgetrf_nopiv, 1, cl_zgetrf_nopiv_cpu_func)

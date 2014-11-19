@@ -324,7 +324,7 @@ static void cl_zunmlq_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION)
 CODELETS(zunmlq, 4, cl_zunmlq_cpu_func, cl_zunmlq_cuda_func, 0)
 #else
 CODELETS_CPU(zunmlq, 4, cl_zunmlq_cpu_func)
