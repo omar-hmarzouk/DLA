@@ -235,9 +235,11 @@ if(NOT CHAMELEON_SIMULATION)
 
     # CHAMELEON depends on CBLAS
     #----------------------------
+    set(BLAS_DIR "" CACHE PATH "Root directory of BLAS library")
     find_package(BLASEXT REQUIRED)
     set(HAVE_BLAS ${BLAS_FOUND})
 
+    set(CBLAS_DIR "" CACHE PATH "Root directory of CBLAS library")
     find_package(CBLAS REQUIRED)
     set(HAVE_CBLAS ${CBLAS_FOUND})
     if(CBLAS_FOUND)
@@ -246,6 +248,7 @@ if(NOT CHAMELEON_SIMULATION)
 
     #---------------------------------------------
     # CHAMELEON depends on LAPACKE (via coreblas)
+    set(LAPACK_DIR "" CACHE PATH "Root directory of LAPACK library")
     find_package(LAPACKEXT REQUIRED)
     set(HAVE_LAPACK ${LAPACK_FOUND})
 
@@ -253,6 +256,7 @@ if(NOT CHAMELEON_SIMULATION)
     # let the comment in case we meet some problems of non existing lapacke 
     # functions in lapack library such as mkl, acml, ...
     set(LAPACKE_STANDALONE TRUE)
+    set(LAPACKE_DIR "" CACHE PATH "Root directory of LAPACKE library")
     find_package(LAPACKE REQUIRED)
     set(HAVE_LAPACKE ${LAPACKE_FOUND})
     if(LAPACKE_FOUND)
@@ -262,6 +266,7 @@ if(NOT CHAMELEON_SIMULATION)
     # CHAMELEON depends on TMG
     #--------------------------
     if (CHAMELEON_ENABLE_TESTING OR CHAMELEON_ENABLE_TIMING)
+        set(TMG_DIR "" CACHE PATH "Root directory of TMG library")
         find_package(TMG REQUIRED)
         set(HAVE_TMG ${TMG_FOUND})
     endif()
@@ -301,6 +306,7 @@ if(NOT CHAMELEON_SIMULATION)
         #----------------------------------------------
         if ( CUDA_FOUND )
             if ( CHAMELEON_USE_MAGMA )
+                set(MAGMA_DIR "" CACHE PATH "Root directory of MAGMA library")
                 find_package(MAGMA REQUIRED COMPONENTS CBLAS LAPACK CUDA)
 
                 set(HAVE_MAGMA ${MAGMA_FOUND})
@@ -403,6 +409,9 @@ if( CHAMELEON_SCHED_STARPU )
         list(APPEND STARPU_COMPONENT_LIST "FXT")
     endif()
 
+    set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
+    set(FXT_DIR "" CACHE PATH "Root directory of FXT library")
+    set(STARPU_DIR "" CACHE PATH "Root directory of STARPU library")
     find_package(STARPU ${CHAMELEON_STARPU_VERSION} REQUIRED
                  COMPONENTS ${STARPU_COMPONENT_LIST})
 
@@ -444,6 +453,8 @@ endif()
 # try to find quark runtime
 if( CHAMELEON_SCHED_QUARK )
 
+    set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
+    set(QUARK_DIR "" CACHE PATH "Root directory of QUARK library")
     find_package(QUARK REQUIRED COMPONENTS HWLOC)
     set(HAVE_QUARK ${QUARK_FOUND})
 
