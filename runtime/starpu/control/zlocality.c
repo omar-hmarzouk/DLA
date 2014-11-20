@@ -39,6 +39,7 @@ void RUNTIME_zlocality_allrestrict( uint32_t where )
     cl_zhemm_restrict_where( where );
     cl_zher2k_restrict_where( where );
     cl_zherk_restrict_where( where );
+    cl_zsytrf_nopiv_restrict_where( where );
 #endif
     cl_zsymm_restrict_where( where );
     cl_zsyr2k_restrict_where( where );
@@ -93,6 +94,7 @@ void RUNTIME_zlocality_onerestrict( MORSE_kernel_t kernel, uint32_t where )
     case MORSE_HEMM:   cl_zhemm_restrict_where( where );  break;
     case MORSE_HER2K:  cl_zher2k_restrict_where( where ); break;
     case MORSE_HERK:   cl_zherk_restrict_where( where );  break;
+    case MORSE_SYTRF_NOPIV: cl_zsytrf_nopiv__restrict_where( where );  break;
 #endif
     case MORSE_SYMM:   cl_zhemm_restrict_where( where );  break;
     case MORSE_SYR2K:  cl_zher2k_restrict_where( where ); break;
@@ -149,6 +151,7 @@ void RUNTIME_zlocality_allrestore( )
     cl_zhemm_restore_where();
     cl_zher2k_restore_where();
     cl_zherk_restore_where();
+    cl_zsytrf_nopiv_restore_where();
 #endif
     cl_zsymm_restore_where();
     cl_zsyr2k_restore_where();
@@ -202,6 +205,7 @@ void RUNTIME_zlocality_onerestore( MORSE_kernel_t kernel )
     case MORSE_HEMM:   cl_zhemm_restore_where();  break;
     case MORSE_HER2K:  cl_zher2k_restore_where(); break;
     case MORSE_HERK:   cl_zherk_restore_where();  break;
+    case MORSE_SYTRF_NOPIV: cl_zsytrf_nopiv_restore_where();  break;
 #endif
     case MORSE_SYMM:   cl_zhemm_restore_where();  break;
     case MORSE_SYR2K:  cl_zher2k_restore_where(); break;

@@ -36,6 +36,7 @@ void RUNTIME_zdisplay_allprofile()
     profiling_display_zhemm_info();
     profiling_display_zher2k_info();
     profiling_display_zherk_info();
+    profiling_display_zsytrf_nopiv_info();
 #endif
     profiling_display_zsymm_info();
     profiling_display_zsyr2k_info();
@@ -75,6 +76,7 @@ void RUNTIME_zdisplay_oneprofile( MORSE_kernel_t kernel )
     case MORSE_HEMM:         profiling_display_zhemm_info();         break;
     case MORSE_HER2K:        profiling_display_zher2k_info();        break;
     case MORSE_HERK:         profiling_display_zherk_info();         break;
+    case MORSE_SYTRF_NOPIV:  profiling_display_zsytrf_nopiv_info();  break;
 #endif
     case MORSE_SYMM:         profiling_display_zsymm_info();         break;
     case MORSE_SYR2K:        profiling_display_zsyr2k_info();        break;
