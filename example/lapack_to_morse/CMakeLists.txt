@@ -152,7 +152,6 @@ endif()
 link_directories(${HWLOC_LIBRARY_DIRS})
 
 
-list(REMOVE_DUPLICATES libs_for_ltm)
 # message(STATUS "libs examples: ${libs_for_ltm}")
 foreach(_ltm ${LTM_SOURCES})
     get_filename_component(_name_exe ${_ltm} NAME_WE)
@@ -164,7 +163,6 @@ foreach(_ltm ${LTM_SOURCES})
 endforeach()
 
 add_executable(step0 step0.c)
-list(REMOVE_DUPLICATES libs_for_step0)
 set_property(TARGET step0 PROPERTY LINKER_LANGUAGE Fortran)
 target_link_libraries(step0 ${libs_for_step0})
 install(TARGETS step0
