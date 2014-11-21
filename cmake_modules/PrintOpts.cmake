@@ -17,11 +17,11 @@
 #     King Abdullah Univesity of Science and Technology
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver. 
-# 
+#
 #  @version 0.9.0
 #  @author Florent Pruvost
 #  @date 10-11-2014
-#   
+#
 ###
 set(dep_message "\nConfiguration of Chameleon:\n"
         "       BUILDNAME ...........: ${BUILDNAME}\n"

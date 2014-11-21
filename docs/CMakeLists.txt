@@ -17,13 +17,13 @@
 #     King Abdullah Univesity of Science and Technology
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver. 
-# 
+#
 #  @version 0.9.0
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
 #  @date 13-07-2012
-#   
+#
 ###
 
 cmake_minimum_required(VERSION 2.8)
