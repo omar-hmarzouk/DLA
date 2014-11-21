@@ -71,6 +71,10 @@ Fast implementations are also available as academic packages, such as ATLAS and
 Goto BLAS. 
 The standard interface to BLAS is the FORTRAN interface.
 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+the reference BLAS from NETLIB and the Intel MKL 11.1 from Intel distribution 
+2013_sp1.
+
 @node CBLAS
 @subsubsection CBLAS
 
@@ -81,6 +85,10 @@ Netlib provides a reference implementation of CBLAS on top of FORTRAN BLAS
 (Netlib CBLAS). 
 Since GSL is implemented in C, it naturally provides CBLAS.
 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+the reference CBLAS from NETLIB and the Intel MKL 11.1 from Intel distribution 
+2013_sp1.
+
 @node a LAPACK implementation
 @subsubsection a LAPACK implementation
 
@@ -90,6 +98,10 @@ EISPACK and a predecessor of CHAMELEON.
 LAPACK provides routines for solving linear systems of equations, linear least 
 square problems, eigenvalue problems and singular value problems. 
 Most commercial and academic BLAS packages also provide some LAPACK routines.
+
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+the reference LAPACK from NETLIB and the Intel MKL 11.1 from Intel distribution 
+2013_sp1.
 
 @node LAPACKE
 @subsubsection LAPACKE
@@ -103,6 +115,10 @@ In addition to implementing the C interface, LAPACKE also provides routines
 which automatically handle workspace allocation, making the use of LAPACK much 
 more convenient.
 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+the reference LAPACKE from NETLIB. 
+A stand-alone version of LAPACKE is required.
+
 @node libtmg
 @subsubsection libtmg
 
@@ -111,6 +127,10 @@ library, containing routines for generation
 of input matrices for testing and timing of LAPACK. 
 The testing and timing suites of LAPACK require libtmg, but not the library 
 itself. Note that the LAPACK library can be built and used without libtmg.
+
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+the reference TMG from NETLIB and the Intel MKL 11.1 from Intel distribution 
+2013_sp1.
 
 @node QUARK
 @subsubsection QUARK
@@ -125,6 +145,9 @@ Note StarPU is enabled by default.
 When CHAMELEON is linked with QUARK, it is not possible to exploit neither 
 CUDA (for GPUs) nor MPI (distributed-memory environment).
 You can use StarPU to do so.
+
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+the QUARK library from PLASMA release between versions 2.5.0 and 2.6.0.
 
 @node StarPU
 @subsubsection StarPU
@@ -145,6 +168,9 @@ tasks on the architecture.
 If StarPU is enabled then QUARK is disabled and conversely.
 Note StarPU is enabled by default.
 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+StarPU-1.1 releases.
+
 @node hwloc
 @subsubsection hwloc
 
@@ -157,6 +183,9 @@ It allows to increase performance, and to perform some topology aware
 scheduling.
 @code{hwloc} is available in major distributions and for most OSes and can be  
 downloaded from @uref{http://www.open-mpi.org/software/hwloc}.
+
+@strong{Caution about the compatibility:} hwloc should be compatible with the 
+version of StarPU used.
 
 @node pthread
 @subsubsection pthread
@@ -185,6 +214,9 @@ MPI can be enabled only if the runtime system chosen is StarPU (default).
 To use MPI through StarPU, it is necessary to compile StarPU with MPI 
 enabled.
 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+OpenMPI releases from versions 1.4 to 1.6.
+
 @node Nvidia CUDA Toolkit
 @subsubsection Nvidia CUDA Toolkit
 
@@ -203,6 +235,10 @@ is StarPU (default).
 To use CUDA through StarPU, it is necessary to compile StarPU with CUDA 
 enabled.
 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+CUDA releases from versions 4 to 6. 
+MAGMA library must be compatible with CUDA.
+
 @node MAGMA
 @subsubsection MAGMA
 
@@ -213,6 +249,15 @@ CHAMELEON can use a set of high level MAGMA routines to accelerate
 computations on GPUs.
 To fully benefit from GPUs, the user should enable MAGMA in addition to 
 CUDA/cuBLAS.
+
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+MAGMA releases from versions 1.4 to 1.6.
+MAGMA library must be compatible with CUDA.
+MAGMA library should be built with sequential versions of BLAS/LAPACK. 
+We should not get some MAGMA link flags embarking multithreaded 
+BLAS/LAPACK because it could affect permformances (take care about the 
+MAGMA link flag @option{-lmkl_intel_thread} for example that we could heritate 
+from the pkg-config file @file{magma.pc}).
 
 @node FxT
 @subsubsection FxT
@@ -225,6 +270,9 @@ CHAMELEON can trace kernels execution on the different workers and produce
 FxT can only be used through StarPU and StarPU must be compiled with FxT 
 enabled, see how to use this feature here @ref{Use FxT profiling through 
 StarPU}.
+
+@strong{Caution about the compatibility:} FxT should be compatible with the 
+version of StarPU used.
 
 @node Build process of CHAMELEON
 @section Build process of CHAMELEON

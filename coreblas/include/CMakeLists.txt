@@ -40,6 +40,9 @@ precisions_rules_py(COREBLAS_HDRS_GENERATED "${ZHDR}"
 # --------------------------
 set(COREBLAS_HDRS
     cblas.h
+    lapacke.h
+    lapacke_config.h
+    lapacke_mangling.h
     coreblas.h
     ${COREBLAS_HDRS_GENERATED}
     )
