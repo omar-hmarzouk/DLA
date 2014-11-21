@@ -163,18 +163,18 @@ static void cl_ztsqrt_cpu_func(void *descr[], void *cl_arg)
 #if defined(CHAMELEON_USE_MAGMA)
 
 magma_int_t
-magma_ztsqrt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
-                  magmaDoubleComplex *da1, magma_int_t ldda1,
-                  magmaDoubleComplex *da2, magma_int_t ldda2,
-                  magmaDoubleComplex *a2,  magma_int_t lda2,
-                  magmaDoubleComplex *dt,  magma_int_t lddt,
-                  magmaDoubleComplex *t,  magma_int_t ldt,
-                  magmaDoubleComplex *dd,
-                  magmaDoubleComplex *d,  magma_int_t ldd,
-                  magmaDoubleComplex *tau,
-                  magmaDoubleComplex *hwork,
-                  magmaDoubleComplex *dwork,
-                  CUstream stream)
+magma_ztsqrt2_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
+                   magmaDoubleComplex *da1, magma_int_t ldda1,
+                   magmaDoubleComplex *da2, magma_int_t ldda2,
+                   magmaDoubleComplex *a2,  magma_int_t lda2,
+                   magmaDoubleComplex *dt,  magma_int_t lddt,
+                   magmaDoubleComplex *t,  magma_int_t ldt,
+                   magmaDoubleComplex *dd,
+                   magmaDoubleComplex *d,  magma_int_t ldd,
+                   magmaDoubleComplex *tau,
+                   magmaDoubleComplex *hwork,
+                   magmaDoubleComplex *dwork,
+                   CUstream stream)
 {
 #define da1_ref(a_1,a_2) ( da1+(a_2)*ldda1 + (a_1))
 #define da2_ref(a_1,a_2) ( da2+(a_2)*ldda2 + (a_1))
@@ -343,12 +343,12 @@ static void cl_ztsqrt_cuda_func(void *descr[], void *cl_arg)
     h_D   = h_W   + ib*n;
 
     CUstream stream = starpu_cuda_get_local_stream();
-    magma_ztsqrt_gpu( m, n, ib,
-                      d_A1, lda1, d_A2, lda2,
-                      h_A2, lda2,
-                      d_T, ldt, h_T, ib,
-                      d_D, h_D, ib, h_TAU,
-                      h_W, d_W, stream);
+    magma_ztsqrt2_gpu( m, n, ib,
+                       d_A1, lda1, d_A2, lda2,
+                       h_A2, lda2,
+                       d_T, ldt, h_T, ib,
+                       d_D, h_D, ib, h_TAU,
+                       h_W, d_W, stream);
 
     cudaThreadSynchronize();
 }
