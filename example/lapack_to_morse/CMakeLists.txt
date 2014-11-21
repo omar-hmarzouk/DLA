@@ -82,17 +82,17 @@ if(NOT CHAMELEON_SIMULATION)
         )
         link_directories(${MAGMA_LIBRARY_DIRS})
     endif()
-    
+
     list(APPEND libs_for_ltm
          coreblas
          ${LAPACKE_LIBRARIES}
-         ${CBLAS_LIBRARIES}         
+         ${CBLAS_LIBRARIES}
          ${LAPACK_SEQ_LIBRARIES}
          ${BLAS_SEQ_LIBRARIES}
          ${HWLOC_LIBRARIES}
          ${EXTRA_LIBRARIES}
     )
-    
+
     if( BLA_VENDOR MATCHES "Intel10_64lp*" OR BLA_VENDOR MATCHES "ACML*")
         if(BLAS_PAR_LIBRARIES)
             set(CBLAS_LIBRARIES "${BLAS_PAR_LIBRARIES}")
@@ -110,20 +110,20 @@ if(NOT CHAMELEON_SIMULATION)
              ${BLAS_PAR_LIBRARIES}
              ${HWLOC_LIBRARIES}
              ${EXTRA_LIBRARIES}
-        )       
-        
+        )
+
     else()
         list(APPEND libs_for_step0
              coreblas
              ${LAPACKE_LIBRARIES}
-             ${CBLAS_LIBRARIES}         
+             ${CBLAS_LIBRARIES}
              ${LAPACK_SEQ_LIBRARIES}
              ${BLAS_SEQ_LIBRARIES}
              ${HWLOC_LIBRARIES}
              ${EXTRA_LIBRARIES}
         )
-    endif ()    
-    
+    endif ()
+
     link_directories(${LAPACKE_LIBRARY_DIRS})
     link_directories(${LAPACK_LIBRARY_DIRS})
     link_directories(${CBLAS_LIBRARY_DIRS})
@@ -133,19 +133,19 @@ else()
 
     list(APPEND libs_for_ltm
          coreblas
-         simulapacke         
+         simulapacke
          simucblas
          ${HWLOC_LIBRARIES}
          ${EXTRA_LIBRARIES}
     )
     list(APPEND libs_for_step0
          coreblas
-         simulapacke         
+         simulapacke
          simucblas
          ${HWLOC_LIBRARIES}
          ${EXTRA_LIBRARIES}
     )
-    
+
 endif()
 
 link_directories(${HWLOC_LIBRARY_DIRS})
