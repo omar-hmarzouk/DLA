@@ -23,56 +23,55 @@
 #  @date 10-11-2014
 #   
 ###
-message("\nConfiguration of package `chameleon':")
-message("        BUILDNAME ...........: ${BUILDNAME}")
-message("        SITE ................: ${SITE}")
-message(" ")
-message("        Compiler: C .........: ${CMAKE_C_COMPILER} (${CMAKE_C_COMPILER_ID})")
-message("                version .....: ${COMPILER_C_VERSION}")
-if(CMAKE_CXX_COMPILER)
-  message("        Compiler: C++ .......: ${CMAKE_CXX_COMPILER} (${CMAKE_CXX_COMPILER_ID})")
-  message("                version .....: ${COMPILER_CXX_VERSION}")
-endif()
-if(CMAKE_Fortran_COMPILER)
-  message("        Compiler: Fortran ...: ${CMAKE_Fortran_COMPILER} (${CMAKE_Fortran_COMPILER_ID})")
-  message("                version .....: ${COMPILER_Fortran_VERSION}")
-endif()
+set(dep_message "\nConfiguration of Chameleon:\n"
+        "       BUILDNAME ...........: ${BUILDNAME}\n"
+        "       SITE ................: ${SITE}\n"
+        "\n"
+        "       Compiler: C .........: ${CMAKE_C_COMPILER} (${CMAKE_C_COMPILER_ID})\n"
+        "       Compiler: Fortran ...: ${CMAKE_Fortran_COMPILER} (${CMAKE_Fortran_COMPILER_ID})\n")
 if(CHAMELEON_USE_MPI)
-  message("        Compiler: MPI .......: ${MPI_C_COMPILER}")
-  message("        compiler flags ......: ${MPI_C_COMPILE_FLAGS}")
+  set(dep_message "${dep_message}"
+  "       Compiler: MPI .......: ${MPI_C_COMPILER}\n"
+  "       compiler flags ......: ${MPI_C_COMPILE_FLAGS}\n")
 endif()
-message("        Linker: .............: ${CMAKE_LINKER}")
-message(" ")
-message("        Build type ..........: ${CMAKE_BUILD_TYPE}")
-message("        Build shared ........: ${BUILD_SHARED_LIBS}")
-message("        CFlags ..............: ${CMAKE_C_FLAGS}")
-message("        CXXFlags ............: ${CMAKE_CXX_FLAGS}")
-message("        LDFlags .............: ${CMAKE_C_LINK_FLAGS}")
-message(" ")
-message("        Implementation paradigm")
-message("        CUDA ................: ${CHAMELEON_USE_CUDA}")
-message("        MPI .................: ${CHAMELEON_USE_MPI}")
-message(" ")
-message("        Runtime specific")
-message("        QUARK ...............: ${CHAMELEON_SCHED_QUARK}")
-message("        StarPU ..............: ${CHAMELEON_SCHED_STARPU}")
-message("        FxT .................: ${CHAMELEON_USE_FXT}")
-message(" ")
-message("        Kernels specific")
-message("        BLAS ................: ${BLA_VENDOR}")
-message("        MAGMA ...............: ${CHAMELEON_USE_MAGMA}")
-message(" ")
-message("        Simulation mode .....: ${CHAMELEON_SIMULATION}")
-message(" ")
-message("        Binaries to build")
-message("        documentation ........: ${CHAMELEON_ENABLE_DOCS}")
-message("        example ..............: ${CHAMELEON_ENABLE_EXAMPLE}")
-message("        testing ..............: ${CHAMELEON_ENABLE_TESTING}")
-message("        timing ...............: ${CHAMELEON_ENABLE_TIMING}")
-message(" ")
-message("        CHAMELEON dependencies :")
+set(dep_message "${dep_message}"
+"       Linker: .............: ${CMAKE_LINKER}\n"
+"\n"
+"       Build type ..........: ${CMAKE_BUILD_TYPE}\n"
+"       Build shared ........: ${BUILD_SHARED_LIBS}\n"
+"       CFlags ..............: ${CMAKE_C_FLAGS}\n"
+"       LDFlags .............: ${CMAKE_C_LINK_FLAGS}\n"
+"\n"
+"       Implementation paradigm\n"
+"       CUDA ................: ${CHAMELEON_USE_CUDA}\n"
+"       MPI .................: ${CHAMELEON_USE_MPI}\n"
+"\n"
+"       Runtime specific\n"
+"       QUARK ...............: ${CHAMELEON_SCHED_QUARK}\n"
+"       StarPU ..............: ${CHAMELEON_SCHED_STARPU}\n"
+"       FxT .................: ${CHAMELEON_USE_FXT}\n"
+"\n"
+"       Kernels specific\n"
+"       BLAS ................: ${BLA_VENDOR}\n"
+"       MAGMA ...............: ${CHAMELEON_USE_MAGMA}\n"
+"\n"
+"       Simulation mode .....: ${CHAMELEON_SIMULATION}\n"
+"\n"
+"       Binaries to build\n"
+"       documentation ........: ${CHAMELEON_ENABLE_DOCS}\n"
+"       example ..............: ${CHAMELEON_ENABLE_EXAMPLE}\n"
+"       testing ..............: ${CHAMELEON_ENABLE_TESTING}\n"
+"       timing ...............: ${CHAMELEON_ENABLE_TIMING}\n"
+"\n"
+"       CHAMELEON dependencies :\n")
 foreach (_dep ${CHAMELEON_DEP})
-    message("                                  ${_dep}")
+    set(dep_message "${dep_message}"
+    "                                 ${_dep}\n")
 endforeach ()
-message(" ")
-message("        INSTALL_PREFIX ......: ${CMAKE_INSTALL_PREFIX}")
+set(dep_message "${dep_message}"
+"\n"
+"       INSTALL_PREFIX ......: ${CMAKE_INSTALL_PREFIX}\n")
+
+string(REPLACE ";" " " dep_message_wsc "${dep_message}")
+message(${dep_message})
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/config.log "${dep_message_wsc}")
