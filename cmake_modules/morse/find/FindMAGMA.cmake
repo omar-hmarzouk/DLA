@@ -94,6 +94,27 @@ if(PKG_CONFIG_EXECUTABLE)
         endif()
     endif()
 
+    if (MAGMA_FIND_VERSION_EXACT STREQUAL 1)
+        if( NOT (MAGMA_FIND_VERSION_MAJOR STREQUAL MAGMA_VERSION_MAJOR) OR
+            NOT (MAGMA_FIND_VERSION_MINOR STREQUAL MAGMA_VERSION_MINOR) )
+            if(NOT MAGMA_FIND_QUIETLY)
+                message(FATAL_ERROR
+                        "MAGMA version found is ${MAGMA_VERSION_STRING}"
+                        "when required is ${MAGMA_FIND_VERSION}")
+            endif()
+        endif()
+    else()
+        # if the version found is older than the required then error
+        if( (MAGMA_FIND_VERSION_MAJOR STRGREATER MAGMA_VERSION_MAJOR) OR
+            (MAGMA_FIND_VERSION_MINOR STRGREATER MAGMA_VERSION_MINOR) )
+            if(NOT MAGMA_FIND_QUIETLY)
+                message(FATAL_ERROR
+                        "MAGMA version found is ${MAGMA_VERSION_STRING}"
+                        "when required is ${MAGMA_FIND_VERSION} or newer")
+            endif()
+        endif()
+    endif()
+
 endif(PKG_CONFIG_EXECUTABLE)
 
 if(NOT MAGMA_FOUND OR NOT MAGMA_LIBRARIES)
