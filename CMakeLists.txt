@@ -306,9 +306,9 @@ if(NOT CHAMELEON_SIMULATION)
         #----------------------------------------------
         if ( CUDA_FOUND )
             if ( CHAMELEON_USE_MAGMA )
-                set(CHAMELEON_CACHE_VERSION "1.4" CACHE STRING "oldest MAGMA version desired")
+                set(CHAMELEON_MAGMA_VERSION "1.4" CACHE STRING "oldest MAGMA version desired")
                 set(MAGMA_DIR "" CACHE PATH "Root directory of MAGMA library")
-                find_package(MAGMA ${CHAMELEON_CACHE_VERSION} REQUIRED COMPONENTS CBLAS LAPACK CUDA)
+                find_package(MAGMA ${CHAMELEON_MAGMA_VERSION} REQUIRED COMPONENTS CBLAS LAPACK CUDA)
 
                 set(HAVE_MAGMA ${MAGMA_FOUND})
                 if ( MAGMA_FOUND )
