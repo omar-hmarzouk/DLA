@@ -65,6 +65,19 @@ include(GenPkgConfig)
 add_definitions(-DADD_)
 
 
+# Set the RPATH config
+# --------------------
+
+# use, i.e. don't skip the full RPATH for the build tree
+set(CMAKE_SKIP_BUILD_RPATH  FALSE)
+
+# when building, don't use the install RPATH already
+# (but later on when installing)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE) 
+
+# the RPATH to be used when installing
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+
 # Misc options
 # ------------
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
