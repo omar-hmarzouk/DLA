@@ -170,18 +170,22 @@ gcc main.o -o main                                         \
 -lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64           \
 -lmkl_sequential -lmkl_core -lpthread -lm -lrt
 @end example
-As you can see in this example, we also link with dynamic libraries 
-@option{starpu-1.1}, @option{Intel MKL} 
-libraries (for BLAS/LAPACK/CBLAS/LAPACKE), @option{pthread}, @option{m} (math) 
-and @option{rt}.
+As you can see in this example, we also link with some dynamic libraries 
+@option{starpu-1.1}, @option{Intel MKL} libraries (for 
+BLAS/LAPACK/CBLAS/LAPACKE), @option{pthread}, @option{m} (math) and 
+@option{rt}.
 These libraries will depend on the configuration of your CHAMELEON build.
 You can find these dependencies in .pc files we generate during compilation and 
 that are installed in the sub-directory @file{lib/pkgconfig} of your 
 CHAMELEON install directory.
 Note also that you could need to specify where to find these libraries with 
 @option{-L} option of your compiler/linker.
-Before to run your program, make sure that all dynamic libraries path are 
-appended in the @env{LD_LIBRARY_PATH} (for Linux systems) environment variable 
+
+Before to run your program, make sure that all shared libraries paths your 
+executable depends on are known.
+Enter @code{ldd main} to check.
+If some shared libraries paths are missing append them in the 
+@env{LD_LIBRARY_PATH} (for Linux systems) environment variable 
 (@env{DYLD_LIBRARY_PATH} on Mac, @env{LIB} on Windows).
 
 @node Dynamic linking in C 
@@ -199,9 +203,10 @@ gcc main.o -o main                               \
 -lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64 \
 -lmkl_sequential -lmkl_core -lpthread -lm -lrt
 @end example
+
 Note that an update of your environment variable 
 @env{LD_LIBRARY_PATH} (@env{DYLD_LIBRARY_PATH} on Mac, @env{LIB} on Windows) 
-with the path of the libraries is required before executing, example:
+with the path of the libraries could be required before executing, example:
 @example
 export @env{LD_LIBRARY_PATH}=path/to/libs:path/to/chameleon/lib 
 @end example
