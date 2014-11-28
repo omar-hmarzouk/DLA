@@ -73,7 +73,7 @@ set(CMAKE_SKIP_BUILD_RPATH  FALSE)
 
 # when building, don't use the install RPATH already
 # (but later on when installing)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE) 
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
 
 # the RPATH to be used when installing
 set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
@@ -251,6 +251,10 @@ if(NOT CHAMELEON_SIMULATION)
     set(BLAS_DIR "" CACHE PATH "Root directory of BLAS library")
     find_package(BLASEXT REQUIRED)
     set(HAVE_BLAS ${BLAS_FOUND})
+    if(BLAS_FOUND AND BLAS_LIBRARY_DIRS)
+        # the RPATH to be used when installing
+        list(APPEND CMAKE_INSTALL_RPATH "${BLAS_LIBRARY_DIRS}")
+    endif()
 
     set(CBLAS_DIR "" CACHE PATH "Root directory of CBLAS library")
     find_package(CBLAS REQUIRED)
@@ -258,12 +262,20 @@ if(NOT CHAMELEON_SIMULATION)
     if(CBLAS_FOUND)
         include_directories(${CBLAS_INCLUDE_DIRS})
     endif()
+    if(CBLAS_FOUND AND CBLAS_LIBRARY_DIRS)
+        # the RPATH to be used when installing
+        list(APPEND CMAKE_INSTALL_RPATH "${CBLAS_LIBRARY_DIRS}")
+    endif()
 
     #---------------------------------------------
     # CHAMELEON depends on LAPACKE (via coreblas)
     set(LAPACK_DIR "" CACHE PATH "Root directory of LAPACK library")
     find_package(LAPACKEXT REQUIRED)
     set(HAVE_LAPACK ${LAPACK_FOUND})
+    if(LAPACK_FOUND AND LAPACK_LIBRARY_DIRS)
+        # the RPATH to be used when installing
+        list(APPEND CMAKE_INSTALL_RPATH "${LAPACK_LIBRARY_DIRS}")
+    endif()
 
     # standalone version of lapacke seems useless for now
     # let the comment in case we meet some problems of non existing lapacke 
@@ -275,6 +287,10 @@ if(NOT CHAMELEON_SIMULATION)
     if(LAPACKE_FOUND)
         include_directories(${LAPACKE_INCLUDE_DIRS})
     endif()
+    if(LAPACKE_FOUND AND LAPACKE_LIBRARY_DIRS)
+        # the RPATH to be used when installing
+        list(APPEND CMAKE_INSTALL_RPATH "${LAPACKE_LIBRARY_DIRS}")
+    endif()
 
     # CHAMELEON depends on TMG
     #--------------------------
@@ -282,6 +298,10 @@ if(NOT CHAMELEON_SIMULATION)
         set(TMG_DIR "" CACHE PATH "Root directory of TMG library")
         find_package(TMG REQUIRED)
         set(HAVE_TMG ${TMG_FOUND})
+        if(TMG_FOUND AND TMG_LIBRARY_DIRS)
+            # the RPATH to be used when installing
+            list(APPEND CMAKE_INSTALL_RPATH "${TMG_LIBRARY_DIRS}")
+        endif()
     endif()
 
     # CHAMELEON depends on CUDA/CUBLAS
@@ -329,14 +349,18 @@ if(NOT CHAMELEON_SIMULATION)
                     add_definitions(-DCHAMELEON_USE_MAGMA)
                     list(APPEND EXTRA_LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
                     include_directories(${MAGMA_INCLUDE_DIRS})
+                    if(MAGMA_LIBRARY_DIRS)
+                        # the RPATH to be used when installing
+                        list(APPEND CMAKE_INSTALL_RPATH "${MAGMA_LIBRARY_DIRS}")
+                    endif()
                 endif( MAGMA_FOUND )
             endif()
         endif()
 
     endif(CHAMELEON_USE_CUDA)
-    
+
     # CHAMELEON depends on MPI
-    #--------------------------
+    #-------------------------
     if (CHAMELEON_USE_MPI)
 
         # allows to use an external mpi compilation by setting compilers with
@@ -460,9 +484,21 @@ if( CHAMELEON_SCHED_STARPU )
                 add_definitions(-DHAVE_STARPU_MPI_DATA_REGISTER)
             endif()
         endif()
-    endif()
+        if(HWLOC_FOUND AND HWLOC_LIBRARY_DIRS)
+            # the RPATH to be used when installing
+            list(APPEND CMAKE_INSTALL_RPATH "${HWLOC_LIBRARY_DIRS}")
+        endif()
+        if(FXT_FOUND AND FXT_LIBRARY_DIRS)
+            # the RPATH to be used when installing
+            list(APPEND CMAKE_INSTALL_RPATH "${FXT_LIBRARY_DIRS}")
+        endif()
+        if(STARPU_FOUND AND STARPU_LIBRARY_DIRS)
+            # the RPATH to be used when installing
+            list(APPEND CMAKE_INSTALL_RPATH "${STARPU_LIBRARY_DIRS}")
+        endif()
+    endif( STARPU_FOUND )
 
-endif()
+endif( CHAMELEON_SCHED_STARPU )
 
 # try to find quark runtime
 if( CHAMELEON_SCHED_QUARK )
@@ -476,6 +512,10 @@ if( CHAMELEON_SCHED_QUARK )
     if(QUARK_FOUND)
         add_definitions(-DCHAMELEON_SCHED_QUARK) # TODO: remove that
         include_directories(${QUARK_INCLUDE_DIRS})
+    endif()
+    if(QUARK_FOUND AND QUARK_LIBRARY_DIRS)
+        # the RPATH to be used when installing
+        list(APPEND CMAKE_INSTALL_RPATH "${QUARK_LIBRARY_DIRS}")
     endif()
 
 endif()

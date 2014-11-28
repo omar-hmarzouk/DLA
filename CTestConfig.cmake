@@ -21,7 +21,7 @@ set(CTEST_DROP_SITE_CDASH TRUE)
 if(NOT BUILDNAME)
 
     set(BUILDNAME "${CMAKE_SYSTEM_NAME}")
-    
+
     # Add i386 or amd64
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
         set(BUILDNAME "${BUILDNAME}-amd64")
@@ -54,7 +54,7 @@ if(NOT BUILDNAME)
     if(CHAMELEON_USE_CUDA)
         set(BUILDNAME "${BUILDNAME}-cuda")
     endif(CHAMELEON_USE_CUDA)  
-    
+
 endif()
 
 
