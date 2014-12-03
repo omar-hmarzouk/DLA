@@ -114,7 +114,7 @@ static void cl_zherk_cuda_func(void *descr[], void *cl_arg)
     cublasSetKernelStream( stream );
 
     cublasZherk(
-        lapack_const(uplo), lapack_const(trans),
+        morse_lapack_const(uplo), morse_lapack_const(trans),
         n, k,
         alpha, A, lda,
         beta, C, ldc);

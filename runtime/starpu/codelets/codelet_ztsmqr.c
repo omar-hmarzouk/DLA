@@ -305,7 +305,7 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
             transW  = storev == MorseColumnwise ? MagmaConjTrans : MagmaNoTrans;
             transA2 = storev == MorseColumnwise ? MagmaNoTrans : MagmaConjTrans;
 
-            cublasZgemm(lapack_const(transW), lapack_const(MagmaNoTrans),
+            cublasZgemm(morse_lapack_const(transW), morse_lapack_const(MagmaNoTrans),
                         K, N1, M2,
                         zone,
                         (cuDoubleComplex*)V     /* K*M2  */, LDV,
@@ -316,8 +316,8 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
             WORKC = NULL;
             if (WORKC == NULL) {
                 /* W = op(T) * W */
-                cublasZtrmm( lapack_const(MagmaLeft), lapack_const(MagmaUpper),
-                             lapack_const(trans), lapack_const(MagmaNonUnit),
+                cublasZtrmm( morse_lapack_const(MagmaLeft), morse_lapack_const(MagmaUpper),
+                             morse_lapack_const(trans), morse_lapack_const(MagmaNonUnit),
                              K, N2,
                              zone,
                              (cuDoubleComplex*)T, LDT,
@@ -332,7 +332,7 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
                 }
 
                 /* A2 = A2 - op(V) * W  */
-                cublasZgemm(lapack_const(transA2), lapack_const(MagmaNoTrans),
+                cublasZgemm(morse_lapack_const(transA2), morse_lapack_const(MagmaNoTrans),
                             M2, N2, K,
                             mzone,
                             (cuDoubleComplex*)V     /* M2*K  */, LDV,
@@ -342,21 +342,21 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
 
             } else {
                 /* Wc = V * op(T) */
-                cublasZgemm( lapack_const(transA2), lapack_const(trans),
+                cublasZgemm( morse_lapack_const(transA2), morse_lapack_const(trans),
                              M2, K, K,
                              zone,  V,     LDV,
                                     T,     LDT,
                              zzero, WORKC, LDWORKC );
 
                 /* A1 = A1 - opt(T) * W */
-                cublasZgemm( lapack_const(trans), lapack_const(MagmaNoTrans),
+                cublasZgemm( morse_lapack_const(trans), morse_lapack_const(MagmaNoTrans),
                              K, N1, K,
                              mzone, T,    LDT,
                                     WORK, LDWORK,
                              zone,  A1,   LDA1 );
 
                 /* A2 = A2 - Wc * W */
-                cublasZgemm( lapack_const(MagmaNoTrans), lapack_const(MagmaNoTrans),
+                cublasZgemm( morse_lapack_const(MagmaNoTrans), morse_lapack_const(MagmaNoTrans),
                              M2, N2, K,
                              mzone, WORKC, LDWORKC,
                                     WORK,  LDWORK,
@@ -386,7 +386,7 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
             transW  = storev == MorseColumnwise ? MagmaNoTrans : MagmaConjTrans;
             transA2 = storev == MorseColumnwise ? MagmaConjTrans : MagmaNoTrans;
 
-            cublasZgemm(lapack_const(MagmaNoTrans), lapack_const(transW),
+            cublasZgemm(morse_lapack_const(MagmaNoTrans), morse_lapack_const(transW),
                         M1, K, N2,
                         zone,
                         (cuDoubleComplex*)A2    /* M1*N2 */, LDA2,
@@ -397,8 +397,8 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
             WORKC = NULL;
             if (WORKC == NULL) {
                 /* W = W * op(T) */
-                cublasZtrmm( lapack_const(MagmaRight), lapack_const(MagmaUpper),
-                             lapack_const(trans), lapack_const(MagmaNonUnit),
+                cublasZtrmm( morse_lapack_const(MagmaRight), morse_lapack_const(MagmaUpper),
+                             morse_lapack_const(trans), morse_lapack_const(MagmaNonUnit),
                              M2, K,
                              zone,
                              (cuDoubleComplex*)T, LDT,
@@ -413,7 +413,7 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
                 }
 
                 /* A2 = A2 - W * op(V)  */
-                cublasZgemm(lapack_const(MagmaNoTrans), lapack_const(transA2),
+                cublasZgemm(morse_lapack_const(MagmaNoTrans), morse_lapack_const(transA2),
                             M2, N2, K,
                             mzone,
                             (cuDoubleComplex*)WORK  /* M2*K  */, LDWORK,
@@ -423,21 +423,21 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
 
             } else {
                 /* A1 = A1 - W * opt(T) */
-                cublasZgemm( lapack_const(MagmaNoTrans), lapack_const(trans),
+                cublasZgemm( morse_lapack_const(MagmaNoTrans), morse_lapack_const(trans),
                              M1, K, K,
                              mzone, WORK, LDWORK,
                                     T,    LDT,
                              zone,  A1,   LDA1 );
 
                 /* Wc = op(T) * V */
-                cublasZgemm( lapack_const(trans), lapack_const(transA2),
+                cublasZgemm( morse_lapack_const(trans), morse_lapack_const(transA2),
                              K, N2, K,
                              zone,  T,     LDT,
                                     V,     LDV,
                              zzero, WORKC, LDWORKC );
 
                 /* A2 = A2 - W * Wc */
-                cublasZgemm( lapack_const(MagmaNoTrans), lapack_const(MagmaNoTrans),
+                cublasZgemm( morse_lapack_const(MagmaNoTrans), morse_lapack_const(MagmaNoTrans),
                              M2, N2, K,
                              mzone, WORK,  LDWORK,
                                     WORKC, LDWORKC,

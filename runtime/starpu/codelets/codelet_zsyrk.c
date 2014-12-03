@@ -115,7 +115,7 @@ static void cl_zsyrk_cuda_func(void *descr[], void *cl_arg)
     cublasSetKernelStream( stream );
 
     cublasZsyrk(
-        lapack_const(uplo), lapack_const(trans),
+        morse_lapack_const(uplo), morse_lapack_const(trans),
         n, k,
         alpha, A, lda,
         beta, C, ldc);

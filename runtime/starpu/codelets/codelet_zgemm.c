@@ -130,7 +130,7 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
     cublasSetKernelStream( stream );
 
     cublasZgemm(
-        lapack_const(transA), lapack_const(transB),
+        morse_lapack_const(transA), morse_lapack_const(transB),
         m, n, k,
         alpha, A, lda,
                B, ldb,

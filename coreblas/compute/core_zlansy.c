@@ -86,6 +86,6 @@ void CORE_zlansy(int norm, MORSE_enum uplo, int N,
 {
     *normA = LAPACKE_zlansy_work(
         LAPACK_COL_MAJOR,
-        lapack_const(norm), lapack_const(uplo),
+        morse_lapack_const(norm), morse_lapack_const(uplo),
         N, A, LDA, work);
 }

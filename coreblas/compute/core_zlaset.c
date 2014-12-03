@@ -73,7 +73,7 @@ void CORE_zlaset(MORSE_enum uplo, int M, int N,
 {
     LAPACKE_zlaset_work(
         LAPACK_COL_MAJOR,
-        lapack_const(uplo),
+        morse_lapack_const(uplo),
         M, N, alpha, beta, A, LDA);
 }
 

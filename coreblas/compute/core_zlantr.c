@@ -98,9 +98,9 @@ void CORE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
 #if defined(LAPACKE_CORRECT_DLANTR)
     *normA = LAPACKE_zlantr_work(
         LAPACK_COL_MAJOR,
-        lapack_const(norm),
-        lapack_const(uplo),
-        lapack_const(diag),
+        morse_lapack_const(norm),
+        morse_lapack_const(uplo),
+        morse_lapack_const(diag),
         M, N, A, LDA, work);
 #else
     const MORSE_Complex64_t *tmpA;

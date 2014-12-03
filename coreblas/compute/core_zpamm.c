@@ -337,7 +337,7 @@ CORE_zpamm_w(MORSE_enum side, MORSE_enum trans, MORSE_enum uplo,
 
             /* W = A2_2 */
             LAPACKE_zlacpy_work(LAPACK_COL_MAJOR,
-                lapack_const(MorseUpperLower),
+                morse_lapack_const(MorseUpperLower),
                 L, N,
                 &A2[K-L], LDA2, W, LDW);
 
@@ -403,7 +403,7 @@ CORE_zpamm_w(MORSE_enum side, MORSE_enum trans, MORSE_enum uplo,
 
                 /* W = A2_2 */
                 LAPACKE_zlacpy_work(LAPACK_COL_MAJOR,
-                    lapack_const(MorseUpperLower),
+                    morse_lapack_const(MorseUpperLower),
                     M, L,
                     &A2[LDA2*(K-L)], LDA2, W, LDW);
 

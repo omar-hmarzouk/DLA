@@ -101,11 +101,11 @@ int CORE_zgesplit(MORSE_enum side, MORSE_enum diag,
     }
 
     LAPACKE_zlacpy_work(LAPACK_COL_MAJOR,
-                        lapack_const(uplo),
+                        morse_lapack_const(uplo),
                         M, N, A, LDA, B, LDB);
 
     LAPACKE_zlaset_work(LAPACK_COL_MAJOR,
-                        lapack_const(uplo),
+                        morse_lapack_const(uplo),
                         M, N, 0., 1., A, LDA);
 
     return MORSE_SUCCESS;

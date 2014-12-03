@@ -71,19 +71,19 @@ void CORE_zlaset2(MORSE_enum uplo, int M, int N,
     if (uplo == MorseUpper) {
         LAPACKE_zlaset_work(
             LAPACK_COL_MAJOR,
-            lapack_const(uplo),
+            morse_lapack_const(uplo),
             M, N-1, alpha, alpha, A+LDA, LDA);
     }
     else if (uplo == MorseLower) {
         LAPACKE_zlaset_work(
             LAPACK_COL_MAJOR,
-            lapack_const(uplo),
+            morse_lapack_const(uplo),
             M-1, N, alpha, alpha, A+1, LDA);
     }
     else {
         LAPACKE_zlaset_work(
             LAPACK_COL_MAJOR,
-            lapack_const(uplo),
+            morse_lapack_const(uplo),
             M, N, alpha, alpha, A, LDA);
     }
 }

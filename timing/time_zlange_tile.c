@@ -49,7 +49,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         /* Allocate Data */
         PASTE_TILE_TO_LAPACK( descA, A, check, MORSE_Complex64_t, M, N );
         double *work = (double*) malloc(max(M,N)*sizeof(double));
-        normlapack = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), M, N, A, LDA, work);
+        normlapack = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, A, LDA, work);
         result = fabs(normmorse - normlapack);
         switch(norm[2]) {
         case MorseMaxNorm:

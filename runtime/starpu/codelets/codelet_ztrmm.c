@@ -119,8 +119,8 @@ static void cl_ztrmm_cuda_func(void *descr[], void *cl_arg)
     cublasSetKernelStream( stream );
 
     cublasZtrmm(
-        lapack_const(side), lapack_const(uplo),
-        lapack_const(transA), lapack_const(diag),
+        morse_lapack_const(side), morse_lapack_const(uplo),
+        morse_lapack_const(transA), morse_lapack_const(diag),
         M, N,
         alpha, A, LDA,
         B, LDB);

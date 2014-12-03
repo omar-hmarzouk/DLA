@@ -109,7 +109,7 @@ static void cl_zlaset_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &M, &N, &alpha, &beta, &LDA);
     LAPACKE_zlaset_work(
         LAPACK_COL_MAJOR,
-        lapack_const(uplo),
+        morse_lapack_const(uplo),
         M, N, alpha, beta, A, LDA);
 }
 /*

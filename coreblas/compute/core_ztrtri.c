@@ -41,7 +41,7 @@ void CORE_ztrtri(MORSE_enum uplo, MORSE_enum diag, int N, MORSE_Complex64_t *A, 
 {
     *info = LAPACKE_ztrtri_work(
         LAPACK_COL_MAJOR,
-        lapack_const(uplo), lapack_const(diag),
+        morse_lapack_const(uplo), morse_lapack_const(diag),
         N, A, LDA);
 }
 

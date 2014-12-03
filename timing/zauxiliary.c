@@ -53,7 +53,7 @@ int z_check_orthogonality(int M, int N, int LDQ, MORSE_Complex64_t *Q)
     else
         cblas_zherk(CblasColMajor, CblasUpper, CblasNoTrans, M, N, alpha, Q, LDQ, beta, Id, M);
 
-    normQ = LAPACKE_zlansy_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), 'u', minMN, Id, minMN, work);
+    normQ = LAPACKE_zlansy_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), 'u', minMN, Id, minMN, work);
 
     printf("============\n");
     printf("Checking the orthogonality of Q \n");
@@ -122,8 +122,8 @@ int z_check_QRfactorization(int M, int N, MORSE_Complex64_t *A1, MORSE_Complex64
         for (j = 0 ; j < N; j++)
             Residual[j*M+i] = A1[j*LDA+i]-Ql[j*M+i];
 
-    Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), M, N, Residual, M, work);
-    Anorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), M, N, A2, LDA, work);
+    Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, Residual, M, work);
+    Anorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, A2, LDA, work);
 
     if (M >= N) {
         printf("============\n");
@@ -193,8 +193,8 @@ int z_check_LLTfactorization(int N, MORSE_Complex64_t *A1, MORSE_Complex64_t *A2
         for (j = 0; j < N; j++)
            Residual[j*N+i] = L2[j*N+i] - Residual[j*N+i];
 
-    Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), N, N, Residual, N, work);
-    Anorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), N, N, A1, LDA, work);
+    Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), N, N, Residual, N, work);
+    Anorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), N, N, A1, LDA, work);
 
     printf("============\n");
     printf("Checking the Cholesky Factorization \n");
@@ -228,17 +228,17 @@ double z_check_gemm(MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
     double Rnorm;
     double *work = (double *)malloc(max(K,max(M, N))* sizeof(double));
 
-    *Cinitnorm   = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), M, N, Cref,    LDC, work);
-    *Cmorsenorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), M, N, Cmorse, LDC, work);
+    *Cinitnorm   = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, Cref,    LDC, work);
+    *Cmorsenorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, Cmorse, LDC, work);
 
     cblas_zgemm(CblasColMajor, (CBLAS_TRANSPOSE)transA, (CBLAS_TRANSPOSE)transB, M, N, K,
                 CBLAS_SADDR(alpha), A, LDA, B, LDB, CBLAS_SADDR(beta), Cref, LDC);
 
-    *Clapacknorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), M, N, Cref, LDC, work);
+    *Clapacknorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, Cref, LDC, work);
 
     cblas_zaxpy(LDC * N, CBLAS_SADDR(beta_const), Cmorse, 1, Cref, 1);
 
-    Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), M, N, Cref, LDC, work);
+    Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, Cref, LDC, work);
 
     free(work);
 
@@ -293,13 +293,13 @@ double z_check_solution(int M, int N, int NRHS, MORSE_Complex64_t *A, int LDA,
     MORSE_Complex64_t mzone = -1.0;
     double *work = (double *)malloc(max(M, N)* sizeof(double));
 
-    *anorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), M, N,    A, LDA, work);
-    *xnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), M, NRHS, X, LDB, work);
-    *bnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), N, NRHS, B, LDB, work);
+    *anorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N,    A, LDA, work);
+    *xnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, NRHS, X, LDB, work);
+    *bnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), N, NRHS, B, LDB, work);
 
     cblas_zgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, M, NRHS, N, CBLAS_SADDR(zone), A, LDA, X, LDB, CBLAS_SADDR(mzone), B, LDB);
 
-    Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseInfNorm), N, NRHS, B, LDB, work);
+    Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), N, NRHS, B, LDB, work);
 
     free(work);
 
@@ -347,9 +347,9 @@ int zcheck_inverse(int N, MORSE_Complex64_t *A1, MORSE_Complex64_t *A2, int LDA,
         *(workz+i+i*N) = *(workz+i+i*N) + zone;
 
 
-    *rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseOneNorm), N, N,    workz, N, workd);
-    *anorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseOneNorm), N, N, A1, LDA, workd);
-    *ainvnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, lapack_const(MorseOneNorm), N, N, A2, LDA, workd);
+    *rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseOneNorm), N, N,    workz, N, workd);
+    *anorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseOneNorm), N, N, A1, LDA, workd);
+    *ainvnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseOneNorm), N, N, A2, LDA, workd);
 
 
       result = *rnorm / ( ((*anorm) * (*ainvnorm))*N*eps ) ;

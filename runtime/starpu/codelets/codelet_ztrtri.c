@@ -80,7 +80,7 @@ static void cl_ztrtri_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &diag, &N, &LDA, &iinfo);
     info = LAPACKE_ztrtri_work(
         LAPACK_COL_MAJOR,
-        lapack_const(uplo), lapack_const(diag),
+        morse_lapack_const(uplo), morse_lapack_const(diag),
         N, A, LDA);
 }
 

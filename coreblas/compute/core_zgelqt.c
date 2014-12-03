@@ -136,8 +136,8 @@ int CORE_zgelqt(int M, int N, int IB,
                             &A[LDA*i+i], LDA, &TAU[i], WORK);
 
         LAPACKE_zlarft_work(LAPACK_COL_MAJOR,
-            lapack_const(MorseForward),
-            lapack_const(MorseRowwise),
+            morse_lapack_const(MorseForward),
+            morse_lapack_const(MorseRowwise),
             N-i, sb,
             &A[LDA*i+i], LDA, &TAU[i],
             &T[LDT*i], LDT);
@@ -145,10 +145,10 @@ int CORE_zgelqt(int M, int N, int IB,
         if (M > i+sb) {
             LAPACKE_zlarfb_work(
                 LAPACK_COL_MAJOR,
-                lapack_const(MorseRight),
-                lapack_const(MorseNoTrans),
-                lapack_const(MorseForward),
-                lapack_const(MorseRowwise),
+                morse_lapack_const(MorseRight),
+                morse_lapack_const(MorseNoTrans),
+                morse_lapack_const(MorseForward),
+                morse_lapack_const(MorseRowwise),
                 M-i-sb, N-i, sb,
                 &A[LDA*i+i],      LDA,
                 &T[LDT*i],        LDT,

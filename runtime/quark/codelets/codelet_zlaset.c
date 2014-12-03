@@ -99,6 +99,6 @@ void CORE_zlaset_quark(Quark *quark)
     quark_unpack_args_7(quark, uplo, M, N, alpha, beta, A, LDA);
     LAPACKE_zlaset_work(
         LAPACK_COL_MAJOR,
-        lapack_const(uplo),
+        morse_lapack_const(uplo),
         M, N, alpha, beta, A, LDA);
 }

@@ -43,7 +43,7 @@ void CORE_zlacpy(MORSE_enum uplo, int M, int N,
 {
     LAPACKE_zlacpy_work(
         LAPACK_COL_MAJOR,
-        lapack_const(uplo),
+        morse_lapack_const(uplo),
         M, N, A, LDA, B, LDB);
 }
 

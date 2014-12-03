@@ -93,7 +93,7 @@ extern "C" {
  *  LAPACK Constants
  **/
 extern char *morse_lapack_constants[];
-#define lapack_const(morse_const) morse_lapack_constants[morse_const][0]
+#define morse_lapack_const(morse_const) morse_lapack_constants[morse_const][0]
 
 #ifdef __cplusplus
 }

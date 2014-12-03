@@ -84,6 +84,6 @@ void CORE_zlange(int norm, int M, int N,
 {
     *normA = LAPACKE_zlange_work(
         LAPACK_COL_MAJOR,
-        lapack_const(norm),
+        morse_lapack_const(norm),
         M, N, A, LDA, work);
 }

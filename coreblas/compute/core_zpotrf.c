@@ -41,7 +41,7 @@ void CORE_zpotrf(MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA, int *INF
 {
     *INFO = LAPACKE_zpotrf_work(
         LAPACK_COL_MAJOR,
-        lapack_const(uplo),
+        morse_lapack_const(uplo),
         N, A, LDA );
 }
 

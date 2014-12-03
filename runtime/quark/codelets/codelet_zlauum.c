@@ -60,5 +60,5 @@ void CORE_zlauum_quark(Quark *quark)
     int LDA;
 
     quark_unpack_args_4(quark, uplo, N, A, LDA);
-    LAPACKE_zlauum_work(LAPACK_COL_MAJOR, lapack_const(uplo), N, A, LDA);
+    LAPACKE_zlauum_work(LAPACK_COL_MAJOR, morse_lapack_const(uplo), N, A, LDA);
 }

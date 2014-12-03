@@ -69,7 +69,7 @@ void CORE_zlacpy_quark(Quark *quark)
     quark_unpack_args_7(quark, uplo, M, N, A, LDA, B, LDB);
     LAPACKE_zlacpy_work(
         LAPACK_COL_MAJOR,
-        lapack_const(uplo),
+        morse_lapack_const(uplo),
         M, N, A, LDA, B, LDB);
 }
 

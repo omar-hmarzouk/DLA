@@ -126,7 +126,7 @@ static void cl_zsymm_cuda_func(void *descr[], void *cl_arg)
     cublasSetKernelStream( stream );
 
     cublasZsymm(
-        lapack_const(side), lapack_const(uplo),
+        morse_lapack_const(side), morse_lapack_const(uplo),
         M, N,
         alpha, A, LDA,
         B, LDB,

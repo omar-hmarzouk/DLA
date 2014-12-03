@@ -120,7 +120,7 @@ static void cl_zsyr2k_cuda_func(void *descr[], void *cl_arg)
     CUstream stream = starpu_cuda_get_local_stream();
     cublasSetKernelStream( stream );
 
-    cublasZsyr2k( lapack_const(uplo), lapack_const(trans),
+    cublasZsyr2k( morse_lapack_const(uplo), morse_lapack_const(trans),
                  n, k, alpha, A, lda, B, ldb, beta, C, ldc);
 
 #ifndef STARPU_CUDA_ASYNC
