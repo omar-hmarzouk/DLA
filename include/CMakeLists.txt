@@ -52,7 +52,7 @@ set(CHAMELEON_HDRS
     runtime.h
     ${CHAMELEON_HDRS_GENERATED}
     )
-    
+
 foreach(_prec ${CHAMELEON_PRECISION})
     set_source_files_properties(runtime.h PROPERTIES COMPILE_FLAGS "-DPRECISION_${_prec}")
 endforeach()
