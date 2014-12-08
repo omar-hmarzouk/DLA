@@ -40,10 +40,10 @@ precisions_rules_py(COREBLAS_HDRS_GENERATED "${ZHDR}"
 # --------------------------
 set(COREBLAS_HDRS
     cblas.h
+    coreblas.h
     lapacke.h
     lapacke_config.h
     lapacke_mangling.h
-    coreblas.h
     ${COREBLAS_HDRS_GENERATED}
     )
 
@@ -51,7 +51,7 @@ set(COREBLAS_HDRS
 # ---------------------------
 add_custom_target(coreblas_include ALL SOURCES ${COREBLAS_HDRS})
 
-set(HDR_INSTALL "cblas.h;coreblas.h")
+set(HDR_INSTALL "cblas.h;coreblas.h;lapacke.h;lapacke_config.h;lapacke_mangling.h")
 foreach( hdr_file ${COREBLAS_HDRS_GENERATED} )
     list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
 endforeach()
