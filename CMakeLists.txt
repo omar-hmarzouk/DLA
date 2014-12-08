@@ -250,7 +250,6 @@ if(NOT CHAMELEON_SIMULATION)
     #----------------------------
     set(BLAS_DIR "" CACHE PATH "Root directory of BLAS library")
     find_package(BLASEXT REQUIRED)
-    set(HAVE_BLAS ${BLAS_FOUND})
     if(BLAS_FOUND AND BLAS_LIBRARY_DIRS)
         # the RPATH to be used when installing
         list(APPEND CMAKE_INSTALL_RPATH "${BLAS_LIBRARY_DIRS}")
@@ -258,7 +257,6 @@ if(NOT CHAMELEON_SIMULATION)
 
     set(CBLAS_DIR "" CACHE PATH "Root directory of CBLAS library")
     find_package(CBLAS REQUIRED)
-    set(HAVE_CBLAS ${CBLAS_FOUND})
     if(CBLAS_FOUND)
         include_directories(${CBLAS_INCLUDE_DIRS})
     endif()
@@ -271,7 +269,6 @@ if(NOT CHAMELEON_SIMULATION)
     # CHAMELEON depends on LAPACKE (via coreblas)
     set(LAPACK_DIR "" CACHE PATH "Root directory of LAPACK library")
     find_package(LAPACKEXT REQUIRED)
-    set(HAVE_LAPACK ${LAPACK_FOUND})
     if(LAPACK_FOUND AND LAPACK_LIBRARY_DIRS)
         # the RPATH to be used when installing
         list(APPEND CMAKE_INSTALL_RPATH "${LAPACK_LIBRARY_DIRS}")
@@ -283,7 +280,6 @@ if(NOT CHAMELEON_SIMULATION)
     #set(LAPACKE_STANDALONE TRUE)
     set(LAPACKE_DIR "" CACHE PATH "Root directory of LAPACKE library")
     find_package(LAPACKE REQUIRED)
-    set(HAVE_LAPACKE ${LAPACKE_FOUND})
     if(LAPACKE_FOUND)
         include_directories(${LAPACKE_INCLUDE_DIRS})
     endif()
@@ -297,7 +293,6 @@ if(NOT CHAMELEON_SIMULATION)
     if (CHAMELEON_ENABLE_TESTING OR CHAMELEON_ENABLE_TIMING)
         set(TMG_DIR "" CACHE PATH "Root directory of TMG library")
         find_package(TMG REQUIRED)
-        set(HAVE_TMG ${TMG_FOUND})
         if(TMG_FOUND AND TMG_LIBRARY_DIRS)
             # the RPATH to be used when installing
             list(APPEND CMAKE_INSTALL_RPATH "${TMG_LIBRARY_DIRS}")
@@ -310,7 +305,6 @@ if(NOT CHAMELEON_SIMULATION)
 
         find_package(CUDA REQUIRED)
 
-        set(HAVE_CUDA ${CUDA_FOUND})
         if (CUDA_FOUND)
             add_definitions(-DCHAMELEON_USE_CUDA)
             if(CUDA_VERSION VERSION_LESS "3.0")
@@ -331,6 +325,10 @@ if(NOT CHAMELEON_SIMULATION)
             endif()
             set(CMAKE_REQUIRED_INCLUDES  "${saved_include}")
             set(CMAKE_REQUIRED_LIBRARIES "${saved_libs}")
+            FindHeader(CUDA cublas_v2.h)
+            if(CUDA_cublas_v2.h_DIRS)
+                add_definitions(-DCHAMELEON_USE_CUBLAS_V2)
+            endif()
         endif (CUDA_FOUND)
 
         # CHAMELEON depends on MAGMA gpu kernels
@@ -343,9 +341,8 @@ if(NOT CHAMELEON_SIMULATION)
                 set(MAGMA_DIR "" CACHE PATH "Root directory of MAGMA library")
                 find_package(MAGMA ${CHAMELEON_MAGMA_VERSION} REQUIRED COMPONENTS CBLAS LAPACK CUDA)
 
-                set(HAVE_MAGMA ${MAGMA_FOUND})
                 if ( MAGMA_FOUND )
-                    add_definitions(-DHAVE_CUBLAS)
+                    add_definitions(-DCHAMELEON_USE_CUBLAS)
                     add_definitions(-DCHAMELEON_USE_MAGMA)
                     list(APPEND EXTRA_LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
                     include_directories(${MAGMA_INCLUDE_DIRS})
@@ -371,7 +368,6 @@ if(NOT CHAMELEON_SIMULATION)
         endif()
         find_package(MPI REQUIRED)
 
-        set(HAVE_MPI ${MPI_C_FOUND})
         if (MPI_C_FOUND)
             add_definitions(-DCHAMELEON_USE_MPI)
             list(APPEND EXTRA_LIBRARIES ${MPI_C_LIBRARIES} )
@@ -453,9 +449,6 @@ if( CHAMELEON_SCHED_STARPU )
     find_package(STARPU ${CHAMELEON_STARPU_VERSION} REQUIRED
                  COMPONENTS ${STARPU_COMPONENT_LIST})
 
-    # Is this useful??
-    set(HAVE_STARPU ${STARPU_FOUND})
-
     # Add definition and include_dir if found
     if(STARPU_FOUND)
         add_definitions(-DCHAMELEON_SCHED_STARPU) # TODO: remove that
@@ -506,7 +499,6 @@ if( CHAMELEON_SCHED_QUARK )
     set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
     set(QUARK_DIR "" CACHE PATH "Root directory of QUARK library")
     find_package(QUARK REQUIRED COMPONENTS HWLOC)
-    set(HAVE_QUARK ${QUARK_FOUND})
 
     # Add definition and include_dir if found
     if(QUARK_FOUND)
