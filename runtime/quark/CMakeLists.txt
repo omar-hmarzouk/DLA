@@ -53,6 +53,11 @@ set(RUNTIME_HDRS
 # ---------------------------
 add_custom_target(runtime_quark_include ALL SOURCES ${RUNTIME_HDRS})
 
+# installation
+# ------------
+#install(FILES ${RUNTIME_HDRS}
+#        DESTINATION include)
+
 # Generate the morse common for all possible precisions
 # -----------------------------------------------------
 set(RUNTIME_COMMON_GENERATED "")
@@ -109,12 +114,12 @@ set(ZSRC
     codelets/codelet_zgetrf.c
     codelets/codelet_zgetrf_incpiv.c
     codelets/codelet_zgetrf_nopiv.c
-    codelets/codelet_zhessq.c    
+    codelets/codelet_zhessq.c
     codelets/codelet_zlacpy.c
     codelets/codelet_zlange.c
     codelets/codelet_zlanhe.c
-    codelets/codelet_zlansy.c    
-    codelets/codelet_zlantr.c        
+    codelets/codelet_zlansy.c
+    codelets/codelet_zlantr.c
     codelets/codelet_zlaset2.c
     codelets/codelet_zlaset.c
     codelets/codelet_zlauum.c
@@ -125,7 +130,7 @@ set(ZSRC
     codelets/codelet_zpotrf.c
     codelets/codelet_zssssm.c
     codelets/codelet_zsyssq.c
-    codelets/codelet_zsytrf_nopiv.c    
+    codelets/codelet_zsytrf_nopiv.c
     codelets/codelet_ztrasm.c
     codelets/codelet_ztrssq.c
     codelets/codelet_ztrtri.c
