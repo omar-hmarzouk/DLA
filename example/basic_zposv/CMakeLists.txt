@@ -37,7 +37,7 @@ set(ZSRC
    )
 
 precisions_rules_py(EXAMPLES "${ZSRC}"
-                    PRECISIONS "${CHAMELEON_PRECISION}")                 
+                    PRECISIONS "${CHAMELEON_PRECISION}")
 
 # Define what libraries we have to link with
 # ------------------------------------------
@@ -85,13 +85,13 @@ if(NOT CHAMELEON_SIMULATION)
     list(APPEND libs_for_examples
          coreblas
          ${LAPACKE_LIBRARIES}
-         ${CBLAS_LIBRARIES}         
+         ${CBLAS_LIBRARIES}
          ${LAPACK_SEQ_LIBRARIES}
          ${BLAS_SEQ_LIBRARIES}
          ${HWLOC_LIBRARIES}
          ${EXTRA_LIBRARIES}
     )
-    
+
     link_directories(${LAPACKE_LIBRARY_DIRS})
     link_directories(${LAPACK_LIBRARY_DIRS})
     link_directories(${CBLAS_LIBRARY_DIRS})
@@ -101,12 +101,12 @@ else()
 
     list(APPEND libs_for_examples
          coreblas
-         simulapacke         
+         simulapacke
          simucblas
          ${HWLOC_LIBRARIES}
          ${EXTRA_LIBRARIES}
     )
-    
+
 endif()
 
 link_directories(${HWLOC_LIBRARY_DIRS})
