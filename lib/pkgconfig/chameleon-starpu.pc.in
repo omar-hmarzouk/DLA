@@ -4,7 +4,7 @@ libdir=${exec_prefix}/lib
 includedir=${exec_prefix}/include
 
 Name: chameleon
-Description: Parallel Linear Algebra for Scalable Multi-core Architectures and GPGPUs
+Description: Dense Linear Algebra for Scalable Multi-core Architectures and GPGPUs
 Version: @CHAMELEON_VERSION_MAJOR@.@CHAMELEON_VERSION_MINOR@.@CHAMELEON_VERSION_PATCH@
 Cflags: -I${includedir} 
 Libs: -L${libdir} @CHAMELEON_PKGCONFIG_LIBS@
