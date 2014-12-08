@@ -28,6 +28,7 @@
 
 #include <assert.h>
 #include "morse_struct.h"
+#include "auxiliary.h"
 
 #ifdef __cplusplus
 extern "C" {

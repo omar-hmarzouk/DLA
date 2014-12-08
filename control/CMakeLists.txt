@@ -42,10 +42,14 @@ precisions_rules_py(CHAMELEON_HDRS_GENERATED "${ZHDR}"
 set(CHAMELEON_HDRS
     async.h
     auxiliary.h
+    bulge.h
     common.h
     context.h
     descriptor.h
+    gkkleader.h
+    global.h
     morsewinthread.h
+    tile.h
     workspace.h
     ${CHAMELEON_HDRS_GENERATED}
     )
@@ -57,10 +61,14 @@ add_custom_target(control_include ALL SOURCES ${CHAMELEON_HDRS})
 set(HDR_INSTALL
     async.h
     auxiliary.h
+    bulge.h
     common.h
     context.h
     descriptor.h
+    gkkleader.h
+    global.h
     morsewinthread.h
+    tile.h
     workspace.h
     )
 foreach( hdr_file ${CHAMELEON_HDRS_GENERATED} )
