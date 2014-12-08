@@ -33,7 +33,7 @@
 #
 ###
 MACRO(GENERATE_PKGCONFIG_FILE _file) 
-    
+
     # The link flags specific to this package and any required libraries 
     # that don't support PkgConfig
     set(CHAMELEON_PKGCONFIG_LIBS "")
@@ -45,7 +45,7 @@ MACRO(GENERATE_PKGCONFIG_FILE _file)
     # A list of private packages required by this package but not exposed to 
     # applications
     set(CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE "")
-    
+
     list(APPEND CHAMELEON_PKGCONFIG_LIBS -lchameleon)
     if(CHAMELEON_SCHED_STARPU)
         list(APPEND CHAMELEON_PKGCONFIG_LIBS -lchameleon_starpu)
@@ -53,55 +53,55 @@ MACRO(GENERATE_PKGCONFIG_FILE _file)
             list(APPEND CHAMELEON_PKGCONFIG_REQUIRED 
             starpumpi-${CHAMELEON_STARPU_VERSION})
         else()
-            list(APPEND CHAMELEON_PKGCONFIG_REQUIRED 
-            starpu-${CHAMELEON_STARPU_VERSION})        
+            list(APPEND CHAMELEON_PKGCONFIG_REQUIRED
+            starpu-${CHAMELEON_STARPU_VERSION})
         endif()
     elseif(CHAMELEON_SCHED_QUARK)
         list(APPEND CHAMELEON_PKGCONFIG_LIBS -lchameleon_quark)
         list(APPEND CHAMELEON_PKGCONFIG_LIBS -lquark)
     endif()
-    
-    
+
+
     if(NOT CHAMELEON_SIMULATION)
-    
+
         if(CHAMELEON_USE_CUDA)
             list(APPEND CHAMELEON_PKGCONFIG_LIBS ${CUDA_LIBRARIES})
         endif()
-               
+
         if(CHAMELEON_USE_MAGMA)
             list(APPEND CHAMELEON_PKGCONFIG_REQUIRED magma)
         endif()
-        
+
         list(APPEND CHAMELEON_PKGCONFIG_LIBS 
         -lcoreblas
         ${LAPACKE_LIBRARIES}
-        ${CBLAS_LIBRARIES}    
+        ${CBLAS_LIBRARIES}
         ${LAPACK_SEQ_LIBRARIES}
         ${BLAS_SEQ_LIBRARIES}
         ${EXTRA_LIBRARIES}
         )
-        
+
         list(APPEND CHAMELEON_PKGCONFIG_REQUIRED hwloc)
-    
+
     else(NOT CHAMELEON_SIMULATION)
-        
+
         list(APPEND CHAMELEON_PKGCONFIG_LIBS 
         -lcoreblas
-        -lsimulapacke    
+        -lsimulapacke
         -lsimucblas
-        ${EXTRA_LIBRARIES}        
+        ${EXTRA_LIBRARIES}
         )
-        
+
         list(APPEND CHAMELEON_PKGCONFIG_REQUIRED hwloc) 
-               
+
     endif(NOT CHAMELEON_SIMULATION)
-    
+
     list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_LIBS)
     list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_LIBS_PRIVATE)
     list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_REQUIRED)
     list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE)
 
-    
+
     # Define required package
     # -----------------------
     set(CHAMELEON_PKGCONFIG_LIBS_CPY "${CHAMELEON_PKGCONFIG_LIBS}")
@@ -115,12 +115,12 @@ MACRO(GENERATE_PKGCONFIG_FILE _file)
         STRING(REPLACE ".dll"   ""   dep_we "${dep_we}")
         list(APPEND CHAMELEON_PKGCONFIG_LIBS ${dep_we})
     endforeach()
-    
+
     STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_LIBS "${CHAMELEON_PKGCONFIG_LIBS}")
     STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_LIBS_PRIVATE "${CHAMELEON_PKGCONFIG_LIBS_PRIVATE}")
     STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_REQUIRED "${CHAMELEON_PKGCONFIG_REQUIRED}")
     STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE "${CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE}")
-      
+
     # Create .pc file
     # ---------------
     GET_FILENAME_COMPONENT(_output_file ${_file} NAME)
