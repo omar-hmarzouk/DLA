@@ -28,7 +28,7 @@
 set(SIMULAPACKE_SRCS
     simulapacke.c
     )
-    
+
 # Define the list of headers
 # --------------------------
 set(SIMULAPACKE_HDRS
@@ -36,7 +36,7 @@ set(SIMULAPACKE_HDRS
     lapacke_config.h
     lapacke_mangling.h
     )
-    
+
 # include directories
 # -------------------
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})

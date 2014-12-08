@@ -31,17 +31,17 @@
 set(SIMUCBLAS_SRCS
     simucblas.c
     )
-    
+
 # Define the list of headers
 # --------------------------
 set(SIMUCBLAS_HDRS
     cblas.h
     )
-    
+
 # include directories
 # -------------------
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_BINARY_DIR})    
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # Force generation of headers
 # ---------------------------
