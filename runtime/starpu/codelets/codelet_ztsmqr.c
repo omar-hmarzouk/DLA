@@ -215,6 +215,7 @@ static void cl_ztsmqr_cpu_func(void *descr[], void *cl_arg)
 
 #if defined(CHAMELEON_USE_MAGMA)
 
+#if defined(CHAMELEON_USE_CUBLAS_V2)
 magma_int_t
 magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
 		         magma_direct_t direct, magma_storev_t storev,
@@ -228,6 +229,325 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
 		               magmaDoubleComplex *WORK, magma_int_t LDWORK,
 		               magmaDoubleComplex *WORKC, magma_int_t LDWORKC,
 		               CUstream stream)
+
+{
+#if defined(PRECISION_z) || defined(PRECISION_c)
+    cuDoubleComplex zzero = make_cuDoubleComplex(0.0, 0.0);
+    cuDoubleComplex zone  = make_cuDoubleComplex(1.0, 0.0);
+    cuDoubleComplex mzone = make_cuDoubleComplex(-1.0, 0.0);
+#else
+    double zzero = 0.0;
+    double zone  = 1.0;
+    double mzone = -1.0;
+#endif /* defined(PRECISION_z) || defined(PRECISION_c) */
+
+    int j;
+    magma_trans_t transW;
+    magma_trans_t transA2;
+    cublasHandle_t handle;
+    cublasStatus_t stat = cublasCreate(&handle);
+    if (stat != CUBLAS_STATUS_SUCCESS) {
+        printf ("CUBLAS initialization failed\n");
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    stat = cublasSetStream(handle, stream);
+    if (stat != CUBLAS_STATUS_SUCCESS) {
+        printf ("cublasSetStream failed\n");
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    cublasOperation_t cublasTrans;
+    if (trans == MagmaNoTrans){
+        cublasTrans = CUBLAS_OP_N;
+    }else if(trans == MagmaTrans){
+        cublasTrans = CUBLAS_OP_T;
+    }else if(trans == MagmaConjTrans){
+        cublasTrans = CUBLAS_OP_C;
+    }else{
+        fprintf(stderr, "Error in magma_zparfb_gpu: bad trans parameter %d\n", trans);
+    }
+
+    /* Check input arguments */
+    if ((side != MagmaLeft) && (side != MagmaRight)) {
+        return -1;
+    }
+    if ((trans != MagmaNoTrans) && (trans != MagmaConjTrans)) {
+        return -2;
+    }
+    if ((direct != MagmaForward) && (direct != MagmaBackward)) {
+        return -3;
+    }
+    if ((storev != MagmaColumnwise) && (storev != MagmaRowwise)) {
+        return -4;
+    }
+    if (M1 < 0) {
+        return -5;
+    }
+    if (N1 < 0) {
+        return -6;
+    }
+    if ((M2 < 0) ||
+        ( (side == MagmaRight) && (M1 != M2) ) ) {
+        return -7;
+    }
+    if ((N2 < 0) ||
+        ( (side == MagmaLeft) && (N1 != N2) ) ) {
+        return -8;
+    }
+    if (K < 0) {
+        return -9;
+    }
+
+    /* Quick return */
+    if ((M1 == 0) || (N1 == 0) || (M2 == 0) || (N2 == 0) || (K == 0))
+        return MAGMA_SUCCESS;
+
+    if (direct == MagmaForward) {
+
+        if (side == MagmaLeft) {
+
+            /*
+             * Column or Rowwise / Forward / Left
+             * ----------------------------------
+             *
+             * Form  H * A  or  H' * A  where  A = ( A1 )
+             *                                     ( A2 )
+             */
+
+            /*
+             * W = A1 + V' * A2:
+             *      W = A1
+             *      W = W + V' * A2
+             *
+             */
+            cudaMemcpy2DAsync( WORK, LDWORK * sizeof(cuDoubleComplex),
+                               A1,   LDA1   * sizeof(cuDoubleComplex),
+                               K * sizeof(cuDoubleComplex), N1,
+                               cudaMemcpyDeviceToDevice, stream );
+
+            transW  = storev == MorseColumnwise ? MagmaConjTrans : MagmaNoTrans;
+            transA2 = storev == MorseColumnwise ? MagmaNoTrans : MagmaConjTrans;
+
+            cublasOperation_t cublasTransW;
+            if (transW == MagmaNoTrans){
+                cublasTransW = CUBLAS_OP_N;
+            }else if(transW == MagmaTrans){
+                cublasTransW = CUBLAS_OP_T;
+            }else if(transW == MagmaConjTrans){
+                cublasTransW = CUBLAS_OP_C;
+            }else{
+                fprintf(stderr, "Error in magma_zparfb_gpu: bad transW parameter %d\n", transW);
+            }
+            cublasOperation_t cublasTransA2;
+            if (transA2 == MagmaNoTrans){
+                cublasTransA2 = CUBLAS_OP_N;
+            }else if(transA2 == MagmaTrans){
+                cublasTransA2 = CUBLAS_OP_T;
+            }else if(transA2 == MagmaConjTrans){
+                cublasTransA2 = CUBLAS_OP_C;
+            }else{
+                fprintf(stderr, "Error in magma_zparfb_gpu: bad transA2 parameter %d\n", transA2);
+            }
+
+            cublasZgemm(handle, cublasTransW, CUBLAS_OP_N,
+                        K, N1, M2,
+                        (const cuDoubleComplex *) &zone,
+                        (const cuDoubleComplex*)V     /* K*M2  */, LDV,
+                        (const cuDoubleComplex*)A2    /* M2*N1 */, LDA2,
+                        (const cuDoubleComplex *) &zone,
+                        (cuDoubleComplex*)WORK  /* K*N1  */, LDWORK);
+
+            WORKC = NULL;
+            if (WORKC == NULL) {
+                /* W = op(T) * W */
+                cublasZtrmm( handle,
+                    CUBLAS_SIDE_LEFT, CUBLAS_FILL_MODE_UPPER,
+                    cublasTrans, CUBLAS_DIAG_NON_UNIT,
+                    K, N2,
+                    (const cuDoubleComplex *) &zone,
+                    (const cuDoubleComplex*)T, LDT,
+                    (cuDoubleComplex*)WORK, LDWORK,
+                    (cuDoubleComplex*)WORK, LDWORK);
+
+
+                /* A1 = A1 - W = A1 - op(T) * W */
+                for(j = 0; j < N1; j++) {
+                    cublasZaxpy(handle, K, (const cuDoubleComplex *) &mzone,
+                                (const cuDoubleComplex*)(WORK + LDWORK*j), 1,
+                                (cuDoubleComplex*)(A1 + LDA1*j), 1);
+                }
+
+                /* A2 = A2 - op(V) * W  */
+                cublasZgemm(handle, cublasTransA2, CUBLAS_OP_N,
+                            M2, N2, K,
+                            (const cuDoubleComplex *) &mzone,
+                            (const cuDoubleComplex*)V     /* M2*K  */, LDV,
+                            (const cuDoubleComplex*)WORK  /* K*N2  */, LDWORK,
+                            (const cuDoubleComplex *) &zone,
+                            (cuDoubleComplex*)A2    /* m2*N2 */, LDA2);
+
+            } else {
+                /* Wc = V * op(T) */
+                cublasZgemm( handle, cublasTransA2, cublasTrans,
+                             M2, K, K,
+                             (const cuDoubleComplex *) &zone,  V,     LDV,
+                                    T,     LDT,
+                             (const cuDoubleComplex *) &zzero, WORKC, LDWORKC );
+
+                /* A1 = A1 - opt(T) * W */
+                cublasZgemm( handle, cublasTrans, CUBLAS_OP_N,
+                             K, N1, K,
+                             (const cuDoubleComplex *) &mzone,
+                             (const cuDoubleComplex *)T,    LDT,
+                             (const cuDoubleComplex *)WORK, LDWORK,
+                             (const cuDoubleComplex *) &zone,
+                             (cuDoubleComplex*)A1,   LDA1 );
+
+                /* A2 = A2 - Wc * W */
+                cublasZgemm( handle, CUBLAS_OP_N, CUBLAS_OP_N,
+                             M2, N2, K,
+                             (const cuDoubleComplex *) &mzone,
+                             (const cuDoubleComplex *)WORKC, LDWORKC,
+                             (const cuDoubleComplex *)WORK,  LDWORK,
+                             (const cuDoubleComplex *) &zone,
+                             (cuDoubleComplex *)A2,    LDA2 );
+            }
+        }
+        else {
+            /*
+             * Column or Rowwise / Forward / Right
+             * -----------------------------------
+             *
+             * Form  H * A  or  H' * A  where A  = ( A1 A2 )
+             *
+             */
+
+            /*
+             * W = A1 + A2 * V':
+             *      W = A1
+             *      W = W + A2 * V'
+             *
+             */
+            cudaMemcpy2DAsync( WORK, LDWORK * sizeof(cuDoubleComplex),
+                               A1,   LDA1   * sizeof(cuDoubleComplex),
+                               M1 * sizeof(cuDoubleComplex), K,
+                               cudaMemcpyDeviceToDevice, stream );
+
+            transW  = storev == MorseColumnwise ? MagmaNoTrans : MagmaConjTrans;
+            transA2 = storev == MorseColumnwise ? MagmaConjTrans : MagmaNoTrans;
+
+            cublasOperation_t cublasTransW;
+            if (transW == MagmaNoTrans){
+                cublasTransW = CUBLAS_OP_N;
+            }else if(transW == MagmaTrans){
+                cublasTransW = CUBLAS_OP_T;
+            }else if(transW == MagmaConjTrans){
+                cublasTransW = CUBLAS_OP_C;
+            }else{
+                fprintf(stderr, "Error in magma_zparfb_gpu: bad transW parameter %d\n", transW);
+            }
+            cublasOperation_t cublasTransA2;
+            if (transA2 == MagmaNoTrans){
+                cublasTransA2 = CUBLAS_OP_N;
+            }else if(transA2 == MagmaTrans){
+                cublasTransA2 = CUBLAS_OP_T;
+            }else if(transA2 == MagmaConjTrans){
+                cublasTransA2 = CUBLAS_OP_C;
+            }else{
+                fprintf(stderr, "Error in magma_zparfb_gpu: bad transA2 parameter %d\n", transA2);
+            }
+
+            cublasZgemm(handle, CUBLAS_OP_N, cublasTransW,
+                        M1, K, N2,
+                        (const cuDoubleComplex *) &zone,
+                        (const cuDoubleComplex*)A2    /* M1*N2 */, LDA2,
+                        (const cuDoubleComplex*)V     /* N2*K  */, LDV,
+                        (const cuDoubleComplex *) &zone,
+                        (cuDoubleComplex*)WORK  /* M1*K  */, LDWORK);
+
+            WORKC = NULL;
+            if (WORKC == NULL) {
+                /* W = W * op(T) */
+                cublasZtrmm( handle,
+                    CUBLAS_SIDE_RIGHT, CUBLAS_FILL_MODE_UPPER,
+                    cublasTrans, CUBLAS_DIAG_NON_UNIT,
+                    M2, K,
+                    (const cuDoubleComplex *) &zone,
+                    (const cuDoubleComplex*)T, LDT,
+                    (cuDoubleComplex*)WORK, LDWORK,
+                    (cuDoubleComplex*)WORK, LDWORK);
+
+
+                /* A1 = A1 - W = A1 - W * op(T) */
+                for(j = 0; j < K; j++) {
+                    cublasZaxpy(handle, M1, (const cuDoubleComplex *) &mzone,
+                        (const cuDoubleComplex*)(WORK + LDWORK*j), 1,
+                        (cuDoubleComplex*)(A1 + LDA1*j), 1);
+                }
+
+                /* A2 = A2 - W * op(V)  */
+                cublasZgemm(handle, CUBLAS_OP_N, cublasTransA2,
+                            M2, N2, K,
+                            (const cuDoubleComplex *) &mzone,
+                            (const cuDoubleComplex*)WORK  /* M2*K  */, LDWORK,
+                            (const cuDoubleComplex*)V     /* K*N2  */, LDV,
+                            (const cuDoubleComplex *) &zone,
+                            (cuDoubleComplex*)A2    /* M2*N2 */, LDA2);
+
+            } else {
+                /* A1 = A1 - W * opt(T) */
+                cublasZgemm( handle, CUBLAS_OP_N, cublasTrans,
+                    M1, K, K,
+                    (const cuDoubleComplex *) &mzone,
+                    (const cuDoubleComplex *)WORK, LDWORK,
+                    (const cuDoubleComplex *)T,    LDT,
+                    (const cuDoubleComplex *) &zone,
+                    (cuDoubleComplex *)A1,   LDA1 );
+
+                /* Wc = op(T) * V */
+                cublasZgemm( handle, cublasTrans, cublasTransA2,
+                             K, N2, K,
+                             (const cuDoubleComplex *) &zone,
+                             (const cuDoubleComplex *)T,     LDT,
+                             (const cuDoubleComplex *)V,     LDV,
+                             (const cuDoubleComplex *) &zzero,
+                             (cuDoubleComplex *)WORKC, LDWORKC );
+
+                /* A2 = A2 - W * Wc */
+                cublasZgemm( handle, CUBLAS_OP_N, CUBLAS_OP_N,
+                             M2, N2, K,
+                             (const cuDoubleComplex *) &mzone,
+                             (const cuDoubleComplex *)WORK,  LDWORK,
+                             (const cuDoubleComplex *)WORKC, LDWORKC,
+                             (const cuDoubleComplex *) &zone,
+                             (cuDoubleComplex *)A2,    LDA2 );
+            }
+        }
+    }
+    else {
+        fprintf(stderr, "Not implemented (Backward / Left or Right)");
+        return MAGMA_ERR_NOT_SUPPORTED;
+    }
+
+    cublasDestroy(handle);
+
+    return MAGMA_SUCCESS;
+}
+#else /* CHAMELEON_USE_CUBLAS_V2 */
+magma_int_t
+magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
+                 magma_direct_t direct, magma_storev_t storev,
+                 magma_int_t M1, magma_int_t N1,
+                 magma_int_t M2, magma_int_t N2,
+                 magma_int_t K, magma_int_t L,
+                       magmaDoubleComplex *A1, magma_int_t LDA1,
+                       magmaDoubleComplex *A2, magma_int_t LDA2,
+                 const magmaDoubleComplex *V, magma_int_t LDV,
+                 const magmaDoubleComplex *T, magma_int_t LDT,
+                       magmaDoubleComplex *WORK, magma_int_t LDWORK,
+                       magmaDoubleComplex *WORKC, magma_int_t LDWORKC,
+                       CUstream stream)
 
 {
 #if defined(PRECISION_z) || defined(PRECISION_c)
@@ -452,6 +772,7 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
 
     return MAGMA_SUCCESS;
 }
+#endif /* CHAMELEON_USE_CUBLAS_V2 */
 
 magma_int_t
 magma_ztsmqr_gpu( magma_side_t side, magma_trans_t trans,

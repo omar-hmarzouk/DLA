@@ -105,6 +105,84 @@ static void cl_zgemm_cpu_func(void *descr[], void *cl_arg)
 }
 
 #ifdef CHAMELEON_USE_CUDA
+#if defined(CHAMELEON_USE_CUBLAS_V2)
+static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
+{
+    MORSE_enum transA;
+    MORSE_enum transB;
+    int m;
+    int n;
+    int k;
+    cuDoubleComplex alpha;
+    const cuDoubleComplex *A;
+    int lda;
+    const cuDoubleComplex *B;
+    int ldb;
+    cuDoubleComplex beta;
+    cuDoubleComplex *C;
+    int ldc;
+
+    A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
+    B = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
+    C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
+    starpu_codelet_unpack_args(cl_arg, &transA, &transB, &m, &n, &k, &alpha, &lda, &ldb, &beta, &ldc);
+
+    cublasHandle_t handle;
+    cublasStatus_t stat = cublasCreate(&handle);
+    if (stat != CUBLAS_STATUS_SUCCESS) {
+        printf ("CUBLAS initialization failed\n");
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    CUstream stream = starpu_cuda_get_local_stream();
+    stat = cublasSetStream(handle, stream);
+    if (stat != CUBLAS_STATUS_SUCCESS) {
+            printf ("cublasSetStream failed\n");
+            assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    cublasOperation_t cublasTransA;
+    if (transA == MorseNoTrans){
+        cublasTransA = CUBLAS_OP_N;
+    }else if(transA == MorseTrans){
+        cublasTransA = CUBLAS_OP_T;
+    }else if(transA == MorseConjTrans){
+        cublasTransA = CUBLAS_OP_C;
+    }else{
+        fprintf(stderr, "Error in cl_zgemm_cuda_func: bad transA parameter %d\n", transA);
+    }
+    cublasOperation_t cublasTransB;
+    if (transB == MorseNoTrans){
+        cublasTransB = CUBLAS_OP_N;
+    }else if(transB == MorseTrans){
+        cublasTransB = CUBLAS_OP_T;
+    }else if(transB == MorseConjTrans){
+        cublasTransB = CUBLAS_OP_C;
+    }else{
+        fprintf(stderr, "Error in cl_zgemm_cuda_func: bad transB parameter %d\n", transB);
+    }
+
+    stat = cublasZgemm(handle,
+        cublasTransA, cublasTransB,
+        m, n, k,
+        (const cuDoubleComplex *) &alpha, A, lda,
+        B, ldb,
+        (const cuDoubleComplex *) &beta,  C, ldc);
+    if (stat != CUBLAS_STATUS_SUCCESS){
+        printf ("cublasZgemm failed");
+        cublasDestroy(handle);
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    cublasDestroy(handle);
+
+#ifndef STARPU_CUDA_ASYNC
+    cudaStreamSynchronize( stream );
+#endif
+
+    return;
+}
+#else /* CHAMELEON_USE_CUBLAS_V2 */
 static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum transA;
@@ -135,6 +213,7 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
         alpha, A, lda,
                B, ldb,
         beta,  C, ldc);
+
     assert( CUBLAS_STATUS_SUCCESS == cublasGetError() );
 
 #ifndef STARPU_CUDA_ASYNC
@@ -143,7 +222,8 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
-#endif
+#endif /* CHAMELEON_USE_CUBLAS_V2 */
+#endif /* CHAMELEON_USE_CUDA */
 
 /*
  * Codelet definition

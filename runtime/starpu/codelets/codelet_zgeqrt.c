@@ -153,6 +153,61 @@ static void cl_zgeqrt_cpu_func(void *descr[], void *cl_arg)
 
 #if defined(CHAMELEON_USE_MAGMA)
 
+#if defined(CHAMELEON_USE_CUBLAS_V2)
+magma_int_t
+magma_zgemerge_gpu(magma_side_t side, magma_diag_t diag,
+                   magma_int_t M, magma_int_t N,
+                   magmaDoubleComplex *A, magma_int_t LDA,
+                   magmaDoubleComplex *B, magma_int_t LDB)
+{
+    int i, j;
+    magmaDoubleComplex *cola, *colb;
+    cublasHandle_t handle;
+    cublasStatus_t stat = cublasCreate(&handle);
+    if (stat != CUBLAS_STATUS_SUCCESS) {
+        printf ("CUBLAS initialization failed\n");
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    CUstream stream = starpu_cuda_get_local_stream();
+    stat = cublasSetStream(handle, stream);
+    if (stat != CUBLAS_STATUS_SUCCESS) {
+        printf ("cublasSetStream failed\n");
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    if (M < 0) {
+        return -1;
+    }
+    if (N < 0) {
+        return -2;
+    }
+    if ( (LDA < max(1,M)) && (M > 0) ) {
+        return -5;
+    }
+    if ( (LDB < max(1,M)) && (M > 0) ) {
+        return -7;
+    }
+
+    if (side == MagmaLeft){
+        for(i=0; i<N; i++){
+            cola = A + i*LDA;
+            colb = B + i*LDB;
+            cublasZcopy(handle, i+1, cola, 1, colb, 1);
+        }
+    }else{
+        for(i=0; i<N; i++){
+            cola = A + i*LDA;
+            colb = B + i*LDB;
+            cublasZcopy(handle, M-i, cola + i, 1, colb + i, 1);
+        }
+    }
+
+    cublasDestroy(handle);
+
+    return MAGMA_SUCCESS;
+}
+#else /* CHAMELEON_USE_CUBLAS_V2 */
 magma_int_t
 magma_zgemerge_gpu(magma_side_t side, magma_diag_t diag,
                    magma_int_t M, magma_int_t N,
@@ -191,7 +246,7 @@ magma_zgemerge_gpu(magma_side_t side, magma_diag_t diag,
 
     return MAGMA_SUCCESS;
 }
-
+#endif /* CHAMELEON_USE_CUBLAS_V2 */
 
 magma_int_t
 magma_zgeqrt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,

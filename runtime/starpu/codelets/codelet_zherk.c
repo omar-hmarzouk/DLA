@@ -93,6 +93,80 @@ static void cl_zherk_cpu_func(void *descr[], void *cl_arg)
 }
 
 #ifdef CHAMELEON_USE_CUDA
+#if defined(CHAMELEON_USE_CUBLAS_V2)
+static void cl_zherk_cuda_func(void *descr[], void *cl_arg)
+{
+    MORSE_enum uplo;
+    MORSE_enum trans;
+    int n;
+    int k;
+    double alpha;
+    const cuDoubleComplex *A;
+    int lda;
+    double beta;
+    cuDoubleComplex *C;
+    int ldc;
+
+    A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
+    C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
+    starpu_codelet_unpack_args(cl_arg, &uplo, &trans, &n, &k, &alpha, &lda, &beta, &ldc);
+
+    cublasHandle_t handle;
+    cublasStatus_t stat = cublasCreate(&handle);
+    if (stat != CUBLAS_STATUS_SUCCESS) {
+        printf ("CUBLAS initialization failed\n");
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    CUstream stream = starpu_cuda_get_local_stream();
+    stat = cublasSetStream(handle, stream);
+    if (stat != CUBLAS_STATUS_SUCCESS) {
+        printf ("cublasSetStream failed\n");
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    cublasFillMode_t cublasUplo;
+    if (uplo == MorseUpper){
+        cublasUplo = CUBLAS_FILL_MODE_UPPER;
+    }else if(uplo == MorseLower){
+        cublasUplo = CUBLAS_FILL_MODE_LOWER;
+    }else if(uplo == MorseUpperLower){
+        cublasUplo = 0;
+    }else{
+        fprintf(stderr, "Error in cl_zherk_cuda_func: bad uplo parameter %d\n", uplo);
+    }
+
+    cublasOperation_t cublasTrans;
+    if (trans == MorseNoTrans){
+        cublasTrans = CUBLAS_OP_N;
+    }else if(trans == MorseTrans){
+        cublasTrans = CUBLAS_OP_T;
+    }else if(trans == MorseConjTrans){
+        cublasTrans = CUBLAS_OP_C;
+    }else{
+        fprintf(stderr, "Error in cl_zherk_cuda_func: bad trans parameter %d\n", trans);
+    }
+
+    stat = cublasZherk(handle,
+        cublasUplo, cublasTrans,
+        n, k,
+        (const double *) &alpha, A, lda,
+        (const double *) &beta, C, ldc);
+    if (stat != CUBLAS_STATUS_SUCCESS){
+        printf ("cublasZherk failed");
+        cublasDestroy(handle);
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    cublasDestroy(handle);
+
+#ifndef STARPU_CUDA_ASYNC
+    cudaStreamSynchronize( stream );
+#endif
+
+    return;
+}
+#else /* CHAMELEON_USE_CUBLAS_V2 */
 static void cl_zherk_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;
@@ -125,7 +199,8 @@ static void cl_zherk_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
-#endif
+#endif /* CHAMELEON_USE_CUBLAS_V2 */
+#endif /* CHAMELEON_USE_CUDA */
 
 /*
  * Codelet definition

@@ -102,6 +102,81 @@ static void cl_zhemm_cpu_func(void *descr[], void *cl_arg)
 }
 
 #ifdef CHAMELEON_USE_CUDA
+#if defined(CHAMELEON_USE_CUBLAS_V2)
+static void cl_zhemm_cuda_func(void *descr[], void *cl_arg)
+{
+    MORSE_enum side;
+    MORSE_enum uplo;
+    int M;
+    int N;
+    cuDoubleComplex alpha;
+    const cuDoubleComplex *A;
+    int LDA;
+    const cuDoubleComplex *B;
+    int LDB;
+    cuDoubleComplex beta;
+    cuDoubleComplex *C;
+    int LDC;
+
+    A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
+    B = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
+    C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
+    starpu_codelet_unpack_args(cl_arg, &side, &uplo, &M, &N, &alpha, &LDA, &LDB, &beta, &LDC);
+
+    cublasHandle_t handle;
+    cublasStatus_t stat = cublasCreate(&handle);
+    if (stat != CUBLAS_STATUS_SUCCESS) {
+        printf ("CUBLAS initialization failed\n");
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    CUstream stream = starpu_cuda_get_local_stream();
+    stat = cublasSetStream(handle, stream);
+    if (stat != CUBLAS_STATUS_SUCCESS) {
+        printf ("cublasSetStream failed\n");
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    cublasSideMode_t cublasSide;
+    if (side == MorseLeft){
+        cublasSide = CUBLAS_SIDE_LEFT;
+    }else if (side == MorseRight){
+        cublasSide = CUBLAS_SIDE_RIGHT;
+    }else{
+        fprintf(stderr, "Error in cl_zhemm_cuda_func: bad side parameter %d\n", side);
+    }
+    cublasFillMode_t cublasUplo;
+    if (uplo == MorseUpper){
+        cublasUplo = CUBLAS_FILL_MODE_UPPER;
+    }else if(uplo == MorseLower){
+        cublasUplo = CUBLAS_FILL_MODE_LOWER;
+    }else if(uplo == MorseUpperLower){
+        cublasUplo = 0;
+    }else{
+        fprintf(stderr, "Error in cl_zhemm_cuda_func: bad uplo parameter %d\n", uplo);
+    }
+
+    stat = cublasZhemm(handle,
+        cublasSide, cublasUplo,
+        M, N,
+        (const cuDoubleComplex *) &alpha, A, LDA,
+        B, LDB,
+        (const cuDoubleComplex *) &beta, C, LDC);
+    if (stat != CUBLAS_STATUS_SUCCESS){
+        printf ("cublasZhemm failed");
+        cublasDestroy(handle);
+        assert( stat == CUBLAS_STATUS_SUCCESS );
+    }
+
+    cublasDestroy(handle);
+
+#ifndef STARPU_CUDA_ASYNC
+    cudaStreamSynchronize( stream );
+#endif
+
+    return;
+}
+#else /* CHAMELEON_USE_CUBLAS_V2 */
 static void cl_zhemm_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
@@ -138,7 +213,8 @@ static void cl_zhemm_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
-#endif
+#endif /* CHAMELEON_USE_CUBLAS_V2 */
+#endif /* CHAMELEON_USE_CUDA */
 
 /*
  * Codelet definition
