@@ -53,13 +53,6 @@ void morse_pzsytrf(MORSE_enum uplo, MORSE_desc_t *A,
         return;
     RUNTIME_options_init(&options, morse, sequence, request);
 
-#ifdef CHAMELEON_USE_MAGMA
-    if (0) /* Disable the workspace as long as it is is not used*/
-    {
-        int nb = magma_get_zsytrf_nb(A->nb);
-        ws_host = sizeof(MORSE_Complex64_t)*nb*nb;
-    }
-#endif
     RUNTIME_options_ws_alloc( &options, 0, ws_host );
 
     /*
