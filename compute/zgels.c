@@ -287,7 +287,7 @@ int MORSE_zgels_Tile(MORSE_enum trans, MORSE_desc_t *A,
     RUNTIME_barrier(morse);
     RUNTIME_desc_getoncpu(A);
     RUNTIME_desc_getoncpu(B);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

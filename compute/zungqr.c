@@ -159,7 +159,7 @@ int MORSE_zungqr(int M, int N, int K,
 /*        morse_ziptile2lap( descQ, Q, NB, NB, LDQ, N,  sequence, &request);*/
 /*        RUNTIME_barrier(morse);*/
 /*    }*/
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

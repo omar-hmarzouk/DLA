@@ -57,7 +57,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     START_TIMING();
     MORSE_zgels_Tile( MorseNoTrans, descA, descT, descX );
     STOP_TIMING();
-    
+
     /* Allocate Workspace */
     MORSE_Dealloc_Workspace(&descT);
 

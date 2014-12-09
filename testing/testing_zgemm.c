@@ -133,7 +133,7 @@ int testing_zgemm(int argc, char **argv)
             MORSE_zgemm(trans[ta], trans[tb], M, N, K, alpha, A, LDA, B, LDB, beta, Cfinal, LDC);
 
             /* Check the solution */
-            info_solution = check_solution(trans[ta], trans[tb], M, N, K, 
+            info_solution = check_solution(trans[ta], trans[tb], M, N, K,
                                            alpha, A, LDA, B, LDB, beta, Cinit, Cfinal, LDC);
             if (MORSE_My_Mpi_Rank() == 0){
                 if (info_solution == 0) {
@@ -191,7 +191,7 @@ static int check_solution(MORSE_enum transA, MORSE_enum transB, int M, int N, in
     Anorm       = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), Am, An, A,       LDA, work);
     Bnorm       = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), Bm, Bn, B,       LDB, work);
     Cinitnorm   = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M,  N,  Cref,    LDC, work);
-    Cmorsenorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M,  N,  Cmorse, LDC, work);
+    Cmorsenorm  = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M,  N,  Cmorse, LDC, work);
 
     cblas_zgemm(CblasColMajor, (CBLAS_TRANSPOSE)transA, (CBLAS_TRANSPOSE)transB, M, N, K, 
                 CBLAS_SADDR(alpha), A, LDA, B, LDB, CBLAS_SADDR(beta), Cref, LDC);
