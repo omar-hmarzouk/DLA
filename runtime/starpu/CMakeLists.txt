@@ -94,9 +94,11 @@ set(RUNTIME_COMMON
     ${RUNTIME_COMMON_GENERATED}
     )
 
+set(flags_to_add "")
 foreach(_prec ${CHAMELEON_PRECISION})
-    set_source_files_properties(control/profiling.c PROPERTIES COMPILE_FLAGS "-DPRECISION_${_prec}")
+    set(flags_to_add "${flags_to_add} -DPRECISION_${_prec}")
 endforeach()
+set_source_files_properties(control/profiling.c PROPERTIES COMPILE_FLAGS "${flags_to_add}")
 
 # Generate the morse sources for all possible precisions
 # ------------------------------------------------------

@@ -42,9 +42,11 @@ set(CHAMELEON_CONTROL
 #    ../control/morsewinthread.c
    )
 
+set(flags_to_add "")
 foreach(_prec ${CHAMELEON_PRECISION})
-    set_source_files_properties(../control/tile.c PROPERTIES COMPILE_FLAGS "-DPRECISION_${_prec}")
+    set(flags_to_add "${flags_to_add} -DPRECISION_${_prec}")
 endforeach()
+set_source_files_properties(../control/tile.c PROPERTIES COMPILE_FLAGS "${flags_to_add}")
 
 # Generate the morse sources for all possible precisions
 # ------------------------------------------------------

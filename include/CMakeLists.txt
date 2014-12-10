@@ -53,9 +53,11 @@ set(CHAMELEON_HDRS
     ${CHAMELEON_HDRS_GENERATED}
     )
 
+set(flags_to_add "")
 foreach(_prec ${CHAMELEON_PRECISION})
-    set_source_files_properties(runtime.h PROPERTIES COMPILE_FLAGS "-DPRECISION_${_prec}")
+    set(flags_to_add "${flags_to_add} -DPRECISION_${_prec}")
 endforeach()
+set_source_files_properties(runtime.h PROPERTIES COMPILE_FLAGS "${flags_to_add}")
 
 # Force generation of headers
 # ---------------------------
