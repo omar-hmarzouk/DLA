@@ -503,25 +503,7 @@ int MORSE_Desc_Create_User(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int 
     **desc = morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
         get_blkaddr, get_blkldd, get_rankof);
 
-    if (mat == NULL) {
-
-#ifdef CHAMELEON_SIMULATION
-        (**desc).mat = (void*) 1;
-#else
-        /* TODO: a call to morse_desc_mat_alloc should be made, but require to
-        move the call to RUNTIME_desc_create within the function */
-        size_t size = (size_t)((*desc)->llm) * (size_t)((*desc)->lln)
-            * (size_t)morse_element_size((*desc)->dtyp);
-
-        if (((**desc).mat = malloc(size)) == NULL) {
-            morse_error("MORSE_Desc_Create", "malloc() failed");
-            return MORSE_ERR_OUT_OF_RESOURCES;
-        }
-#endif
-
-    } else {
-        (**desc).mat = mat;
-    }
+    (**desc).mat = mat;
 
     /* Create scheduler structure like registering data */
     RUNTIME_desc_create( *desc );

@@ -101,27 +101,18 @@ int main(int argc, char *argv[]) {
     MORSE_zplghe_Tile( (double)N, descA, 51 );
 
     /* generate RHS */
-    MORSE_Desc_Create_User(&descB, NULL, MorseComplexDouble,
-                           NB, NB, NB*NB, N, 1, 0, 0, N, 1, 1, 1,
-                           morse_getaddr_ccrb,
-                           morse_getblkldd_ccrb,
-                           morse_getrankof_2d);
+    MORSE_Desc_Create(&descB, NULL, MorseComplexDouble,
+                      NB, NB, NB*NB, N, 1, 0, 0, N, 1, 1, 1);
     MORSE_zplrnt_Tile( descB, 7672 );
 
     /* copy A before facto. in order to check the result */
-    MORSE_Desc_Create_User(&descAC, NULL, MorseComplexDouble,
-                           NB, NB, NB*NB, N, N, 0, 0, N, N, 1, 1,
-                           morse_getaddr_ccrb,
-                           morse_getblkldd_ccrb,
-                           morse_getrankof_2d);
+    MORSE_Desc_Create(&descAC, NULL, MorseComplexDouble,
+                      NB, NB, NB*NB, N, N, 0, 0, N, N, 1, 1);
     MORSE_zlacpy_Tile(MorseUpperLower, descA, descAC);
 
     /* copy B before solving in order to check the result */
-    MORSE_Desc_Create_User(&descX, NULL, MorseComplexDouble,
-                           NB, NB, NB*NB, N, 1, 0, 0, N, 1, 1, 1,
-                           morse_getaddr_ccrb,
-                           morse_getblkldd_ccrb,
-                           morse_getrankof_2d);
+    MORSE_Desc_Create(&descX, NULL, MorseComplexDouble,
+                      NB, NB, NB*NB, N, 1, 0, 0, N, 1, 1, 1);
     MORSE_zlacpy_Tile(MorseUpperLower, descB, descX);
 
     /* solve the system AX = B using the Cholesky factorization,
