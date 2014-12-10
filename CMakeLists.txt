@@ -342,6 +342,7 @@ if(NOT CHAMELEON_SIMULATION)
                 find_package(MAGMA ${CHAMELEON_MAGMA_VERSION} REQUIRED COMPONENTS CBLAS LAPACK CUDA)
 
                 if ( MAGMA_FOUND )
+                    add_definitions(-DHAVE_CUBLAS)
                     add_definitions(-DCHAMELEON_USE_CUBLAS)
                     add_definitions(-DCHAMELEON_USE_MAGMA)
                     list(APPEND EXTRA_LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
