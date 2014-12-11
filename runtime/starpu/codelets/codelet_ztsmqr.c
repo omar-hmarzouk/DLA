@@ -633,7 +633,6 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
                         zone,
                         (cuDoubleComplex*)WORK  /* K*N1  */, LDWORK);
 
-            WORKC = NULL;
             if (WORKC == NULL) {
                 /* W = op(T) * W */
                 cublasZtrmm( morse_lapack_const(MagmaLeft), morse_lapack_const(MagmaUpper),
@@ -714,7 +713,6 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
                         zone,
                         (cuDoubleComplex*)WORK  /* M1*K  */, LDWORK);
 
-            WORKC = NULL;
             if (WORKC == NULL) {
                 /* W = W * op(T) */
                 cublasZtrmm( morse_lapack_const(MagmaRight), morse_lapack_const(MagmaUpper),
