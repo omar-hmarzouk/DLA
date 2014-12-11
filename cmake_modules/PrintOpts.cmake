@@ -70,6 +70,9 @@ foreach (_dep ${CHAMELEON_DEP})
 endforeach ()
 set(dep_message "${dep_message}"
 "\n"
+"       Definitions: ${CHAMELEON_DEFINITIONS_LIST}\n")
+set(dep_message "${dep_message}"
+"\n"
 "       INSTALL_PREFIX ......: ${CMAKE_INSTALL_PREFIX}\n")
 
 string(REPLACE ";" " " dep_message_wsc "${dep_message}")
