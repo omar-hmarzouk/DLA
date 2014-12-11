@@ -169,6 +169,10 @@ magma_zgelqt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
 
     int i, k, ib, lddwork, old_i, old_ib, rows, cols;
     double _Complex one=1.;
+    CUstream stream;
+
+    stream = starpu_cuda_get_local_stream();
+    cublasSetKernelStream( stream );
 
     if (m < 0) {
         return -1;
@@ -221,7 +225,7 @@ magma_zgelqt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
 
             /* copy the lower diag tile into d_A */
             magma_zgemerge_gpu(MagmaRight, MagmaUnit, old_ib, old_ib,
-                               dd, ldd, da_ref(old_i, old_i), ldda);
+                               dd, ldd, da_ref(old_i, old_i), ldda, stream);
 
         }
 
@@ -280,7 +284,7 @@ magma_zgelqt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
                 }
                 /* copy the upper diag tile into d_A */
                 magma_zgemerge_gpu(MagmaRight, MagmaUnit, old_ib, old_ib,
-                                   dd, ldd, da_ref(old_i, old_i), ldda);
+                                   dd, ldd, da_ref(old_i, old_i), ldda, stream);
             }
         }
 

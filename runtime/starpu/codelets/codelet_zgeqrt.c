@@ -158,11 +158,11 @@ magma_int_t
 magma_zgemerge_gpu(magma_side_t side, magma_diag_t diag,
                    magma_int_t M, magma_int_t N,
                    magmaDoubleComplex *A, magma_int_t LDA,
-                   magmaDoubleComplex *B, magma_int_t LDB)
+                   magmaDoubleComplex *B, magma_int_t LDB,
+                   CUstream stream)
 {
     int i, j;
     magmaDoubleComplex *cola, *colb;
-    CUstream stream;
     cublasHandle_t handle;
     cublasStatus_t stat;
 
@@ -172,7 +172,6 @@ magma_zgemerge_gpu(magma_side_t side, magma_diag_t diag,
         assert( stat == CUBLAS_STATUS_SUCCESS );
     }
 
-    stream = starpu_cuda_get_local_stream();
     stat = cublasSetStream(handle, stream);
     if (stat != CUBLAS_STATUS_SUCCESS) {
         printf ("cublasSetStream failed\n");
@@ -196,13 +195,19 @@ magma_zgemerge_gpu(magma_side_t side, magma_diag_t diag,
         for(i=0; i<N; i++){
             cola = A + i*LDA;
             colb = B + i*LDB;
-            cublasZcopy(handle, i+1, cola, 1, colb, 1);
+//            cublasZcopy(handle, i+1, cola, 1, colb, 1);
+            cudaMemcpyAsync(colb , cola,
+                            (i+1)*sizeof(cuDoubleComplex),
+                            cudaMemcpyDeviceToDevice, stream);
         }
     }else{
         for(i=0; i<N; i++){
             cola = A + i*LDA;
             colb = B + i*LDB;
-            cublasZcopy(handle, M-i, cola + i, 1, colb + i, 1);
+//            cublasZcopy(handle, M-i, cola + i, 1, colb + i, 1);
+            cudaMemcpyAsync(colb+i , cola+i,
+                            (M-i)*sizeof(cuDoubleComplex),
+                            cudaMemcpyDeviceToDevice, stream);
         }
     }
 
@@ -215,7 +220,8 @@ magma_int_t
 magma_zgemerge_gpu(magma_side_t side, magma_diag_t diag,
                    magma_int_t M, magma_int_t N,
                    magmaDoubleComplex *A, magma_int_t LDA,
-                   magmaDoubleComplex *B, magma_int_t LDB)
+                   magmaDoubleComplex *B, magma_int_t LDB,
+                   CUstream stream)
 {
     int i, j;
     magmaDoubleComplex *cola, *colb;
@@ -237,19 +243,19 @@ magma_zgemerge_gpu(magma_side_t side, magma_diag_t diag,
         for(i=0; i<N; i++){
             cola = A + i*LDA;
             colb = B + i*LDB;
-            //cublasZcopy(i+1, cola, 1, colb, 1);
-            cudaMemcpy(colb , cola,
-                       (i+1)*sizeof(cuDoubleComplex),
-                       cudaMemcpyDeviceToDevice );
+//            cublasZcopy(i+1, cola, 1, colb, 1);
+            cudaMemcpyAsync(colb , cola,
+                            (i+1)*sizeof(cuDoubleComplex),
+                            cudaMemcpyDeviceToDevice, stream);
         }
     }else{
         for(i=0; i<N; i++){
             cola = A + i*LDA;
             colb = B + i*LDB;
-            //cublasZcopy(M-i, cola + i, 1, colb + i, 1);
-            cudaMemcpy(colb+i , cola+i,
-                       (M-i)*sizeof(cuDoubleComplex),
-                       cudaMemcpyDeviceToDevice );
+//            cublasZcopy(M-i, cola + i, 1, colb + i, 1);
+            cudaMemcpyAsync(colb+i , cola+i,
+                            (M-i)*sizeof(cuDoubleComplex),
+                            cudaMemcpyDeviceToDevice, stream);
         }
     }
 
@@ -276,6 +282,10 @@ magma_zgeqrt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
 
     int i, k, ib, lddwork, old_i, old_ib, rows, cols;
     double _Complex one=1.;
+    CUstream stream;
+
+    stream = starpu_cuda_get_local_stream();
+    cublasSetKernelStream( stream );
 //    int lwkopt = n * nb;
 //    hwork[0] = *((magmaDoubleComplex*) &lwkopt);
 
@@ -297,16 +307,15 @@ magma_zgeqrt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
 
     /* lower parts of little T must be zero: memset to 0 for simplicity */
     memset(t_ref(0,0), 0, nb*nb*sizeof(magmaDoubleComplex));
-    cudaMemset(dt_ref(0,0), 0, nb*n*sizeof(magmaDoubleComplex));
+    cudaMemsetAsync(dt_ref(0,0), 0, nb*n*sizeof(magmaDoubleComplex), stream);
 
     /* copy first panel of A on the host */
 //	cublasGetMatrix(m, min(nb,n), sizeof(magmaDoubleComplex),
 //                    da_ref(0, 0), ldda,
 //                    v, ldv);
-    /* copy first panel of A on the host */
     cudaMemcpy( v, da_ref(0,0),
                 m*min(nb,n)*sizeof(magmaDoubleComplex),
-                cudaMemcpyDeviceToHost );
+                cudaMemcpyDeviceToHost);
 
     /* Use blocked code initially */
     for (i = 0; i < k; i += nb) {
@@ -324,7 +333,7 @@ magma_zgeqrt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
             /* copy panel of A from device to host */
             cudaMemcpy( v, da_ref(0,i),
                         m*ib*sizeof(magmaDoubleComplex),
-                        cudaMemcpyDeviceToHost );
+                        cudaMemcpyDeviceToHost);
 
             /* Apply H' to A(i:m,i+2*ib:n) from the left */
             cols = n-old_i-2*old_ib;
@@ -338,7 +347,7 @@ magma_zgeqrt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
 
             /* copy the upper diag tile into d_A */
             magma_zgemerge_gpu(MagmaLeft, MagmaUnit, old_ib, old_ib,
-                               dd, ldd, da_ref(old_i, old_i), ldda);
+                               dd, ldd, da_ref(old_i, old_i), ldda, stream);
 
         }
 
@@ -397,7 +406,7 @@ magma_zgeqrt_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
                 }
                 /* copy the upper diag tile into d_A */
                 magma_zgemerge_gpu(MagmaLeft, MagmaUnit, old_ib, old_ib,
-                                   dd, ldd, da_ref(old_i, old_i), ldda);
+                                   dd, ldd, da_ref(old_i, old_i), ldda, stream);
             }
         }
 
