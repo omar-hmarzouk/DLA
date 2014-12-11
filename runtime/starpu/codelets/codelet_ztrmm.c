@@ -202,12 +202,13 @@ static void cl_ztrmm_cuda_func(void *descr[], void *cl_arg)
     int LDA;
     cuDoubleComplex *B;
     int LDB;
+    CUstream stream;
 
     A = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     starpu_codelet_unpack_args(cl_arg, &side, &uplo, &transA, &diag, &M, &N, &alpha, &LDA, &LDB);
 
-    CUstream stream = starpu_cuda_get_local_stream();
+    stream = starpu_cuda_get_local_stream();
     cublasSetKernelStream( stream );
 
     cublasZtrmm(

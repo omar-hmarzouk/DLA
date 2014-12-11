@@ -181,12 +181,13 @@ static void cl_zsyrk_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex beta;
     cuDoubleComplex *C;
     int ldc;
+    CUstream stream;
 
     A = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     starpu_codelet_unpack_args(cl_arg, &uplo, &trans, &n, &k, &alpha, &lda, &beta, &ldc);
 
-    CUstream stream = starpu_cuda_get_local_stream();
+    stream = starpu_cuda_get_local_stream();
     cublasSetKernelStream( stream );
 
     cublasZsyrk(

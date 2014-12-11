@@ -187,13 +187,14 @@ static void cl_zher2k_cuda_func(void *descr[], void *cl_arg)
     double beta;
     cuDoubleComplex *C;
     int ldc;
+    CUstream stream;
 
     A = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &uplo, &trans, &n, &k, &alpha, &lda, &ldb, &beta, &ldc);
 
-    CUstream stream = starpu_cuda_get_local_stream();
+    stream = starpu_cuda_get_local_stream();
     cublasSetKernelStream( stream );
 
     cublasZher2k( morse_lapack_const(uplo), morse_lapack_const(trans),
