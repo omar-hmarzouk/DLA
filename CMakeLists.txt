@@ -329,7 +329,7 @@ if(NOT CHAMELEON_SIMULATION)
             set(CMAKE_REQUIRED_LIBRARIES "${saved_libs}")
             FindHeader(CUDA cublas_v2.h)
             if(CUDA_cublas_v2.h_DIRS)
-                add_definitions(-DCHAMELEON_USE_CUBLAS_V2)
+                #add_definitions(-DCHAMELEON_USE_CUBLAS_V2)
             endif()
         endif (CUDA_FOUND)
 
