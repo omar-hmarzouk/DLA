@@ -117,27 +117,30 @@ static void cl_zhemm_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex beta;
     cuDoubleComplex *C;
     int LDC;
+    CUstream stream;
+    cublasHandle_t handle;
+    cublasStatus_t stat;
+    cublasSideMode_t cublasSide;
+    cublasFillMode_t cublasUplo;
 
     A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &side, &uplo, &M, &N, &alpha, &LDA, &LDB, &beta, &LDC);
 
-    cublasHandle_t handle;
-    cublasStatus_t stat = cublasCreate(&handle);
+    stat = cublasCreate(&handle);
     if (stat != CUBLAS_STATUS_SUCCESS) {
         printf ("CUBLAS initialization failed\n");
         assert( stat == CUBLAS_STATUS_SUCCESS );
     }
 
-    CUstream stream = starpu_cuda_get_local_stream();
+    stream = starpu_cuda_get_local_stream();
     stat = cublasSetStream(handle, stream);
     if (stat != CUBLAS_STATUS_SUCCESS) {
         printf ("cublasSetStream failed\n");
         assert( stat == CUBLAS_STATUS_SUCCESS );
     }
 
-    cublasSideMode_t cublasSide;
     if (side == MorseLeft){
         cublasSide = CUBLAS_SIDE_LEFT;
     }else if (side == MorseRight){
@@ -145,7 +148,6 @@ static void cl_zhemm_cuda_func(void *descr[], void *cl_arg)
     }else{
         fprintf(stderr, "Error in cl_zhemm_cuda_func: bad side parameter %d\n", side);
     }
-    cublasFillMode_t cublasUplo;
     if (uplo == MorseUpper){
         cublasUplo = CUBLAS_FILL_MODE_UPPER;
     }else if(uplo == MorseLower){

@@ -213,11 +213,17 @@ magma_ztsqrt2_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
 	cublasGetMatrix(nb, nb, sizeof(magmaDoubleComplex),
                     da1_ref(0, 0), ldda1,
                     d, ldd);
+//	cudaMemcpy( d, da1_ref(0,0),
+//	            nb*nb*sizeof(cuDoubleComplex),
+//	            cudaMemcpyDeviceToHost );
 
 	/* copy first panel of A2 from device to host: da2 -> a2 */
-	cublasGetMatrix(m, nb, sizeof(magmaDoubleComplex),
-                    da2_ref(0, 0), ldda2,
-                    a2, lda2);
+//	cublasGetMatrix(m, nb, sizeof(magmaDoubleComplex),
+//                    da2_ref(0, 0), ldda2,
+//                    a2, lda2);
+	cudaMemcpy( a2, da2_ref(0, 0),
+	            m*nb*sizeof(cuDoubleComplex),
+	            cudaMemcpyDeviceToHost );
 
 	/* This is only blocked code for now */
 	for (i = 0; i < n; i += nb) {
@@ -234,11 +240,17 @@ magma_ztsqrt2_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
 			cublasGetMatrix(ib, ib, sizeof(magmaDoubleComplex),
 		                    da1_ref(i, i), ldda1,
 		                    d, ldd);
+//		    cudaMemcpy( d, da1_ref(i,i),
+//		        ib*ib*sizeof(cuDoubleComplex),
+//		        cudaMemcpyDeviceToHost );
 
 			/* copy panel of A2 from device to host: da2 -> a2 */
 			cublasGetMatrix(rows, ib, sizeof(magmaDoubleComplex),
                             da2_ref(0, i), ldda2,
                             a2, lda2);
+//            cudaMemcpy( a2, da2_ref(0,i),
+//                rows*ib*sizeof(cuDoubleComplex),
+//                cudaMemcpyDeviceToHost );
 
 			/* Apply H' to A(i:m,i+2*ib:n) from the left */
 			cols = n-old_i-2*old_ib;
@@ -268,16 +280,25 @@ magma_ztsqrt2_gpu( magma_int_t m, magma_int_t n, magma_int_t nb,
 		cublasSetMatrix(rows, ib, sizeof(magmaDoubleComplex),
                         a2, lda2,
                         da2_ref(0, i), ldda2);
+//        cudaMemcpy( da2_ref(0,i), a2,
+//            rows*ib*sizeof(cuDoubleComplex),
+//            cudaMemcpyHostToDevice );
 
 		/* Send the triangular factor T from hwork to the GPU */
 		cublasSetMatrix(ib, ib, sizeof(magmaDoubleComplex),
                         t, ldt,
                         dt_ref(0, i), lddt);
+//        cudaMemcpy( dt_ref(0,i), t,
+//            ib*ib*sizeof(cuDoubleComplex),
+//            cudaMemcpyHostToDevice );
 
 		/* get back the diag tile in A1 from host to device: d -> da1 */
 		cublasSetMatrix(ib, ib, sizeof(magmaDoubleComplex),
                         d, ldd,
                         da1_ref(i, i), ldda1);
+//        cudaMemcpy( da1_ref(i, i), d,
+//            ib*ib*sizeof(cuDoubleComplex),
+//            cudaMemcpyHostToDevice );
 
 		/* tsmqr update on one panel forward (look ahead 1) */
 		if (i + ib < n) {

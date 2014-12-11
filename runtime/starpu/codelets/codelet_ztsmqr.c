@@ -245,7 +245,12 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
     magma_trans_t transW;
     magma_trans_t transA2;
     cublasHandle_t handle;
-    cublasStatus_t stat = cublasCreate(&handle);
+    cublasStatus_t stat;
+    cublasOperation_t cublasTrans;
+    cublasOperation_t cublasTransW;
+    cublasOperation_t cublasTransA2;
+
+    stat = cublasCreate(&handle);
     if (stat != CUBLAS_STATUS_SUCCESS) {
         printf ("CUBLAS initialization failed\n");
         assert( stat == CUBLAS_STATUS_SUCCESS );
@@ -257,7 +262,6 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
         assert( stat == CUBLAS_STATUS_SUCCESS );
     }
 
-    cublasOperation_t cublasTrans;
     if (trans == MagmaNoTrans){
         cublasTrans = CUBLAS_OP_N;
     }else if(trans == MagmaTrans){
@@ -329,7 +333,6 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
             transW  = storev == MorseColumnwise ? MagmaConjTrans : MagmaNoTrans;
             transA2 = storev == MorseColumnwise ? MagmaNoTrans : MagmaConjTrans;
 
-            cublasOperation_t cublasTransW;
             if (transW == MagmaNoTrans){
                 cublasTransW = CUBLAS_OP_N;
             }else if(transW == MagmaTrans){
@@ -339,7 +342,6 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
             }else{
                 fprintf(stderr, "Error in magma_zparfb_gpu: bad transW parameter %d\n", transW);
             }
-            cublasOperation_t cublasTransA2;
             if (transA2 == MagmaNoTrans){
                 cublasTransA2 = CUBLAS_OP_N;
             }else if(transA2 == MagmaTrans){
@@ -358,7 +360,6 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
                         (const cuDoubleComplex *) &zone,
                         (cuDoubleComplex*)WORK  /* K*N1  */, LDWORK);
 
-            WORKC = NULL;
             if (WORKC == NULL) {
                 /* W = op(T) * W */
                 cublasZtrmm( handle,
@@ -437,7 +438,6 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
             transW  = storev == MorseColumnwise ? MagmaNoTrans : MagmaConjTrans;
             transA2 = storev == MorseColumnwise ? MagmaConjTrans : MagmaNoTrans;
 
-            cublasOperation_t cublasTransW;
             if (transW == MagmaNoTrans){
                 cublasTransW = CUBLAS_OP_N;
             }else if(transW == MagmaTrans){
@@ -447,7 +447,6 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
             }else{
                 fprintf(stderr, "Error in magma_zparfb_gpu: bad transW parameter %d\n", transW);
             }
-            cublasOperation_t cublasTransA2;
             if (transA2 == MagmaNoTrans){
                 cublasTransA2 = CUBLAS_OP_N;
             }else if(transA2 == MagmaTrans){
@@ -466,7 +465,6 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
                         (const cuDoubleComplex *) &zone,
                         (cuDoubleComplex*)WORK  /* M1*K  */, LDWORK);
 
-            WORKC = NULL;
             if (WORKC == NULL) {
                 /* W = W * op(T) */
                 cublasZtrmm( handle,
@@ -548,7 +546,6 @@ magma_zparfb_gpu(magma_side_t side, magma_trans_t trans,
                        magmaDoubleComplex *WORK, magma_int_t LDWORK,
                        magmaDoubleComplex *WORKC, magma_int_t LDWORKC,
                        CUstream stream)
-
 {
 #if defined(PRECISION_z) || defined(PRECISION_c)
     cuDoubleComplex zzero = make_cuDoubleComplex(0.0, 0.0);

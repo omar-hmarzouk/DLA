@@ -112,27 +112,30 @@ static void cl_zsyr2k_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex beta;
     cuDoubleComplex *C;
     int ldc;
+    CUstream stream;
+    cublasHandle_t handle;
+    cublasStatus_t stat;
+    cublasFillMode_t cublasUplo;
+    cublasOperation_t cublasTrans;
 
     A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &uplo, &trans, &n, &k, &alpha, &lda, &ldb, &beta, &ldc);
 
-    cublasHandle_t handle;
-    cublasStatus_t stat = cublasCreate(&handle);
+    stat = cublasCreate(&handle);
     if (stat != CUBLAS_STATUS_SUCCESS) {
         printf ("CUBLAS initialization failed\n");
         assert( stat == CUBLAS_STATUS_SUCCESS );
     }
 
-    CUstream stream = starpu_cuda_get_local_stream();
+    stream = starpu_cuda_get_local_stream();
     stat = cublasSetStream(handle, stream);
     if (stat != CUBLAS_STATUS_SUCCESS) {
         printf ("cublasSetStream failed\n");
         assert( stat == CUBLAS_STATUS_SUCCESS );
     }
 
-    cublasFillMode_t cublasUplo;
     if (uplo == MorseUpper){
         cublasUplo = CUBLAS_FILL_MODE_UPPER;
     }else if(uplo == MorseLower){
@@ -142,8 +145,6 @@ static void cl_zsyr2k_cuda_func(void *descr[], void *cl_arg)
     }else{
         fprintf(stderr, "Error in cl_zsyr2k_cuda_func: bad uplo parameter %d\n", uplo);
     }
-
-    cublasOperation_t cublasTrans;
     if (trans == MorseNoTrans){
         cublasTrans = CUBLAS_OP_N;
     }else if(trans == MorseTrans){

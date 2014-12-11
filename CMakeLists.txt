@@ -60,6 +60,8 @@ include(GenPkgConfig)
 # Parameters/Options #
 ######################
 
+set(CHAMELEON_DEFINITIONS_LIST "")
+
 # Add define for Fortran Mangling (should be defined somewhere else)
 # ------------------------------------------------------------------
 add_definitions(-DADD_)
@@ -686,6 +688,7 @@ endif()
 ###############################################################################
 # Print Options #
 #################
+get_directory_property( CHAMELEON_DEFINITIONS_LIST DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
 include(PrintOpts)
 
 ###

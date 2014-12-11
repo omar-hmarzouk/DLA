@@ -121,27 +121,30 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex beta;
     cuDoubleComplex *C;
     int ldc;
+    CUstream stream;
+    cublasHandle_t handle;
+    cublasStatus_t stat;
+    cublasOperation_t cublasTransA;
+    cublasOperation_t cublasTransB;
 
     A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &transA, &transB, &m, &n, &k, &alpha, &lda, &ldb, &beta, &ldc);
 
-    cublasHandle_t handle;
-    cublasStatus_t stat = cublasCreate(&handle);
+    stat = cublasCreate(&handle);
     if (stat != CUBLAS_STATUS_SUCCESS) {
         printf ("CUBLAS initialization failed\n");
         assert( stat == CUBLAS_STATUS_SUCCESS );
     }
 
-    CUstream stream = starpu_cuda_get_local_stream();
+    stream = starpu_cuda_get_local_stream();
     stat = cublasSetStream(handle, stream);
     if (stat != CUBLAS_STATUS_SUCCESS) {
             printf ("cublasSetStream failed\n");
             assert( stat == CUBLAS_STATUS_SUCCESS );
     }
 
-    cublasOperation_t cublasTransA;
     if (transA == MorseNoTrans){
         cublasTransA = CUBLAS_OP_N;
     }else if(transA == MorseTrans){
@@ -151,7 +154,6 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
     }else{
         fprintf(stderr, "Error in cl_zgemm_cuda_func: bad transA parameter %d\n", transA);
     }
-    cublasOperation_t cublasTransB;
     if (transB == MorseNoTrans){
         cublasTransB = CUBLAS_OP_N;
     }else if(transB == MorseTrans){
