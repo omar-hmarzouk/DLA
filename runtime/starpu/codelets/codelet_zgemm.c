@@ -200,13 +200,14 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex beta;
     cuDoubleComplex *C;
     int ldc;
+    CUstream stream;
 
     A = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &transA, &transB, &m, &n, &k, &alpha, &lda, &ldb, &beta, &ldc);
 
-    CUstream stream = starpu_cuda_get_local_stream();
+    stream = starpu_cuda_get_local_stream();
     cublasSetKernelStream( stream );
 
     cublasZgemm(
