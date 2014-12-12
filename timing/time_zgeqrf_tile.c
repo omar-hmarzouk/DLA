@@ -45,6 +45,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 
     /* Allocate Workspace */
     MORSE_Alloc_Workspace_zgels_Tile(M, N, &descT);
+    memset(descT->mat, 0, (descT->llm*descT->lln)*sizeof(MorseComplexDouble));
 
     /* Do the computations */
     START_TIMING();
