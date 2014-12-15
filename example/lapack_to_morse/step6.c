@@ -130,30 +130,18 @@ int main(int argc, char *argv[]) {
     }
 
     /* Initialize the structure required for MORSE tile interface */
-    MORSE_Desc_Create_User(&descA, NULL, MorseRealDouble,
-                           NB, NB, NB*NB, N, N, 0, 0, N, N,
-                           GRID_P, GRID_Q,
-                           morse_getaddr_ccrb,
-                           morse_getblkldd_ccrb,
-                           morse_getrankof_2d);
-    MORSE_Desc_Create_User(&descB, NULL, MorseRealDouble,
-                           NB, NB, NB*NB, N, NRHS, 0, 0, N, NRHS,
-                           GRID_P, GRID_Q,
-                           morse_getaddr_ccrb,
-                           morse_getblkldd_ccrb,
-                           morse_getrankof_2d);
-    MORSE_Desc_Create_User(&descX, NULL, MorseRealDouble,
-                           NB, NB, NB*NB, N, NRHS, 0, 0, N, NRHS,
-                           GRID_P, GRID_Q,
-                           morse_getaddr_ccrb,
-                           morse_getblkldd_ccrb,
-                           morse_getrankof_2d);
-    MORSE_Desc_Create_User(&descAC, NULL, MorseRealDouble,
-                           NB, NB, NB*NB, N, N, 0, 0, N, N,
-                           GRID_P, GRID_Q,
-                           morse_getaddr_ccrb,
-                           morse_getblkldd_ccrb,
-                           morse_getrankof_2d);
+    MORSE_Desc_Create(&descA, NULL, MorseRealDouble,
+                      NB, NB, NB*NB, N, N, 0, 0, N, N,
+                      GRID_P, GRID_Q);
+    MORSE_Desc_Create(&descB, NULL, MorseRealDouble,
+                      NB, NB, NB*NB, N, NRHS, 0, 0, N, NRHS,
+                      GRID_P, GRID_Q);
+    MORSE_Desc_Create(&descX, NULL, MorseRealDouble,
+                      NB, NB, NB*NB, N, NRHS, 0, 0, N, NRHS,
+                      GRID_P, GRID_Q);
+    MORSE_Desc_Create(&descAC, NULL, MorseRealDouble,
+                      NB, NB, NB*NB, N, N, 0, 0, N, N,
+                      GRID_P, GRID_Q);
 
     /* generate A matrix with random values such that it is spd */
     MORSE_dplgsy_Tile( (double)N, descA, 51 );

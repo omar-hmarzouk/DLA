@@ -131,21 +131,12 @@ int main(int argc, char *argv[]) {
      * is equivalent to a call to MORSE_Desc_Create (morse_get... are the
      * functions used inside MORSE_Desc_Create).
      */
-    MORSE_Desc_Create_User(&descB, NULL, MorseRealDouble,
-                           NB, NB, NB*NB, N, NRHS, 0, 0, N, NRHS, 1, 1,
-                           morse_getaddr_ccrb,
-                           morse_getblkldd_ccrb,
-                           morse_getrankof_2d);
-    MORSE_Desc_Create_User(&descX, NULL, MorseRealDouble,
-                           NB, NB, NB*NB, N, NRHS, 0, 0, N, NRHS, 1, 1,
-                           morse_getaddr_ccrb,
-                           morse_getblkldd_ccrb,
-                           morse_getrankof_2d);
-    MORSE_Desc_Create_User(&descAC, NULL, MorseRealDouble,
-                           NB, NB, NB*NB, N, N, 0, 0, N, N, 1, 1,
-                           morse_getaddr_ccrb,
-                           morse_getblkldd_ccrb,
-                           morse_getrankof_2d);
+    MORSE_Desc_Create(&descB, NULL, MorseRealDouble,
+                      NB, NB, NB*NB, N, NRHS, 0, 0, N, NRHS, 1, 1);
+    MORSE_Desc_Create(&descX, NULL, MorseRealDouble,
+                      NB, NB, NB*NB, N, NRHS, 0, 0, N, NRHS, 1, 1);
+    MORSE_Desc_Create(&descAC, NULL, MorseRealDouble,
+                      NB, NB, NB*NB, N, N, 0, 0, N, N, 1, 1);
 
     /* generate A matrix with random values such that it is spd */
     MORSE_dplgsy_Tile( (double)N, descA, 51 );
