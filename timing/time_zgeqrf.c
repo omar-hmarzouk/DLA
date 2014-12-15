@@ -43,6 +43,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 
     /* Allocate Workspace */
     MORSE_Alloc_Workspace_zgels(M, N, &T);
+    memset(T->mat, 0, (T->llm*T->lln)*sizeof(MorseComplexDouble));
 
     /* Save AT in lapack layout for check */
     PASTE_CODE_ALLOCATE_COPY( Acpy, check, MORSE_Complex64_t, A, LDA, N );
@@ -50,14 +51,14 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     START_TIMING();
     MORSE_zgeqrf( M, N, A, LDA, T );
     STOP_TIMING();
-    
+
     /* Check the solution */
     if ( check )
     {
         PASTE_CODE_ALLOCATE_MATRIX( X, 1, MORSE_Complex64_t, LDB, NRHS );
         MORSE_zplrnt( N, NRHS, X, LDB, 5673 );
         PASTE_CODE_ALLOCATE_COPY( B, 1, MORSE_Complex64_t, X, LDB, NRHS );
-        
+
         MORSE_zgeqrs(M, N, NRHS, A, LDA, T, X, LDB);
 
         dparam[IPARAM_RES] = z_check_solution(M, N, NRHS, Acpy, LDA, B, X, LDB,

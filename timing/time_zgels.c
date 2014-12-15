@@ -29,7 +29,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
     MORSE_desc_t *T;
     PASTE_CODE_IPARAM_LOCALS( iparam );
-    
+
     if ( M != N ) {
         fprintf(stderr, "This timing works only with M == N\n");
         return -1;
@@ -46,6 +46,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_zplrnt( M, NRHS, x, LDB, 5673 );
 
     MORSE_Alloc_Workspace_zgels(M, N, &T);
+    memset(T->mat, 0, (T->llm*T->lln)*sizeof(MorseComplexDouble));
 
     /* Save A and b  */
     if (check) {
