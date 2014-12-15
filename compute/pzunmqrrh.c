@@ -35,11 +35,8 @@
 #define B(m,n) B,  (m),  (n)
 #define T(m,n) T,  (m),  (n)
 #define T2(m,n) T,  (m),  ((n)+A->nt)
-#if defined(CHAMELEON_USE_MAGMA)
 #define DIAG(m,n) DIAG, ((m)/BS), 0
-#else
-#define DIAG(m,n) A, (m), (n)
-#endif
+
 /***************************************************************************//**
  *  Parallel application of Q using tile V - QR factorization (reduction
  *  Householder) - dynamic scheduling
@@ -60,6 +57,7 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
     int ldbM, ldbm, ldbMRD;
     int tempMm, tempkn, tempnn, tempmm, tempMRDm, tempkmin;
     int ib;
+    int nblk;
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
@@ -76,12 +74,6 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
     ws_worker = A->nb * ib;
 
 #if defined(CHAMELEON_USE_MAGMA)
-    {
-        int nblk = ( A->mt + BS -1 ) / BS;
-        DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-        morse_zdesc_alloc2(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb);
-    }
-
     /* Worker space
      *
      * zunmqr = A->nb * ib
@@ -94,6 +86,11 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
     ws_host   *= sizeof(MORSE_Complex64_t);
 
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
+
+    /* necessary to avoid dependencies between tasks regarding the diag tile */
+    nblk = ( A->mt + BS -1 ) / BS;
+    DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+    morse_zdesc_alloc2(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb);
 
     K = min(A->mt, A->nt);
     if (side == MorseLeft ) {
@@ -108,12 +105,12 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
                     tempkmin = min(tempMm, tempkn);
                     ldaM = BLKLDD(A, M);
                     ldbM = BLKLDD(B, M);
-#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseLower, tempMm, tempkmin, A->nb,
                         A(M, k), ldaM,
                         DIAG(M, k), ldaM );
+#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlaset(
                         &options,
                         MorseUpper, tempMm, tempkmin,
@@ -221,12 +218,12 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
                                 T(m, k), T->mb);
                         }
                     }
-#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseLower, tempMm, tempkmin, A->nb,
                         A(M, k), ldaM,
                         DIAG(M, k), ldaM );
+#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlaset(
                         &options,
                         MorseUpper, tempMm, tempkmin,
@@ -298,12 +295,12 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
                                 T(n, k), T->mb);
                         }
                     }
-#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseLower, tempMm, tempkmin, A->nb,
                         A(M, k), ldaM,
                         DIAG(M, k), ldaM );
+#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlaset(
                         &options,
                         MorseUpper, tempMm, tempkmin,
@@ -334,12 +331,12 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
                     tempMm   = M == A->mt-1 ? A->m-M*A->mb : A->mb;
                     tempkmin = min(tempMm, tempkn);
                     ldaM = BLKLDD(A, M);
-#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseLower, tempMm, tempkmin, A->nb,
                         A(M, k), ldaM,
                         DIAG(M, k), ldaM );
+#if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlaset(
                         &options,
                         MorseUpper, tempMm, tempkmin,
@@ -402,8 +399,6 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
-#if defined(CHAMELEON_USE_MAGMA)
     morse_desc_mat_free(DIAG);
     free(DIAG);
-#endif
 }

@@ -34,11 +34,7 @@
 #define A(m,n) A,  (m),  (n)
 #define T(m,n) T,  (m),  (n)
 #define T2(m,n) T,  (m), ((n)+A->nt)
-#if defined(CHAMELEON_USE_MAGMA)
 #define DIAG(m,n) DIAG, ((m)/BS), 0
-#else
-#define DIAG(m,n) A, (m), (n)
-#endif
 
 /***************************************************************************//**
  *  Parallel tile QR factorization (reduction Householder) - dynamic scheduling
@@ -57,6 +53,7 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     int ldaM, ldam, ldaMRD;
     int tempkmin, tempkn, tempMm, tempnn, tempmm, tempMRDm;
     int ib;
+    int nblk;
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
@@ -77,12 +74,6 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
 
     /* Allocation of temporary (scratch) working space */
 #if defined(CHAMELEON_USE_MAGMA)
-    {
-        int nblk = ( A->mt + BS -1 ) / BS;
-        DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-        morse_zdesc_alloc2(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb);
-    }
-
     /* Worker space
      *
      * zgeqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
@@ -107,6 +98,11 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
 
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
+    /* necessary to avoid dependencies between tasks regarding the diag tile */
+    nblk = ( A->mt + BS -1 ) / BS;
+    DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+    morse_zdesc_alloc2(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb);
+
     K = min(A->mt, A->nt);
     for (k = 0; k < K; k++) {
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
@@ -119,20 +115,20 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
                 tempMm, tempkn, ib, T->nb,
                 A(M, k), ldaM,
                 T(M, k), T->mb);
-#if defined(CHAMELEON_USE_MAGMA)
             if ( k < (A->nt-1) ) {
                 MORSE_TASK_zlacpy(
                     &options,
                     MorseLower, tempMm, A->nb, A->nb,
                     A(M, k), ldaM,
                     DIAG(M, k), ldaM );
+#if defined(CHAMELEON_USE_MAGMA)
                 MORSE_TASK_zlaset(
                     &options,
                     MorseUpper, tempMm, A->nb,
                     0., 1.,
                     DIAG(M, k), ldaM );
-            }
 #endif
+            }
             for (n = k+1; n < A->nt; n++) {
                 tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
                 MORSE_TASK_zunmqr(
@@ -196,8 +192,6 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
-#if defined(CHAMELEON_USE_MAGMA)
     morse_desc_mat_free(DIAG);
     free(DIAG);
-#endif
 }

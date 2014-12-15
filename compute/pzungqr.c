@@ -33,11 +33,8 @@
 #define A(m,n) A,  m,  n
 #define Q(m,n) Q,  m,  n
 #define T(m,n) T,  m,  n
-#if defined(CHAMELEON_USE_MAGMA)
 #define DIAG(k) DIAG, k, 0
-#else
-#define DIAG(k) A, k, k
-#endif
+
 /***************************************************************************//**
  *  Parallel construction of Q using tile V (application to identity) - dynamic scheduling
  **/
@@ -71,8 +68,6 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
 
     /* Allocation of temporary (scratch) working space */
 #if defined(CHAMELEON_USE_MAGMA)
-    DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc2(*DIAG, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb);
     /* Worker space
      *
      * zunmqr = A->nb * ib
@@ -85,6 +80,10 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
     ws_host   *= sizeof(MORSE_Complex64_t);
 
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
+
+    /* necessary to avoid dependencies between tasks regarding the diag tile */
+    DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+    morse_zdesc_alloc2(*DIAG, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb);
 
     for (k = min(A->mt, A->nt)-1; k >= 0; k--) {
         tempAkm  = k == A->mt-1 ? A->m-k*A->mb : A->mb;
@@ -109,12 +108,12 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
                     T(m, k), T->mb);
             }
         }
-#if defined(CHAMELEON_USE_MAGMA)
         MORSE_TASK_zlacpy(
             &options,
             MorseLower, tempkm, tempkmin, A->nb,
             A(k, k), ldak,
             DIAG(k), ldak );
+#if defined(CHAMELEON_USE_MAGMA)
         MORSE_TASK_zlaset(
             &options,
             MorseUpper, tempkm, tempkmin,
@@ -136,8 +135,6 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
-#if defined(CHAMELEON_USE_MAGMA)
     morse_desc_mat_free(DIAG);
     free(DIAG);
-#endif
 }
