@@ -30,7 +30,7 @@ if(NOT BUILDNAME)
     endif()
 
     # Add compiler name
-    get_filename_component(CMAKE_C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)  
+    get_filename_component(CMAKE_C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
     set(BUILDNAME "${BUILDNAME}-${CMAKE_C_COMPILER_NAME}")
 
     # Add the build type, e.g. "Debug, Release..."
@@ -53,10 +53,7 @@ if(NOT BUILDNAME)
 
     if(CHAMELEON_USE_CUDA)
         set(BUILDNAME "${BUILDNAME}-cuda")
-    endif(CHAMELEON_USE_CUDA)  
+    endif(CHAMELEON_USE_CUDA)
 
 endif()
-
-
-
 
