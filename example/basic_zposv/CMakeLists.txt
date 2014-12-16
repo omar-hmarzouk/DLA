@@ -121,6 +121,9 @@ foreach(_example ${EXAMPLES})
             DESTINATION ${CMAKE_INSTALL_PREFIX}/example/basic_zposv)
 endforeach()
 
+#-------- Tests ---------
+include(CTestLists.cmake)
+
 ###
 ### END CMakeLists.txt
 ###

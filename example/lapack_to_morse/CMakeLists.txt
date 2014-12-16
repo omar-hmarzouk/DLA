@@ -168,6 +168,9 @@ target_link_libraries(step0 ${libs_for_step0})
 install(TARGETS step0
         DESTINATION ${CMAKE_INSTALL_PREFIX}/example/lapack_to_morse)
 
+#-------- Tests ---------
+include(CTestLists.cmake)
+
 ###
 ### END CMakeLists.txt
 ###

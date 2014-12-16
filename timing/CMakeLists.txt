@@ -235,6 +235,7 @@ foreach(_timing ${TIMINGS})
             DESTINATION ${CMAKE_INSTALL_PREFIX}/timing)
 endforeach()
 
+#-------- Tests ---------
 include(CTestLists.cmake)
 
 ###

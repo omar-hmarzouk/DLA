@@ -198,17 +198,13 @@ foreach(_precision ${CHAMELEON_PRECISION} )
 
 endforeach()
 
-# Add tests (C/CPP)
-# -----------------
+# Copy python scripts to use test drivers
+# ---------------------------------------
 if(CHAMELEON_SCHED_STARPU)
     # Copy launcher
     add_custom_target(testing_launcher_starpu ALL
                      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/morse_testing_starpu.py
                                                       ${CMAKE_CURRENT_BINARY_DIR}/morse_testing_starpu.py)
-    # add test
-#     add_test(NAME    morse_testing_starpu
-#              COMMAND ${PYTHON_EXECUTABLE}
-#                      ${CMAKE_CURRENT_BINARY_DIR}/morse_testing_starpu.py)
     # install file
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/morse_testing_starpu.py
             DESTINATION ${CMAKE_INSTALL_PREFIX}/testing)
@@ -224,6 +220,7 @@ if(CHAMELEON_SCHED_QUARK)
             DESTINATION ${CMAKE_INSTALL_PREFIX}/testing)
 endif()
 
+#-------- Tests ---------
 include(CTestLists.cmake)
 
 ###
