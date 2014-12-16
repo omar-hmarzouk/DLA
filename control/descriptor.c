@@ -63,8 +63,10 @@ MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.mt = (m == 0) ? 0 : (i+m-1)/mb - i/mb + 1;
     desc.nt = (n == 0) ? 0 : (j+n-1)/nb - j/nb + 1;
 
-    desc.occurences = 0;
     desc.id = nbdesc; nbdesc++;
+    desc.occurences = 0;
+    desc.use_mat = 1;
+    desc.register_mat = 1;
 
 #if defined(CHAMELEON_USE_MPI)
     MPI_Comm_rank( MPI_COMM_WORLD, &(desc.myrank) );
@@ -152,8 +154,10 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.mt = (m == 0) ? 0 : (i+m-1)/mb - i/mb + 1;
     desc.nt = (n == 0) ? 0 : (j+n-1)/nb - j/nb + 1;
 
-    desc.occurences = 0;
     desc.id = nbdesc; nbdesc++;
+    desc.occurences = 0;
+    desc.use_mat = 1;
+    desc.register_mat = 1;
 
 #if defined(CHAMELEON_USE_MPI)
     MPI_Comm_rank( MPI_COMM_WORLD, &(desc.myrank) );
@@ -248,7 +252,7 @@ int morse_desc_check(MORSE_desc_t *desc)
         morse_error("morse_desc_check", "NULL descriptor");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    if (desc->mat == NULL) {
+    if (desc->mat == NULL && desc->use_mat == 1) {
         morse_error("morse_desc_check", "NULL matrix pointer");
         return MORSE_ERR_UNALLOCATED;
     }
@@ -312,7 +316,7 @@ int morse_desc_mat_free( MORSE_desc_t *desc )
 
     RUNTIME_desc_destroy( desc );
 
-    if (desc->mat != NULL) {
+    if (desc->mat != NULL && desc->use_mat == 1) {
 #ifndef CHAMELEON_SIMULATION
         free(desc->mat);
 #endif
@@ -502,6 +506,13 @@ int MORSE_Desc_Create_User(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int 
     }
     **desc = morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
         get_blkaddr, get_blkldd, get_rankof);
+
+
+    /* if the user gives a pointer to the overall data (tiles) we can use it */
+    (**desc).use_mat = (mat == NULL) ? 0 : 1;
+
+    /* users data can have multiple forms: let him register tiles */
+    (**desc).register_mat = 0;
 
     (**desc).mat = mat;
 

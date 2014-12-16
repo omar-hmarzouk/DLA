@@ -53,28 +53,30 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
     desc->occurences = 1;
 
     /*
-     * Allocate starpu_handle_t array (handlers are initialized on the fly when discovered by any algorithm to save space)
+     * Allocate starpu_handle_t array (handlers are initialized on the fly when
+     * discovered by any algorithm to save space)
      */
     desc->schedopt = (void*)calloc(lnt*lmt,sizeof(starpu_data_handle_t));
     assert(desc->schedopt);
     tiles = (starpu_data_handle_t*)(desc->schedopt);
 
 #if defined(CHAMELEON_USE_CUDA)
-    /*
-     * Register allocated memory as CUDA pinned memory
-     */
-    {
-        int64_t eltsze = morse_element_size(desc->dtyp);
-        size_t size = (size_t)(desc->llm) * (size_t)(desc->lln) * eltsze;
-
-        /* Register the matrix as pinned memory */
-        if ( cudaHostRegister( desc->mat, size, cudaHostRegisterPortable ) != cudaSuccess )
+    if (desc->use_mat == 1 && desc->register_mat == 1){
+        /*
+         * Register allocated memory as CUDA pinned memory
+         */
         {
-            morse_warning("RUNTIME_desc_create(StarPU)", "cudaHostRegister failed to register the matrix as pinned memory");
+            int64_t eltsze = morse_element_size(desc->dtyp);
+            size_t size = (size_t)(desc->llm) * (size_t)(desc->lln) * eltsze;
+
+            /* Register the matrix as pinned memory */
+            if ( cudaHostRegister( desc->mat, size, cudaHostRegisterPortable ) != cudaSuccess )
+            {
+                morse_warning("RUNTIME_desc_create(StarPU)", "cudaHostRegister failed to register the matrix as pinned memory");
+            }
         }
     }
 #endif
-
 
 #if defined(CHAMELEON_USE_MPI)
     /*
@@ -131,7 +133,7 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
 
     /*
      * If this is the last descriptor using the matrix, we release the handle
-     * and deregister the GPU data
+     * and unregister the GPU data
      */
     if ( desc->occurences == 0 ) {
         starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);
@@ -154,7 +156,7 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
             }
 
 #if defined(CHAMELEON_USE_CUDA)
-        {
+        if (desc->use_mat == 1 && desc->register_mat == 1){
             int64_t eltsze = morse_element_size(desc->dtyp);
             size_t size = (size_t)(desc->llm) * (size_t)(desc->lln) * eltsze;
 
@@ -162,7 +164,8 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
             if (cudaHostUnregister(desc->mat) != cudaSuccess)
             {
                 morse_warning("RUNTIME_desc_destroy(StarPU)",
-                              "cudaHostUnregister failed to unregister the pinned memory associated to the matrix");
+                              "cudaHostUnregister failed to unregister the "
+                              "pinned memory associated to the matrix");
             }
         }
 #endif /* defined(CHAMELEON_USE_CUDA) */
@@ -183,7 +186,8 @@ void RUNTIME_desc_submatrix( MORSE_desc_t *desc )
     return;
 }
 
-/* TODO: Acquire/Release/GetonCPU need to be studied carefully and fixed because we are not using them correctly */
+/* TODO: Acquire/Release/GetonCPU need to be studied carefully and fixed
+ * because we are not using them correctly */
 int RUNTIME_desc_acquire( MORSE_desc_t *desc )
 {
     starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);

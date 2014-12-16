@@ -63,41 +63,48 @@ struct morse_desc_s;
 typedef struct morse_desc_s MORSE_desc_t;
 
 struct morse_desc_s {
+    // function to get matrix tiles address
     void *(*get_blkaddr)( const MORSE_desc_t*, int, int );
+    // function to get matrix tiles leading dimension
     int   (*get_blkldd )( const MORSE_desc_t*, int );
+    // function to get matrix tiles MPI rank
     int   (*get_rankof) ( const MORSE_desc_t*, int, int );
-    void *mat;          // pointer to the beginning of the matrix
-    size_t A21;         // pointer to the beginning of the matrix A21
-    size_t A12;         // pointer to the beginning of the matrix A12
-    size_t A22;         // pointer to the beginning of the matrix A22
-    MORSE_enum styp;    // storage layout of the matrix
-    MORSE_enum dtyp;    // precision of the matrix
-    int mb;             // number of rows in a tile
-    int nb;             // number of columns in a tile
-    int bsiz;           // size in elements including padding
-    int lm;             // number of rows of the entire matrix
-    int ln;             // number of columns of the entire matrix
-    int lmt;            // number of tile rows of the entire matrix - derived parameter
-    int lnt;            // number of tile columns of the entire matrix - derived parameter
-    int i;              // row index to the beginning of the submatrix
-    int j;              // column index to the beginning of the submatrix
-    int m;              // number of rows of the submatrix
-    int n;              // number of columns of the submatrix
-    int mt;             // number of tile rows of the submatrix - derived parameter
-    int nt;             // number of tile columns of the submatrix - derived parameter
-  // Data for distributed cases
-    int p;              // number of rows of the 2D distribution grid
-    int q;              // number of columns of the 2D distribution grid
-    int llm;            // number of rows of the 2D distribution grid
-    int lln;            // number of columns of the 2D distribution grid
-    int llm1;           // number of tile rows of the A11 matrix - derived parameter
-    int lln1;           // number of tile columns of the A11 matrix - derived parameter
-    int llmt;           // number of tile rows of the local (to a node) matrix
-    int llnt;           // number of tile columns of the local (to a node) matrix
-    int id;
-    int occurences;
-    int myrank;
-    void *schedopt;
+    void *mat;        // pointer to the beginning of the matrix
+    size_t A21;       // pointer to the beginning of the matrix A21
+    size_t A12;       // pointer to the beginning of the matrix A12
+    size_t A22;       // pointer to the beginning of the matrix A22
+    MORSE_enum styp;  // storage layout of the matrix
+    MORSE_enum dtyp;  // precision of the matrix
+    int mb;           // number of rows in a tile
+    int nb;           // number of columns in a tile
+    int bsiz;         // size in elements including padding
+    int lm;           // number of rows of the entire matrix
+    int ln;           // number of columns of the entire matrix
+    int lmt;          // number of tile rows of the entire matrix - derived parameter
+    int lnt;          // number of tile columns of the entire matrix - derived parameter
+    int i;            // row index to the beginning of the submatrix
+    int j;            // column index to the beginning of the submatrix
+    int m;            // number of rows of the submatrix
+    int n;            // number of columns of the submatrix
+    int mt;           // number of tile rows of the submatrix - derived parameter
+    int nt;           // number of tile columns of the submatrix - derived parameter
+                      // Data for distributed cases
+    int p;            // number of rows of the 2D distribution grid
+    int q;            // number of columns of the 2D distribution grid
+    int llm;          // number of rows of the 2D distribution grid
+    int lln;          // number of columns of the 2D distribution grid
+    int llm1;         // number of tile rows of the A11 matrix - derived parameter
+    int lln1;         // number of tile columns of the A11 matrix - derived parameter
+    int llmt;         // number of tile rows of the local (to a node) matrix
+    int llnt;         // number of tile columns of the local (to a node) matrix
+    int id;           // identification number of the descriptor
+    int occurences;   // identify main matrix desc (occurances=1) or
+                      // submatrix desc (occurances>1) to avoid unregistering
+                      // GPU data twice
+    int use_mat;      // 1 if we have a pointer to the overall data mat - else 0
+    int register_mat; // 1 if we have to register mat - else 0 (handled by the application)
+    int myrank;       // MPI rank of the descriptor
+    void *schedopt;   // scheduler (QUARK|StarPU) specific structure
 };
 
 

@@ -188,7 +188,7 @@ int MORSE_Dealloc_Workspace(MORSE_desc_t **desc)
         morse_error("MORSE_Dealloc_Workspace", "attempting to deallocate a NULL descriptor");
         return MORSE_ERR_UNALLOCATED;
     }
-    if ((*desc)->mat == NULL) {
+    if ((*desc)->mat == NULL && (*desc)->use_mat == 1) {
         morse_error("MORSE_Dealloc_Worspace", "attempting to deallocate a NULL pointer");
         return MORSE_ERR_UNALLOCATED;
     }
