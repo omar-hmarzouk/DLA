@@ -213,8 +213,17 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
                 0., 0.,
                 VECNORMS_STEP2(m, 0), 1);
 
-            /* compute vector sums between tiles in rows */
-            for(n = 0; n < A->nt; n++) {
+            /* compute vector sums between tiles in rows locally on each rank */
+            for(n = A->myrank % A->q + A->q; n < A->nt; n+=A->q) {
+                MORSE_TASK_dgeadd(
+                    &options,
+                    tempkm, 1, 1.0,
+                    VECNORMS_STEP1(m, n), tempkm,
+                    VECNORMS_STEP1(m, A->myrank % A->q), tempkm);
+            }
+
+            /* compute vector sums between tiles in rows between ranks */
+            for(n = 0; n < A->q; n++) {
                 MORSE_TASK_dgeadd(
                     &options,
                     tempkm, 1, 1.0,
@@ -240,9 +249,19 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
             0., 0.,
             RESULT(0,0), 1);
 
-        /* compute max norm between tiles in the column */
+        /* compute max norm between tiles in the column locally on each rank */
         if (A->myrank % A->q == 0) {
-            for(m = 0; m < A->mt; m++) {
+            for(m = (A->myrank / A->q); m < A->mt; m+=A->p) {
+                MORSE_TASK_dlange_max(
+                    &options,
+                    VECNORMS_STEP1(m, 0),
+                    RESULT(0,0));
+            }
+        }
+
+        /* compute max norm between tiles in the column between ranks */
+        if (A->myrank % A->q == 0) {
+            for(m = 0; m < A->p; m++) {
                 MORSE_TASK_dlange_max(
                     &options,
                     VECNORMS_STEP1(m, 0),
