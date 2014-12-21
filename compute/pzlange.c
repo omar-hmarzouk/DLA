@@ -182,7 +182,7 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
                           workm, 1, 0, 0, workm, 1, A->p, A->q);
 
         MORSE_Desc_Create(&(RESULT), NULL, MorseRealDouble, 1, 1, 1,
-                          1, 1, 0, 0, 1, 1, 1, 1);
+                          A->p, A->q, 0, 0, A->p, A->q, A->p, A->q);
 
         for(m = (A->myrank / A->q); m < A->mt; m+=A->p) {
             tempkm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
@@ -247,7 +247,7 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
             &options,
             MorseUpperLower, 1, 1,
             0., 0.,
-            RESULT(0,0), 1);
+            RESULT(A->myrank / A->q, A->myrank % A->q), 1);
 
         /* compute max norm between tiles in the column locally on each rank */
         if (A->myrank % A->q == 0) {
@@ -255,7 +255,7 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
                 MORSE_TASK_dlange_max(
                     &options,
                     VECNORMS_STEP1(m, 0),
-                    RESULT(0,0));
+                    RESULT(A->myrank / A->q, A->myrank % A->q));
             }
         }
 
@@ -264,7 +264,7 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
             for(m = 0; m < A->p; m++) {
                 MORSE_TASK_dlange_max(
                     &options,
-                    VECNORMS_STEP1(m, 0),
+                    RESULT(m,0),
                     RESULT(0,0));
             }
         }
