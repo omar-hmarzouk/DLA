@@ -65,6 +65,8 @@ void RUNTIME_zdisplay_allprofile()
     profiling_display_zttqrt_info();
     profiling_display_zunmlq_info();
     profiling_display_zunmqr_info();
+
+    profiling_display_zlange_info();
 }
 
 void RUNTIME_zdisplay_oneprofile( MORSE_kernel_t kernel )
@@ -105,7 +107,9 @@ void RUNTIME_zdisplay_oneprofile( MORSE_kernel_t kernel )
     case MORSE_TTQRT:        profiling_display_zttqrt_info();        break;
     case MORSE_UNMLQ:        profiling_display_zunmlq_info();        break;
     case MORSE_UNMQR:        profiling_display_zunmqr_info();        break;
- 
+
+    case MORSE_LANGE:        profiling_display_zlange_info();        break;
+
     default:
         return;
     }
