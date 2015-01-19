@@ -135,6 +135,18 @@ void morse_pzgemm(MORSE_enum transA, MORSE_enum transB,
                 }
             }
         }
+        if (transA == MorseNoTrans) {
+            for (k = 0; k < A->nt; k++) {
+                MORSE_TASK_dataflush( &options, A(m, k) );
+            }
+        } else {
+            for (k = 0; k < A->mt; k++) {
+                MORSE_TASK_dataflush( &options, A(k, m) );
+            }
+        }
+        for (n = 0; n < C->nt; n++) {
+            MORSE_TASK_dataflush( &options, C(m, n) );
+        }
     }
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
