@@ -41,16 +41,33 @@ void MORSE_TASK_zgemm(MORSE_option_t *options,
                       MORSE_enum transA, int transB,
                       int m, int n, int k, int nb,
                       MORSE_Complex64_t alpha, MORSE_desc_t *A, int Am, int An, int lda,
-                                                MORSE_desc_t *B, int Bm, int Bn, int ldb,
-                      MORSE_Complex64_t beta, MORSE_desc_t *C, int Cm, int Cn, int ldc)
+                                               MORSE_desc_t *B, int Bm, int Bn, int ldb,
+                      MORSE_Complex64_t beta,  MORSE_desc_t *C, int Cm, int Cn, int ldc)
 {
     (void)nb;
     struct starpu_codelet *codelet = &cl_zgemm;
     void (*callback)(void*) = options->profiling ? cl_zgemm_callback : NULL;
+    int sizeA = m*k;
+    int sizeB = k*n;
+    int sizeC = m*n;
+    int execution_rank = C->get_rankof( C, Cm, Cn );
+    int rank_changed=0;
+
+    // force execution on the rank owning the largest data (tile)
+    // the numerical facto 10 should be an environnement variable
+    if ( sizeA > 10*sizeC ){
+        execution_rank = A->get_rankof( A, Am, An );
+        rank_changed = 1;
+    }else if( sizeB > 10*sizeC ){
+        execution_rank = B->get_rankof( B, Bm, Bn );
+        rank_changed = 1;
+    }
 
     if ( morse_desc_islocal( A, Am, An ) ||
          morse_desc_islocal( B, Bm, Bn ) ||
-         morse_desc_islocal( C, Cm, Cn ) )
+         morse_desc_islocal( C, Cm, Cn ) ||
+         rank_changed
+       )
     {
         starpu_insert_task(
             codelet,
@@ -69,6 +86,9 @@ void MORSE_TASK_zgemm(MORSE_option_t *options,
             STARPU_VALUE,    &ldc,               sizeof(int),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
+#if defined(CHAMELEON_USE_MPI)
+            STARPU_EXECUTE_ON_NODE, execution_rank,
+#endif
             0);
     }
 }
