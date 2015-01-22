@@ -14,21 +14,21 @@
 #               [REQUIRED]             # Fail with error if lapacke is not found
 #               [COMPONENTS <libs>...] # required dependencies
 #              )
-# This module finds headers and lapacke library. 
+# This module finds headers and lapacke library.
 # Results are reported in variables:
 #  LAPACKE_FOUND           - True if headers and requested libraries were found
 #  LAPACKE_INCLUDE_DIRS    - lapacke include directories
 #  LAPACKE_LIBRARY_DIRS    - Link directories for lapacke libraries
 #  LAPACKE_LIBRARIES       - lapacke component libraries to be linked
-# The user can give specific paths where to find the libraries adding cmake 
+# The user can give specific paths where to find the libraries adding cmake
 # options at configure (ex: cmake path/to/project -DLAPACKE_DIR=path/to/lapacke):
 #  LAPACKE_DIR             - Where to find the base directory of lapacke
 #  LAPACKE_INCDIR          - Where to find the header files
 #  LAPACKE_LIBDIR          - Where to find the library files
-# LAPACKE could be directly embedded in LAPACK library (ex: Intel MKL) so that 
-# we test a lapacke function with the lapack libraries found and set LAPACKE 
-# variables to LAPACK ones if test is successful. To skip this feature and 
-# look for a stand alone lapacke, please add the following in your 
+# LAPACKE could be directly embedded in LAPACK library (ex: Intel MKL) so that
+# we test a lapacke function with the lapack libraries found and set LAPACKE
+# variables to LAPACK ones if test is successful. To skip this feature and
+# look for a stand alone lapacke, please add the following in your
 # CMakeLists.txt before to call find_package(LAPACKE):
 # set(LAPACKE_STANDALONE TRUE)
 
@@ -49,10 +49,6 @@
 # (To distribute this file outside of Morse, substitute the full
 #  License text for the above reference.)
 
-
-# Some macros to print status when search for headers and libs
-# PrintFindStatus.cmake is in cmake_modules/morse/find directory
-include(PrintFindStatus)
 
 # LAPACKE depends on LAPACK
 # try to find it specified as COMPONENTS during the call
@@ -83,7 +79,7 @@ if (LAPACK_FOUND)
         check_function_exists(LAPACKE_dgeqrf LAPACKE_WORKS)
         mark_as_advanced(LAPACKE_WORKS)
         set(CMAKE_REQUIRED_LIBRARIES)
-    
+
         if(LAPACKE_WORKS)
             if(NOT LAPACKE_FIND_QUIETLY)
                 message(STATUS "Looking for lapacke: test with lapack succeeds")
@@ -96,17 +92,17 @@ if (LAPACK_FOUND)
             endif()
         endif()
     endif (NOT LAPACKE_STANDALONE)
-        
+
     if (LAPACKE_STANDALONE OR NOT LAPACKE_WORKS)
-   
+
         if(NOT LAPACKE_WORKS AND NOT LAPACKE_FIND_QUIETLY)
             message(STATUS "Looking for lapacke : test with lapack fails")
         endif()
         # test fails: try to find LAPACKE lib exterior to LAPACK
-        
+
         # Try to find LAPACKE lib
         #######################
-        
+
         # Looking for include
         # -------------------
 
@@ -153,12 +149,6 @@ if (LAPACK_FOUND)
             endif()
         endif()
         mark_as_advanced(LAPACKE_lapacke.h_DIRS)
-        
-        # Print status if not found
-        # -------------------------
-        if (NOT LAPACKE_lapacke.h_DIRS)
-            Print_Find_Header_Status(lapacke lapacke.h)
-        endif ()        
 
         # If found, add path to cmake variable
         # ------------------------------------
@@ -215,12 +205,6 @@ if (LAPACK_FOUND)
             endif()
         endif()
         mark_as_advanced(LAPACKE_lapacke_LIBRARY)
-        
-        # Print status if not found
-        # -------------------------
-        if (NOT LAPACKE_lapacke_LIBRARY AND NOT LAPACKE_FIND_QUIETLY)
-            Print_Find_Library_Status(lapacke liblapacke)
-        endif ()
 
         # If found, add path to cmake variable
         # ------------------------------------
@@ -236,16 +220,16 @@ if (LAPACK_FOUND)
                 message(STATUS "Looking for lapacke -- lib lapacke not found")
             endif()
         endif ()
-        
+
     endif (LAPACKE_STANDALONE OR NOT LAPACKE_WORKS)
-    
+
 else(LAPACK_FOUND)
 
     if (NOT LAPACKE_FIND_QUIETLY)
         message(STATUS "LAPACKE requires LAPACK but LAPACK has not been found."
             "Please look for LAPACK first.")
     endif()
-        
+
 endif(LAPACK_FOUND)
 
 

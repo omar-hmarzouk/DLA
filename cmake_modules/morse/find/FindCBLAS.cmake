@@ -14,21 +14,21 @@
 #               [REQUIRED]             # Fail with error if cblas is not found
 #               [COMPONENTS <libs>...] # required dependencies
 #              )
-# This module finds headers and cblas library. 
+# This module finds headers and cblas library.
 # Results are reported in variables:
 #  CBLAS_FOUND           - True if headers and requested libraries were found
 #  CBLAS_INCLUDE_DIRS    - cblas include directories
 #  CBLAS_LIBRARY_DIRS    - Link directories for cblas libraries
 #  CBLAS_LIBRARIES       - cblas component libraries to be linked
-# The user can give specific paths where to find the libraries adding cmake 
+# The user can give specific paths where to find the libraries adding cmake
 # options at configure (ex: cmake path/to/project -DCBLAS_DIR=path/to/cblas):
 #  CBLAS_DIR             - Where to find the base directory of cblas
 #  CBLAS_INCDIR          - Where to find the header files
 #  CBLAS_LIBDIR          - Where to find the library files
-# CBLAS could be directly embedded in BLAS library (ex: Intel MKL) so that 
-# we test a cblas function with the blas libraries found and set CBLAS 
-# variables to BLAS ones if test is successful. To skip this feature and 
-# look for a stand alone cblas, please add the following in your 
+# CBLAS could be directly embedded in BLAS library (ex: Intel MKL) so that
+# we test a cblas function with the blas libraries found and set CBLAS
+# variables to BLAS ones if test is successful. To skip this feature and
+# look for a stand alone cblas, please add the following in your
 # CMakeLists.txt before to call find_package(CBLAS):
 # set(CBLAS_STANDALONE TRUE)
 
@@ -49,10 +49,6 @@
 # (To distribute this file outside of Morse, substitute the full
 #  License text for the above reference.)
 
-
-# Some macros to print status when search for headers and libs
-# PrintFindStatus.cmake is in cmake_modules/morse/find directory
-include(PrintFindStatus)
 
 # CBLAS depends on BLAS
 # try to find it specified as COMPONENTS during the call
@@ -83,7 +79,7 @@ if (BLAS_FOUND)
         check_function_exists(cblas_dscal CBLAS_WORKS)
         mark_as_advanced(CBLAS_WORKS)
         set(CMAKE_REQUIRED_LIBRARIES)
-    
+
         if(CBLAS_WORKS)
             if(NOT CBLAS_FIND_QUIETLY)
                 message(STATUS "Looking for cblas: test with blas succeeds")
@@ -96,17 +92,17 @@ if (BLAS_FOUND)
             endif()
         endif()
     endif (NOT CBLAS_STANDALONE)
-        
+
     if (CBLAS_STANDALONE OR NOT CBLAS_WORKS)
-   
+
         if(NOT CBLAS_WORKS AND NOT CBLAS_FIND_QUIETLY)
             message(STATUS "Looking for cblas : test with blas fails")
         endif()
         # test fails: try to find CBLAS lib exterior to BLAS
-        
+
         # Try to find CBLAS lib
         #######################
-        
+
         # Looking for include
         # -------------------
 
@@ -153,12 +149,6 @@ if (BLAS_FOUND)
             endif()
         endif()
         mark_as_advanced(CBLAS_cblas.h_DIRS)
-        
-        # Print status if not found
-        # -------------------------
-        if (NOT CBLAS_cblas.h_DIRS)
-            Print_Find_Header_Status(cblas cblas.h)
-        endif ()        
 
         # If found, add path to cmake variable
         # ------------------------------------
@@ -215,12 +205,6 @@ if (BLAS_FOUND)
             endif()
         endif()
         mark_as_advanced(CBLAS_cblas_LIBRARY)
-        
-        # Print status if not found
-        # -------------------------
-        if (NOT CBLAS_cblas_LIBRARY AND NOT CBLAS_FIND_QUIETLY)
-            Print_Find_Library_Status(cblas libcblas)
-        endif ()
 
         # If found, add path to cmake variable
         # ------------------------------------
@@ -236,16 +220,16 @@ if (BLAS_FOUND)
                 message(STATUS "Looking for cblas -- lib cblas not found")
             endif()
         endif ()
-        
+
     endif (CBLAS_STANDALONE OR NOT CBLAS_WORKS)
-    
+
 else(BLAS_FOUND)
 
-    if (NOT CBLAS_FIND_QUIETLY)
+    if (NOT CBLAS_FIND_QUIETLY OR NOT MORSE_VERBOSE)
         message(STATUS "CBLAS requires BLAS but BLAS has not been found."
             "Please look for BLAS first.")
     endif()
-        
+
 endif(BLAS_FOUND)
 
 

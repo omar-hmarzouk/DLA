@@ -13,14 +13,14 @@
 #  find_package(TMG
 #               [REQUIRED]             # Fail with error if tmg is not found
 #               [COMPONENTS <libs>...] # required dependencies
-#              )  
-# This module finds headers and tmg library. 
+#              )
+# This module finds headers and tmg library.
 # Results are reported in variables:
 #  TMG_FOUND           - True if headers and requested libraries were found
 #  TMG_INCLUDE_DIRS    - tmg include directories
 #  TMG_LIBRARY_DIRS    - Link directories for tmg libraries
 #  TMG_LIBRARIES       - tmg component libraries to be linked
-# The user can give specific paths where to find the libraries adding cmake 
+# The user can give specific paths where to find the libraries adding cmake
 # options at configure (ex: cmake path/to/project -DTMG=path/to/tmg):
 #  TMG_DIR             - Where to find the base directory of tmg
 #  TMG_INCDIR          - Where to find the header files
@@ -43,10 +43,6 @@
 # (To distribute this file outside of Morse, substitute the full
 #  License text for the above reference.)
 
-
-# Some macros to print status when search for headers and libs
-# PrintFindStatus.cmake is in cmake_modules/morse/find directory
-include(PrintFindStatus)
 
 # used to test a TMG function after
 get_property(_LANGUAGES_ GLOBAL PROPERTY ENABLED_LANGUAGES)
@@ -82,11 +78,11 @@ if (LAPACK_FOUND)
     check_function_exists(dlarnv TMG_WORKS)
     if (TMG_WORKS)
         unset(TMG_WORKS CACHE)
-        check_function_exists(dlagsy TMG_WORKS)    
+        check_function_exists(dlagsy TMG_WORKS)
         mark_as_advanced(TMG_WORKS)
         set(CMAKE_REQUIRED_LIBRARIES)
     endif()
-    
+
     if(TMG_WORKS)
         if(NOT TMG_FIND_QUIETLY)
             message(STATUS "Looking for tmg: test with lapack succeeds")
@@ -97,13 +93,13 @@ if (LAPACK_FOUND)
         if(LAPACK_INCLUDE_DIRS)
             set(TMG_INCLUDE_DIRS "${LAPACK_INCLUDE_DIRS}")
         endif()
-    else()    
+    else()
 
         if(NOT TMG_FIND_QUIETLY)
             message(STATUS "Looking for tmg : test with lapack fails")
             message(STATUS "Looking for tmg : try to find it elsewhere")
         endif()
-        # test fails: try to find TMG lib exterior to LAPACK  
+        # test fails: try to find TMG lib exterior to LAPACK
 
         # Looking for lib tmg
         # -------------------
@@ -175,7 +171,7 @@ else()
         message(STATUS "TMG requires LAPACK but LAPACK has not been found."
             "Please look for LAPACK first.")
     endif()
-    
+
 endif()
 
 

@@ -66,7 +66,6 @@ set(CHAMELEON_DEFINITIONS_LIST "")
 # ------------------------------------------------------------------
 add_definitions(-DADD_)
 
-
 # Set the RPATH config
 # --------------------
 
@@ -152,7 +151,7 @@ if(CHAMELEON_USE_FXT AND NOT CHAMELEON_SCHED_STARPU)
     "Use -DCHAMELEON_SCHED_QUARK=OFF -DCHAMELEON_SCHED_STARPU=ON at cmake \n"
     "configure to do so.")
 endif()
-        
+
 # Additional options
 # ------------------
 
@@ -223,11 +222,11 @@ if(UNIX OR WIN32)
         list(APPEND EXTRA_LIBRARIES "${M_m_LIBRARY}")
     else()
         message(FATAL_ERROR "Could NOT find libm on your system."
-            "Are you sure to a have a C compiler installed?")        
+            "Are you sure to a have a C compiler installed?")
     endif()
 endif()
 
-# Try to find librt (libposix4 - POSIX.1b Realtime Extensions library) 
+# Try to find librt (libposix4 - POSIX.1b Realtime Extensions library)
 # on Unix systems except Apple ones because it does not exist on it
 set(RT_LIBRARIES "")
 if(UNIX AND NOT APPLE)
@@ -240,11 +239,11 @@ if(UNIX AND NOT APPLE)
         list(APPEND RT_LIBRARIES "${RT_rt_LIBRARY}")
         list(APPEND EXTRA_LIBRARIES "${RT_rt_LIBRARY}")
     else()
-        message(FATAL_ERROR "Could NOT find librt on your system")        
+        message(FATAL_ERROR "Could NOT find librt on your system")
     endif()
 endif()
 
-# If simulation we don't enter in kernel functions so that we don't need to 
+# If simulation we don't enter in kernel functions so that we don't need to
 # link with concerned libraries
 if(NOT CHAMELEON_SIMULATION)
 
@@ -255,49 +254,85 @@ if(NOT CHAMELEON_SIMULATION)
     if(BLAS_FOUND AND BLAS_LIBRARY_DIRS)
         # the RPATH to be used when installing
         list(APPEND CMAKE_INSTALL_RPATH "${BLAS_LIBRARY_DIRS}")
+    else()
+        message(FATAL_ERROR "A BLAS library is required but has not been found")
     endif()
 
     set(CBLAS_DIR "" CACHE PATH "Root directory of CBLAS library")
-    find_package(CBLAS REQUIRED)
+    find_package(CBLAS)
     if(CBLAS_FOUND)
         include_directories(${CBLAS_INCLUDE_DIRS})
-    endif()
-    if(CBLAS_FOUND AND CBLAS_LIBRARY_DIRS)
-        # the RPATH to be used when installing
-        list(APPEND CMAKE_INSTALL_RPATH "${CBLAS_LIBRARY_DIRS}")
+        if(CBLAS_LIBRARY_DIRS)
+            # the RPATH to be used when installing
+            list(APPEND CMAKE_INSTALL_RPATH "${CBLAS_LIBRARY_DIRS}")
+        endif()
+    else()
+        if(MORSE_VERBOSE)
+            if(CBLAS_STANDALONE OR NOT CBLAS_WORKS)
+                if (NOT CBLAS_cblas.h_DIRS)
+                    Print_Find_Header_Status(cblas cblas.h)
+                endif ()
+                if (NOT CBLAS_cblas_LIBRARY)
+                    Print_Find_Library_Status(cblas libcblas)
+                endif ()
+            endif()
+        else()
+            message(WARNING "CBLAS library has not been found and MORSE_VERBOSE is set to OFF"
+            "Try to activate MORSE_VERBOSE option (-DMORSE_VERBOSE=ON) to get some hints for the detection")
+        endif()
+        message(FATAL_ERROR "A CBLAS library is required but has not been found")
     endif()
 
-    #---------------------------------------------
-    # CHAMELEON depends on LAPACKE (via coreblas)
+    # CHAMELEON depends on LAPACKE
+    #-----------------------------
     set(LAPACK_DIR "" CACHE PATH "Root directory of LAPACK library")
-    find_package(LAPACKEXT REQUIRED)
+    find_package(LAPACKEXT)
     if(LAPACK_FOUND AND LAPACK_LIBRARY_DIRS)
         # the RPATH to be used when installing
         list(APPEND CMAKE_INSTALL_RPATH "${LAPACK_LIBRARY_DIRS}")
+    else()
+        message(FATAL_ERROR "A LAPACK library is required but has not been found")
     endif()
 
     # standalone version of lapacke seems useless for now
-    # let the comment in case we meet some problems of non existing lapacke 
+    # let the comment in case we meet some problems of non existing lapacke
     # functions in lapack library such as mkl, acml, ...
     #set(LAPACKE_STANDALONE TRUE)
     set(LAPACKE_DIR "" CACHE PATH "Root directory of LAPACKE library")
-    find_package(LAPACKE REQUIRED)
+    find_package(LAPACKE)
     if(LAPACKE_FOUND)
         include_directories(${LAPACKE_INCLUDE_DIRS})
-    endif()
-    if(LAPACKE_FOUND AND LAPACKE_LIBRARY_DIRS)
-        # the RPATH to be used when installing
-        list(APPEND CMAKE_INSTALL_RPATH "${LAPACKE_LIBRARY_DIRS}")
+        if(LAPACKE_LIBRARY_DIRS)
+            # the RPATH to be used when installing
+            list(APPEND CMAKE_INSTALL_RPATH "${LAPACKE_LIBRARY_DIRS}")
+        endif()
+    else()
+        if(MORSE_VERBOSE)
+            if (LAPACKE_STANDALONE OR NOT LAPACKE_WORKS)
+                if (NOT LAPACKE_lapacke.h_DIRS)
+                    Print_Find_Header_Status(lapacke lapacke.h)
+                endif ()
+                if (NOT LAPACKE_lapacke_LIBRARY)
+                    Print_Find_Library_Status(lapacke liblapacke)
+                endif ()
+            endif()
+        else()
+            message(WARNING "LAPACKE library has not been found and MORSE_VERBOSE is set to OFF"
+            "Try to activate MORSE_VERBOSE option (-DMORSE_VERBOSE=ON) to get some hints for the detection")
+        endif()
+        message(FATAL_ERROR "A LAPACKE library is required but has not been found")
     endif()
 
     # CHAMELEON depends on TMG
     #--------------------------
     if (CHAMELEON_ENABLE_TESTING OR CHAMELEON_ENABLE_TIMING)
         set(TMG_DIR "" CACHE PATH "Root directory of TMG library")
-        find_package(TMG REQUIRED)
+        find_package(TMG)
         if(TMG_FOUND AND TMG_LIBRARY_DIRS)
             # the RPATH to be used when installing
             list(APPEND CMAKE_INSTALL_RPATH "${TMG_LIBRARY_DIRS}")
+        else()
+            message(FATAL_ERROR "A TMG library is required but has not been found")
         endif()
     endif()
 
@@ -327,34 +362,44 @@ if(NOT CHAMELEON_SIMULATION)
             endif()
             set(CMAKE_REQUIRED_INCLUDES  "${saved_include}")
             set(CMAKE_REQUIRED_LIBRARIES "${saved_libs}")
-            FindHeader(CUDA cublas_v2.h)
-            if(CUDA_cublas_v2.h_DIRS)
+            #FindHeader(CUDA cublas_v2.h)
+            #if(CUDA_cublas_v2.h_DIRS)
                 #add_definitions(-DCHAMELEON_USE_CUBLAS_V2)
-            endif()
+            #endif()
         endif (CUDA_FOUND)
 
         # CHAMELEON depends on MAGMA gpu kernels
         # call our cmake module to test (in cmake_modules)
         # change this call position if not appropriated
         #----------------------------------------------
-        if ( CUDA_FOUND )
-            if ( CHAMELEON_USE_MAGMA )
-                set(CHAMELEON_MAGMA_VERSION "1.4" CACHE STRING "oldest MAGMA version desired")
-                set(MAGMA_DIR "" CACHE PATH "Root directory of MAGMA library")
-                find_package(MAGMA ${CHAMELEON_MAGMA_VERSION} REQUIRED COMPONENTS CBLAS LAPACK CUDA)
-
-                if ( MAGMA_FOUND )
-                    add_definitions(-DHAVE_CUBLAS)
-                    add_definitions(-DCHAMELEON_USE_CUBLAS)
-                    add_definitions(-DCHAMELEON_USE_MAGMA)
-                    list(APPEND EXTRA_LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
-                    include_directories(${MAGMA_INCLUDE_DIRS})
-                    if(MAGMA_LIBRARY_DIRS)
-                        # the RPATH to be used when installing
-                        list(APPEND CMAKE_INSTALL_RPATH "${MAGMA_LIBRARY_DIRS}")
-                    endif()
-                endif( MAGMA_FOUND )
-            endif()
+        if ( CUDA_FOUND AND CHAMELEON_USE_MAGMA )
+            set(CHAMELEON_MAGMA_VERSION "1.4" CACHE STRING "oldest MAGMA version desired")
+            set(MAGMA_DIR "" CACHE PATH "Root directory of MAGMA library")
+            find_package(MAGMA ${CHAMELEON_MAGMA_VERSION} COMPONENTS CBLAS LAPACK CUDA)
+            if ( MAGMA_FOUND )
+                add_definitions(-DHAVE_CUBLAS)
+                add_definitions(-DCHAMELEON_USE_CUBLAS)
+                add_definitions(-DCHAMELEON_USE_MAGMA)
+                list(APPEND EXTRA_LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
+                include_directories(${MAGMA_INCLUDE_DIRS})
+                if(MAGMA_LIBRARY_DIRS)
+                    # the RPATH to be used when installing
+                    list(APPEND CMAKE_INSTALL_RPATH "${MAGMA_LIBRARY_DIRS}")
+                endif()
+            else( MAGMA_FOUND )
+                if(MORSE_VERBOSE)
+                    if (NOT MAGMA_magma.h_DIRS)
+                        Print_Find_Header_Status(magma magma.h)
+                    endif ()
+                    if (NOT MAGMA_magma_LIBRARY)
+                        Print_Find_Library_Status(magma libmagma)
+                    endif ()
+                else()
+                    message(WARNING "MAGMA library has not been found and MORSE_VERBOSE is set to OFF"
+                    "Try to activate MORSE_VERBOSE option (-DMORSE_VERBOSE=ON) to get some hints for the detection")
+                endif()
+                message(FATAL_ERROR "MAGMA library is required but has not been found")
+            endif( MAGMA_FOUND )
         endif()
 
     endif(CHAMELEON_USE_CUDA)
@@ -365,7 +410,7 @@ if(NOT CHAMELEON_SIMULATION)
 
         # allows to use an external mpi compilation by setting compilers with
         # -DMPI_C_COMPILER=path/to/mpicc -DMPI_Fortran_COMPILER=path/to/mpif90
-        # at cmake configure 
+        # at cmake configure
         if(NOT MPI_C_COMPILER)
             set(MPI_C_COMPILER mpicc)
         endif()
@@ -381,7 +426,7 @@ if(NOT CHAMELEON_SIMULATION)
         endif (MPI_C_FOUND)
 
     endif (CHAMELEON_USE_MPI)
-    
+
 else (NOT CHAMELEON_SIMULATION)
 
     message("${BoldBlue}Simulation mode of CHAMELEON is activated (CHAMELEON_SIMULATION=ON)."
@@ -449,11 +494,11 @@ if( CHAMELEON_SCHED_STARPU )
     set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
     set(FXT_DIR "" CACHE PATH "Root directory of FXT library")
     set(STARPU_DIR "" CACHE PATH "Root directory of STARPU library")
-    find_package(STARPU ${CHAMELEON_STARPU_VERSION} REQUIRED
+    find_package(STARPU ${CHAMELEON_STARPU_VERSION}
                  COMPONENTS ${STARPU_COMPONENT_LIST})
 
     # Add definition and include_dir if found
-    if(STARPU_FOUND)
+    if ( STARPU_FOUND )
         add_definitions(-DCHAMELEON_SCHED_STARPU) # TODO: remove that
         include_directories(${STARPU_INCLUDE_DIRS})
         set(CMAKE_REQUIRED_INCLUDES "${STARPU_INCLUDE_DIRS}")
@@ -492,7 +537,56 @@ if( CHAMELEON_SCHED_STARPU )
             # the RPATH to be used when installing
             list(APPEND CMAKE_INSTALL_RPATH "${STARPU_LIBRARY_DIRS}")
         endif()
-    endif( STARPU_FOUND )
+    else ( STARPU_FOUND )
+        if(MORSE_VERBOSE)
+            if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
+                if (NOT HWLOC_hwloc.h_DIRS)
+                    Print_Find_Header_Status(hwloc hwloc.h)
+                endif ()
+                if (NOT HWLOC_hwloc_LIBRARY)
+                    Print_Find_Library_Status(hwloc libhwloc)
+                endif ()
+            endif()
+            if(CHAMELEON_USE_FXT AND (NOT FXT_FOUND OR NOT FXT_LIBRARIES))
+                if (NOT FXT_fxt.h_DIRS)
+                    Print_Find_Header_Status(fxt fxt.h)
+                endif ()
+                if (NOT FXT_fxt_LIBRARY)
+                    Print_Find_Library_Status(fxt libfxt)
+                endif ()
+            endif()
+            if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
+                ( STARPU_LOOK_FOR_MPI AND (NOT STARPU_MPI_FOUND OR NOT STARPU_MPI_LIBRARIES) )
+              )
+                foreach(starpu_hdr ${STARPU_hdrs_to_find})
+                    if (NOT STARPU_${starpu_hdr}_INCLUDE_DIRS)
+                        Print_Find_Header_Status(starpu ${starpu_hdr})
+                    endif ()
+                endforeach()
+                if(STARPU_VERSION_STRING)
+                    foreach(starpu_lib ${STARPU_libs_to_find})
+                        if (NOT STARPU_${starpu_lib}_LIBRARY)
+                            Print_Find_Library_Status(starpu ${starpu_lib})
+                        endif ()
+                    endforeach()
+                endif()
+            endif()
+        else(MORSE_VERBOSE)
+            message(WARNING "StarPU library has not been found and MORSE_VERBOSE is set to OFF"
+            "Try to activate MORSE_VERBOSE option (-DMORSE_VERBOSE=ON) to get some hints for the detection")
+        endif(MORSE_VERBOSE)
+        if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
+            message(FATAL_ERROR "hwloc library is required but has not been found")
+        endif()
+        if(CHAMELEON_USE_FXT AND (NOT FXT_FOUND OR NOT FXT_LIBRARIES))
+            message(FATAL_ERROR "FxT library is required but has not been found")
+        endif()
+        if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
+            ( STARPU_LOOK_FOR_MPI AND (NOT STARPU_MPI_FOUND OR NOT STARPU_MPI_LIBRARIES) )
+          )
+            message(FATAL_ERROR "StarPU library is required but has not been found")
+        endif()
+    endif ( STARPU_FOUND )
 
 endif( CHAMELEON_SCHED_STARPU )
 
@@ -501,22 +595,46 @@ if( CHAMELEON_SCHED_QUARK )
 
     set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
     set(QUARK_DIR "" CACHE PATH "Root directory of QUARK library")
-    find_package(QUARK REQUIRED COMPONENTS HWLOC)
+    find_package(QUARK COMPONENTS HWLOC)
 
     # Add definition and include_dir if found
     if(QUARK_FOUND)
         add_definitions(-DCHAMELEON_SCHED_QUARK) # TODO: remove that
         include_directories(${QUARK_INCLUDE_DIRS})
-    endif()
-    if(QUARK_FOUND AND QUARK_LIBRARY_DIRS)
-        # the RPATH to be used when installing
-        list(APPEND CMAKE_INSTALL_RPATH "${QUARK_LIBRARY_DIRS}")
-    endif()
+        if(QUARK_LIBRARY_DIRS)
+            # the RPATH to be used when installing
+            list(APPEND CMAKE_INSTALL_RPATH "${QUARK_LIBRARY_DIRS}")
+        endif()
+    else(QUARK_FOUND)
+        if(MORSE_VERBOSE)
+            if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
+                if (NOT HWLOC_hwloc.h_DIRS)
+                    Print_Find_Header_Status(hwloc hwloc.h)
+                endif ()
+                if (NOT HWLOC_hwloc_LIBRARY)
+                    Print_Find_Library_Status(hwloc libhwloc)
+                endif ()
+            endif()
+            if (NOT QUARK_quark.h_DIRS)
+                Print_Find_Header_Status(quark quark.h)
+            endif ()
+            if (NOT QUARK_quark_LIBRARY)
+                Print_Find_Library_Status(quark libquark)
+            endif ()
+        else()
+            message(WARNING "QUARK library has not been found and MORSE_VERBOSE is set to OFF"
+            "Try to activate MORSE_VERBOSE option (-DMORSE_VERBOSE=ON) to get some hints for the detection")
+        endif()
+        if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
+            message(FATAL_ERROR "hwloc library is required but has not been found")
+        endif()
+        message(FATAL_ERROR "QUARK library is required but has not been found")
+    endif(QUARK_FOUND)
 
 endif()
 
 #------------------------------------------------------------------------------
-# Save all dependencies (all required links) 
+# Save all dependencies (all required links)
 set(CHAMELEON_DEP -lchameleon)
 if(CHAMELEON_SCHED_STARPU)
     if ( CHAMELEON_USE_MPI )
@@ -554,7 +672,7 @@ if(NOT CHAMELEON_SIMULATION)
     list(APPEND CHAMELEON_DEP
     -lcoreblas
     ${LAPACKE_LIBRARIES}
-    ${CBLAS_LIBRARIES}    
+    ${CBLAS_LIBRARIES}
     ${LAPACK_SEQ_LIBRARIES}
     ${BLAS_SEQ_LIBRARIES}
     ${HWLOC_LIBRARIES}
@@ -563,7 +681,7 @@ if(NOT CHAMELEON_SIMULATION)
 else()
     list(APPEND CHAMELEON_DEP
     -lcoreblas
-    -lsimulapacke    
+    -lsimulapacke
     -lsimucblas
     ${HWLOC_LIBRARIES}
     ${EXTRA_LIBRARIES}

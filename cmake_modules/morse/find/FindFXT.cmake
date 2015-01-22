@@ -12,13 +12,13 @@
 # Use this module by invoking find_package with the form:
 #  find_package(FXT
 #               [REQUIRED]) # Fail with error if fxt is not found
-# This module finds headers and fxt library. 
+# This module finds headers and fxt library.
 # Results are reported in variables:
 #  FXT_FOUND           - True if headers and requested libraries were found
 #  FXT_INCLUDE_DIRS    - fxt include directories
 #  FXT_LIBRARY_DIRS    - Link directories for fxt libraries
 #  FXT_LIBRARIES       - fxt component libraries to be linked
-# The user can give specific paths where to find the libraries adding cmake 
+# The user can give specific paths where to find the libraries adding cmake
 # options at configure (ex: cmake path/to/project -DFXT_DIR=path/to/fxt):
 #  FXT_DIR             - Where to find the base directory of fxt
 #  FXT_INCDIR          - Where to find the header files
@@ -42,10 +42,6 @@
 #  License text for the above reference.)
 
 
-# Some macros to print status when search for headers and libs
-# PrintFindStatus.cmake is in cmake_modules/morse/find directory
-include(PrintFindStatus)
-
 # Optionally use pkg-config to detect include/library dirs (if pkg-config is available)
 # -------------------------------------------------------------------------------------
 include(FindPkgConfig)
@@ -56,11 +52,11 @@ if(PKG_CONFIG_EXECUTABLE)
     if (NOT FXT_FIND_QUIETLY)
         if (FXT_FOUND AND FXT_LIBRARIES)
             message(STATUS "Looking for FXT - found using PkgConfig")
-            if(NOT FXT_INCLUDE_DIRS)
-                message("${Magenta}FXT_INCLUDE_DIRS is empty using PkgConfig."
-                    "Perhaps the path to fxt headers is already present in your"
-                    "C(PLUS)_INCLUDE_PATH environment variable.${ColourReset}")
-            endif()
+            #if(NOT FXT_INCLUDE_DIRS)
+            #    message("${Magenta}FXT_INCLUDE_DIRS is empty using PkgConfig."
+            #        "Perhaps the path to fxt headers is already present in your"
+            #        "C(PLUS)_INCLUDE_PATH environment variable.${ColourReset}")
+            #endif()
         else()
             message("${Magenta}Looking for FXT - not found using PkgConfig."
                 "Perhaps you should add the directory containing fxt.pc to the"
@@ -78,7 +74,7 @@ if(NOT FXT_FOUND OR NOT FXT_LIBRARIES)
 
     # Looking for include
     # -------------------
-    
+
     # Add system include paths to search include
     # ------------------------------------------
     unset(_inc_env)
@@ -97,7 +93,7 @@ if(NOT FXT_FOUND OR NOT FXT_LIBRARIES)
     list(APPEND _inc_env "${CMAKE_PLATFORM_IMPLICIT_INCLUDE_DIRECTORIES}")
     list(APPEND _inc_env "${CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES}")
     list(REMOVE_DUPLICATES _inc_env)
-    
+
     # Try to find the fxt header in the given paths
     # -------------------------------------------------
     # call cmake macro to find the header path
@@ -121,13 +117,7 @@ if(NOT FXT_FOUND OR NOT FXT_LIBRARIES)
         endif()
     endif()
     mark_as_advanced(FXT_fxt.h_DIRS)
-    
-    # Print status if not found
-    # -------------------------
-    if (NOT FXT_fxt.h_DIRS AND NOT FXT_FIND_QUIETLY)
-        Print_Find_Header_Status(fxt fxt.h)
-    endif ()
-    
+
     # Add path to cmake variable
     # ------------------------------------
     if (FXT_fxt.h_DIRS)
@@ -138,15 +128,15 @@ if(NOT FXT_FOUND OR NOT FXT_LIBRARIES)
             message(STATUS "Looking for fxt -- fxt.h not found")
         endif()
     endif ()
-    
+
     if (FXT_INCLUDE_DIRS)
         list(REMOVE_DUPLICATES FXT_INCLUDE_DIRS)
     endif ()
-    
-    
+
+
     # Looking for lib
     # ---------------
-    
+
     # Add system library paths to search lib
     # --------------------------------------
     unset(_lib_env)
@@ -162,10 +152,10 @@ if(NOT FXT_FOUND OR NOT FXT_LIBRARIES)
         list(APPEND _lib_env "${CMAKE_C_IMPLICIT_LINK_DIRECTORIES}")
     endif()
     list(REMOVE_DUPLICATES _lib_env)
-    
+
     # Try to find the fxt lib in the given paths
     # ----------------------------------------------
-    
+
     # call cmake macro to find the lib path
     if(FXT_LIBDIR)
         set(FXT_fxt_LIBRARY "FXT_fxt_LIBRARY-NOTFOUND")
@@ -187,13 +177,7 @@ if(NOT FXT_FOUND OR NOT FXT_LIBRARIES)
         endif()
     endif()
     mark_as_advanced(FXT_fxt_LIBRARY)
-    
-    # Print status if not found
-    # -------------------------
-    if (NOT FXT_fxt_LIBRARY AND NOT FXT_FIND_QUIETLY)
-        Print_Find_Library_Status(fxt libfxt)
-    endif ()
-    
+
     # If found, add path to cmake variable
     # ------------------------------------
     if (FXT_fxt_LIBRARY)
@@ -208,7 +192,7 @@ if(NOT FXT_FOUND OR NOT FXT_LIBRARIES)
             message(STATUS "Looking for fxt -- lib fxt not found")
         endif()
     endif ()
-    
+
     if (FXT_LIBRARY_DIRS)
         list(REMOVE_DUPLICATES FXT_LIBRARY_DIRS)
     endif ()

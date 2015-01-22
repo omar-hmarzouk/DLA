@@ -13,14 +13,14 @@
 #  find_package(PTSCOTCH
 #               [REQUIRED]             # Fail with error if ptscotch is not found
 #               [COMPONENTS <libs>...] # required dependencies
-#              )  
-# This module finds headers and ptscotch library. 
+#              )
+# This module finds headers and ptscotch library.
 # Results are reported in variables:
 #  PTSCOTCH_FOUND           - True if headers and requested libraries were found
 #  PTSCOTCH_INCLUDE_DIRS    - ptscotch include directories
 #  PTSCOTCH_LIBRARY_DIRS    - Link directories for ptscotch libraries
 #  PTSCOTCH_LIBRARIES       - ptscotch component libraries to be linked
-# The user can give specific paths where to find the libraries adding cmake 
+# The user can give specific paths where to find the libraries adding cmake
 # options at configure (ex: cmake path/to/project -DPTSCOTCH=path/to/ptscotch):
 #  PTSCOTCH_DIR             - Where to find the base directory of ptscotch
 #  PTSCOTCH_INCDIR          - Where to find the header files
@@ -44,10 +44,6 @@
 #  License text for the above reference.)
 
 
-# Some macros to print status when search for headers and libs
-# PrintFindStatus.cmake is in cmake_modules/morse/find directory
-include(PrintFindStatus)
-
 # PTSCOTCH may depend on MPI and Threads
 # try to find it specified as COMPONENTS during the call
 if( PTSCOTCH_FIND_COMPONENTS )
@@ -67,7 +63,7 @@ if( PTSCOTCH_FIND_COMPONENTS )
                 mark_as_advanced(MPI_LIBRARY)
                 mark_as_advanced(MPI_EXTRA_LIBRARY)
                 list(APPEND EXTRA_LIBRARIES ${MPI_C_LIBRARIES} )
-                include_directories( ${MPI_C_INCLUDE_PATH} )                
+                include_directories( ${MPI_C_INCLUDE_PATH} )
             endif()
         else()
             set(PTSCOTCH_${component}_FOUND FALSE)
@@ -113,7 +109,7 @@ else()
         find_path(PTSCOTCH_ptscotch.h_DIRS
           NAMES ptscotch.h
           HINTS ${PTSCOTCH_DIR}
-          PATH_SUFFIXES include)        
+          PATH_SUFFIXES include)
     else()
         set(PTSCOTCH_ptscotch.h_DIRS "PTSCOTCH_ptscotch.h_DIRS-NOTFOUND")
         find_path(PTSCOTCH_ptscotch.h_DIRS
@@ -122,12 +118,6 @@ else()
     endif()
 endif()
 mark_as_advanced(PTSCOTCH_ptscotch.h_DIRS)
-
-# Print status if not found
-# -------------------------
-if (NOT PTSCOTCH_ptscotch.h_DIRS AND NOT PTSCOTCH_FIND_QUIETLY)
-    Print_Find_Header_Status(ptscotch ptscotch.h)
-endif ()
 
 # If found, add path to cmake variable
 # ------------------------------------
@@ -171,10 +161,10 @@ if(PTSCOTCH_LIBDIR)
         set(PTSCOTCH_${ptscotch_lib}_LIBRARY "PTSCOTCH_${ptscotch_lib}_LIBRARY-NOTFOUND")
         find_library(PTSCOTCH_${ptscotch_lib}_LIBRARY
             NAMES ${ptscotch_lib}
-            HINTS ${PTSCOTCH_LIBDIR}) 
+            HINTS ${PTSCOTCH_LIBDIR})
     endforeach()
 else()
-    if(PTSCOTCH_DIR)  
+    if(PTSCOTCH_DIR)
         foreach(ptscotch_lib ${PTSCOTCH_libs_to_find})
             set(PTSCOTCH_${ptscotch_lib}_LIBRARY "PTSCOTCH_${ptscotch_lib}_LIBRARY-NOTFOUND")
             find_library(PTSCOTCH_${ptscotch_lib}_LIBRARY
@@ -187,18 +177,10 @@ else()
             set(PTSCOTCH_${ptscotch_lib}_LIBRARY "PTSCOTCH_${ptscotch_lib}_LIBRARY-NOTFOUND")
             find_library(PTSCOTCH_${ptscotch_lib}_LIBRARY
                 NAMES ${ptscotch_lib}
-                HINTS ${_lib_env})  
+                HINTS ${_lib_env})
         endforeach()
     endif()
 endif()
-
-# Print status if not found
-# -------------------------
-foreach(ptscotch_lib ${PTSCOTCH_libs_to_find})
-    if (NOT PTSCOTCH_${ptscotch_lib}_LIBRARY AND NOT PTSCOTCH_FIND_QUIETLY)
-        Print_Find_Library_Status(ptscotch ${ptscotch_lib})
-    endif ()
-endforeach()
 
 set(PTSCOTCH_LIBRARIES "")
 set(PTSCOTCH_LIBRARY_DIRS "")
@@ -217,9 +199,9 @@ foreach(ptscotch_lib ${PTSCOTCH_libs_to_find})
             message(STATUS "Looking for ptscotch -- lib ${ptscotch_lib} not found")
         endif()
     endif ()
-    
+
     mark_as_advanced(PTSCOTCH_${ptscotch_lib}_LIBRARY)
-    
+
 endforeach()
 
 

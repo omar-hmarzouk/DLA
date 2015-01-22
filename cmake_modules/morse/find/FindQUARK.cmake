@@ -13,14 +13,14 @@
 #  find_package(QUARK
 #               [REQUIRED]             # Fail with error if quark is not found
 #               [COMPONENTS <libs>...] # required dependencies
-#              )  
-# This module finds headers and quark library. 
+#              )
+# This module finds headers and quark library.
 # Results are reported in variables:
 #  QUARK_FOUND           - True if headers and requested libraries were found
 #  QUARK_INCLUDE_DIRS    - quark include directories
 #  QUARK_LIBRARY_DIRS    - Link directories for quark libraries
 #  QUARK_LIBRARIES       - quark component libraries to be linked
-# The user can give specific paths where to find the libraries adding cmake 
+# The user can give specific paths where to find the libraries adding cmake
 # options at configure (ex: cmake path/to/project -DQUARK=path/to/quark):
 #  QUARK_DIR             - Where to find the base directory of quark
 #  QUARK_INCDIR          - Where to find the header files
@@ -43,10 +43,6 @@
 # (To distribute this file outside of Morse, substitute the full
 #  License text for the above reference.)
 
-
-# Some macros to print status when search for headers and libs
-# PrintFindStatus.cmake is in cmake_modules/morse/find directory
-include(PrintFindStatus)
 
 # QUARK may depend on HWLOC
 # try to find it specified as COMPONENTS during the call
@@ -112,12 +108,6 @@ else()
 endif()
 mark_as_advanced(QUARK_quark.h_DIRS)
 
-# Print status if not found
-# -------------------------
-if (NOT QUARK_quark.h_DIRS AND NOT QUARK_FIND_QUIETLY)
-    Print_Find_Header_Status(quark quark.h)
-endif ()
-
 # If found, add path to cmake variable
 # ------------------------------------
 if (QUARK_quark.h_DIRS)
@@ -173,12 +163,6 @@ else()
     endif()
 endif()
 mark_as_advanced(QUARK_quark_LIBRARY)
-
-# Print status if not found
-# -------------------------
-if (NOT QUARK_quark_LIBRARY AND NOT QUARK_FIND_QUIETLY)
-    Print_Find_Library_Status(quark libquark)
-endif ()
 
 # If found, add path to cmake variable
 # ------------------------------------

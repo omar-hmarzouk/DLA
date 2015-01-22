@@ -65,14 +65,14 @@ macro(Print_Find_Header_Status _libname _header_to_find)
     string(TOLOWER ${_libname} libname)
 
     # print status
-    #message(" ")    
+    #message(" ")
     if(${LIBNAME}_INCDIR)
         message("${Blue}${LIBNAME}_INCDIR is defined but ${_header_to_find}"
                 "has not been found in ${${LIBNAME}_INCDIR}${ColourReset}")
     else()
         if(${LIBNAME}_DIR)
             message("${Blue}${LIBNAME}_DIR is defined but"
-                    "${_header_to_find} has not been found in" 
+                    "${_header_to_find} has not been found in"
                     "${${LIBNAME}_DIR}/include${ColourReset}")
         else()
             message("${Blue}${_header_to_find} not found."
@@ -83,7 +83,7 @@ macro(Print_Find_Header_Status _libname _header_to_find)
                     ", CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES)${ColourReset}")
             if(_inc_env)
                 message("${Blue}${_header_to_find} has not been found in"
-                        "${_inc_env}${ColourReset}")        
+                        "${_inc_env}${ColourReset}")
             endif()
         endif()
     endif()
@@ -92,7 +92,7 @@ macro(Print_Find_Header_Status _libname _header_to_find)
             "- Option 2: Provide the directory where to find the headers with cmake option: -D${LIBNAME}_INCDIR=your/path/to/${libname}/include/\n"
             "- Option 3: Update your environment variable (INCLUDE or CPATH)\n"
             "- Option 4: If your library provides a PkgConfig file, make sure pkg-config finds your library${ColourReset}")
-    #message(" ")
+        #message(" ")
 
 endmacro()
 
@@ -185,7 +185,7 @@ macro(Print_Find_Library_Blas_CheckFunc_Status _name)
     message("${Red}Libs have been found but check of symbol ${_name} failed "
             "with following libraries ${ARGN}${ColourReset}")
     message("${BoldRed}Please open your error file CMakeFiles/CMakeError.log"
-            "to figure out why it fails${ColourReset}")            
+            "to figure out why it fails${ColourReset}")
     #message(" ")
 
 endmacro()
@@ -204,7 +204,7 @@ macro(Print_Find_Pkgconfig_Status _libname _pc_to_find)
             "${ARGN}${ColourReset}")
     message("${BoldMagenta}If you really want to use the pkg-config file of"
             "${libname}, please update your PKG_CONFIG_PATH with the path"
-            "where ${_pc_to_find} states${ColourReset}")     
+            "where ${_pc_to_find} states${ColourReset}")
     #message(" ")
 
 endmacro()

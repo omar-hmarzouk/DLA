@@ -13,14 +13,14 @@
 #  find_package(METIS
 #               [REQUIRED]             # Fail with error if metis is not found
 #               [COMPONENTS <libs>...] # required dependencies
-#              )  
-# This module finds headers and metis library. 
+#              )
+# This module finds headers and metis library.
 # Results are reported in variables:
 #  METIS_FOUND           - True if headers and requested libraries were found
 #  METIS_INCLUDE_DIRS    - metis include directories
 #  METIS_LIBRARY_DIRS    - Link directories for metis libraries
 #  METIS_LIBRARIES       - metis component libraries to be linked
-# The user can give specific paths where to find the libraries adding cmake 
+# The user can give specific paths where to find the libraries adding cmake
 # options at configure (ex: cmake path/to/project -DMETIS_DIR=path/to/metis):
 #  METIS_DIR             - Where to find the base directory of metis
 #  METIS_INCDIR          - Where to find the header files
@@ -43,10 +43,6 @@
 # (To distribute this file outside of Morse, substitute the full
 #  License text for the above reference.)
 
-
-# Some macros to print status when search for headers and libs
-# PrintFindStatus.cmake is in cmake_modules/morse/find directory
-include(PrintFindStatus)
 
 # Looking for include
 # -------------------
@@ -85,7 +81,7 @@ else()
         find_path(METIS_metis.h_DIRS
           NAMES metis.h
           HINTS ${METIS_DIR}
-          PATH_SUFFIXES include)        
+          PATH_SUFFIXES include)
     else()
         set(METIS_metis.h_DIRS "METIS_metis.h_DIRS-NOTFOUND")
         find_path(METIS_metis.h_DIRS
@@ -95,11 +91,6 @@ else()
 endif()
 mark_as_advanced(METIS_metis.h_DIRS)
 
-# Print status if not found
-# -------------------------
-if (NOT METIS_metis.h_DIRS AND NOT METIS_FIND_QUIETLY)
-    Print_Find_Header_Status(metis metis.h)
-endif ()
 
 # If found, add path to cmake variable
 # ------------------------------------
@@ -139,9 +130,9 @@ if(METIS_LIBDIR)
     set(METIS_metis_LIBRARY "METIS_metis_LIBRARY-NOTFOUND")
     find_library(METIS_metis_LIBRARY
         NAMES metis
-        HINTS ${METIS_LIBDIR})      
+        HINTS ${METIS_LIBDIR})
 else()
-    if(METIS_DIR)   
+    if(METIS_DIR)
         set(METIS_metis_LIBRARY "METIS_metis_LIBRARY-NOTFOUND")
         find_library(METIS_metis_LIBRARY
             NAMES metis
@@ -151,16 +142,11 @@ else()
         set(METIS_metis_LIBRARY "METIS_metis_LIBRARY-NOTFOUND")
         find_library(METIS_metis_LIBRARY
             NAMES metis
-            HINTS ${_lib_env})        
+            HINTS ${_lib_env})
     endif()
 endif()
 mark_as_advanced(METIS_metis_LIBRARY)
 
-# Print status if not found
-# -------------------------
-if (NOT METIS_metis_LIBRARY AND NOT METIS_FIND_QUIETLY)
-    Print_Find_Library_Status(metis libmetis)
-endif ()
 
 # If found, add path to cmake variable
 # ------------------------------------
