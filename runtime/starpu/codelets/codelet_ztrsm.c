@@ -52,8 +52,13 @@ void MORSE_TASK_ztrsm(MORSE_option_t *options,
     int rank_changed=0;
 
     // force execution on the rank owning the largest data (tile)
-    // the numerical facto 10 should be an environnement variable
-    if ( sizeA > 10*sizeB ){
+    int threshold;
+    char* env = getenv("MORSE_COMM_FACTOR_THRESHOLD");
+    if (env != NULL)
+        threshold = (unsigned)atoi(env);
+    else
+        threshold = 10;
+    if ( sizeA > threshold*sizeB ){
         execution_rank = A->get_rankof( A, Am, An );
         rank_changed=1;
     }
