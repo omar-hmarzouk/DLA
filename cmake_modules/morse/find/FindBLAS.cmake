@@ -361,8 +361,9 @@ if (BLA_VENDOR MATCHES "Intel*" OR BLA_VENDOR STREQUAL "All")
                     list(APPEND BLAS_SEARCH_LIBS
                     "mkl_blas95 mkl_intel_lp64 mkl_intel_thread mkl_core guide")
                     # mkl >= 10.3
-                    if (CMAKE_C_COMPILER MATCHES ".+gcc" OR
-                        CMAKE_C_COMPILER MATCHES ".+cc")
+                    get_filename_component(CMAKE_C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
+                    if (CMAKE_C_COMPILER_NAME STREQUAL "gcc" OR
+                        CMAKE_C_COMPILER_NAME STREQUAL "cc")
                         list(APPEND BLAS_SEARCH_LIBS
                         "mkl_blas95_lp64 mkl_intel_lp64 mkl_gnu_thread mkl_core gomp")
                     else ()
@@ -432,8 +433,9 @@ if (BLA_VENDOR MATCHES "Intel*" OR BLA_VENDOR STREQUAL "All")
                     "mkl_intel_lp64 mkl_intel_thread mkl_core guide")
 
                     # mkl >= 10.3
-                    if (CMAKE_C_COMPILER MATCHES ".+gcc" OR
-                        CMAKE_C_COMPILER MATCHES ".+cc")
+                    get_filename_component(CMAKE_C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
+                    if (CMAKE_C_COMPILER_NAME STREQUAL "gcc" OR
+                        CMAKE_C_COMPILER_NAME STREQUAL "cc")
                         list(APPEND BLAS_SEARCH_LIBS
                         "mkl_intel_lp64 mkl_gnu_thread mkl_core gomp")
                     else ()
