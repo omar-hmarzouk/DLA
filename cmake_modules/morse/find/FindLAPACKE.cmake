@@ -238,6 +238,8 @@ if (LAPACK_FOUND)
             set(CMAKE_REQUIRED_LIBRARIES "${LAPACKE_LIBRARIES};${LAPACK_LIBRARIES};-lm")
             if (CMAKE_Fortran_COMPILER MATCHES ".+gfortran.*")
                 list(APPEND CMAKE_REQUIRED_LIBRARIES "-lgfortran")
+            elseif (CMAKE_Fortran_COMPILER MATCHES ".+ifort.*")
+                list(APPEND CMAKE_REQUIRED_LIBRARIES "-lifcore")
             endif()
             set(CMAKE_REQUIRED_FLAGS "-L${LAPACKE_LIBRARY_DIRS} -L${LAPACK_LIBRARY_DIRS}")
 
