@@ -123,9 +123,7 @@ MACRO(GENERATE_PKGCONFIG_FILE _file)
 
     # Create .pc file
     # ---------------
-    GET_FILENAME_COMPONENT(_output_file ${_file} NAME)
-    STRING(REPLACE ".in" "" _output_file "${_output_file}")
-    SET(_output_file "${CMAKE_BINARY_DIR}/${_output_file}")
+    SET(_output_file "${CMAKE_BINARY_DIR}/chameleon.pc")
     # TODO: add url of MORSE releases in .pc file
     CONFIGURE_FILE("${_file}" "${_output_file}" @ONLY)
 
