@@ -288,6 +288,3 @@ include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(CBLAS DEFAULT_MSG
                                   CBLAS_LIBRARIES
                                   CBLAS_LIBRARY_DIRS)
-#
-# TODO: Add possibility to check for specific functions in the library
-#

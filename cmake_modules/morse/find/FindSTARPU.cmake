@@ -615,7 +615,3 @@ if(STARPU_MPI_FOUND)
     find_package_handle_standard_args(STARPU DEFAULT_MSG
                                       STARPU_MPI_LIBRARIES)
 endif()
-
-#
-# TODO: Add possibility to check for specific functions in the library
-#

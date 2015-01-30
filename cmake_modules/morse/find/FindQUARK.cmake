@@ -224,6 +224,3 @@ find_package_handle_standard_args(QUARK DEFAULT_MSG
                                   QUARK_LIBRARIES
                                   QUARK_INCLUDE_DIRS
                                   QUARK_LIBRARY_DIRS)
-#
-# TODO: Add possibility to check for specific functions in the library
-#

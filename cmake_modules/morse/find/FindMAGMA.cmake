@@ -316,6 +316,3 @@ endif(NOT MAGMA_FOUND OR NOT MAGMA_LIBRARIES)
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(MAGMA DEFAULT_MSG
                                   MAGMA_LIBRARIES)
-#
-# TODO: Add possibility to check for specific functions in the library
-#

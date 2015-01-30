@@ -248,6 +248,3 @@ endif(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(HWLOC DEFAULT_MSG
                                   HWLOC_LIBRARIES)
-#
-# TODO: Add possibility to check for specific functions in the library
-#

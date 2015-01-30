@@ -252,6 +252,3 @@ include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(TMG DEFAULT_MSG
                                   TMG_LIBRARIES
                                   TMG_LIBRARY_DIRS)
-#
-# TODO: Add possibility to check for specific functions in the library
-#
