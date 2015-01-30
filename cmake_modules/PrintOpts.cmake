@@ -78,3 +78,7 @@ set(dep_message "${dep_message}"
 string(REPLACE ";" " " dep_message_wsc "${dep_message}")
 message(${dep_message})
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/config.log "${dep_message_wsc}")
+
+# installation
+# ------------
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.log DESTINATION share/chameleon)
