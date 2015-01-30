@@ -494,7 +494,7 @@ if( CHAMELEON_SCHED_STARPU )
     set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
     set(FXT_DIR "" CACHE PATH "Root directory of FXT library")
     set(STARPU_DIR "" CACHE PATH "Root directory of STARPU library")
-    find_package(STARPU ${CHAMELEON_STARPU_VERSION}
+    find_package(STARPU ${CHAMELEON_STARPU_VERSION} REQUIRED
                  COMPONENTS ${STARPU_COMPONENT_LIST})
 
     # Add definition and include_dir if found
@@ -598,7 +598,7 @@ if( CHAMELEON_SCHED_QUARK )
 
     set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
     set(QUARK_DIR "" CACHE PATH "Root directory of QUARK library")
-    find_package(QUARK COMPONENTS HWLOC)
+    find_package(QUARK REQUIRED COMPONENTS HWLOC)
 
     # Add definition and include_dir if found
     if(QUARK_FOUND)
