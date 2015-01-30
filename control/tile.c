@@ -68,21 +68,29 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
     }
     morse_sequence_create(morse, &sequence);
     switch( A->dtyp ) {
+#if defined(PRECISION_s)
     case MorseRealFloat:
         morse_pslapack_to_tile(Af77, LDA, A, sequence, &request);
         break;
+#endif
 
+#if defined(PRECISION_d)
     case MorseRealDouble:
         morse_pdlapack_to_tile(Af77, LDA, A, sequence, &request);
         break;
+#endif
 
+#if defined(PRECISION_c)
     case MorseComplexFloat:
         morse_pclapack_to_tile(Af77, LDA, A, sequence, &request);
         break;
+#endif
 
+#if defined(PRECISION_z)
     case MorseComplexDouble:
         morse_pzlapack_to_tile(Af77, LDA, A, sequence, &request);
         break;
+#endif
 
     default:
         morse_error("MORSE_Lapack_to_Tile", "Type unknown");
@@ -135,21 +143,29 @@ int MORSE_Tile_to_Lapack(MORSE_desc_t *A, void *Af77, int LDA)
     }
     morse_sequence_create(morse, &sequence);
     switch( A->dtyp ) {
+#if defined(PRECISION_s)
     case MorseRealFloat:
         morse_pstile_to_lapack(A, Af77, LDA, sequence, &request);
         break;
+#endif
 
+#if defined(PRECISION_d)
     case MorseRealDouble:
         morse_pdtile_to_lapack(A, Af77, LDA, sequence, &request);
         break;
+#endif
 
+#if defined(PRECISION_c)
     case MorseComplexFloat:
         morse_pctile_to_lapack(A, Af77, LDA, sequence, &request);
         break;
+#endif
 
+#if defined(PRECISION_z)
     case MorseComplexDouble:
         morse_pztile_to_lapack(A, Af77, LDA, sequence, &request);
         break;
+#endif
 
     default:
         morse_error("MORSE_Tile_to_Lapack", "Type unknown");
