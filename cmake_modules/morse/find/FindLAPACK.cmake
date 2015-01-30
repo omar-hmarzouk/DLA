@@ -113,6 +113,10 @@ macro(Print_Find_Library_Blas_Status _libname _lib_to_find)
 
 endmacro()
 
+if (NOT LAPACK_FOUND)
+    set(LAPACK_DIR "" CACHE PATH "Root directory of LAPACK library")
+endif (NOT LAPACK_FOUND)
+
 option(LAPACK_VERBOSE "Print some additional information during LAPACK
 libraries detection" OFF)
 if (BLAS_VERBOSE)

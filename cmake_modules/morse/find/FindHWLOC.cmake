@@ -42,6 +42,10 @@
 #  License text for the above reference.)
 
 
+if (NOT HWLOC_FOUND)
+    set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
+endif()
+
 # Optionally use pkg-config to detect include/library dirs (if pkg-config is available)
 # -------------------------------------------------------------------------------------
 include(FindPkgConfig)
@@ -202,6 +206,39 @@ if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
     if (HWLOC_LIBRARY_DIRS)
         list(REMOVE_DUPLICATES HWLOC_LIBRARY_DIRS)
     endif ()
+
+    if(HWLOC_LIBRARIES)
+        # check a function to validate the find
+        set(CMAKE_REQUIRED_INCLUDES  "${HWLOC_INCLUDE_DIRS}")
+        set(CMAKE_REQUIRED_LIBRARIES "${HWLOC_LIBRARIES}")
+        set(CMAKE_REQUIRED_FLAGS     "-L${HWLOC_LIBRARY_DIRS}")
+
+        unset(HWLOC_WORKS CACHE)
+        include(CheckFunctionExists)
+        check_function_exists(hwloc_topology_init HWLOC_WORKS)
+        mark_as_advanced(HWLOC_WORKS)
+
+        if(HWLOC_WORKS)
+            set(HWLOC_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
+            set(HWLOC_LIBRARY_DIRS "${HWLOC_LIBRARY_DIRS}")
+            set(HWLOC_INCLUDE_DIRS "${CMAKE_REQUIRED_INCLUDES}")
+        else()
+            if (HWLOC_FIND_REQUIRED)
+                if(NOT HWLOC_FIND_QUIETLY)
+                    message(STATUS "Looking for hwloc : test of hwloc_topology_init with hwloc library fails")
+                    message(STATUS "HWLOC_LIBRARIES: ${CMAKE_REQUIRED_LIBRARIES}")
+                    message(STATUS "HWLOC_LIBRARY_DIRS: ${CMAKE_REQUIRED_FLAGS}")
+                    message(STATUS "HWLOC_INCLUDE_DIRS: ${CMAKE_REQUIRED_INCLUDES}")
+                    message(STATUS "Check in CMakeFiles/CMakeError.log to figure out why it fails")
+                    message(STATUS "Looking for hwloc : set HWLOC_LIBRARIES to NOTFOUND")
+                endif()
+                set(HWLOC_LIBRARIES "HWLOC_LIBRARIES-NOTFOUND")
+            endif()
+        endif()
+        set(CMAKE_REQUIRED_INCLUDES)
+        set(CMAKE_REQUIRED_FLAGS)
+        set(CMAKE_REQUIRED_LIBRARIES)
+    endif(HWLOC_LIBRARIES)
 
 endif(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
 

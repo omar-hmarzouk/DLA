@@ -49,6 +49,9 @@
 # (To distribute this file outside of Morse, substitute the full
 #  License text for the above reference.)
 
+if (NOT LAPACKE_FOUND)
+    set(LAPACKE_DIR "" CACHE PATH "Root directory of LAPACKE library")
+endif()
 
 # LAPACKE depends on LAPACK
 # try to find it specified as COMPONENTS during the call
@@ -67,6 +70,14 @@ if (LAPACKE_FIND_COMPONENTS)
     endforeach()
 endif ()
 
+# LAPACKE depends on LAPACK anyway, try to find it
+if (NOT LAPACK_FOUND)
+    if(LAPACKE_FIND_REQUIRED)
+        find_package(LAPACK REQUIRED)
+    else()
+        find_package(LAPACK)
+    endif()
+endif()
 
 # LAPACKE depends on LAPACK
 if (LAPACK_FOUND)
@@ -74,7 +85,7 @@ if (LAPACK_FOUND)
     if (NOT LAPACKE_STANDALONE)
         # check if a lapacke function exists in the LAPACK lib
         include(CheckFunctionExists)
-        set(CMAKE_REQUIRED_LIBRARIES "${LAPACK_LIBRARIES};${CMAKE_THREAD_LIBS_INIT};${LM}")
+        set(CMAKE_REQUIRED_LIBRARIES "${LAPACK_LIBRARIES}")
         unset(LAPACKE_WORKS CACHE)
         check_function_exists(LAPACKE_dgeqrf LAPACKE_WORKS)
         mark_as_advanced(LAPACKE_WORKS)
@@ -220,6 +231,42 @@ if (LAPACK_FOUND)
                 message(STATUS "Looking for lapacke -- lib lapacke not found")
             endif()
         endif ()
+
+        if(LAPACKE_LIBRARIES)
+            # check a function to validate the find
+            set(CMAKE_REQUIRED_INCLUDES "${LAPACKE_INCLUDE_DIRS};${LAPACK_INCLUDE_DIRS}")
+            set(CMAKE_REQUIRED_LIBRARIES "${LAPACKE_LIBRARIES};${LAPACK_LIBRARIES};-lm")
+            if (CMAKE_Fortran_COMPILER MATCHES ".+gfortran.*")
+                list(APPEND CMAKE_REQUIRED_LIBRARIES "-lgfortran")
+            endif()
+            set(CMAKE_REQUIRED_FLAGS "-L${LAPACKE_LIBRARY_DIRS} -L${LAPACK_LIBRARY_DIRS}")
+
+            unset(LAPACKE_WORKS CACHE)
+            include(CheckFunctionExists)
+            check_function_exists(LAPACKE_dgeqrf LAPACKE_WORKS)
+            mark_as_advanced(LAPACKE_WORKS)
+
+            if(LAPACKE_WORKS)
+                set(LAPACKE_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES})
+                set(LAPACKE_LIBRARY_DIRS "${LAPACKE_LIBRARY_DIRS}" "${LAPACK_LIBRARY_DIRS}")
+                set(LAPACKE_INCLUDE_DIRS ${CMAKE_REQUIRED_INCLUDES})
+            else()
+                if (LAPACKE_FIND_REQUIRED)
+                    if(NOT LAPACKE_FIND_QUIETLY)
+                        message(STATUS "Looking for lapacke: test of LAPACKE_dgeqrf with lapacke and lapack libraries fails")
+                        message(STATUS "LAPACKE_LIBRARIES: ${CMAKE_REQUIRED_LIBRARIES}")
+                        message(STATUS "LAPACKE_LIBRARY_DIRS: ${CMAKE_REQUIRED_FLAGS}")
+                        message(STATUS "LAPACKE_INCLUDE_DIRS: ${CMAKE_REQUIRED_INCLUDES}")
+                        message(STATUS "Check in CMakeFiles/CMakeError.log to figure out why it fails")
+                        message(STATUS "Looking for lapacke : set LAPACKE_LIBRARIES to NOTFOUND")
+                    endif()
+                    set(LAPACKE_LIBRARIES "LAPACKE_LIBRARIES-NOTFOUND")
+                endif()
+            endif()
+            set(CMAKE_REQUIRED_INCLUDES)
+            set(CMAKE_REQUIRED_FLAGS)
+            set(CMAKE_REQUIRED_LIBRARIES)
+        endif(LAPACKE_LIBRARIES)
 
     endif (LAPACKE_STANDALONE OR NOT LAPACKE_WORKS)
 

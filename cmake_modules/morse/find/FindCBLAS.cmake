@@ -50,7 +50,12 @@
 #  License text for the above reference.)
 
 
-# CBLAS depends on BLAS
+if (NOT CBLAS_FOUND)
+    set(CBLAS_DIR "" CACHE PATH "Root directory of CBLAS library")
+endif()
+
+
+# CBLAS may depend on BLASEXT
 # try to find it specified as COMPONENTS during the call
 if (CBLAS_FIND_COMPONENTS)
     foreach( component ${CBLAS_FIND_COMPONENTS} )
@@ -68,13 +73,24 @@ if (CBLAS_FIND_COMPONENTS)
 endif ()
 
 
-# CBLAS depends on BLAS
+# CBLAS depends on BLAS anyway, try to find it
+if (NOT BLAS_FOUND)
+    if(CBLAS_FIND_REQUIRED)
+        find_package(BLAS REQUIRED)
+    else()
+        find_package(BLAS)
+    endif()
+endif()
+
+
+# find CBLAS
 if (BLAS_FOUND)
 
     if (NOT CBLAS_STANDALONE)
         # check if a cblas function exists in the BLAS lib
+        # this can be the case with libs such as MKL, ACML
         include(CheckFunctionExists)
-        set(CMAKE_REQUIRED_LIBRARIES "${BLAS_LIBRARIES};${CMAKE_THREAD_LIBS_INIT};${LM}")
+        set(CMAKE_REQUIRED_LIBRARIES "${BLAS_LIBRARIES}")
         unset(CBLAS_WORKS CACHE)
         check_function_exists(cblas_dscal CBLAS_WORKS)
         mark_as_advanced(CBLAS_WORKS)
@@ -221,11 +237,44 @@ if (BLAS_FOUND)
             endif()
         endif ()
 
+        if(CBLAS_LIBRARIES)
+            # check a function to validate the find
+            set(CMAKE_REQUIRED_INCLUDES  "${CBLAS_INCLUDE_DIRS};${BLAS_INCLUDE_DIRS}")
+            set(CMAKE_REQUIRED_LIBRARIES "${CBLAS_LIBRARIES};${BLAS_LIBRARIES}")
+            set(CMAKE_REQUIRED_FLAGS     "-L${CBLAS_LIBRARY_DIRS} -L${BLAS_LIBRARY_DIRS}")
+
+            unset(CBLAS_WORKS CACHE)
+            include(CheckFunctionExists)
+            check_function_exists(cblas_dscal CBLAS_WORKS)
+            mark_as_advanced(CBLAS_WORKS)
+
+            if(CBLAS_WORKS)
+                set(CBLAS_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
+                set(CBLAS_LIBRARY_DIRS "${CBLAS_LIBRARY_DIRS}" "${BLAS_LIBRARY_DIRS}")
+                set(CBLAS_INCLUDE_DIRS "${CMAKE_REQUIRED_INCLUDES}")
+            else()
+                if (CBLAS_FIND_REQUIRED)
+                    if(NOT CBLAS_FIND_QUIETLY)
+                        message(STATUS "Looking for cblas : test of cblas_dscal with cblas and blas libraries fails")
+                        message(STATUS "CBLAS_LIBRARIES: ${CMAKE_REQUIRED_LIBRARIES}")
+                        message(STATUS "CBLAS_LIBRARY_DIRS: ${CMAKE_REQUIRED_FLAGS}")
+                        message(STATUS "CBLAS_INCLUDE_DIRS: ${CMAKE_REQUIRED_INCLUDES}")
+                        message(STATUS "Check in CMakeFiles/CMakeError.log to figure out why it fails")
+                        message(STATUS "Looking for cblas : set CBLAS_LIBRARIES to NOTFOUND")
+                    endif()
+                    set(CBLAS_LIBRARIES "CBLAS_LIBRARIES-NOTFOUND")
+                endif()
+            endif()
+            set(CMAKE_REQUIRED_INCLUDES)
+            set(CMAKE_REQUIRED_FLAGS)
+            set(CMAKE_REQUIRED_LIBRARIES)
+        endif(CBLAS_LIBRARIES)
+
     endif (CBLAS_STANDALONE OR NOT CBLAS_WORKS)
 
 else(BLAS_FOUND)
 
-    if (NOT CBLAS_FIND_QUIETLY OR NOT MORSE_VERBOSE)
+    if (NOT CBLAS_FIND_QUIETLY)
         message(STATUS "CBLAS requires BLAS but BLAS has not been found."
             "Please look for BLAS first.")
     endif()
@@ -234,7 +283,7 @@ endif(BLAS_FOUND)
 
 
 # check that CBLAS has been found
-# ---------------------------------
+# -------------------------------
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(CBLAS DEFAULT_MSG
                                   CBLAS_LIBRARIES

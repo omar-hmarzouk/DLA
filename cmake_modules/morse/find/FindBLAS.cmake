@@ -134,6 +134,10 @@ macro(Print_Find_Library_Blas_CheckFunc_Status _name)
 
 endmacro()
 
+if (NOT BLAS_FOUND)
+    set(BLAS_DIR "" CACHE PATH "Root directory of BLAS library")
+endif()
+
 option(BLAS_VERBOSE "Print some additional information during BLAS
 libraries detection" OFF)
 
@@ -264,7 +268,9 @@ macro(Check_Fortran_Libraries LIBRARIES _prefix _name _flags _list _thread)
         set(CMAKE_REQUIRED_LIBRARIES)
     endif()
 
-    if(NOT _libraries_work)
+    if(_libraries_work)
+        set(${LIBRARIES} ${${LIBRARIES}} ${_thread})
+    else()
         set(${LIBRARIES} FALSE)
     endif()
 

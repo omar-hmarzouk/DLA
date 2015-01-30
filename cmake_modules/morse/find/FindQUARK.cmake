@@ -44,6 +44,10 @@
 #  License text for the above reference.)
 
 
+if (NOT QUARK_FOUND)
+    set(QUARK_DIR "" CACHE PATH "Root directory of QUARK library")
+endif()
+
 # QUARK may depend on HWLOC
 # try to find it specified as COMPONENTS during the call
 if( QUARK_FIND_COMPONENTS )
@@ -178,6 +182,39 @@ else ()
         message(STATUS "Looking for quark -- lib quark not found")
     endif()
 endif ()
+
+if(QUARK_LIBRARIES)
+    # check a function to validate the find
+    set(CMAKE_REQUIRED_INCLUDES  "${QUARK_INCLUDE_DIRS}")
+    set(CMAKE_REQUIRED_LIBRARIES "${QUARK_LIBRARIES}")
+    set(CMAKE_REQUIRED_FLAGS     "-L${QUARK_LIBRARY_DIRS}")
+
+    unset(QUARK_WORKS CACHE)
+    include(CheckFunctionExists)
+    check_function_exists(QUARK_New QUARK_WORKS)
+    mark_as_advanced(QUARK_WORKS)
+
+    if(QUARK_WORKS)
+        set(QUARK_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
+        set(QUARK_LIBRARY_DIRS "${QUARK_LIBRARY_DIRS}")
+        set(QUARK_INCLUDE_DIRS "${CMAKE_REQUIRED_INCLUDES}")
+    else()
+        if (QUARK_FIND_REQUIRED)
+            if(NOT QUARK_FIND_QUIETLY)
+                message(STATUS "Looking for quark : test of QUARK_New with quark library fails")
+                message(STATUS "QUARK_LIBRARIES: ${CMAKE_REQUIRED_LIBRARIES}")
+                message(STATUS "QUARK_LIBRARY_DIRS: ${CMAKE_REQUIRED_FLAGS}")
+                message(STATUS "QUARK_INCLUDE_DIRS: ${CMAKE_REQUIRED_INCLUDES}")
+                message(STATUS "Check in CMakeFiles/CMakeError.log to figure out why it fails")
+                message(STATUS "Looking for quark : set QUARK_LIBRARIES to NOTFOUND")
+            endif()
+            set(QUARK_LIBRARIES "QUARK_LIBRARIES-NOTFOUND")
+        endif()
+    endif()
+    set(CMAKE_REQUIRED_INCLUDES)
+    set(CMAKE_REQUIRED_FLAGS)
+    set(CMAKE_REQUIRED_LIBRARIES)
+endif(QUARK_LIBRARIES)
 
 
 # check that QUARK has been found

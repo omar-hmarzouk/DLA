@@ -43,6 +43,11 @@
 #  License text for the above reference.)
 
 
+if(NOT MAGMA_FOUND)
+    set(MAGMA_DIR "" CACHE PATH "Root directory of MAGMA library")
+endif(NOT MAGMA_FOUND)
+
+
 # MAGMA may depend on CUDA
 # try to find it specified as COMPONENTS during the call
 if( MAGMA_FIND_COMPONENTS )
@@ -66,6 +71,38 @@ if( MAGMA_FIND_COMPONENTS )
             set(MAGMA_${component}_FOUND FALSE)
         endif()
     endforeach()
+endif()
+
+# MAGMA depends on CUDA anyway, try to find it
+if (NOT CUDA_FOUND)
+    if(MAGMA_FIND_REQUIRED)
+        find_package(CUDA REQUIRED)
+    else()
+        find_package(CUDA)
+    endif()
+endif()
+# MAGMA depends on cuBLAS which should come with CUDA, if not found -> error
+if (NOT CUDA_CUBLAS_LIBRARIES)
+    if(MAGMA_FIND_REQUIRED)
+        message(FATAL_ERROR "Looking for MAGMA - MAGMA depends on cuBLAS which has
+        not been found (should come with cuda install)")
+    endif()
+endif()
+# MAGMA depends on LAPACK anyway, try to find it
+if (NOT LAPACK_FOUND)
+    if(MAGMA_FIND_REQUIRED)
+        find_package(LAPACK REQUIRED)
+    else()
+        find_package(LAPACK)
+    endif()
+endif()
+# MAGMA depends on CBLAS anyway, try to find it
+if (NOT CBLAS_FOUND)
+    if(MAGMA_FIND_REQUIRED)
+        find_package(CBLAS REQUIRED)
+    else()
+        find_package(CBLAS)
+    endif()
 endif()
 
 # Optionally use pkg-config to detect include/library dirs (if pkg-config is available)
@@ -236,6 +273,40 @@ if(NOT MAGMA_FOUND OR NOT MAGMA_LIBRARIES)
             message(STATUS "Looking for magma -- lib magma not found")
         endif()
     endif ()
+
+    if (MAGMA_LIBRARIES)
+        # check a function to validate the find
+        set(CMAKE_REQUIRED_INCLUDES "${MAGMA_INCLUDE_DIRS};${CBLAS_INCLUDE_DIRS};${CUDA_INCLUDE_DIRS}")
+        set(CMAKE_REQUIRED_LIBRARIES "${MAGMA_LIBRARIES};${CBLAS_LIBRARIES};${CUDA_CUBLAS_LIBRARIES};${CUDA_LIBRARIES};${LAPACK_LIBRARIES}")
+        set(CMAKE_REQUIRED_FLAGS     "-L${MAGMA_LIBRARY_DIRS} -L${CBLAS_LIBRARY_DIRS} -L${CUDA_LIBRARY_DIRS} -L${LAPACK_LIBRARY_DIRS}")
+
+        unset(MAGMA_WORKS CACHE)
+        include(CheckFunctionExists)
+        check_function_exists(magma_dgetrf MAGMA_WORKS)
+        mark_as_advanced(MAGMA_WORKS)
+
+        if(MAGMA_WORKS)
+            set(MAGMA_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
+            set(MAGMA_LIBRARY_DIRS "${MAGMA_LIBRARY_DIRS}" "${CBLAS_LIBRARY_DIRS}" "${CUDA_LIBRARY_DIRS}" "${LAPACK_LIBRARY_DIRS}")
+            set(MAGMA_INCLUDE_DIRS "${CMAKE_REQUIRED_INCLUDES}")
+        else()
+            if (MAGMA_FIND_REQUIRED)
+                if(NOT MAGMA_FIND_QUIETLY)
+                    message(STATUS "Looking for magma : test of magma_dgetrf with
+                    magma, cblas, cuda and lapack libraries fails")
+                    message(STATUS "MAGMA_LIBRARIES: ${CMAKE_REQUIRED_LIBRARIES}")
+                    message(STATUS "MAGMA_LIBRARY_DIRS: ${CMAKE_REQUIRED_FLAGS}")
+                    message(STATUS "MAGMA_INCLUDE_DIRS: ${CMAKE_REQUIRED_INCLUDES}")
+                    message(STATUS "Check in CMakeFiles/CMakeError.log to figure out why it fails")
+                    message(STATUS "Looking for magma : set MAGMA_LIBRARIES to NOTFOUND")
+                endif()
+                set(MAGMA_LIBRARIES "MAGMA_LIBRARIES-NOTFOUND")
+            endif()
+        endif()
+        set(CMAKE_REQUIRED_INCLUDES)
+        set(CMAKE_REQUIRED_FLAGS)
+        set(CMAKE_REQUIRED_LIBRARIES)
+    endif(MAGMA_LIBRARIES)
 
 endif(NOT MAGMA_FOUND OR NOT MAGMA_LIBRARIES)
 
