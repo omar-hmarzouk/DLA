@@ -194,7 +194,7 @@ foreach(_precision ${CHAMELEON_PRECISION} )
     target_link_libraries(${_precision}testing ${libs_for_tests})
 
     install(TARGETS ${_precision}testing
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/testing)
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/testing)
 
 endforeach()
 
@@ -207,7 +207,7 @@ if(CHAMELEON_SCHED_STARPU)
                                                       ${CMAKE_CURRENT_BINARY_DIR}/morse_testing_starpu.py)
     # install file
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/morse_testing_starpu.py
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/testing)
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/testing)
 endif()
 
 if(CHAMELEON_SCHED_QUARK)
@@ -217,7 +217,7 @@ if(CHAMELEON_SCHED_QUARK)
                                                       ${CMAKE_CURRENT_BINARY_DIR}/morse_testing_quark.py)
     # install file
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/morse_testing_quark.py
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/testing)
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/testing)
 endif()
 
 #-------- Tests ---------

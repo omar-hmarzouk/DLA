@@ -118,7 +118,7 @@ foreach(_example ${EXAMPLES})
     set_property(TARGET ${_name_exe} PROPERTY LINKER_LANGUAGE Fortran)
     target_link_libraries(${_name_exe} ${libs_for_examples})
     install(TARGETS ${_name_exe}
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/example/basic_zposv)
+            DESTINATION lib/chameleon/example/basic_zposv)
 endforeach()
 
 #-------- Tests ---------

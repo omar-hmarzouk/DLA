@@ -341,7 +341,7 @@ if(NOT CHAMELEON_FOUND OR NOT CHAMELEON_LIBRARIES)
             find_path(CHAMELEON_morse.h_DIRS
               NAMES morse.h
               HINTS ${CHAMELEON_DIR}
-              PATH_SUFFIXES include)
+              PATH_SUFFIXES include/chameleon)
         else()
             set(CHAMELEON_morse.h_DIRS "CHAMELEON_morse.h_DIRS-NOTFOUND")
             find_path(CHAMELEON_morse.h_DIRS

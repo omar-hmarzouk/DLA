@@ -110,11 +110,11 @@ if(DOXYGEN_EXECUTABLE)
         if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../../../scratch)
             install(FILES       ${CMAKE_CURRENT_BINARY_DIR}/out/latex/refman.pdf
                     RENAME      magma-morse-devguide-${MAGMA_VERSION_NUMBER}.pdf
-                    DESTINATION share/pdf)
+                    DESTINATION share/chameleon/pdf)
         else()
             install(FILES       ${CMAKE_CURRENT_BINARY_DIR}/out/latex/refman.pdf
                     RENAME      magma-morse-usersguide-${MAGMA_VERSION_NUMBER}.pdf
-                    DESTINATION share/pdf)
+                    DESTINATION share/chameleon/pdf)
         endif()
 
     endif()
@@ -122,12 +122,12 @@ if(DOXYGEN_EXECUTABLE)
     # Installation for html version
     # -----------------------------
     install(DIRECTORY   ${CMAKE_CURRENT_BINARY_DIR}/out/html
-            DESTINATION share/doxygen)
+            DESTINATION share/chameleon/doxygen)
 
     # Installation for man version
     # ----------------------------
     install(DIRECTORY   ${CMAKE_CURRENT_BINARY_DIR}/out/man
-            DESTINATION share/)
+            DESTINATION share/chameleon)
 
 else()
     message(STATUS "Looking for doxygen - not found")

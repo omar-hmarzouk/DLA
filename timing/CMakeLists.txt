@@ -189,7 +189,7 @@ if(NOT CHAMELEON_SIMULATION)
     ${HWLOC_LIBRARIES}
     ${EXTRA_LIBRARIES}
     )
-    
+
     link_directories(${LAPACKE_LIBRARY_DIRS})
     link_directories(${LAPACK_LIBRARY_DIRS})
     link_directories(${CBLAS_LIBRARY_DIRS})
@@ -199,12 +199,12 @@ else()
 
     list(APPEND libs_for_timings
     coreblas
-    simulapacke    
+    simulapacke
     simucblas
     ${HWLOC_LIBRARIES}
     ${EXTRA_LIBRARIES}
     )
-    
+
 endif()
 
 link_directories(${HWLOC_LIBRARY_DIRS})
@@ -232,7 +232,7 @@ foreach(_timing ${TIMINGS})
     target_link_libraries(${_name_exe} ${libs_for_timings})
 
     install(TARGETS ${_name_exe}
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/timing)
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/timing)
 endforeach()
 
 #-------- Tests ---------

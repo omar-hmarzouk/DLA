@@ -56,7 +56,7 @@ set_property(TARGET simucblas PROPERTY LINKER_LANGUAGE Fortran)
 # installation
 # ------------
 install(FILES ${SIMUCBLAS_HDRS}
-        DESTINATION include)
+        DESTINATION include/chameleon)
 install(TARGETS simucblas
         DESTINATION lib)
 

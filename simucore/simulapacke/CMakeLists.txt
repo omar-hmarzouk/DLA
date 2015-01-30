@@ -55,7 +55,7 @@ set_property(TARGET simulapacke PROPERTY LINKER_LANGUAGE Fortran)
 # installation
 # ------------
 install(FILES ${SIMULAPACKE_HDRS}
-        DESTINATION include)
+        DESTINATION include/chameleon)
 install(TARGETS simulapacke
         DESTINATION lib)
 

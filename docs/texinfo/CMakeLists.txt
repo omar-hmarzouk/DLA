@@ -22,6 +22,7 @@
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
+#  @author Florent Pruvost
 #  @date 13-07-2012
 #
 ###
@@ -54,7 +55,7 @@ set(FIGURES_HTML
     potri_async.png
     morse_header.png
     )
-    
+
 foreach(_fig ${FIGURES})
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/figures/${_fig}
                    ${CMAKE_CURRENT_BINARY_DIR}/${_fig}
@@ -92,17 +93,16 @@ if(MAKEINFO_COMPILER)
     # Installation
     # ------------
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/users_guide.info
-            DESTINATION share/info)
+            DESTINATION share/chameleon/info)
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/users_guide.html
-            DESTINATION share/html)
+            DESTINATION share/chameleon/html)
     foreach(_fig ${FIGURES_HTML})
         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${_fig}
-                DESTINATION share/html)
-    endforeach()           
+                DESTINATION share/chameleon/html)
+    endforeach()
 
 else(MAKEINFO_COMPILER)
     message(STATUS "Looking for makeinfo - not found")
-
 endif(MAKEINFO_COMPILER)
 
 # Looking for texi2dvi
@@ -122,11 +122,10 @@ if(TEXI2DVI_COMPILER AND TEX_COMPILER)
     # Installation
     # ------------
     install(FILES ${CMAKE_CURRENT_BINARY_DIR}/users_guide.pdf
-            DESTINATION share/pdf)
+            DESTINATION share/chameleon/pdf)
 
 else()
     message(STATUS "Looking for texi2dvi - not found")
-
 endif()
 
 ###

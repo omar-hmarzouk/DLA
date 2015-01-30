@@ -78,7 +78,7 @@ endforeach()
 # installation
 # ------------
 install(FILES ${HDR_INSTALL}
-        DESTINATION include)
+        DESTINATION include/chameleon)
 
 ###
 ### END CMakeLists.txt
