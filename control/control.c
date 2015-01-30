@@ -90,7 +90,7 @@ int MORSE_InitPar(int nworkers, int ncudas, int nthreads_per_worker)
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
 
-#if 0    
+#if 0
     /* Init number of cores and topology */
     morse_topology_init();
 
