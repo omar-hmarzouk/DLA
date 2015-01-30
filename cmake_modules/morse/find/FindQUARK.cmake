@@ -65,6 +65,10 @@ if( QUARK_FIND_COMPONENTS )
     endforeach()
 endif()
 
+if (NOT Threads_FOUND)
+    find_package(Threads REQUIRED)
+endif()
+
 # Looking for include
 # -------------------
 
@@ -186,7 +190,7 @@ endif ()
 if(QUARK_LIBRARIES)
     # check a function to validate the find
     set(CMAKE_REQUIRED_INCLUDES  "${QUARK_INCLUDE_DIRS}")
-    set(CMAKE_REQUIRED_LIBRARIES "${QUARK_LIBRARIES}")
+    set(CMAKE_REQUIRED_LIBRARIES "${QUARK_LIBRARIES};${CMAKE_THREAD_LIBS_INIT}")
     set(CMAKE_REQUIRED_FLAGS     "-L${QUARK_LIBRARY_DIRS}")
 
     unset(QUARK_WORKS CACHE)
@@ -194,7 +198,9 @@ if(QUARK_LIBRARIES)
     check_function_exists(QUARK_New QUARK_WORKS)
     mark_as_advanced(QUARK_WORKS)
 
-    if(NOT QUARK_WORKS)
+    if(QUARK_WORKS)
+        set(QUARK_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
+    else()
         if (QUARK_FIND_REQUIRED)
             if(NOT QUARK_FIND_QUIETLY)
                 message(STATUS "Looking for quark : test of QUARK_New with quark library fails")
