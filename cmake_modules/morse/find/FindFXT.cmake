@@ -41,6 +41,9 @@
 # (To distribute this file outside of Morse, substitute the full
 #  License text for the above reference.)
 
+if (NOT FXT_FOUND)
+    set(FXT_DIR "" CACHE PATH "Root directory of FXT library")
+endif()
 
 # Optionally use pkg-config to detect include/library dirs (if pkg-config is available)
 # -------------------------------------------------------------------------------------
@@ -197,6 +200,35 @@ if(NOT FXT_FOUND OR NOT FXT_LIBRARIES)
         list(REMOVE_DUPLICATES FXT_LIBRARY_DIRS)
     endif ()
 
+    if(FXT_LIBRARIES)
+        # check a function to validate the find
+        set(CMAKE_REQUIRED_INCLUDES  "${FXT_INCLUDE_DIRS}")
+        set(CMAKE_REQUIRED_LIBRARIES "${FXT_LIBRARIES}")
+        set(CMAKE_REQUIRED_FLAGS     "-L${FXT_LIBRARY_DIRS}")
+
+        unset(FXT_WORKS CACHE)
+        include(CheckFunctionExists)
+        check_function_exists(fut_keychange FXT_WORKS)
+        mark_as_advanced(FXT_WORKS)
+
+        if(NOT FXT_WORKS)
+            if (FXT_FIND_REQUIRED)
+                if(NOT FXT_FIND_QUIETLY)
+                    message(STATUS "Looking for fxt : test of fut_keychange with fxt library fails")
+                    message(STATUS "FXT_LIBRARIES: ${CMAKE_REQUIRED_LIBRARIES}")
+                    message(STATUS "FXT_LIBRARY_DIRS: ${CMAKE_REQUIRED_FLAGS}")
+                    message(STATUS "FXT_INCLUDE_DIRS: ${CMAKE_REQUIRED_INCLUDES}")
+                    message(STATUS "Check in CMakeFiles/CMakeError.log to figure out why it fails")
+                    message(STATUS "Looking for fxt : set FXT_LIBRARIES to NOTFOUND")
+                endif()
+                set(FXT_LIBRARIES "FXT_LIBRARIES-NOTFOUND")
+            endif()
+        endif()
+        set(CMAKE_REQUIRED_INCLUDES)
+        set(CMAKE_REQUIRED_FLAGS)
+        set(CMAKE_REQUIRED_LIBRARIES)
+    endif(FXT_LIBRARIES)
+
 endif(NOT FXT_FOUND OR NOT FXT_LIBRARIES)
 
 
@@ -205,6 +237,3 @@ endif(NOT FXT_FOUND OR NOT FXT_LIBRARIES)
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(FXT DEFAULT_MSG
                                   FXT_LIBRARIES)
-#
-# TODO: Add possibility to check for specific functions in the library
-#
