@@ -210,7 +210,7 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
                 find_path(STARPU_${starpu_hdr}_INCLUDE_DIRS
                           NAMES ${starpu_hdr}
                           HINTS ${STARPU_DIR}
-                          PATH_SUFFIXES "include/starpu/${STARPU_FIND_VERSION}")
+                          PATH_SUFFIXES "include/starpu/1.0" "include/starpu/1.1" "include/starpu/1.2")
             endforeach()
         else()
             foreach(starpu_hdr ${STARPU_hdrs_to_find})
@@ -249,24 +249,28 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
     # remark: the version is defined in this file since the STARPU 1.0 version
     if (STARPU_starpu_config.h_INCLUDE_DIRS)
         GET_VERSION("STARPU" "${STARPU_starpu_config.h_INCLUDE_DIRS}/starpu_config.h")
-        if (STARPU_FIND_VERSION)
+        if (STARPU_VERSION_MAJOR AND STARPU_VERSION_MINOR)
             if (STARPU_FIND_VERSION_EXACT STREQUAL 1)
-                if( NOT (STARPU_FIND_VERSION_MAJOR STREQUAL STARPU_VERSION_MAJOR) OR
-                    NOT (STARPU_FIND_VERSION_MINOR STREQUAL STARPU_VERSION_MINOR) )
-                    if(STARPU_FIND_REQUIRED AND NOT STARPU_FIND_QUIETLY)
-                        message(FATAL_ERROR
-                                "STARPU version found is ${STARPU_VERSION_STRING} "
-                                "when required is ${STARPU_FIND_VERSION}")
+                if (STARPU_FIND_VERSION_MAJOR AND STARPU_FIND_VERSION_MINOR)
+                    if( NOT (STARPU_FIND_VERSION_MAJOR STREQUAL STARPU_VERSION_MAJOR) OR
+                        NOT (STARPU_FIND_VERSION_MINOR STREQUAL STARPU_VERSION_MINOR) )
+                        if(STARPU_FIND_REQUIRED AND NOT STARPU_FIND_QUIETLY)
+                            message(FATAL_ERROR
+                                    "STARPU version found is ${STARPU_VERSION_STRING} "
+                                    "when required is ${STARPU_FIND_VERSION}")
+                        endif()
                     endif()
                 endif()
             else()
-                # if the version found is older than the required then error
-                if( (STARPU_FIND_VERSION_MAJOR STRGREATER STARPU_VERSION_MAJOR) OR
-                    (STARPU_FIND_VERSION_MINOR STRGREATER STARPU_VERSION_MINOR) )
-                    if(STARPU_FIND_REQUIRED AND NOT STARPU_FIND_QUIETLY)
-                        message(FATAL_ERROR
-                                "STARPU version found is ${STARPU_VERSION_STRING} "
-                                "when required is ${STARPU_FIND_VERSION} or newer")
+                if (STARPU_FIND_VERSION_MAJOR AND STARPU_FIND_VERSION_MINOR)
+                    # if the version found is older than the required then error
+                    if( (STARPU_FIND_VERSION_MAJOR STRGREATER STARPU_VERSION_MAJOR) OR
+                        (STARPU_FIND_VERSION_MINOR STRGREATER STARPU_VERSION_MINOR) )
+                        if(STARPU_FIND_REQUIRED AND NOT STARPU_FIND_QUIETLY)
+                            message(FATAL_ERROR
+                                    "STARPU version found is ${STARPU_VERSION_STRING} "
+                                    "when required is ${STARPU_FIND_VERSION} or newer")
+                        endif()
                     endif()
                 endif()
             endif()
@@ -528,30 +532,24 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
         set(CMAKE_REQUIRED_INCLUDES "${STARPU_INCLUDE_DIRS}")
         set(CMAKE_REQUIRED_FLAGS)
         foreach(libdir ${STARPU_LIBRARY_DIRS})
-            list(APPEND CMAKE_REQUIRED_FLAGS "-L${libdir}")
         endforeach()
         set(CMAKE_REQUIRED_LIBRARIES "${STARPU_LIBRARIES}")
         if (HWLOC_FOUND)
             list(APPEND CMAKE_REQUIRED_INCLUDES "${HWLOC_INCLUDE_DIRS}")
-            list(APPEND CMAKE_REQUIRED_FLAGS "-L${HWLOC_LIBRARY_DIRS}")
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${HWLOC_LIBRARIES}")
         endif()
         if (MPI_FOUND)
             list(APPEND CMAKE_REQUIRED_INCLUDES "${MPI_C_INCLUDE_PATH}")
-            list(APPEND CMAKE_REQUIRED_FLAGS "-L${MPI_C_LINK_FLAGS}")
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${MPI_C_LIBRARIES}")
         endif()
         if (CUDA_FOUND)
             list(APPEND CMAKE_REQUIRED_INCLUDES "${CUDA_INCLUDE_DIRS}")
-            list(APPEND CMAKE_REQUIRED_FLAGS "-L${CUDA_LIBRARY_DIRS}")
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${CUDA_CUBLAS_LIBRARIES};${CUDA_LIBRARIES}")
         endif()
         if (MAGMA_FOUND)
             list(APPEND CMAKE_REQUIRED_INCLUDES "${MAGMA_INCLUDE_DIRS}")
-            list(APPEND CMAKE_REQUIRED_FLAGS "-L${MAGMA_LIBRARY_DIRS}")
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${${MAGMA_LIBRARIES}}")
         endif()
-        string(REPLACE ";" " " CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS}")
 
         unset(STARPU_WORKS CACHE)
         include(CheckFunctionExists)
@@ -559,9 +557,7 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
         mark_as_advanced(STARPU_WORKS)
 
         if(STARPU_WORKS)
-            string(REPLACE " -L" ";" CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS}")
             set(STARPU_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
-            set(STARPU_LIBRARY_DIRS "${CMAKE_REQUIRED_FLAGS}")
             set(STARPU_INCLUDE_DIRS "${CMAKE_REQUIRED_INCLUDES}")
         else()
             if(NOT STARPU_FIND_QUIETLY)
