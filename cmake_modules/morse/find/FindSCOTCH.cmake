@@ -20,6 +20,7 @@
 #  SCOTCH_INCLUDE_DIRS    - scotch include directories
 #  SCOTCH_LIBRARY_DIRS    - Link directories for scotch libraries
 #  SCOTCH_LIBRARIES       - scotch component libraries to be linked
+#  SCOTCH_INTSIZE         - Number of octets occupied by a SCOTCH_Num
 # The user can give specific paths where to find the libraries adding cmake
 # options at configure (ex: cmake path/to/project -DSCOTCH=path/to/scotch):
 #  SCOTCH_DIR             - Where to find the base directory of scotch
@@ -196,6 +197,46 @@ foreach(scotch_lib ${SCOTCH_libs_to_find})
     mark_as_advanced(SCOTCH_${scotch_lib}_LIBRARY)
 
 endforeach()
+
+
+# Check the size of SCOTCH_Num
+# ---------------------------------
+set(CMAKE_REQUIRED_INCLUDES ${SCOTCH_INCLUDE_DIRS})
+
+include(CheckCSourceRuns)
+set(SCOTCH_C_TEST_SCOTCH_Num_4 "
+#include <stdio.h>
+#include <scotch.h>
+int main(int argc, char **argv) {
+  if (sizeof(SCOTCH_Num) == 4)
+    return 0;
+  else
+    return 1;
+}
+")
+
+set(SCOTCH_C_TEST_SCOTCH_Num_8 "
+#include <stdio.h>
+#include <scotch.h>
+int main(int argc, char **argv) {
+  if (sizeof(SCOTCH_Num) == 8)
+    return 0;
+  else
+    return 1;
+}
+")
+set(CMAKE_REQUIRED_INCLUDES "")
+check_c_source_runs("${SCOTCH_C_TEST_SCOTCH_Num_4}" SCOTCH_Num_4)
+if(NOT SCOTCH_Num_4)
+  check_c_source_runs("${SCOTCH_C_TEST_SCOTCH_Num_8}" SCOTCH_Num_8)
+  if(NOT SCOTCH_Num_8)
+    set(SCOTCH_INTSIZE -1)
+  else()
+    set(SCOTCH_INTSIZE 8)
+  endif()
+else()
+  set(SCOTCH_INTSIZE 4)
+endif()
 
 # check that SCOTCH has been found
 # ---------------------------------

@@ -20,6 +20,7 @@
 #  PTSCOTCH_INCLUDE_DIRS    - ptscotch include directories
 #  PTSCOTCH_LIBRARY_DIRS    - Link directories for ptscotch libraries
 #  PTSCOTCH_LIBRARIES       - ptscotch component libraries to be linked
+#  PTSCOTCH_INTSIZE         - Number of octets occupied by a SCOTCH_Num
 # The user can give specific paths where to find the libraries adding cmake
 # options at configure (ex: cmake path/to/project -DPTSCOTCH=path/to/ptscotch):
 #  PTSCOTCH_DIR             - Where to find the base directory of ptscotch
@@ -127,7 +128,7 @@ else ()
     set(PTSCOTCH_INCLUDE_DIRS "PTSCOTCH_INCLUDE_DIRS-NOTFOUND")
     if (NOT PTSCOTCH_FIND_QUIETLY)
         message(STATUS "Looking for ptscotch -- ptscotch.h not found")
-    endif
+    endif()
 endif()
 
 
@@ -204,6 +205,45 @@ foreach(ptscotch_lib ${PTSCOTCH_libs_to_find})
 
 endforeach()
 
+
+# Check the size of SCOTCH_Num
+# ---------------------------------
+set(CMAKE_REQUIRED_INCLUDES ${PTSCOTCH_INCLUDE_DIRS})
+
+include(CheckCSourceRuns)
+set(PTSCOTCH_C_TEST_SCOTCH_Num_4 "
+#include <stdio.h>
+#include <ptscotch.h>
+int main(int argc, char **argv) {
+  if (sizeof(SCOTCH_Num) == 4)
+    return 0;
+  else
+    return 1;
+}
+")
+
+set(PTSCOTCH_C_TEST_SCOTCH_Num_8 "
+#include <stdio.h>
+#include <ptscotch.h>
+int main(int argc, char **argv) {
+  if (sizeof(SCOTCH_Num) == 8)
+    return 0;
+  else
+    return 1;
+}
+")
+set(CMAKE_REQUIRED_INCLUDES "")
+check_c_source_runs("${PTSCOTCH_C_TEST_SCOTCH_Num_4}" PTSCOTCH_Num_4)
+if(NOT PTSCOTCH_Num_4)
+  check_c_source_runs("${PTSCOTCH_C_TEST_SCOTCH_Num_8}" PTSCOTCH_Num_8)
+  if(NOT PTSCOTCH_Num_8)
+    set(PTSCOTCH_INTSIZE -1)
+  else()
+    set(PTSCOTCH_INTSIZE 8)
+  endif()
+else()
+  set(PTSCOTCH_INTSIZE 4)
+endif()
 
 # check that PTSCOTCH has been found
 # ---------------------------------
