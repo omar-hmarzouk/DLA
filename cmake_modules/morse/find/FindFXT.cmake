@@ -204,7 +204,9 @@ if(NOT FXT_FOUND OR NOT FXT_LIBRARIES)
         # check a function to validate the find
         set(CMAKE_REQUIRED_INCLUDES  "${FXT_INCLUDE_DIRS}")
         set(CMAKE_REQUIRED_LIBRARIES "${FXT_LIBRARIES}")
-        set(CMAKE_REQUIRED_FLAGS     "-L${FXT_LIBRARY_DIRS}")
+        if (FXT_LIBRARY_DIRS)
+            set(CMAKE_REQUIRED_FLAGS     "-L${FXT_LIBRARY_DIRS}")
+        endif()
 
         unset(FXT_WORKS CACHE)
         include(CheckFunctionExists)

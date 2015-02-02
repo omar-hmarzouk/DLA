@@ -241,7 +241,12 @@ if (BLAS_FOUND)
             # check a function to validate the find
             set(CMAKE_REQUIRED_INCLUDES  "${CBLAS_INCLUDE_DIRS};${BLAS_INCLUDE_DIRS}")
             set(CMAKE_REQUIRED_LIBRARIES "${CBLAS_LIBRARIES};${BLAS_LIBRARIES}")
-            set(CMAKE_REQUIRED_FLAGS     "-L${CBLAS_LIBRARY_DIRS} -L${BLAS_LIBRARY_DIRS}")
+            if (CBLAS_LIBRARY_DIRS)
+                set(CMAKE_REQUIRED_FLAGS "-L${CBLAS_LIBRARY_DIRS}")
+                if (BLAS_LIBRARY_DIRS)
+                    set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -L${BLAS_LIBRARY_DIRS}")
+                endif()
+            endif()
 
             unset(CBLAS_WORKS CACHE)
             include(CheckFunctionExists)

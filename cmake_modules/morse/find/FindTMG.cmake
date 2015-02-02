@@ -191,7 +191,12 @@ if (LAPACK_FOUND)
         # check a function to validate the find
         set(CMAKE_REQUIRED_INCLUDES "${TMG_INCLUDE_DIRS};${LAPACK_INCLUDE_DIRS}")
         set(CMAKE_REQUIRED_LIBRARIES "${TMG_LIBRARIES};${LAPACK_LIBRARIES}")
-        set(CMAKE_REQUIRED_FLAGS "-L${TMG_LIBRARY_DIRS} -L${LAPACK_LIBRARY_DIRS}")
+        if (TMG_LIBRARY_DIRS)
+            set(CMAKE_REQUIRED_FLAGS "-L${TMG_LIBRARY_DIRS}")
+            if (LAPACK_LIBRARY_DIRS)
+                set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -L${LAPACK_LIBRARY_DIRS}")
+            endif()
+        endif()
 
         if(TMG_LIBRARIES)
             unset(TMG_WORKS CACHE)
