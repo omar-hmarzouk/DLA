@@ -228,7 +228,7 @@ subs = {
     ['s',              'd',              'c',              'z'               ],
 
     # ----- Preprocessor
-    ('#define PRECISION_s',  '#define PRECISION_d',   '#define PRECISION_c',             '#define PRECISION_z'              ),
+    ('#define PRECISION_s',  '#define PRECISION_d',   '#define PRECISION_c',             '#\s*define PRECISION_z'              ),
     ('#undef PRECISION_s',   '#undef PRECISION_d',    '#undef PRECISION_c',              '#undef PRECISION_z'               ),
     ('#define REAL',         '#define REAL',          '#define COMPLEX',                 '#define COMPLEX'                  ),
     ('#undef COMPLEX',       '#undef COMPLEX',        '#undef REAL',                     '#undef REAL'                      ),
@@ -241,33 +241,38 @@ subs = {
     ('real',                 'double precision',      'complex',                         'complex\(kind=wp\)'               ),
 
     # ----- Data types
-    ('real',                 'double precision',      'real',                            'double precision'                 ),  # before double
-    ('float',                'double',                'float _Complex',                  'double _Complex'                  ),
-    ('float',                'double',                'cuFloatComplex',                  'cuDoubleComplex'                  ),
-    ('float',                'double',                'magmaFloatComplex',               'magmaDoubleComplex'               ),
-    ('float',                'double',                'PLASMA_Complex32_t',              'PLASMA_Complex64_t'               ),
-    ('float',                'double',                'PLASMA_voidComplex32_t',          'PLASMA_voidComplex64_t'           ),
-    ('PlasmaRealFloat',      'PlasmaRealDouble',      'PlasmaComplexFloat',              'PlasmaComplexDouble'              ),
-    ('float',                'double',                'MORSE_Complex32_t',               'MORSE_Complex64_t'                ),
-    ('float',                'double',                'MORSE_voidComplex32_t',           'MORSE_voidComplex64_t'            ),
-    ('MorseRealFloat',       'MorseRealDouble',       'MorseComplexFloat',               'MorseComplexDouble'               ),
-    ('real',                 'double precision',      'complex',                         'complex\*16'                      ),
-    ('REAL',                 'DOUBLE_PRECISION',      'COMPLEX',                         'COMPLEX_16'                       ),
-    ('sizeof_real',          'sizeof_double',         'sizeof_complex',                  'sizeof_complex_16'                ),  # before complex
-    ('real',                 'real',                  'complex',                         'complex'                          ),
-    ('float',                'double',                'float2',                          'double2'                          ),
-    ('float',                'double',                'float',                           'double'                           ),
+    ('real',                 'double precision',      'real',                            r'\bdouble precision'                 ),  # before double
+    ('float',                'double',                'float _Complex',                  r'\bdouble _Complex'                  ),
+    ('float',                'double',                'cuFloatComplex',                  r'\bcuDoubleComplex'                  ),
+    ('float',                'double',                'magmaFloatComplex',               r'\bmagmaDoubleComplex'               ),
+    ('float',                'double',                'PLASMA_Complex32_t',              r'\bPLASMA_Complex64_t'               ),
+    ('float',                'double',                'PLASMA_voidComplex32_t',          r'\bPLASMA_voidComplex64_t'           ),
+    ('PlasmaRealFloat',      'PlasmaRealDouble',      'PlasmaComplexFloat',              r'\bPlasmaComplexDouble'              ),
+    ('float',                'double',                'MORSE_Complex32_t',               r'\bMORSE_Complex64_t'                ),
+    ('float',                'double',                'MORSE_voidComplex32_t',           r'\bMORSE_voidComplex64_t'            ),
+    ('MorseRealFloat',       'MorseRealDouble',       'MorseComplexFloat',               r'\bMorseComplexDouble'               ),
+    ('real',                 'double precision',      'complex',                         r'\bcomplex\*16'                      ),
+    ('REAL',                 'DOUBLE_PRECISION',      'COMPLEX',                         r'\bCOMPLEX_16'                       ),
+    ('REAL',                 'DOUBLE PRECISION',      'COMPLEX',                         r'\bDOUBLE COMPLEX'                   ),
+    ('REAL',                 'DOUBLE PRECISION',      'REAL',                            r'\bDOUBLE PRECISION'                 ),
+    ('sizeof_real',          'sizeof_double',         'sizeof_complex',                  r'\bsizeof_complex_16'                ),  # before complex
+    ('float',                'double',                'pastix_complex32_t',              r'\bpastix_complex64_t'               ),
+    ('real',                 'real',                  'complex',                         r'\bcomplex'                          ),
+    ('float',                'double',                'float2',                          r'\bdouble2'                          ),
+      ('float',                'double',                'float',                         r'\bdouble'                           ),
     ('ipt_s',                'ipt_d',                 'ipt_c',                           'ipt_z'                            ),
 
     # ----- Text
     ('symmetric',      'symmetric',      'Hermitian',      'Hermitian'       ),
     ('\*\*T',          '\*\*T',          '\*\*H',          '\*\*H'           ),
     ('%f',             '%lf',            '%f',             '%lf'             ),  # for scanf
+      ('%g',             '%lg',            '%g',             '%lg'             ),  # for scanf
 
     # ----- CBLAS
     ('cblas_sasum',    'cblas_dasum',    'cblas_scasum',   'cblas_dzasum'    ),
     ('cblas_snrm2',    'cblas_dnrm2',    'cblas_scnrm2',   'cblas_dznrm2'    ),
     ('',               '',               'CBLAS_SADDR',    'CBLAS_SADDR'     ),
+    ('cblas_ssyr',     'cblas_dsyr',     'cblas_cher',     'cblas_zher'      ),
 
     # ----- Core BLAS
     ('CORE_sasum',     'CORE_dasum',     'CORE_scasum',    'CORE_dzasum'     ),
@@ -341,6 +346,10 @@ subs = {
     ('Workspace_s',    'Workspace_d',    'Workspace_c',    'Workspace_z'     ),
     ('workspace_s',    'workspace_d',    'workspace_c',    'workspace_z'     ),
 
+    ('csc_s',          'csc_d',          'csc_c',          'csc_z'           ),
+    ('sequential_s',   'sequential_d',   'sequential_c',   'sequential_z'    ),
+    ('coeftab_s',      'coeftab_d',      'coeftab_c',      'coeftab_z'       ),
+
     # ----- Prefixes MORSE
     ('MORSE_S',        'MORSE_D',        'MORSE_C',        'MORSE_Z'         ),
     ('MORSE_sor',      'MORSE_dor',      'MORSE_cun',      'MORSE_zun'       ),
@@ -368,6 +377,8 @@ subs = {
     ('',               '',               'cuCimagf',       'cuCimag'         ),
     ('',               '',               'cuConjf',        'cuConj'          ),
     ('fabsf',          'fabs',           'cuCabsf',        'cuCabs'          ),
+    ('',               '',               'crealf',         'creal'           ),
+    ('sqrtf',          'sqrt',           'csqrtf',         'csqrt'           ),
 
     # ----- CUDA
     ('cublasIsamax',   'cublasIdamax',   'cublasIcamax',   'cublasIzamax'    ),
@@ -422,6 +433,8 @@ subs = {
     ('scopy',          'dcopy',          'ccopy',          'zcopy'           ),
     ('sgecfi',         'dgecfi',         'cgecfi',         'zgecfi'          ),
     ('sgemm',          'dgemm',          'cgemm',          'zgemm'           ),
+    ('sgemdm',         'dgemdm',         'cgemdm',         'zgemdm'          ),
+    ('SGEMDM',         'DGEMDM',         'CGEMDM',         'ZGEMDM'          ),
     ('sgemv',          'dgemv',          'cgemv',          'zgemv'           ),
     ('sscal',          'dscal',          'cscal',          'zscal'           ),
     ('sscal',          'dscal',          'csscal',         'zdscal'          ),
@@ -572,6 +585,7 @@ subs = {
     ('ssyr2',          'dsyr2',          'cher2',          'zher2'           ),
     ('ssyr2k',         'dsyr2k',         'cher2k',         'zher2k'          ),
     ('ssyrk',          'dsyrk',          'cherk',          'zherk'           ),
+    ('ssyr',           'dsyr',           'cher',           'zher'            ),
 
     # LAPACK, with precision
     ('slag2d',         'dlag2s',         'clag2z',         'zlag2c'          ),
@@ -811,6 +825,7 @@ subs = {
     ('SSYR2',          'DSYR2',          'CHER2',          'ZHER2'           ),
     ('SSYR2K',         'DSYR2K',         'CHER2K',         'ZHER2K'          ),
     ('SSYRK',          'DSYRK',          'CHERK',          'ZHERK'           ),
+    ('SSYR',           'DSYR',           'CHER',           'ZHER'            ),
 
     # LAPACK, WITH PRECISION
     ('SLAG2D',         'DLAG2S',         'CLAG2Z',         'ZLAG2C'          ),
@@ -913,8 +928,27 @@ subs = {
     ('DAG_CORE_UNMQL', 'DAG_CORE_UNMQL', 'DAG_CORE_UNMQL', 'DAG_CORE_U-NMQL' ),
     ('DAG_CORE_UNMQR', 'DAG_CORE_UNMQR', 'DAG_CORE_UNMQR', 'DAG_CORE_U-NMQR' ),
 
-    # ----- useful??
+    # PaStiX
+    ('sutils.h',       'dutils.h',       'cutils.h',       'zutils.h'        ),
+    ('SMURGE_',        'DMURGE_',        'CMURGE_',        'ZMURGE_'         ),
+    ('smurge_',        'dmurge_',        'cmurge_',        'zmurge_'         ),
+    ('smurge.h',       'dmurge.h',       'cmurge.h',       'zmurge.h'        ),
+    ('smurge.inc',     'dmurge.inc',     'cmurge.inc',     'zmurge.inc'      ),
+    ('smurge.c',       'dmurge.c',       'cmurge.c',       'zmurge.c'        ),
+    ('ssimple',        'dsimple',        'csimple',        'zsimple'         ),
+    ('sstep-by-step',  'dstep-by-step',  'cstep-by-step',  'zstep-by-step'   ),
+    ('starpu_s',       'starpu_d',       'starpu_c',       'starpu_z'        ),
+    ('STARPU_S',       'STARPU_D',       'STARPU_C',       'STARPU_Z'        ),
+    ('pastix_s',       'pastix_d',       'pastix_c',       'pastix_z'        ),
+    ('s_',             'd_',             'c_',             'z_'              ),
+    ('S_',             'D_',             'C_',             'Z_'              ),
+    ('FLT_EPSILON',    'DBL_EPSILON',    'FLT_EPSILON',    'DBL_EPSILON'     ),
+    ('s_RAFF_FLOAT',   'd_RAFF_FLOAT',   'c_RAFF_FLOAT',   'z_RAFF_FLOAT'    ),
+    ('MPI_FLOAT',      'MPI_DOUBLE',     'MPI_COMPLEX',    'MPI_DOUBLE_COMPLEX'),
+    ('MPI_FLOAT',      'MPI_DOUBLE',     'MPI_FLOAT',      'MPI_DOUBLE'      ),
+    # ----- unused?
     ('s_check',        'd_check',        'c_check',        'z_check'         ),
+    ('s_get_idparm',   'd_get_idparm',   's_get_idparm',   'd_get_idparm',   ),
     #('stesting',       'dtesting',       'ctesting',       'ztesting'        ),
     #('SAUXILIARY',     'DAUXILIARY',     'CAUXILIARY',     'ZAUXILIARY'      ),
   ],

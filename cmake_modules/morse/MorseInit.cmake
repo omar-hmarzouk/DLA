@@ -40,6 +40,9 @@ include(FindHeadersAndLibs)
 # PrintFindStatus.cmake is in cmake_modules/morse/find directory
 include(PrintFindStatus)
 
+# Define some auxilary flags
+include(AuxilaryFlags)
+
 # Add the path where we handle our FindFOO.cmake to seek for liraries
 list(APPEND CMAKE_MODULE_PATH ${MORSE_CMAKE_MODULE_PATH}/find)
 
