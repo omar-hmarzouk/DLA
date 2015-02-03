@@ -244,6 +244,7 @@ subs = {
     ('real',                 'double precision',      'real',                            r'\bdouble precision'                 ),  # before double
     ('float',                'double',                'float _Complex',                  r'\bdouble _Complex'                  ),
     ('float',                'double',                'cuFloatComplex',                  r'\bcuDoubleComplex'                  ),
+    ('float',                'double',                'make_cuFloatComplex',             'make_cuDoubleComplex'                ),
     ('float',                'double',                'magmaFloatComplex',               r'\bmagmaDoubleComplex'               ),
     ('float',                'double',                'PLASMA_Complex32_t',              r'\bPLASMA_Complex64_t'               ),
     ('float',                'double',                'PLASMA_voidComplex32_t',          r'\bPLASMA_voidComplex64_t'           ),
