@@ -46,6 +46,9 @@
 
 if (NOT QUARK_FOUND)
     set(QUARK_DIR "" CACHE PATH "Root directory of QUARK library")
+    if (NOT QUARK_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely QUARK_DIR, has been set to specify the install directory of QUARK")
+    endif()
 endif()
 
 # QUARK may depend on HWLOC

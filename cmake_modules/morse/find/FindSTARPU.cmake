@@ -52,6 +52,9 @@
 
 if (NOT STARPU_FOUND)
     set(STARPU_DIR "" CACHE PATH "Root directory of STARPU library")
+    if (NOT STARPU_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely STARPU_DIR, has been set to specify the install directory of STARPU")
+    endif()
 endif()
 
 # STARPU may depend on other packages (HWLOC, MPI, CUDA, MAGMA, ...)

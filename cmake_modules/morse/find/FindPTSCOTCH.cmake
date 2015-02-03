@@ -44,6 +44,12 @@
 # (To distribute this file outside of Morse, substitute the full
 #  License text for the above reference.)
 
+if (NOT PTSCOTCH_FOUND)
+    set(PTSCOTCH_DIR "" CACHE PATH "Root directory of PTSCOTCH library")
+    if (NOT PTSCOTCH_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely PTSCOTCH_DIR, has been set to specify the install directory of PTSCOTCH")
+    endif()
+endif()
 
 # PTSCOTCH may depend on MPI and Threads
 # try to find it specified as COMPONENTS during the call

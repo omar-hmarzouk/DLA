@@ -45,6 +45,9 @@
 
 if(NOT MAGMA_FOUND)
     set(MAGMA_DIR "" CACHE PATH "Root directory of MAGMA library")
+    if (NOT MAGMA_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely MAGMA_DIR, has been set to specify the install directory of MAGMA")
+    endif()
 endif(NOT MAGMA_FOUND)
 
 

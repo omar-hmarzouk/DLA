@@ -44,6 +44,12 @@
 # (To distribute this file outside of Morse, substitute the full
 #  License text for the above reference.)
 
+if (NOT SCOTCH_FOUND)
+    set(SCOTCH_DIR "" CACHE PATH "Root directory of SCOTCH library")
+    if (NOT SCOTCH_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely SCOTCH_DIR, has been set to specify the install directory of SCOTCH")
+    endif()
+endif()
 
 # SCOTCH may depend on Threads
 # try to find it specified as COMPONENTS during the call

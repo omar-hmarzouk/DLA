@@ -43,6 +43,12 @@
 # (To distribute this file outside of Morse, substitute the full
 #  License text for the above reference.)
 
+if (NOT METIS_FOUND)
+    set(METIS_DIR "" CACHE PATH "Root directory of METIS library")
+    if (NOT METIS_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely METIS_DIR, has been set to specify the install directory of METIS")
+    endif()
+endif()
 
 # Looking for include
 # -------------------

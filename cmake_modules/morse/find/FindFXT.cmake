@@ -43,6 +43,9 @@
 
 if (NOT FXT_FOUND)
     set(FXT_DIR "" CACHE PATH "Root directory of FXT library")
+    if (NOT FXT_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely FXT_DIR, has been set to specify the install directory of FXT")
+    endif()
 endif()
 
 # Optionally use pkg-config to detect include/library dirs (if pkg-config is available)

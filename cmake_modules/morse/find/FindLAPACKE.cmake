@@ -51,6 +51,9 @@
 
 if (NOT LAPACKE_FOUND)
     set(LAPACKE_DIR "" CACHE PATH "Root directory of LAPACKE library")
+    if (NOT LAPACKE_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely LAPACKE_DIR, has been set to specify the install directory of LAPACKE")
+    endif()
 endif()
 
 # LAPACKE depends on LAPACK

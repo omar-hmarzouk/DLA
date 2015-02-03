@@ -45,7 +45,10 @@
 
 
 if (NOT TMG_FOUND)
-   set(TMG_DIR "" CACHE PATH "Root directory of TMG library")
+    set(TMG_DIR "" CACHE PATH "Root directory of TMG library")
+    if (NOT TMG_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely TMG_DIR, has been set to specify the install directory of TMG")
+    endif()
 endif()
 
 

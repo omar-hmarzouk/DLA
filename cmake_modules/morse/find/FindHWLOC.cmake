@@ -44,6 +44,9 @@
 
 if (NOT HWLOC_FOUND)
     set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
+    if (NOT HWLOC_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely HWLOC_DIR, has been set to specify the install directory of HWLOC")
+    endif()
 endif()
 
 # Optionally use pkg-config to detect include/library dirs (if pkg-config is available)

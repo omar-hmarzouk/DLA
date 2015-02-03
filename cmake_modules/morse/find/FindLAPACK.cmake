@@ -115,6 +115,9 @@ endmacro()
 
 if (NOT LAPACK_FOUND)
     set(LAPACK_DIR "" CACHE PATH "Root directory of LAPACK library")
+    if (NOT LAPACK_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely LAPACK_DIR, has been set to specify the install directory of LAPACK")
+    endif()
 endif (NOT LAPACK_FOUND)
 
 option(LAPACK_VERBOSE "Print some additional information during LAPACK

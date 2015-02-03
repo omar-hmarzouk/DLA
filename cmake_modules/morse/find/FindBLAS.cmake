@@ -136,6 +136,9 @@ endmacro()
 
 if (NOT BLAS_FOUND)
     set(BLAS_DIR "" CACHE PATH "Root directory of BLAS library")
+    if (NOT BLAS_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely BLAS_DIR, has been set to specify the install directory of BLAS")
+    endif()
 endif()
 
 option(BLAS_VERBOSE "Print some additional information during BLAS

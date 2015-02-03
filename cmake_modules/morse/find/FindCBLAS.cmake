@@ -52,6 +52,9 @@
 
 if (NOT CBLAS_FOUND)
     set(CBLAS_DIR "" CACHE PATH "Root directory of CBLAS library")
+    if (NOT CBLAS_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely CBLAS_DIR, has been set to specify the install directory of CBLAS")
+    endif()
 endif()
 
 

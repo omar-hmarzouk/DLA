@@ -50,6 +50,9 @@
 
 if (NOT CHAMELEON_FOUND)
     set(CHAMELEON_DIR "" CACHE PATH "Root directory of CHAMELEON library")
+    if (NOT CHAMELEON_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely CHAMELEON_DIR, has been set to specify the install directory of CHAMELEON")
+    endif()
 endif()
 
 # Try to find CHAMELEON dependencies if specified as COMPONENTS during the call

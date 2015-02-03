@@ -43,6 +43,12 @@
 # (To distribute this file outside of Morse, substitute the full
 #  License text for the above reference.)
 
+if (NOT PARMETIS_FOUND)
+    set(PARMETIS_DIR "" CACHE PATH "Root directory of PARMETIS library")
+    if (NOT PARMETIS_FIND_QUIETLY)
+        message(STATUS "A cache variable, namely PARMETIS_DIR, has been set to specify the install directory of PARMETIS")
+    endif()
+endif()
 
 # PARMETIS depends on MPI
 # try to find it specified as COMPONENTS during the call
