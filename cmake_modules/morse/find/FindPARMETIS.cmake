@@ -188,12 +188,43 @@ else ()
     set(PARMETIS_LIBRARY_DIRS "PARMETIS_LIBRARY_DIRS-NOTFOUND")
     if (NOT PARMETIS_FIND_QUIETLY)
         message(STATUS "Looking for parmetis -- lib parmetis not found")
-    endif
+    endif()
 endif ()
+
+if(PARMETIS_LIBRARIES)
+    # check a function to validate the find
+    set(CMAKE_REQUIRED_INCLUDES  "${PARMETIS_INCLUDE_DIRS}")
+    set(CMAKE_REQUIRED_LIBRARIES "${PARMETIS_LIBRARIES}")
+    if (PARMETIS_LIBRARY_DIRS)
+        set(CMAKE_REQUIRED_FLAGS "-L${PARMETIS_LIBRARY_DIRS}")
+    endif()
+
+    unset(PARMETIS_WORKS CACHE)
+    include(CheckFunctionExists)
+    check_function_exists(ParMETIS_V3_NodeND PARMETIS_WORKS)
+    mark_as_advanced(PARMETIS_WORKS)
+
+    if(PARMETIS_WORKS)
+        set(PARMETIS_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
+    else()
+        if(NOT PARMETIS_FIND_QUIETLY)
+            message(STATUS "Looking for PARMETIS : test of ParMETIS_V3_NodeND with PARMETIS library fails")
+            message(STATUS "PARMETIS_LIBRARIES: ${CMAKE_REQUIRED_LIBRARIES}")
+            message(STATUS "PARMETIS_LIBRARY_DIRS: ${CMAKE_REQUIRED_FLAGS}")
+            message(STATUS "PARMETIS_INCLUDE_DIRS: ${CMAKE_REQUIRED_INCLUDES}")
+            message(STATUS "Check in CMakeFiles/CMakeError.log to figure out why it fails")
+            message(STATUS "Looking for PARMETIS : set PARMETIS_LIBRARIES to NOTFOUND")
+        endif()
+        set(PARMETIS_LIBRARIES "PARMETIS_LIBRARIES-NOTFOUND")
+    endif()
+    set(CMAKE_REQUIRED_INCLUDES)
+    set(CMAKE_REQUIRED_FLAGS)
+    set(CMAKE_REQUIRED_LIBRARIES)
+endif(PARMETIS_LIBRARIES)
 
 
 # check that PARMETIS has been found
-# ---------------------------------
+# ----------------------------------
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(PARMETIS DEFAULT_MSG
                                   PARMETIS_LIBRARIES

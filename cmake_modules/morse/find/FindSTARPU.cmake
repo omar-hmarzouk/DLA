@@ -169,6 +169,17 @@ if(PKG_CONFIG_EXECUTABLE)
 endif(PKG_CONFIG_EXECUTABLE)
 
 
+# STARPU may depend on CUDA, try to find it
+if (NOT CUDA_FOUND)
+    find_package(CUDA)
+endif()
+
+# STARPU may depend on MPI, try to find it
+if (NOT MPI_FOUND)
+    find_package(MPI)
+endif()
+
+
 if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
     ( STARPU_LOOK_FOR_MPI AND (NOT STARPU_MPI_FOUND OR NOT STARPU_MPI_LIBRARIES) )
   )

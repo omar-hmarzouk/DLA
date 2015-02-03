@@ -71,6 +71,10 @@ if( SCOTCH_FIND_COMPONENTS )
     endforeach()
 endif()
 
+# PTSCOTCH may depend on Threads, try to find it
+if (NOT THREADS_FOUND)
+    find_package(Threads)
+endif()
 
 # Looking for include
 # -------------------
@@ -203,6 +207,41 @@ foreach(scotch_lib ${SCOTCH_libs_to_find})
     mark_as_advanced(SCOTCH_${scotch_lib}_LIBRARY)
 
 endforeach()
+
+
+if(SCOTCH_LIBRARIES)
+    # check a function to validate the find
+    set(CMAKE_REQUIRED_INCLUDES  "${SCOTCH_INCLUDE_DIRS}")
+    set(CMAKE_REQUIRED_LIBRARIES "${SCOTCH_LIBRARIES}")
+    if(CMAKE_THREAD_LIBS_INIT)
+        list(APPEND CMAKE_REQUIRED_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
+    endif()
+    if (SCOTCH_LIBRARY_DIRS)
+        set(CMAKE_REQUIRED_FLAGS "-L${SCOTCH_LIBRARY_DIRS}")
+    endif()
+
+    unset(SCOTCH_WORKS CACHE)
+    include(CheckFunctionExists)
+    check_function_exists(SCOTCH_graphInit SCOTCH_WORKS)
+    mark_as_advanced(SCOTCH_WORKS)
+
+    if(SCOTCH_WORKS)
+        set(SCOTCH_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
+    else()
+        if(NOT SCOTCH_FIND_QUIETLY)
+            message(STATUS "Looking for SCOTCH : test of SCOTCH_graphInit with SCOTCH library fails")
+            message(STATUS "SCOTCH_LIBRARIES: ${CMAKE_REQUIRED_LIBRARIES}")
+            message(STATUS "SCOTCH_LIBRARY_DIRS: ${CMAKE_REQUIRED_FLAGS}")
+            message(STATUS "SCOTCH_INCLUDE_DIRS: ${CMAKE_REQUIRED_INCLUDES}")
+            message(STATUS "Check in CMakeFiles/CMakeError.log to figure out why it fails")
+            message(STATUS "Looking for SCOTCH : set SCOTCH_LIBRARIES to NOTFOUND")
+        endif()
+        set(SCOTCH_LIBRARIES "SCOTCH_LIBRARIES-NOTFOUND")
+    endif()
+    set(CMAKE_REQUIRED_INCLUDES)
+    set(CMAKE_REQUIRED_FLAGS)
+    set(CMAKE_REQUIRED_LIBRARIES)
+endif(SCOTCH_LIBRARIES)
 
 
 # Check the size of SCOTCH_Num

@@ -169,6 +169,36 @@ else ()
     endif()
 endif ()
 
+if(METIS_LIBRARIES)
+    # check a function to validate the find
+    set(CMAKE_REQUIRED_INCLUDES  "${METIS_INCLUDE_DIRS}")
+    set(CMAKE_REQUIRED_LIBRARIES "${METIS_LIBRARIES}")
+    if (METIS_LIBRARY_DIRS)
+        set(CMAKE_REQUIRED_FLAGS "-L${METIS_LIBRARY_DIRS}")
+    endif()
+
+    unset(METIS_WORKS CACHE)
+    include(CheckFunctionExists)
+    check_function_exists(METIS_NodeND METIS_WORKS)
+    mark_as_advanced(METIS_WORKS)
+
+    if(METIS_WORKS)
+        set(METIS_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
+    else()
+        if(NOT METIS_FIND_QUIETLY)
+            message(STATUS "Looking for METIS : test of METIS_NodeND with METIS library fails")
+            message(STATUS "METIS_LIBRARIES: ${CMAKE_REQUIRED_LIBRARIES}")
+            message(STATUS "METIS_LIBRARY_DIRS: ${CMAKE_REQUIRED_FLAGS}")
+            message(STATUS "METIS_INCLUDE_DIRS: ${CMAKE_REQUIRED_INCLUDES}")
+            message(STATUS "Check in CMakeFiles/CMakeError.log to figure out why it fails")
+            message(STATUS "Looking for METIS : set METIS_LIBRARIES to NOTFOUND")
+        endif()
+        set(METIS_LIBRARIES "METIS_LIBRARIES-NOTFOUND")
+    endif()
+    set(CMAKE_REQUIRED_INCLUDES)
+    set(CMAKE_REQUIRED_FLAGS)
+    set(CMAKE_REQUIRED_LIBRARIES)
+endif(METIS_LIBRARIES)
 
 # check that METIS has been found
 # ---------------------------------

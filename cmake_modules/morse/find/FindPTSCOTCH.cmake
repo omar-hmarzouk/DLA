@@ -78,6 +78,15 @@ if( PTSCOTCH_FIND_COMPONENTS )
     endforeach()
 endif()
 
+# PTSCOTCH may depend on Threads, try to find it
+if (NOT THREADS_FOUND)
+    find_package(Threads)
+endif()
+
+# PTSCOTCH may depend on MPI, try to find it
+if (NOT MPI_FOUND)
+    find_package(MPI)
+endif()
 
 # Looking for include
 # -------------------
@@ -180,7 +189,7 @@ else()
                 PATH_SUFFIXES lib lib32 lib64)
         endforeach()
     else()
-        foreach(scotch_lib ${PTSCOTCH_libs_to_find})
+        foreach(ptscotch_lib ${PTSCOTCH_libs_to_find})
             set(PTSCOTCH_${ptscotch_lib}_LIBRARY "PTSCOTCH_${ptscotch_lib}_LIBRARY-NOTFOUND")
             find_library(PTSCOTCH_${ptscotch_lib}_LIBRARY
                 NAMES ${ptscotch_lib}
@@ -210,6 +219,48 @@ foreach(ptscotch_lib ${PTSCOTCH_libs_to_find})
     mark_as_advanced(PTSCOTCH_${ptscotch_lib}_LIBRARY)
 
 endforeach()
+
+
+if(PTSCOTCH_LIBRARIES)
+    # check a function to validate the find
+    set(CMAKE_REQUIRED_INCLUDES  "${PTSCOTCH_INCLUDE_DIRS}")
+    set(CMAKE_REQUIRED_LIBRARIES "${PTSCOTCH_LIBRARIES}")
+    if(CMAKE_THREAD_LIBS_INIT)
+        list(APPEND CMAKE_REQUIRED_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
+    endif()
+    if (PTSCOTCH_LIBRARY_DIRS)
+        set(CMAKE_REQUIRED_FLAGS "-L${PTSCOTCH_LIBRARY_DIRS}")
+    endif()
+    if (MPI_FOUND)
+        list(APPEND CMAKE_REQUIRED_INCLUDES "${MPI_C_INCLUDE_PATH}")
+        if (MPI_C_LINK_FLAGS)
+            set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -L${MPI_C_LINK_FLAGS}")
+        endif()
+        list(APPEND CMAKE_REQUIRED_LIBRARIES "${MPI_C_LIBRARIES}")
+    endif()
+
+    unset(PTSCOTCH_WORKS CACHE)
+    include(CheckFunctionExists)
+    check_function_exists(SCOTCH_dgraphInit PTSCOTCH_WORKS)
+    mark_as_advanced(PTSCOTCH_WORKS)
+
+    if(PTSCOTCH_WORKS)
+        set(PTSCOTCH_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
+    else()
+        if(NOT PTSCOTCH_FIND_QUIETLY)
+            message(STATUS "Looking for PTSCOTCH : test of SCOTCH_dgraphInit with PTSCOTCH library fails")
+            message(STATUS "PTSCOTCH_LIBRARIES: ${CMAKE_REQUIRED_LIBRARIES}")
+            message(STATUS "PTSCOTCH_LIBRARY_DIRS: ${CMAKE_REQUIRED_FLAGS}")
+            message(STATUS "PTSCOTCH_INCLUDE_DIRS: ${CMAKE_REQUIRED_INCLUDES}")
+            message(STATUS "Check in CMakeFiles/CMakeError.log to figure out why it fails")
+            message(STATUS "Looking for PTSCOTCH : set PTSCOTCH_LIBRARIES to NOTFOUND")
+        endif()
+        set(PTSCOTCH_LIBRARIES "PTSCOTCH_LIBRARIES-NOTFOUND")
+    endif()
+    set(CMAKE_REQUIRED_INCLUDES)
+    set(CMAKE_REQUIRED_FLAGS)
+    set(CMAKE_REQUIRED_LIBRARIES)
+endif(PTSCOTCH_LIBRARIES)
 
 
 # Check the size of SCOTCH_Num
