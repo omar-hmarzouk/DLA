@@ -35,7 +35,11 @@
 #define B(m,n) B,  (m),  (n)
 #define T(m,n) T,  (m),  (n)
 #define T2(m,n) T,  (m),  (n)+A->nt
+#if defined(CHAMELEON_COPY_DIAG)
 #define DIAG(m,n) DIAG, ((n)/BS), 0
+#else
+#define DIAG(m,n) A, (m), (n)
+#endif
 
 /***************************************************************************//**
  *  Parallel application of Q using tile V - LQ factorization (reduction
@@ -106,11 +110,13 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                     tempkmin = min(tempkm,tempNn);
                     ldaN = BLKLDD(A, N);
                     ldbN = BLKLDD(B, N);
+#if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseUpper, tempkmin, tempNn, A->nb,
                         A(k, N), ldak,
                         DIAG(k, N), ldak );
+#endif
 #if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlaset(
                         &options,
@@ -216,11 +222,13 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 T(k, m), T->mb);
                         }
                     }
+#if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseUpper, tempkmin, tempNn, A->nb,
                         A(k, N), ldak,
                         DIAG(k, N), ldak );
+#endif
 #if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlaset(
                         &options,
@@ -291,11 +299,13 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 T(k, n), T->mb);
                         }
                     }
+#if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseUpper, tempkmin, tempNn, A->nb,
                         A(k, N), ldak,
                         DIAG(k, N), ldak );
+#endif
 #if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlaset(
                         &options,
@@ -328,11 +338,13 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                     tempNn = N == A->nt-1 ? A->n-N*A->nb : A->nb;
                     tempkmin = min(tempkm,tempNn);
                     ldaN = BLKLDD(A, N);
+#if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
                         MorseUpper, tempkmin, tempNn, A->nb,
                         A(k, N), ldaN,
                         DIAG(k, N), ldaN );
+#endif
 #if defined(CHAMELEON_USE_MAGMA)
                     MORSE_TASK_zlaset(
                         &options,

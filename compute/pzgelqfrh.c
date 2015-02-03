@@ -36,7 +36,11 @@
 #define A(m,n) A,  (m),  (n)
 #define T(m,n) T,  (m),  (n)
 #define T2(m,n) T,  (m),  (n)+A->nt
+#if defined(CHAMELEON_COPY_DIAG)
 #define DIAG(m,n) DIAG, ((n)/BS), 0
+#else
+#define DIAG(m,n) A,  (m),  (n)
+#endif
 
 /***************************************************************************//**
  *  Parallel tile LQ factorization (reduction Householder) - dynamic scheduling
@@ -117,11 +121,13 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
                 A(k, N), ldak,
                 T(k, N), T->mb);
         if ( k < (A->mt-1) ) {
+#if defined(CHAMELEON_COPY_DIAG)
             MORSE_TASK_zlacpy(
                 &options,
                 MorseUpper, tempkm, tempNn, A->nb,
                 A(k, N), ldak,
                 DIAG(k, N), ldak );
+#endif
 #if defined(CHAMELEON_USE_MAGMA)
             MORSE_TASK_zlaset(
                 &options,

@@ -33,7 +33,11 @@
 #include "common.h"
 
 #define A(_m_,_n_) A, _m_, _n_
+#if defined(CHAMELEON_COPY_DIAG)
 #define DIAG(_k_) DIAG, _k_, 0
+#else
+#define DIAG(_k_) A, _k_, _k_
+#endif
 #define L(_m_,_n_) L,  _m_,  _n_
 #define IPIV(_m_,_n_) &(IPIV[(int64_t)A->mb*((int64_t)(_m_)+(int64_t)A->mt*(int64_t)(_n_))])
 
@@ -86,11 +90,13 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
             k == A->mt-1, A->nb*k);
 
         if ( k < (minMNT-1) ) {
+#if defined(CHAMELEON_COPY_DIAG)
             MORSE_TASK_zlacpy(
                 &options,
                 MorseUpperLower, tempkm, tempkn, A->nb,
                 A(k, k), ldak,
                 DIAG(k), ldak);
+#endif
         }
 
         for (n = k+1; n < A->nt; n++) {

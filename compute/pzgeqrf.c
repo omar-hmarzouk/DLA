@@ -32,7 +32,11 @@
 
 #define A(m,n) A,  m,  n
 #define T(m,n) T,  m,  n
+#if defined(CHAMELEON_COPY_DIAG)
 #define DIAG(k) DIAG, k, 0
+#else
+#define DIAG(k) A, k, k
+#endif
 
 /***************************************************************************//**
  *  Parallel tile QR factorization - dynamic scheduling
@@ -107,11 +111,13 @@ void morse_pzgeqrf(MORSE_desc_t *A, MORSE_desc_t *T,
             A(k, k), ldak,
             T(k, k), T->mb);
         if ( k < (A->nt-1) ) {
+#if defined(CHAMELEON_COPY_DIAG)
             MORSE_TASK_zlacpy(
                 &options,
                 MorseLower, A->mb, A->nb, A->nb,
                 A(k, k), ldak,
                 DIAG(k), ldak );
+#endif
 #if defined(CHAMELEON_USE_MAGMA)
             MORSE_TASK_zlaset(
                 &options,

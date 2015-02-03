@@ -35,7 +35,11 @@
 #define Q(m,n) Q,  (m),  (n)
 #define T(m,n) T,  (m),  (n)
 #define T2(m,n) T,  (m),  (n)+(A->nt)
+#if defined(CHAMELEON_COPY_DIAG)
 #define DIAG(m,n) DIAG, ((m)/BS), 0
+#else
+#define DIAG(m,n) A, (m), (n)
+#endif
 
 /**
  *  Parallel construction of Q using tile V (application to identity;
@@ -141,11 +145,13 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                         T(m, k), T->mb);
                 }
             }
+#if defined(CHAMELEON_COPY_DIAG)
             MORSE_TASK_zlacpy(
                 &options,
                 MorseLower, tempMm, tempkmin, A->nb,
                 A(M, k), ldaM,
                 DIAG(M, k), ldaM );
+#endif
 #if defined(CHAMELEON_USE_MAGMA)
             MORSE_TASK_zlaset(
                 &options,

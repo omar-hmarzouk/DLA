@@ -136,6 +136,12 @@
 #define MORSE_MPI_SIZE    morse->mpi_comm_size
 #endif
 
+/*******************************************************************************
+ *  Activate copy of diagonal tile (StarPU only) for some tile algorithms (pz)
+ **/
+#if defined(CHAMELEON_SCHED_STARPU)
+#define CHAMELEON_COPY_DIAG
+#endif
 
 /*******************************************************************************
  *  IPT internal define
