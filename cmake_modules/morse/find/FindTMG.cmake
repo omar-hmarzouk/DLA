@@ -256,5 +256,4 @@ endif()
 # -------------------------------
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(TMG DEFAULT_MSG
-                                  TMG_LIBRARIES
-                                  TMG_LIBRARY_DIRS)
+                                  TMG_LIBRARIES)

@@ -102,6 +102,9 @@ option(CHAMELEON_SCHED_STARPU
 option(CHAMELEON_SCHED_QUARK
     "Enable Quark scheduler as the default runtime
     (Conflict with other CHAMELEON_SCHED_* options)" OFF)
+message(STATUS "CHAMELEON uses StarPU runtime: CHAMELEON_SCHED_STARPU is set to ON")
+message(STATUS "To use CHAMELEON with QUARK runtime: set CHAMELEON_SCHED_QUARK"
+    "to ON (CHAMELEON_SCHED_STARPU will be disabled)")
 
 if (CHAMELEON_SCHED_QUARK)
     set(CHAMELEON_SCHED_STARPU OFF)
@@ -160,34 +163,62 @@ endif()
 cmake_dependent_option(CHAMELEON_USE_MPI
                     "Enable distributed memory through MPI" OFF
                     "CHAMELEON_SCHED_STARPU" OFF)
+if (NOT CHAMELEON_USE_MPI)
+    message(STATUS "CHAMELEON_USE_MPI is set to OFF, turn it ON to use MPI (only with StarPU)")
+endif()
 
 # Enable Cuda kernels if StarPU (only if StarPU runtime is enabled)
 # TODO: Default should be changed to ON/OFF when it will be ok
 cmake_dependent_option(CHAMELEON_USE_CUDA
                     "Enable CUDA kernels" OFF
                     "CHAMELEON_SCHED_STARPU" OFF)
+if (NOT CHAMELEON_USE_CUDA)
+    message(STATUS "CHAMELEON_USE_CUDA is set to OFF, turn it ON to use CUDA (only with StarPU)")
+endif()
 
 # Enable MAGMA advanced kernels if CUDA is enabled
 cmake_dependent_option(CHAMELEON_USE_MAGMA
                     "Enable MAGMA Cuda kernels" OFF
                     "CHAMELEON_USE_CUDA" OFF)
+if (NOT CHAMELEON_USE_MAGMA)
+    message(STATUS "CHAMELEON_USE_MAGMA is set to OFF, turn it ON to use MAGMA (only with StarPU)")
+endif()
 
 # Enable FXT if StarPU (only if StarPU runtime is enabled)
 cmake_dependent_option(CHAMELEON_USE_FXT
                     "Enable FXT with STARPU" OFF
                     "CHAMELEON_SCHED_STARPU" OFF)
+if (NOT CHAMELEON_USE_FXT)
+    message(STATUS "CHAMELEON_USE_FXT is set to OFF, turn it ON to use FxT (only with StarPU)")
+endif()
 
 # Options to enable/disable testings and timings
 # ----------------------------------------------
 option(CHAMELEON_ENABLE_DOCS     "Enable documentation build"  ON)
+if (CHAMELEON_ENABLE_DOCS)
+    message(STATUS "CHAMELEON_ENABLE_DOCS is set to ON, turn it OFF to avoid building docs")
+endif()
 option(CHAMELEON_ENABLE_EXAMPLE  "Enable examples build"       ON)
+if (CHAMELEON_ENABLE_EXAMPLE)
+    message(STATUS "CHAMELEON_ENABLE_EXAMPLE is set to ON, turn it OFF to avoid building examples")
+endif()
 option(CHAMELEON_ENABLE_TESTING  "Enable testings build"       ON)
+if (CHAMELEON_ENABLE_TESTING)
+    message(STATUS "CHAMELEON_ENABLE_TESTING is set to ON, turn it OFF to avoid building testing")
+endif()
 option(CHAMELEON_ENABLE_TIMING   "Enable timings build"        ON)
+if (CHAMELEON_ENABLE_TIMING)
+    message(STATUS "CHAMELEON_ENABLE_TIMING is set to ON, turn it OFF to avoid building timing")
+endif()
 
 # Option to activate or not simulation mode (use Simgrid through StarPU)
 # ----------------------------------------------------------------------
 if(CHAMELEON_SCHED_STARPU)
     option(CHAMELEON_SIMULATION "Enable simulation mode using Simgrid through StarPU" OFF)
+    if (NOT CHAMELEON_SIMULATION)
+        message(STATUS "CHAMELEON_SIMULATION is set to OFF, turn it ON to use"
+            "SIMULATION mode (only with StarPU compiled with SimGrid)")
+    endif()
 endif()
 
 # Initially we need to generate files for different precisions
@@ -249,7 +280,6 @@ if(NOT CHAMELEON_SIMULATION)
 
     # CHAMELEON depends on CBLAS
     #----------------------------
-    set(BLAS_DIR "" CACHE PATH "Root directory of BLAS library")
     find_package(BLASEXT REQUIRED)
     if(BLAS_FOUND AND BLAS_LIBRARY_DIRS)
         # the RPATH to be used when installing
@@ -258,7 +288,6 @@ if(NOT CHAMELEON_SIMULATION)
         message(FATAL_ERROR "A BLAS library is required but has not been found")
     endif()
 
-    set(CBLAS_DIR "" CACHE PATH "Root directory of CBLAS library")
     find_package(CBLAS)
     if(CBLAS_FOUND)
         include_directories(${CBLAS_INCLUDE_DIRS})
@@ -285,7 +314,6 @@ if(NOT CHAMELEON_SIMULATION)
 
     # CHAMELEON depends on LAPACKE
     #-----------------------------
-    set(LAPACK_DIR "" CACHE PATH "Root directory of LAPACK library")
     find_package(LAPACKEXT)
     if(LAPACK_FOUND AND LAPACK_LIBRARY_DIRS)
         # the RPATH to be used when installing
@@ -298,7 +326,6 @@ if(NOT CHAMELEON_SIMULATION)
     # let the comment in case we meet some problems of non existing lapacke
     # functions in lapack library such as mkl, acml, ...
     #set(LAPACKE_STANDALONE TRUE)
-    set(LAPACKE_DIR "" CACHE PATH "Root directory of LAPACKE library")
     find_package(LAPACKE)
     if(LAPACKE_FOUND)
         include_directories(${LAPACKE_INCLUDE_DIRS})
@@ -326,7 +353,6 @@ if(NOT CHAMELEON_SIMULATION)
     # CHAMELEON depends on TMG
     #--------------------------
     if (CHAMELEON_ENABLE_TESTING OR CHAMELEON_ENABLE_TIMING)
-        set(TMG_DIR "" CACHE PATH "Root directory of TMG library")
         find_package(TMG)
         if(TMG_FOUND AND TMG_LIBRARY_DIRS)
             # the RPATH to be used when installing
@@ -374,7 +400,6 @@ if(NOT CHAMELEON_SIMULATION)
         #----------------------------------------------
         if ( CUDA_FOUND AND CHAMELEON_USE_MAGMA )
             set(CHAMELEON_MAGMA_VERSION "1.4" CACHE STRING "oldest MAGMA version desired")
-            set(MAGMA_DIR "" CACHE PATH "Root directory of MAGMA library")
             find_package(MAGMA ${CHAMELEON_MAGMA_VERSION} COMPONENTS CBLAS LAPACK CUDA)
             if ( MAGMA_FOUND )
                 add_definitions(-DHAVE_CUBLAS)
@@ -491,9 +516,6 @@ if( CHAMELEON_SCHED_STARPU )
         list(APPEND STARPU_COMPONENT_LIST "FXT")
     endif()
 
-    set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
-    set(FXT_DIR "" CACHE PATH "Root directory of FXT library")
-    set(STARPU_DIR "" CACHE PATH "Root directory of STARPU library")
     find_package(STARPU ${CHAMELEON_STARPU_VERSION} REQUIRED
                  COMPONENTS ${STARPU_COMPONENT_LIST})
 
@@ -596,8 +618,6 @@ endif( CHAMELEON_SCHED_STARPU )
 # try to find quark runtime
 if( CHAMELEON_SCHED_QUARK )
 
-    set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
-    set(QUARK_DIR "" CACHE PATH "Root directory of QUARK library")
     find_package(QUARK REQUIRED COMPONENTS HWLOC)
 
     # Add definition and include_dir if found

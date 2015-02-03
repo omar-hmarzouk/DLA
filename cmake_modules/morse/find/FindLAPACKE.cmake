@@ -292,5 +292,4 @@ endif(LAPACK_FOUND)
 # ---------------------------------
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(LAPACKE DEFAULT_MSG
-                                  LAPACKE_LIBRARIES
-                                  LAPACKE_LIBRARY_DIRS)
+                                  LAPACKE_LIBRARIES)

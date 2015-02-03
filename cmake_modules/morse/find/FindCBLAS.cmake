@@ -292,5 +292,4 @@ endif(BLAS_FOUND)
 # -------------------------------
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(CBLAS DEFAULT_MSG
-                                  CBLAS_LIBRARIES
-                                  CBLAS_LIBRARY_DIRS)
+                                  CBLAS_LIBRARIES)
