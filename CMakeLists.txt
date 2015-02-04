@@ -366,7 +366,7 @@ if(NOT CHAMELEON_SIMULATION)
 
         if (CUDA_FOUND)
             message("-- ${Blue}Add definition CHAMELEON_USE_CUDA"
-            " - Activate CUDA${ColourReset}")
+            " - Activate CUDA in Chameleon${ColourReset}")
             add_definitions(-DCHAMELEON_USE_CUDA)
             if(CUDA_VERSION VERSION_LESS "3.0")
                 set(CUDA_HOST_COMPILATION_CPP OFF)
@@ -527,7 +527,7 @@ if( CHAMELEON_SCHED_STARPU )
     # Add definition and include_dir if found
     if ( STARPU_FOUND )
         message("-- ${Blue}Add definition CHAMELEON_SCHED_STARPU"
-        " - Use of StarPU inside Chameleon${ColourReset}")
+        " - Activate StarPU in Chameleon${ColourReset}")
         add_definitions(-DCHAMELEON_SCHED_STARPU) # TODO: remove that
         include_directories(${STARPU_INCLUDE_DIRS})
         set(CMAKE_REQUIRED_INCLUDES "${STARPU_INCLUDE_DIRS}")
@@ -638,7 +638,7 @@ if( CHAMELEON_SCHED_QUARK )
     # Add definition and include_dir if found
     if(QUARK_FOUND)
         message("-- ${Blue}Add definition CHAMELEON_SCHED_QUARK"
-        " - Use of QUARK inside Chameleon${ColourReset}")
+        " - Activate QUARK in Chameleon${ColourReset}")
         add_definitions(-DCHAMELEON_SCHED_QUARK) # TODO: remove that
         include_directories(${QUARK_INCLUDE_DIRS})
         if(QUARK_LIBRARY_DIRS)
@@ -756,7 +756,7 @@ if ( CHAMELEON_SIMULATION )
     include_directories(${CMAKE_CURRENT_BINARY_DIR}/simucore/simulapacke)
     add_subdirectory(simucore)
     message("-- ${Blue}Add definition CHAMELEON_SIMULATION"
-    " - Activate simulation mode (to use with StarPU+SimGrid)${ColourReset}")
+    " - Activate simulation mode in Chameleon (to use with StarPU+SimGrid)${ColourReset}")
     add_definitions(-DCHAMELEON_SIMULATION)
 endif()
 #------------------------------------------------------------------------------
