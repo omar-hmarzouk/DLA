@@ -98,14 +98,20 @@ option(CHAMELEON_SCHED_STARPU
 option(CHAMELEON_SCHED_QUARK
     "Enable Quark scheduler as the default runtime
     (Conflict with other CHAMELEON_SCHED_* options)" OFF)
-message("-- ${BoldGreen}CHAMELEON_SCHED_STARPU is set to ON: CHAMELEON uses StarPU runtime${ColourReset}")
-message("-- ${BoldGreen}To use CHAMELEON with QUARK runtime: set CHAMELEON_SCHED_QUARK"
-    "to ON (CHAMELEON_SCHED_STARPU will be disabled)${ColourReset}")
 
 if (CHAMELEON_SCHED_QUARK)
     set(CHAMELEON_SCHED_STARPU OFF)
 elseif (CHAMELEON_SCHED_STARPU)
     set(CHAMELEON_SCHED_QUARK OFF)
+endif()
+if (CHAMELEON_SCHED_STARPU)
+    message("-- ${BoldGreen}CHAMELEON_SCHED_STARPU is set to ON: CHAMELEON uses StarPU runtime${ColourReset}")
+    message("-- ${BoldGreen}To use CHAMELEON with QUARK runtime: set CHAMELEON_SCHED_QUARK"
+    "to ON (CHAMELEON_SCHED_STARPU will be disabled)${ColourReset}")
+elseif(CHAMELEON_SCHED_QUARK)
+    message("-- ${BoldGreen}CHAMELEON_SCHED_QUARK is set to ON: CHAMELEON uses QUARK runtime${ColourReset}")
+    message("-- ${BoldGreen}To use CHAMELEON with StarPU runtime: set CHAMELEON_SCHED_STARPU"
+    "to ON (CHAMELEON_SCHED_QUARK will be disabled)${ColourReset}")
 endif()
 
 # Check that one, and only one, SCHED option is set to ON
