@@ -405,8 +405,8 @@ if(NOT CHAMELEON_SIMULATION)
                 message("-- ${Blue}Add definition CHAMELEON_USE_CUBLAS"
                 " - Use GPU kernels from cuBLAS${ColourReset}")
                 add_definitions(-DCHAMELEON_USE_CUBLAS)
-                message("-- ${Blue}Add definition CHAMELEON_USE_MAGMA$"
-                "Use GPU kernels from MAGMA- {ColourReset}")
+                message("-- ${Blue}Add definition CHAMELEON_USE_MAGMA"
+                " - Use GPU kernels from MAGMA${ColourReset}")
                 add_definitions(-DCHAMELEON_USE_MAGMA)
                 list(APPEND EXTRA_LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
                 include_directories(${MAGMA_INCLUDE_DIRS})
