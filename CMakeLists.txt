@@ -316,7 +316,7 @@ if(NOT CHAMELEON_SIMULATION)
 
     # CHAMELEON depends on LAPACKE
     #-----------------------------
-    find_package(LAPACKEXT)
+    find_package(LAPACKEXT REQUIRED)
     if(LAPACK_FOUND AND LAPACK_LIBRARY_DIRS)
         # the RPATH to be used when installing
         list(APPEND CMAKE_INSTALL_RPATH "${LAPACK_LIBRARY_DIRS}")
@@ -527,7 +527,7 @@ if( CHAMELEON_SCHED_STARPU )
         list(APPEND STARPU_COMPONENT_LIST "FXT")
     endif()
 
-    find_package(STARPU ${CHAMELEON_STARPU_VERSION} REQUIRED
+    find_package(STARPU ${CHAMELEON_STARPU_VERSION}
                  COMPONENTS ${STARPU_COMPONENT_LIST})
 
     # Add definition and include_dir if found
@@ -639,7 +639,7 @@ endif( CHAMELEON_SCHED_STARPU )
 # try to find quark runtime
 if( CHAMELEON_SCHED_QUARK )
 
-    find_package(QUARK REQUIRED COMPONENTS HWLOC)
+    find_package(QUARK COMPONENTS HWLOC)
 
     # Add definition and include_dir if found
     if(QUARK_FOUND)
