@@ -406,8 +406,6 @@ if(NOT CHAMELEON_SIMULATION)
             set(CHAMELEON_MAGMA_VERSION "1.4" CACHE STRING "oldest MAGMA version desired")
             find_package(MAGMA ${CHAMELEON_MAGMA_VERSION} COMPONENTS CBLAS LAPACK CUDA)
             if ( MAGMA_FOUND )
-                message("-- ${Blue}Add definition HAVE_CUBLAS (for MAGMA)${ColourReset}")
-                add_definitions(-DHAVE_CUBLAS)
                 message("-- ${Blue}Add definition CHAMELEON_USE_CUBLAS"
                 " - Use GPU kernels from cuBLAS${ColourReset}")
                 add_definitions(-DCHAMELEON_USE_CUBLAS)
