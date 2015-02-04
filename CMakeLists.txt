@@ -62,10 +62,6 @@ include(GenPkgConfig)
 
 set(CHAMELEON_DEFINITIONS_LIST "")
 
-# Add define for Fortran Mangling (should be defined somewhere else)
-# ------------------------------------------------------------------
-add_definitions(-DADD_)
-
 # Set the RPATH config
 # --------------------
 
@@ -102,9 +98,9 @@ option(CHAMELEON_SCHED_STARPU
 option(CHAMELEON_SCHED_QUARK
     "Enable Quark scheduler as the default runtime
     (Conflict with other CHAMELEON_SCHED_* options)" OFF)
-message(STATUS "CHAMELEON uses StarPU runtime: CHAMELEON_SCHED_STARPU is set to ON")
-message(STATUS "To use CHAMELEON with QUARK runtime: set CHAMELEON_SCHED_QUARK"
-    "to ON (CHAMELEON_SCHED_STARPU will be disabled)")
+message("-- ${BoldGreen}CHAMELEON_SCHED_STARPU is set to ON: CHAMELEON uses StarPU runtime${ColourReset}")
+message("-- ${BoldGreen}To use CHAMELEON with QUARK runtime: set CHAMELEON_SCHED_QUARK"
+    "to ON (CHAMELEON_SCHED_STARPU will be disabled)${ColourReset}")
 
 if (CHAMELEON_SCHED_QUARK)
     set(CHAMELEON_SCHED_STARPU OFF)
@@ -164,7 +160,7 @@ cmake_dependent_option(CHAMELEON_USE_MPI
                     "Enable distributed memory through MPI" OFF
                     "CHAMELEON_SCHED_STARPU" OFF)
 if (NOT CHAMELEON_USE_MPI)
-    message(STATUS "CHAMELEON_USE_MPI is set to OFF, turn it ON to use MPI (only with StarPU)")
+    message("-- ${BoldGreen}CHAMELEON_USE_MPI is set to OFF, turn it ON to use MPI (only with StarPU)${ColourReset}")
 endif()
 
 # Enable Cuda kernels if StarPU (only if StarPU runtime is enabled)
@@ -173,7 +169,7 @@ cmake_dependent_option(CHAMELEON_USE_CUDA
                     "Enable CUDA kernels" OFF
                     "CHAMELEON_SCHED_STARPU" OFF)
 if (NOT CHAMELEON_USE_CUDA)
-    message(STATUS "CHAMELEON_USE_CUDA is set to OFF, turn it ON to use CUDA (only with StarPU)")
+    message("-- ${BoldGreen}CHAMELEON_USE_CUDA is set to OFF, turn it ON to use CUDA (only with StarPU)${ColourReset}")
 endif()
 
 # Enable MAGMA advanced kernels if CUDA is enabled
@@ -181,7 +177,7 @@ cmake_dependent_option(CHAMELEON_USE_MAGMA
                     "Enable MAGMA Cuda kernels" OFF
                     "CHAMELEON_USE_CUDA" OFF)
 if (NOT CHAMELEON_USE_MAGMA)
-    message(STATUS "CHAMELEON_USE_MAGMA is set to OFF, turn it ON to use MAGMA (only with StarPU)")
+    message("-- ${BoldGreen}CHAMELEON_USE_MAGMA is set to OFF, turn it ON to use MAGMA (only with StarPU)${ColourReset}")
 endif()
 
 # Enable FXT if StarPU (only if StarPU runtime is enabled)
@@ -189,26 +185,26 @@ cmake_dependent_option(CHAMELEON_USE_FXT
                     "Enable FXT with STARPU" OFF
                     "CHAMELEON_SCHED_STARPU" OFF)
 if (NOT CHAMELEON_USE_FXT)
-    message(STATUS "CHAMELEON_USE_FXT is set to OFF, turn it ON to use FxT (only with StarPU)")
+    message("-- ${BoldGreen}CHAMELEON_USE_FXT is set to OFF, turn it ON to use FxT (only with StarPU)${ColourReset}")
 endif()
 
 # Options to enable/disable testings and timings
 # ----------------------------------------------
 option(CHAMELEON_ENABLE_DOCS     "Enable documentation build"  ON)
 if (CHAMELEON_ENABLE_DOCS)
-    message(STATUS "CHAMELEON_ENABLE_DOCS is set to ON, turn it OFF to avoid building docs")
+    message("-- ${BoldGreen}CHAMELEON_ENABLE_DOCS is set to ON, turn it OFF to avoid building docs${ColourReset}")
 endif()
 option(CHAMELEON_ENABLE_EXAMPLE  "Enable examples build"       ON)
 if (CHAMELEON_ENABLE_EXAMPLE)
-    message(STATUS "CHAMELEON_ENABLE_EXAMPLE is set to ON, turn it OFF to avoid building examples")
+    message("-- ${BoldGreen}CHAMELEON_ENABLE_EXAMPLE is set to ON, turn it OFF to avoid building examples${ColourReset}")
 endif()
 option(CHAMELEON_ENABLE_TESTING  "Enable testings build"       ON)
 if (CHAMELEON_ENABLE_TESTING)
-    message(STATUS "CHAMELEON_ENABLE_TESTING is set to ON, turn it OFF to avoid building testing")
+    message("-- ${BoldGreen}CHAMELEON_ENABLE_TESTING is set to ON, turn it OFF to avoid building testing${ColourReset}")
 endif()
 option(CHAMELEON_ENABLE_TIMING   "Enable timings build"        ON)
 if (CHAMELEON_ENABLE_TIMING)
-    message(STATUS "CHAMELEON_ENABLE_TIMING is set to ON, turn it OFF to avoid building timing")
+    message("-- ${BoldGreen}CHAMELEON_ENABLE_TIMING is set to ON, turn it OFF to avoid building timing${ColourReset}")
 endif()
 
 # Option to activate or not simulation mode (use Simgrid through StarPU)
@@ -216,8 +212,8 @@ endif()
 if(CHAMELEON_SCHED_STARPU)
     option(CHAMELEON_SIMULATION "Enable simulation mode using Simgrid through StarPU" OFF)
     if (NOT CHAMELEON_SIMULATION)
-        message(STATUS "CHAMELEON_SIMULATION is set to OFF, turn it ON to use"
-            "SIMULATION mode (only with StarPU compiled with SimGrid)")
+        message("-- ${BoldGreen}CHAMELEON_SIMULATION is set to OFF, turn it ON to use"
+            "SIMULATION mode (only with StarPU compiled with SimGrid)${ColourReset}")
     endif()
 endif()
 
@@ -296,7 +292,7 @@ if(NOT CHAMELEON_SIMULATION)
             list(APPEND CMAKE_INSTALL_RPATH "${CBLAS_LIBRARY_DIRS}")
         endif()
     else()
-        if(MORSE_VERBOSE)
+        if(MORSE_VERBOSE_FIND_PACKAGE)
             if(CBLAS_STANDALONE OR NOT CBLAS_WORKS)
                 if (NOT CBLAS_cblas.h_DIRS)
                     Print_Find_Header_Status(cblas cblas.h)
@@ -306,8 +302,8 @@ if(NOT CHAMELEON_SIMULATION)
                 endif ()
             endif()
         else()
-            message(WARNING "CBLAS library has not been found and MORSE_VERBOSE is set to OFF"
-            "Try to activate MORSE_VERBOSE option (-DMORSE_VERBOSE=ON) to get some hints for the detection")
+            message(WARNING "CBLAS library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
+            "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
         endif()
         message(FATAL_ERROR "A CBLAS library is required but has not been found")
     endif()
@@ -334,7 +330,7 @@ if(NOT CHAMELEON_SIMULATION)
             list(APPEND CMAKE_INSTALL_RPATH "${LAPACKE_LIBRARY_DIRS}")
         endif()
     else()
-        if(MORSE_VERBOSE)
+        if(MORSE_VERBOSE_FIND_PACKAGE)
             if (LAPACKE_STANDALONE OR NOT LAPACKE_WORKS)
                 if (NOT LAPACKE_lapacke.h_DIRS)
                     Print_Find_Header_Status(lapacke lapacke.h)
@@ -344,8 +340,8 @@ if(NOT CHAMELEON_SIMULATION)
                 endif ()
             endif()
         else()
-            message(WARNING "LAPACKE library has not been found and MORSE_VERBOSE is set to OFF"
-            "Try to activate MORSE_VERBOSE option (-DMORSE_VERBOSE=ON) to get some hints for the detection")
+            message(WARNING "LAPACKE library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
+            "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
         endif()
         message(FATAL_ERROR "A LAPACKE library is required but has not been found")
     endif()
@@ -369,6 +365,8 @@ if(NOT CHAMELEON_SIMULATION)
         find_package(CUDA REQUIRED)
 
         if (CUDA_FOUND)
+            message("-- ${Blue}Add definition CHAMELEON_USE_CUDA"
+            " - Activate CUDA${ColourReset}")
             add_definitions(-DCHAMELEON_USE_CUDA)
             if(CUDA_VERSION VERSION_LESS "3.0")
                 set(CUDA_HOST_COMPILATION_CPP OFF)
@@ -402,8 +400,13 @@ if(NOT CHAMELEON_SIMULATION)
             set(CHAMELEON_MAGMA_VERSION "1.4" CACHE STRING "oldest MAGMA version desired")
             find_package(MAGMA ${CHAMELEON_MAGMA_VERSION} COMPONENTS CBLAS LAPACK CUDA)
             if ( MAGMA_FOUND )
+                message("-- ${Blue}Add definition HAVE_CUBLAS (for MAGMA)${ColourReset}")
                 add_definitions(-DHAVE_CUBLAS)
+                message("-- ${Blue}Add definition CHAMELEON_USE_CUBLAS"
+                " - Use GPU kernels from cuBLAS${ColourReset}")
                 add_definitions(-DCHAMELEON_USE_CUBLAS)
+                message("-- ${Blue}Add definition CHAMELEON_USE_MAGMA$"
+                "Use GPU kernels from MAGMA- {ColourReset}")
                 add_definitions(-DCHAMELEON_USE_MAGMA)
                 list(APPEND EXTRA_LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
                 include_directories(${MAGMA_INCLUDE_DIRS})
@@ -412,7 +415,7 @@ if(NOT CHAMELEON_SIMULATION)
                     list(APPEND CMAKE_INSTALL_RPATH "${MAGMA_LIBRARY_DIRS}")
                 endif()
             else( MAGMA_FOUND )
-                if(MORSE_VERBOSE)
+                if(MORSE_VERBOSE_FIND_PACKAGE)
                     if (NOT MAGMA_magma.h_DIRS)
                         Print_Find_Header_Status(magma magma.h)
                     endif ()
@@ -420,8 +423,8 @@ if(NOT CHAMELEON_SIMULATION)
                         Print_Find_Library_Status(magma libmagma)
                     endif ()
                 else()
-                    message(WARNING "MAGMA library has not been found and MORSE_VERBOSE is set to OFF"
-                    "Try to activate MORSE_VERBOSE option (-DMORSE_VERBOSE=ON) to get some hints for the detection")
+                    message(WARNING "MAGMA library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
+                    "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
                 endif()
                 message(FATAL_ERROR "MAGMA library is required but has not been found")
             endif( MAGMA_FOUND )
@@ -442,6 +445,8 @@ if(NOT CHAMELEON_SIMULATION)
         find_package(MPI REQUIRED)
 
         if (MPI_C_FOUND)
+            message("-- ${Blue}Add definition CHAMELEON_USE_MPI"
+            " - Activate MPI in Chameleon${ColourReset}")
             add_definitions(-DCHAMELEON_USE_MPI)
             list(APPEND EXTRA_LIBRARIES ${MPI_C_LIBRARIES} )
             include_directories( ${MPI_C_INCLUDE_PATH} )
@@ -521,6 +526,8 @@ if( CHAMELEON_SCHED_STARPU )
 
     # Add definition and include_dir if found
     if ( STARPU_FOUND )
+        message("-- ${Blue}Add definition CHAMELEON_SCHED_STARPU"
+        " - Use of StarPU inside Chameleon${ColourReset}")
         add_definitions(-DCHAMELEON_SCHED_STARPU) # TODO: remove that
         include_directories(${STARPU_INCLUDE_DIRS})
         set(CMAKE_REQUIRED_INCLUDES "${STARPU_INCLUDE_DIRS}")
@@ -534,11 +541,13 @@ if( CHAMELEON_SCHED_STARPU )
             unset(STARPU_FXT_START_PROFILING_FOUND CACHE)
             check_function_exists(starpu_fxt_start_profiling STARPU_FXT_START_PROFILING_FOUND)
             if ( STARPU_FXT_START_PROFILING_FOUND )
-                message(STATUS "Set HAVE_STARPU_FXT_PROFILING - Activate FxT profiling through StarPU")
+                message("-- ${Blue}Add definition HAVE_STARPU_FXT_PROFILING"
+                " - Activate FxT profiling through StarPU${ColourReset}")
                 add_definitions(-DHAVE_STARPU_FXT_PROFILING)
             else()
-                message(STATUS "Looking for starpu with fxt - starpu_fxt_start_profiling test fails in StarPU")
-                message(STATUS "Check in CMakeFiles/CMakeError.log to figure out why it fails")
+                message("-- ${Red}Looking for starpu with fxt"
+                " - starpu_fxt_start_profiling() test fails in StarPU${ColourReset}")
+                message("-- ${Red}Check in CMakeFiles/CMakeError.log to figure out why it fails${ColourReset}")
             endif()
         endif()
         if (CHAMELEON_USE_MPI AND STARPU_MPI_LIBRARIES)
@@ -547,7 +556,13 @@ if( CHAMELEON_SCHED_STARPU )
             unset(STARPU_MPI_DATA_REGISTER_FOUND CACHE)
             check_function_exists(starpu_mpi_data_register STARPU_MPI_DATA_REGISTER_FOUND)
             if ( STARPU_MPI_DATA_REGISTER_FOUND )
+                message("-- ${Blue}Add definition HAVE_STARPU_MPI_DATA_REGISTER - Activate"
+                "use of starpu_mpi_data_register() in Chameleon with StarPU${ColourReset}")
                 add_definitions(-DHAVE_STARPU_MPI_DATA_REGISTER)
+            else()
+                message("-- ${Red}Looking for starpu with starpu_mpi_data_register"
+                " - starpu_mpi_data_register() test fails in StarPU${ColourReset}")
+                message("-- ${Red}Check in CMakeFiles/CMakeError.log to figure out why it fails${ColourReset}")
             endif()
         endif()
         if(HWLOC_FOUND AND HWLOC_LIBRARY_DIRS)
@@ -563,7 +578,7 @@ if( CHAMELEON_SCHED_STARPU )
             list(APPEND CMAKE_INSTALL_RPATH "${STARPU_LIBRARY_DIRS}")
         endif()
     else ( STARPU_FOUND )
-        if(MORSE_VERBOSE)
+        if(MORSE_VERBOSE_FIND_PACKAGE)
             if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
                 if (NOT HWLOC_hwloc.h_DIRS)
                     Print_Find_Header_Status(hwloc hwloc.h)
@@ -596,10 +611,10 @@ if( CHAMELEON_SCHED_STARPU )
                     endforeach()
                 endif()
             endif()
-        else(MORSE_VERBOSE)
-            message(WARNING "StarPU library has not been found and MORSE_VERBOSE is set to OFF"
-            "Try to activate MORSE_VERBOSE option (-DMORSE_VERBOSE=ON) to get some hints for the detection")
-        endif(MORSE_VERBOSE)
+        else(MORSE_VERBOSE_FIND_PACKAGE)
+            message(WARNING "StarPU library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
+            "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
+        endif(MORSE_VERBOSE_FIND_PACKAGE)
         if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
             message(FATAL_ERROR "hwloc library is required but has not been found")
         endif()
@@ -622,6 +637,8 @@ if( CHAMELEON_SCHED_QUARK )
 
     # Add definition and include_dir if found
     if(QUARK_FOUND)
+        message("-- ${Blue}Add definition CHAMELEON_SCHED_QUARK"
+        " - Use of QUARK inside Chameleon${ColourReset}")
         add_definitions(-DCHAMELEON_SCHED_QUARK) # TODO: remove that
         include_directories(${QUARK_INCLUDE_DIRS})
         if(QUARK_LIBRARY_DIRS)
@@ -629,7 +646,7 @@ if( CHAMELEON_SCHED_QUARK )
             list(APPEND CMAKE_INSTALL_RPATH "${QUARK_LIBRARY_DIRS}")
         endif()
     else(QUARK_FOUND)
-        if(MORSE_VERBOSE)
+        if(MORSE_VERBOSE_FIND_PACKAGE)
             if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
                 if (NOT HWLOC_hwloc.h_DIRS)
                     Print_Find_Header_Status(hwloc hwloc.h)
@@ -645,8 +662,8 @@ if( CHAMELEON_SCHED_QUARK )
                 Print_Find_Library_Status(quark libquark)
             endif ()
         else()
-            message(WARNING "QUARK library has not been found and MORSE_VERBOSE is set to OFF"
-            "Try to activate MORSE_VERBOSE option (-DMORSE_VERBOSE=ON) to get some hints for the detection")
+            message(WARNING "QUARK library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
+            "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
         endif()
         if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
             message(FATAL_ERROR "hwloc library is required but has not been found")
@@ -655,6 +672,12 @@ if( CHAMELEON_SCHED_QUARK )
     endif(QUARK_FOUND)
 
 endif()
+
+# Add define for Fortran Mangling (should be defined somewhere else)
+# ------------------------------------------------------------------
+message("-- ${Blue}Add definition ADD_"
+        " - For Fortran mangling${ColourReset}")
+add_definitions(-DADD_)
 
 #------------------------------------------------------------------------------
 # Save all dependencies (all required links)
@@ -732,6 +755,8 @@ if ( CHAMELEON_SIMULATION )
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/simucore/simulapacke)
     include_directories(${CMAKE_CURRENT_BINARY_DIR}/simucore/simulapacke)
     add_subdirectory(simucore)
+    message("-- ${Blue}Add definition CHAMELEON_SIMULATION"
+    " - Activate simulation mode (to use with StarPU+SimGrid)${ColourReset}")
     add_definitions(-DCHAMELEON_SIMULATION)
 endif()
 #------------------------------------------------------------------------------
@@ -831,6 +856,11 @@ endif()
 #################
 get_directory_property( CHAMELEON_DEFINITIONS_LIST DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
 include(PrintOpts)
+
+if (${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/local" OR ${CMAKE_INSTALL_PREFIX} STREQUAL "C:/Program Files")
+    message(WARNING "Your CMAKE_INSTALL_PREFIX is ${CMAKE_INSTALL_PREFIX} which is a default system path."
+    "You may want to change it: set the CMAKE_INSTALL_PREFIX variable")
+endif()
 
 ###
 ### END CMakeLists.txt

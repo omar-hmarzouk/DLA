@@ -73,12 +73,13 @@ set(dep_message "${dep_message}"
 "       Definitions: ${CHAMELEON_DEFINITIONS_LIST}\n")
 set(dep_message "${dep_message}"
 "\n"
-"       INSTALL_PREFIX ......: ${CMAKE_INSTALL_PREFIX}\n")
+"       INSTALL_PREFIX ......: ${CMAKE_INSTALL_PREFIX}\n\n")
 
 string(REPLACE ";" " " dep_message_wsc "${dep_message}")
-message(${dep_message})
+#message(${dep_message})
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/config.log "${dep_message_wsc}")
-
+message(STATUS "Configuration is done - A summary of the current configuration"
+"has been written in ${CMAKE_CURRENT_BINARY_DIR}/config.log")
 # installation
 # ------------
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.log DESTINATION share/chameleon)
