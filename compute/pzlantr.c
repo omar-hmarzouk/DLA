@@ -26,7 +26,7 @@
  **/
 #include <stdlib.h>
 #include <math.h>
-#include "common.h"
+#include "control/common.h"
 
 #define A(m, n) A, m, n
 #define VECNORMS_STEP1(m, n) VECNORMS_STEP1, m, n

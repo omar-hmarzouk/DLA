@@ -24,7 +24,7 @@
  *
  **/
 #include <stdlib.h>
-#include "common.h"
+#include "control/common.h"
 #include "runtime.h"
 
 /*******************************************************************************

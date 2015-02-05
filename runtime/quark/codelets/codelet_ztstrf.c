@@ -28,8 +28,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "morse_quark.h"
-#include <cblas.h>
+#include "runtime/quark/include/morse_quark.h"
+#include "coreblas/include/cblas.h"
 #include <math.h>
 
 /***************************************************************************//**

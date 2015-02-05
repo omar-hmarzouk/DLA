@@ -26,14 +26,14 @@
 
 #include <stdlib.h>
 #if defined( _WIN32 ) || defined( _WIN64 )
-#include "morsewinthread.h"
+#include "control/morsewinthread.h"
 #else
 #include <pthread.h>
 #endif
 
-#include "common.h"
-#include "auxiliary.h"
-#include "context.h"
+#include "control/common.h"
+#include "control/auxiliary.h"
+#include "control/context.h"
 #include "runtime.h"
 
 /*******************************************************************************

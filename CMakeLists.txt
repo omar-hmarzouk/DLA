@@ -744,20 +744,16 @@ list(REMOVE_DUPLICATES CHAMELEON_DEP)
 
 # include headers
 # ---------------
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/coreblas/include)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/coreblas/include)
 
 ###############################################################################
 # simucore libraries #
 ######################
 
 if ( CHAMELEON_SIMULATION )
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/simucore/simucblas)
-    include_directories(${CMAKE_CURRENT_BINARY_DIR}/simucore/simucblas)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/simucore/simulapacke)
-    include_directories(${CMAKE_CURRENT_BINARY_DIR}/simucore/simulapacke)
     add_subdirectory(simucore)
     message("-- ${Blue}Add definition CHAMELEON_SIMULATION"
     " - Activate simulation mode in Chameleon (to use with StarPU+SimGrid)${ColourReset}")
@@ -778,8 +774,6 @@ add_subdirectory(coreblas)
 # Main library #
 ################
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/control)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/control)
 add_subdirectory(include)
 add_subdirectory(control)
 add_subdirectory(compute)

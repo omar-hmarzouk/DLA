@@ -29,8 +29,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "common.h"
-#include "workspace.h"
+#include "control/common.h"
+#include "control/workspace.h"
 
 /***************************************************************************//**
  *

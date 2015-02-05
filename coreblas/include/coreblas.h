@@ -36,7 +36,7 @@
 #ifndef CBLAS_SADDR
 #define CBLAS_SADDR( _val_ ) &(_val_)
 #endif
-#include <cblas.h>
+#include "coreblas/include/cblas.h"
 
 /** ****************************************************************************
  * MORSE types and constants
@@ -44,20 +44,20 @@
 #include "morse_types.h"
 #include "morse_struct.h"
 #include "morse_constants.h"
-//#include "auxiliary.h"
-//#include "descriptor.h"
-//#include "tile.h"
-//#include "bulge.h"
+//#include "control/auxiliary.h"
+//#include "control/descriptor.h"
+//#include "control/tile.h"
+//#include "control/bulge.h"
 
 /** ****************************************************************************
  * CORE BLAS headers
  **/
-#include "coreblas_z.h"
-#include "coreblas_d.h"
-#include "coreblas_c.h"
-#include "coreblas_s.h"
-#include "coreblas_zc.h"
-#include "coreblas_ds.h"
+#include "coreblas/include/coreblas_z.h"
+#include "coreblas/include/coreblas_d.h"
+#include "coreblas/include/coreblas_c.h"
+#include "coreblas/include/coreblas_s.h"
+#include "coreblas/include/coreblas_zc.h"
+#include "coreblas/include/coreblas_ds.h"
 
 #ifdef __cplusplus
 extern "C" {

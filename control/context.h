@@ -10,7 +10,7 @@
 
 /**
  *
- * @file context.h
+ * @file control/context.h
  *
  *  MORSE auxiliary routines
  *  MORSE is a software package provided by Univ. of Tennessee,

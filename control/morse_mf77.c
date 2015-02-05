@@ -23,7 +23,7 @@
  *
  **/
 #include <stdlib.h>
-#include "common.h"
+#include "control/common.h"
 
 #define MORSE_ZCGESV           MORSE_FNAME(zcgesv,   ZCGESV)
 #define MORSE_DSGESV           MORSE_FNAME(dsgesv,   DSGESV)

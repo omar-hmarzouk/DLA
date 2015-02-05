@@ -28,8 +28,8 @@
  * @precisions normal z -> c
  *
  **/
-#include "morse_starpu.h"
-#include "codelet_z.h"
+#include "runtime/starpu/include/morse_starpu.h"
+#include "runtime/starpu/include/codelet_z.h"
 
 void MORSE_TASK_zplghe( MORSE_option_t *options,
                         double bump, int m, int n, MORSE_desc_t *A, int Am, int An, int lda,

@@ -59,7 +59,7 @@ endforeach()
 # installation
 # ------------
 install(FILES ${HDR_INSTALL}
-        DESTINATION include/chameleon)
+        DESTINATION include/chameleon/coreblas/include)
 
 ###
 ### END CMakeLists.txt

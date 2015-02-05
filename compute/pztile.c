@@ -24,7 +24,7 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "common.h"
+#include "control/common.h"
 
 #define A(m, n) dA, m, n
 #define B(m, n) &dB, m, n

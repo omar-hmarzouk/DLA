@@ -33,9 +33,9 @@
 #include <math.h>
 
 #include <morse.h>
-#include <cblas.h>
-#include <lapacke.h>
-#include <coreblas.h>
+#include <coreblas/include/cblas.h>>
+#include <coreblas/include/lapacke.h>
+#include <coreblas/include/coreblas.h>
 #include "testing_zauxiliary.h"
 
 enum blas_order_type {

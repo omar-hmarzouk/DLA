@@ -31,11 +31,11 @@
 #define _MORSE_QUARK_H_
 
 #include <quark.h>
-#include <coreblas.h>
-#include <quark_blas.h>
-#include <core_blas_dag.h>
+#include "coreblas/include/coreblas.h"
+#include "runtime/quark/include/quark_blas.h"
+#include "runtime/quark/include/core_blas_dag.h"
 
-#include "common.h"
+#include "control/common.h"
 
 typedef struct quark_option_s {
     Quark_Task_Flags flags;

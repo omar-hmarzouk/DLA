@@ -28,8 +28,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "coreblas.h"
-#include <cblas.h>
+#include "coreblas/include/coreblas.h"
+#include "coreblas/include/cblas.h"
 #include <math.h>
 
 /***************************************************************************//**

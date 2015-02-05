@@ -29,7 +29,7 @@
 //ALLOC_WS :  A->mb
 //ALLOC_WS :  A->nb
 //WS_ADD :  A->mb + A->nb
-#include "common.h"
+#include "control/common.h"
 
 #define A(m, n) A, m, n
 #define VECNORMS_STEP1(m, n) VECNORMS_STEP1, m, n

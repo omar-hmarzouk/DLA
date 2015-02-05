@@ -24,7 +24,7 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "morse_quark.h"
+#include "runtime/quark/include/morse_quark.h"
 
 void MORSE_TASK_dzasum(MORSE_option_t *options,
                        MORSE_enum storev, MORSE_enum uplo, int M, int N,

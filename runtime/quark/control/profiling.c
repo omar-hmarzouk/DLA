@@ -22,7 +22,7 @@
  * @date 2011-10-29 
  *
  **/
-#include "morse_quark.h"
+#include "runtime/quark/include/morse_quark.h"
 
 #if defined( _WIN32 ) || defined( _WIN64 )
 #include <windows.h>

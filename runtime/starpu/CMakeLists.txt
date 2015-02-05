@@ -177,11 +177,6 @@ set(RUNTIME_SRCS
   ${RUNTIME_SRCS_GENERATED}
   )
 
-# include directories
-# -------------------
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
-
 # Add library
 # -----------
 add_library(chameleon_starpu ${RUNTIME_SRCS})

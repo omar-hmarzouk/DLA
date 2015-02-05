@@ -20,7 +20,7 @@
  *
  **/
 
-#include "cblas.h"
+#include "simucore/simucblas/cblas.h"
 #include <assert.h>
 
 /*

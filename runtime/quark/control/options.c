@@ -24,7 +24,7 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
-#include "morse_quark.h"
+#include "runtime/quark/include/morse_quark.h"
 
 void RUNTIME_options_init( MORSE_option_t *options, MORSE_context_t *morse,
                            MORSE_sequence_t *sequence, MORSE_request_t *request )

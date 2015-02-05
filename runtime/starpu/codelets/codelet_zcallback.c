@@ -24,8 +24,8 @@
  *  @precisions normal z -> c d s
  *
  **/
-#include "morse_starpu.h"
-#include "codelet_z.h"
+#include "runtime/starpu/include/morse_starpu.h"
+#include "runtime/starpu/include/codelet_z.h"
 
 CHAMELEON_CL_CB(zasum,         starpu_matrix_get_nx(task->handles[0]), starpu_matrix_get_ny(task->handles[0]), 0,                                      M*N);
 CHAMELEON_CL_CB(zaxpy,         starpu_matrix_get_nx(task->handles[0]), starpu_matrix_get_nx(task->handles[1]), 0,                                      M);

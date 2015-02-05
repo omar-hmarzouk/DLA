@@ -20,7 +20,7 @@
  *
  **/
 
-#include "lapacke.h"
+#include "simucore/simulapacke/lapacke.h"
 #include <assert.h>
 
 /* Complex types are structures equivalent to the

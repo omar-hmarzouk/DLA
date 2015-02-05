@@ -25,7 +25,7 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
-#include "morse_starpu.h"
+#include "runtime/starpu/include/morse_starpu.h"
 
 /*******************************************************************************
  * Thread rank.

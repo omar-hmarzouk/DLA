@@ -23,9 +23,9 @@
  *
  **/
 #include <stdlib.h>
-#include "common.h"
-#include "auxiliary.h"
-#include "workspace.h"
+#include "control/common.h"
+#include "control/auxiliary.h"
+#include "control/workspace.h"
 
 /*******************************************************************************
  *

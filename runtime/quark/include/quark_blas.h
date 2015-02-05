@@ -25,14 +25,14 @@
 #ifndef _QUARK_BLAS_H_
 #define _QUARK_BLAS_H_
 
-#include <cblas.h>
+#include "coreblas/include/cblas.h"
 
-#include "quark_zblas.h"
-#include "quark_dblas.h"
-#include "quark_cblas.h"
-#include "quark_sblas.h"
-#include "quark_zcblas.h"
-#include "quark_dsblas.h"
+#include "runtime/quark/include/quark_zblas.h"
+#include "runtime/quark/include/quark_dblas.h"
+#include "runtime/quark/include/quark_cblas.h"
+#include "runtime/quark/include/quark_sblas.h"
+#include "runtime/quark/include/quark_zcblas.h"
+#include "runtime/quark/include/quark_dsblas.h"
 
 void CORE_ztile_zero_quark(Quark *quark);
 void CORE_dtile_zero_quark(Quark *quark);

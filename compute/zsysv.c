@@ -29,7 +29,7 @@
  * @precisions normal z -> c
  *
  **/
-#include "common.h"
+#include "control/common.h"
 
 /***************************************************************************//**
  *

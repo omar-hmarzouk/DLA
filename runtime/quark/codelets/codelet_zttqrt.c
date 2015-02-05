@@ -28,8 +28,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include <lapacke.h>
-#include "morse_quark.h"
+#include "coreblas/include/lapacke.h"
+#include "runtime/quark/include/morse_quark.h"
 #undef REAL
 #define COMPLEX
 

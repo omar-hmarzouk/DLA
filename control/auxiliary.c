@@ -24,8 +24,8 @@
  * @date 2012-09-15
  *
  **/
-#include "common.h"
-#include "auxiliary.h"
+#include "control/common.h"
+#include "control/auxiliary.h"
 
 #include <stdio.h>
 #include <stdlib.h>

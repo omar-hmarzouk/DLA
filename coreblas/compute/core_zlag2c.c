@@ -26,8 +26,8 @@
  * @precisions mixed zc -> ds
  *
  **/
-#include <lapacke.h>
-#include "coreblas.h"
+#include "coreblas/include/lapacke.h"
+#include "coreblas/include/coreblas.h"
 
 /***************************************************************************//**
  *

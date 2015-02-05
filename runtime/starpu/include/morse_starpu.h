@@ -45,7 +45,7 @@
 #include <starpu_cuda.h>
 #endif
 
-#include "common.h"
+#include "control/common.h"
 #include "codelets.h"
 #include "profiling.h"
 #include "codelet_profile.h"

@@ -26,9 +26,9 @@
  * @precisions mixed zc -> ds
  *
  **/
-#include <lapacke.h>
-#include "morse_starpu.h"
-#include "codelet_z.h"
+#include "coreblas/include/lapacke.h"
+#include "runtime/starpu/include/morse_starpu.h"
+#include "runtime/starpu/include/codelet_z.h"
 
 /**
  *

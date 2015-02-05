@@ -26,8 +26,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include <lapacke.h>
-#include "morse_quark.h"
+#include "coreblas/include/lapacke.h"
+#include "runtime/quark/include/morse_quark.h"
 
 void MORSE_TASK_zlansy(MORSE_option_t *options,
                        MORSE_enum norm, MORSE_enum uplo, int N, int NB,

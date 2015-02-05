@@ -47,10 +47,10 @@
 #include <sys/resource.h>
 #endif
 
-#include <cblas.h>
-#include <lapacke.h>
+#include <coreblas/include/cblas.h>
+#include <coreblas/include/lapacke.h>
 #include <morse.h>
-#include <coreblas.h>
+#include <coreblas/include/coreblas.h>
 
 #if defined(CHAMELEON_USE_MPI)
 #include <mpi.h>

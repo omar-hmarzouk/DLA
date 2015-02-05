@@ -22,9 +22,9 @@
  * @date 2010-11-15
  *
  **/
-#include "common.h"
-#include "auxiliary.h"
-#include "tile.h"
+#include "control/common.h"
+#include "control/auxiliary.h"
+#include "control/tile.h"
 
 /*******************************************************************************
  *

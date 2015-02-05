@@ -81,16 +81,16 @@
 #ifndef LAPACK_NAME
 #define LAPACK_NAME(a, b) lapackef77_##a
 #endif
-#include <lapacke.h>
-#include <coreblas.h>
+#include "coreblas/include/lapacke.h"
+#include "coreblas/include/coreblas.h"
 
 #include "morse.h"
 
-#include "global.h"
-#include "auxiliary.h"
-#include "tile.h"
-#include "async.h"
-#include "bulge.h"
+#include "control/global.h"
+#include "control/auxiliary.h"
+#include "control/tile.h"
+#include "control/async.h"
+#include "control/bulge.h"
 
 /** ****************************************************************************
  *  Determine FORTRAN names
@@ -161,11 +161,11 @@ extern char *morse_lapack_constants[];
 extern "C" {
 #endif
 
-#include "compute_s.h"
-#include "compute_d.h"
+#include "control/compute_s.h"
+#include "control/compute_d.h"
 #define COMPLEX
-#include "compute_c.h"
-#include "compute_z.h"
+#include "control/compute_c.h"
+#include "control/compute_z.h"
 #undef COMPLEX
 
 /*

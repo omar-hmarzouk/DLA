@@ -29,7 +29,7 @@
 #include "lapack_to_morse.h"
 
 /* Specific includes for step 2 */
-#include <lapacke.h>
+#include <coreblas/include/lapacke.h>
 #include "morse.h"
 
 /* Integer parameters for step2 */

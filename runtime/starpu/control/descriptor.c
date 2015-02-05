@@ -24,7 +24,7 @@
  *
  **/
 #include <stdlib.h>
-#include "morse_starpu.h"
+#include "runtime/starpu/include/morse_starpu.h"
 
 #if defined(CHAMELEON_USE_MPI)
 

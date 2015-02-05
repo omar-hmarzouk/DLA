@@ -24,7 +24,7 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "morse_quark.h"
+#include "runtime/quark/include/morse_quark.h"
 
 void MORSE_TASK_zgessq( MORSE_option_t *options,
                         int m, int n,

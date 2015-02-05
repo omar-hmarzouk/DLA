@@ -25,8 +25,8 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
-#include "auxiliary.h"
-#include "common.h"
+#include "control/auxiliary.h"
+#include "control/common.h"
 #include "runtime.h"
 
 /*******************************************************************************

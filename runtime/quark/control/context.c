@@ -23,7 +23,7 @@
  *
  **/
 #include <stdlib.h>
-#include "morse_quark.h"
+#include "runtime/quark/include/morse_quark.h"
 
 /*******************************************************************************
  *  Create new context

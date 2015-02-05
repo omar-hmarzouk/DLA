@@ -60,8 +60,8 @@
 /** ****************************************************************************
  * Set of routines which can be useful fo users
  */
-#include "context.h"
-#include "descriptor.h"
+#include "control/context.h"
+#include "control/descriptor.h"
 
 
 /** ****************************************************************************

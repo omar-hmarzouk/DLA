@@ -28,7 +28,7 @@
  * @precisions normal z -> c
  *
  **/
-#include "coreblas.h"
+#include "coreblas/include/coreblas.h"
 
 #undef REAL
 #define COMPLEX

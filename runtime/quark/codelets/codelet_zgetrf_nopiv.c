@@ -25,7 +25,7 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "morse_quark.h"
+#include "runtime/quark/include/morse_quark.h"
 
 /***************************************************************************//**
  *

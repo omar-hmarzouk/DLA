@@ -24,7 +24,7 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "morse_quark.h"
+#include "runtime/quark/include/morse_quark.h"
 
 void MORSE_TASK_zaxpy(MORSE_option_t *options,
                       int M, MORSE_Complex64_t *alpha,

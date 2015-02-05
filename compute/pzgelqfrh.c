@@ -31,7 +31,7 @@
  **/
 //ALLOC_WS :  A->nb + ib*T->nb
 //WS_ADD :  A->nb + ib*T->nb
-#include "common.h"
+#include "control/common.h"
 
 #define A(m,n) A,  (m),  (n)
 #define T(m,n) T,  (m),  (n)

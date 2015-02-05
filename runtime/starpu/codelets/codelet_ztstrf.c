@@ -28,9 +28,9 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "morse_starpu.h"
-#include "codelet_z.h"
-#include <cblas.h>
+#include "runtime/starpu/include/morse_starpu.h"
+#include "runtime/starpu/include/codelet_z.h"
+#include "coreblas/include/cblas.h"
 #include <math.h>
 
 /**

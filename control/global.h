@@ -32,7 +32,7 @@
 #define _MORSE_GLOBAL_H_
 
 #if defined( _WIN32 ) || defined( _WIN64 )
-#include "morsewinthread.h"
+#include "control/morsewinthread.h"
 #else
 #include <pthread.h>
 #endif

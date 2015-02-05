@@ -25,7 +25,7 @@
  * @precisions normal z -> s d c
  *
  **/
-#include "morse_starpu.h"
+#include "runtime/starpu/include/morse_starpu.h"
 
 void RUNTIME_zdisplay_allprofile()
 {

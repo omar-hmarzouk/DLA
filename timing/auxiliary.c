@@ -24,8 +24,8 @@
  **/
 
 #include <morse.h>
-#include <coreblas.h>
-#include "auxiliary.h"
+#include <coreblas/include/coreblas.h>
+#include "control/auxiliary.h"
 
 int   format[6]= { MorseCM, MorseCCRB, MorseCRRB, MorseRCRB, MorseRRRB, MorseRM };
 int   side[2]  = { MorseLeft,    MorseRight };

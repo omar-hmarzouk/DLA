@@ -29,7 +29,7 @@
  *
  **/
 #include <stdlib.h>
-#include "common.h"
+#include "control/common.h"
 #undef REAL
 #define COMPLEX
 

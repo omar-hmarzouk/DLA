@@ -24,7 +24,7 @@
  * @date 2014-02-05
  *
  **/
-#include "morse_starpu.h"
+#include "runtime/starpu/include/morse_starpu.h"
 
 void MORSE_TASK_dataflush(MORSE_option_t *options,
                           MORSE_desc_t *A, int Am, int An)

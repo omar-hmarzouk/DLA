@@ -23,7 +23,7 @@
  *
  **/
 #include <stdlib.h>
-#include "morse_quark.h"
+#include "runtime/quark/include/morse_quark.h"
 
 void RUNTIME_desc_init( MORSE_desc_t *desc )
 {

@@ -26,8 +26,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include <lapacke.h>
-#include "coreblas.h"
+#include "coreblas/include/lapacke.h"
+#include "coreblas/include/coreblas.h"
 
 
 int CORE_zgetrf(int m, int n,

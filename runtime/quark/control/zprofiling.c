@@ -25,7 +25,7 @@
  *  @precisions normal z -> s d c
  *
  **/
-#include "morse_quark.h"
+#include "runtime/quark/include/morse_quark.h"
 
 void RUNTIME_zdisplay_allprofile()
 {

@@ -24,8 +24,8 @@
  **/
 #include <stdlib.h>
 #include <assert.h>
-#include "common.h"
-#include "descriptor.h"
+#include "control/common.h"
+#include "control/descriptor.h"
 #include "runtime.h"
 
 static int nbdesc = 0;

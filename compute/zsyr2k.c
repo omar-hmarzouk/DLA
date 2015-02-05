@@ -26,7 +26,7 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "common.h"
+#include "control/common.h"
 
 /***************************************************************************//**
  *

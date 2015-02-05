@@ -23,7 +23,7 @@
  *
  **/
 
-#include "morsewinthread.h"
+#include "control/morsewinthread.h"
 
 #include <limits.h>
 

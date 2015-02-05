@@ -10,7 +10,7 @@
 
 /**
  *
- * @file descriptor.h
+ * @file control/descriptor.h
  *
  *  MORSE auxiliary routines
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -28,7 +28,7 @@
 
 #include <assert.h>
 #include "morse_struct.h"
-#include "auxiliary.h"
+#include "control/auxiliary.h"
 
 #ifdef __cplusplus
 extern "C" {

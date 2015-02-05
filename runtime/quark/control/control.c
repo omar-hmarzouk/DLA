@@ -24,7 +24,7 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
-#include "morse_quark.h"
+#include "runtime/quark/include/morse_quark.h"
 
 /*******************************************************************************
  * Thread rank.

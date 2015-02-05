@@ -23,7 +23,7 @@
  *
  **/
 #include <stdlib.h>
-#include "common.h"
+#include "control/common.h"
 #include "morse.h"
 
 #ifdef ADD_
