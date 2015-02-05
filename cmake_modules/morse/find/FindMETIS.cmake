@@ -171,7 +171,9 @@ endif ()
 
 if(METIS_LIBRARIES)
     # check a function to validate the find
-    set(CMAKE_REQUIRED_INCLUDES  "${METIS_INCLUDE_DIRS}")
+    if (METIS_INCLUDE_DIRS)
+        set(CMAKE_REQUIRED_INCLUDES  "${METIS_INCLUDE_DIRS}")
+    endif()
     set(CMAKE_REQUIRED_LIBRARIES "${METIS_LIBRARIES}")
     if (METIS_LIBRARY_DIRS)
         set(CMAKE_REQUIRED_FLAGS "-L${METIS_LIBRARY_DIRS}")

@@ -100,6 +100,26 @@ if( STARPU_FIND_COMPONENTS )
     endforeach()
 endif()
 
+# STARPU may depend on CUDA, try to find it
+if (NOT CUDA_FOUND)
+    find_package(CUDA)
+endif()
+
+# STARPU may depend on MPI, try to find it
+if (NOT MPI_FOUND)
+    find_package(MPI)
+endif()
+
+# STARPU may depend on HWLOC, try to find it
+if (NOT HWLOC_FOUND)
+    find_package(HWLOC)
+endif()
+
+# STARPU may depend on MAGMA, try to find it
+if (NOT MAGMA_FOUND)
+    find_package(MAGMA)
+endif()
+
 # Optionally use pkg-config to detect include/library dirs (if pkg-config is available)
 # -------------------------------------------------------------------------------------
 include(FindPkgConfig)
@@ -110,7 +130,7 @@ if(PKG_CONFIG_EXECUTABLE)
     pkg_search_module(STARPU_SHM libstarpu)
     set(STARPU_INCLUDE_DIRS "${STARPU_SHM_INCLUDE_DIRS}")
     set(STARPU_LIBRARY_DIRS "${STARPU_SHM_LIBRARY_DIRS}")
-    if(STARPU_LOOK_FOR_MPI)
+    if(STARPU_LOOK_FOR_MPI OR MPI_FOUND)
         pkg_search_module(STARPU_MPI libstarpumpi)
     endif()
     if (NOT STARPU_FIND_QUIETLY)
@@ -169,19 +189,8 @@ if(PKG_CONFIG_EXECUTABLE)
 endif(PKG_CONFIG_EXECUTABLE)
 
 
-# STARPU may depend on CUDA, try to find it
-if (NOT CUDA_FOUND)
-    find_package(CUDA)
-endif()
-
-# STARPU may depend on MPI, try to find it
-if (NOT MPI_FOUND)
-    find_package(MPI)
-endif()
-
-
 if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
-    ( STARPU_LOOK_FOR_MPI AND (NOT STARPU_MPI_FOUND OR NOT STARPU_MPI_LIBRARIES) )
+    (  MPI_FOUND AND (NOT STARPU_MPI_FOUND OR NOT STARPU_MPI_LIBRARIES) )
   )
 
     # Looking for include
@@ -308,10 +317,10 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
 
     # create list of headers to find
     list(APPEND STARPU_hdrs_to_find "starpu.h;starpu_profiling.h")
-    if(STARPU_LOOK_FOR_MPI)
+    if(STARPU_LOOK_FOR_MPI OR MPI_FOUND)
         list(APPEND STARPU_hdrs_to_find "starpu_mpi.h")
     endif()
-    if(STARPU_LOOK_FOR_CUDA)
+    if(STARPU_LOOK_FOR_CUDA OR CUDA_FOUND)
         list(APPEND STARPU_hdrs_to_find "starpu_cuda.h;starpu_scheduler.h")
     endif()
 
@@ -406,7 +415,7 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
         # create list of libs to find
         set(STARPU_libs_to_find     "starpu-${STARPU_VERSION_STRING}")
         set(STARPU_SHM_libs_to_find "starpu-${STARPU_VERSION_STRING}")
-        if (STARPU_LOOK_FOR_MPI)
+        if (STARPU_LOOK_FOR_MPI OR MPI_FOUND)
             list(APPEND STARPU_libs_to_find "starpumpi-${STARPU_VERSION_STRING}")
             set(STARPU_MPI_libs_to_find "${STARPU_libs_to_find}")
         endif()
@@ -456,7 +465,7 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
                         endif()
                     endif()
                 endforeach()
-                if (STARPU_LOOK_FOR_MPI)
+                if (STARPU_LOOK_FOR_MPI OR MPI_FOUND)
                     foreach(starpu_mpi_lib ${STARPU_MPI_libs_to_find})
                         if(starpu_mpi_lib STREQUAL starpu_lib)
                             if (STARPU_MPI_LIBRARIES)
@@ -495,7 +504,7 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
                             endif()
                         endif()
                     endforeach()
-                    if (STARPU_LOOK_FOR_MPI)
+                    if (STARPU_LOOK_FOR_MPI OR MPI_FOUND)
                         foreach(starpu_mpi_lib ${STARPU_MPI_libs_to_find})
                             if(starpu_mpi_lib STREQUAL starpu_lib)
                                 if (STARPU_MPI_LIBRARIES)
@@ -543,41 +552,45 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
 
     if(STARPU_LIBRARIES)
         # check a function to validate the find
-        set(CMAKE_REQUIRED_INCLUDES "${STARPU_INCLUDE_DIRS}")
+        if (STARPU_INCLUDE_DIRS)
+            set(CMAKE_REQUIRED_INCLUDES "${STARPU_INCLUDE_DIRS}")
+        endif()
         set(CMAKE_REQUIRED_FLAGS)
         foreach(libdir ${STARPU_LIBRARY_DIRS})
-            if(libdir)
+            if (libdir)
                 set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -L${libdir}")
             endif()
         endforeach()
         set(CMAKE_REQUIRED_LIBRARIES "${STARPU_LIBRARIES}")
         if (HWLOC_FOUND)
-            list(APPEND CMAKE_REQUIRED_INCLUDES "${HWLOC_INCLUDE_DIRS}")
+            if (HWLOC_INCLUDE_DIRS)
+                list(APPEND CMAKE_REQUIRED_INCLUDES "${HWLOC_INCLUDE_DIRS}")
+            endif()
             if (HWLOC_LIBRARY_DIRS)
                 set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -L${HWLOC_LIBRARY_DIRS}")
             endif()
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${HWLOC_LIBRARIES}")
         endif()
         if (MPI_FOUND)
-            list(APPEND CMAKE_REQUIRED_INCLUDES "${MPI_C_INCLUDE_PATH}")
-            if (MPI_C_LINK_FLAGS)
-                set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -L${MPI_C_LINK_FLAGS}")
-            endif()
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${MPI_C_LIBRARIES}")
         endif()
         if (CUDA_FOUND)
-            list(APPEND CMAKE_REQUIRED_INCLUDES "${CUDA_INCLUDE_DIRS}")
+            if (CUDA_INCLUDE_DIRS)
+                list(APPEND CMAKE_REQUIRED_INCLUDES "${CUDA_INCLUDE_DIRS}")
+            endif()
             if (CUDA_LIBRARY_DIRS)
                 set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -L${CUDA_LIBRARY_DIRS}")
             endif()
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${CUDA_CUBLAS_LIBRARIES};${CUDA_LIBRARIES}")
         endif()
         if (MAGMA_FOUND)
-            list(APPEND CMAKE_REQUIRED_INCLUDES "${MAGMA_INCLUDE_DIRS}")
+            if (MAGMA_INCLUDE_DIRS)
+                list(APPEND CMAKE_REQUIRED_INCLUDES "${MAGMA_INCLUDE_DIRS}")
+            endif()
             if (MAGMA_LIBRARY_DIRS)
                 set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -L${MAGMA_LIBRARY_DIRS}")
             endif()
-            list(APPEND CMAKE_REQUIRED_LIBRARIES "${${MAGMA_LIBRARIES}}")
+            list(APPEND CMAKE_REQUIRED_LIBRARIES "${MAGMA_LIBRARIES}")
         endif()
 
         unset(STARPU_WORKS CACHE)
@@ -605,7 +618,7 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
     endif(STARPU_LIBRARIES)
 
 endif( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
-       ( STARPU_LOOK_FOR_MPI AND (NOT STARPU_MPI_FOUND OR NOT STARPU_MPI_LIBRARIES) )
+       ( MPI_FOUND AND (NOT STARPU_MPI_FOUND OR NOT STARPU_MPI_LIBRARIES) )
      )
 
 

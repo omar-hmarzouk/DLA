@@ -68,8 +68,14 @@ if( QUARK_FIND_COMPONENTS )
     endforeach()
 endif()
 
+# QUARK may depend on Threads, try to find it
 if (NOT Threads_FOUND)
     find_package(Threads REQUIRED)
+endif()
+
+# QUARK may depend on HWLOC, try to find it
+if (NOT HWLOC_FOUND)
+    find_package(HWLOC)
 endif()
 
 # Looking for include
@@ -192,13 +198,17 @@ endif ()
 
 if(QUARK_LIBRARIES)
     # check a function to validate the find
-    set(CMAKE_REQUIRED_INCLUDES  "${QUARK_INCLUDE_DIRS}")
+    if (QUARK_INCLUDE_DIRS)
+        set(CMAKE_REQUIRED_INCLUDES  "${QUARK_INCLUDE_DIRS}")
+    endif()
     set(CMAKE_REQUIRED_LIBRARIES "${QUARK_LIBRARIES};${CMAKE_THREAD_LIBS_INIT}")
     if (QUARK_LIBRARY_DIRS)
         set(CMAKE_REQUIRED_FLAGS "-L${QUARK_LIBRARY_DIRS}")
     endif()
     if (HWLOC_FOUND)
-        list(APPEND CMAKE_REQUIRED_INCLUDES "${HWLOC_INCLUDE_DIRS}")
+        if (HWLOC_INCLUDE_DIRS)
+            list(APPEND CMAKE_REQUIRED_INCLUDES "${HWLOC_INCLUDE_DIRS}")
+        endif()
         list(APPEND CMAKE_REQUIRED_LIBRARIES "${HWLOC_LIBRARIES}")
         if (HWLOC_LIBRARY_DIRS)
             set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -L${HWLOC_LIBRARY_DIRS}")

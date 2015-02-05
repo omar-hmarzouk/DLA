@@ -212,7 +212,9 @@ if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
 
     if(HWLOC_LIBRARIES)
         # check a function to validate the find
-        set(CMAKE_REQUIRED_INCLUDES  "${HWLOC_INCLUDE_DIRS}")
+        if (HWLOC_INCLUDE_DIRS)
+            set(CMAKE_REQUIRED_INCLUDES  "${HWLOC_INCLUDE_DIRS}")
+        endif()
         set(CMAKE_REQUIRED_LIBRARIES "${HWLOC_LIBRARIES}")
         if (HWLOC_LIBRARY_DIRS)
             set(CMAKE_REQUIRED_FLAGS     "-L${HWLOC_LIBRARY_DIRS}")
