@@ -862,8 +862,8 @@ get_directory_property( CHAMELEON_DEFINITIONS_LIST DIRECTORY ${CMAKE_SOURCE_DIR}
 include(PrintOpts)
 
 if (${CMAKE_INSTALL_PREFIX} STREQUAL "/usr/local" OR ${CMAKE_INSTALL_PREFIX} STREQUAL "C:/Program Files")
-    message(WARNING "Your CMAKE_INSTALL_PREFIX is ${CMAKE_INSTALL_PREFIX} which is a default system path."
-    "You may want to change it: set the CMAKE_INSTALL_PREFIX variable")
+    message("-- ${Yellow}Your CMAKE_INSTALL_PREFIX is ${CMAKE_INSTALL_PREFIX} which is a default system path."
+    "You may want to change it: set the CMAKE_INSTALL_PREFIX variable to do so.${ColourReset}")
 endif()
 
 ###
