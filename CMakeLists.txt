@@ -558,7 +558,7 @@ if( CHAMELEON_SCHED_STARPU )
             # Check if a specific function exist
             set(CMAKE_REQUIRED_LIBRARIES "${STARPU_MPI_LIBRARIES}")
             unset(STARPU_MPI_DATA_REGISTER_FOUND CACHE)
-            check_function_exists(starpu_mpi_data_register STARPU_MPI_DATA_REGISTER_FOUND)
+            check_function_exists(starpu_mpi_data_register_comm STARPU_MPI_DATA_REGISTER_FOUND)
             if ( STARPU_MPI_DATA_REGISTER_FOUND )
                 message("-- ${Blue}Add definition HAVE_STARPU_MPI_DATA_REGISTER - Activate"
                 "use of starpu_mpi_data_register() in Chameleon with StarPU${ColourReset}")
