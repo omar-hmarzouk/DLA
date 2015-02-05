@@ -45,7 +45,7 @@
 #include <sys/resource.h>
 #endif
 
-#include <coreblas/include/cblas.h>>
+#include <coreblas/include/cblas.h>
 #include <coreblas/include/lapacke.h>
 #include <morse.h>
 #include <coreblas/include/coreblas.h>

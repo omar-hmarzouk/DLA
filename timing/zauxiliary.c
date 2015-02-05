@@ -18,7 +18,7 @@
 #include <string.h>
 #include <math.h>
 #include <morse.h>
-#include <coreblas/include/cblas.h>>
+#include <coreblas/include/cblas.h>
 #include <coreblas/include/lapacke.h>
 #include <coreblas/include/coreblas.h>
 #include <control/auxiliary.h>

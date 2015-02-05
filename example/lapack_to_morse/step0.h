@@ -32,7 +32,7 @@
 #ifndef CBLAS_SADDR
 #define CBLAS_SADDR( _val_ ) &(_val_)
 #endif
-#include <coreblas/include/cblas.h>>
+#include <coreblas/include/cblas.h>
 #include <coreblas/include/lapacke.h>
 
 #define CHAMELEON_VERSION_MAJOR 0
