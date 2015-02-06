@@ -55,7 +55,7 @@ endif()
 # try to find it specified as COMPONENTS during the call
 if( PTSCOTCH_FIND_COMPONENTS )
     foreach( component ${PTSCOTCH_FIND_COMPONENTS} )
-        if(${PTSCOTCH_FIND_REQUIRED_${component}} STREQUAL 1)
+        if(PTSCOTCH_FIND_REQUIRED_${component})
             find_package(${component} REQUIRED)
         else()
             find_package(${component})

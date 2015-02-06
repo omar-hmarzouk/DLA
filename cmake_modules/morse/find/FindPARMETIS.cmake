@@ -54,7 +54,7 @@ endif()
 # try to find it specified as COMPONENTS during the call
 if( PARMETIS_FIND_COMPONENTS )
     foreach( component ${PARMETIS_FIND_COMPONENTS} )
-        if(${PARMETIS_FIND_REQUIRED_${component}} STREQUAL 1)
+        if(PARMETIS_FIND_REQUIRED_${component})
             find_package(${component} REQUIRED)
         else()
             find_package(${component})

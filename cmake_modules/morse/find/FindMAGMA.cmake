@@ -55,7 +55,7 @@ endif(NOT MAGMA_FOUND)
 # try to find it specified as COMPONENTS during the call
 if( MAGMA_FIND_COMPONENTS )
     foreach( component ${MAGMA_FIND_COMPONENTS} )
-        if(${MAGMA_FIND_REQUIRED_${component}} STREQUAL 1)
+        if(MAGMA_FIND_REQUIRED_${component})
             find_package(${component} REQUIRED)
         else()
             find_package(${component})
@@ -130,7 +130,7 @@ if(PKG_CONFIG_EXECUTABLE)
         endif()
     endif()
 
-    if (MAGMA_FIND_VERSION_EXACT STREQUAL 1)
+    if (MAGMA_FIND_VERSION_EXACT)
         if( NOT (MAGMA_FIND_VERSION_MAJOR STREQUAL MAGMA_VERSION_MAJOR) OR
             NOT (MAGMA_FIND_VERSION_MINOR STREQUAL MAGMA_VERSION_MINOR) )
             if(NOT MAGMA_FIND_QUIETLY)
