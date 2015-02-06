@@ -344,7 +344,7 @@ if(NOT CHAMELEON_FOUND OR NOT CHAMELEON_LIBRARIES)
             find_path(CHAMELEON_morse.h_DIRS
               NAMES morse.h
               HINTS ${CHAMELEON_DIR}
-              PATH_SUFFIXES include/chameleon)
+              PATH_SUFFIXES "include" "include/chameleon")
         else()
             set(CHAMELEON_morse.h_DIRS "CHAMELEON_morse.h_DIRS-NOTFOUND")
             find_path(CHAMELEON_morse.h_DIRS
@@ -499,6 +499,9 @@ if(NOT CHAMELEON_FOUND OR NOT CHAMELEON_LIBRARIES)
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${${MAGMA_LIBRARIES}}")
         endif()
         if (MPI_FOUND)
+            if (MPI_C_INCLUDE_PATH)
+                list(APPEND CMAKE_REQUIRED_INCLUDES "${MPI_C_INCLUDE_PATH}")
+            endif()
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${MPI_C_LIBRARIES}")
         endif()
         if (HWLOC_FOUND)

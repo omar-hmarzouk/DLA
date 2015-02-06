@@ -233,7 +233,11 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
                 find_path(STARPU_${starpu_hdr}_INCLUDE_DIRS
                           NAMES ${starpu_hdr}
                           HINTS ${STARPU_DIR}
-                          PATH_SUFFIXES "include/starpu/1.0" "include/starpu/1.1" "include/starpu/1.2")
+                          PATH_SUFFIXES "include"
+                          "include/starpu/1.0"
+                          "include/starpu/1.1"
+                          "include/starpu/1.2"
+                          "include/starpu/1.3")
             endforeach()
         else()
             foreach(starpu_hdr ${STARPU_hdrs_to_find})
@@ -572,6 +576,9 @@ if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${HWLOC_LIBRARIES}")
         endif()
         if (MPI_FOUND)
+            if (MPI_C_INCLUDE_PATH)
+                list(APPEND CMAKE_REQUIRED_INCLUDES "${MPI_C_INCLUDE_PATH}")
+            endif()
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${MPI_C_LIBRARIES}")
         endif()
         if (CUDA_FOUND)
