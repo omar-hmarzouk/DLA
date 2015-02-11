@@ -66,6 +66,7 @@ MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.id = nbdesc; nbdesc++;
     desc.occurences = 0;
     desc.use_mat = 1;
+    desc.alloc_mat = 1;
     desc.register_mat = 1;
 
 #if defined(CHAMELEON_USE_MPI)
@@ -157,6 +158,7 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.id = nbdesc; nbdesc++;
     desc.occurences = 0;
     desc.use_mat = 1;
+    desc.alloc_mat = 1;
     desc.register_mat = 1;
 
 #if defined(CHAMELEON_USE_MPI)
@@ -316,7 +318,9 @@ int morse_desc_mat_free( MORSE_desc_t *desc )
 
     RUNTIME_desc_destroy( desc );
 
-    if (desc->mat != NULL && desc->use_mat == 1) {
+    if (desc->mat != NULL  &&
+        desc->use_mat == 1 &&
+        desc->alloc_mat == 1) {
 #ifndef CHAMELEON_SIMULATION
         free(desc->mat);
 #endif
@@ -417,6 +421,8 @@ int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, i
 
     } else {
         (**desc).mat = mat;
+        /* memory of the matrix is handle by users */
+        (**desc).alloc_mat = 0;
     }
 
     /* Create scheduler structure like registering data */
@@ -510,6 +516,9 @@ int MORSE_Desc_Create_User(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int 
 
     /* if the user gives a pointer to the overall data (tiles) we can use it */
     (**desc).use_mat = (mat == NULL) ? 0 : 1;
+
+    /* memory of the matrix is handle by users */
+    (**desc).alloc_mat = 0;
 
     /* users data can have multiple forms: let him register tiles */
     (**desc).register_mat = 0;

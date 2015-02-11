@@ -102,6 +102,7 @@ struct morse_desc_s {
                       // submatrix desc (occurances>1) to avoid unregistering
                       // GPU data twice
     int use_mat;      // 1 if we have a pointer to the overall data mat - else 0
+    int alloc_mat;    // 1 if we handle the allocation of mat - else 0
     int register_mat; // 1 if we have to register mat - else 0 (handled by the application)
     int myrank;       // MPI rank of the descriptor
     void *schedopt;   // scheduler (QUARK|StarPU) specific structure

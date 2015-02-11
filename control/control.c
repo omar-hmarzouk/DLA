@@ -122,7 +122,7 @@ int MORSE_InitPar(int nworkers, int ncudas, int nthreads_per_worker)
       int flag = 0, provided = 0;
       MPI_Initialized( &flag );
       if ( !flag ) {
-	MPI_Init_thread( NULL, NULL, MPI_THREAD_MULTIPLE, &provided );
+          MPI_Init_thread( NULL, NULL, MPI_THREAD_MULTIPLE, &provided );
       }
     }
 #endif
