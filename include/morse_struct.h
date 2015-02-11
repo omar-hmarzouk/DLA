@@ -139,7 +139,8 @@ typedef struct morse_context_s {
     int                nbnbsize;           // tile size in elements (possibly padded)
     int                ibnbsize;           // T or L tile size in elements (---''---)
     int                rhblock;            // block size for tree-based (reduction) Householder
-    void              *schedopt;
+    void              *schedopt;           // structure for runtimes
+    int                mpi_outer_init;     // MPI has been initialized outside our functions
 } MORSE_context_t;
 
 

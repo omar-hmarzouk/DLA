@@ -110,7 +110,7 @@ int MORSE_InitPar(int nworkers, int ncudas, int nthreads_per_worker)
         return MORSE_ERR_NOT_FOUND;
     }
     nworkers = morse->world_size;
-    
+
     /* Get the size of each NUMA node */
     morse->group_size = morse_get_numthreads_numa();
     while ( ((morse->world_size)%(morse->group_size)) != 0 ) 
@@ -121,6 +121,7 @@ int MORSE_InitPar(int nworkers, int ncudas, int nthreads_per_worker)
     {
       int flag = 0, provided = 0;
       MPI_Initialized( &flag );
+      morse->mpi_outer_init = flag;
       if ( !flag ) {
           MPI_Init_thread( NULL, NULL, MPI_THREAD_MULTIPLE, &provided );
       }
@@ -160,7 +161,8 @@ int MORSE_Finalize(void)
     morse_context_destroy();
 #if defined(CHAMELEON_USE_MPI)
     MPI_Barrier(MPI_COMM_WORLD);
-    MPI_Finalize();
+    if (!morse->mpi_outer_init)
+        MPI_Finalize();
 #endif
 
     return MORSE_SUCCESS;
