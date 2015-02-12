@@ -233,6 +233,10 @@ endif()
 # Look for dependencies #
 #########################
 
+#find_package(MUMPS REQUIRED COMPONENTS SEQ)
+#find_package(MUMPS REQUIRED)
+#message(FATAL_ERROR "MUMPS_FOUND: ${MUMPS_FOUND}")
+
 # Check for Thread library
 # ------------------------
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
