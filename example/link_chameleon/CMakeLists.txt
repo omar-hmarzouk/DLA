@@ -27,11 +27,11 @@ if (MORSE_DISTRIB_DIR)
     if (MORSE_CHAMELEON_USE_QUARK)
         find_package(CHAMELEON COMPONENTS QUARK)
     else()
-        find_package(CHAMELEON COMPONENTS STARPU)
+        find_package(CHAMELEON COMPONENTS STARPU MPI CUDA MAGMA FXT)
     endif()
     if (CHAMELEON_FOUND)
-        link_directories(${CHAMELEON_LIBRARY_DIRS})
-        include_directories(${CHAMELEON_INCLUDE_DIRS})
+        link_directories(${CHAMELEON_LIBRARY_DIRS_DEP})
+        include_directories(${CHAMELEON_INCLUDE_DIRS_DEP})
     else()
         message(FATAL_ERROR "Chameleon libraries not found in your environment."
         "Please update your environment variables that help find it"
@@ -40,7 +40,7 @@ if (MORSE_DISTRIB_DIR)
 
     # link_chameleon exe
     add_executable(link_chameleon link_chameleon.c)
-    target_link_libraries(link_chameleon ${CHAMELEON_LIBRARIES})
+    target_link_libraries(link_chameleon ${CHAMELEON_LIBRARIES_DEP})
 else()
     message(STATUS "MORSE_DISTRIB_DIR is not set")
     message(STATUS "Please indicate where is located your MORSE distribution directory."

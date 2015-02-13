@@ -292,16 +292,14 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     if(NOT CHAMELEON_SIMULATION)
 
         # CHAMELEON depends on CBLAS
-        #----------------------------
-        find_package(BLASEXT REQUIRED)
+        #---------------------------
+        find_package(CBLAS COMPONENTS BLASEXT)
         if(BLAS_FOUND AND BLAS_LIBRARY_DIRS)
             # the RPATH to be used when installing
             list(APPEND CMAKE_INSTALL_RPATH "${BLAS_LIBRARY_DIRS}")
         else()
             message(FATAL_ERROR "A BLAS library is required but has not been found")
         endif()
-
-        find_package(CBLAS)
         if(CBLAS_FOUND)
             include_directories(${CBLAS_INCLUDE_DIRS})
             if(CBLAS_LIBRARY_DIRS)
@@ -327,19 +325,17 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
         # CHAMELEON depends on LAPACKE
         #-----------------------------
-        find_package(LAPACKEXT REQUIRED)
+        # standalone version of lapacke seems useless for now
+        # let the comment in case we meet some problems of non existing lapacke
+        # functions in lapack library such as mkl, acml, ...
+        #set(LAPACKE_STANDALONE TRUE)
+        find_package(LAPACKE COMPONENTS LAPACKEXT)
         if(LAPACK_FOUND AND LAPACK_LIBRARY_DIRS)
             # the RPATH to be used when installing
             list(APPEND CMAKE_INSTALL_RPATH "${LAPACK_LIBRARY_DIRS}")
         else()
             message(FATAL_ERROR "A LAPACK library is required but has not been found")
         endif()
-
-        # standalone version of lapacke seems useless for now
-        # let the comment in case we meet some problems of non existing lapacke
-        # functions in lapack library such as mkl, acml, ...
-        #set(LAPACKE_STANDALONE TRUE)
-        find_package(LAPACKE)
         if(LAPACKE_FOUND)
             include_directories(${LAPACKE_INCLUDE_DIRS})
             if(LAPACKE_LIBRARY_DIRS)
@@ -364,7 +360,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
         endif()
 
         # CHAMELEON depends on TMG
-        #--------------------------
+        #-------------------------
         if (CHAMELEON_ENABLE_TESTING OR CHAMELEON_ENABLE_TIMING)
             find_package(TMG)
             if(TMG_FOUND AND TMG_LIBRARY_DIRS)
@@ -415,7 +411,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             #----------------------------------------------
             if ( CUDA_FOUND AND CHAMELEON_USE_MAGMA )
                 set(CHAMELEON_MAGMA_VERSION "1.4" CACHE STRING "oldest MAGMA version desired")
-                find_package(MAGMA ${CHAMELEON_MAGMA_VERSION} COMPONENTS CBLAS LAPACK CUDA)
+                find_package(MAGMA ${CHAMELEON_MAGMA_VERSION})
                 if ( MAGMA_FOUND )
                     message("-- ${Blue}Add definition CHAMELEON_USE_CUBLAS"
                     " - Use GPU kernels from cuBLAS${ColourReset}")
