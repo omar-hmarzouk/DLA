@@ -234,7 +234,6 @@ if(PTSCOTCH_LIBRARIES)
         endif()
         list(APPEND REQUIRED_LIBS "${MPI_C_LIBRARIES}")
     endif()
-    endif()
     # THREADS
     if(CMAKE_THREAD_LIBS_INIT)
         list(APPEND REQUIRED_LIBS "${CMAKE_THREAD_LIBS_INIT}")
