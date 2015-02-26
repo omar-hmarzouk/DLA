@@ -44,7 +44,7 @@
 #  License text for the above reference.)
 
 if (NOT FXT_FOUND)
-    set(FXT_DIR "" CACHE PATH "Root directory of FXT library")
+    set(FXT_DIR "" CACHE PATH "Installation directory of FXT library")
     if (NOT FXT_FIND_QUIETLY)
         message(STATUS "A cache variable, namely FXT_DIR, has been set to specify the install directory of FXT")
     endif()
@@ -54,7 +54,7 @@ endif()
 # -------------------------------------------------------------------------------------
 include(FindPkgConfig)
 find_package(PkgConfig QUIET)
-if(PKG_CONFIG_EXECUTABLE)
+if(PKG_CONFIG_EXECUTABLE AND NOT FXT_DIR)
 
     pkg_search_module(FXT fxt)
     if (NOT FXT_FIND_QUIETLY)
@@ -72,7 +72,7 @@ if(PKG_CONFIG_EXECUTABLE)
         endif()
     endif()
 
-endif(PKG_CONFIG_EXECUTABLE)
+endif()
 
 if( (NOT PKG_CONFIG_EXECUTABLE AND NOT FXT_FOUND) OR NOT FXT_FOUND )
 
@@ -250,6 +250,18 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT FXT_FOUND) OR NOT FXT_FOUND )
 
 endif( (NOT PKG_CONFIG_EXECUTABLE AND NOT FXT_FOUND) OR NOT FXT_FOUND )
 
+if (FXT_LIBRARIES AND NOT FXT_DIR)
+    if (FXT_LIBRARY_DIRS)
+        list(GET FXT_LIBRARY_DIRS 0 first_lib_path)
+    else()
+        list(GET FXT_LIBRARIES 0 first_lib)
+        get_filename_component(first_lib_path "${first_lib}" PATH)
+    endif()
+    if (${first_lib_path} MATCHES "/lib(32|64)?$")
+        string(REGEX REPLACE "/lib(32|64)?$" "" not_cached_dir "${first_lib_path}")
+        set(FXT_DIR "${not_cached_dir}" CACHE PATH "Installation directory of FXT library" FORCE)
+    endif()
+endif()
 
 # check that FXT has been found
 # -------------------------------

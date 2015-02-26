@@ -306,6 +306,9 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 # the RPATH to be used when installing
                 list(APPEND CMAKE_INSTALL_RPATH "${CBLAS_LIBRARY_DIRS}")
             endif()
+            if(CBLAS_LINKER_FLAGS)
+                list(APPEND CMAKE_EXE_LINKER_FLAGS "${CBLAS_LINKER_FLAGS}")
+            endif()
         else()
             if(MORSE_VERBOSE_FIND_PACKAGE)
                 if(CBLAS_STANDALONE OR NOT CBLAS_WORKS)
@@ -342,6 +345,9 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 # the RPATH to be used when installing
                 list(APPEND CMAKE_INSTALL_RPATH "${LAPACKE_LIBRARY_DIRS}")
             endif()
+            if(LAPACKE_LINKER_FLAGS)
+                list(APPEND CMAKE_EXE_LINKER_FLAGS "${LAPACKE_LINKER_FLAGS}")
+            endif()
         else()
             if(MORSE_VERBOSE_FIND_PACKAGE)
                 if (LAPACKE_STANDALONE OR NOT LAPACKE_WORKS)
@@ -368,6 +374,9 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 list(APPEND CMAKE_INSTALL_RPATH "${TMG_LIBRARY_DIRS}")
             else()
                 message(FATAL_ERROR "A TMG library is required but has not been found")
+            endif()
+            if(TMG_LINKER_FLAGS)
+                list(APPEND CMAKE_EXE_LINKER_FLAGS "${TMG_LINKER_FLAGS}")
             endif()
         endif()
 
@@ -464,6 +473,9 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 # tests for intel mpi
                 #list(APPEND MPI_C_COMPILE_FLAGS "-mt_mpi")
                 #list(APPEND MPI_COMPILE_FLAGS "-mt_mpi")
+                if(MPI_C_LINK_FLAGS)
+                    list(APPEND CMAKE_EXE_LINKER_FLAGS "${MPI_C_LINK_FLAGS}")
+                endif()
             endif (MPI_C_FOUND)
 
         endif (CHAMELEON_USE_MPI)
@@ -541,6 +553,9 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             " - Activate StarPU in Chameleon${ColourReset}")
             add_definitions(-DCHAMELEON_SCHED_STARPU) # TODO: remove that
             include_directories(${STARPU_INCLUDE_DIRS})
+            if(STARPU_LINKER_FLAGS)
+                list(APPEND CMAKE_EXE_LINKER_FLAGS "${STARPU_LINKER_FLAGS}")
+            endif()
             set(CMAKE_REQUIRED_INCLUDES "${STARPU_INCLUDE_DIRS}")
             foreach(libdir ${STARPU_LIBRARY_DIRS})
                 list(APPEND CMAKE_REQUIRED_FLAGS "-L${libdir}")
@@ -684,6 +699,9 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
     endif()
 
+    list(REMOVE_DUPLICATES CMAKE_EXE_LINKER_FLAGS)
+    string(REPLACE ";" "" CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
+
     # Add define for Fortran Mangling (should be defined somewhere else)
     # ------------------------------------------------------------------
     message("-- ${Blue}Add definition ADD_"
@@ -808,7 +826,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     string(REGEX MATCH ".*ifort$" _match_ifort ${CMAKE_Fortran_COMPILER})
     if(_match_ifort)
         #message(STATUS "Add -nofor_main to the Fortran linker")
-        set(CMAKE_Fortran_FLAGS "-nofor_main")
+        list(APPEND CMAKE_Fortran_FLAGS "-nofor_main")
     endif(_match_ifort)
 
     # Testing executables

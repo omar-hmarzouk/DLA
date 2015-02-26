@@ -37,6 +37,7 @@
 # This module finds headers and chameleon library.
 # Results are reported in variables:
 #  CHAMELEON_FOUND            - True if headers and requested libraries were found
+#  CHAMELEON_LINKER_FLAGS     - list of required linker flags (excluding -l and -L)
 #  CHAMELEON_INCLUDE_DIRS     - chameleon include directories
 #  CHAMELEON_LIBRARY_DIRS     - Link directories for chameleon libraries
 #  CHAMELEON_INCLUDE_DIRS_DEP - chameleon + dependencies include directories
@@ -67,7 +68,7 @@
 
 
 if (NOT CHAMELEON_FOUND)
-    set(CHAMELEON_DIR "" CACHE PATH "Root directory of CHAMELEON library")
+    set(CHAMELEON_DIR "" CACHE PATH "Installation directory of CHAMELEON library")
     if (NOT CHAMELEON_FIND_QUIETLY)
         message(STATUS "A cache variable, namely CHAMELEON_DIR, has been set to specify the install directory of CHAMELEON")
     endif()
@@ -116,7 +117,7 @@ endif()
 # -------------------------------------------------------------------------------------
 include(FindPkgConfig)
 find_package(PkgConfig QUIET)
-if(PKG_CONFIG_EXECUTABLE)
+if(PKG_CONFIG_EXECUTABLE AND NOT CHAMELEON_DIR)
 
     pkg_search_module(CHAMELEON chameleon)
     if (NOT CHAMELEON_FIND_QUIETLY)
@@ -155,7 +156,7 @@ if(PKG_CONFIG_EXECUTABLE)
         endif()
     endif()
 
-endif(PKG_CONFIG_EXECUTABLE)
+endif()
 
 if( (NOT PKG_CONFIG_EXECUTABLE AND NOT CHAMELEON_FOUND) OR NOT CHAMELEON_FOUND )
 
@@ -499,10 +500,10 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT CHAMELEON_FOUND) OR NOT CHAMELEON_FOUND )
     # check a function to validate the find
     if(CHAMELEON_LIBRARIES)
 
+        set(REQUIRED_LDFLAGS)
         set(REQUIRED_INCDIRS)
         set(REQUIRED_LIBDIRS)
         set(REQUIRED_LIBS)
-        set(REQUIRED_FLAGS)
 
         # CHAMELEON
         if (CHAMELEON_INCLUDE_DIRS)
@@ -598,7 +599,7 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT CHAMELEON_FOUND) OR NOT CHAMELEON_FOUND )
                 list(APPEND REQUIRED_INCDIRS "${MPI_C_INCLUDE_PATH}")
             endif()
             if (MPI_C_LINK_FLAGS)
-                list(APPEND REQUIRED_FLAGS "${MPI_C_LINK_FLAGS}")
+                list(APPEND REQUIRED_LDFLAGS "${MPI_C_LINK_FLAGS}")
             endif()
             list(APPEND REQUIRED_LIBS "${MPI_C_LIBRARIES}")
         endif()
@@ -637,6 +638,9 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT CHAMELEON_FOUND) OR NOT CHAMELEON_FOUND )
             elseif(TMG_LIBRARIES)
                 list(APPEND REQUIRED_LIBS "${TMG_LIBRARIES}")
             endif()
+            if (TMG_LINKER_FLAGS)
+                list(APPEND REQUIRED_LDFLAGS "${TMG_LINKER_FLAGS}")
+            endif()
         endif()
         # LAPACKE
         if (LAPACKE_FOUND)
@@ -654,6 +658,9 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT CHAMELEON_FOUND) OR NOT CHAMELEON_FOUND )
                 list(APPEND REQUIRED_LIBS "${LAPACKE_LIBRARIES_DEP}")
             elseif(LAPACKE_LIBRARIES)
                 list(APPEND REQUIRED_LIBS "${LAPACKE_LIBRARIES}")
+            endif()
+            if (LAPACK_LINKER_FLAGS)
+                list(APPEND REQUIRED_LDFLAGS "${LAPACK_LINKER_FLAGS}")
             endif()
         endif()
         # CBLAS
@@ -673,6 +680,9 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT CHAMELEON_FOUND) OR NOT CHAMELEON_FOUND )
             elseif(CBLAS_LIBRARIES)
                 list(APPEND REQUIRED_LIBS "${CBLAS_LIBRARIES}")
             endif()
+            if (BLAS_LINKER_FLAGS)
+                list(APPEND REQUIRED_LDFLAGS "${BLAS_LINKER_FLAGS}")
+            endif()
         endif()
         # EXTRA LIBS such that pthread, m, rt
         list(APPEND REQUIRED_LIBS ${CHAMELEON_EXTRA_LIBRARIES})
@@ -680,11 +690,11 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT CHAMELEON_FOUND) OR NOT CHAMELEON_FOUND )
         # set required libraries for link
         set(CMAKE_REQUIRED_INCLUDES "${REQUIRED_INCDIRS}")
         set(CMAKE_REQUIRED_LIBRARIES)
+        list(APPEND CMAKE_REQUIRED_LIBRARIES "${REQUIRED_LDFLAGS}")
         foreach(lib_dir ${REQUIRED_LIBDIRS})
             list(APPEND CMAKE_REQUIRED_LIBRARIES "-L${lib_dir}")
         endforeach()
         list(APPEND CMAKE_REQUIRED_LIBRARIES "${REQUIRED_LIBS}")
-        list(APPEND CMAKE_REQUIRED_FLAGS "${REQUIRED_FLAGS}")
 
         # test link
         unset(CHAMELEON_WORKS CACHE)
@@ -694,15 +704,13 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT CHAMELEON_FOUND) OR NOT CHAMELEON_FOUND )
 
         if(CHAMELEON_WORKS)
             # save link with dependencies
-            if (REQUIRED_FLAGS)
-                set(CHAMELEON_LIBRARIES_DEP "${REQUIRED_FLAGS};${REQUIRED_LIBS}")
-            else()
-                set(CHAMELEON_LIBRARIES_DEP "${REQUIRED_LIBS}")
-            endif()
+            set(CHAMELEON_LIBRARIES_DEP "${REQUIRED_LIBS}")
             set(CHAMELEON_LIBRARY_DIRS_DEP "${REQUIRED_LIBDIRS}")
             set(CHAMELEON_INCLUDE_DIRS_DEP "${REQUIRED_INCDIRS}")
+            set(CHAMELEON_LINKER_FLAGS "${REQUIRED_LDFLAGS}")
             list(REMOVE_DUPLICATES CHAMELEON_LIBRARY_DIRS_DEP)
             list(REMOVE_DUPLICATES CHAMELEON_INCLUDE_DIRS_DEP)
+            list(REMOVE_DUPLICATES CHAMELEON_LINKER_FLAGS)
         else()
             if(NOT CHAMELEON_FIND_QUIETLY)
                 message(STATUS "Looking for chameleon : test of MORSE_Init fails")
@@ -721,6 +729,22 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT CHAMELEON_FOUND) OR NOT CHAMELEON_FOUND )
 
 endif( (NOT PKG_CONFIG_EXECUTABLE AND NOT CHAMELEON_FOUND) OR NOT CHAMELEON_FOUND )
 
+if (CHAMELEON_LIBRARIES AND NOT CHAMELEON_DIR)
+    if (CHAMELEON_LIBRARY_DIRS)
+        foreach(dir ${CHAMELEON_LIBRARY_DIRS})
+            if ("${dir}" MATCHES "chameleon")
+                set(first_lib_path "${dir}")
+            endif()
+        endforeach()
+    else()
+        list(GET CHAMELEON_LIBRARIES 0 first_lib)
+        get_filename_component(first_lib_path "${first_lib}" PATH)
+    endif()
+    if (${first_lib_path} MATCHES "/lib(32|64)?$")
+        string(REGEX REPLACE "/lib(32|64)?$" "" not_cached_dir "${first_lib_path}")
+        set(CHAMELEON_DIR "${not_cached_dir}" CACHE PATH "Installation directory of CHAMELEON library" FORCE)
+    endif()
+endif()
 
 # check that CHAMELEON has been found
 # ---------------------------------

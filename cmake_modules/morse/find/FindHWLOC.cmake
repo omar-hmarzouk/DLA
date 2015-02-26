@@ -45,7 +45,7 @@
 
 
 if (NOT HWLOC_FOUND)
-    set(HWLOC_DIR "" CACHE PATH "Root directory of HWLOC library")
+    set(HWLOC_DIR "" CACHE PATH "Installation directory of HWLOC library")
     if (NOT HWLOC_FIND_QUIETLY)
         message(STATUS "A cache variable, namely HWLOC_DIR, has been set to specify the install directory of HWLOC")
     endif()
@@ -55,7 +55,7 @@ endif()
 # -------------------------------------------------------------------------------------
 include(FindPkgConfig)
 find_package(PkgConfig QUIET)
-if(PKG_CONFIG_EXECUTABLE)
+if(PKG_CONFIG_EXECUTABLE AND NOT HWLOC_DIR)
 
     pkg_search_module(HWLOC hwloc)
     if (NOT HWLOC_FIND_QUIETLY)
@@ -73,7 +73,7 @@ if(PKG_CONFIG_EXECUTABLE)
         endif()
     endif()
 
-endif(PKG_CONFIG_EXECUTABLE)
+endif()
 
 if( (NOT PKG_CONFIG_EXECUTABLE AND NOT HWLOC_FOUND) OR NOT HWLOC_FOUND )
 
@@ -257,6 +257,18 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT HWLOC_FOUND) OR NOT HWLOC_FOUND )
 
 endif( (NOT PKG_CONFIG_EXECUTABLE AND NOT HWLOC_FOUND) OR NOT HWLOC_FOUND )
 
+if (HWLOC_LIBRARIES AND NOT HWLOC_DIR)
+    if (HWLOC_LIBRARY_DIRS)
+        list(GET HWLOC_LIBRARY_DIRS 0 first_lib_path)
+    else()
+        list(GET HWLOC_LIBRARIES 0 first_lib)
+        get_filename_component(first_lib_path "${first_lib}" PATH)
+    endif()
+    if (${first_lib_path} MATCHES "/lib(32|64)?$")
+        string(REGEX REPLACE "/lib(32|64)?$" "" not_cached_dir "${first_lib_path}")
+        set(HWLOC_DIR "${not_cached_dir}" CACHE PATH "Installation directory of HWLOC library" FORCE)
+    endif()
+endif()
 
 # check that HWLOC has been found
 # -------------------------------

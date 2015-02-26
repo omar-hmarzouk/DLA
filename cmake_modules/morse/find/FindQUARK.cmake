@@ -58,7 +58,7 @@
 
 
 if (NOT QUARK_FOUND)
-    set(QUARK_DIR "" CACHE PATH "Root directory of QUARK library")
+    set(QUARK_DIR "" CACHE PATH "Installation directory of QUARK library")
     if (NOT QUARK_FIND_QUIETLY)
         message(STATUS "A cache variable, namely QUARK_DIR, has been set to specify the install directory of QUARK")
     endif()
@@ -282,6 +282,14 @@ if(QUARK_LIBRARIES)
     set(CMAKE_REQUIRED_LIBRARIES)
 endif(QUARK_LIBRARIES)
 
+if (QUARK_LIBRARIES AND NOT QUARK_DIR)
+    list(GET QUARK_LIBRARIES 0 first_lib)
+    get_filename_component(first_lib_path "${first_lib}" PATH)
+    if (${first_lib_path} MATCHES "/lib(32|64)?$")
+        string(REGEX REPLACE "/lib(32|64)?$" "" not_cached_dir "${first_lib_path}")
+        set(QUARK_DIR "${not_cached_dir}" CACHE PATH "Installation directory of QUARK library" FORCE)
+    endif()
+endif()
 
 # check that QUARK has been found
 # ---------------------------------
