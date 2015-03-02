@@ -102,7 +102,7 @@ endif()
 # -------------------------------------------------------------------------------------
 include(FindPkgConfig)
 find_package(PkgConfig QUIET)
-if(PKG_CONFIG_EXECUTABLE AND NOT MAGMA_DIR)
+if(PKG_CONFIG_EXECUTABLE)
 
     pkg_search_module(MAGMA magma)
     if (NOT MAGMA_FIND_QUIETLY)
@@ -148,11 +148,15 @@ if(PKG_CONFIG_EXECUTABLE AND NOT MAGMA_DIR)
     set(MAGMA_INCLUDE_DIRS_DEP "")
     set(MAGMA_LIBRARY_DIRS_DEP "")
     set(MAGMA_LIBRARIES_DEP "")
+    # replace it anyway: we should update it with dependencies given by pkg-config
+    set(MAGMA_INCLUDE_DIRS_DEP "${MAGMA_INCLUDE_DIRS}")
+    set(MAGMA_LIBRARY_DIRS_DEP "${MAGMA_LIBRARY_DIRS}")
+    set(MAGMA_LIBRARIES_DEP "${MAGMA_LIBRARIES}")
 
 endif()
 
 # if MAGMA is not found using pkg-config
-if( (NOT PKG_CONFIG_EXECUTABLE AND NOT MAGMA_FOUND) OR NOT MAGMA_FOUND )
+if( (NOT PKG_CONFIG_EXECUTABLE AND NOT MAGMA_FOUND) OR NOT MAGMA_FOUND OR MAGMA_DIR)
 
     if (NOT MAGMA_FIND_QUIETLY)
         message(STATUS "Looking for MAGMA - PkgConfig not used")
@@ -369,7 +373,7 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT MAGMA_FOUND) OR NOT MAGMA_FOUND )
         set(CMAKE_REQUIRED_LIBRARIES)
     endif(MAGMA_LIBRARIES)
 
-endif( (NOT PKG_CONFIG_EXECUTABLE AND NOT MAGMA_FOUND) OR NOT MAGMA_FOUND )
+endif( (NOT PKG_CONFIG_EXECUTABLE AND NOT MAGMA_FOUND) OR NOT MAGMA_FOUND OR MAGMA_DIR)
 
 if (MAGMA_LIBRARIES AND NOT MAGMA_DIR)
     if (MAGMA_LIBRARY_DIRS)

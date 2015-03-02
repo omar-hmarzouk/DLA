@@ -54,7 +54,7 @@ endif()
 # -------------------------------------------------------------------------------------
 include(FindPkgConfig)
 find_package(PkgConfig QUIET)
-if(PKG_CONFIG_EXECUTABLE AND NOT FXT_DIR)
+if(PKG_CONFIG_EXECUTABLE)
 
     pkg_search_module(FXT fxt)
     if (NOT FXT_FIND_QUIETLY)
@@ -74,7 +74,7 @@ if(PKG_CONFIG_EXECUTABLE AND NOT FXT_DIR)
 
 endif()
 
-if( (NOT PKG_CONFIG_EXECUTABLE AND NOT FXT_FOUND) OR NOT FXT_FOUND )
+if( (NOT PKG_CONFIG_EXECUTABLE AND NOT FXT_FOUND) OR NOT FXT_FOUND OR FXT_DIR)
 
     if (NOT FXT_FIND_QUIETLY)
         message(STATUS "Looking for FXT - PkgConfig not used")
@@ -248,7 +248,7 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT FXT_FOUND) OR NOT FXT_FOUND )
         set(CMAKE_REQUIRED_LIBRARIES)
     endif(FXT_LIBRARIES)
 
-endif( (NOT PKG_CONFIG_EXECUTABLE AND NOT FXT_FOUND) OR NOT FXT_FOUND )
+endif( (NOT PKG_CONFIG_EXECUTABLE AND NOT FXT_FOUND) OR NOT FXT_FOUND OR FXT_DIR)
 
 if (FXT_LIBRARIES AND NOT FXT_DIR)
     if (FXT_LIBRARY_DIRS)

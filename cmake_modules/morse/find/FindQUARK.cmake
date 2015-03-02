@@ -87,7 +87,7 @@ endif()
 
 # QUARK may depend on HWLOC, try to find it
 if (NOT HWLOC_FOUND AND QUARK_LOOK_FOR_HWLOC)
-    if (QUARK_FIND_REQUIRED)
+    if (QUARK_FIND_REQUIRED AND QUARK_FIND_REQUIRED_HWLOC)
         find_package(HWLOC REQUIRED)
     else()
         find_package(HWLOC)

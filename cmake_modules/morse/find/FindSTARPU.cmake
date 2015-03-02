@@ -101,7 +101,7 @@ endif()
 
 # STARPU may depend on HWLOC, try to find it
 if (NOT HWLOC_FOUND AND STARPU_LOOK_FOR_HWLOC)
-    if (STARPU_FIND_REQUIRED)
+    if (STARPU_FIND_REQUIRED AND STARPU_FIND_REQUIRED_HWLOC)
         find_package(HWLOC REQUIRED)
     else()
         find_package(HWLOC)
@@ -110,7 +110,7 @@ endif()
 
 # STARPU may depend on CUDA, try to find it
 if (NOT CUDA_FOUND AND STARPU_LOOK_FOR_CUDA)
-    if (STARPU_FIND_REQUIRED)
+    if (STARPU_FIND_REQUIRED AND STARPU_FIND_REQUIRED_CUDA)
         find_package(CUDA REQUIRED)
     else()
         find_package(CUDA)
@@ -126,7 +126,7 @@ endif()
 
 # STARPU may depend on MPI, try to find it
 if (NOT MPI_FOUND AND STARPU_LOOK_FOR_MPI)
-    if (STARPU_FIND_REQUIRED)
+    if (STARPU_FIND_REQUIRED AND STARPU_FIND_REQUIRED_MPI)
         find_package(MPI REQUIRED)
     else()
         find_package(MPI)
@@ -139,7 +139,7 @@ endif()
 
 # STARPU may depend on BLAS, try to find it
 if (NOT BLAS_FOUND AND STARPU_LOOK_FOR_BLAS)
-    if (STARPU_FIND_REQUIRED)
+    if (STARPU_FIND_REQUIRED AND STARPU_FIND_REQUIRED_BLAS)
         find_package(BLAS REQUIRED)
     else()
         find_package(BLAS)
@@ -148,7 +148,7 @@ endif()
 
 # STARPU may depend on MAGMA, try to find it
 if (NOT MAGMA_FOUND AND STARPU_LOOK_FOR_MAGMA)
-    if (STARPU_FIND_REQUIRED)
+    if (STARPU_FIND_REQUIRED AND STARPU_FIND_REQUIRED_MAGMA)
         find_package(MAGMA REQUIRED)
     else()
         find_package(MAGMA)
@@ -157,7 +157,7 @@ endif()
 
 # STARPU may depend on FXT, try to find it
 if (NOT FXT_FOUND AND STARPU_LOOK_FOR_FXT)
-    if (STARPU_FIND_REQUIRED)
+    if (STARPU_FIND_REQUIRED AND STARPU_FIND_REQUIRED_FXT)
         find_package(FXT REQUIRED)
     else()
         find_package(FXT)
@@ -169,7 +169,7 @@ endif()
 include(FindPkgConfig)
 find_package(PkgConfig QUIET)
 
-if(PKG_CONFIG_EXECUTABLE AND NOT STARPU_DIR)
+if(PKG_CONFIG_EXECUTABLE)
 
     pkg_search_module(STARPU_SHM libstarpu)
     set(STARPU_INCLUDE_DIRS "${STARPU_SHM_INCLUDE_DIRS}")
@@ -229,12 +229,14 @@ if(PKG_CONFIG_EXECUTABLE AND NOT STARPU_DIR)
     else()
         set(STARPU_LIBRARIES "STARPU_LIBRARIES-NOTFOUND")
     endif()
-
+    set(STARPU_INCLUDE_DIRS_DEP "${STARPU_INCLUDE_DIRS}")
+    set(STARPU_LIBRARY_DIRS_DEP "${STARPU_LIBRARY_DIRS}")
 endif()
 
 
 if( (NOT PKG_CONFIG_EXECUTABLE AND NOT STARPU_FOUND) OR
    (NOT STARPU_SHM_FOUND OR (NOT STARPU_MPI_FOUND AND STARPU_LOOK_FOR_MPI))
+   OR STARPU_DIR
   )
 
     # Looking for include
@@ -768,6 +770,7 @@ if( (NOT PKG_CONFIG_EXECUTABLE AND NOT STARPU_FOUND) OR
 
 endif( (NOT PKG_CONFIG_EXECUTABLE AND NOT STARPU_FOUND) OR
        (NOT STARPU_SHM_FOUND OR (NOT STARPU_MPI_FOUND AND STARPU_LOOK_FOR_MPI))
+       OR STARPU_DIR
      )
 
 if (STARPU_LIBRARIES AND NOT STARPU_DIR)
