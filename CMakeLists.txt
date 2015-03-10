@@ -544,7 +544,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             list(APPEND STARPU_COMPONENT_LIST "FXT")
         endif()
 
-        find_package(STARPU ${CHAMELEON_STARPU_VERSION}
+        find_package(STARPU ${CHAMELEON_STARPU_VERSION} REQUIRED
                      COMPONENTS ${STARPU_COMPONENT_LIST})
 
         # Add definition and include_dir if found
