@@ -294,9 +294,14 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
         # CHAMELEON depends on CBLAS
         #---------------------------
         find_package(CBLAS COMPONENTS BLASEXT)
-        if(BLAS_FOUND AND BLAS_LIBRARY_DIRS)
-            # the RPATH to be used when installing
-            list(APPEND CMAKE_INSTALL_RPATH "${BLAS_LIBRARY_DIRS}")
+        if(BLAS_FOUND)
+            if (BLAS_LIBRARY_DIRS)
+                # the RPATH to be used when installing
+                list(APPEND CMAKE_INSTALL_RPATH "${BLAS_LIBRARY_DIRS}")
+            endif()
+            if(BLAS_LINKER_FLAGS)
+                list(APPEND CMAKE_EXE_LINKER_FLAGS "${BLAS_LINKER_FLAGS}")
+            endif()
         else()
             message(FATAL_ERROR "A BLAS library is required but has not been found")
         endif()
@@ -305,9 +310,6 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             if(CBLAS_LIBRARY_DIRS)
                 # the RPATH to be used when installing
                 list(APPEND CMAKE_INSTALL_RPATH "${CBLAS_LIBRARY_DIRS}")
-            endif()
-            if(CBLAS_LINKER_FLAGS)
-                list(APPEND CMAKE_EXE_LINKER_FLAGS "${CBLAS_LINKER_FLAGS}")
             endif()
         else()
             if(MORSE_VERBOSE_FIND_PACKAGE)
