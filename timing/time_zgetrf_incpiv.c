@@ -23,6 +23,7 @@
 #define _FADDS FADDS_GETRF(M, N)
 
 #include "./timing.c"
+#include "timing_zauxiliary.h"
 
 static int
 RunTest(int *iparam, double *dparam, morse_time_t *t_) 

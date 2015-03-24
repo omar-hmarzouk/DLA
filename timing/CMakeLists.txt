@@ -30,14 +30,13 @@
 # ----------------------------------------------------------------
 set(TIMING_AUX_HDRS_GENERATED "")
 set(ZHDR
-    zauxiliary.h
+    timing_zauxiliary.h
    )
 
 precisions_rules_py(TIMING_AUX_HDRS_GENERATED "${ZHDR}"
                     PRECISIONS "s;d;c;z;ds;zc" )
 
 set(TIMING_AUX_HDRS
-    auxiliary.h
     timing.h
     timing.c
     ${TIMING_AUX_HDRS_GENERATED}
@@ -51,14 +50,13 @@ add_custom_target(timing_include ALL SOURCES ${TIMING_AUX_HDRS})
 # ----------------------------------------------------------------
 set(TIMING_AUX_SRCS_GENERATED "")
 set(ZSRC
-    zauxiliary.c
+    timing_zauxiliary.c
    )
 
 precisions_rules_py(TIMING_AUX_SRCS_GENERATED "${ZSRC}"
                     PRECISIONS "${CHAMELEON_PRECISION}")
 
 set(TIMING_SRCS
-    auxiliary.c
     ${TIMING_AUX_SRCS_GENERATED}
    )
 

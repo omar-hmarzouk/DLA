@@ -23,13 +23,15 @@
 #define _FADDS FADDS_GEMM(M, N, K)
 
 #include "./timing.c"
+#include "timing_zauxiliary.h"
 
 static int
 RunTest(int *iparam, double *dparam, morse_time_t *t_) 
 {
     MORSE_Complex64_t alpha, beta;
     PASTE_CODE_IPARAM_LOCALS( iparam );
-    
+
+
     LDB = max(K, iparam[IPARAM_LDB]);
     LDC = max(M, iparam[IPARAM_LDC]);
 
@@ -42,17 +44,17 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_zplrnt_Tile( descA, 5373 );
     MORSE_zplrnt_Tile( descB, 7672 );
     MORSE_zplrnt_Tile( descC, 6387 );
-    
+
     LAPACKE_zlarnv_work(1, ISEED, 1, &alpha);
     LAPACKE_zlarnv_work(1, ISEED, 1, &beta);
-    
+
     /* Save C for check */
     PASTE_TILE_TO_LAPACK( descC, C2, check, MORSE_Complex64_t, LDC, N );
 
     START_TIMING();
     MORSE_zgemm_Tile( MorseNoTrans, MorseNoTrans, alpha, descA, descB, beta, descC );
     STOP_TIMING();
-    
+
     /* Check the solution */
     if (check)
     {
@@ -60,28 +62,12 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         PASTE_TILE_TO_LAPACK( descB, B, check, MORSE_Complex64_t, LDB, N );
         PASTE_TILE_TO_LAPACK( descC, C, check, MORSE_Complex64_t, LDC, N );
 
-//        dparam[IPARAM_RES] = z_check_gemm( MorseNoTrans, MorseNoTrans, M, N, K,
-//                                           alpha, A, LDA, B, LDB, beta, C, C2, LDC,
-//                                           &(dparam[IPARAM_ANORM]),
-//                                           &(dparam[IPARAM_BNORM]),
-//                                           &(dparam[IPARAM_XNORM]));
+        dparam[IPARAM_RES] = z_check_gemm( MorseNoTrans, MorseNoTrans, M, N, K,
+                                           alpha, A, LDA, B, LDB, beta, C, C2, LDC,
+                                           &(dparam[IPARAM_ANORM]),
+                                           &(dparam[IPARAM_BNORM]),
+                                           &(dparam[IPARAM_XNORM]));
 
-        MORSE_Complex64_t beta_const = -1.0;
-        double *work = (double *)malloc(max(K,max(M, N))* sizeof(double));
-
-        dparam[IPARAM_ANORM] = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, C2,   LDC, work);
-        dparam[IPARAM_BNORM] = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, C, LDC, work);
-
-        cblas_zgemm(CblasColMajor, (CBLAS_TRANSPOSE)MorseNoTrans, (CBLAS_TRANSPOSE)MorseNoTrans, M, N, K,
-                    CBLAS_SADDR(alpha), A, LDA, B, LDB, CBLAS_SADDR(beta), C2, LDC);
-
-        dparam[IPARAM_XNORM] = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, C2, LDC, work);
-
-        cblas_zaxpy(LDC * N, CBLAS_SADDR(beta_const), C, 1, C2, 1);
-
-        dparam[IPARAM_RES] = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, C2, LDC, work);
-
-        free(work);
         free(A); free(B); free(C); free(C2);
     }
 

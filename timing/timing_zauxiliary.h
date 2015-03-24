@@ -13,8 +13,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#ifndef ZAUXILIARY_H
-#define ZAUXILIARY_H
+#ifndef TIMING_ZAUXILIARY_H
+#define TIMING_ZAUXILIARY_H
 
 int    z_check_orthogonality   (int M, int N, int LDQ, MORSE_Complex64_t *Q);
 int    z_check_QRfactorization (int M, int N, MORSE_Complex64_t *A1, MORSE_Complex64_t *A2, int LDA, MORSE_Complex64_t *Q);
@@ -41,4 +41,4 @@ int zcheck_inverse(int N, MORSE_Complex64_t *A1, MORSE_Complex64_t *A2,
                          int LDA, MORSE_enum uplo, double *rnorm, double *anorm, double *ainvnorm);
 
 
-#endif /* ZAUXILIARY_H */
+#endif /* TIMING_ZAUXILIARY_H */

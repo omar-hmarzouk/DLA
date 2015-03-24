@@ -24,6 +24,7 @@
 
 int morse_element_size(int type);
 #include "./timing.c"
+#include "timing_zauxiliary.h"
 
 static int
 RunTest(int *iparam, double *dparam, morse_time_t *t_) 

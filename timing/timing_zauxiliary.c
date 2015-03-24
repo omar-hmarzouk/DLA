@@ -21,7 +21,7 @@
 #include <coreblas/include/cblas.h>
 #include <coreblas/include/lapacke.h>
 #include <coreblas/include/coreblas.h>
-#include <control/auxiliary.h>
+#include "timing_zauxiliary.h"
 
 /*-------------------------------------------------------------------
  * Check the orthogonality of Q
