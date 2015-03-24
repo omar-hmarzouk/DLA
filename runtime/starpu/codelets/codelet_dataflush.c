@@ -59,12 +59,15 @@ void MORSE_TASK_dataflush(MORSE_option_t *options,
             starpu_mpi_cache_flush(MPI_COMM_WORLD, *ptrtile);
 #endif
 
-            /* Push data to main memory when we have time to */
+            if ( A->myrank == A->get_rankof( A, Am, An ) )
+            {
+                /* Push data to main memory when we have time to */
 #ifdef CHAMELEON_USE_STARPU_IDLE_PREFETCH
-            starpu_data_acquire_on_node_cb(*ptrtile, -1, STARPU_R, data_flush, *ptrtile);
+                starpu_data_acquire_on_node_cb(*ptrtile, -1, STARPU_R, data_flush, *ptrtile);
 #else
-            starpu_data_acquire_cb(*ptrtile, STARPU_R, data_release, *ptrtile);
+                starpu_data_acquire_cb(*ptrtile, STARPU_R, data_release, *ptrtile);
 #endif
+            }
         }
     }
 }
