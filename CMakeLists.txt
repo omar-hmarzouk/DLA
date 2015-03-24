@@ -4,7 +4,7 @@
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
 # @copyright (c) 2012-2014 Inria. All rights reserved.
-# @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+# @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
 #
@@ -563,6 +563,15 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 list(APPEND CMAKE_REQUIRED_FLAGS "-L${libdir}")
             endforeach()
             string(REPLACE ";" " " CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS}")
+            set(CMAKE_REQUIRED_LIBRARIES "${STARPU_SHM_LIBRARIES}")
+            check_function_exists(starpu_data_idle_prefetch_on_node STARPU_IDLE_PREFETCH_FOUND)
+	    if ( STARPU_IDLE_PREFETCH_FOUND )
+                add_definitions(-DCHAMELEON_USE_STARPU_IDLE_PREFETCH)
+	    endif()
+            check_function_exists(starpu_data_wont_use STARPU_DATA_WONT_USE_FOUND)
+	    if ( STARPU_DATA_WONT_USE_FOUND )
+                add_definitions(-DCHAMELEON_USE_STARPU_DATA_WONT_USE)
+	    endif()
             if(CHAMELEON_USE_FXT)
                 # check if fxt profiling is accessible in starpu and activate it in chameleon
                 set(CMAKE_REQUIRED_LIBRARIES "${STARPU_SHM_LIBRARIES}")
