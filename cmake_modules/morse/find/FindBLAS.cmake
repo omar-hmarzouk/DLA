@@ -401,7 +401,7 @@ if (BLAS_DOWNLOAD)
             message(STATUS "Untar blas.tgz")
         endif()
         execute_process(
-            COMMAND tar xf ${CMAKE_SOURCE_DIR}/externals/blas.tgz
+            COMMAND tar xvf ${CMAKE_SOURCE_DIR}/externals/blas.tgz
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/externals
         )
         if (EXISTS "${CMAKE_SOURCE_DIR}/externals/BLAS/")
