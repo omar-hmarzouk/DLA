@@ -245,7 +245,6 @@ add_dependencies(chameleon
   chameleon_include
   coreblas_include
   control_include
-  runtime_starpu_include
 )
 
 set_property(TARGET chameleon PROPERTY LINKER_LANGUAGE Fortran)
