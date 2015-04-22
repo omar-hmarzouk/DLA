@@ -51,15 +51,6 @@
 ###
 # We handle different modes to find the dependency
 #
-# - Install from a tarball downloaded on internet (we decide the distribution to ensure compatibility)
-#   - activate it with CBLAS_DOWNLOAD=ON
-#   - will download and build NETLIB CBLAS: http://www.netlib.org/blas/blast-forum/cblas.tgz
-#   - the resulting library is cblas_LINUX.a, see their Makafile.in !
-#
-# - Install from sources somewhere on the system: 
-#   - activate it with CBLAS_SOURCE_DIR=path/to/sources, note you manage your build configuration through the make.inc 
-#   - for now we handle the NETLIB cblas only, see http://www.netlib.org/blas/blast-forum/cblas.tgz, maybe more in the future
-#
 # - Detection if already installed on the system
 #   - CBLAS libraries can be detected from different ways
 #     Here is the order of precedence:
@@ -102,11 +93,7 @@ endif()
 if (CBLAS_FIND_COMPONENTS)
     foreach( component ${CBLAS_FIND_COMPONENTS} )
         if(CBLAS_FIND_REQUIRED_${component})
-            if (CBLAS_FIND_REQUIRED)
-                find_package(${component} REQUIRED)
-            else()
-                find_package(${component})
-            endif()
+            find_package(${component} REQUIRED)
         else()
             find_package(${component})
         endif()
@@ -128,94 +115,10 @@ if (NOT BLAS_FOUND)
     endif()
 endif()
 
+
 # find CBLAS
 if (BLAS_FOUND)
 
-    if (CBLAS_DOWNLOAD)
-
-        # Download
-        if(NOT CBLAS_FIND_QUIETLY)
-            message(STATUS "Download: http://www.netlib.org/blas/blast-forum/cblas.tgz")
-        endif()
-        if (NOT EXISTS "${CMAKE_SOURCE_DIR}/externals/cblas.tgz")
-            file(DOWNLOAD http://www.netlib.org/blas/blast-forum/cblas.tgz
-                 ${CMAKE_SOURCE_DIR}/externals/cblas.tgz
-                 STATUS IS_GOT
-                 SHOW_PROGRESS
-                 TIMEOUT 30
-            )
-            if (EXISTS "${CMAKE_SOURCE_DIR}/externals/cblas.tgz")
-                if(NOT CBLAS_FIND_QUIETLY)
-                    message(STATUS "cblas.tgz downloaded: ${CMAKE_SOURCE_DIR}/externals/cblas.tgz")
-                endif()
-            else()
-                if(CBLAS_FIND_REQUIRED)
-                    message(FATAL_ERROR "http://www.netlib.org/blas/blast-forum/cblas.tgz download has failed")
-                elseif(NOT CBLAS_FIND_QUIETLY)
-                    message(STATUS "http://www.netlib.org/blas/blast-forum/cblas.tgz download has failed")
-                endif()
-            endif()
-        endif()
-
-        # Untar
-        if (NOT EXISTS "${CMAKE_SOURCE_DIR}/externals/CBLAS/")
-            if(NOT CBLAS_FIND_QUIETLY)
-                message(STATUS "Untar cblas.tgz")
-            endif()
-            execute_process(
-                COMMAND tar xvf ${CMAKE_SOURCE_DIR}/externals/cblas.tgz
-                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/externals
-            )
-            if (EXISTS "${CMAKE_SOURCE_DIR}/externals/CBLAS/")
-                if(NOT CBLAS_FIND_QUIETLY)
-                    message(STATUS "CBLAS untared: ${CMAKE_SOURCE_DIR}/externals/CBLAS/")
-                endif()
-            else()
-                if(CBLAS_FIND_REQUIRED)
-                    message(FATAL_ERROR "CBLAS untar has failed")
-                elseif(NOT CBLAS_FIND_QUIETLY)
-                    message(STATUS "CBLAS untar has failed")
-                endif()
-            endif()
-        endif()
-
-        # Build
-        if(NOT CBLAS_FIND_QUIETLY)
-            message(STATUS "Build NETLIB cblas")
-        endif()
-        execute_process(
-            COMMAND make alllib
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/externals/CBLAS
-        )
-
-        set(CBLAS_DIR "${CMAKE_SOURCE_DIR}/externals/CBLAS" CACHE PATH "Installation directory of CBLAS library" FORCE)
-
-    elseif(CBLAS_SOURCE_DIR)
-
-        # Build
-        if(NOT CBLAS_FIND_QUIETLY)
-            message(STATUS "Build NETLIB cblas from sources: ${CBLAS_SOURCE_DIR}")
-        endif()
-        execute_process(
-            COMMAND make alllib
-            WORKING_DIRECTORY ${CBLAS_SOURCE_DIR}
-        )
-        if (NOT CBLAS_SOURCE_LIBNAME)
-            set(CBLAS_SOURCE_LIBNAME cblas_LINUX.a)
-            if(NOT CBLAS_FIND_QUIETLY)
-                message(STATUS "CBLAS_SOURCE_LIBNAME not defined, the default value is ${CBLAS_SOURCE_LIBNAME}")
-            endif()
-        else()
-            if(NOT CBLAS_FIND_QUIETLY)
-                message(STATUS "CBLAS_SOURCE_LIBNAME is defined, we check that ${CBLAS_SOURCE_LIBNAME} exists")
-            endif()
-        endif()
-
-        set(CBLAS_DIR "${CMAKE_SOURCE_DIR}/externals/CBLAS" CACHE PATH "Installation directory of CBLAS library" FORCE)
-
-    endif()
-
-    # Find on the system
     if (NOT CBLAS_STANDALONE)
         # check if a cblas function exists in the BLAS lib
         # this can be the case with libs such as MKL, ACML
@@ -358,19 +261,19 @@ if (BLAS_FOUND)
         if(CBLAS_LIBDIR)
             set(CBLAS_cblas_LIBRARY "CBLAS_cblas_LIBRARY-NOTFOUND")
             find_library(CBLAS_cblas_LIBRARY
-                NAMES cblas cblas_LINUX.a
+                NAMES cblas
                 HINTS ${CBLAS_LIBDIR})
         else()
             if(CBLAS_DIR)
                 set(CBLAS_cblas_LIBRARY "CBLAS_cblas_LIBRARY-NOTFOUND")
                 find_library(CBLAS_cblas_LIBRARY
-                    NAMES cblas cblas_LINUX.a
+                    NAMES cblas
                     HINTS ${CBLAS_DIR}
                     PATH_SUFFIXES lib lib32 lib64)
             else()
                 set(CBLAS_cblas_LIBRARY "CBLAS_cblas_LIBRARY-NOTFOUND")
                 find_library(CBLAS_cblas_LIBRARY
-                    NAMES cblas cblas_LINUX.a
+                    NAMES cblas
                     HINTS ${_lib_env})
             endif()
         endif()
@@ -424,7 +327,7 @@ if (BLAS_FOUND)
             set(CMAKE_REQUIRED_LIBRARIES)
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${REQUIRED_LDFLAGS}")
             foreach(lib_dir ${REQUIRED_LIBDIRS})
-                #list(APPEND CMAKE_REQUIRED_LIBRARIES "-L${lib_dir}")
+                list(APPEND CMAKE_REQUIRED_LIBRARIES "-L${lib_dir}")
             endforeach()
             list(APPEND CMAKE_REQUIRED_LIBRARIES "${REQUIRED_LIBS}")
             string(REGEX REPLACE "^ -" "-" CMAKE_REQUIRED_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES}")
