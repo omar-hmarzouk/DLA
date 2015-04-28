@@ -410,6 +410,13 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 endif()
                 set(CMAKE_REQUIRED_INCLUDES  "${saved_include}")
                 set(CMAKE_REQUIRED_LIBRARIES "${saved_libs}")
+                # Add cublas if found
+                if (CUDA_CUBLAS_LIBRARIES)
+                    message("-- ${Blue}Add definition CHAMELEON_USE_CUBLAS"
+                    " - Use GPU kernels from cuBLAS${ColourReset}")
+                    add_definitions(-DCHAMELEON_USE_CUBLAS)
+                    list(APPEND EXTRA_LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
+                endif()
                 #FindHeader(CUDA cublas_v2.h)
                 #if(CUDA_cublas_v2.h_DIRS)
                     #add_definitions(-DCHAMELEON_USE_CUBLAS_V2)
@@ -424,13 +431,9 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 set(CHAMELEON_MAGMA_VERSION "1.4" CACHE STRING "oldest MAGMA version desired")
                 find_package(MAGMA ${CHAMELEON_MAGMA_VERSION})
                 if ( MAGMA_FOUND )
-                    message("-- ${Blue}Add definition CHAMELEON_USE_CUBLAS"
-                    " - Use GPU kernels from cuBLAS${ColourReset}")
-                    add_definitions(-DCHAMELEON_USE_CUBLAS)
                     message("-- ${Blue}Add definition CHAMELEON_USE_MAGMA"
                     " - Use GPU kernels from MAGMA${ColourReset}")
                     add_definitions(-DCHAMELEON_USE_MAGMA)
-                    list(APPEND EXTRA_LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
                     include_directories(${MAGMA_INCLUDE_DIRS})
                     if(MAGMA_LIBRARY_DIRS)
                         # the RPATH to be used when installing
@@ -711,7 +714,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     endif()
 
     list(REMOVE_DUPLICATES CMAKE_EXE_LINKER_FLAGS)
-    string(REPLACE ";" "" CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
+    string(REPLACE ";" " " CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 
     # Add define for Fortran Mangling (should be defined somewhere else)
     # ------------------------------------------------------------------
