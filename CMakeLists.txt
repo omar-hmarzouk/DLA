@@ -124,6 +124,10 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
         "to ON (CHAMELEON_SCHED_QUARK will be disabled)${ColourReset}")
     endif()
 
+    if (CHAMELEON_USE_MAGMA)
+        set(CHAMELEON_USE_CUDA ON)
+    endif()
+
     # Check that one, and only one, SCHED option is set to ON
     # count number of runtime sets to ON
     math(EXPR number_of_active_runtime 0)
