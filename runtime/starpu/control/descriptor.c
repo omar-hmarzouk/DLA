@@ -144,8 +144,7 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
         for (n = 0; n < lnt; n++)
             for (m = 0; m < lmt; m++)
             {
-                if ( (*handle == NULL) ||
-                     !morse_desc_islocal( desc, m, n ) )
+                if (*handle == NULL)
                 {
                     handle++;
                     continue;
