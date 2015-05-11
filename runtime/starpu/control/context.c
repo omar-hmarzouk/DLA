@@ -38,15 +38,6 @@ void RUNTIME_context_create( MORSE_context_t *morse )
     conf = morse->schedopt;
 
     starpu_conf_init( conf );
-    conf->nopencl = 0;
-
-    /* By default, use the dmda strategy */
-    if (!getenv("STARPU_SCHED"))
-        conf->sched_policy_name = "dmda";
-
-    /* By default, enable calibration */
-    if (!getenv("STARPU_CALIBRATE"))
-        conf->calibrate = 1;
 
     return;
 }

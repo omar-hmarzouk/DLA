@@ -46,6 +46,15 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int nworkers, int ncudas, in
 
     conf->ncpus = nworkers;
     conf->ncuda = ncudas;
+    conf->nopencl = 0;
+
+    /* By default, use the dmdas strategy */
+    if (!getenv("STARPU_SCHED"))
+        conf->sched_policy_name = "dmdas";
+
+    /* By default, enable calibration */
+    if (!getenv("STARPU_CALIBRATE"))
+        conf->calibrate = 1;
 
     /* Set scheduling to "ws" if no cuda devices used because it behaves better
      * on homognenous architecture. If the user wants to use another
