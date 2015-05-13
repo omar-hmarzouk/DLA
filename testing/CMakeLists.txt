@@ -150,17 +150,17 @@ if(NOT CHAMELEON_SIMULATION)
     link_directories(${LAPACK_LIBRARY_DIRS})
     link_directories(${CBLAS_LIBRARY_DIRS})
     link_directories(${BLAS_LIBRARY_DIRS})
-    
+
 else()
 
     list(APPEND libs_for_tests
     coreblas
-    simulapacke    
+    simulapacke
     simucblas
     ${HWLOC_LIBRARIES}
     ${EXTRA_LIBRARIES}
     )
-    
+
 endif()
 
 link_directories(${HWLOC_LIBRARY_DIRS})
