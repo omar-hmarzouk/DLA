@@ -43,7 +43,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
      * the function we want to trace
      */
     MORSE_zplghe_Tile( (double)N, descA, 51 );
-    
+
     /* MORSE ZPOTRF / ZTRTRI / ZLAUUM  */
     /*
      * Example of the different way to combine several asynchonous calls
@@ -51,23 +51,23 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 #if defined(TRACE_BY_SEQUENCE)
     {
         MORSE_sequence_t *sequence[3];
-        MORSE_request_t request[3] = { MORSE_REQUEST_INITIALIZER, 
-                                      MORSE_REQUEST_INITIALIZER, 
-                                      MORSE_REQUEST_INITIALIZER };
-        
+        MORSE_request_t request[3] = { MORSE_REQUEST_INITIALIZER,
+                                       MORSE_REQUEST_INITIALIZER,
+                                       MORSE_REQUEST_INITIALIZER };
+
         MORSE_Sequence_Create(&sequence[0]);
         MORSE_Sequence_Create(&sequence[1]);
         MORSE_Sequence_Create(&sequence[2]);
-        
+
         if ( ! iparam[IPARAM_ASYNC] ) {
             START_TIMING();
 
             MORSE_zpotrf_Tile_Async(uplo, descA,                sequence[0], &request[0]);
             MORSE_Sequence_Wait(sequence[0]);
-            
+
             MORSE_ztrtri_Tile_Async(uplo, MorseNonUnit, descA, sequence[1], &request[1]);
             MORSE_Sequence_Wait(sequence[1]);
-            
+
             MORSE_zlauum_Tile_Async(uplo, descA,                sequence[2], &request[2]);
             MORSE_Sequence_Wait(sequence[2]);
             MORSE_Desc_Getoncpu( descA );
@@ -86,11 +86,11 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
             MORSE_Desc_Getoncpu( descA );
             STOP_TIMING();
         }
-        
+
         MORSE_Sequence_Destroy(sequence[0]);
         MORSE_Sequence_Destroy(sequence[1]);
         MORSE_Sequence_Destroy(sequence[2]);
-    }       
+    }
 #else
     {
         if ( ! iparam[IPARAM_ASYNC] ) {
@@ -105,9 +105,9 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 
             /* Default: we use Asynchonous call with only one sequence */
             MORSE_sequence_t *sequence;
-            MORSE_request_t request[2] = { MORSE_REQUEST_INITIALIZER, 
-                                          MORSE_REQUEST_INITIALIZER };
-        
+            MORSE_request_t request[2] = { MORSE_REQUEST_INITIALIZER,
+                                           MORSE_REQUEST_INITIALIZER };
+
             START_TIMING();
             MORSE_Sequence_Create(&sequence);
             MORSE_zpotrf_Tile_Async(uplo, descA, sequence, &request[0]);
@@ -115,12 +115,12 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
             MORSE_Sequence_Wait(sequence);
             MORSE_Desc_Getoncpu( descA );
             STOP_TIMING();
-        
-            MORSE_Sequence_Destroy(sequence);       
+
+            MORSE_Sequence_Destroy(sequence);
         }
     }
 #endif
-    
+
     /* Check the solution */
     if ( check )
     {

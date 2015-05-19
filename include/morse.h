@@ -77,6 +77,8 @@ int MORSE_Init           (int nworkers, int ncudas);
 int MORSE_InitPar        (int nworkers, int ncudas, int nthreads_per_worker);
 int MORSE_Finalize       (void);
 int MORSE_My_Mpi_Rank    (void);
+int MORSE_Pause          (void);
+int MORSE_Resume         (void);
 int MORSE_Lapack_to_Tile (void *Af77, int LDA, MORSE_desc_t *A);
 int MORSE_Tile_to_Lapack (MORSE_desc_t *A, void *Af77, int LDA);
 

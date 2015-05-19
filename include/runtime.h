@@ -52,6 +52,8 @@ int   RUNTIME_rank               (MORSE_context_t*);
 int   RUNTIME_init_scheduler     (MORSE_context_t*, int, int, int);
 void  RUNTIME_finalize_scheduler (MORSE_context_t*);
 void  RUNTIME_barrier            (MORSE_context_t*);
+void  RUNTIME_pause              (MORSE_context_t*);
+void  RUNTIME_resume             (MORSE_context_t*);
 
 /*******************************************************************************
  * RUNTIME Descriptor
@@ -76,12 +78,6 @@ int   RUNTIME_options_ws_alloc (MORSE_option_t*, size_t, size_t);
 int   RUNTIME_options_ws_free  (MORSE_option_t*);
 /* int   RUNTIME_options_ws_gethost   (MORSE_option_t*); */
 /* int   RUNTIME_options_ws_getdevice (MORSE_option_t*); */
-
-/*******************************************************************************
- * RUNTIME Profiling
- **/
-void  RUNTIME_schedprofile_display ();
-void  RUNTIME_kernelprofile_display();
 
 /*******************************************************************************
  * RUNTIME Locality
@@ -110,6 +106,8 @@ void RUNTIME_slocality_onerestore (MORSE_kernel_t);
 /*******************************************************************************
  * RUNTIME Profiling
  **/
+void  RUNTIME_schedprofile_display ();
+void  RUNTIME_kernelprofile_display();
 double RUNTIME_get_time();
 
 void RUNTIME_start_profiling();

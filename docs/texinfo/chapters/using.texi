@@ -742,6 +742,17 @@ Return the MPI rank of the calling process.
 int MORSE_My_Mpi_Rank    (void);
 @end verbatim
 
+Suspend MORSE runtime to poll for new tasks, to avoid useless CPU consumption when 
+no tasks have to be executed by MORSE runtime system.
+@verbatim
+int MORSE_Pause          (void);
+@end verbatim
+
+Symmetrical call to MORSE_Pause, used to resume the workers polling for new tasks.
+@verbatim
+int MORSE_Resume         (void);
+@end verbatim
+
 Conversion from LAPACK layout to tile layout.
 @verbatim
 int MORSE_Lapack_to_Tile (void *Af77, int LDA, MORSE_desc_t *A);
@@ -834,7 +845,7 @@ Create a sequence.
 int MORSE_Sequence_Create  (MORSE_sequence_t **sequence);
 @end verbatim
 
-Destroy a squence.
+Destroy a sequence.
 @verbatim
 int MORSE_Sequence_Destroy (MORSE_sequence_t *sequence);
 @end verbatim

@@ -105,7 +105,7 @@ int morse_context_destroy(){
     RUNTIME_context_destroy(morse_ctxt);
     free(morse_ctxt);
     morse_ctxt = NULL;
-    
+
     return MORSE_SUCCESS;
 }
 
@@ -163,7 +163,7 @@ int MORSE_Enable(MORSE_enum option)
         case MORSE_BOUND:
             break;
     }
-    
+
     /* Enable at the lower level if required */
     RUNTIME_enable( option );
 
@@ -221,7 +221,7 @@ int MORSE_Disable(MORSE_enum option)
             morse_error("MORSE_Disable", "illegal parameter value");
             return MORSE_ERR_ILLEGAL_VALUE;
     }
-    
+
     /* Disable at the lower level if required */
     RUNTIME_disable( option );
 

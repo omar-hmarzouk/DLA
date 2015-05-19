@@ -67,3 +67,22 @@ void RUNTIME_finalize_scheduler(MORSE_context_t *morse)
     QUARK_Delete((Quark*)(morse->schedopt));
     return;
 }
+
+/*******************************************************************************
+ *  To suspend the processing of new tasks by workers
+ **/
+void RUNTIME_pause( MORSE_context_t *morse )
+{
+    (void)morse;
+    return;
+}
+
+/*******************************************************************************
+ *  This is the symmetrical call to RUNTIME_pause,
+ *  used to resume the workers polling for new tasks.
+ **/
+void RUNTIME_resume( MORSE_context_t *morse )
+{
+    (void)morse;
+    return;
+}

@@ -192,6 +192,53 @@ int MORSE_My_Mpi_Rank(void)
     }
     return MORSE_MPI_RANK;
 #else
-    return 0;
+    return MORSE_SUCCESS;
 #endif
+}
+
+/*******************************************************************************
+ *
+ * @ingroup Auxiliary
+ *
+ *  MORSE_Pause - Suspend MORSE runtime to poll for new tasks.
+ *
+ *******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *
+ ******************************************************************************/
+int MORSE_Pause(void)
+{
+    MORSE_context_t *morse = morse_context_self();
+    if (morse == NULL) {
+        morse_error("MORSE_Pause()", "MORSE not initialized");
+        return MORSE_ERR_NOT_INITIALIZED;
+    }
+    RUNTIME_pause(morse);
+    return MORSE_SUCCESS;
+}
+
+/*******************************************************************************
+ *
+ * @ingroup Auxiliary
+ *
+ *  MORSE_Resume - Symmetrical call to MORSE_Pause,
+ *  used to resume the workers polling for new tasks.
+ *
+ *******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *
+ ******************************************************************************/
+int MORSE_Resume(void)
+{
+    MORSE_context_t *morse = morse_context_self();
+    if (morse == NULL) {
+        morse_error("MORSE_Resume()", "MORSE not initialized");
+        return MORSE_ERR_NOT_INITIALIZED;
+    }
+    RUNTIME_resume(morse);
+    return MORSE_SUCCESS;
 }

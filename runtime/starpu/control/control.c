@@ -144,3 +144,24 @@ void RUNTIME_barrier( MORSE_context_t *morse )
     starpu_mpi_barrier(MPI_COMM_WORLD);
 #endif
 }
+
+/*******************************************************************************
+ *  To suspend the processing of new tasks by workers
+ **/
+void RUNTIME_pause( MORSE_context_t *morse )
+{
+    (void)morse;
+    starpu_pause();
+    return;
+}
+
+/*******************************************************************************
+ *  This is the symmetrical call to RUNTIME_pause,
+ *  used to resume the workers polling for new tasks.
+ **/
+void RUNTIME_resume( MORSE_context_t *morse )
+{
+    (void)morse;
+    starpu_resume();
+    return;
+}
