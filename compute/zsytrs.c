@@ -10,7 +10,7 @@
 
 /**
  *
- * @file zsysv.c
+ * @file zsytrs.c
  *
  *  MORSE computational routines
  *  MORSE is a software package provided by Univ. of Tennessee,
