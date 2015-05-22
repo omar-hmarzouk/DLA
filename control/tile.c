@@ -22,17 +22,25 @@
  * @date 2010-11-15
  *
  **/
+
+/**
+ *
+ * @defgroup Tile
+ * @brief Group routines exposed to users for matrices conversion LAPACK-Tile
+ *
+ */
+
 #include "control/common.h"
 #include "control/auxiliary.h"
 #include "control/tile.h"
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Tile
  *
  *  MORSE_Lapack_to_Tile - Conversion from LAPACK layout to tile layout.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] Af77
  *          LAPACK matrix.
@@ -43,12 +51,12 @@
  * @param[out] A
  *          Descriptor of the MORSE matrix in tile layout.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
 {
     MORSE_context_t  *morse;
@@ -101,13 +109,13 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
     return status;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Tile
  *
  *  MORSE_Tile_to_Lapack - Conversion from tile layout to LAPACK layout.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[out] A
  *          Descriptor of the MORSE matrix in tile layout.
@@ -118,12 +126,12 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
  * @param[in] LDA
  *          The leading dimension of the matrix Af77.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Tile_to_Lapack(MORSE_desc_t *A, void *Af77, int LDA)
 {
     MORSE_context_t  *morse;

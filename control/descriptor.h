@@ -71,7 +71,7 @@ inline static void* morse_getaddr_ccrb(const MORSE_desc_t *A, int m, int n)
 {
     size_t mm = m + A->i / A->mb;
     size_t nn = n + A->j / A->nb;
-    size_t eltsize = morse_element_size(A->dtyp);
+    size_t eltsize = MORSE_Element_Size(A->dtyp);
     size_t offset = 0;
 
 #if defined(CHAMELEON_USE_MPI)
@@ -103,7 +103,7 @@ inline static void *morse_getaddr_cm(const MORSE_desc_t *A, int m, int n)
 {
     size_t mm = m + A->i / A->mb;
     size_t nn = n + A->j / A->nb;
-    size_t eltsize = morse_element_size(A->dtyp);
+    size_t eltsize = MORSE_Element_Size(A->dtyp);
     size_t offset = 0;
 
 #if defined(CHAMELEON_USE_MPI)

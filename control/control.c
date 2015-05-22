@@ -23,63 +23,69 @@
  * @date 2012-09-15
  *
  **/
+
+/**
+ *
+ * @defgroup Control
+ * @brief Group routines exposed to users to control MORSE state
+ *
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "control/auxiliary.h"
 #include "control/common.h"
 #include "runtime.h"
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Control
  *
  *  MORSE_Init - Initialize MORSE.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] cores
- *          Number of cores to use (threads to launch).
- *          If cores = 0, cores = MORSE_NUM_THREADS if it is set, the
- *          system number of core otherwise.
+ *          Number of cores to use.
  *
- *******************************************************************************
+ * @param[in] gpus
+ *          Number of cuda devices to use.
+ *
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Init(int cores, int gpus)
 {
     return MORSE_InitPar(cores, gpus, -1);
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Control
  *
- *  MORSE_Init_Affinity - Initialize MORSE.
+ *  MORSE_InitPar - Initialize MORSE.
  *
- *******************************************************************************
+ ******************************************************************************
  *
- * @param[in] cores
- *          Number of cores to use (threads to launch).
- *          If cores = 0, cores = MORSE_NUM_THREADS if it is set, the
- *          system number of core otherwise.
+ * @param[in] ncpus
+ *          Number of cores to use.
  *
- * @param[in] coresbind
- *          Array to specify where to bind each thread.
- *          Each thread i is binded to coresbind[hwloc(i)] if hwloc is
- *          provided, or to coresbind[i] otherwise.
- *          If coresbind = NULL, coresbind = MORSE_AFF_THREADS if it
- *          is set, the identity function otherwise.
+ * @param[in] ncudas
+ *          Number of cuda devices to use.
  *
- *******************************************************************************
+ * @param[in] nthreads_per_worker
+ *          Number of threads per worker (cpu, cuda device).
+ *
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
-int MORSE_InitPar(int nworkers, int ncudas, int nthreads_per_worker)
+ *****************************************************************************/
+int MORSE_InitPar(int ncpus, int ncudas, int nthreads_per_worker)
 {
     MORSE_context_t *morse;
 
@@ -89,33 +95,6 @@ int MORSE_InitPar(int nworkers, int ncudas, int nthreads_per_worker)
         morse_fatal_error("MORSE_Init", "morse_context_create() failed");
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
-
-#if 0
-    /* Init number of cores and topology */
-    morse_topology_init();
-
-    /* Set number of nworkers */
-    if ( nworkers < 1 ) {
-        morse->world_size = morse_get_numthreads();
-        if ( morse->world_size == -1 ) {
-            morse->world_size = 1;
-            morse_warning("MORSE_Init", "Could not find the number of cores: the thread number is set to 1");
-        }
-    }
-    else
-      morse->world_size = nworkers;
-
-    if (morse->world_size <= 0) {
-        morse_fatal_error("MORSE_Init", "failed to get system size");
-        return MORSE_ERR_NOT_FOUND;
-    }
-    nworkers = morse->world_size;
-
-    /* Get the size of each NUMA node */
-    morse->group_size = morse_get_numthreads_numa();
-    while ( ((morse->world_size)%(morse->group_size)) != 0 ) 
-        (morse->group_size)--;
-#endif
 
 #if defined(CHAMELEON_USE_MPI)
     {
@@ -130,22 +109,22 @@ int MORSE_InitPar(int nworkers, int ncudas, int nthreads_per_worker)
 #if defined(CHAMELEON_USE_MAGMA)
     magma_init();
 #endif
-    RUNTIME_init_scheduler( morse, nworkers, ncudas, nthreads_per_worker );
+    RUNTIME_init_scheduler( morse, ncpus, ncudas, nthreads_per_worker );
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Control
  *
  *  MORSE_Finalize - Finalize MORSE.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Finalize(void)
 {
     MORSE_context_t *morse = morse_context_self();
@@ -168,46 +147,18 @@ int MORSE_Finalize(void)
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
- *
- *  MORSE_My_Mpi_Rank - Return the MPI rank of the calling process.
- *
- *******************************************************************************
- *
- *******************************************************************************
- *
- * @return
- *          \retval MPI rank
- *
- ******************************************************************************/
-int MORSE_My_Mpi_Rank(void)
-{
-#if defined(CHAMELEON_USE_MPI)
-    MORSE_context_t *morse = morse_context_self();
-    if (morse == NULL) {
-        morse_error("MORSE_Finalize()", "MORSE not initialized");
-        return MORSE_ERR_NOT_INITIALIZED;
-    }
-    return MORSE_MPI_RANK;
-#else
-    return MORSE_SUCCESS;
-#endif
-}
-
-/*******************************************************************************
- *
- * @ingroup Auxiliary
+ * @ingroup Control
  *
  *  MORSE_Pause - Suspend MORSE runtime to poll for new tasks.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Pause(void)
 {
     MORSE_context_t *morse = morse_context_self();
@@ -219,19 +170,19 @@ int MORSE_Pause(void)
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Control
  *
  *  MORSE_Resume - Symmetrical call to MORSE_Pause,
  *  used to resume the workers polling for new tasks.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Resume(void)
 {
     MORSE_context_t *morse = morse_context_self();

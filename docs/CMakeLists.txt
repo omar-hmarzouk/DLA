@@ -33,7 +33,7 @@ cmake_minimum_required(VERSION 2.8)
 #      Compilation of documentation         #
 #                                           #
 #############################################
-#add_subdirectory(doxygen)
+add_subdirectory(doxygen)
 add_subdirectory(texinfo)
 
 ###

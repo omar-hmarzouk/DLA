@@ -22,6 +22,14 @@
  * @date 2010-11-15
  *
  **/
+
+/**
+ *
+ * @defgroup Descriptor
+ * @brief Group descriptor routines exposed to users
+ *
+ */
+
 #include <stdlib.h>
 #include <assert.h>
 #include "control/common.h"
@@ -299,7 +307,7 @@ int morse_desc_mat_alloc( MORSE_desc_t *desc )
 {
 
     size_t size = (size_t)(desc->llm) * (size_t)(desc->lln)
-      * (size_t)morse_element_size(desc->dtyp);
+      * (size_t)MORSE_Element_Size(desc->dtyp);
     if ((desc->mat = malloc(size)) == NULL) {
         morse_error("morse_desc_mat_alloc", "malloc() failed");
         return MORSE_ERR_OUT_OF_RESOURCES;
@@ -329,13 +337,13 @@ int morse_desc_mat_free( MORSE_desc_t *desc )
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Descriptor
  *
  *  MORSE_Desc_Create - Create matrix descriptor.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[out] desc
  *          On exit, descriptor of the matrix.
@@ -378,12 +386,12 @@ int morse_desc_mat_free( MORSE_desc_t *desc )
  * @param[in] n
  *          Number of columns of the submatrix.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, int nb, int bsiz,
                       int lm, int ln, int i, int j, int m, int n, int p, int q)
 {
@@ -411,7 +419,7 @@ int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, i
         /* TODO: a call to morse_desc_mat_alloc should be made, but require to
         move the call to RUNTIME_desc_create within the function */
         size_t size = (size_t)((*desc)->llm) * (size_t)((*desc)->lln)
-            * (size_t)morse_element_size((*desc)->dtyp);
+            * (size_t)MORSE_Element_Size((*desc)->dtyp);
 
         if (((**desc).mat = malloc(size)) == NULL) {
             morse_error("MORSE_Desc_Create", "malloc() failed");
@@ -437,13 +445,13 @@ int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, i
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Descriptor
  *
  *  MORSE_Desc_Create_User - Create matrix descriptor for general applications.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[out] desc
  *          On exit, descriptor of the matrix.
@@ -484,12 +492,12 @@ int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, i
  * @param[in] (*get_rankof)( const MORSE_desc_t *A, int m, int n)
  *          A function that return the MPI rank of the tile A(m,n).
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Desc_Create_User(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, int nb, int bsiz,
                            int lm, int ln, int i, int j, int m, int n, int p, int q,
                            void* (*get_blkaddr)( const MORSE_desc_t*, int, int ),
@@ -537,23 +545,23 @@ int MORSE_Desc_Create_User(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int 
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Descriptor
  *
  *  MORSE_Desc_Destroy - Destroys matrix descriptor.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] desc
  *          Matrix descriptor.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Desc_Destroy(MORSE_desc_t **desc)
 {
     MORSE_context_t *morse;
@@ -575,15 +583,69 @@ int MORSE_Desc_Destroy(MORSE_desc_t **desc)
     return MORSE_SUCCESS;
 }
 
-
+/** ***************************************************************************
+ *
+ * @ingroup Descriptor
+ *
+ *  MORSE_Desc_Acquire - Ensures that all data of the descriptor are
+ *  up-to-date.
+ *
+ ******************************************************************************
+ *
+ * @param[in] desc
+ *          Matrix descriptor.
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *
+ *****************************************************************************/
 int MORSE_Desc_Acquire (MORSE_desc_t  *desc) {
   return RUNTIME_desc_acquire( desc );
 }
 
+/** ***************************************************************************
+ *
+ * @ingroup Descriptor
+ *
+ *  MORSE_Desc_Release - Release the data of the descriptor acquired by the
+ *  application. Should be called if MORSE_Desc_Acquire has been called on the
+ *  descriptor and if you do not need to access to its data anymore.
+ *
+ ******************************************************************************
+ *
+ * @param[in] desc
+ *          Matrix descriptor.
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *
+ *****************************************************************************/
 int MORSE_Desc_Release (MORSE_desc_t  *desc) {
   return RUNTIME_desc_release( desc );
 }
 
+/** ***************************************************************************
+ *
+ * @ingroup Descriptor
+ *
+ *  MORSE_Desc_Getoncpu - Apply an acquire and a release on the data of the
+ *  descriptors so that its values are up-to-date in the main memory.
+ *
+ ******************************************************************************
+ *
+ * @param[in] desc
+ *          Matrix descriptor.
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *
+ *****************************************************************************/
 int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc) {
   return RUNTIME_desc_getoncpu( desc );
 }

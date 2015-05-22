@@ -23,6 +23,14 @@
  * @date 2012-09-15
  *
  **/
+
+/**
+ *
+ * @defgroup Sequences
+ * @brief Group routines exposed to users to handle asynchronous tasks execution
+ *
+ */
+
 #include <stdlib.h>
 #include "control/common.h"
 #include "runtime.h"
@@ -73,23 +81,23 @@ int morse_sequence_wait(MORSE_context_t *morse, MORSE_sequence_t *sequence)
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Sequences
  *
  *  MORSE_Sequence_Create - Create a squence.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[out] sequence
  *          Identifies a set of routines sharing common exception handling.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Sequence_Create(MORSE_sequence_t **sequence)
 {
     MORSE_context_t *morse;
@@ -104,23 +112,23 @@ int MORSE_Sequence_Create(MORSE_sequence_t **sequence)
     return status;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Sequences
  *
  *  MORSE_Sequence_Destroy - Destroy a sequence.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] sequence
  *          Identifies a set of routines sharing common exception handling.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Sequence_Destroy(MORSE_sequence_t *sequence)
 {
     MORSE_context_t *morse;
@@ -139,23 +147,23 @@ int MORSE_Sequence_Destroy(MORSE_sequence_t *sequence)
     return status;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Sequences
  *
  *  MORSE_Sequence_Wait - Wait for the completion of a sequence.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] sequence
  *          Identifies a set of routines sharing common exception handling.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Sequence_Wait(MORSE_sequence_t *sequence)
 {
     MORSE_context_t *morse;
@@ -174,13 +182,13 @@ int MORSE_Sequence_Wait(MORSE_sequence_t *sequence)
     return status;
 }
 
-/******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Sequences
  *
  *  MORSE_Sequence_Flush - Terminate a sequence.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] sequence
  *          Identifies a set of routines sharing common exception handling.
@@ -188,12 +196,12 @@ int MORSE_Sequence_Wait(MORSE_sequence_t *sequence)
  * @param[in] request
  *          The flush request.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Sequence_Flush(MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;

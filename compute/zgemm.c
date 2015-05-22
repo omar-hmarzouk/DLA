@@ -28,6 +28,28 @@
  **/
 #include "control/common.h"
 
+/**
+ *
+ * @defgroup MORSE_Complex64_t
+ * @brief Linear algebra routines exposed to users. LAPACK matrix data storage
+ *
+ */
+
+/**
+ *
+ * @defgroup MORSE_Complex64_t_Tile
+ * @brief Linear algebra routines exposed to users. Tile matrix data storage
+ *
+ */
+
+/**
+ *
+ * @defgroup MORSE_Complex64_t_Tile_Async
+ * @brief Linear algebra routines exposed to users. Tile matrix data storage,
+ *  asynchronous interface.
+ *
+ */
+
 /***************************************************************************//**
  *
  * @ingroup MORSE_Complex64_t

@@ -51,29 +51,19 @@ set(CHAMELEON_HDRS
     morsewinthread.h
     tile.h
     workspace.h
-    ${CHAMELEON_HDRS_GENERATED}
     )
+
+set(HDR_INSTALL ${CHAMELEON_HDRS})
+foreach( hdr_file ${CHAMELEON_HDRS_GENERATED} )
+    list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
+endforeach()
+
+list(APPEND CHAMELEON_HDRS ${CHAMELEON_HDRS_GENERATED})
 
 # Force generation of headers
 # ---------------------------
 add_custom_target(control_include ALL SOURCES ${CHAMELEON_HDRS})
 
-set(HDR_INSTALL
-    async.h
-    auxiliary.h
-    bulge.h
-    common.h
-    context.h
-    descriptor.h
-    gkkleader.h
-    global.h
-    morsewinthread.h
-    tile.h
-    workspace.h
-    )
-foreach( hdr_file ${CHAMELEON_HDRS_GENERATED} )
-    list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
-endforeach()
 
 # installation
 # ------------

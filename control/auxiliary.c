@@ -24,6 +24,14 @@
  * @date 2012-09-15
  *
  **/
+
+/**
+ *
+ * @defgroup Auxiliary
+ * @brief Group auxiliary routines exposed to users
+ *
+ */
+
 #include "control/common.h"
 #include "control/auxiliary.h"
 
@@ -101,24 +109,6 @@ void morse_fatal_error(const char *func_name, char* msg_text)
 }
 
 /*******************************************************************************
- *
- **/
-int morse_element_size(int type)
-{
-    switch(type) {
-        case MorseByte:          return          1;
-        case MorseInteger:       return   sizeof(int);
-        case MorseRealFloat:     return   sizeof(float);
-        case MorseRealDouble:    return   sizeof(double);
-        case MorseComplexFloat:  return 2*sizeof(float);
-        case MorseComplexDouble: return 2*sizeof(double);
-        default: morse_fatal_error("morse_element_size", "undefined type");
-                 return MORSE_ERR_ILLEGAL_VALUE;
-
-    }
-}
-
-/*******************************************************************************
  *  Returns core id
  **/
 int morse_rank(MORSE_context_t *morse)
@@ -139,13 +129,13 @@ int morse_tune(MORSE_enum func, int M, int N, int NRHS)
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
  * @ingroup Auxiliary
  *
  *  MORSE_Version - Reports MORSE version number.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[out] ver_major
  *          MORSE major version number.
@@ -156,12 +146,12 @@ int morse_tune(MORSE_enum func, int M, int N, int NRHS)
  * @param[out] ver_micro
  *          MORSE micro version number.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Version(int *ver_major, int *ver_minor, int *ver_micro)
 {
     if (! ver_major && ! ver_minor && ! ver_micro)
@@ -177,4 +167,71 @@ int MORSE_Version(int *ver_major, int *ver_minor, int *ver_micro)
         *ver_micro = CHAMELEON_VERSION_MICRO;
 
     return MORSE_SUCCESS;
+}
+
+/** ***************************************************************************
+ *
+ * @ingroup Auxiliary
+ *
+ *  MORSE_Element_Size - Reports the size in bytes of a MORSE precision type
+ *  (e.g. MorseInteger, MorseRealFloat, etc).
+ *
+ ******************************************************************************
+ *
+ * @param[in] type
+ *          MORSE element type, can be one of the following:
+ *          - MorseByte
+ *          - MorseInteger
+ *          - MorseRealFloat
+ *          - MorseRealDouble
+ *          - MorseComplexFloat
+ *          - MorseComplexDouble
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval Element size in bytes
+ *
+ *****************************************************************************/
+int MORSE_Element_Size(int type)
+{
+    switch(type) {
+        case MorseByte:          return          1;
+        case MorseInteger:       return   sizeof(int);
+        case MorseRealFloat:     return   sizeof(float);
+        case MorseRealDouble:    return   sizeof(double);
+        case MorseComplexFloat:  return 2*sizeof(float);
+        case MorseComplexDouble: return 2*sizeof(double);
+        default: morse_fatal_error("MORSE_Element_Size", "undefined type");
+                 return MORSE_ERR_ILLEGAL_VALUE;
+
+    }
+}
+
+/** ***************************************************************************
+ *
+ * @ingroup Auxiliary
+ *
+ *  MORSE_My_Mpi_Rank - Return the MPI rank of the calling process.
+ *
+ ******************************************************************************
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval MPI rank
+ *
+ *****************************************************************************/
+int MORSE_My_Mpi_Rank(void)
+{
+#if defined(CHAMELEON_USE_MPI)
+    MORSE_context_t *morse = morse_context_self();
+    if (morse == NULL) {
+        morse_error("MORSE_Finalize()", "MORSE not initialized");
+        return MORSE_ERR_NOT_INITIALIZED;
+    }
+    return MORSE_MPI_RANK;
+#else
+    return MORSE_SUCCESS;
+#endif
 }

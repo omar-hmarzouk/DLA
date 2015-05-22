@@ -32,59 +32,63 @@
 #include "control/common.h"
 #include "control/workspace.h"
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
- *  MORSE_Alloc_Workspace_zgeev - Allocates workspace for MORSE_zgeev or MORSE_zgeev_Tile routine.
+ *  MORSE_Alloc_Workspace_zgeev - Allocates workspace for MORSE_zgeev or
+ *  MORSE_zgeev_Tile routine.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] N
  *          The order of the matrix A.  N >= 0.
  *
  * @param[out] descT
- *          On exit, workspace handle for storage of the extra T factors required by the tile Hessenberg.
+ *          On exit, workspace handle for storage of the extra T factors
+ *          required by the tile Hessenberg.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Alloc_Workspace_zgeev(int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(N, N, MORSE_FUNC_ZGEEV, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
- *  MORSE_Alloc_Workspace_zgehrd - Allocates workspace for MORSE_zgehrd or MORSE_zgehrd_Tile routine.
+ *  MORSE_Alloc_Workspace_zgehrd - Allocates workspace for MORSE_zgehrd or
+ *  MORSE_zgehrd_Tile routine.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] N
  *          The number of columns of the matrix A.  N >= 0.
  *
  * @param[out] descT
- *          On exit, workspace handle for storage of the extra T factors required by the tile Hessenberg.
+ *          On exit, workspace handle for storage of the extra T factors
+ *          required by the tile Hessenberg.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Alloc_Workspace_zgehrd(int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(N, N, MORSE_FUNC_ZGEHRD, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
  *  MORSE_Alloc_Workspace_zgebrd - Allocates workspace for MORSE_zgebrd or MORSE_zgebrd_Tile routine.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] M
  *          The number of rows of the matrix A. M >= 0.
@@ -93,24 +97,26 @@ int MORSE_Alloc_Workspace_zgehrd(int N, MORSE_desc_t **descT) {
  *          The number of columns of the matrix A.  N >= 0.
  *
  * @param[out] descT
- *          On exit, workspace handle for storage of the extra T factors required by the tile BRD.
+ *          On exit, workspace handle for storage of the extra T factors
+ *          required by the tile BRD.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Alloc_Workspace_zgebrd(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGEBRD, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
- *  MORSE_Alloc_Workspace_zgels - Allocates workspace for MORSE_zgels or MORSE_zgels_Tile routine.
+ *  MORSE_Alloc_Workspace_zgels - Allocates workspace for MORSE_zgels or
+ *  MORSE_zgels_Tile routine.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] M
  *          The number of rows of the matrix A. M >= 0.
@@ -119,26 +125,26 @@ int MORSE_Alloc_Workspace_zgebrd(int M, int N, MORSE_desc_t **descT) {
  *          The number of columns of the matrix A.  N >= 0.
  *
  * @param[out] descT
- *          On exit, workspace handle for storage of the extra T factors required by the tile QR
- *          or the tile LQ factorization.
+ *          On exit, workspace handle for storage of the extra T factors
+ *          required by the tile QR or the tile LQ factorization.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Alloc_Workspace_zgels(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
-@@ -192,33 +120,6 @@
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
- *  MORSE_Alloc_Workspace_zgels_Tile - Allocates tile workspace for MORSE_zgels_Tile routine.
+ *  MORSE_Alloc_Workspace_zgels_Tile - Allocates tile workspace for
+ *  MORSE_zgels_Tile routine.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] M
  *          The number of rows of the matrix A. M >= 0.
@@ -147,25 +153,26 @@ int MORSE_Alloc_Workspace_zgels(int M, int N, MORSE_desc_t **descT) {
  *          The number of columns of the matrix A.  N >= 0.
  *
  * @param[out] descT
- *          On exit, MORSE_desc_t *on workspace handle for storage of the extra T factors required by the tile QR
- *          or the tile LQ factorization.
+ *          On exit, MORSE_desc_t *on workspace handle for storage of the extra
+ *          T factors required by the tile QR or the tile LQ factorization.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Alloc_Workspace_zgels_Tile(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
- *  MORSE_Alloc_Workspace_zgeqrf - Allocates workspace for MORSE_zgeqrf or MORSE_zgeqrf_Tile routine.
+ *  MORSE_Alloc_Workspace_zgeqrf - Allocates workspace for MORSE_zgeqrf or
+ *  MORSE_zgeqrf_Tile routine.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] M
  *          The number of rows of the matrix A. M >= 0.
@@ -174,25 +181,26 @@ int MORSE_Alloc_Workspace_zgels_Tile(int M, int N, MORSE_desc_t **descT) {
  *          The number of columns of the matrix A.  N >= 0.
  *
  * @param[out] descT
- *          On exit, workspace handle for storage of the extra T factors required by the tile QR
- *          factorization.
+ *          On exit, workspace handle for storage of the extra T factors
+ *          required by the tile QR factorization.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Alloc_Workspace_zgeqrf(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
- *  MORSE_Alloc_Workspace_zgeqrf_Tile - Allocates tile workspace for MORSE_zgels_Tile routine.
+ *  MORSE_Alloc_Workspace_zgeqrf_Tile - Allocates tile workspace for
+ *  MORSE_zgels_Tile routine.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] M
  *          The number of rows of the matrix A. M >= 0.
@@ -201,25 +209,26 @@ int MORSE_Alloc_Workspace_zgeqrf(int M, int N, MORSE_desc_t **descT) {
  *          The number of columns of the matrix A.  N >= 0.
  *
  * @param[out] descT
- *          On exit, MORSE_desc_t *on workspace handle for storage of the extra T factors required by the tile QR
- *          or the tile LQ factorization.
+ *          On exit, MORSE_desc_t *on workspace handle for storage of the extra
+ *          T factors required by the tile QR or the tile LQ factorization.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Alloc_Workspace_zgeqrf_Tile(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
- *  MORSE_Alloc_Workspace_zgelqf - Allocates workspace for MORSE_zgelqf or MORSE_zgelqf_Tile routines.
+ *  MORSE_Alloc_Workspace_zgelqf - Allocates workspace for MORSE_zgelqf or
+ *  MORSE_zgelqf_Tile routines.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] M
  *          The number of rows of the matrix A. M >= 0.
@@ -231,22 +240,22 @@ int MORSE_Alloc_Workspace_zgeqrf_Tile(int M, int N, MORSE_desc_t **descT) {
  *          On exit, workspace handle for storage of the extra T factors required by the tile LQ
  *          factorization.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Alloc_Workspace_zgelqf(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
  *  MORSE_Alloc_Workspace_zgelqf_Tile - Allocates tile workspace for MORSE_zgels_Tile routine.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] M
  *          The number of rows of the matrix A. M >= 0.
@@ -255,80 +264,85 @@ int MORSE_Alloc_Workspace_zgelqf(int M, int N, MORSE_desc_t **descT) {
  *          The number of columns of the matrix A.  N >= 0.
  *
  * @param[out] descT
- *          On exit, MORSE_desc_t *on workspace handle for storage of the extra T factors required by the tile QR
- *          or the tile LQ factorization.
+ *          On exit, MORSE_desc_t *on workspace handle for storage of the extra
+ *          T factors required by the tile QR or the tile LQ factorization.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Alloc_Workspace_zgelqf_Tile(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
- *  MORSE_Alloc_Workspace_zgesv - Allocates workspace for MORSE_zgesv or MORSE_zgesv_Tile routines.
+ *  MORSE_Alloc_Workspace_zgesv - Allocates workspace for MORSE_zgesv or
+ *  MORSE_zgesv_Tile routines.
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @param[in] N
- *          The number of linear equations, i.e., the order of the matrix A. N >= 0.
+ *          The number of linear equations, i.e., the order of the matrix A.
+ *          N >= 0.
  *
  * @param[out] descL
- *          On exit, workspace handle for storage of the extra L factors required by the tile LU
- *          factorization.
+ *          On exit, workspace handle for storage of the extra L factors
+ *          required by the tile LU factorization.
  *
  * @param[out] IPIV
- *          On exit, workspace handle for storage of pivot indexes required by the tile LU
- *          factorization (not equivalent to LAPACK).
+ *          On exit, workspace handle for storage of pivot indexes required
+ *          by the tile LU factorization (not equivalent to LAPACK).
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Alloc_Workspace_zgesv_incpiv(int N, MORSE_desc_t **descL, int **IPIV) {
     return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
- *  MORSE_Alloc_Workspace_zgesv_Tile - Allocates workspace for MORSE_zgesv_Tile routines.
+ *  MORSE_Alloc_Workspace_zgesv_Tile - Allocates workspace for MORSE_zgesv_Tile
+ *  routines.
  *
  *******************************************************************************
  *
  * @param[in] N
- *          The number of linear equations, i.e., the order of the matrix A. N >= 0.
+ *          The number of linear equations, i.e., the order of the matrix A.
+ *          N >= 0.
  *
  * @param[out] descL
- *          On exit, MORSE descriptor on workspace handle for storage of the extra
- *          L factors required by the tile LU factorization.
+ *          On exit, MORSE descriptor on workspace handle for storage of the
+ *          extra L factors required by the tile LU factorization.
  *
  * @param[out] IPIV
- *          On exit, workspace handle for storage of pivot indexes required by the tile LU
- *          factorization (not equivalent to LAPACK).
+ *          On exit, workspace handle for storage of pivot indexes required by
+ *          the tile LU factorization (not equivalent to LAPACK).
  *
- *******************************************************************************
+ ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ *****************************************************************************/
 int MORSE_Alloc_Workspace_zgesv_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV)
 {
     return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV);
 }
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
- *  MORSE_Alloc_Workspace_zgesvd - Allocates workspace for MORSE_zgesvd or MORSE_zgesvd_Tile routine.
+ *  MORSE_Alloc_Workspace_zgesvd - Allocates workspace for MORSE_zgesvd or
+ *  MORSE_zgesvd_Tile routine.
  *
  *******************************************************************************
  *
@@ -350,8 +364,9 @@ int MORSE_Alloc_Workspace_zgesv_incpiv_Tile(int N, MORSE_desc_t **descL, int **I
 int MORSE_Alloc_Workspace_zgesvd(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGESVD, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
- * @ingroup Auxiliary
+/** ***************************************************************************
+ *
+ * @ingroup Workspace
  *
  *  MORSE_Alloc_Workspace_zgetrf_incpiv - Allocates workspace for
  *  MORSE_zgetrf_incpiv or MORSE_zgetrf_incpiv_Tile or
@@ -388,9 +403,9 @@ int MORSE_Alloc_Workspace_zgesvd(int M, int N, MORSE_desc_t **descT) {
 int MORSE_Alloc_Workspace_zgetrf_incpiv(int M, int N, MORSE_desc_t **descL, int **IPIV) {
     return morse_alloc_ipiv(M, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
  *  MORSE_Alloc_Workspace_zgetrf_incpiv_Tile - Allocates workspace for
  *  MORSE_zgesv_incpiv_Tile or MORSE_zgesv_incpiv_Tile_Async routines.
@@ -418,9 +433,9 @@ int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **
 {
     return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV);
 }
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
  *  MORSE_Alloc_Workspace_zheev - Allocates workspace for MORSE_zheev or MORSE_zheev_Tile routine.
  *
@@ -444,9 +459,9 @@ int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **
 int MORSE_Alloc_Workspace_zheev(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEEV, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
  *  MORSE_Alloc_Workspace_zheevd - Allocates workspace for MORSE_zheevd or MORSE_zheevd_Tile routine.
  *
@@ -470,9 +485,9 @@ int MORSE_Alloc_Workspace_zheev(int M, int N, MORSE_desc_t **descT) {
 int MORSE_Alloc_Workspace_zheevd(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEEVD, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
  *  MORSE_Alloc_Workspace_zhegv - Allocates workspace for MORSE_zhegv or MORSE_zhegv_Tile routine.
  *
@@ -496,9 +511,9 @@ int MORSE_Alloc_Workspace_zheevd(int M, int N, MORSE_desc_t **descT) {
 int MORSE_Alloc_Workspace_zhegv(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEGV, MorseComplexDouble, descT); }
 
-/***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
  *  MORSE_Alloc_Workspace_zhegvd - Allocates workspace for MORSE_zhegvd or MORSE_zhegvd_Tile routine.
  *
@@ -522,9 +537,9 @@ int MORSE_Alloc_Workspace_zhegv(int M, int N, MORSE_desc_t **descT) {
 int MORSE_Alloc_Workspace_zhegvd(int M, int N, MORSE_desc_t **descT) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEGVD, MorseComplexDouble, descT); }
 
- /***************************************************************************//**
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
  *  MORSE_Alloc_Workspace_zhetrd - Allocates workspace for MORSE_zhetrd or MORSE_zhetrd_Tile routine.
  *

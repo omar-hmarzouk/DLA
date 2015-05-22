@@ -22,6 +22,14 @@
  * @date 2012-09-15
  *
  **/
+
+/**
+ *
+ * @defgroup Workspace
+ * @brief Group routines exposed to users about specific workspaces management
+ *
+ */
+
 #include <stdlib.h>
 #include "control/common.h"
 #include "control/auxiliary.h"
@@ -159,7 +167,7 @@ int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **des
 
 /*******************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Workspace
  *
  *  MORSE_Dealloc_Worksapce - Deallocate workspace descriptor allocated by
  *                            any workspace allocation routine.

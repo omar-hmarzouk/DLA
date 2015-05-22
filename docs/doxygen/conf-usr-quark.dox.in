@@ -38,7 +38,7 @@ PROJECT_NUMBER         = @CHAMELEON_VERSION_NUMBER@
 # If a relative path is entered, it will be relative to the location
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/out/
+OUTPUT_DIRECTORY       = @CMAKE_CURRENT_BINARY_DIR@/out-usr
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create
 # 4096 sub-directories (in 2 levels) under the output directory of each output
@@ -581,22 +581,17 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  =  @CMAKE_CURRENT_SOURCE_DIR@/groups-dev.dox               \
+INPUT                  =  @CMAKE_CURRENT_SOURCE_DIR@/main.dox                     \
                           @CMAKE_CURRENT_SOURCE_DIR@/../../include                \
-                          @CMAKE_CURRENT_BINARY_DIR@/../../include                \
-                          @CMAKE_CURRENT_SOURCE_DIR@/../../control                \
-                          @CMAKE_CURRENT_BINARY_DIR@/../../control                \
                           @CMAKE_CURRENT_SOURCE_DIR@/../../compute                \
-                          @CMAKE_CURRENT_BINARY_DIR@/../../compute                \
-                          @CMAKE_CURRENT_SOURCE_DIR@/../../coreblas/include       \
-                          @CMAKE_CURRENT_BINARY_DIR@/../../coreblas/include       \
-                          @CMAKE_CURRENT_SOURCE_DIR@/../../coreblas/compute       \
-                          @CMAKE_CURRENT_BINARY_DIR@/../../coreblas               \
-                          @CMAKE_CURRENT_SOURCE_DIR@/../../runtime/quark/include  \
-                          @CMAKE_CURRENT_BINARY_DIR@/../../runtime/quark/include  \
-                          @CMAKE_CURRENT_SOURCE_DIR@/../../runtime/quark/control  \
-                          @CMAKE_CURRENT_SOURCE_DIR@/../../runtime/quark/codelets \
-                          @CMAKE_CURRENT_BINARY_DIR@/../../runtime/quark
+                          @CMAKE_CURRENT_SOURCE_DIR@/../../coreblas               \
+                          @CMAKE_CURRENT_SOURCE_DIR@/../../control                \
+                          @CMAKE_CURRENT_SOURCE_DIR@/../../runtime/quark          \
+                          @CMAKE_CURRENT_SOURCE_DIR@/../../simucore
+#                          @CMAKE_CURRENT_BINARY_DIR@/../../include                \
+#                          @CMAKE_CURRENT_BINARY_DIR@/../../compute                \
+#                          @CMAKE_CURRENT_BINARY_DIR@/../../coreblas/              \
+#                          @CMAKE_CURRENT_BINARY_DIR@/../../runtime/quark
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
@@ -613,7 +608,7 @@ INPUT_ENCODING         = UTF-8
 # *.c *.cc *.cxx *.cpp *.c++ *.java *.ii *.ixx *.ipp *.i++ *.inl *.h *.hh *.hxx
 # *.hpp *.h++ *.idl *.odl *.cs *.php *.php3 *.inc *.m *.mm *.py *.f90
 
-FILE_PATTERNS          =
+FILE_PATTERNS          = *.c
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories
 # should be searched for input files as well. Possible values are YES and NO.
@@ -877,7 +872,7 @@ HTML_DYNAMIC_SECTIONS  = NO
 # directory and running "make install" will install the docset in
 # ~/Library/Developer/Shared/Documentation/DocSets so that Xcode will find
 # it at startup.
-# See http://developer.apple.com/tools/creatingdocsetswithdoxygen.html
+# See http:/developer.apple.com/tools/creatingdocsetswithdoxygen.html
 # for more information.
 
 GENERATE_DOCSET        = NO
@@ -1100,7 +1095,7 @@ SERVER_BASED_SEARCH    = NO
 # If the GENERATE_LATEX tag is set to YES (the default) Doxygen will
 # generate Latex output.
 
-GENERATE_LATEX         = YES
+GENERATE_LATEX         = NO
 
 # The LATEX_OUTPUT tag is used to specify where the LaTeX docs will be put.
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be
@@ -1227,8 +1222,8 @@ RTF_EXTENSIONS_FILE    =
 
 # If the GENERATE_MAN tag is set to YES (the default) Doxygen will
 # generate man pages
-  
-GENERATE_MAN           = YES
+
+GENERATE_MAN           = NO
 
 # The MAN_OUTPUT tag is used to specify where the man pages will be put.
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be

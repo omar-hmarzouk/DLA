@@ -24,6 +24,13 @@
  *
  **/
 
+/**
+ *
+ * @defgroup Options
+ * @brief Group routines exposed to users to handle options
+ *
+ */
+
 #include <stdlib.h>
 #if defined( _WIN32 ) || defined( _WIN64 )
 #include "control/morsewinthread.h"
@@ -109,15 +116,15 @@ int morse_context_destroy(){
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Options
  *
  *  MORSE_Enable - Enable MORSE feature.
  *
  *******************************************************************************
  *
- * @param[in] lever
+ * @param[in] option
  *          Feature to be enabled:
  *          @arg MORSE_WARNINGS   printing of warning messages,
  *          @arg MORSE_ERRORS     printing of error messages,
@@ -170,15 +177,15 @@ int MORSE_Enable(MORSE_enum option)
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Options
  *
  *  MORSE_Disable - Disable MORSE feature.
  *
  *******************************************************************************
  *
- * @param[in] lever
+ * @param[in] option
  *          Feature to be disabled:
  *          @arg MORSE_WARNINGS   printing of warning messages,
  *          @arg MORSE_ERRORS     printing of error messages,
@@ -228,9 +235,9 @@ int MORSE_Disable(MORSE_enum option)
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Options
  *
  *  MORSE_Set - Set MORSE parameter.
  *
@@ -322,9 +329,9 @@ int MORSE_Set(MORSE_enum param, int value)
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/** ***************************************************************************
  *
- * @ingroup Auxiliary
+ * @ingroup Options
  *
  *  MORSE_Get - Get value of MORSE parameter.
  *

@@ -35,40 +35,26 @@ find_package(Doxygen)
 # Generate documentation
 # ----------------------
 if(DOXYGEN_EXECUTABLE)
+
     # Create file chameleon.dox
     # ---------------------------
-    if(MORSE_SCHED_STARPU)
-        if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../../../scratch)
-            configure_file("conf-dev-starpu.dox.in"
-                           "chameleon.dox"
-                           @ONLY)
-        else()
-            configure_file("conf-usr-starpu.dox.in"
-                           "chameleon.dox"
-                           @ONLY)
-        endif()
+    if(CHAMELEON_SCHED_STARPU)
 
-    elseif(MORSE_SCHED_QUARK)
-        if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../../../scratch)
-            configure_file("conf-dev-quark.dox.in"
-                           "chameleon.dox"
-                            @ONLY)
-        else()
-            configure_file("conf-usr-quark.dox.in"
-                           "chameleon.dox"
-                           @ONLY)
-        endif()
+        configure_file("conf-dev-starpu.dox.in"
+                       "chameleon-dev.dox"
+                       @ONLY)
+#        configure_file("conf-usr-starpu.dox.in"
+#                       "chameleon-usr.dox"
+#                       @ONLY)
 
-    else()
-        if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../../../scratch)
-            configure_file("conf-dev-starpu.dox.in"
-                           "chameleon.dox"
-                           @ONLY)
-        else()
-            configure_file("conf-usr-starpu.dox.in"
-                           "chameleon.dox"
-                           @ONLY)
-        endif()
+    elseif(CHAMELEON_SCHED_QUARK)
+
+        configure_file("conf-dev-quark.dox.in"
+                       "chameleon-dev.dox"
+                        @ONLY)
+#        configure_file("conf-usr-quark.dox.in"
+#                       "chameleon-usr.dox"
+#                       @ONLY)
 
     endif()
 
@@ -78,56 +64,27 @@ if(DOXYGEN_EXECUTABLE)
 
     # User's documentation
     # --------------------
-    add_custom_command(OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/out
+    add_custom_command(OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/out-dev
                        COMMAND ${DOXYGEN_EXECUTABLE}
-                       ARGS    ${CMAKE_CURRENT_BINARY_DIR}/chameleon.dox
-                       DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/chameleon.dox
+                       ARGS    ${CMAKE_CURRENT_BINARY_DIR}/chameleon-dev.dox
+                       DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/chameleon-dev.dox
                       )
+#    add_custom_command(OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/out-usr
+#                       COMMAND ${DOXYGEN_EXECUTABLE}
+#                       ARGS    ${CMAKE_CURRENT_BINARY_DIR}/chameleon-usr.dox
+#                       DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/chameleon-usr.dox
+#                      )
     add_custom_target(doxygen-out ALL
-                      DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/out)
-
-    # Compilation and installation for latex version
-    # ----------------------------------------------
-    find_package(LATEX)
-    if(PDFLATEX_COMPILER AND MAKEINDEX_COMPILER)
-        # Message
-        # -------
-        message(STATUS "Looking for pdflatex - found")
-        message(STATUS "Looking for makeindex - found")
-
-        # Compile pdf
-        # -----------
-        add_custom_command(OUTPUT            refman.pdf
-                           COMMAND           ${CMAKE_MAKE_PROGRAM}
-                           ARGS              refman.pdf
-                           WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/out/latex
-                           )
-        add_custom_target(doxygen-user_guide-chameleon ALL
-                          DEPENDS refman.pdf ${CMAKE_CURRENT_BINARY_DIR}/out) 
-
-        # Installation of produced pdf
-        # ----------------------------
-        if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../../../scratch)
-            install(FILES       ${CMAKE_CURRENT_BINARY_DIR}/out/latex/refman.pdf
-                    RENAME      magma-morse-devguide-${MAGMA_VERSION_NUMBER}.pdf
-                    DESTINATION share/chameleon/pdf)
-        else()
-            install(FILES       ${CMAKE_CURRENT_BINARY_DIR}/out/latex/refman.pdf
-                    RENAME      magma-morse-usersguide-${MAGMA_VERSION_NUMBER}.pdf
-                    DESTINATION share/chameleon/pdf)
-        endif()
-
-    endif()
+                      DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/out-dev
+                              #${CMAKE_CURRENT_BINARY_DIR}/out-usr
+                              )
 
     # Installation for html version
     # -----------------------------
-    install(DIRECTORY   ${CMAKE_CURRENT_BINARY_DIR}/out/html
-            DESTINATION share/chameleon/doxygen)
-
-    # Installation for man version
-    # ----------------------------
-    install(DIRECTORY   ${CMAKE_CURRENT_BINARY_DIR}/out/man
-            DESTINATION share/chameleon)
+    install(DIRECTORY   ${CMAKE_CURRENT_BINARY_DIR}/out-dev/html
+            DESTINATION share/chameleon/doxygen/dev)
+#    install(DIRECTORY   ${CMAKE_CURRENT_BINARY_DIR}/out-usr/html
+#            DESTINATION share/chameleon/doxygen/usr)
 
 else()
     message(STATUS "Looking for doxygen - not found")

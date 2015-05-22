@@ -36,35 +36,34 @@
 #define CHAMELEON_VERSION_MICRO 0
 
 
-/** ****************************************************************************
+/* ****************************************************************************
  * MORSE types and constants
- **/
-//#include "morse_mangling.h"
+ */
 #include "morse_types.h"
 #include "morse_struct.h"
 #include "morse_constants.h"
 
 
-/** ****************************************************************************
+/* ****************************************************************************
  * RUNTIME Functions
  */
 #include "runtime.h"
 
 
-/** ****************************************************************************
+/* ****************************************************************************
  * For Simulation mode
  */
 #include "morse_simulate.h"
 
 
-/** ****************************************************************************
+/* ****************************************************************************
  * Set of routines which can be useful fo users
  */
 #include "control/context.h"
 #include "control/descriptor.h"
 
 
-/** ****************************************************************************
+/* ****************************************************************************
  * MORSE Functions
  */
 #ifdef __cplusplus
@@ -73,10 +72,11 @@ extern "C" {
 
 /* Auxiliary */
 int MORSE_Version        (int *ver_major, int *ver_minor, int *ver_micro);
+int MORSE_Element_Size(int type);
+int MORSE_My_Mpi_Rank    (void);
 int MORSE_Init           (int nworkers, int ncudas);
 int MORSE_InitPar        (int nworkers, int ncudas, int nthreads_per_worker);
 int MORSE_Finalize       (void);
-int MORSE_My_Mpi_Rank    (void);
 int MORSE_Pause          (void);
 int MORSE_Resume         (void);
 int MORSE_Lapack_to_Tile (void *Af77, int LDA, MORSE_desc_t *A);

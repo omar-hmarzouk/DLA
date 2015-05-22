@@ -28,6 +28,13 @@
 #include <math.h>
 #include "coreblas/include/coreblas.h"
 
+/**
+ *
+ * @defgroup CORE_MORSE_Complex64_t
+ * @brief Linear algebra routines exposed to users. CPU functions.
+ *
+ */
+
 /***************************************************************************//**
  *
  * @ingroup CORE_MORSE_Complex64_t
