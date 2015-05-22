@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelet_zasum.c
+ * @file codelet_zaxpy.c
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
