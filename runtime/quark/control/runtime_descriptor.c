@@ -10,7 +10,7 @@
 
 /**
  *
- * @file descriptor.c
+ * @file runtime_descriptor.c
  *
  *  MORSE auxiliary routines
  *  MORSE is a software package provided by Univ. of Tennessee,

@@ -10,7 +10,7 @@
 
 /**
  *
- * @file profiling.c
+ * @file runtime_profiling.c
  *
  *  MORSE auxiliary routines
  *  MORSE is a software package provided by Univ. of Tennessee,

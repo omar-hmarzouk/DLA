@@ -10,7 +10,7 @@
 
 /**
  *
- *  @file zprofiling.c
+ *  @file runtime_zprofiling.c
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,

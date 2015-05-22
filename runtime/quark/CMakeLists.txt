@@ -62,8 +62,8 @@ add_custom_target(runtime_quark_include ALL SOURCES ${RUNTIME_HDRS})
 # -----------------------------------------------------
 set(RUNTIME_COMMON_GENERATED "")
 set(ZSRC
-    control/zprofiling.c
-    control/zlocality.c
+    control/runtime_zprofiling.c
+    control/runtime_zlocality.c
     )
 
 precisions_rules_py(RUNTIME_COMMON_GENERATED "${ZSRC}"
@@ -71,12 +71,12 @@ precisions_rules_py(RUNTIME_COMMON_GENERATED "${ZSRC}"
                     TARGETDIR "control")
 
 set(RUNTIME_COMMON
-    control/async.c
-    control/context.c
-    control/control.c
-    control/descriptor.c
-    control/options.c
-    control/profiling.c
+    control/runtime_async.c
+    control/runtime_context.c
+    control/runtime_control.c
+    control/runtime_descriptor.c
+    control/runtime_options.c
+    control/runtime_profiling.c
     codelets/codelet_dataflush.c
     ${RUNTIME_COMMON_GENERATED}
     )
