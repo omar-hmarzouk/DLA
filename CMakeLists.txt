@@ -210,7 +210,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
     # Options to enable/disable testings and timings
     # ----------------------------------------------
-    option(CHAMELEON_ENABLE_DOCS     "Enable documentation build"  ON)
+    option(CHAMELEON_ENABLE_DOCS     "Enable documentation build"  OFF)
     if (CHAMELEON_ENABLE_DOCS)
         message("-- ${BoldGreen}CHAMELEON_ENABLE_DOCS is set to ON, turn it OFF to avoid building docs${ColourReset}")
     endif()
