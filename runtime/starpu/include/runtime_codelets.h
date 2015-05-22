@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelets.h
+ * @file runtime_codelets.h
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -28,7 +28,7 @@
 #ifndef _CODELETS_H_
 #define _CODELETS_H_
 
-#include "codelet_profile.h"
+#include "runtime_codelet_profile.h"
 
 //#undef STARPU_CUDA_ASYNC
 #ifdef STARPU_CUDA_ASYNC

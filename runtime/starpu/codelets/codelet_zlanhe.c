@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelet_zlange.c
+ * @file codelet_zlanhe.c
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
@@ -27,7 +27,7 @@
  *
  **/
 #include "runtime/starpu/include/morse_starpu.h"
-#include "runtime/starpu/include/codelet_z.h"
+#include "runtime/starpu/include/runtime_codelet_z.h"
 
 void MORSE_TASK_zlanhe(MORSE_option_t *options,
                        MORSE_enum norm, MORSE_enum uplo, int N, int NB,

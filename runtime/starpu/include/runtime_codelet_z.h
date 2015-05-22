@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelet_z.h
+ * @file runtime_codelet_z.h
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -30,7 +30,7 @@
 #define _CODELETS_Z_H_
 
 #include <stdio.h>
-#include "runtime/starpu/include/codelets.h"
+#include "runtime/starpu/include/runtime_codelets.h"
 
 /*
  * Management functions

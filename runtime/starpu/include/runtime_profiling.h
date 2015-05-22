@@ -10,7 +10,7 @@
 
 /**
  *
- * @file progiling.h
+ * @file runtime_progiling.h
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,

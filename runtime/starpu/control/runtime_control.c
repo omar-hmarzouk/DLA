@@ -10,7 +10,7 @@
 
 /**
  *
- * @file control.c
+ * @file runtime_control.c
  *
  *  MORSE auxiliary routines
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -39,12 +39,12 @@ int RUNTIME_rank(MORSE_context_t *morse)
 /*******************************************************************************
  *
  **/
-int RUNTIME_init_scheduler( MORSE_context_t *morse, int nworkers, int ncudas, int nthreads_per_worker)
+int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int nthreads_per_worker)
 {
     starpu_conf_t *conf = (starpu_conf_t*)(morse->schedopt);
     int hres = -1;
 
-    conf->ncpus = nworkers;
+    conf->ncpus = ncpus;
     conf->ncuda = ncudas;
     conf->nopencl = 0;
 
@@ -70,7 +70,7 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int nworkers, int ncudas, in
         conf->sched_policy_name = "ws";
 #endif
 
-    if ((nworkers == -1)||(nthreads_per_worker == -1))
+    if ((ncpus == -1)||(nthreads_per_worker == -1))
     {
         morse->parallel_enabled = MORSE_FALSE;
 
@@ -81,17 +81,17 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int nworkers, int ncudas, in
 
         morse->parallel_enabled = MORSE_TRUE;
 
-        for (worker = 0; worker < nworkers; worker++)
+        for (worker = 0; worker < ncpus; worker++)
             conf->workers_bindid[worker] = (worker+1)*nthreads_per_worker - 1;
 
-        for (worker = 0; worker < nworkers; worker++)
+        for (worker = 0; worker < ncpus; worker++)
             conf->workers_bindid[worker + ncudas] = worker*nthreads_per_worker;
 
         conf->use_explicit_workers_bindid = 1;
 
         hres = starpu_init( conf );
 
-        morse->nworkers = nworkers;
+        morse->nworkers = ncpus;
         morse->nthreads_per_worker = nthreads_per_worker;
     }
 

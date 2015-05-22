@@ -25,7 +25,7 @@
  *
  **/
 #include "runtime/starpu/include/morse_starpu.h"
-#include "runtime/starpu/include/codelet_z.h"
+#include "runtime/starpu/include/runtime_codelet_z.h"
 
 void MORSE_TASK_ztrasm(MORSE_option_t *options,
                        MORSE_enum storev, MORSE_enum uplo, MORSE_enum diag, int M, int N,

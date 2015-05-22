@@ -39,11 +39,11 @@ if ( CBLAS_FOUND AND LAPACKE_FOUND AND LAPACK_FOUND AND CUDA_FOUND AND CUDA_CUBL
     endif()
 endif()
 
-# Generate the magma headers for all possible precisions
-# ------------------------------------------------------
+# Generate headers for all possible precisions
+# --------------------------------------------
 set(RUNTIME_HDRS_GENERATED "")
 set(ZHDR
-  include/codelet_z.h
+  include/runtime_codelet_z.h
 )
 
 precisions_rules_py(RUNTIME_HDRS_GENERATED "${ZHDR}"
@@ -53,11 +53,11 @@ precisions_rules_py(RUNTIME_HDRS_GENERATED "${ZHDR}"
 # Define the list of headers
 # --------------------------
 set(RUNTIME_HDRS
-    include/codelet_profile.h
-    include/codelets.h
     include/morse_starpu.h
-    include/profiling.h
-    include/workspace.h
+    include/runtime_codelet_profile.h
+    include/runtime_codelets.h
+    include/runtime_profiling.h
+    include/runtime_workspace.h
     ${RUNTIME_HDRS_GENERATED}
     )
 
@@ -74,8 +74,8 @@ add_custom_target(runtime_starpu_include ALL SOURCES ${RUNTIME_HDRS})
 # -----------------------------------------------------
 set(RUNTIME_COMMON_GENERATED "")
 set(ZSRC
-    control/zprofiling.c
-    control/zlocality.c
+    control/runtime_zprofiling.c
+    control/runtime_zlocality.c
     )
 
 precisions_rules_py(RUNTIME_COMMON_GENERATED "${ZSRC}"
@@ -83,13 +83,13 @@ precisions_rules_py(RUNTIME_COMMON_GENERATED "${ZSRC}"
                     TARGETDIR "control")
 
 set(RUNTIME_COMMON
-    control/control.c
-    control/context.c
-    control/descriptor.c
-    control/async.c
-    control/options.c
-    control/profiling.c
-    control/workspace.c
+    control/runtime_control.c
+    control/runtime_context.c
+    control/runtime_descriptor.c
+    control/runtime_async.c
+    control/runtime_options.c
+    control/runtime_profiling.c
+    control/runtime_workspace.c
     codelets/codelet_dataflush.c
     ${RUNTIME_COMMON_GENERATED}
     )
@@ -98,7 +98,7 @@ set(flags_to_add "")
 foreach(_prec ${CHAMELEON_PRECISION})
     set(flags_to_add "${flags_to_add} -DPRECISION_${_prec}")
 endforeach()
-set_source_files_properties(control/profiling.c PROPERTIES COMPILE_FLAGS "${flags_to_add}")
+set_source_files_properties(control/runtime_profiling.c PROPERTIES COMPILE_FLAGS "${flags_to_add}")
 
 # Generate the morse sources for all possible precisions
 # ------------------------------------------------------

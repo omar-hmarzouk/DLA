@@ -10,7 +10,7 @@
 
 /**
  *
- * @file context.c
+ * @file runtime_context.c
  *
  *  MORSE auxiliary routines
  *  MORSE is a software package provided by Univ. of Tennessee,

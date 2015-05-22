@@ -23,7 +23,7 @@
  *
  **/
 #include "runtime/starpu/include/morse_starpu.h"
-#include "runtime/starpu/include/codelet_z.h"
+#include "runtime/starpu/include/runtime_codelet_z.h"
 
 void MORSE_TASK_zaxpy(MORSE_option_t *options,
                       int M, MORSE_Complex64_t alpha,

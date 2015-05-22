@@ -10,7 +10,7 @@
 
 /**
  *
- * @file descriptor.c
+ * @file runtime_descriptor.c
  *
  *  MORSE auxiliary routines
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -66,7 +66,7 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
          * Register allocated memory as CUDA pinned memory
          */
         {
-            int64_t eltsze = morse_element_size(desc->dtyp);
+            int64_t eltsze = MORSE_Element_Size(desc->dtyp);
             size_t size = (size_t)(desc->llm) * (size_t)(desc->lln) * eltsze;
 
             /* Register the matrix as pinned memory */
@@ -156,7 +156,7 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
 
 #if defined(CHAMELEON_USE_CUDA)
         if (desc->use_mat == 1 && desc->register_mat == 1){
-            int64_t eltsze = morse_element_size(desc->dtyp);
+            int64_t eltsze = MORSE_Element_Size(desc->dtyp);
             size_t size = (size_t)(desc->llm) * (size_t)(desc->lln) * eltsze;
 
             /* Unmap the pinned memory associated to the matrix */
@@ -263,7 +263,7 @@ void *RUNTIME_desc_getaddr( MORSE_desc_t *desc, int m, int n )
 
     if (*ptrtile == NULL) {
         int64_t block_ind = desc->lmt * n + m;
-        int64_t eltsze = morse_element_size(desc->dtyp);
+        int64_t eltsze = MORSE_Element_Size(desc->dtyp);
         int myrank = desc->myrank;
         int owner  = desc->get_rankof( desc, m, n );
         int tempmm = (m == desc->lmt-1) ? (desc->lm - m * desc->mb) : desc->mb;

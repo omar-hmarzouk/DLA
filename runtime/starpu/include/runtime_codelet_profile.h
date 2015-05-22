@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelet_profile.h
+ * @file runtime_codelet_profile.h
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,

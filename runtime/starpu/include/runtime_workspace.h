@@ -10,7 +10,7 @@
 
 /**
  *
- * @file workspace.h
+ * @file runtime_workspace.h
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,

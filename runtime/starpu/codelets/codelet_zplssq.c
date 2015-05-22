@@ -26,7 +26,7 @@
  **/
 #include <math.h>
 #include "runtime/starpu/include/morse_starpu.h"
-#include "runtime/starpu/include/codelet_z.h"
+#include "runtime/starpu/include/runtime_codelet_z.h"
 
 /*****************************************************************************
  *

@@ -46,10 +46,10 @@
 #endif
 
 #include "control/common.h"
-#include "codelets.h"
-#include "profiling.h"
-#include "codelet_profile.h"
-#include "workspace.h"
+#include "runtime/starpu/include/runtime_codelets.h"
+#include "runtime/starpu/include/runtime_profiling.h"
+#include "runtime/starpu/include/runtime_codelet_profile.h"
+#include "runtime/starpu/include/runtime_workspace.h"
 
 typedef struct starpu_conf starpu_conf_t;
 

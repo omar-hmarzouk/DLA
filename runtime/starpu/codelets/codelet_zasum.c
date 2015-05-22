@@ -25,7 +25,7 @@
  *
  **/
 #include "runtime/starpu/include/morse_starpu.h"
-#include "runtime/starpu/include/codelet_z.h"
+#include "runtime/starpu/include/runtime_codelet_z.h"
 #include "runtime_z.h"
 
 void MORSE_TASK_dzasum(MORSE_option_t *options,
