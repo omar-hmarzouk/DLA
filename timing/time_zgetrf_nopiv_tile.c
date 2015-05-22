@@ -22,7 +22,6 @@
 #define _FMULS FMULS_GETRF(M, N)
 #define _FADDS FADDS_GETRF(M, N)
 
-int morse_element_size(int type);
 #include "./timing.c"
 
 static int
