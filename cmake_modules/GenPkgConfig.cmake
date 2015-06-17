@@ -51,10 +51,10 @@ MACRO(GENERATE_PKGCONFIG_FILE _file)
         list(APPEND CHAMELEON_PKGCONFIG_LIBS -lchameleon_starpu)
         if ( CHAMELEON_USE_MPI )
             list(APPEND CHAMELEON_PKGCONFIG_REQUIRED
-            starpumpi-${CHAMELEON_STARPU_VERSION})
+            starpumpi-${STARPU_VERSION_STRING})
         else()
             list(APPEND CHAMELEON_PKGCONFIG_REQUIRED
-            starpu-${CHAMELEON_STARPU_VERSION})
+            starpu-${STARPU_VERSION_STRING})
         endif()
     elseif(CHAMELEON_SCHED_QUARK)
         list(APPEND CHAMELEON_PKGCONFIG_LIBS -lchameleon_quark)
