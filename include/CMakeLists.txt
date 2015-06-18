@@ -65,6 +65,7 @@ add_custom_target(chameleon_include ALL SOURCES ${CHAMELEON_HDRS})
 
 set(HDR_INSTALL
     morse_constants.h
+    morse_fortran.h
     morse_kernels.h
     morse_simulate.h
     morse_struct.h

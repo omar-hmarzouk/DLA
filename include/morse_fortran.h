@@ -164,12 +164,13 @@
 !   State machine switches
 !
       integer MORSE_WARNINGS, MORSE_ERRORS, MORSE_AUTOTUNING
-      integer MORSE_DAG
+      integer MORSE_DAG, MORSE_PROFILING_MODE, MORSE_PARALLEL_MODE
+      integer MORSE_BOUND
       parameter ( MORSE_WARNINGS       = 1 )
       parameter ( MORSE_ERRORS         = 2 )
       parameter ( MORSE_AUTOTUNING     = 3 )
       parameter ( MORSE_DAG            = 4 )
-      parameter ( MORSE_PROFILING_MOSE = 5 )
+      parameter ( MORSE_PROFILING_MODE = 5 )
       parameter ( MORSE_PARALLEL_MODE  = 6 )
       parameter ( MORSE_BOUND          = 7 )
 

@@ -90,12 +90,12 @@ module morse
       integer, parameter :: dp = kind(0.0d0)
 
       interface
-         function MORSE_Init_c(cores) &
+         function MORSE_Init_c(cpus, gpus) &
           & bind(c, name='MORSE_Init')
             use iso_c_binding
             implicit none
             integer(kind=c_int) :: MORSE_Init_c
-            integer(kind=c_int), value :: cores
+            integer(kind=c_int), value :: cpus, gpus
          end function MORSE_Init_c
       end interface
 
@@ -209,11 +209,11 @@ module morse
       end interface
 
       interface
-         function MORSE_Init_Affinity_c(cores,bindtab) &
+         function MORSE_Init_Affinity_c(cores,gpus,bindtab) &
           & bind(c, name='MORSE_Init_Affinity')
             use iso_c_binding
             integer(kind=c_int) :: MORSE_Init_Affinity_c
-            integer(kind=c_int), value ::  cores
+            integer(kind=c_int), value ::  cores, gpus
             type(c_ptr), value :: bindtab
          end function MORSE_Init_Affinity_c
       end interface
@@ -296,12 +296,12 @@ module morse
 
    contains
 
-   subroutine morse_init(ncores,info)
+   subroutine morse_init(cores,gpus,info)
       use iso_c_binding
       implicit none
-      integer(kind=c_int), intent(in) :: ncores
+      integer(kind=c_int), intent(in) :: cores, gpus
       integer(kind=c_int), intent(out) :: info
-      info = morse_init_c(ncores)
+      info = morse_init_c(cores,gpus)
       morse_initialized = .true.
    end subroutine morse_init
 
