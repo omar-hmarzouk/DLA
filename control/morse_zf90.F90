@@ -408,6 +408,19 @@ module morse_z
       end interface
 
       interface
+         function MORSE_zgetrf_nopiv_c(M,N,A,LDA) &
+          & bind(c, name='MORSE_zgetrf_nopiv')
+            use iso_c_binding
+            implicit none
+            integer(kind=c_int) :: MORSE_zgetrf_nopiv_c
+            integer(kind=c_int), value :: M
+            integer(kind=c_int), value :: N
+            type(c_ptr), value :: A
+            integer(kind=c_int), value :: LDA
+          end function MORSE_zgetrf_nopiv_c
+      end interface
+
+      interface
          function MORSE_zgetri_c(N,A,LDA,IPIV) &
           & bind(c, name='MORSE_zgetri')
             use iso_c_binding
@@ -1286,6 +1299,16 @@ module morse_z
       end interface
 
       interface
+         function MORSE_zgetrf_nopiv_Tile_c(A) &
+          & bind(c, name='MORSE_zgetrf_nopiv_Tile')
+            use iso_c_binding
+            implicit none
+            integer(kind=c_int) :: MORSE_zgetrf_nopiv_Tile_c
+            type(c_ptr), value :: A
+          end function MORSE_zgetrf_nopiv_Tile_c
+      end interface
+
+      interface
          function MORSE_zgetri_Tile_c(A,IPIV) &
           & bind(c, name='MORSE_zgetri_Tile')
             use iso_c_binding
@@ -2042,6 +2065,18 @@ module morse_z
             type(c_ptr), value :: sequence
             type(c_ptr), value :: request
           end function MORSE_zgetrf_incpiv_Tile_Async_c
+      end interface
+
+      interface
+         function MORSE_zgetrf_nopiv_Tile_Async_c(A,sequence,request) &
+          & bind(c, name='MORSE_zgetrf_nopiv_Tile_Async')
+            use iso_c_binding
+            implicit none
+            integer(kind=c_int) :: MORSE_zgetrf_nopiv_Tile_Async_c
+            type(c_ptr), value :: A
+            type(c_ptr), value :: sequence
+            type(c_ptr), value :: request
+          end function MORSE_zgetrf_nopiv_Tile_Async_c
       end interface
 
       interface
@@ -3132,6 +3167,17 @@ module morse_z
          info = MORSE_zgetrf_incpiv_c(M,N,c_loc(A),LDA,L,IPIV)
       end subroutine MORSE_zgetrf_incpiv
 
+      subroutine MORSE_zgetrf_nopiv(M,N,A,LDA,info)
+         use iso_c_binding
+         implicit none
+         integer(kind=c_int), intent(out) :: info
+         integer(kind=c_int), intent(in) :: LDA
+         integer(kind=c_int), intent(in) :: M
+         integer(kind=c_int), intent(in) :: N
+         complex(kind=c_double_complex), intent(inout), target :: A(LDA,*)
+         info = MORSE_zgetrf_nopiv_c(M,N,c_loc(A),LDA)
+      end subroutine MORSE_zgetrf_nopiv
+
       subroutine MORSE_zgetrs(trans,N,NRHS,A,LDA,IPIV,B,LDB,info)
          use iso_c_binding
          implicit none
@@ -3910,6 +3956,14 @@ module morse_z
          info = MORSE_zgetrf_incpiv_Tile_c(A,L,IPIV)
       end subroutine MORSE_zgetrf_incpiv_Tile
 
+      subroutine MORSE_zgetrf_nopiv_Tile(A,info)
+         use iso_c_binding
+         implicit none
+         integer(kind=c_int), intent(out) :: info
+         type(c_ptr), value :: A ! Arg managed by MORSE: opaque to Fortran
+         info = MORSE_zgetrf_nopiv_Tile_c(A)
+      end subroutine MORSE_zgetrf_nopiv_Tile
+
       subroutine MORSE_zgetrs_Tile(trans,A,IPIV,B,info)
          use iso_c_binding
          implicit none
@@ -4615,6 +4669,16 @@ module morse_z
          type(c_ptr), value :: request ! Arg managed by MORSE: opaque to Fortran
          info = MORSE_zgetrf_incpiv_Tile_Async_c(A,L,IPIV,sequence,request)
       end subroutine MORSE_zgetrf_incpiv_Tile_Async
+
+      subroutine MORSE_zgetrf_nopiv_Tile_Async(A,sequence,request,info)
+         use iso_c_binding
+         implicit none
+         integer(kind=c_int), intent(out) :: info
+         type(c_ptr), value :: A ! Arg managed by MORSE: opaque to Fortran
+         type(c_ptr), value :: sequence ! Arg managed by MORSE: opaque to Fortran
+         type(c_ptr), value :: request ! Arg managed by MORSE: opaque to Fortran
+         info = MORSE_zgetrf_nopiv_Tile_Async_c(A,sequence,request)
+      end subroutine MORSE_zgetrf_nopiv_Tile_Async
 
       subroutine MORSE_zgetrs_Tile_Async(trans,A,IPIV,B,sequence,request,info)
          use iso_c_binding
