@@ -210,7 +210,8 @@ if (BLAS_FOUND)
                 set(CBLAS_cblas.h_DIRS "CBLAS_cblas.h_DIRS-NOTFOUND")
                 find_path(CBLAS_cblas.h_DIRS
                 NAMES cblas.h
-                HINTS ${_inc_env})
+                HINTS ${_inc_env}
+                PATH_SUFFIXES "cblas")
             endif()
         endif()
         mark_as_advanced(CBLAS_cblas.h_DIRS)
