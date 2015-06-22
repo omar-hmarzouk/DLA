@@ -37,9 +37,13 @@ if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 endif()
 
 # set project version number
+set(MORSE_VERSION_MAJOR 1)
+set(MORSE_VERSION_MINOR 0)
+set(MORSE_VERSION_MICRO 0)
+# set subproject version number
 set(CHAMELEON_VERSION_MAJOR 0)
 set(CHAMELEON_VERSION_MINOR 9)
-set(CHAMELEON_VERSION_PATCH 1)
+set(CHAMELEON_VERSION_MICRO 1)
 
 set( MORSE_DISTRIB_DIR "" CACHE PATH "Directory of MORSE distribution")
 

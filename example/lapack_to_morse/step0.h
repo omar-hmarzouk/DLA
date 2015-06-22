@@ -35,10 +35,6 @@
 #include <coreblas/include/cblas.h>
 #include <coreblas/include/lapacke.h>
 
-#define CHAMELEON_VERSION_MAJOR 0
-#define CHAMELEON_VERSION_MINOR 9
-#define CHAMELEON_VERSION_MICRO 0
-
 /* Integer parameters for step0 */
 enum iparam_step0 {
     IPARAM_THRDNBR,        /* Number of cores                            */
@@ -112,15 +108,12 @@ static void print_header(char *prog_name, int * iparam) {
 #endif
 
     printf( "#\n"
-            "# CHAMELEON %d.%d.%d, %s\n"
+            "# CHAMELEON %s\n"
             "# Nb threads: %d\n"
             "# N:          %d\n"
             "# IB:         %d\n"
             "# eps:        %e\n"
             "#\n",
-            CHAMELEON_VERSION_MAJOR,
-            CHAMELEON_VERSION_MINOR,
-            CHAMELEON_VERSION_MICRO,
             prog_name,
             iparam[IPARAM_THRDNBR],
             iparam[IPARAM_N],

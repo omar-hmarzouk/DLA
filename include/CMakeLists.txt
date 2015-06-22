@@ -40,6 +40,10 @@ set(ZHDR
 precisions_rules_py(CHAMELEON_HDRS_GENERATED "${ZHDR}"
                     PRECISIONS "z;c;d;s;zc;ds")
 
+configure_file("morse.h.in"
+               "morse.h"
+               @ONLY)
+
 # Define the list of headers
 # --------------------------
 set(CHAMELEON_HDRS
@@ -70,12 +74,12 @@ set(HDR_INSTALL
     morse_simulate.h
     morse_struct.h
     morse_types.h
-    morse.h
     runtime.h
     )
 foreach( hdr_file ${CHAMELEON_HDRS_GENERATED} )
     list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
 endforeach()
+list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/morse.h)
 
 # installation
 # ------------
