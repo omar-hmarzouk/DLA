@@ -39,7 +39,7 @@ endif()
 # set project version number
 set(CHAMELEON_VERSION_MAJOR 0)
 set(CHAMELEON_VERSION_MINOR 9)
-set(CHAMELEON_VERSION_PATCH 0)
+set(CHAMELEON_VERSION_PATCH 1)
 
 set( MORSE_DISTRIB_DIR "" CACHE PATH "Directory of MORSE distribution")
 
