@@ -33,7 +33,7 @@ to install CHAMELEON.
 
 The latest official release tarballs of CHAMELEON sources are available for 
 download from 
-@uref{http://morse.gforge.inria.fr/chameleon-0.9.tar.gz, chameleon-0.9}.
+@uref{http://morse.gforge.inria.fr/chameleon-0.9.1.tar.gz, chameleon-0.9.1}.
 
 @c The latest development snapshot is available from  
 @c @uref{http://hydra.bordeaux.inria.fr/job/hiepacs/morse-cmake/tarball/latest/
