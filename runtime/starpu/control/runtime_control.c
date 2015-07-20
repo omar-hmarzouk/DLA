@@ -48,27 +48,29 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
     conf->ncuda = ncudas;
     conf->nopencl = 0;
 
-    /* By default, use the dmdas strategy */
-    if (!getenv("STARPU_SCHED"))
-        conf->sched_policy_name = "dmdas";
-
     /* By default, enable calibration */
     if (!getenv("STARPU_CALIBRATE"))
         conf->calibrate = 1;
 
-    /* Set scheduling to "ws" if no cuda devices used because it behaves better
-     * on homognenous architecture. If the user wants to use another
-     * scheduling strategy, he can set STARPU_SCHED env. var. to whatever he
-     * wants
-     * TODO: discuss this with ManuMathieu
-     * reference, we should use "lws" strategy
-     */
-    if ( !getenv("STARPU_SCHED") && conf->ncuda == 0)
-#if STARPU_MAJOR_VERSION > 1 || (STARPU_MAJOR_VERSION == 1 && STARPU_MINOR_VERSION >= 2)
-        conf->sched_policy_name = "lws";
+    /* By default, use the dmdas strategy */
+    if (!getenv("STARPU_SCHED")) {
+        if (conf->ncuda > 0) {
+            conf->sched_policy_name = "dmdas";
+        }
+        else {
+            /**
+             * Set scheduling to "ws"/"lws" if no cuda devices used because it
+             * behaves better on homogneneous architectures. If the user wants
+             * to use another scheduling strategy, he can set STARPU_SCHED
+             * env. var. to whatever he wants
+             */
+#if (STARPU_MAJOR_VERSION > 1) || ((STARPU_MAJOR_VERSION == 1) && (STARPU_MINOR_VERSION >= 2))
+            conf->sched_policy_name = "lws";
 #else
-        conf->sched_policy_name = "ws";
+            conf->sched_policy_name = "ws";
 #endif
+        }
+    }
 
     if ((ncpus == -1)||(nthreads_per_worker == -1))
     {
