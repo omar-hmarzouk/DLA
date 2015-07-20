@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #include "runtime/starpu/include/morse_starpu.h"
 
+/* TODO/WARNING: Call the correct function or remove for release */
 int _starpu_is_initialized(void);
 
 /*******************************************************************************
