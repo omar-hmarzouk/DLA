@@ -26,6 +26,8 @@
 #include <stdlib.h>
 #include "runtime/starpu/include/morse_starpu.h"
 
+int _starpu_is_initialized(void);
+
 /*******************************************************************************
  *  Create new context
  **/
@@ -34,10 +36,16 @@ void RUNTIME_context_create( MORSE_context_t *morse )
     starpu_conf_t *conf;
 
     morse->scheduler = CHAMELEON_SCHED_STARPU;
-    morse->schedopt = (void*) malloc (sizeof(struct starpu_conf));
-    conf = morse->schedopt;
 
-    starpu_conf_init( conf );
+    if (! _starpu_is_initialized() ) {
+        morse->schedopt = (void*) malloc (sizeof(struct starpu_conf));
+        conf = morse->schedopt;
+
+        starpu_conf_init( conf );
+    }
+    else {
+        morse->schedopt = NULL;
+    }
 
     return;
 }
@@ -48,7 +56,10 @@ void RUNTIME_context_create( MORSE_context_t *morse )
 
 void RUNTIME_context_destroy( MORSE_context_t *morse )
 {
-    free(morse->schedopt);
+    /* StarPU was already initialized by an external library */
+    if (morse->schedopt) {
+        free(morse->schedopt);
+    }
     return;
 }
 

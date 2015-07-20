@@ -44,6 +44,11 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
     starpu_conf_t *conf = (starpu_conf_t*)(morse->schedopt);
     int hres = -1;
 
+    /* StarPU was already initialized by an external library */
+    if (conf == NULL) {
+        return 0;
+    }
+
     conf->ncpus = ncpus;
     conf->ncuda = ncudas;
     conf->nopencl = 0;
@@ -124,6 +129,12 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
 void RUNTIME_finalize_scheduler( MORSE_context_t *morse )
 {
     (void)morse;
+
+    /* StarPU was already initialized by an external library */
+    if (morse->schedopt == NULL) {
+        return 0;
+    }
+
 #if defined(CHAMELEON_USE_MPI)
     starpu_mpi_shutdown();
 #endif
