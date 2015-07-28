@@ -45,7 +45,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_zplrnt( N, N,    A, LDA,   51 );
     MORSE_zplrnt( N, NRHS, X, LDB, 5673 );
 
-    MORSE_Alloc_Workspace_zgesv_incpiv(N, &L, &piv);
+    MORSE_Alloc_Workspace_zgesv_incpiv(N, &L, &piv, P, Q);
 
     /* Save A and b  */
     PASTE_CODE_ALLOCATE_COPY( Acpy, check, MORSE_Complex64_t, A, LDA, N    );

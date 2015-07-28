@@ -108,7 +108,7 @@ int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t 
 /*******************************************************************************
  *
  **/
-int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc, void **IPIV)
+int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc, void **IPIV, int p, int q)
 {
     int status;
     int NB, IB, MT, NT;
@@ -148,12 +148,11 @@ int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **des
         *IPIV = NULL;
         return MORSE_SUCCESS;
     }
-
-    *desc = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+    /* TODO: Fix the distribution for IPIV */
     *IPIV = (int*)malloc( size );
 
-    /* TODO: Fix the distribution for L / IPIV */
-    **desc = morse_desc_init(type, IB, NB, IB*NB, lm, ln, 0, 0, lm, ln, 1, 1 );
+    *desc = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+    **desc = morse_desc_init(type, IB, NB, IB*NB, lm, ln, 0, 0, lm, ln, p, q );
 
     if ( morse_desc_mat_alloc(*desc) ) {
         morse_error("morse_alloc_ipiv", "malloc() failed");

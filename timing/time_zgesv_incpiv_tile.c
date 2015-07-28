@@ -30,12 +30,12 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_desc_t *descL;
     int *piv;
     PASTE_CODE_IPARAM_LOCALS( iparam );
-    
+
     if ( M != N ) {
         fprintf(stderr, "This timing works only with M == N\n");
         return -1;
     }
-    
+
     /* Allocate Data */
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descA, 1, MORSE_Complex64_t, MorseComplexDouble, LDA, N, N    );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descX, 1,      MORSE_Complex64_t, MorseComplexDouble, LDB, N, NRHS );
@@ -54,12 +54,12 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     }
 
     /* Allocate Workspace */
-    MORSE_Alloc_Workspace_zgesv_incpiv_Tile(N, &descL, &piv);
+    MORSE_Alloc_Workspace_zgesv_incpiv_Tile(N, &descL, &piv, P, Q);
 
     START_TIMING();
     MORSE_zgesv_incpiv_Tile( descA, descL, piv, descX );
     STOP_TIMING();
-    
+
     /* Allocate Workspace */
     MORSE_Dealloc_Workspace(&descL);
 

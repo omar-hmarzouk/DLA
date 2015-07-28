@@ -261,8 +261,8 @@ int MORSE_zunmqr_Tile_Async(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, 
 /** ****************************************************************************
  *  Declarations of workspace allocation functions (tile layout) - alphabetical order
  **/
-int MORSE_Alloc_Workspace_zgesv_incpiv(        int N, MORSE_desc_t **descL, int **IPIV);
-int MORSE_Alloc_Workspace_zgetrf_incpiv(int M, int N, MORSE_desc_t **descL, int **IPIV);
+int MORSE_Alloc_Workspace_zgesv_incpiv(        int N, MORSE_desc_t **descL, int **IPIV, int p, int q);
+int MORSE_Alloc_Workspace_zgetrf_incpiv(int M, int N, MORSE_desc_t **descL, int **IPIV, int p, int q);
 
 int MORSE_Alloc_Workspace_zgebrd(int M, int N, MORSE_desc_t **descT, int p, int q);
 int MORSE_Alloc_Workspace_zgeev( int N,        MORSE_desc_t **descT, int p, int q);
@@ -286,8 +286,8 @@ int MORSE_Alloc_Workspace_zgetri_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *W);
 int MORSE_Alloc_Workspace_zgelqf_Tile(int M, int N, MORSE_desc_t **descT, int p, int q);
 int MORSE_Alloc_Workspace_zgels_Tile( int M, int N, MORSE_desc_t **descT, int p, int q);
 int MORSE_Alloc_Workspace_zgeqrf_Tile(int M, int N, MORSE_desc_t **descT, int p, int q);
-int MORSE_Alloc_Workspace_zgesv_incpiv_Tile (int N, MORSE_desc_t **descL, int **IPIV);
-int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV);
+int MORSE_Alloc_Workspace_zgesv_incpiv_Tile (int N, MORSE_desc_t **descL, int **IPIV, int p, int q);
+int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV, int p, int q);
 
 /** ****************************************************************************
  *  Auxiliary function prototypes

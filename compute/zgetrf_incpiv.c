@@ -204,7 +204,7 @@ int MORSE_zgetrf_incpiv_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV)
     MORSE_zgetrf_incpiv_Tile_Async(A, L, IPIV, sequence, &request);
     RUNTIME_barrier(morse);
     RUNTIME_desc_getoncpu(A);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

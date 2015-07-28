@@ -2875,7 +2875,7 @@ module morse_z
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgesv_incpiv_c(N,descL,IPIV) &
+         function MORSE_Alloc_Workspace_zgesv_incpiv_c(N,descL,IPIV,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgesv_incpiv')
             use iso_c_binding
             implicit none
@@ -2883,11 +2883,13 @@ module morse_z
             integer(kind=c_int), value :: N
             type(c_ptr) :: descL ! descL is **, so pass by reference
             type(c_ptr) :: IPIV ! IPIV is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgesv_incpiv_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgesv_incpiv_Tile_c(N,descL,IPIV) &
+         function MORSE_Alloc_Workspace_zgesv_incpiv_Tile_c(N,descL,IPIV,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgesv_incpiv_Tile')
             use iso_c_binding
             implicit none
@@ -2895,6 +2897,8 @@ module morse_z
             integer(kind=c_int), value :: N
             type(c_ptr) :: descL ! descL is **, so pass by reference
             type(c_ptr) :: IPIV ! IPIV is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgesv_incpiv_Tile_c
       end interface
 
@@ -2913,7 +2917,7 @@ module morse_z
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgetrf_incpiv_c(M,N,descL,IPIV) &
+         function MORSE_Alloc_Workspace_zgetrf_incpiv_c(M,N,descL,IPIV,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgetrf_incpiv')
             use iso_c_binding
             implicit none
@@ -2922,11 +2926,13 @@ module morse_z
             integer(kind=c_int), value :: N
             type(c_ptr) :: descL ! descL is **, so pass by reference
             type(c_ptr) :: IPIV ! IPIV is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgetrf_incpiv_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgetrf_incpiv_Tile_c(N,descL,IPIV) &
+         function MORSE_Alloc_Workspace_zgetrf_incpiv_Tile_c(N,descL,IPIV,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgetrf_incpiv_Tile')
             use iso_c_binding
             implicit none
@@ -2934,6 +2940,8 @@ module morse_z
             integer(kind=c_int), value :: N
             type(c_ptr) :: descL ! descL is **, so pass by reference
             type(c_ptr) :: IPIV ! IPIV is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgetrf_incpiv_Tile_c
       end interface
 
@@ -5269,17 +5277,19 @@ module morse_z
          info = MORSE_Alloc_Workspace_zgeqrf_c(M,N,T)
       end subroutine MORSE_Alloc_Workspace_zgeqrf
 
-      subroutine MORSE_Alloc_Workspace_zgesv_incpiv(N,L,IPIV,info)
+      subroutine MORSE_Alloc_Workspace_zgesv_incpiv(N,L,IPIV,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: IPIV ! IPIV is **, so pass by reference
          type(c_ptr) :: L ! L is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zgesv_incpiv_c(N,L,IPIV)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zgesv_incpiv_c(N,L,IPIV,p,q)
       end subroutine MORSE_Alloc_Workspace_zgesv_incpiv
 
-      subroutine MORSE_Alloc_Workspace_zgetrf_incpiv(M,N,L,IPIV,info)
+      subroutine MORSE_Alloc_Workspace_zgetrf_incpiv(M,N,L,IPIV,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
@@ -5287,7 +5297,9 @@ module morse_z
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: IPIV ! IPIV is **, so pass by reference
          type(c_ptr) :: L ! L is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zgetrf_incpiv_c(M,N,L,IPIV)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zgetrf_incpiv_c(M,N,L,IPIV,p,q)
       end subroutine MORSE_Alloc_Workspace_zgetrf_incpiv
 
       subroutine MORSE_Alloc_Workspace_zgeev(N,T,info)
@@ -5430,24 +5442,28 @@ module morse_z
          info = MORSE_Alloc_Workspace_zgeqrf_Tile_c(M,N,descT,p,q)
       end subroutine MORSE_Alloc_Workspace_zgeqrf_Tile
 
-      subroutine MORSE_Alloc_Workspace_zgesv_incpiv_Tile(N,descL,IPIV,info)
+      subroutine MORSE_Alloc_Workspace_zgesv_incpiv_Tile(N,descL,IPIV,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: IPIV ! IPIV is **, so pass by reference
          type(c_ptr) :: descL ! descL is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zgesv_incpiv_Tile_c(N,descL,IPIV)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zgesv_incpiv_Tile_c(N,descL,IPIV,p,q)
       end subroutine MORSE_Alloc_Workspace_zgesv_incpiv_Tile
 
-      subroutine MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(N,descL,IPIV,info)
+      subroutine MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(N,descL,IPIV,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: IPIV ! IPIV is **, so pass by reference
          type(c_ptr) :: descL ! descL is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zgetrf_incpiv_Tile_c(N,descL,IPIV)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zgetrf_incpiv_Tile_c(N,descL,IPIV,p,q)
       end subroutine MORSE_Alloc_Workspace_zgetrf_incpiv_Tile
 
       subroutine MORSE_Alloc_Workspace_zgetri_Tile_Async(A,W,info)

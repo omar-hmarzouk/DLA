@@ -333,8 +333,8 @@ int MORSE_Alloc_Workspace_zgelqf_Tile(int M, int N, MORSE_desc_t **descT, int p,
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Alloc_Workspace_zgesv_incpiv(int N, MORSE_desc_t **descL, int **IPIV) {
-    return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV); }
+int MORSE_Alloc_Workspace_zgesv_incpiv(int N, MORSE_desc_t **descL, int **IPIV, int p, int q) {
+    return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV, p, q); }
 
 /** ***************************************************************************
  *
@@ -363,9 +363,9 @@ int MORSE_Alloc_Workspace_zgesv_incpiv(int N, MORSE_desc_t **descL, int **IPIV) 
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Alloc_Workspace_zgesv_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV)
+int MORSE_Alloc_Workspace_zgesv_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV, int p, int q)
 {
-    return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV);
+    return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV, p, q);
 }
 /** ***************************************************************************
  *
@@ -436,8 +436,8 @@ int MORSE_Alloc_Workspace_zgesvd(int M, int N, MORSE_desc_t **descT, int p, int 
  * @sa MORSE_zgetrf_incpiv_Tile_Async
  *
  ******************************************************************************/
-int MORSE_Alloc_Workspace_zgetrf_incpiv(int M, int N, MORSE_desc_t **descL, int **IPIV) {
-    return morse_alloc_ipiv(M, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV); }
+int MORSE_Alloc_Workspace_zgetrf_incpiv(int M, int N, MORSE_desc_t **descL, int **IPIV, int p, int q) {
+    return morse_alloc_ipiv(M, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV, p, q); }
 
 /** ***************************************************************************
  *
@@ -465,8 +465,8 @@ int MORSE_Alloc_Workspace_zgetrf_incpiv(int M, int N, MORSE_desc_t **descL, int 
  *          \retval MORSE_SUCCESS successful exit
  *
  ******************************************************************************/
-int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV) {
-    return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV); }
+int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV, int p, int q) {
+    return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV, p, q); }
 
 /** ***************************************************************************
  *

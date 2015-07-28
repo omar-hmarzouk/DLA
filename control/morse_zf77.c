@@ -909,20 +909,20 @@ void MORSE_ALLOC_WORKSPACE_ZGEQRF(int *M, int *N, MORSE_desc_t **T, int *p, int 
 void MORSE_ALLOC_WORKSPACE_ZGEQRF_TILE(int *M, int *N, MORSE_desc_t **descT, int *p, int *q, int *info)
 { *info = MORSE_Alloc_Workspace_zgeqrf_Tile(*M, *N, descT, *p, *q); }
 
-void MORSE_ALLOC_WORKSPACE_ZGESV_INCPIV(int *N, MORSE_desc_t **descL, int **IPIV, int *info)
-{ *info = MORSE_Alloc_Workspace_zgesv_incpiv(*N, descL, IPIV); }
+void MORSE_ALLOC_WORKSPACE_ZGESV_INCPIV(int *N, MORSE_desc_t **descL, int **IPIV, int *p, int *q, int *info)
+{ *info = MORSE_Alloc_Workspace_zgesv_incpiv(*N, descL, IPIV, *p, *q); }
 
-void MORSE_ALLOC_WORKSPACE_ZGESV_INCPIV_TILE (int *N, MORSE_desc_t **descL, int **IPIV, int *info)
-{ *info = MORSE_Alloc_Workspace_zgesv_incpiv_Tile (*N, descL, IPIV); }
+void MORSE_ALLOC_WORKSPACE_ZGESV_INCPIV_TILE (int *N, MORSE_desc_t **descL, int **IPIV, int *p, int *q, int *info)
+{ *info = MORSE_Alloc_Workspace_zgesv_incpiv_Tile (*N, descL, IPIV, *p, *q); }
 
 //void MORSE_ALLOC_WORKSPACE_ZGESVD(int *M, int *N, MORSE_desc_t **descT, int *info)
 //{ *info = MORSE_Alloc_Workspace_zgesvd(*M, *N, descT); }
 
-void MORSE_ALLOC_WORKSPACE_ZGETRF_INCPIV(int *M, int *N, MORSE_desc_t **descL, int **IPIV, int *info)
-{ *info = MORSE_Alloc_Workspace_zgetrf_incpiv(*M, *N, descL, IPIV); }
+void MORSE_ALLOC_WORKSPACE_ZGETRF_INCPIV(int *M, int *N, MORSE_desc_t **descL, int **IPIV, int *p, int *q, int *info)
+{ *info = MORSE_Alloc_Workspace_zgetrf_incpiv(*M, *N, descL, IPIV, *p, *q); }
 
-void MORSE_ALLOC_WORKSPACE_ZGETRF_INCPIV_TILE(int *N, MORSE_desc_t **descL, int **IPIV, int *info)
-{ *info = MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(*N, descL, IPIV); }
+void MORSE_ALLOC_WORKSPACE_ZGETRF_INCPIV_TILE(int *N, MORSE_desc_t **descL, int **IPIV, int *p, int *q, int *info)
+{ *info = MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(*N, descL, IPIV, *p, *q); }
 
 //void MORSE_ALLOC_WORKSPACE_ZGETRI_TILE_ASYNC(MORSE_desc_t *A, MORSE_desc_t *W, int *info)
 //{ *info = MORSE_Alloc_Workspace_zgetri_Tile_Async(A, W); }

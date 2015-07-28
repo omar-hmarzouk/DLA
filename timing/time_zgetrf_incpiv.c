@@ -31,7 +31,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_desc_t *L;
     int *piv;
     PASTE_CODE_IPARAM_LOCALS( iparam );
-    
+
     if ( M != N && check ) {
         fprintf(stderr, "Check cannot be perfomed with M != N\n");
         check = 0;
@@ -39,12 +39,12 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 
     /* Allocate Data */
     PASTE_CODE_ALLOCATE_MATRIX( A, 1, MORSE_Complex64_t, LDA, N );
-    
+
     /* Initialize Data */
     MORSE_zplrnt(M, N, A, LDA, 3456);
 
     /* Allocate Workspace */
-    MORSE_Alloc_Workspace_zgesv_incpiv( min(M,N), &L, &piv);
+    MORSE_Alloc_Workspace_zgesv_incpiv( min(M,N), &L, &piv, P, Q);
 
     /* Save AT in lapack layout for check */
     PASTE_CODE_ALLOCATE_COPY( Acpy, check, MORSE_Complex64_t, A, LDA, N );
@@ -52,7 +52,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     START_TIMING();
     MORSE_zgetrf_incpiv( M, N, A, LDA, L, piv );
     STOP_TIMING();
-    
+
     /* Check the solution */
     if ( check )
     {
@@ -66,7 +66,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
                                               &(dparam[IPARAM_ANORM]), 
                                               &(dparam[IPARAM_BNORM]), 
                                               &(dparam[IPARAM_XNORM]));
-        
+
         free( Acpy ); free( B ); free( X );
     }
 

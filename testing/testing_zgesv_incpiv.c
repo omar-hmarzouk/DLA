@@ -220,7 +220,7 @@ int testing_zgesv_incpiv(int argc, char **argv)
             B2[LDB*j+i] = B1[LDB*j+i];
 
     /* MORSE ZGESV */
-    MORSE_Alloc_Workspace_zgesv_incpiv(N, &L, &IPIV);
+    MORSE_Alloc_Workspace_zgesv_incpiv(N, &L, &IPIV, 1, 1);
     MORSE_zgesv_incpiv(N, NRHS, A2, LDA, L, IPIV, B2, LDB);
 
     printf("\n");
