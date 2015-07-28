@@ -83,6 +83,7 @@ set(ZSRC
     time_zgels_tile.c
     time_zgeqrf.c
     time_zgeqrf_tile.c
+    time_zgeqrs_tile.c
     time_zgetrf_incpiv.c
     time_zgetrf_incpiv_tile.c
     time_zgetrf_nopiv.c
@@ -93,6 +94,7 @@ set(ZSRC
     time_zposv_tile.c
     time_zpotrf.c
     time_zpotrf_tile.c
+    time_zpotrs_tile.c
     time_zsytrf_tile.c
     time_zpotri_tile.c
     ##################
