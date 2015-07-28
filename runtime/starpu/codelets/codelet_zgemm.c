@@ -47,9 +47,9 @@ void MORSE_TASK_zgemm(MORSE_option_t *options,
     (void)nb;
     struct starpu_codelet *codelet = &cl_zgemm;
     void (*callback)(void*) = options->profiling ? cl_zgemm_callback : NULL;
-    int sizeA = m*k;
-    int sizeB = k*n;
-    int sizeC = m*n;
+    int sizeA = lda*k;
+    int sizeB = ldb*n;
+    int sizeC = ldc*n;
     int execution_rank = C->get_rankof( C, Cm, Cn );
     int rank_changed=0;
 

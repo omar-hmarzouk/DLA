@@ -46,8 +46,8 @@ void MORSE_TASK_ztrsm(MORSE_option_t *options,
     (void)nb;
     struct starpu_codelet *codelet = &cl_ztrsm;
     void (*callback)(void*) = options->profiling ? cl_ztrsm_callback : NULL;
-    int sizeA = m*m;
-    int sizeB = m*n;
+    int sizeA = lda*m;
+    int sizeB = ldb*n;
     int execution_rank = B->get_rankof( B, Bm, Bn );
     int rank_changed=0;
 

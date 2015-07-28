@@ -126,10 +126,31 @@ void MORSE_TASK_zunmqr(MORSE_option_t *options,
 {
     struct starpu_codelet *codelet = &cl_zunmqr;
     void (*callback)(void*) = options->profiling ? cl_zunmqr_callback : NULL;
+    int sizeA = lda*k;
+    int sizeT = ldt*n;
+    int sizeC = ldc*n;
+    int execution_rank = C->get_rankof( C, Cm, Cn );
+    int rank_changed=0;
+
+    // force execution on the rank owning the largest data (tile)
+    int threshold;
+    char* env = getenv("MORSE_COMM_FACTOR_THRESHOLD");
+    if (env != NULL)
+        threshold = (unsigned)atoi(env);
+    else
+        threshold = 10;
+    if ( sizeA > threshold*sizeC ){
+        execution_rank = A->get_rankof( A, Am, An );
+        rank_changed = 1;
+    }else if( sizeT > threshold*sizeC ){
+        execution_rank = T->get_rankof( T, Tm, Tn );
+        rank_changed = 1;
+    }
 
     if ( morse_desc_islocal( A, Am, An ) ||
          morse_desc_islocal( T, Tm, Tn ) ||
-         morse_desc_islocal( C, Cm, Cn ) )
+         morse_desc_islocal( C, Cm, Cn ) ||
+         rank_changed )
     {
         starpu_insert_task(
             codelet,
@@ -150,6 +171,9 @@ void MORSE_TASK_zunmqr(MORSE_option_t *options,
             STARPU_VALUE,    &nb,                sizeof(int),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
+#if defined(CHAMELEON_USE_MPI)
+            STARPU_EXECUTE_ON_NODE, execution_rank,
+#endif
             0);
     }
 }

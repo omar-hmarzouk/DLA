@@ -137,11 +137,36 @@ void MORSE_TASK_zttmqr(MORSE_option_t *options,
     struct starpu_codelet *codelet = &cl_zttmqr;
     void (*callback)(void*) = options->profiling ? cl_zttmqr_callback : NULL;
     int ldwork = side == MorseLeft ? ib : nb;
+    int sizeA1 = lda1*n1;
+    int sizeA2 = lda2*n2;
+    int sizeV = ldv*k;
+    int sizeT = ldt*n1;
+    int execution_rank = A2->get_rankof( A2, A2m, A2n );
+    int rank_changed=0;
+
+    // force execution on the rank owning the largest data (tile)
+    int threshold;
+    char* env = getenv("MORSE_COMM_FACTOR_THRESHOLD");
+    if (env != NULL)
+        threshold = (unsigned)atoi(env);
+    else
+        threshold = 10;
+    if ( sizeA1 > threshold*sizeA2 ){
+        execution_rank = A1->get_rankof( A1, A1m, A1n );
+        rank_changed = 1;
+    }else if( sizeV > threshold*sizeA2 ){
+        execution_rank = V->get_rankof( V, Vm, Vn );
+        rank_changed = 1;
+    }else if( sizeT > threshold*sizeA2 ){
+        execution_rank = T->get_rankof( T, Tm, Tn );
+        rank_changed = 1;
+    }
 
     if ( morse_desc_islocal( A1, A1m, A1n ) ||
          morse_desc_islocal( A2, A2m, A2n ) ||
          morse_desc_islocal( V,  Vm,  Vn  ) ||
-         morse_desc_islocal( T,  Tm,  Tn  ) )
+         morse_desc_islocal( T,  Tm,  Tn  ) ||
+         rank_changed )
     {
         starpu_insert_task(
             codelet,
@@ -166,6 +191,9 @@ void MORSE_TASK_zttmqr(MORSE_option_t *options,
             STARPU_VALUE,    &ldwork,            sizeof(int),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
+#if defined(CHAMELEON_USE_MPI)
+            STARPU_EXECUTE_ON_NODE, execution_rank,
+#endif
             0);
     }
 }
