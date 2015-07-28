@@ -220,8 +220,9 @@ int MORSE_zgeqrs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B)
     MORSE_zgeqrs_Tile_Async(A, T, B, sequence, &request);
     RUNTIME_barrier(morse);
     RUNTIME_desc_getoncpu(A);
-        RUNTIME_desc_getoncpu(B);
-    
+    RUNTIME_desc_getoncpu(T);
+    RUNTIME_desc_getoncpu(B);
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

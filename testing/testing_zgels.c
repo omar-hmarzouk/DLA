@@ -270,7 +270,7 @@ int testing_zgels(int argc, char **argv)
         MORSE_Set(MORSE_HOUSEHOLDER_SIZE, rh);
     }
 
-    MORSE_Alloc_Workspace_zgels(M, N, &T);
+    MORSE_Alloc_Workspace_zgels(M, N, &T, 1, 1);
     memset(T->mat, 0, (T->llm*T->lln)*sizeof(MORSE_Complex64_t));
     eps = BLAS_dfpinfo( blas_eps );
 

@@ -2751,7 +2751,7 @@ module morse_z
     !  FORTRAN API - workspace allocation
     !
       interface
-         function MORSE_Alloc_Workspace_zgebrd_c(M,N,descT) &
+         function MORSE_Alloc_Workspace_zgebrd_c(M,N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgebrd')
             use iso_c_binding
             implicit none
@@ -2759,33 +2759,39 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgebrd_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgeev_c(N,descT) &
+         function MORSE_Alloc_Workspace_zgeev_c(N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgeev')
             use iso_c_binding
             implicit none
             integer(kind=c_int) :: MORSE_Alloc_Workspace_zgeev_c
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgeev_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgehrd_c(N,descT) &
+         function MORSE_Alloc_Workspace_zgehrd_c(N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgehrd')
             use iso_c_binding
             implicit none
             integer(kind=c_int) :: MORSE_Alloc_Workspace_zgehrd_c
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgehrd_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgelqf_c(M,N,T) &
+         function MORSE_Alloc_Workspace_zgelqf_c(M,N,T,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgelqf')
             use iso_c_binding
             implicit none
@@ -2793,11 +2799,13 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: T ! T is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgelqf_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgelqf_Tile_c(M,N,descT) &
+         function MORSE_Alloc_Workspace_zgelqf_Tile_c(M,N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgelqf_Tile')
             use iso_c_binding
             implicit none
@@ -2805,11 +2813,13 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgelqf_Tile_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgels_c(M,N,T) &
+         function MORSE_Alloc_Workspace_zgels_c(M,N,T,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgels')
             use iso_c_binding
             implicit none
@@ -2817,11 +2827,13 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: T ! T is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgels_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgels_Tile_c(M,N,descT) &
+         function MORSE_Alloc_Workspace_zgels_Tile_c(M,N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgels_Tile')
             use iso_c_binding
             implicit none
@@ -2829,11 +2841,13 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgels_Tile_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgeqrf_c(M,N,T) &
+         function MORSE_Alloc_Workspace_zgeqrf_c(M,N,T,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgeqrf')
             use iso_c_binding
             implicit none
@@ -2841,11 +2855,13 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: T ! T is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgeqrf_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgeqrf_Tile_c(M,N,descT) &
+         function MORSE_Alloc_Workspace_zgeqrf_Tile_c(M,N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgeqrf_Tile')
             use iso_c_binding
             implicit none
@@ -2853,6 +2869,8 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgeqrf_Tile_c
       end interface
 
@@ -2881,7 +2899,7 @@ module morse_z
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zgesvd_c(M,N,descT) &
+         function MORSE_Alloc_Workspace_zgesvd_c(M,N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zgesvd')
             use iso_c_binding
             implicit none
@@ -2889,6 +2907,8 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zgesvd_c
       end interface
 
@@ -2929,7 +2949,7 @@ module morse_z
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zheev_c(M,N,descT) &
+         function MORSE_Alloc_Workspace_zheev_c(M,N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zheev')
             use iso_c_binding
             implicit none
@@ -2937,11 +2957,13 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zheev_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zheevd_c(M,N,descT) &
+         function MORSE_Alloc_Workspace_zheevd_c(M,N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zheevd')
             use iso_c_binding
             implicit none
@@ -2949,11 +2971,13 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zheevd_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zhegv_c(M,N,descT) &
+         function MORSE_Alloc_Workspace_zhegv_c(M,N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zhegv')
             use iso_c_binding
             implicit none
@@ -2961,11 +2985,13 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zhegv_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zhegvd_c(M,N,descT) &
+         function MORSE_Alloc_Workspace_zhegvd_c(M,N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zhegvd')
             use iso_c_binding
             implicit none
@@ -2973,11 +2999,13 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zhegvd_c
       end interface
 
       interface
-         function MORSE_Alloc_Workspace_zhetrd_c(M,N,descT) &
+         function MORSE_Alloc_Workspace_zhetrd_c(M,N,descT,p,q) &
           & bind(c, name='MORSE_Alloc_Workspace_zhetrd')
             use iso_c_binding
             implicit none
@@ -2985,6 +3013,8 @@ module morse_z
             integer(kind=c_int), value :: M
             integer(kind=c_int), value :: N
             type(c_ptr) :: descT ! descT is **, so pass by reference
+            integer(kind=c_int), value :: p
+            integer(kind=c_int), value :: q
           end function MORSE_Alloc_Workspace_zhetrd_c
       end interface
 
@@ -5269,113 +5299,135 @@ module morse_z
          info = MORSE_Alloc_Workspace_zgeev_c(N,T)
       end subroutine MORSE_Alloc_Workspace_zgeev
 
-      subroutine MORSE_Alloc_Workspace_zgebrd(M,N,T,info)
+      subroutine MORSE_Alloc_Workspace_zgebrd(M,N,T,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: M
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: T ! T is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zgebrd_c(M,N,T)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zgebrd_c(M,N,T,p,q)
       end subroutine MORSE_Alloc_Workspace_zgebrd
 
-      subroutine MORSE_Alloc_Workspace_zgehrd(N,T,info)
+      subroutine MORSE_Alloc_Workspace_zgehrd(N,T,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: T ! T is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zgehrd_c(N,T)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zgehrd_c(N,T,p,q)
       end subroutine MORSE_Alloc_Workspace_zgehrd
 
-      subroutine MORSE_Alloc_Workspace_zgesvd(M,N,T,info)
+      subroutine MORSE_Alloc_Workspace_zgesvd(M,N,T,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: M
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: T ! T is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zgesvd_c(M,N,T)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zgesvd_c(M,N,T,p,q)
       end subroutine MORSE_Alloc_Workspace_zgesvd
 
-      subroutine MORSE_Alloc_Workspace_zheev(M,N,T,info)
+      subroutine MORSE_Alloc_Workspace_zheev(M,N,T,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: M
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: T ! T is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zheev_c(M,N,T)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zheev_c(M,N,T,p,q)
       end subroutine MORSE_Alloc_Workspace_zheev
 
-      subroutine MORSE_Alloc_Workspace_zheevd(M,N,T,info)
+      subroutine MORSE_Alloc_Workspace_zheevd(M,N,T,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: M
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: T ! T is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zheevd_c(M,N,T)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zheevd_c(M,N,T,p,q)
       end subroutine MORSE_Alloc_Workspace_zheevd
 
-      subroutine MORSE_Alloc_Workspace_zhegv(M,N,T,info)
+      subroutine MORSE_Alloc_Workspace_zhegv(M,N,T,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: M
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: T ! T is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zhegv_c(M,N,T)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zhegv_c(M,N,T,p,q)
       end subroutine MORSE_Alloc_Workspace_zhegv
 
-      subroutine MORSE_Alloc_Workspace_zhegvd(M,N,T,info)
+      subroutine MORSE_Alloc_Workspace_zhegvd(M,N,T,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: M
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: T ! T is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zhegvd_c(M,N,T)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zhegvd_c(M,N,T,p,q)
       end subroutine MORSE_Alloc_Workspace_zhegvd
 
-      subroutine MORSE_Alloc_Workspace_zhetrd(M,N,T,info)
+      subroutine MORSE_Alloc_Workspace_zhetrd(M,N,T,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: M
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: T ! T is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zhetrd_c(M,N,T)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zhetrd_c(M,N,T,p,q)
       end subroutine MORSE_Alloc_Workspace_zhetrd
 
-      subroutine MORSE_Alloc_Workspace_zgelqf_Tile(M,N,descT,info)
+      subroutine MORSE_Alloc_Workspace_zgelqf_Tile(M,N,descT,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: M
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: descT ! descT is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zgelqf_Tile_c(M,N,descT)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zgelqf_Tile_c(M,N,descT,p,q)
       end subroutine MORSE_Alloc_Workspace_zgelqf_Tile
 
-      subroutine MORSE_Alloc_Workspace_zgels_Tile(M,N,descT,info)
+      subroutine MORSE_Alloc_Workspace_zgels_Tile(M,N,descT,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: M
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: descT ! descT is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zgels_Tile_c(M,N,descT)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zgels_Tile_c(M,N,descT,p,q)
       end subroutine MORSE_Alloc_Workspace_zgels_Tile
 
-      subroutine MORSE_Alloc_Workspace_zgeqrf_Tile(M,N,descT,info)
+      subroutine MORSE_Alloc_Workspace_zgeqrf_Tile(M,N,descT,p,q,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          integer(kind=c_int), intent(in) :: M
          integer(kind=c_int), intent(in) :: N
          type(c_ptr) :: descT ! descT is **, so pass by reference
-         info = MORSE_Alloc_Workspace_zgeqrf_Tile_c(M,N,descT)
+         integer(kind=c_int), value :: p
+         integer(kind=c_int), value :: q
+         info = MORSE_Alloc_Workspace_zgeqrf_Tile_c(M,N,descT,p,q)
       end subroutine MORSE_Alloc_Workspace_zgeqrf_Tile
 
       subroutine MORSE_Alloc_Workspace_zgesv_incpiv_Tile(N,descL,IPIV,info)

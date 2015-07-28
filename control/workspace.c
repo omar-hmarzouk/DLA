@@ -38,7 +38,7 @@
 /*******************************************************************************
  *
  **/
-int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc)
+int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc, int p, int q)
 {
     int status;
     int IB, NB, MT, NT;
@@ -85,8 +85,7 @@ int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t 
         morse_error("morse_alloc_ibnb_tile", "malloc() failed");
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
-    /* TODO: Fix the distribution of the workspace */
-    **desc = morse_desc_init(type, IB, NB, IB*NB, lm, ln, 0, 0, lm, ln, 1, 1);
+    **desc = morse_desc_init(type, IB, NB, IB*NB, lm, ln, 0, 0, lm, ln, p, q);
 
     /* Allocate matrix */
     if (morse_desc_mat_alloc(*desc)) {

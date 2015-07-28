@@ -104,7 +104,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
 
     /* necessary to avoid dependencies between tslqt and unmlq tasks regarding the diag tile */
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc2(*DIAG, A->mb, A->nb, (minMT-1)*A->mb, A->nb, 0, 0, (minMT-1)*A->mb, A->nb);
+    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, (minMT-1)*A->mb, A->nb, 0, 0, (minMT-1)*A->mb, A->nb, A->p, A->q);
 
     for (k = 0; k < min(A->mt, A->nt); k++) {
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;

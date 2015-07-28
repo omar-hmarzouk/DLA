@@ -43,7 +43,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_zplrnt(M, N, A, LDA, 3456);
 
     /* Allocate Workspace */
-    MORSE_Alloc_Workspace_zgels(M, N, &T);
+    MORSE_Alloc_Workspace_zgels(M, N, &T, P, Q);
     memset(T->mat, 0, (T->llm*T->lln)*sizeof(MorseComplexDouble));
 
     /* Save AT in lapack layout for check */

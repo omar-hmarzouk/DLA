@@ -47,9 +47,12 @@ inline static int   morse_getblkldd_ccrb(const MORSE_desc_t *A, int m);
  *  Data distributions
  */
 inline static int   morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n);
+inline static int   morse_getrankof_2d_diag(const MORSE_desc_t *desc, int m, int n);
 
 MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
                              int lm, int ln, int i, int j, int m, int n, int p, int q);
+MORSE_desc_t morse_desc_init_diag(MORSE_enum dtyp, int mb, int nb, int bsiz,
+                                  int lm, int ln, int i, int j, int m, int n, int p, int q);
 MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
                                   int lm, int ln, int i, int j,
                                   int m,  int n,  int p, int q,
@@ -168,6 +171,15 @@ inline static int morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n)
 {
     return (m % desc->p) * desc->q + (n % desc->q);
 }
+
+/*******************************************************************************
+ *  Internal function to return MPI rank of element DIAG(m,0)
+ **/
+inline static int morse_getrankof_2d_diag(const MORSE_desc_t *desc, int m, int n)
+{
+    return (m % desc->p) * desc->q + (m % desc->q);
+}
+
 
 /*******************************************************************************
  * Detect if the tile is local or not

@@ -54,8 +54,8 @@
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Alloc_Workspace_zgeev(int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(N, N, MORSE_FUNC_ZGEEV, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zgeev(int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(N, N, MORSE_FUNC_ZGEEV, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -79,8 +79,8 @@ int MORSE_Alloc_Workspace_zgeev(int N, MORSE_desc_t **descT) {
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Alloc_Workspace_zgehrd(int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(N, N, MORSE_FUNC_ZGEHRD, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zgehrd(int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(N, N, MORSE_FUNC_ZGEHRD, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -106,8 +106,8 @@ int MORSE_Alloc_Workspace_zgehrd(int N, MORSE_desc_t **descT) {
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Alloc_Workspace_zgebrd(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGEBRD, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zgebrd(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGEBRD, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -134,8 +134,8 @@ int MORSE_Alloc_Workspace_zgebrd(int M, int N, MORSE_desc_t **descT) {
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Alloc_Workspace_zgels(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zgels(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -156,14 +156,20 @@ int MORSE_Alloc_Workspace_zgels(int M, int N, MORSE_desc_t **descT) {
  *          On exit, MORSE_desc_t *on workspace handle for storage of the extra
  *          T factors required by the tile QR or the tile LQ factorization.
  *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
  ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Alloc_Workspace_zgels_Tile(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zgels_Tile(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -184,14 +190,20 @@ int MORSE_Alloc_Workspace_zgels_Tile(int M, int N, MORSE_desc_t **descT) {
  *          On exit, workspace handle for storage of the extra T factors
  *          required by the tile QR factorization.
  *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
  ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Alloc_Workspace_zgeqrf(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zgeqrf(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -212,14 +224,20 @@ int MORSE_Alloc_Workspace_zgeqrf(int M, int N, MORSE_desc_t **descT) {
  *          On exit, MORSE_desc_t *on workspace handle for storage of the extra
  *          T factors required by the tile QR or the tile LQ factorization.
  *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
  ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Alloc_Workspace_zgeqrf_Tile(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zgeqrf_Tile(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -240,14 +258,20 @@ int MORSE_Alloc_Workspace_zgeqrf_Tile(int M, int N, MORSE_desc_t **descT) {
  *          On exit, workspace handle for storage of the extra T factors required by the tile LQ
  *          factorization.
  *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
  ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Alloc_Workspace_zgelqf(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zgelqf(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -267,14 +291,20 @@ int MORSE_Alloc_Workspace_zgelqf(int M, int N, MORSE_desc_t **descT) {
  *          On exit, MORSE_desc_t *on workspace handle for storage of the extra
  *          T factors required by the tile QR or the tile LQ factorization.
  *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
  ******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Alloc_Workspace_zgelqf_Tile(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zgelqf_Tile(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -355,14 +385,20 @@ int MORSE_Alloc_Workspace_zgesv_incpiv_Tile(int N, MORSE_desc_t **descL, int **I
  * @param[out] descT
  *          On exit, workspace handle for storage of the extra T factors required by the tile BRD.
  *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
  *******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
  ******************************************************************************/
-int MORSE_Alloc_Workspace_zgesvd(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGESVD, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zgesvd(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGESVD, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -429,10 +465,9 @@ int MORSE_Alloc_Workspace_zgetrf_incpiv(int M, int N, MORSE_desc_t **descL, int 
  *          \retval MORSE_SUCCESS successful exit
  *
  ******************************************************************************/
-int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV)
-{
-    return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV);
-}
+int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV) {
+    return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV); }
+
 /** ***************************************************************************
  *
  * @ingroup Workspace
@@ -450,14 +485,20 @@ int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **
  * @param[out] descT
  *          On exit, workspace handle for storage of the extra T factors required by the tile TRD.
  *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
  *******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
  ******************************************************************************/
-int MORSE_Alloc_Workspace_zheev(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEEV, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zheev(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEEV, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -476,14 +517,20 @@ int MORSE_Alloc_Workspace_zheev(int M, int N, MORSE_desc_t **descT) {
  * @param[out] descT
  *          On exit, workspace handle for storage of the extra T factors required by the tile TRD.
  *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
  *******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
  ******************************************************************************/
-int MORSE_Alloc_Workspace_zheevd(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEEVD, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zheevd(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEEVD, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -502,14 +549,20 @@ int MORSE_Alloc_Workspace_zheevd(int M, int N, MORSE_desc_t **descT) {
  * @param[out] descT
  *          On exit, workspace handle for storage of the extra T factors required by the tile TRD.
  *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
  *******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
  ******************************************************************************/
-int MORSE_Alloc_Workspace_zhegv(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEGV, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zhegv(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEGV, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -528,14 +581,20 @@ int MORSE_Alloc_Workspace_zhegv(int M, int N, MORSE_desc_t **descT) {
  * @param[out] descT
  *          On exit, workspace handle for storage of the extra T factors required by the tile TRD.
  *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
  *******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
  ******************************************************************************/
-int MORSE_Alloc_Workspace_zhegvd(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEGVD, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zhegvd(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEGVD, MorseComplexDouble, descT, p, q); }
 
 /** ***************************************************************************
  *
@@ -554,11 +613,17 @@ int MORSE_Alloc_Workspace_zhegvd(int M, int N, MORSE_desc_t **descT) {
  * @param[out] descT
  *          On exit, workspace handle for storage of the extra T factors required by the tile TRD.
  *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
  *******************************************************************************
  *
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
  ******************************************************************************/
-int MORSE_Alloc_Workspace_zhetrd(int M, int N, MORSE_desc_t **descT) {
-    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHETRD, MorseComplexDouble, descT); }
+int MORSE_Alloc_Workspace_zhetrd(int M, int N, MORSE_desc_t **descT, int p, int q) {
+    return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHETRD, MorseComplexDouble, descT, p, q); }

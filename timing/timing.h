@@ -86,21 +86,23 @@ enum dparam_timing {
     int64_t IB    = iparam[IPARAM_IB];             \
     int64_t MB    = iparam[IPARAM_MB];             \
     int64_t NB    = iparam[IPARAM_NB];             \
+    int64_t P     = iparam[IPARAM_P];              \
+    int64_t Q     = iparam[IPARAM_Q];              \
     int64_t MT    = (M%MB==0) ? (M/MB) : (M/MB+1); \
     int64_t NT    = (N%NB==0) ? (N/NB) : (N/NB+1); \
     int check     = iparam[IPARAM_CHECK];          \
     int loud      = iparam[IPARAM_VERBOSE];        \
     (void)M;(void)N;(void)K;(void)NRHS;            \
     (void)LDA;(void)LDB;(void)LDC;                 \
-    (void)IB;(void)MB;(void)NB;(void)MT;(void)NT;  \
-    (void)check;(void)loud;
+    (void)IB;(void)MB;(void)NB;(void)P;(void)Q;    \
+    (void)MT;(void)NT;(void)check;(void)loud;
 
 /* Paste code to allocate a matrix in desc if cond_init is true */
 #define PASTE_CODE_ALLOCATE_MATRIX_TILE(_desc_, _cond_, _type_, _type2_, _lda_, _m_, _n_) \
     MORSE_desc_t *_desc_ = NULL;                                        \
     if( _cond_ ) {                                                      \
         MORSE_Desc_Create(&(_desc_), NULL, _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
-                          iparam[IPARAM_P], iparam[IPARAM_Q]);          \
+                          P, Q);          \
     }
 
 #define PASTE_CODE_FREE_MATRIX(_desc_)                                  \
@@ -196,20 +198,20 @@ enum dparam_timing {
  *
  */
 #define START_TIMING()                \
+  t = -RUNTIME_get_time();            \
   START_DAG();                        \
   START_TRACING();                    \
-  START_DISTRIBUTED();                \
-  t = -RUNTIME_get_time();
+  START_DISTRIBUTED();
 
 #define STOP_TIMING()                 \
-  STOP_DISTRIBUTED();                 \
   t += RUNTIME_get_time();            \
-  STOP_TRACING();                     \
-  STOP_DAG();                         \
   if (iparam[IPARAM_PROFILE] == 2) {  \
     RUNTIME_kernelprofile_display();  \
     RUNTIME_schedprofile_display();   \
   }                                   \
-  *t_ = t;
+  *t_ = t;                            \
+  STOP_DISTRIBUTED();                 \
+  STOP_TRACING();                     \
+  STOP_DAG();
 
 #endif /* TIMING_H */

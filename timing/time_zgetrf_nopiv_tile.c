@@ -39,18 +39,18 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descX,  check, MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descAC, check, MORSE_Complex64_t, MorseComplexDouble, LDA, M, N    );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descB,  check, MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
-    
+
     MORSE_zplrnt_Tile(descA, 3456);
 
     /* Save A for check */
     if (check == 1){
         MORSE_zlacpy_Tile(MorseUpperLower, descA, descAC);
     }
-    
+
     START_TIMING();
     MORSE_zgetrf_nopiv_Tile( descA );
     STOP_TIMING();
-    
+
     /* Check the solution */
     if ( check )
     {

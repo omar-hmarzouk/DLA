@@ -46,7 +46,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_zplrnt( M, N,    A, LDA,  453 );
     MORSE_zplrnt( M, NRHS, x, LDB, 5673 );
 
-    MORSE_Alloc_Workspace_zgels(M, N, &T);
+    MORSE_Alloc_Workspace_zgels(M, N, &T, P, Q);
     memset(T->mat, 0, (T->llm*T->lln)*sizeof(MorseComplexDouble));
 
     /* Save A and b  */

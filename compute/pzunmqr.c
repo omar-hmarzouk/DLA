@@ -87,7 +87,7 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
 
     /* necessary to avoid dependencies between tasks regarding the diag tile */
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc2(*DIAG, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb);
+    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb, A->p, A->q);
 
     if (A->m > A->n) {
         minM  = A->n;

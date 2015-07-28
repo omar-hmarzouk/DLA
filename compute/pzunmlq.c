@@ -95,7 +95,7 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
 
     /* necessary to avoid dependencies between tasks regarding the diag tile */
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc2(*DIAG, A->mb, A->nb, minMT*A->mb, A->nb, 0, 0, minMT*A->mb, A->nb);
+    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, minMT*A->mb, A->nb, 0, 0, minMT*A->mb, A->nb, A->p, A->q);
 
     if (side == MorseLeft ) {
         if (trans == MorseNoTrans) {

@@ -92,7 +92,7 @@ void morse_pzunglqrh(MORSE_desc_t *A, MORSE_desc_t *Q,
     /* necessary to avoid dependencies between tasks regarding the diag tile */
     nblk = ( A->nt + BS -1 ) / BS;
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc2(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb);
+    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb, A->p, A->q);
 
     K = min(A->mt, A->nt);
     for (k = K-1; k >= 0; k--) {

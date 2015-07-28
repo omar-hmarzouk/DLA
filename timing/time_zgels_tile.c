@@ -45,7 +45,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_zplrnt_Tile( descX,  673 );
 
     /* Allocate Workspace */
-    MORSE_Alloc_Workspace_zgels_Tile(M, N, &descT);
+    MORSE_Alloc_Workspace_zgels_Tile(M, N, &descT, P, Q);
     memset(descT->mat, 0, (descT->llm*descT->lln)*sizeof(MorseComplexDouble));
 
     /* Save A and B for check */
@@ -54,7 +54,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         MORSE_zlacpy_Tile(MorseUpperLower, descX, descB);
     }
 
-    /* Do the computations */
+    /* MORSE ZGELS */
     START_TIMING();
     MORSE_zgels_Tile( MorseNoTrans, descA, descT, descX );
     STOP_TIMING();

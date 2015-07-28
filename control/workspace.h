@@ -32,7 +32,7 @@ extern "C" {
 /*******************************************************************************
  *  Internal routines
  **/
-int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc);
+int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc, int p, int q);
 int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc, void **IPIV);
 
 #ifdef __cplusplus

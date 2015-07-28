@@ -31,10 +31,10 @@
 /***************************************************************************//**
  *  Macro for matrix conversion / Lapack interface
  **/
-#define morse_zdesc_alloc2(descA, mb, nb, lm, ln, i, j, m, n)         \
-    descA = morse_desc_init(                                          \
-        MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                  \
-        (m), (n), (i), (j), (m), (n), 1, 1);                          \
+#define morse_zdesc_alloc_diag(descA, mb, nb, lm, ln, i, j, m, n, p, q) \
+    descA = morse_desc_init_diag(                                       \
+        MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                    \
+        (m), (n), (i), (j), (m), (n), p, q);                            \
     morse_desc_mat_alloc( &(descA) );
 
 #define morse_zdesc_alloc( descA, mb, nb, lm, ln, i, j, m, n, free)   \
