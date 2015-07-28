@@ -88,6 +88,8 @@ set(ZSRC
     time_zgetrf_incpiv_tile.c
     time_zgetrf_nopiv.c
     time_zgetrf_nopiv_tile.c
+    time_zgetrs_incpiv_tile.c
+    time_zgetrs_nopiv_tile.c
     #time_zgetrf.c
     #time_zgetrf_tile.c
     time_zposv.c
