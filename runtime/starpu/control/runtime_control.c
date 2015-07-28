@@ -132,7 +132,7 @@ void RUNTIME_finalize_scheduler( MORSE_context_t *morse )
 
     /* StarPU was already initialized by an external library */
     if (morse->schedopt == NULL) {
-        return 0;
+        return;
     }
 
 #if defined(CHAMELEON_USE_MPI)
