@@ -173,6 +173,7 @@ void MORSE_TASK_ztsmqr(MORSE_option_t *options,
             STARPU_VALUE,    &ldwork,            sizeof(int),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
+            STARPU_EXECUTE_ON_NODE, A2->get_rankof(A2, A2m, A2n),
             0);
     }
 }
