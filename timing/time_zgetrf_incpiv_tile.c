@@ -30,7 +30,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_desc_t *descL;
     int *piv;
     PASTE_CODE_IPARAM_LOCALS( iparam );
-    
+
     if ( M != N && check ) {
         fprintf(stderr, "Check cannot be perfomed with M != N\n");
         check = 0;
@@ -48,11 +48,11 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descX,  check, MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descAC, check, MORSE_Complex64_t, MorseComplexDouble, LDA, M, N    );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descB,  check, MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
-    
+
     MORSE_zplrnt_Tile(descA, 3456);
 
     /* Allocate Workspace */
-    MORSE_Alloc_Workspace_zgesv_incpiv_Tile(min(M,N), &descL, &piv);
+    MORSE_Alloc_Workspace_zgesv_incpiv_Tile(min(M,N), &descL, &piv, P, Q);
 
     /* Save A for check */
     if (check == 1){
