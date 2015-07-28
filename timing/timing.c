@@ -461,7 +461,7 @@ main(int argc, char *argv[]) {
     iparam[IPARAM_NB            ] = 128;
     iparam[IPARAM_IB            ] = 32;
     iparam[IPARAM_NITER         ] = 1;
-    iparam[IPARAM_WARMUP        ] = 1;
+    iparam[IPARAM_WARMUP        ] = 0;
     iparam[IPARAM_CHECK         ] = 0;
     iparam[IPARAM_VERBOSE       ] = 0;
     iparam[IPARAM_AUTOTUNING    ] = 0;
