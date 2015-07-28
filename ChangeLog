@@ -1,3 +1,9 @@
+chameleon-???
+------------------------------------------------------------------------
+
+- add timing drivers time_zpotrs_tile and time_zgeqrs_tile
+- deactivate warmup by default
+
 chameleon-0.9.1
 ------------------------------------------------------------------------
 r2253 | fpruvost | 2015-06-19 16:57:27 +0200 (ven. 19 juin 2015)
