@@ -465,7 +465,11 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             # -DMPI_C_COMPILER=path/to/mpicc -DMPI_Fortran_COMPILER=path/to/mpif90
             # at cmake configure
             if(NOT MPI_C_COMPILER)
-                set(MPI_C_COMPILER mpicc)
+                if(NOT CHAMELEON_SIMULATION)
+                    set(MPI_C_COMPILER mpicc)
+                else(NOT CHAMELEON_SIMULATION)
+                    set(MPI_C_COMPILER smpicc)
+                endif()
             endif()
             find_package(MPI REQUIRED)
 
@@ -508,12 +512,6 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             message("${BoldBlue}CHAMELEON_USE_MAGMA is set to ON but we turn it OFF."
             "Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
             "we do not need to link with MAGMA.${ColourReset}")
-        endif ()
-        if (CHAMELEON_USE_MPI)
-            set(CHAMELEON_USE_MPI OFF)
-            message("${BoldBlue}CHAMELEON_USE_MPI is set to ON but we turn it OFF."
-            "Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
-            "we do not need to link with MPI.${ColourReset}")
         endif ()
         if (CHAMELEON_ENABLE_TESTING)
             set(CHAMELEON_ENABLE_TESTING OFF)
