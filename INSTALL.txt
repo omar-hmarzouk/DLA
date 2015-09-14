@@ -94,7 +94,7 @@ example: cmake /home/toto/chameleon/ -DCMAKE_BUILD_TYPE=Debug \
                                       -DCHAMELEON_USE_MPI=ON \
                                       -DBLA_VENDOR=Intel10_64lp \ 
                                       -DSTARPU_DIR=/home/toto/install/starpu-1.1/build/include/starpu/1.1/ \
-                                      -DCHAMELEON_USE_FXT=ON 
+                                      -DCHAMELEON_ENABLE_TRACING=ON 
 
 You can get the full list of options with -L[A][H] options of cmake command
 example: cmake -LH /home/toto/chameleon/
@@ -126,7 +126,7 @@ CHAMELEON specific:
 CHAMELEON_USE_MPI=ON|OFF (default OFF)
 CHAMELEON_USE_CUDA=ON|OFF (default OFF) 
 CHAMELEON_USE_MAGMA=ON|OFF (default OFF)
-CHAMELEON_USE_FXT=ON|OFF (default OFF)
+CHAMELEON_ENABLE_TRACING=ON|OFF (default OFF)
 CHAMELEON_SCHED_STARPU=ON|OFF (default ON)
 CHAMELEON_SCHED_QUARK=ON|OFF (default OFF)
 CHAMELEON_SIMULATION=ON|OFF (default OFF)
@@ -150,7 +150,7 @@ StarPU in the directory pointed by the STARPU_FXT_PREFIX environment variable.
 example: export STARPU_FXT_PREFIX=/home/toto/fxt_files/
 
 When executing a ./timing/... CHAMELEON program, if it has been enabled 
-(StarPU compiled with FxT and -DCHAMELEON_USE_FXT=ON), you can give the option --trace 
+(StarPU compiled with FxT and -DCHAMELEON_ENABLE_TRACING=ON), you can give the option --trace 
 to tell the program to generate trace log files.
 
 Finally, to generate the trace file which can be opened with Vite program 

@@ -168,13 +168,6 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
         "configure to do so.")
     endif()
 
-    if(CHAMELEON_USE_FXT AND NOT CHAMELEON_SCHED_STARPU)
-        message(WARNING "You have activated FXT but CHAMELEON_SCHED_STARPU is OFF.\n"
-        "You should use StarPU Runtime system if you want to benefit from FxT.\n"
-        "Use -DCHAMELEON_SCHED_QUARK=OFF -DCHAMELEON_SCHED_STARPU=ON at cmake \n"
-        "configure to do so.")
-    endif()
-
     # Additional options
     # ------------------
 
@@ -204,13 +197,12 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
         message("-- ${BoldGreen}CHAMELEON_USE_MAGMA is set to OFF, turn it ON to use MAGMA (only with StarPU)${ColourReset}")
     endif()
 
-    # Enable FXT if StarPU (only if StarPU runtime is enabled)
-    cmake_dependent_option(CHAMELEON_USE_FXT
-                        "Enable FXT with STARPU" OFF
-                        "CHAMELEON_SCHED_STARPU" OFF)
-    if (NOT CHAMELEON_USE_FXT)
-        message("-- ${BoldGreen}CHAMELEON_USE_FXT is set to OFF, turn it ON to use FxT (only with StarPU)${ColourReset}")
+    # Enable FXT if StarPU
+    option(CHAMELEON_ENABLE_TRACING "Enable tracing support" OFF)
+    if (NOT CHAMELEON_ENABLE_TRACING)
+        message("-- ${BoldGreen}CHAMELEON_ENABLE_TRACING is set to OFF, turn it ON to use FxT (with StarPU)${ColourReset}")
     endif()
+    #option(CHAMELEON_USE_EZTRACE "Enable EZTRACE to build modules" OFF)
 
     # Options to enable/disable testings and timings
     # ----------------------------------------------
@@ -553,7 +545,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 list(APPEND STARPU_COMPONENT_LIST "CUDA")
             endif()
         endif()
-        if(CHAMELEON_USE_FXT)
+        if(CHAMELEON_ENABLE_TRACING)
             list(APPEND STARPU_COMPONENT_LIST "FXT")
         endif()
 
@@ -583,7 +575,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             if ( STARPU_DATA_WONT_USE_FOUND )
                 add_definitions(-DCHAMELEON_USE_STARPU_DATA_WONT_USE)
             endif()
-            if(CHAMELEON_USE_FXT)
+            if(CHAMELEON_ENABLE_TRACING)
                 # check if fxt profiling is accessible in starpu and activate it in chameleon
                 set(CMAKE_REQUIRED_LIBRARIES "${STARPU_SHM_LIBRARIES}")
                 unset(STARPU_FXT_START_PROFILING_FOUND CACHE)
@@ -635,7 +627,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                         Print_Find_Library_Status(hwloc libhwloc)
                     endif ()
                 endif()
-                if(CHAMELEON_USE_FXT AND (NOT FXT_FOUND OR NOT FXT_LIBRARIES))
+                if(CHAMELEON_ENABLE_TRACING AND (NOT FXT_FOUND OR NOT FXT_LIBRARIES))
                     if (NOT FXT_fxt.h_DIRS)
                         Print_Find_Header_Status(fxt fxt.h)
                     endif ()
@@ -666,7 +658,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
                 message(FATAL_ERROR "hwloc library is required but has not been found")
             endif()
-            if(CHAMELEON_USE_FXT AND (NOT FXT_FOUND OR NOT FXT_LIBRARIES))
+            if(CHAMELEON_ENABLE_TRACING AND (NOT FXT_FOUND OR NOT FXT_LIBRARIES))
                 message(FATAL_ERROR "FxT library is required but has not been found")
             endif()
             if( (NOT STARPU_SHM_FOUND) OR (NOT STARPU_SHM_LIBRARIES) OR
