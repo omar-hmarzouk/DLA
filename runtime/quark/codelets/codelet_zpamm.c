@@ -28,7 +28,7 @@
  *
  **/
 #include "coreblas/include/cblas.h"
-#include "coreblas/include/lapacke.h"
+
 #include "runtime/quark/include/morse_quark.h"
 
 /***************************************************************************//**

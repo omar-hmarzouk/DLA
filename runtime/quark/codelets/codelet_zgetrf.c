@@ -26,7 +26,7 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "coreblas/include/lapacke.h"
+
 #include "runtime/quark/include/morse_quark.h"
 
 void MORSE_TASK_zgetrf(MORSE_option_t *options,

@@ -26,7 +26,7 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "coreblas/include/lapacke.h"
+
 #include "runtime/starpu/include/morse_starpu.h"
 #include "runtime/starpu/include/runtime_codelet_z.h"
 
