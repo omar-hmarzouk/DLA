@@ -87,12 +87,10 @@ static void cl_ztrmm_cpu_func(void *descr[], void *cl_arg)
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
     starpu_codelet_unpack_args(cl_arg, &side, &uplo, &transA, &diag, &M, &N, &alpha, &LDA, &LDB);
-    cblas_ztrmm(
-        CblasColMajor,
-        (CBLAS_SIDE)side, (CBLAS_UPLO)uplo,
-        (CBLAS_TRANSPOSE)transA, (CBLAS_DIAG)diag,
+    CORE_ztrmm(side, uplo,
+        transA, diag,
         M, N,
-        CBLAS_SADDR(alpha), A, LDA,
+        alpha, A, LDA,
         B, LDB);
 }
 

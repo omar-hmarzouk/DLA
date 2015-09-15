@@ -120,13 +120,11 @@ static void cl_zgemm_cpu_func(void *descr[], void *cl_arg)
     B = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
     C = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &transA, &transB, &m, &n, &k, &alpha, &lda, &ldb, &beta, &ldc);
-    cblas_zgemm(
-        CblasColMajor,
-        (CBLAS_TRANSPOSE)transA, (CBLAS_TRANSPOSE)transB,
+    CORE_zgemm(transA, transB,
         m, n, k,
-        CBLAS_SADDR(alpha), A, lda,
+        alpha, A, lda,
         B, ldb,
-        CBLAS_SADDR(beta), C, ldc);
+        beta, C, ldc);
 }
 
 #ifdef CHAMELEON_USE_CUDA

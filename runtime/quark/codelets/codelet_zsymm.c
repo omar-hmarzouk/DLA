@@ -78,11 +78,9 @@ void CORE_zsymm_quark(Quark *quark)
     int LDC;
 
     quark_unpack_args_12(quark, side, uplo, M, N, alpha, A, LDA, B, LDB, beta, C, LDC);
-    cblas_zsymm(
-        CblasColMajor,
-        (CBLAS_SIDE)side, (CBLAS_UPLO)uplo,
+    CORE_zsymm(side, uplo,
         M, N,
-        CBLAS_SADDR(alpha), A, LDA,
+        alpha, A, LDA,
         B, LDB,
-        CBLAS_SADDR(beta), C, LDC);
+        beta, C, LDC);
 }

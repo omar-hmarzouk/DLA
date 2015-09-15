@@ -85,12 +85,10 @@ static void cl_zsyrk_cpu_func(void *descr[], void *cl_arg)
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     C = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
     starpu_codelet_unpack_args(cl_arg, &uplo, &trans, &n, &k, &alpha, &lda, &beta, &ldc);
-    cblas_zsyrk(
-        CblasColMajor,
-        (CBLAS_UPLO)uplo, (CBLAS_TRANSPOSE)trans,
+    CORE_zsyrk(uplo, trans,
         n, k,
-        CBLAS_SADDR(alpha), A, lda,
-        CBLAS_SADDR(beta), C, ldc);
+        alpha, A, lda,
+        beta, C, ldc);
 }
 
 #ifdef CHAMELEON_USE_CUDA

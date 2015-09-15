@@ -76,9 +76,7 @@ void CORE_zherk_quark(Quark *quark)
     int ldc;
 
     quark_unpack_args_10(quark, uplo, trans, n, k, alpha, A, lda, beta, C, ldc);
-    cblas_zherk(
-        CblasColMajor,
-        (CBLAS_UPLO)uplo, (CBLAS_TRANSPOSE)trans,
+    CORE_zherk(uplo, trans,
         n, k,
         alpha, A, lda,
         beta, C, ldc);

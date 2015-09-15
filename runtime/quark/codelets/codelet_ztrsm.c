@@ -75,11 +75,9 @@ void CORE_ztrsm_quark(Quark *quark)
     int ldb;
 
     quark_unpack_args_11(quark, side, uplo, transA, diag, m, n, alpha, A, lda, B, ldb);
-    cblas_ztrsm(
-        CblasColMajor,
-        (CBLAS_SIDE)side, (CBLAS_UPLO)uplo,
-        (CBLAS_TRANSPOSE)transA, (CBLAS_DIAG)diag,
+    CORE_ztrsm(side, uplo,
+        transA, diag,
         m, n,
-        CBLAS_SADDR(alpha), A, lda,
+        alpha, A, lda,
         B, ldb);
 }

@@ -81,7 +81,7 @@ void CORE_zher2k_quark(Quark *quark)
     int ldc;
 
     quark_unpack_args_12(quark, uplo, trans, n, k, alpha, A, lda, B, ldb, beta, C, ldc);
-    cblas_zher2k(CblasColMajor, (CBLAS_UPLO)uplo, (CBLAS_TRANSPOSE)trans,
-                 n, k, CBLAS_SADDR(alpha), A, lda, B, ldb, beta, C, ldc);
+    CORE_zher2k(uplo, trans,
+                n, k, alpha, A, lda, B, ldb, beta, C, ldc);
 }
 #endif

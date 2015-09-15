@@ -92,13 +92,11 @@ static void cl_zsymm_cpu_func(void *descr[], void *cl_arg)
     B = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
     C = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &side, &uplo, &M, &N, &alpha, &LDA, &LDB, &beta, &LDC);
-    cblas_zsymm(
-        CblasColMajor,
-        (CBLAS_SIDE)side, (CBLAS_UPLO)uplo,
+    CORE_zsymm(side, uplo,
         M, N,
-        CBLAS_SADDR(alpha), A, LDA,
+        alpha, A, LDA,
         B, LDB,
-        CBLAS_SADDR(beta), C, LDC);
+        beta, C, LDC);
 }
 
 #ifdef CHAMELEON_USE_CUDA

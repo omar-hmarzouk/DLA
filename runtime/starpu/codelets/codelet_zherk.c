@@ -84,9 +84,7 @@ static void cl_zherk_cpu_func(void *descr[], void *cl_arg)
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     C = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
     starpu_codelet_unpack_args(cl_arg, &uplo, &trans, &n, &k, &alpha, &lda, &beta, &ldc);
-    cblas_zherk(
-        CblasColMajor,
-        (CBLAS_UPLO)uplo, (CBLAS_TRANSPOSE)trans,
+    CORE_zherk(uplo, trans,
         n, k,
         alpha, A, lda,
         beta, C, ldc);

@@ -73,10 +73,8 @@ void CORE_zsyrk_quark(Quark *quark)
     int ldc;
 
     quark_unpack_args_10(quark, uplo, trans, n, k, alpha, A, lda, beta, C, ldc);
-    cblas_zsyrk(
-        CblasColMajor,
-        (CBLAS_UPLO)uplo, (CBLAS_TRANSPOSE)trans,
+    CORE_zsyrk(uplo, trans,
         n, k,
-        CBLAS_SADDR(alpha), A, lda,
-        CBLAS_SADDR(beta), C, ldc);
+        alpha, A, lda,
+        beta, C, ldc);
 }

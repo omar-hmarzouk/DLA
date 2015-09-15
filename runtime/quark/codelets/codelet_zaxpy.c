@@ -54,5 +54,5 @@ void CORE_zaxpy_quark(Quark *quark)
     int incB;
 
     quark_unpack_args_6(quark, M, alpha, A, incA, B, incB);
-    cblas_zaxpy(M, CBLAS_SADDR(alpha), A, incA, B, incB);
+    CORE_zaxpy(M, alpha, A, incA, B, incB);
 }

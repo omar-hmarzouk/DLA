@@ -75,12 +75,10 @@ void CORE_ztrmm_quark(Quark *quark)
     int LDB;
 
     quark_unpack_args_11(quark, side, uplo, transA, diag, M, N, alpha, A, LDA, B, LDB);
-    cblas_ztrmm(
-        CblasColMajor,
-        (CBLAS_SIDE)side, (CBLAS_UPLO)uplo,
-        (CBLAS_TRANSPOSE)transA, (CBLAS_DIAG)diag,
+    CORE_ztrmm(side, uplo,
+        transA, diag,
         M, N,
-        CBLAS_SADDR(alpha), A, LDA,
+        alpha, A, LDA,
         B, LDB);
 }
 

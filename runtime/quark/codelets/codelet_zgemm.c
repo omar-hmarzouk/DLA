@@ -81,13 +81,11 @@ void CORE_zgemm_quark(Quark *quark)
     int ldc;
 
     quark_unpack_args_13(quark, transA, transB, m, n, k, alpha, A, lda, B, ldb, beta, C, ldc);
-    cblas_zgemm(
-        CblasColMajor,
-        (CBLAS_TRANSPOSE)transA, (CBLAS_TRANSPOSE)transB,
+    CORE_zgemm(transA, transB,
         m, n, k,
-        CBLAS_SADDR(alpha), A, lda,
+        alpha, A, lda,
         B, ldb,
-        CBLAS_SADDR(beta), C, ldc);
+        beta, C, ldc);
 }
 
 

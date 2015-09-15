@@ -55,6 +55,9 @@ int CORE_zgbrce(MORSE_enum uplo, int N,
 int CORE_zgblrx(MORSE_enum uplo, int N,
                 MORSE_desc_t *A, MORSE_Complex64_t *V, MORSE_Complex64_t *TAU,
                 int st, int ed, int eltsize);
+int CORE_zaxpy(int M, MORSE_Complex64_t alpha,
+               const MORSE_Complex64_t *A, int incA,
+                     MORSE_Complex64_t *B, int incB);
 int CORE_zgeadd(int M, int N, MORSE_Complex64_t alpha,
                 const MORSE_Complex64_t *A, int LDA,
                       MORSE_Complex64_t *B, int LDB);

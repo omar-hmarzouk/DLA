@@ -31,6 +31,7 @@
 set(COREBLAS_SRCS_GENERATED "")
 set(ZSRC
     core_dzasum.c
+    core_zaxpy.c
     core_zgeadd.c
     core_zgelqt.c
     core_zgemm.c

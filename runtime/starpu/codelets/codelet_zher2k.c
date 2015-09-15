@@ -92,8 +92,8 @@ static void cl_zher2k_cpu_func(void *descr[], void *cl_arg)
     B = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
     C = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &uplo, &trans, &n, &k, &alpha, &lda, &ldb, &beta, &ldc);
-    cblas_zher2k(CblasColMajor, (CBLAS_UPLO)uplo, (CBLAS_TRANSPOSE)trans,
-                 n, k, CBLAS_SADDR(alpha), A, lda, B, ldb, beta, C, ldc);
+    CORE_zher2k(uplo, trans,
+                n, k, alpha, A, lda, B, ldb, beta, C, ldc);
 }
 
 #ifdef CHAMELEON_USE_CUDA
