@@ -465,11 +465,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             # -DMPI_C_COMPILER=path/to/mpicc -DMPI_Fortran_COMPILER=path/to/mpif90
             # at cmake configure
             if(NOT MPI_C_COMPILER)
-                if(NOT CHAMELEON_SIMULATION)
-                    set(MPI_C_COMPILER mpicc)
-                else(NOT CHAMELEON_SIMULATION)
-                    set(MPI_C_COMPILER smpicc)
-                endif()
+		set(MPI_C_COMPILER mpicc)
             endif()
             find_package(MPI REQUIRED)
 
@@ -520,6 +516,34 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             "there is no sense in compiling testing drivers that are used to check"
             "numerical correctness of algorithms and kernels.${ColourReset}")
         endif ()
+
+        # CHAMELEON depends on MPI
+        #-------------------------
+        if (CHAMELEON_USE_MPI)
+
+            # allows to use an external mpi compilation by setting compilers with
+            # -DMPI_C_COMPILER=path/to/mpicc -DMPI_Fortran_COMPILER=path/to/mpif90
+            # at cmake configure
+            if(NOT MPI_C_COMPILER)
+                set(MPI_C_COMPILER smpicc)
+            endif()
+            if(NOT MPI_C_LIBRARIES)
+                set(MPI_C_LIBRARIES -lsimgrid)
+            endif()
+            find_package(MPI REQUIRED)
+
+            if (MPI_C_FOUND)
+                message("-- ${Blue}Add definition CHAMELEON_USE_MPI"
+                " - Activate MPI in Chameleon${ColourReset}")
+                add_definitions(-DCHAMELEON_USE_MPI)
+                list(APPEND EXTRA_LIBRARIES ${MPI_C_LIBRARIES} )
+                include_directories( ${MPI_C_INCLUDE_PATH} )
+                if(MPI_C_LINK_FLAGS)
+                    list(APPEND CMAKE_EXE_LINKER_FLAGS "${MPI_C_LINK_FLAGS}")
+                endif()
+            endif (MPI_C_FOUND)
+
+        endif (CHAMELEON_USE_MPI)
 
     endif(NOT CHAMELEON_SIMULATION)
 
