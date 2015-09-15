@@ -786,11 +786,6 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
     include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
-    ###############################################################################
-    # To build eztrace modules #
-    ############################
-    add_subdirectory(eztrace_modules)
-    #------------------------------------------------------------------------------
 
     ###############################################################################
     # simucore libraries #
