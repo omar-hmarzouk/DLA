@@ -626,6 +626,12 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                     " - starpu_mpi_data_register() test fails in StarPU${ColourReset}")
                     message("-- ${Red}Check in CMakeFiles/CMakeError.log to figure out why it fails${ColourReset}")
                 endif()
+                if (CHAMELEON_SIMULATION)
+                    # function detection fails due to conflicting main
+                    # definitions. We know that the StarPU-simgrid-MPI version
+                    # has it anyway.
+                    add_definitions(-DHAVE_STARPU_MPI_DATA_REGISTER)
+                endif()
             endif()
             if(HWLOC_FOUND AND HWLOC_LIBRARY_DIRS)
                 # the RPATH to be used when installing
