@@ -50,10 +50,14 @@ if (EZTRACE_FOUND AND EZTRACE_DIR_FOUND)
             DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/output
             )
         add_custom_command(
-            OUTPUT libeztrace-autostart-chameleon_core.so libeztrace-chameleon_core.so libeztrace-convert-chameleon_core.so
+            OUTPUT libeztrace-convert-chameleon_core.so
             COMMAND make
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/output
             DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/output
+            )
+        add_custom_target(
+            eztrace-module-chameleon_core-libs ALL
+            DEPENDS libeztrace-convert-chameleon_core.so
             )
         # installation
         # ------------
