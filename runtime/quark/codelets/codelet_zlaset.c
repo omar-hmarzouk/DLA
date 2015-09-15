@@ -97,8 +97,5 @@ void CORE_zlaset_quark(Quark *quark)
     int LDA;
 
     quark_unpack_args_7(quark, uplo, M, N, alpha, beta, A, LDA);
-    LAPACKE_zlaset_work(
-        LAPACK_COL_MAJOR,
-        morse_lapack_const(uplo),
-        M, N, alpha, beta, A, LDA);
+    CORE_zlaset(uplo, M, N, alpha, beta, A, LDA);
 }

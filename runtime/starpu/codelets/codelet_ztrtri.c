@@ -78,10 +78,7 @@ static void cl_ztrtri_cpu_func(void *descr[], void *cl_arg)
 
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     starpu_codelet_unpack_args(cl_arg, &uplo, &diag, &N, &LDA, &iinfo);
-    info = LAPACKE_ztrtri_work(
-        LAPACK_COL_MAJOR,
-        morse_lapack_const(uplo), morse_lapack_const(diag),
-        N, A, LDA);
+    CORE_ztrtri(uplo, diag, N, A, LDA, &info);
 }
 
 #if defined(CHAMELEON_USE_MAGMA)

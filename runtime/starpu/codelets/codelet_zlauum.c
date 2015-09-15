@@ -70,7 +70,7 @@ static void cl_zlauum_cpu_func(void *descr[], void *cl_arg)
 
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     starpu_codelet_unpack_args(cl_arg, &uplo, &N, &LDA);
-    LAPACKE_zlauum_work(LAPACK_COL_MAJOR, morse_lapack_const(uplo), N, A, LDA);
+    CORE_zlauum(uplo, N, A, LDA);
 }
 
 #if defined(CHAMELEON_USE_MAGMA)

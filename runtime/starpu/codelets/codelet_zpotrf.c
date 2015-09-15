@@ -76,10 +76,7 @@ static void cl_zpotrf_cpu_func(void *descr[], void *cl_arg)
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
 
     starpu_codelet_unpack_args(cl_arg, &uplo, &n, &lda, &iinfo);
-    info = LAPACKE_zpotrf_work(
-        LAPACK_COL_MAJOR,
-        morse_lapack_const(uplo),
-        n, A, lda);
+    CORE_zpotrf(uplo, n, A, lda, &info);
 }
 
 #ifdef CHAMELEON_USE_MAGMA

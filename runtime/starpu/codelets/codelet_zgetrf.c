@@ -71,7 +71,7 @@ static void cl_zgetrf_cpu_func(void *descr[], void *cl_arg)
 
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     starpu_codelet_unpack_args(cl_arg, &m, &n, &lda, &IPIV, &check_info, &iinfo);
-    info = LAPACKE_zgetrf_work(LAPACK_COL_MAJOR, m, n, A, lda, IPIV );
+    CORE_zgetrf( m, n, A, lda, IPIV, &info );
 }
 /*
  * Codelet definition

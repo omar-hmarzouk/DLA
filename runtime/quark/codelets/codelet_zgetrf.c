@@ -65,7 +65,7 @@ void CORE_zgetrf_quark(Quark *quark)
     int info;
 
     quark_unpack_args_9(quark, m, n, A, lda, IPIV, sequence, request, check_info, iinfo);
-    info = LAPACKE_zgetrf_work(LAPACK_COL_MAJOR, m, n, A, lda, IPIV );
+    CORE_zgetrf( m, n, A, lda, IPIV, &info );
     if (info != MORSE_SUCCESS && check_info)
         RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
 }

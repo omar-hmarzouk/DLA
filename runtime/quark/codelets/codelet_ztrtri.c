@@ -72,10 +72,7 @@ void CORE_ztrtri_quark(Quark *quark)
     int info;
 
     quark_unpack_args_8(quark, uplo, diag, N, A, LDA, sequence, request, iinfo);
-    info = LAPACKE_ztrtri_work(
-        LAPACK_COL_MAJOR,
-        morse_lapack_const(uplo), morse_lapack_const(diag),
-        N, A, LDA);
+    CORE_ztrtri(uplo, diag, N, A, LDA, &info);
     if ((sequence->status == MORSE_SUCCESS) && (info > 0))
         RUNTIME_sequence_flush(quark, sequence, request, iinfo + info);
 }

@@ -73,7 +73,7 @@ static void cl_zlag2c_cpu_func(void *descr[], void *cl_arg)
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (MORSE_Complex32_t *)STARPU_MATRIX_GET_PTR(descr[1]);
     starpu_codelet_unpack_args(cl_arg, &m, &n, &lda, &ldb);
-    LAPACKE_zlag2c_work(LAPACK_COL_MAJOR, m, n, A, lda, B, ldb);
+    CORE_zlag2c( m, n, A, lda, B, ldb);
 }
 
 void MORSE_TASK_clag2z(MORSE_option_t *options,
@@ -115,7 +115,7 @@ static void cl_clag2z_cpu_func(void *descr[], void *cl_arg)
     A = (MORSE_Complex32_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
     starpu_codelet_unpack_args(cl_arg, &m, &n, &lda, &ldb);
-    LAPACKE_clag2z_work(LAPACK_COL_MAJOR, m, n, A, lda, B, ldb);
+    CORE_clag2z( m, n, A, lda, B, ldb);
 }
 
 /*

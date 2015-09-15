@@ -68,7 +68,7 @@ void CORE_zlag2c_quark(Quark *quark)
     int info;
 
     quark_unpack_args_8(quark, m, n, A, lda, B, ldb, sequence, request);
-    info = LAPACKE_zlag2c_work(LAPACK_COL_MAJOR, m, n, A, lda, B, ldb);
+    CORE_zlag2c( m, n, A, lda, B, ldb);
     if (sequence->status == MORSE_SUCCESS && info != 0)
         RUNTIME_sequence_flush(quark, sequence, request, info);
 }
@@ -105,6 +105,6 @@ void CORE_clag2z_quark(Quark *quark)
     int ldb;
 
     quark_unpack_args_6(quark, m, n, A, lda, B, ldb);
-    LAPACKE_clag2z_work(LAPACK_COL_MAJOR, m, n, A, lda, B, ldb);
+    CORE_clag2z( m, n, A, lda, B, ldb);
 }
 

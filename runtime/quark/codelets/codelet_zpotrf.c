@@ -69,10 +69,7 @@ void CORE_zpotrf_quark(Quark *quark)
     int info;
 
     quark_unpack_args_7(quark, uplo, n, A, lda, sequence, request, iinfo);
-    info = LAPACKE_zpotrf_work(
-        LAPACK_COL_MAJOR,
-        morse_lapack_const(uplo),
-        n, A, lda);
+    CORE_zpotrf(uplo, n, A, lda, &info);
     if (sequence->status == MORSE_SUCCESS && info != 0)
         RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
 }
