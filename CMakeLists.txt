@@ -551,8 +551,6 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     # CHAMELEON depends on a runtime
     # -------------------------------
 
-    # TODO: discuss on this with Manu
-    # try to find starpu runtime
     if( CHAMELEON_SCHED_STARPU )
 
         set(CHAMELEON_STARPU_VERSION "1.1" CACHE STRING "oldest STARPU version desired")
@@ -589,6 +587,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             endforeach()
             string(REPLACE ";" " " CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS}")
             set(CMAKE_REQUIRED_LIBRARIES "${STARPU_SHM_LIBRARIES}")
+            set(CMAKE_REQUIRED_FLAGS "-include starpu_simgrid_wrap.h")
             check_function_exists(starpu_data_idle_prefetch_on_node STARPU_IDLE_PREFETCH_FOUND)
             if ( STARPU_IDLE_PREFETCH_FOUND )
                 add_definitions(-DCHAMELEON_USE_STARPU_IDLE_PREFETCH)
