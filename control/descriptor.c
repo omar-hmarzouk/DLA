@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -77,11 +77,7 @@ MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.alloc_mat = 1;
     desc.register_mat = 1;
 
-#if defined(CHAMELEON_USE_MPI)
-    MPI_Comm_rank( MPI_COMM_WORLD, &(desc.myrank) );
-#else
-    desc.myrank = 0;
-#endif
+    RUNTIME_distributed_rank( &(desc.myrank) );
 
     // Grid size
     desc.p = p;
@@ -166,11 +162,7 @@ MORSE_desc_t morse_desc_init_diag(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.alloc_mat = 1;
     desc.register_mat = 1;
 
-#if defined(CHAMELEON_USE_MPI)
-    MPI_Comm_rank( MPI_COMM_WORLD, &(desc.myrank) );
-#else
-    desc.myrank = 0;
-#endif
+    RUNTIME_distributed_rank( &(desc.myrank) );
 
     // Grid size
     desc.p = p;
@@ -258,11 +250,7 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.alloc_mat = 1;
     desc.register_mat = 1;
 
-#if defined(CHAMELEON_USE_MPI)
-    MPI_Comm_rank( MPI_COMM_WORLD, &(desc.myrank) );
-#else
-    desc.myrank = 0;
-#endif
+    RUNTIME_distributed_rank( &(desc.myrank) );
 
     // Grid size
     desc.p = p;
@@ -418,7 +406,7 @@ int morse_desc_mat_free( MORSE_desc_t *desc )
     if (desc->mat != NULL  &&
         desc->use_mat == 1 &&
         desc->alloc_mat == 1) {
-#ifndef CHAMELEON_SIMULATION
+#if !defined(CHAMELEON_SIMULATION) || defined(CHAMELEON_USE_MPI)
         free(desc->mat);
 #endif
         desc->mat = NULL;
@@ -508,7 +496,7 @@ int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, i
 
     if (mat == NULL) {
 
-#ifdef CHAMELEON_SIMULATION
+#if defined(CHAMELEON_SIMULATION) && !defined(CHAMELEON_USE_MPI)
         (**desc).mat = (void*) 1;
 #else
         /* TODO: a call to morse_desc_mat_alloc should be made, but require to

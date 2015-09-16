@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -84,5 +84,31 @@ void RUNTIME_pause( MORSE_context_t *morse )
 void RUNTIME_resume( MORSE_context_t *morse )
 {
     (void)morse;
+    return;
+}
+
+/*******************************************************************************
+ *  This returns the rank of this process
+ **/
+void RUNTIME_distributed_rank( int *rank )
+{
+    *rank = 0;
+    return;
+}
+
+/*******************************************************************************
+ *  This returns the size of the distributed computation
+ **/
+void RUNTIME_distributed_size( int *size )
+{
+    *size = 1;
+    return;
+}
+
+/*******************************************************************************
+ *  Barrier between processes of the distributed computation
+ **/
+void RUNTIME_distributed_barrier( void )
+{
     return;
 }

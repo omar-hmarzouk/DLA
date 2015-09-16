@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -185,8 +185,8 @@ enum dparam_timing {
  *
  */
 #if defined(CHAMELEON_USE_MPI)
-#define START_DISTRIBUTED()  MPI_Barrier(MPI_COMM_WORLD);
-#define STOP_DISTRIBUTED()   MPI_Barrier(MPI_COMM_WORLD);
+#define START_DISTRIBUTED()  MORSE_Distributed_start();
+#define STOP_DISTRIBUTED()   MORSE_Distributed_stop();
 #else
 #define START_DISTRIBUTED()  do {} while(0);
 #define STOP_DISTRIBUTED()   do {} while(0);

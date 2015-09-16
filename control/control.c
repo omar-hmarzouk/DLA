@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -138,8 +138,8 @@ int MORSE_Finalize(void)
     magma_finalize();
 #endif
     morse_context_destroy();
+    RUNTIME_distributed_barrier();
 #if defined(CHAMELEON_USE_MPI)
-    MPI_Barrier(MPI_COMM_WORLD);
     if (!morse->mpi_outer_init)
         MPI_Finalize();
 #endif
@@ -191,5 +191,77 @@ int MORSE_Resume(void)
         return MORSE_ERR_NOT_INITIALIZED;
     }
     RUNTIME_resume(morse);
+    return MORSE_SUCCESS;
+}
+
+/** ***************************************************************************
+ *
+ * @ingroup Control
+ *
+ *  MORSE_Distributed_start - Prepare the distributed processes for computation
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *
+ *****************************************************************************/
+int MORSE_Distributed_start(void)
+{
+    RUNTIME_distributed_barrier ();
+    return MORSE_SUCCESS;
+}
+
+/** ***************************************************************************
+ *
+ * @ingroup Control
+ *
+ *  MORSE_Distributed_stop - Clean the distributed processes after computation
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *
+ *****************************************************************************/
+int MORSE_Distributed_stop(void)
+{
+    RUNTIME_distributed_barrier ();
+    return MORSE_SUCCESS;
+}
+
+/** ***************************************************************************
+ *
+ * @ingroup Control
+ *
+ *  MORSE_Distributed_size - Return the size of the distributed computation
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *
+ *****************************************************************************/
+int MORSE_Distributed_size( int *size )
+{
+    RUNTIME_distributed_size (size);
+    return MORSE_SUCCESS;
+}
+
+/** ***************************************************************************
+ *
+ * @ingroup Control
+ *
+ *  MORSE_Distributed_rank - Return the rank of the distributed computation
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *
+ *****************************************************************************/
+int MORSE_Distributed_rank( int *rank )
+{
+    RUNTIME_distributed_rank (rank);
     return MORSE_SUCCESS;
 }

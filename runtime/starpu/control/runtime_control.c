@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -107,8 +107,8 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
         int flag = 0;
         MPI_Initialized( &flag );
         starpu_mpi_init(NULL, NULL, !flag);
-        MPI_Comm_rank(MPI_COMM_WORLD, &(morse->my_mpi_rank));
-        MPI_Comm_size(MPI_COMM_WORLD, &(morse->mpi_comm_size));
+        starpu_mpi_comm_rank(MPI_COMM_WORLD, &(morse->my_mpi_rank));
+        starpu_mpi_comm_size(MPI_COMM_WORLD, &(morse->mpi_comm_size));
     }
 #endif
 
@@ -176,5 +176,50 @@ void RUNTIME_resume( MORSE_context_t *morse )
 {
     (void)morse;
     starpu_resume();
+    return;
+}
+
+/*******************************************************************************
+ *  This returns the rank of this process
+ **/
+void RUNTIME_distributed_rank( int *rank )
+{
+#if defined(CHAMELEON_USE_MPI)
+#  if defined(HAVE_STARPU_MPI_RANK)
+    starpu_mpi_comm_rank(MPI_COMM_WORLD, rank);
+#  else
+    MPI_Comm_rank(MPI_COMM_WORLD, rank);
+#  endif
+#else
+    *rank = 0;
+#endif
+    return;
+}
+
+/*******************************************************************************
+ *  This returns the size of the distributed computation
+ **/
+void RUNTIME_distributed_size( int *size )
+{
+#if defined(CHAMELEON_USE_MPI)
+#  if defined(HAVE_STARPU_MPI_RANK)
+    starpu_mpi_comm_size(MPI_COMM_WORLD, size);
+#  else
+    MPI_Comm_size(MPI_COMM_WORLD, size);
+#  endif
+#else
+    *size = 1;
+#endif
+    return;
+}
+
+/*******************************************************************************
+ *  Barrier between processes of the distributed computation
+ **/
+void RUNTIME_distributed_barrier( void )
+{
+#if defined(CHAMELEON_USE_MPI)
+    starpu_mpi_barrier(MPI_COMM_WORLD);
+#endif
     return;
 }

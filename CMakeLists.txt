@@ -625,6 +625,17 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                     " - starpu_mpi_data_register() test fails in StarPU${ColourReset}")
                     message("-- ${Red}Check in CMakeFiles/CMakeError.log to figure out why it fails${ColourReset}")
                 endif()
+		unset(STARPU_MPI_COMM_RANK_FOUND CACHE)
+		check_function_exists(starpu_mpi_comm_rank STARPU_MPI_COMM_RANK_FOUND)
+		if ( STARPU_MPI_COMM_RANK_FOUND )
+                    message("-- ${Blue}Add definition HAVE_STARPU_MPI_COMM_RANK - Activate"
+                    "use of starpu_mpi_comm_rank() in Chameleon with StarPU${ColourReset}")
+                    add_definitions(-DHAVE_STARPU_MPI_COMM_RANK)
+                else()
+                    message("-- ${Red}Looking for starpu with starpu_mpi_data_register"
+                    " - starpu_mpi_comm_rank() test fails in StarPU${ColourReset}")
+                    message("-- ${Red}Check in CMakeFiles/CMakeError.log to figure out why it fails${ColourReset}")
+                endif()
             endif()
             if(HWLOC_FOUND AND HWLOC_LIBRARY_DIRS)
                 # the RPATH to be used when installing
