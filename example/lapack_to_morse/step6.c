@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -110,7 +110,7 @@ int main(int argc, char *argv[]) {
     MORSE_Set(MORSE_INNER_BLOCK_SIZE, iparam[IPARAM_IB] );
 
 #if defined(CHAMELEON_USE_MPI)
-    MPI_Comm_size( MPI_COMM_WORLD, &NMPIPROC );
+    MORSE_Distributed_size( &NMPIPROC );
     /* Check P */
     if ( (iparam[IPARAM_P] > 1) &&
          (NMPIPROC % iparam[IPARAM_P] != 0) ) {
