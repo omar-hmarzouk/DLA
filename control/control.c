@@ -98,8 +98,8 @@ int MORSE_InitPar(int ncpus, int ncudas, int nthreads_per_worker)
 
 #if defined(CHAMELEON_USE_MPI)
 #  if defined(CHAMELEON_SIMULATION)
-    /* Assuming that there was no outer init (which SMPI doesn't support anyway) */
-    morse->mpi_outer_init = 0;
+    /* Assuming that we don't initialize MPI ourself (which SMPI doesn't support anyway) */
+    morse->mpi_outer_init = 1;
 #  else
     {
       int flag = 0, provided = 0;
@@ -143,7 +143,9 @@ int MORSE_Finalize(void)
     magma_finalize();
 #endif
     morse_context_destroy();
+#  if !defined(CHAMELEON_SIMULATION)
     RUNTIME_barrier(morse);
+#  endif
 #if defined(CHAMELEON_USE_MPI)
     if (!morse->mpi_outer_init)
         MPI_Finalize();
