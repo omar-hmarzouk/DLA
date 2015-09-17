@@ -632,7 +632,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                     "use of starpu_mpi_comm_rank() in Chameleon with StarPU${ColourReset}")
                     add_definitions(-DHAVE_STARPU_MPI_COMM_RANK)
                 else()
-                    message("-- ${Red}Looking for starpu with starpu_mpi_data_register"
+                    message("-- ${Red}Looking for starpu with starpu_mpi_comm_rank"
                     " - starpu_mpi_comm_rank() test fails in StarPU${ColourReset}")
                     message("-- ${Red}Check in CMakeFiles/CMakeError.log to figure out why it fails${ColourReset}")
                 endif()
