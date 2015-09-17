@@ -77,7 +77,6 @@ static void cl_zlauum_cpu_func(void *descr[], void *cl_arg)
 static void cl_zlauum_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;
-    int ret;
     int info = 0;
     int N;
     cuDoubleComplex *A;
@@ -85,12 +84,7 @@ static void cl_zlauum_cuda_func(void *descr[], void *cl_arg)
 
     A = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     starpu_codelet_unpack_args(cl_arg, &uplo, &N, &LDA);
-    ret = magma_zlauum_gpu( uplo, N, A, LDA, &info);
-    if (ret != MAGMA_SUCCESS) {
-        fprintf(stderr, "Error in MAGMA: %d\n", ret);
-        exit(-1);
-    }
-
+    CUDA_zlauum( uplo, N, A, LDA, &info);
     cudaThreadSynchronize();
     return;
 }

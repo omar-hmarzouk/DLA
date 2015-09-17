@@ -146,9 +146,6 @@ static void cl_zgessm_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex *dL, *dD, *dA;
     int lddl, lddd, ldda;
     int info = 0;
-
-    int ret;
-
     /*
      *  hwork => nb*nb
      */
@@ -157,21 +154,9 @@ static void cl_zgessm_cuda_func(void *descr[], void *cl_arg)
     dA = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &m, &n, &k, &ib, &IPIV, &lddl, &lddd, &ldda);
 
-    /* The kernel is just using the inverted part or nothing */
-    if ( lddl >= 2*ib ) {
-      dL += ib;
-      ret = magma_zgessm_gpu( MagmaColMajor, m, n, k, ib,
-			      IPIV, dL, lddl, dD, lddd, dA, ldda, &info );
-    }
-    else {
-      ret = magma_zgessm_gpu( MagmaColMajor, m, n, k, ib,
-			      IPIV, NULL, 1, dD, lddd, dA, ldda, &info );
-    }
-
-    if (ret != MAGMA_SUCCESS) {
-        fprintf(stderr, "Error in MAGMA: %d\n", ret);
-        exit(-1);
-    }
+    CUDA_zgessm(
+            MagmaColMajor, m, n, k, ib,
+            IPIV, dL, lddl, dD, lddd, dA, ldda, &info );
 
     cudaThreadSynchronize();
 

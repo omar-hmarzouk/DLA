@@ -90,19 +90,11 @@ static void cl_ztrtri_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex *A;
     int LDA;
     int iinfo;
-
-    int ret;
     int info = 0;
 
     A = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     starpu_codelet_unpack_args(cl_arg, &uplo, &diag, &N, &LDA, &iinfo);
-    ret = magma_ztrtri_gpu( uplo, diag,
-			    N, A, LDA, &info);
-     if (ret != MAGMA_SUCCESS) {
-        fprintf(stderr, "Error in MAGMA: %d\n", ret);
-        exit(-1);
-    }
-
+    CUDA_ztrtri( uplo, diag, N, A, LDA, &info);
     cudaThreadSynchronize();
     return;
 }

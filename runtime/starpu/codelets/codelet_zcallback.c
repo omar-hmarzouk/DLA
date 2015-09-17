@@ -3,24 +3,25 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2015 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
 /**
  *
- *  @file codelet_zpotrf.c
+ *  @file codelet_zcallback.c
  *
- *  MAGMA codelets kernel
- *  MAGMA is a software package provided by Univ. of Tennessee,
+ *  MORSE codelets kernel
+ *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver,
  *  and INRIA Bordeaux Sud-Ouest
  *
  *  @version 2.3.1
  *  @author Mathieu Faverge
  *  @author Cedric Augonnet
- *  @date 2011-06-01
+ *  @author Florent Pruvost
+ *  @date 2015-09-16
  *  @precisions normal z -> c d s
  *
  **/

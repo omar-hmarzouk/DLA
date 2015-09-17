@@ -81,8 +81,10 @@
 #ifndef LAPACK_NAME
 #define LAPACK_NAME(a, b) lapackef77_##a
 #endif
-#include "coreblas/include/lapacke.h"
 #include "coreblas/include/coreblas.h"
+#if defined(CHAMELEON_USE_CUDA)
+#include "cudablas/include/cudablas.h"
+#endif
 
 #include "morse.h"
 

@@ -188,6 +188,11 @@ add_dependencies(chameleon_starpu
   control_include
   runtime_starpu_include
 )
+if (CHAMELEON_USE_CUDA)
+    add_dependencies(chameleon_starpu
+      cudablas_include
+    )
+endif()
 
 # installation
 # ------------

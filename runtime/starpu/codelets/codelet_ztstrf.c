@@ -247,13 +247,14 @@ static void cl_ztstrf_cuda_func(void *descr[], void *cl_arg)
     /* Initialize L to 0 */
     memset(hL, 0, ldl*nb*sizeof(cuDoubleComplex));
 
-    magma_ztstrf_gpu( MagmaColMajor, m, n, ib, nb,
-                      hU, ldu, dU, ldu,
-                      hA, lda, dA, lda,
-                      hL, ldl, dL, ldl,
-                      ipiv,
-                      hw, ldwork, dw, lda,
-                      &info );
+    CUDA_ztstrf(
+            MagmaColMajor, m, n, ib, nb,
+            hU, ldu, dU, ldu,
+            hA, lda, dA, lda,
+            hL, ldl, dL, ldl,
+            ipiv,
+            hw, ldwork, dw, lda,
+            &info );
 
     cudaThreadSynchronize();
 }

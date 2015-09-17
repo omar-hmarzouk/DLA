@@ -69,6 +69,10 @@ unset(libs_for_step0)
 
 if(NOT CHAMELEON_SIMULATION)
 
+    if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+        list(APPEND libs_for_ltm
+        cudablas)
+    endif()
     if(CHAMELEON_USE_CUDA)
         list(APPEND libs_for_ltm
              ${CUDA_LIBRARIES}

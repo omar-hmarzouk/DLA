@@ -202,7 +202,7 @@ static void cl_zssssm_cuda_func(void *descr[], void *cl_arg)
         dL1 += ib;
     }
 
-    magma_zssssm_gpu(
+    CUDA_zssssm(
         MagmaColMajor, m1, n1, m2, n2, k, ib,
         dA1, lda1, dA2, lda2,
         dL1, ldl1, dL2, ldl2,

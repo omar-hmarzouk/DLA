@@ -214,12 +214,13 @@ static void cl_zgetrf_incpiv_cuda_func(void *descr[], void *cl_arg)
       hL = NULL;
     }
 
-    magma_zgetrf_incpiv_gpu( MagmaColMajor, m, n, ib,
-                             hA, lda, dA, lda,
-                             hL, ib,  dL, ldl,
-                             IPIV,
-                             dwork, lda,
-                             &info );
+    CUDA_zgetrf_incpiv(
+            MagmaColMajor, m, n, ib,
+            hA, lda, dA, lda,
+            hL, ib,  dL, ldl,
+            IPIV,
+            dwork, lda,
+            &info );
 
     cudaThreadSynchronize();
 }

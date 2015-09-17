@@ -89,8 +89,6 @@ static void cl_zpotrf_cuda_func(void *descr[], void *cl_arg)
     /* cuDoubleComplex *hA; */
     int lda;
     int iinfo;
-
-    int ret;
     int info = 0;
 
     A  = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
@@ -107,14 +105,7 @@ static void cl_zpotrf_cuda_func(void *descr[], void *cl_arg)
 //         exit(-1);
 //     }
 
-    ret = magma_zpotrf_gpu(
-        uplo,
-        n, A, lda, &info);
-/*	hA, stream );*/
-     if (ret != MAGMA_SUCCESS) {
-        fprintf(stderr, "Error in MAGMA: %d\n", ret);
-        exit(-1);
-    }
+    CUDA_zpotrf( uplo, n, A, lda, &info);
 
     cudaThreadSynchronize();
 //     cudaStreamDestroy( stream[1] );

@@ -169,6 +169,11 @@ endif()
 
 if(NOT CHAMELEON_SIMULATION)
 
+    if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+        list(APPEND libs_for_timings
+        cudablas
+        )
+    endif()
     if(CHAMELEON_USE_CUDA)
         list(APPEND libs_for_timings
         ${CUDA_LIBRARIES}
@@ -185,7 +190,7 @@ if(NOT CHAMELEON_SIMULATION)
     list(APPEND libs_for_timings
     coreblas
     ${LAPACKE_LIBRARIES}
-    ${CBLAS_LIBRARIES}    
+    ${CBLAS_LIBRARIES}
     ${LAPACK_SEQ_LIBRARIES}
     ${BLAS_SEQ_LIBRARIES}
     ${HWLOC_LIBRARIES}

@@ -789,6 +789,9 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             )
             link_directories(${MAGMA_LIBRARY_DIRS})
         endif()
+        if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+            list(APPEND CHAMELEON_DEP -lcudablas)
+        endif()
 
         list(APPEND CHAMELEON_DEP
         -lcoreblas
@@ -839,6 +842,16 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     #######################################
 
     add_subdirectory(coreblas)
+    #------------------------------------------------------------------------------
+
+
+    ###############################################################################
+    # Cudablas library (kernels for CUDAs) #
+    ########################################
+
+    if(CHAMELEON_USE_CUDA)
+        add_subdirectory(cudablas)
+    endif()
     #------------------------------------------------------------------------------
 
 

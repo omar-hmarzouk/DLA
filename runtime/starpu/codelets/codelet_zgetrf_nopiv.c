@@ -136,7 +136,7 @@ static void cl_zgetrf_nopiv_cuda_func(void *descr[], void *cl_arg)
 
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &iinfo);
     dA = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    magma_zgetrf_nopiv_gpu( m, n, dA, lda, &info );
+    CUDA_zgetrf_nopiv( m, n, dA, lda, &info );
     cudaThreadSynchronize();
 }
 #endif

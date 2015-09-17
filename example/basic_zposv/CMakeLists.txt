@@ -69,6 +69,10 @@ endif()
 
 if(NOT CHAMELEON_SIMULATION)
 
+    if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+        list(APPEND libs_for_examples
+        cudablas)
+    endif()
     if(CHAMELEON_USE_CUDA)
         list(APPEND libs_for_examples
              ${CUDA_LIBRARIES}
