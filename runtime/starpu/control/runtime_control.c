@@ -187,7 +187,7 @@ void RUNTIME_resume( MORSE_context_t *morse )
 void RUNTIME_comm_rank( int *rank )
 {
 #if defined(CHAMELEON_USE_MPI)
-#  if defined(HAVE_STARPU_MPI_RANK)
+#  if defined(HAVE_STARPU_MPI_COMM_RANK)
     starpu_mpi_comm_rank(MPI_COMM_WORLD, rank);
 #  else
     MPI_Comm_rank(MPI_COMM_WORLD, rank);
@@ -204,7 +204,7 @@ void RUNTIME_comm_rank( int *rank )
 void RUNTIME_comm_size( int *size )
 {
 #if defined(CHAMELEON_USE_MPI)
-#  if defined(HAVE_STARPU_MPI_RANK)
+#  if defined(HAVE_STARPU_MPI_COMM_RANK)
     starpu_mpi_comm_size(MPI_COMM_WORLD, size);
 #  else
     MPI_Comm_size(MPI_COMM_WORLD, size);
