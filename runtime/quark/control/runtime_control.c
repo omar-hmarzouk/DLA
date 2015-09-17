@@ -90,7 +90,7 @@ void RUNTIME_resume( MORSE_context_t *morse )
 /*******************************************************************************
  *  This returns the rank of this process
  **/
-void RUNTIME_distributed_rank( int *rank )
+void RUNTIME_comm_rank( int *rank )
 {
     *rank = 0;
     return;
@@ -99,16 +99,8 @@ void RUNTIME_distributed_rank( int *rank )
 /*******************************************************************************
  *  This returns the size of the distributed computation
  **/
-void RUNTIME_distributed_size( int *size )
+void RUNTIME_comm_size( int *size )
 {
     *size = 1;
-    return;
-}
-
-/*******************************************************************************
- *  Barrier between processes of the distributed computation
- **/
-void RUNTIME_distributed_barrier( void )
-{
     return;
 }

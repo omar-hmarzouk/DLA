@@ -184,7 +184,7 @@ void RUNTIME_resume( MORSE_context_t *morse )
 /*******************************************************************************
  *  This returns the rank of this process
  **/
-void RUNTIME_distributed_rank( int *rank )
+void RUNTIME_comm_rank( int *rank )
 {
 #if defined(CHAMELEON_USE_MPI)
 #  if defined(HAVE_STARPU_MPI_RANK)
@@ -201,7 +201,7 @@ void RUNTIME_distributed_rank( int *rank )
 /*******************************************************************************
  *  This returns the size of the distributed computation
  **/
-void RUNTIME_distributed_size( int *size )
+void RUNTIME_comm_size( int *size )
 {
 #if defined(CHAMELEON_USE_MPI)
 #  if defined(HAVE_STARPU_MPI_RANK)
@@ -211,17 +211,6 @@ void RUNTIME_distributed_size( int *size )
 #  endif
 #else
     *size = 1;
-#endif
-    return;
-}
-
-/*******************************************************************************
- *  Barrier between processes of the distributed computation
- **/
-void RUNTIME_distributed_barrier( void )
-{
-#if defined(CHAMELEON_USE_MPI)
-    starpu_mpi_barrier(MPI_COMM_WORLD);
 #endif
     return;
 }

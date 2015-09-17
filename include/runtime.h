@@ -54,9 +54,8 @@ void  RUNTIME_finalize_scheduler (MORSE_context_t*);
 void  RUNTIME_barrier            (MORSE_context_t*);
 void  RUNTIME_pause              (MORSE_context_t*);
 void  RUNTIME_resume             (MORSE_context_t*);
-void  RUNTIME_distributed_rank   (int*);
-void  RUNTIME_distributed_size   (int*);
-void  RUNTIME_distributed_barrier(void);
+void  RUNTIME_comm_rank          (int*);
+void  RUNTIME_comm_size          (int*);
 
 /*******************************************************************************
  * RUNTIME Descriptor

@@ -77,7 +77,7 @@ MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.alloc_mat = 1;
     desc.register_mat = 1;
 
-    RUNTIME_distributed_rank( &(desc.myrank) );
+    RUNTIME_comm_rank( &(desc.myrank) );
 
     // Grid size
     desc.p = p;
@@ -162,7 +162,7 @@ MORSE_desc_t morse_desc_init_diag(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.alloc_mat = 1;
     desc.register_mat = 1;
 
-    RUNTIME_distributed_rank( &(desc.myrank) );
+    RUNTIME_comm_rank( &(desc.myrank) );
 
     // Grid size
     desc.p = p;
@@ -250,7 +250,7 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.alloc_mat = 1;
     desc.register_mat = 1;
 
-    RUNTIME_distributed_rank( &(desc.myrank) );
+    RUNTIME_comm_rank( &(desc.myrank) );
 
     // Grid size
     desc.p = p;

@@ -143,7 +143,7 @@ int MORSE_Finalize(void)
     magma_finalize();
 #endif
     morse_context_destroy();
-    RUNTIME_distributed_barrier();
+    RUNTIME_barrier(morse);
 #if defined(CHAMELEON_USE_MPI)
     if (!morse->mpi_outer_init)
         MPI_Finalize();
@@ -213,7 +213,12 @@ int MORSE_Resume(void)
  *****************************************************************************/
 int MORSE_Distributed_start(void)
 {
-    RUNTIME_distributed_barrier ();
+    MORSE_context_t *morse = morse_context_self();
+    if (morse == NULL) {
+        morse_error("MORSE_Finalize()", "MORSE not initialized");
+        return MORSE_ERR_NOT_INITIALIZED;
+    }
+    RUNTIME_barrier (morse);
     return MORSE_SUCCESS;
 }
 
@@ -231,7 +236,12 @@ int MORSE_Distributed_start(void)
  *****************************************************************************/
 int MORSE_Distributed_stop(void)
 {
-    RUNTIME_distributed_barrier ();
+    MORSE_context_t *morse = morse_context_self();
+    if (morse == NULL) {
+        morse_error("MORSE_Finalize()", "MORSE not initialized");
+        return MORSE_ERR_NOT_INITIALIZED;
+    }
+    RUNTIME_barrier (morse);
     return MORSE_SUCCESS;
 }
 
@@ -239,7 +249,7 @@ int MORSE_Distributed_stop(void)
  *
  * @ingroup Control
  *
- *  MORSE_Distributed_size - Return the size of the distributed computation
+ *  MORSE_Comm_size - Return the size of the distributed computation
  *
  ******************************************************************************
  *
@@ -247,9 +257,9 @@ int MORSE_Distributed_stop(void)
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Distributed_size( int *size )
+int MORSE_Comm_size( int *size )
 {
-    RUNTIME_distributed_size (size);
+    RUNTIME_comm_size (size);
     return MORSE_SUCCESS;
 }
 
@@ -257,7 +267,7 @@ int MORSE_Distributed_size( int *size )
  *
  * @ingroup Control
  *
- *  MORSE_Distributed_rank - Return the rank of the distributed computation
+ *  MORSE_Comm_rank - Return the rank of the distributed computation
  *
  ******************************************************************************
  *
@@ -265,8 +275,8 @@ int MORSE_Distributed_size( int *size )
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Distributed_rank( int *rank )
+int MORSE_Comm_rank( int *rank )
 {
-    RUNTIME_distributed_rank (rank);
+    RUNTIME_comm_rank (rank);
     return MORSE_SUCCESS;
 }
