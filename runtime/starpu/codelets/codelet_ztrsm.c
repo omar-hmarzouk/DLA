@@ -125,81 +125,26 @@ static void cl_ztrsm_cuda_func(void *descr[], void *cl_arg)
     MORSE_enum diag;
     int m;
     int n;
-    cuDoubleComplex alpha;
+    const cuDoubleComplex alpha;
     const cuDoubleComplex *A;
     int lda;
     cuDoubleComplex *B;
     int ldb;
     CUstream stream;
-    cublasHandle_t handle;
-    cublasStatus_t stat;
-    cublasSideMode_t cublasSide;
-    cublasFillMode_t cublasUplo;
-    cublasOperation_t cublasTransA;
-    cublasDiagType_t cublasDiag;
 
     A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     starpu_codelet_unpack_args(cl_arg, &side, &uplo, &transA, &diag, &m, &n, &alpha, &lda, &ldb);
 
-    stat = cublasCreate(&handle);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-        printf ("CUBLAS initialization failed\n");
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
 
     stream = starpu_cuda_get_local_stream();
-    stat = cublasSetStream(handle, stream);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-        printf ("cublasSetStream failed\n");
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
 
-    if (side == MorseLeft){
-        cublasSide = CUBLAS_SIDE_LEFT;
-    }else if (side == MorseRight){
-        cublasSide = CUBLAS_SIDE_RIGHT;
-    }else{
-        fprintf(stderr, "Error in cl_ztrsm_cuda_func: bad side parameter %d\n", side);
-    }
-    if (uplo == MorseUpper){
-        cublasUplo = CUBLAS_FILL_MODE_UPPER;
-    }else if(uplo == MorseLower){
-        cublasUplo = CUBLAS_FILL_MODE_LOWER;
-    }else if(uplo == MorseUpperLower){
-        cublasUplo = 0;
-    }else{
-        fprintf(stderr, "Error in cl_ztrsm_cuda_func: bad uplo parameter %d\n", uplo);
-    }
-    if (transA == MorseNoTrans){
-        cublasTransA = CUBLAS_OP_N;
-    }else if(transA == MorseTrans){
-        cublasTransA = CUBLAS_OP_T;
-    }else if(transA == MorseConjTrans){
-        cublasTransA = CUBLAS_OP_C;
-    }else{
-        fprintf(stderr, "Error in cl_ztrsm_cuda_func: bad transA parameter %d\n", transA);
-    }
-    if (diag == MorseNonUnit){
-        cublasDiag = CUBLAS_DIAG_NON_UNIT;
-    }else if(diag == MorseUnit){
-        cublasDiag = CUBLAS_DIAG_UNIT;
-    }else{
-        fprintf(stderr, "Error in cl_ztrsm_cuda_func: bad diag parameter %d\n", diag);
-    }
-
-    stat = cublasZtrsm( handle,
-        cublasSide, cublasUplo, cublasTransA, cublasDiag,
+    CUDA_ztrsm_V2(
+        side, uplo, transA, diag,
         m, n,
-        (const cuDoubleComplex *) &alpha, A, lda,
-        B, ldb);
-    if (stat != CUBLAS_STATUS_SUCCESS){
-        printf ("cublasZtrsm failed");
-        cublasDestroy(handle);
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
-
-    cublasDestroy(handle);
+        &alpha, A, lda,
+        B, ldb,
+        stream);
 
 #ifndef STARPU_CUDA_ASYNC
     cudaStreamSynchronize( stream );
@@ -217,7 +162,7 @@ static void cl_ztrsm_cuda_func(void *descr[], void *cl_arg)
     int m;
     int n;
     cuDoubleComplex alpha;
-    cuDoubleComplex *A;
+    const cuDoubleComplex *A;
     int lda;
     cuDoubleComplex *B;
     int ldb;
@@ -228,14 +173,13 @@ static void cl_ztrsm_cuda_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &side, &uplo, &transA, &diag, &m, &n, &alpha, &lda, &ldb);
 
     stream = starpu_cuda_get_local_stream();
-    cublasSetKernelStream( stream );
 
-    cublasZtrsm(
-        morse_lapack_const(side), morse_lapack_const(uplo),
-        morse_lapack_const(transA), morse_lapack_const(diag),
+    CUDA_ztrsm(
+        side, uplo, transA, diag,
         m, n,
-        alpha, A, lda,
-        B, ldb);
+        &alpha, A, lda,
+        B, ldb,
+        stream);
 
 #ifndef STARPU_CUDA_ASYNC
     cudaStreamSynchronize( stream );

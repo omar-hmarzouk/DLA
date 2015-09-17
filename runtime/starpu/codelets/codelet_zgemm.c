@@ -145,61 +145,21 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex *C;
     int ldc;
     CUstream stream;
-    cublasHandle_t handle;
-    cublasStatus_t stat;
-    cublasOperation_t cublasTransA;
-    cublasOperation_t cublasTransB;
 
     A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &transA, &transB, &m, &n, &k, &alpha, &lda, &ldb, &beta, &ldc);
 
-    stat = cublasCreate(&handle);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-        printf ("CUBLAS initialization failed\n");
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
-
     stream = starpu_cuda_get_local_stream();
-    stat = cublasSetStream(handle, stream);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-            printf ("cublasSetStream failed\n");
-            assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
 
-    if (transA == MorseNoTrans){
-        cublasTransA = CUBLAS_OP_N;
-    }else if(transA == MorseTrans){
-        cublasTransA = CUBLAS_OP_T;
-    }else if(transA == MorseConjTrans){
-        cublasTransA = CUBLAS_OP_C;
-    }else{
-        fprintf(stderr, "Error in cl_zgemm_cuda_func: bad transA parameter %d\n", transA);
-    }
-    if (transB == MorseNoTrans){
-        cublasTransB = CUBLAS_OP_N;
-    }else if(transB == MorseTrans){
-        cublasTransB = CUBLAS_OP_T;
-    }else if(transB == MorseConjTrans){
-        cublasTransB = CUBLAS_OP_C;
-    }else{
-        fprintf(stderr, "Error in cl_zgemm_cuda_func: bad transB parameter %d\n", transB);
-    }
-
-    stat = cublasZgemm(handle,
-        cublasTransA, cublasTransB,
+    CUDA_zgemm_V2(
+        transA, transB,
         m, n, k,
-        (const cuDoubleComplex *) &alpha, A, lda,
+        &alpha, A, lda,
         B, ldb,
-        (const cuDoubleComplex *) &beta,  C, ldc);
-    if (stat != CUBLAS_STATUS_SUCCESS){
-        printf ("cublasZgemm failed");
-        cublasDestroy(handle);
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
-
-    cublasDestroy(handle);
+        &beta,  C, ldc,
+        stream);
 
 #ifndef STARPU_CUDA_ASYNC
     cudaStreamSynchronize( stream );
@@ -231,16 +191,14 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &transA, &transB, &m, &n, &k, &alpha, &lda, &ldb, &beta, &ldc);
 
     stream = starpu_cuda_get_local_stream();
-    cublasSetKernelStream( stream );
 
-    cublasZgemm(
-        morse_lapack_const(transA), morse_lapack_const(transB),
+    CUDA_zgemm(
+        transA, transB,
         m, n, k,
-        alpha, A, lda,
-               B, ldb,
-        beta,  C, ldc);
-
-    assert( CUBLAS_STATUS_SUCCESS == cublasGetError() );
+        &alpha, A, lda,
+                B, ldb,
+        &beta,  C, ldc,
+        stream);
 
 #ifndef STARPU_CUDA_ASYNC
     cudaStreamSynchronize( stream );

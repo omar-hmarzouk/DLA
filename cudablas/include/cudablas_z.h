@@ -25,6 +25,8 @@
 #ifndef _MORSE_CUDA_ZBLAS_H_
 #define _MORSE_CUDA_ZBLAS_H_
 
+#include "morse_types.h"
+
 #define COMPLEX
 
 #ifdef __cplusplus
@@ -52,6 +54,24 @@ int CUDA_zgemerge(
         magma_int_t M, magma_int_t N,
         magmaDoubleComplex *A, magma_int_t LDA,
         magmaDoubleComplex *B, magma_int_t LDB,
+        CUstream stream);
+int CUDA_zgemm_V2(
+        MORSE_enum transa, MORSE_enum transb,
+        int m, int n, int k,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        const cuDoubleComplex *B, int ldb,
+        cuDoubleComplex *beta,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_zgemm(
+        MORSE_enum transa, MORSE_enum transb,
+        int m, int n, int k,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        const cuDoubleComplex *B, int ldb,
+        cuDoubleComplex *beta,
+        cuDoubleComplex *C, int ldc,
         CUstream stream);
 int CUDA_zgeqrt(
         magma_int_t m, magma_int_t n, magma_int_t nb,
@@ -83,6 +103,58 @@ int CUDA_zgetrf_nopiv(
         magma_int_t m, magma_int_t n,
         cuDoubleComplex *dA, magma_int_t ldda,
         magma_int_t *info);
+int CUDA_zhemm_V2(
+        MORSE_enum side, MORSE_enum uplo,
+        int m, int n,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        const cuDoubleComplex *B, int ldb,
+        cuDoubleComplex *beta,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_zhemm(
+        MORSE_enum side, MORSE_enum uplo,
+        int m, int n,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        const cuDoubleComplex *B, int ldb,
+        cuDoubleComplex *beta,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_zher2k_V2(
+        MORSE_enum uplo, MORSE_enum trans,
+        int n, int k,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        const cuDoubleComplex *B, int ldb,
+        double *beta,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_zher2k(
+        MORSE_enum uplo, MORSE_enum trans,
+        int n, int k,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        const cuDoubleComplex *B, int ldb,
+        double *beta,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_zherk_V2(
+        MORSE_enum uplo, MORSE_enum trans,
+        int n, int k,
+        double *alpha,
+        const cuDoubleComplex *A, int lda,
+        double *beta,
+        cuDoubleComplex *B, int ldb,
+        CUstream stream);
+int CUDA_zherk(
+        MORSE_enum uplo, MORSE_enum trans,
+        int n, int k,
+        double *alpha,
+        const cuDoubleComplex *A, int lda,
+        double *beta,
+        cuDoubleComplex *B, int ldb,
+        CUstream stream);
 int CUDA_zlauum(
         char uplo,  magma_int_t n,
         cuDoubleComplex *dA, magma_int_t ldda, magma_int_t *info);
@@ -110,6 +182,91 @@ int CUDA_zssssm(
         magmaDoubleComplex *dL1, magma_int_t lddl1,
         magmaDoubleComplex *dL2, magma_int_t lddl2,
         magma_int_t *IPIV, magma_int_t *info);
+int CUDA_zsymm_V2(
+        MORSE_enum side, MORSE_enum uplo,
+        int m, int n,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        const cuDoubleComplex *B, int ldb,
+        cuDoubleComplex *beta,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_zsymm(
+        MORSE_enum side, MORSE_enum uplo,
+        int m, int n,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        const cuDoubleComplex *B, int ldb,
+        cuDoubleComplex *beta,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_zsyr2k_V2(
+        MORSE_enum uplo, MORSE_enum trans,
+        int n, int k,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        const cuDoubleComplex *B, int ldb,
+        cuDoubleComplex *beta,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_zsyr2k(
+        MORSE_enum uplo, MORSE_enum trans,
+        int n, int k,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        const cuDoubleComplex *B, int ldb,
+        cuDoubleComplex *beta,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_zsyrk_V2(
+        MORSE_enum uplo, MORSE_enum trans,
+        int n, int k,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        cuDoubleComplex *beta,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_zsyrk(
+        MORSE_enum uplo, MORSE_enum trans,
+        int n, int k,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        cuDoubleComplex *beta,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_ztrmm_V2(
+        MORSE_enum side, MORSE_enum uplo,
+        MORSE_enum transa, MORSE_enum diag,
+        int m, int n,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        const cuDoubleComplex *B, int ldb,
+        cuDoubleComplex *C, int ldc,
+        CUstream stream);
+int CUDA_ztrmm(
+        MORSE_enum side, MORSE_enum uplo,
+        MORSE_enum transa, MORSE_enum diag,
+        int m, int n,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        cuDoubleComplex *B, int ldb,
+        CUstream stream);
+int CUDA_ztrsm_V2(
+        MORSE_enum side, MORSE_enum uplo,
+        MORSE_enum transa, MORSE_enum diag,
+        int m, int n,
+        const cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        cuDoubleComplex *B, int ldb,
+        CUstream stream);
+int CUDA_ztrsm(
+        MORSE_enum side, MORSE_enum uplo,
+        MORSE_enum transa, MORSE_enum diag,
+        int m, int n,
+        cuDoubleComplex *alpha,
+        const cuDoubleComplex *A, int lda,
+        cuDoubleComplex *B, int ldb,
+        CUstream stream);
 int CUDA_ztrtri(
         magma_uplo_t uplo,  magma_diag_t diag, magma_int_t n,
         magmaDoubleComplex *dA, magma_int_t ldda, magma_int_t *info);

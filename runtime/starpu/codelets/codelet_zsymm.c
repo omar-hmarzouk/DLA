@@ -116,59 +116,21 @@ static void cl_zsymm_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex *C;
     int LDC;
     CUstream stream;
-    cublasHandle_t handle;
-    cublasStatus_t stat;
-    cublasSideMode_t cublasSide;
-    cublasFillMode_t cublasUplo;
 
     A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &side, &uplo, &M, &N, &alpha, &LDA, &LDB, &beta, &LDC);
 
-    stat = cublasCreate(&handle);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-        printf ("CUBLAS initialization failed\n");
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
-
     stream = starpu_cuda_get_local_stream();
-    stat = cublasSetStream(handle, stream);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-        printf ("cublasSetStream failed\n");
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
 
-    if (side == MorseLeft){
-        cublasSide = CUBLAS_SIDE_LEFT;
-    }else if (side == MorseRight){
-        cublasSide = CUBLAS_SIDE_RIGHT;
-    }else{
-        fprintf(stderr, "Error in cl_zsymm_cuda_func: bad side parameter %d\n", side);
-    }
-    if (uplo == MorseUpper){
-        cublasUplo = CUBLAS_FILL_MODE_UPPER;
-    }else if(uplo == MorseLower){
-        cublasUplo = CUBLAS_FILL_MODE_LOWER;
-    }else if(uplo == MorseUpperLower){
-        cublasUplo = 0;
-    }else{
-        fprintf(stderr, "Error in cl_zsymm_cuda_func: bad uplo parameter %d\n", uplo);
-    }
-
-    stat = cublasZsymm(handle,
-        cublasSide, cublasUplo,
+    CUDA_zsymm_V2(
+        side, uplo,
         M, N,
-        (const cuDoubleComplex *) &alpha, A, LDA,
+        &alpha, A, LDA,
         B, LDB,
-        (const cuDoubleComplex *) &beta, C, LDC);
-    if (stat != CUBLAS_STATUS_SUCCESS){
-        printf ("cublasZsymm failed");
-        cublasDestroy(handle);
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
-
-    cublasDestroy(handle);
+        &beta, C, LDC,
+        stream);
 
 #ifndef STARPU_CUDA_ASYNC
     cudaStreamSynchronize( stream );
@@ -199,14 +161,14 @@ static void cl_zsymm_cuda_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &side, &uplo, &M, &N, &alpha, &LDA, &LDB, &beta, &LDC);
 
     stream = starpu_cuda_get_local_stream();
-    cublasSetKernelStream( stream );
 
-    cublasZsymm(
-        morse_lapack_const(side), morse_lapack_const(uplo),
+    CUDA_zsymm(
+        side, uplo,
         M, N,
-        alpha, A, LDA,
+        &alpha, A, LDA,
         B, LDB,
-        beta, C, LDC);
+        &beta, C, LDC,
+        stream);
 
 #ifndef STARPU_CUDA_ASYNC
     cudaStreamSynchronize( stream );

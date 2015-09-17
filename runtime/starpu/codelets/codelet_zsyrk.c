@@ -106,59 +106,15 @@ static void cl_zsyrk_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex *C;
     int ldc;
     CUstream stream;
-    cublasHandle_t handle;
-    cublasStatus_t stat;
-    cublasFillMode_t cublasUplo;
-    cublasOperation_t cublasTrans;
-
-    A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    C = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
-    starpu_codelet_unpack_args(cl_arg, &uplo, &trans, &n, &k, &alpha, &lda, &beta, &ldc);
-
-    stat = cublasCreate(&handle);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-        printf ("CUBLAS initialization failed\n");
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
 
     stream = starpu_cuda_get_local_stream();
-    stat = cublasSetStream(handle, stream);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-        printf ("cublasSetStream failed\n");
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
 
-    if (uplo == MorseUpper){
-        cublasUplo = CUBLAS_FILL_MODE_UPPER;
-    }else if(uplo == MorseLower){
-        cublasUplo = CUBLAS_FILL_MODE_LOWER;
-    }else if(uplo == MorseUpperLower){
-        cublasUplo = 0;
-    }else{
-        fprintf(stderr, "Error in cl_zsyrk_cuda_func: bad uplo parameter %d\n", uplo);
-    }
-    if (trans == MorseNoTrans){
-        cublasTrans = CUBLAS_OP_N;
-    }else if(trans == MorseTrans){
-        cublasTrans = CUBLAS_OP_T;
-    }else if(trans == MorseConjTrans){
-        cublasTrans = CUBLAS_OP_C;
-    }else{
-        fprintf(stderr, "Error in cl_zsyrk_cuda_func: bad trans parameter %d\n", trans);
-    }
-
-    stat = cublasZsyrk(handle,
-        cublasUplo, cublasTrans,
+    CUDA_zsyrk_V2(
+        uplo, trans,
         n, k,
-        (const cuDoubleComplex *) &alpha, A, lda,
-        (const cuDoubleComplex *) &beta, C, ldc);
-    if (stat != CUBLAS_STATUS_SUCCESS){
-        printf ("cublasZsyrk failed");
-        cublasDestroy(handle);
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
-
-    cublasDestroy(handle);
+        &alpha, A, lda,
+        &beta, C, ldc,
+        stream);
 
 #ifndef STARPU_CUDA_ASYNC
     cudaStreamSynchronize( stream );
@@ -186,13 +142,13 @@ static void cl_zsyrk_cuda_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &trans, &n, &k, &alpha, &lda, &beta, &ldc);
 
     stream = starpu_cuda_get_local_stream();
-    cublasSetKernelStream( stream );
 
-    cublasZsyrk(
-        morse_lapack_const(uplo), morse_lapack_const(trans),
+    CUDA_zsyrk(
+        uplo, trans,
         n, k,
-        alpha, A, lda,
-        beta, C, ldc);
+        &alpha, A, lda,
+        &beta, C, ldc,
+        stream);
 
 #ifndef STARPU_CUDA_ASYNC
     cudaStreamSynchronize( stream );

@@ -28,7 +28,7 @@
 
 add_subdirectory(include)
 add_subdirectory(compute)
-#add_subdirectory(eztrace_module)
+add_subdirectory(eztrace_module)
 
 ###
 ### END CMakeLists.txt

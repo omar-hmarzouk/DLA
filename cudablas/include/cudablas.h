@@ -32,6 +32,11 @@
 #if defined(CHAMELEON_USE_CUDA)
 #include <cuda.h>
 #include <cuComplex.h>
+#if defined(CHAMELEON_USE_CUBLAS_V2)
+#include <cublas_v2.h>
+#else
+#include <cublas.h>
+#endif
 #if defined(CHAMELEON_USE_MAGMA)
 #include <magma.h>
 #endif
