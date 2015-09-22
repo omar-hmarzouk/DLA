@@ -109,8 +109,8 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
         MPI_Initialized( &flag );
 #endif
         starpu_mpi_init(NULL, NULL, !flag);
-        starpu_mpi_comm_rank(MPI_COMM_WORLD, &(morse->my_mpi_rank));
-        starpu_mpi_comm_size(MPI_COMM_WORLD, &(morse->mpi_comm_size));
+        RUNTIME_comm_rank(&(morse->my_mpi_rank));
+        RUNTIME_comm_size(&(morse->mpi_comm_size));
     }
 #endif
 
