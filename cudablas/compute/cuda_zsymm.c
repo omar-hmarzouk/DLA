@@ -24,7 +24,7 @@
  **/
 #include "cudablas/include/cudablas.h"
 
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
 #if defined(CHAMELEON_USE_CUBLAS_V2)
 int CUDA_zsymm_V2(
         MORSE_enum side, MORSE_enum uplo,
@@ -111,4 +111,4 @@ int CUDA_zsymm(
     return MORSE_SUCCESS;
 }
 #endif /* CHAMELEON_USE_CUBLAS_V2 */
-#endif
+#endif /* CHAMELEON_USE_CUDA */

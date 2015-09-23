@@ -24,7 +24,7 @@
  **/
 #include "cudablas/include/cudablas.h"
 
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
 #if defined(CHAMELEON_USE_CUBLAS_V2)
 int CUDA_zher2k_V2(
         MORSE_enum uplo, MORSE_enum trans,
@@ -110,4 +110,4 @@ int CUDA_zher2k(
     return MORSE_SUCCESS;
 }
 #endif /* CHAMELEON_USE_CUBLAS_V2 */
-#endif
+#endif /* CHAMELEON_USE_CUDA */
