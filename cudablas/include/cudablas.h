@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <assert.h>
 
 #if defined(CHAMELEON_USE_CUDA)
 #include <cuda.h>
