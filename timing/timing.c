@@ -346,7 +346,7 @@ show_help(char *prog_name) {
             "  --[a]sync        Enable/Disable synchronous calls in wrapper function such as POTRI. (default: async)\n"
             "  --[no]check      Check result (default: nocheck)\n"
             "  --[no]inv        Check on inverse (default: noinv)\n"
-            "  --[no]warmup     Perform a warmup run to pre-load libraries (default: warmup)\n"
+            "  --[no]warmup     Perform a warmup run to pre-load libraries (default: nowarmup)\n"
             "  --[no]trace      Enable/Disable trace generation (default: notrace)\n"
             "  --[no]dag        Enable/Disable DAG generation (default: nodag)\n"
             "                   Generates a dot_dag_file.dot.\n"
