@@ -36,8 +36,8 @@ int main(int argc, char *argv[]) {
 
     size_t i, j;
     size_t N;    // matrix order
-    size_t NB;   // number of rows and columns in tiles
-    size_t NRHS; // number of RHS vectors
+    int NB;   // number of rows and columns in tiles
+    int NRHS; // number of RHS vectors
     int NCPU; // number of cores to use
     int NGPU; // number of gpus (cuda devices) to use
     int UPLO = MorseUpper; // where is stored L

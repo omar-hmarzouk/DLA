@@ -40,8 +40,8 @@ int main(int argc, char *argv[]) {
 
     size_t i, j;
     size_t N;    // matrix order
-    size_t NB;   // number of rows and columns in tiles
-    size_t NRHS; // number of RHS vectors
+    int NB;   // number of rows and columns in tiles
+    int NRHS; // number of RHS vectors
     int NCPU; // number of cores to use
     int NGPU; // number of gpus (cuda devices) to use
     int UPLO = MorseUpper; // where is stored L
@@ -148,7 +148,8 @@ int main(int argc, char *argv[]) {
 
     /* Synchronization barrier (the runtime ensures that all submitted tasks
      * have been terminated */
-    RUNTIME_barrier(morse);
+    MORSE_Sequence_Wait(sequence);
+
     /* Ensure that all data processed on the gpus we are depending on are back
      * in main memory */
     RUNTIME_desc_getoncpu(descA);
