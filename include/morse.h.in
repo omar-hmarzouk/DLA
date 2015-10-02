@@ -55,14 +55,6 @@
  */
 #include "morse_simulate.h"
 
-
-/* ****************************************************************************
- * Set of routines which can be useful fo users
- */
-#include "control/context.h"
-#include "control/descriptor.h"
-
-
 /* ****************************************************************************
  * MORSE Functions
  */
@@ -72,7 +64,6 @@ extern "C" {
 
 /* Auxiliary */
 int MORSE_Version        (int *ver_major, int *ver_minor, int *ver_micro);
-int MORSE_Element_Size(int type);
 int MORSE_My_Mpi_Rank    (void);
 int MORSE_Init           (int nworkers, int ncudas);
 int MORSE_InitPar        (int nworkers, int ncudas, int nthreads_per_worker);
@@ -87,6 +78,7 @@ int MORSE_Distributed_size (int*size);
 int MORSE_Distributed_rank (int*rank);
 
 /* Descriptor */
+int MORSE_Element_Size(int type);
 int MORSE_Desc_Create  (MORSE_desc_t **desc, void *mat, MORSE_enum dtyp,
                         int mb, int nb, int bsiz, int lm, int ln,
                         int i, int j, int m, int n, int p, int q);

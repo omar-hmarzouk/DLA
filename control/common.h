@@ -31,6 +31,7 @@
 #ifndef _MORSE_COMMON_H_
 #define _MORSE_COMMON_H_
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
@@ -73,7 +74,6 @@
 #include <magma.h>
 #endif
 
-
 /** ****************************************************************************
  *  Line to avoid conflict with magma, because, we don't know why
  *  but lapacke provide a wrong interface of lapack in fortran
@@ -81,15 +81,21 @@
 #ifndef LAPACK_NAME
 #define LAPACK_NAME(a, b) lapackef77_##a
 #endif
+
+/** ****************************************************************************
+ *  Chameleon header files
+ **/
+#include "morse.h"
+
 #include "coreblas/include/coreblas.h"
 #if defined(CHAMELEON_USE_CUDA)
 #include "cudablas/include/cudablas.h"
 #endif
 
-#include "morse.h"
-
 #include "control/global.h"
 #include "control/auxiliary.h"
+#include "control/context.h"
+#include "control/descriptor.h"
 #include "control/tile.h"
 #include "control/async.h"
 #include "control/bulge.h"
