@@ -56,9 +56,6 @@ int main(int argc, char *argv[]) {
     double anorm, bnorm, xnorm, eps, res;
     int hres;
 
-    /* Morse structure containing parameters and a structure to interact with
-     * the Runtime system */
-    MORSE_context_t *morse;
     /* MORSE sequence uniquely identifies a set of asynchronous function calls
      * sharing common exception handling */
     MORSE_sequence_t *sequence = NULL;
@@ -95,17 +92,14 @@ int main(int argc, char *argv[]) {
     /* print informations to user */
     print_header( argv[0], iparam);
 
-    /* initialize MORSE with main parameters */
-    MORSE_Init( NCPU, NGPU );
-
-    morse = morse_context_self();
-    if (morse == NULL) {
-        morse_fatal_error("step4", "MORSE not initialized");
-        return MORSE_ERR_NOT_INITIALIZED;
+     /* Initialize MORSE with main parameters */
+    if ( MORSE_Init( NCPU, NGPU ) != MORSE_SUCCESS ) {
+        fprintf(stderr, "Error initializing MORSE library\n");
+        return EXIT_FAILURE;
     }
 
-    /* question morse to get the block (tile) size (number of columns) */
-    NB = morse->nb;
+    /* Question morse to get the block (tile) size (number of columns) */
+    MORSE_Get( MORSE_TILE_SIZE, &NB );
 
     /* Initialize the structure required for MORSE tile interface */
     MORSE_Desc_Create(&descA,  NULL, MorseRealDouble,
@@ -136,7 +130,7 @@ int main(int argc, char *argv[]) {
 
     cpu_time = -cWtime();
 
-    morse_sequence_create(morse, &sequence);
+    MORSE_Sequence_Create(&sequence);
 
     /* Cholesky factorization:
      * A is replaced by its factorization L or L^T depending on uplo */
@@ -157,7 +151,7 @@ int main(int argc, char *argv[]) {
     RUNTIME_desc_getoncpu(descX);
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    MORSE_Sequence_Destroy(sequence);
 
     cpu_time += cWtime();
 

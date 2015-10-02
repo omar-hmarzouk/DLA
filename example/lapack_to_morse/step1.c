@@ -89,7 +89,10 @@ int main(int argc, char *argv[]) {
     print_header( argv[0], iparam);
 
     /* Initialize MORSE with main parameters */
-    MORSE_Init( NCPU, NGPU );
+    if ( MORSE_Init( NCPU, NGPU ) != MORSE_SUCCESS ) {
+        fprintf(stderr, "Error initializing MORSE library\n");
+        return EXIT_FAILURE;
+    }
 
     /*
      * allocate memory for our data using a C macro (see step1.h)

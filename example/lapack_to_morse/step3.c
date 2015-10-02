@@ -55,10 +55,6 @@ int main(int argc, char *argv[]) {
     double anorm, bnorm, xnorm, eps, res;
     int hres;
 
-    /* Morse structure containing parameters and a structure to interact with
-     * the Runtime system */
-    MORSE_context_t *morse;
-
     /* initialize some parameters with default values */
     int iparam[IPARAM_SIZEOF];
     memset(iparam, 0, IPARAM_SIZEOF*sizeof(int));
@@ -88,17 +84,14 @@ int main(int argc, char *argv[]) {
     /* print informations to user */
     print_header( argv[0], iparam);
 
-    /* initialize MORSE with main parameters */
-    MORSE_Init( NCPU, NGPU );
-
-    morse = morse_context_self();
-    if (morse == NULL) {
-        morse_fatal_error("step3", "MORSE not initialized");
-        return MORSE_ERR_NOT_INITIALIZED;
+     /* Initialize MORSE with main parameters */
+    if ( MORSE_Init( NCPU, NGPU ) != MORSE_SUCCESS ) {
+        fprintf(stderr, "Error initializing MORSE library\n");
+        return EXIT_FAILURE;
     }
 
-    /* question morse to get the block (tile) size (number of columns) */
-    NB = morse->nb;;
+    /* Question morse to get the block (tile) size (number of columns) */
+    MORSE_Get( MORSE_TILE_SIZE, &NB );
 
     /* allocate tile data */
     matA = allocate_tile_matrix(N, N, NB);

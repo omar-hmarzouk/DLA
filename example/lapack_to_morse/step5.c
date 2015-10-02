@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -56,9 +56,6 @@ int main(int argc, char *argv[]) {
     double anorm, bnorm, xnorm, eps, res;
     int hres;
 
-    /* Morse structure containing parameters and a structure to interact with
-     * the Runtime system */
-    MORSE_context_t *morse;
     /* MORSE sequence uniquely identifies a set of asynchronous function calls
      * sharing common exception handling */
     MORSE_sequence_t *sequence = NULL;
@@ -98,13 +95,10 @@ int main(int argc, char *argv[]) {
     /* print informations to user */
     print_header( argv[0], iparam);
 
-    /* initialize MORSE with main parameters */
-    MORSE_Init( NCPU, NGPU );
-
-    morse = morse_context_self();
-    if (morse == NULL) {
-        morse_fatal_error("step5", "MORSE not initialized");
-        return MORSE_ERR_NOT_INITIALIZED;
+     /* Initialize MORSE with main parameters */
+    if ( MORSE_Init( NCPU, NGPU ) != MORSE_SUCCESS ) {
+        fprintf(stderr, "Error initializing MORSE library\n");
+        return EXIT_FAILURE;
     }
 
     /* set some specific parameters related to MORSE: blocks size and inner-blocking size */
@@ -140,7 +134,7 @@ int main(int argc, char *argv[]) {
 
     cpu_time = -cWtime();
 
-    morse_sequence_create(morse, &sequence);
+    MORSE_Sequence_Create(&sequence);
 
     /* Cholesky factorization:
      * A is replaced by its factorization L or L^T depending on uplo */
@@ -161,7 +155,7 @@ int main(int argc, char *argv[]) {
     RUNTIME_desc_getoncpu(descX);
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    MORSE_Sequence_Destroy(sequence);
 
     cpu_time += cWtime();
 
