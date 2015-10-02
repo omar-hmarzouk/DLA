@@ -54,9 +54,9 @@ set(CHAMELEON_HDRS
     )
 
 set(HDR_INSTALL ${CHAMELEON_HDRS})
-foreach( hdr_file ${CHAMELEON_HDRS_GENERATED} )
-    list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
-endforeach()
+# foreach( hdr_file ${CHAMELEON_HDRS_GENERATED} )
+#     list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
+# endforeach()
 
 list(APPEND CHAMELEON_HDRS ${CHAMELEON_HDRS_GENERATED})
 
@@ -67,8 +67,8 @@ add_custom_target(control_include ALL SOURCES ${CHAMELEON_HDRS})
 
 # installation
 # ------------
-install(FILES ${HDR_INSTALL}
-        DESTINATION include/chameleon/control)
+# install(FILES ${HDR_INSTALL}
+#         DESTINATION include/chameleon/control)
 
 ###
 ### END CMakeLists.txt
