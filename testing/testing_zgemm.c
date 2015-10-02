@@ -188,19 +188,19 @@ static int check_solution(MORSE_enum transA, MORSE_enum transB, int M, int N, in
         Bm = N; Bn = K;
     }
 
-    Anorm       = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), Am, An, A,       LDA, work);
-    Bnorm       = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), Bm, Bn, B,       LDB, work);
-    Cinitnorm   = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M,  N,  Cref,    LDC, work);
-    Cmorsenorm  = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M,  N,  Cmorse, LDC, work);
+    Anorm       = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', Am, An, A,       LDA, work);
+    Bnorm       = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', Bm, Bn, B,       LDB, work);
+    Cinitnorm   = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', M,  N,  Cref,    LDC, work);
+    Cmorsenorm  = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', M,  N,  Cmorse, LDC, work);
 
     cblas_zgemm(CblasColMajor, (CBLAS_TRANSPOSE)transA, (CBLAS_TRANSPOSE)transB, M, N, K, 
                 CBLAS_SADDR(alpha), A, LDA, B, LDB, CBLAS_SADDR(beta), Cref, LDC);
 
-    Clapacknorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, Cref, LDC, work);
+    Clapacknorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', M, N, Cref, LDC, work);
 
     cblas_zaxpy(LDC * N, CBLAS_SADDR(beta_const), Cmorse, 1, Cref, 1);
 
-    Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(MorseInfNorm), M, N, Cref, LDC, work);
+    Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', M, N, Cref, LDC, work);
 
     eps = LAPACKE_dlamch_work('e');
     if (MORSE_My_Mpi_Rank() == 0)
