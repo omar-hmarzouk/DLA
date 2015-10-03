@@ -58,7 +58,6 @@ static void cl_zaxpy_cpu_func(void *descr[], void *cl_arg)
     int incA;
     MORSE_Complex64_t *B;
     int incB;
-    int m, n;
 
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);

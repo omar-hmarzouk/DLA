@@ -50,16 +50,15 @@ void morse_pzlansy(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A, double *re
     MORSE_desc_t *RESULT         = NULL;
     MORSE_context_t *morse;
     MORSE_option_t options;
-    size_t h_work_size, d_work_size;
 
     int workm, workn;
     int tempkm, tempkn;
     int ldam;
-    int m, n, k;
-    int part_p, part_q;
+    int m, n;
+    /* int part_p, part_q; */
 
-    part_p = A->myrank / A->q;
-    part_q = A->myrank % A->q;
+    /* part_p = A->myrank / A->q; */
+    /* part_q = A->myrank % A->q; */
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)

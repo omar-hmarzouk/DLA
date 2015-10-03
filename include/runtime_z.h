@@ -42,7 +42,7 @@ extern "C" {
 /** ****************************************************************************
  *  Declarations of QUARK wrappers (called by MORSE) - alphabetical order
  **/
-void MORSE_TASK_zdasum(MORSE_option_t *options,
+void MORSE_TASK_dzasum(MORSE_option_t *options,
                        MORSE_enum storev, MORSE_enum uplo, int M, int N,
                        MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_desc_t *B, int Bm, int Bn);
@@ -127,6 +127,9 @@ void MORSE_TASK_zgetrf_incpiv(MORSE_option_t *options,
                               MORSE_desc_t *L, int Lm, int Ln, int ldl,
                               int *IPIV,
                               MORSE_bool check_info, int iinfo);
+void MORSE_TASK_zgetrf_nopiv(MORSE_option_t *options,
+                             int m, int n, int ib, int nb,
+                             MORSE_desc_t *A, int Am, int An, int lda, int iinfo);
 void MORSE_TASK_zgetrf_reclap(MORSE_option_t *options,
                               int m, int n, int nb,
                               MORSE_desc_t *A, int Am, int An, int lda,
@@ -288,6 +291,10 @@ void MORSE_TASK_zsyssq( MORSE_option_t *options,
                         MORSE_enum uplo, int n,
                         MORSE_desc_t *A, int Am, int An, int lda,
                         MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn );
+void MORSE_TASK_zsytrf_nopiv(MORSE_option_t *options,
+                             MORSE_enum uplo, int n, int nb,
+                             MORSE_desc_t *A, int Am, int An, int lda,
+                             int iinfo);
 void MORSE_TASK_zswpab(MORSE_option_t *options,
                        int i, int n1, int n2,
                        MORSE_desc_t *A, int Am, int An, int szeA);

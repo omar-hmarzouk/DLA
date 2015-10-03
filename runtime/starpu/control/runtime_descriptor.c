@@ -47,8 +47,8 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
 {
     int64_t lmt = desc->lmt;
     int64_t lnt = desc->lnt;
-    int64_t block_ind = 0;
     starpu_data_handle_t *tiles;
+    (void)tiles;
 
     desc->occurences = 1;
 
@@ -262,7 +262,6 @@ void *RUNTIME_desc_getaddr( MORSE_desc_t *desc, int m, int n )
     ptrtile += ((int64_t)(desc->lmt) * (int64_t)n + (int64_t)m);
 
     if (*ptrtile == NULL) {
-        int64_t block_ind = desc->lmt * n + m;
         int64_t eltsze = MORSE_Element_Size(desc->dtyp);
         int myrank = desc->myrank;
         int owner  = desc->get_rankof( desc, m, n );
@@ -270,20 +269,21 @@ void *RUNTIME_desc_getaddr( MORSE_desc_t *desc, int m, int n )
         int tempnn = (n == desc->lnt-1) ? (desc->ln - n * desc->nb) : desc->nb;
 
         if ( myrank == owner ) {
-            //printf("\nRegister %d %d %d", MORSE_My_Mpi_Rank(), m, n);
             starpu_matrix_data_register(ptrtile, 0,
                                         (uintptr_t)desc->get_blkaddr(desc, m, n),
                                         BLKLDD(desc, m), tempmm, tempnn, eltsze);
         }
         else {
-            //printf("\nRegister dist %d %d %d", MORSE_My_Mpi_Rank(), m, n);
             starpu_matrix_data_register(ptrtile, -1,
                                         (uintptr_t) NULL,
                                         BLKLDD(desc, m), tempmm, tempnn, eltsze);
         }
 
 #if defined(CHAMELEON_USE_MPI)
-        starpu_mpi_data_register(*ptrtile, (desc->id << tag_sep) | (block_ind), owner);
+        {
+            int64_t block_ind = desc->lmt * n + m;
+            starpu_mpi_data_register(*ptrtile, (desc->id << tag_sep) | (block_ind), owner);
+        }
 #endif /* defined(CHAMELEON_USE_MPI) */
     }
 

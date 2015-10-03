@@ -121,14 +121,12 @@ static void cl_zgessm_cpu_func(void *descr[], void *cl_arg)
     int k;
     int ib;
     int *IPIV;
-    MORSE_Complex64_t *L;
     int ldl;
     MORSE_Complex64_t *D;
     int ldd;
     MORSE_Complex64_t *A;
     int lda;
 
-    L = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     D = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[2]);
     starpu_codelet_unpack_args(cl_arg, &m, &n, &k, &ib, &IPIV, &ldl, &ldd, &lda);

@@ -44,18 +44,17 @@ void morse_pzlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
     MORSE_desc_t *RESULT         = NULL;
     MORSE_context_t *morse;
     MORSE_option_t options;
-    size_t h_work_size, d_work_size;
 
     int workm, workn;
     int tempkm, tempkn;
     int ldam, ldan;
-    int m, n, k, minMNT;
-    int part_p, part_q;
+    int m, n, minMNT;
+    /* int part_p, part_q; */
 
     minMNT = min( A->mt, A->nt );
 
-    part_p = A->myrank / A->q;
-    part_q = A->myrank % A->q;
+    /* part_p = A->myrank / A->q; */
+    /* part_q = A->myrank % A->q; */
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)

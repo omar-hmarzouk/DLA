@@ -36,7 +36,6 @@
  */
 int main(int argc, char *argv[]) {
 
-    size_t i, j;
     size_t N;    // matrix order
     int NB;   // number of rows and columns in tiles
     int NRHS; // number of RHS vectors

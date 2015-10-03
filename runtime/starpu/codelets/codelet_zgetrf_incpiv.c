@@ -130,7 +130,7 @@ static void cl_zgetrf_incpiv_cpu_func(void *descr[], void *cl_arg)
     int m;
     int n;
     int ib;
-    MORSE_Complex64_t *A, *L;
+    MORSE_Complex64_t *A;
     int lda, ldl;
     int *IPIV;
     MORSE_bool check_info;
@@ -139,30 +139,32 @@ static void cl_zgetrf_incpiv_cpu_func(void *descr[], void *cl_arg)
     int info = 0;
 
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
-    L = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
 
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &ldl, &IPIV, &check_info, &iinfo, &h_work);
     CORE_zgetrf_incpiv(m, n, ib, A, lda, IPIV, &info);
 
 #if defined(CHAMELEON_USE_MAGMA)
-    /*
-     * L stores:
-     *      L1     L2    L3     ...
-     *      L1^-1  L2^-1 L3^-1  ...
-     */
-    /* Compute L-1 in lower rectangle of L */
-    if ( ldl >= 2*ib )
     {
-        int i, sb;
+        MORSE_Complex64_t *L = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
+        /*
+         * L stores:
+         *      L1     L2    L3     ...
+         *      L1^-1  L2^-1 L3^-1  ...
+         */
+        /* Compute L-1 in lower rectangle of L */
+        if ( ldl >= 2*ib )
+        {
+            int i, sb;
 
-	L += ib;
-        for (i=0; i<n; i+=ib) {
-            sb = min( ib, n-i );
-            CORE_zlacpy(MorseUpperLower, sb, sb, A+(i*lda+i), lda, L+(i*ldl), ldl );
+            L += ib;
+            for (i=0; i<n; i+=ib) {
+                sb = min( ib, n-i );
+                CORE_zlacpy(MorseUpperLower, sb, sb, A+(i*lda+i), lda, L+(i*ldl), ldl );
 
-            CORE_ztrtri( MorseLower, MorseUnit, sb, L+(i*ldl), ldl, &info );
-            if (info != 0 ) {
-                fprintf(stderr, "ERROR, trtri returned with info = %d\n", info);
+                CORE_ztrtri( MorseLower, MorseUnit, sb, L+(i*ldl), ldl, &info );
+                if (info != 0 ) {
+                    fprintf(stderr, "ERROR, trtri returned with info = %d\n", info);
+                }
             }
         }
     }

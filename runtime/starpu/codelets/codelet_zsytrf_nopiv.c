@@ -65,12 +65,11 @@ static void cl_zsytrf_nopiv_cpu_func(void *descr[], void *cl_arg)
     MORSE_Complex64_t *A;
     int lda;
     int iinfo;
-    int info = 0;
 
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
 
     starpu_codelet_unpack_args(cl_arg, &uplo, &n, &lda, &iinfo);
-    info = CORE_zsytf2_nopiv(uplo, n, A, lda);
+    CORE_zsytf2_nopiv(uplo, n, A, lda);
 }
 
 /*

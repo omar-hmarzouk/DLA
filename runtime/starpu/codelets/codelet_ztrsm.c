@@ -50,6 +50,7 @@ void MORSE_TASK_ztrsm(MORSE_option_t *options,
     int sizeB = ldb*n;
     int execution_rank = B->get_rankof( B, Bm, Bn );
     int rank_changed=0;
+    (void)execution_rank;
 
     // force execution on the rank owning the largest data (tile)
     int threshold;

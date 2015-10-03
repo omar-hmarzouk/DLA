@@ -23,6 +23,7 @@
  **/
 
 #include "step0.h"
+#include <coreblas/include/coreblas.h>
 
 /*
  * @brief step0 is a simple Cholesky example using the C interface of
@@ -37,8 +38,6 @@
  * The precision is: double
  */
 int main(int argc, char *argv[]) {
-
-    size_t i, j;
     size_t N;    // matrix order
     size_t NRHS; // number of RHS vectors
 

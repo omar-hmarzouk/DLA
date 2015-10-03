@@ -171,7 +171,7 @@ int MORSE_zsysv(MORSE_enum uplo, int N, int NRHS,
 /*        morse_ziptile2lap( descB, B, NB, NB, LDB, NRHS,  sequence, &request);*/
 /*        RUNTIME_barrier(morse);*/
 /*    }*/
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -238,7 +238,7 @@ int MORSE_zsysv_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B)
     RUNTIME_barrier(morse);
     RUNTIME_desc_getoncpu(A);
         RUNTIME_desc_getoncpu(B);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

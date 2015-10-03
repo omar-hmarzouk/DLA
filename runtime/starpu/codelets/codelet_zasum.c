@@ -59,7 +59,6 @@ static void cl_dzasum_cpu_func(void *descr[], void *cl_arg)
     MORSE_Complex64_t *A;
     int lda;
     double *work;
-    int m, n;
 
     A     = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     work  = (double *)STARPU_MATRIX_GET_PTR(descr[1]);

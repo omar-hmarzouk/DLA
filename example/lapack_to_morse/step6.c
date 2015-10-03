@@ -36,7 +36,6 @@
  */
 int main(int argc, char *argv[]) {
 
-    size_t i, j;
     size_t N;    // matrix order
     int NB;   // number of rows and columns in tiles
     int NRHS; // number of RHS vectors
@@ -178,6 +177,10 @@ int main(int argc, char *argv[]) {
     RUNTIME_desc_getoncpu(descX);
 
     status = sequence->status;
+    if ( status != 0 ) {
+        fprintf(stderr, "Error in computation (%d)\n", status);
+        return EXIT_FAILURE;
+    }
     MORSE_Sequence_Destroy(sequence);
 
     cpu_time += cWtime();

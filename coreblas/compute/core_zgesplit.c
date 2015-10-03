@@ -29,16 +29,15 @@
 #include "coreblas/include/lapacke.h"
 #include "coreblas/include/coreblas.h"
 
-/***************************************************************************//**
+/**
+ ***************************************************************************
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- *  CORE_zgesplit splits a matrix A into two parts (Upper/Lower),
- *  A keeps its lower/upper part unchanged and the other part is filled with zeros .
- *  ones can be optionally set on the diagonal.
- *  The part of A which is erased is copied in B.
- *
- *
+ *  CORE_zgesplit splits a matrix A into two parts (Upper/Lower), A keeps its
+ *  lower/upper part unchanged and the other part is filled with zeros. Ones
+ *  can be optionally set on the diagonal.  The part of A which is erased is
+ *  copied in B.
  *
  *******************************************************************************
  *
@@ -73,9 +72,7 @@ int CORE_zgesplit(MORSE_enum side, MORSE_enum diag,
                   MORSE_Complex64_t *A, int LDA,
                   MORSE_Complex64_t *B, int LDB)
 {
-
-	MORSE_enum uplo;
-	int i, j;
+    MORSE_enum uplo;
 
     if (M < 0) {
         coreblas_error(1, "Illegal value of M");
@@ -95,9 +92,9 @@ int CORE_zgesplit(MORSE_enum side, MORSE_enum diag,
     }
 
     if (side == MorseLeft){
-    	uplo = MorseUpper;
+        uplo = MorseUpper;
     } else{
-    	uplo = MorseLower;
+        uplo = MorseLower;
     }
 
     LAPACKE_zlacpy_work(LAPACK_COL_MAJOR,
@@ -110,6 +107,3 @@ int CORE_zgesplit(MORSE_enum side, MORSE_enum diag,
 
     return MORSE_SUCCESS;
 }
-
-
-

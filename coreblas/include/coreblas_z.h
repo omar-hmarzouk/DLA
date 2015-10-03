@@ -273,6 +273,9 @@ void CORE_zswpab(int i, int n1, int n2,
                  MORSE_Complex64_t *A, MORSE_Complex64_t *work);
 int  CORE_zswptr_ontile(MORSE_desc_t descA, int i1, int i2, const int *ipiv, int inc,
                         const MORSE_Complex64_t *Akk, int ldak);
+void CORE_ztrasm(MORSE_enum storev, MORSE_enum uplo, MORSE_enum diag,
+                 int M, int N,
+                 const MORSE_Complex64_t *A, int lda, double *work);
 void CORE_ztrdalg(MORSE_enum uplo, int N, int NB,
                   const MORSE_desc_t *pA, MORSE_Complex64_t *V, MORSE_Complex64_t *TAU,
                   int i, int j, int m, int grsiz);
@@ -286,6 +289,9 @@ void CORE_ztrsm(MORSE_enum side, MORSE_enum uplo,
                 int M, int N,
                 MORSE_Complex64_t alpha, const MORSE_Complex64_t *A, int LDA,
                                                 MORSE_Complex64_t *B, int LDB);
+int CORE_ztrssq(MORSE_enum uplo, MORSE_enum diag, int M, int N,
+                const MORSE_Complex64_t *A, int LDA,
+                double *scale, double *sumsq);
 void CORE_ztrtri(MORSE_enum uplo, MORSE_enum diag, int N,
                  MORSE_Complex64_t *A, int LDA, int *info);
 int  CORE_ztslqt(int M, int N, int IB,

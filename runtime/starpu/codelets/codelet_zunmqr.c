@@ -131,6 +131,7 @@ void MORSE_TASK_zunmqr(MORSE_option_t *options,
     int sizeC = ldc*n;
     int execution_rank = C->get_rankof( C, Cm, Cn );
     int rank_changed=0;
+    (void)execution_rank;
 
     // force execution on the rank owning the largest data (tile)
     int threshold;

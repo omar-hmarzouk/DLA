@@ -219,7 +219,7 @@ int MORSE_zpotrimm_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE
     MORSE_zpotrimm_Tile_Async(uplo, A, B, C, sequence, &request);
     RUNTIME_barrier(morse);
     RUNTIME_desc_getoncpu(C);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -315,7 +315,7 @@ int MORSE_zpotrimm_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
         return MORSE_SUCCESS;
 */
     morse_pzpotrimm(uplo, A, B, C, sequence, request);
-    
+
 
     /*
     morse_pztrtri(uplo, MorseNonUnit, A, sequence, request);

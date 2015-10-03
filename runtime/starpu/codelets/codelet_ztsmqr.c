@@ -150,6 +150,7 @@ void MORSE_TASK_ztsmqr(MORSE_option_t *options,
     int sizeT = ldt*n1;
     int execution_rank = A2->get_rankof( A2, A2m, A2n );
     int rank_changed=0;
+    (void)execution_rank;
 
     // force execution on the rank owning the largest data (tile)
     int threshold;

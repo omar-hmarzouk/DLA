@@ -129,7 +129,7 @@ static void print_header(char *prog_name, int * iparam) {
  *  Function that allocate an array of pointers to square tiles (allocated to 0)
  */
 double **allocate_tile_matrix(int m, int n, int nb){
-    int i, j;
+    int i;
     int mt, nt;
     double **mat;
 
@@ -155,7 +155,7 @@ double **allocate_tile_matrix(int m, int n, int nb){
  *  Function that deallocate an array of pointers to square tiles
  */
 static void deallocate_tile_matrix(double **mat, int m, int n, int nb){
-    int i, j;
+    int i;
     int mt, nt;
 
     /* compute number of tiles in rows and columns */

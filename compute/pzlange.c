@@ -50,13 +50,11 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
     MORSE_desc_t *RESULT         = NULL;
     MORSE_context_t *morse;
     MORSE_option_t options;
-    size_t h_work_size, d_work_size;
 
     int workm, workn;
     int tempkm, tempkn;
     int ldam;
-    int m, n, k;
-    double alpha = 1.0;
+    int m, n;
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)

@@ -52,10 +52,12 @@ void MORSE_TASK_zgemm(MORSE_option_t *options,
     int sizeC = ldc*n;
     int execution_rank = C->get_rankof( C, Cm, Cn );
     int rank_changed=0;
+    (void)execution_rank;
 
     // force execution on the rank owning the largest data (tile)
     int threshold;
     char* env = getenv("MORSE_COMM_FACTOR_THRESHOLD");
+
     if (env != NULL)
         threshold = (unsigned)atoi(env);
     else

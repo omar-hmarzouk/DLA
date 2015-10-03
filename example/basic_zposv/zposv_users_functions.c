@@ -29,7 +29,7 @@
  *  Function that allocate an array of pointers to square tiles (allocated to 0)
  **/
 MORSE_Complex64_t **allocate_tile_matrix(int m, int n, int nb){
-    int i, j;
+    int i;
     int mt, nt;
     MORSE_Complex64_t **mat;
 
