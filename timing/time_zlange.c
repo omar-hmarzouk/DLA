@@ -1,6 +1,6 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
+ * @Copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
@@ -24,17 +24,13 @@
 #include "./timing.c"
 
 static int
-RunTest(int *iparam, double *dparam, morse_time_t *t_) 
+RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
-	int hres = 0;
-	int n;
-	double normmorse, normlapack, result;
-	double eps;
-	int   norm[4]   = { MorseMaxNorm, MorseOneNorm, MorseInfNorm, MorseFrobeniusNorm };
-	char *normstr[4]  = { "Max", "One", "Inf", "Fro" };
-    PASTE_CODE_IPARAM_LOCALS( iparam );
+    int    hres = 0;
+    double normmorse, normlapack, result;
+    int    norm = MorseInfNorm;
 
-    eps = LAPACKE_dlamch_work('e');
+    PASTE_CODE_IPARAM_LOCALS( iparam );
 
     /* Allocate Data */
     PASTE_CODE_ALLOCATE_MATRIX( A, 1, MORSE_Complex64_t, M, N );
@@ -43,16 +39,16 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 
     /* MORSE ZLANGE */
     START_TIMING();
-    normmorse = MORSE_zlange(MorseInfNorm, M, N, A, LDA);
+    normmorse = MORSE_zlange(norm, M, N, A, LDA);
     STOP_TIMING();
 
     /* Check the solution */
     if ( check )
     {
         double *work = (double*) malloc(max(M,N)*sizeof(double));
-    	normlapack = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', M, N, A, LDA, work);
-    	result = fabs(normmorse - normlapack);
-        switch(norm[2]) {
+        normlapack = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(norm), M, N, A, LDA, work);
+        result = fabs(normmorse - normlapack);
+        switch(norm) {
         case MorseMaxNorm:
             /* result should be perfectly equal */
             break;
@@ -70,7 +66,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
             break;
         }
         if ( MORSE_My_Mpi_Rank() == 0 ) {
-        	dparam[IPARAM_ANORM] = normlapack;
+            dparam[IPARAM_ANORM] = normlapack;
             dparam[IPARAM_BNORM] = 0.;
             dparam[IPARAM_XNORM] = 1.;
             dparam[IPARAM_RES] = result;

@@ -28,11 +28,9 @@ static int
 RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
     double normmorse, normlapack, result;
-    double eps;
-    int   norm[4] = { MorseMaxNorm, MorseOneNorm, MorseInfNorm, MorseFrobeniusNorm };
-    PASTE_CODE_IPARAM_LOCALS( iparam );
+    int    norm = MorseInfNorm;
 
-    eps = LAPACKE_dlamch_work('e');
+    PASTE_CODE_IPARAM_LOCALS( iparam );
 
     /* Allocate Data */
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descA, 1,     MORSE_Complex64_t, MorseComplexDouble, LDA, M, N    );
@@ -40,7 +38,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 
     /* MORSE ZPOSV */
     START_TIMING();
-    normmorse = MORSE_zlange_Tile(MorseInfNorm, descA);
+    normmorse = MORSE_zlange_Tile(norm, descA);
     STOP_TIMING();
 
     /* Check the solution */
@@ -49,9 +47,9 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         /* Allocate Data */
         PASTE_TILE_TO_LAPACK( descA, A, check, MORSE_Complex64_t, M, N );
         double *work = (double*) malloc(max(M,N)*sizeof(double));
-        normlapack = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', M, N, A, LDA, work);
+        normlapack = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(norm), M, N, A, LDA, work);
         result = fabs(normmorse - normlapack);
-        switch(norm[2]) {
+        switch(norm) {
         case MorseMaxNorm:
             /* result should be perfectly equal */
             break;
