@@ -181,13 +181,12 @@ Test(int64_t n, int *iparam) {
 
         gflops = flops / t[iter];
 
-
-        double upper_gflops = 0.0;
-        double tmin = 0.0;
-        double integer_tmin = 0.0;
 #if defined (CHAMELEON_SCHED_STARPU)
         if (iparam[IPARAM_BOUND])
         {
+            double upper_gflops = 0.0;
+            double tmin = 0.0;
+            double integer_tmin = 0.0;
 #if 0
             if (iparam[IPARAM_BOUNDDEPS]) {
                 FILE *out = fopen("bounddeps.pl", "w");
