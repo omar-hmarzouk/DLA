@@ -138,14 +138,14 @@ int MORSE_Finalize(void)
         return MORSE_ERR_NOT_INITIALIZED;
     }
     MORSE_TASK_dataflush_all();
+#  if !defined(CHAMELEON_SIMULATION)
+    RUNTIME_barrier(morse);
+#  endif
     RUNTIME_finalize_scheduler( morse );
 #if defined(CHAMELEON_USE_MAGMA)
     magma_finalize();
 #endif
     morse_context_destroy();
-#  if !defined(CHAMELEON_SIMULATION)
-    RUNTIME_barrier(morse);
-#  endif
 #if defined(CHAMELEON_USE_MPI)
     if (!morse->mpi_outer_init)
         MPI_Finalize();
