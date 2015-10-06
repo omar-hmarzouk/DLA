@@ -53,6 +53,9 @@ int RUNTIME_sequence_wait( MORSE_context_t *morse, MORSE_sequence_t *sequence )
     (void)morse;
     (void)sequence;
     starpu_task_wait_for_all();
+#if defined(CHAMELEON_USE_MPI)
+    starpu_mpi_barrier(MPI_COMM_WORLD);
+#endif
     return MORSE_SUCCESS;
 }
 

@@ -194,7 +194,7 @@ int MORSE_zhemm(MORSE_enum side, MORSE_enum uplo, int M, int N,
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
         morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
-        RUNTIME_barrier(morse);
+        morse_sequence_wait(morse, sequence);
         morse_desc_mat_free(&descA);
         morse_desc_mat_free(&descB);
         morse_desc_mat_free(&descC);
@@ -202,7 +202,7 @@ int MORSE_zhemm(MORSE_enum side, MORSE_enum uplo, int M, int N,
 /*        morse_ziptile2lap( descA, A, NB, NB, LDA, Am,  sequence, &request);*/
 /*        morse_ziptile2lap( descB, B, NB, NB, LDB, N,  sequence, &request);*/
 /*        morse_ziptile2lap( descC, C, NB, NB, LDC, N,  sequence, &request);*/
-/*        RUNTIME_barrier(morse);*/
+/*        morse_sequence_wait(morse, sequence);*/
 /*    }*/
 
     status = sequence->status;
@@ -284,7 +284,7 @@ int MORSE_zhemm_Tile(MORSE_enum side, MORSE_enum uplo,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zhemm_Tile_Async(side, uplo, alpha, A, B, beta, C, sequence, &request);
-    RUNTIME_barrier(morse);
+    morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu(A);
         RUNTIME_desc_getoncpu(B);
         RUNTIME_desc_getoncpu(C);

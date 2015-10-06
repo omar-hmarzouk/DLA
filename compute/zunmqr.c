@@ -193,13 +193,13 @@ int MORSE_zunmqr(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
         morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
-        RUNTIME_barrier(morse);
+        morse_sequence_wait(morse, sequence);
         morse_desc_mat_free(&descA);
         morse_desc_mat_free(&descC);
 /*    } else {*/
 /*        morse_ziptile2lap( descA, A, NB, NB, LDA, K,  sequence, &request);*/
 /*        morse_ziptile2lap( descC, C, NB, NB, LDC, N,  sequence, &request);*/
-/*        RUNTIME_barrier(morse);*/
+/*        morse_sequence_wait(morse, sequence);*/
 /*    }*/
 
     status = sequence->status;
@@ -271,7 +271,7 @@ int MORSE_zunmqr_Tile(MORSE_enum side, MORSE_enum trans,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zunmqr_Tile_Async(side, trans, A, T, C, sequence, &request);
-    RUNTIME_barrier(morse);
+    morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu(A);
         RUNTIME_desc_getoncpu(C);
     

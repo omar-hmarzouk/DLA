@@ -146,13 +146,13 @@ int MORSE_zpotrimm(MORSE_enum uplo, int N,
         morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
         morse_zooptile2lap(descB, A, NB, NB, LDB, N,  sequence, &request);
         morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
-        RUNTIME_barrier(morse);
+        morse_sequence_wait(morse, sequence);
         morse_desc_mat_free(&descA);
         morse_desc_mat_free(&descB);
         morse_desc_mat_free(&descC);
 /*    } else {*/
 /*        morse_ziptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);*/
-/*        RUNTIME_barrier(morse);*/
+/*        morse_sequence_wait(morse, sequence);*/
 /*    }*/
 
     status = sequence->status;
@@ -217,7 +217,7 @@ int MORSE_zpotrimm_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zpotrimm_Tile_Async(uplo, A, B, C, sequence, &request);
-    RUNTIME_barrier(morse);
+    morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu(C);
 
     status = sequence->status;

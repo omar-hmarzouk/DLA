@@ -114,9 +114,9 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, int N,
     /* Call the tile interface */
     MORSE_zplgsy_Tile_Async( bump, &descA, seed, sequence, &request );
 
-    RUNTIME_barrier(morse);
+    morse_sequence_wait(morse, sequence);
     morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
-    RUNTIME_barrier(morse);
+    morse_sequence_wait(morse, sequence);
     morse_desc_mat_free(&descA);
 
     status = sequence->status;
@@ -178,7 +178,7 @@ int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_desc_t *A,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zplgsy_Tile_Async( bump, A, seed, sequence, &request );
-    RUNTIME_barrier(morse);
+    morse_sequence_wait(morse, sequence);
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

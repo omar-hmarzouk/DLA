@@ -145,11 +145,11 @@ double MORSE_zlansy(MORSE_enum norm, MORSE_enum uplo, int N,
     MORSE_zlansy_Tile_Async(norm, uplo, &descA, &value, sequence, &request);
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        RUNTIME_barrier(morse);
+        morse_sequence_wait(morse, sequence);
         morse_desc_mat_free(&descA);
 /*    } else {*/
 /*        morse_ziptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);*/
-/*        RUNTIME_barrier(morse);*/
+/*        morse_sequence_wait(morse, sequence);*/
 /*    }*/
 
     morse_sequence_destroy(morse, sequence);
@@ -212,7 +212,7 @@ double MORSE_zlansy_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A)
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zlansy_Tile_Async(norm, uplo, A, &value, sequence, &request);
-    RUNTIME_barrier(morse);
+    morse_sequence_wait(morse, sequence);
     morse_sequence_destroy(morse, sequence);
     return value;
 }
