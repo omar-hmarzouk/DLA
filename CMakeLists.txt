@@ -747,6 +747,11 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
     list(REMOVE_DUPLICATES CMAKE_EXE_LINKER_FLAGS)
     string(REPLACE ";" " " CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
+    # Fix a problem on Mac OS X when building shared libraries
+    if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+        set(CMAKE_SHARED_LINKER_FLAGS "-undefined dynamic_lookup")
+    endif()
+    message("CMAKE_SYSTEM_NAME: ${CMAKE_SYSTEM_NAME}")
 
     # Add define for Fortran Mangling (should be defined somewhere else)
     # ------------------------------------------------------------------
