@@ -43,7 +43,7 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
     MORSE_option_t options;
 
     int k, m, n;
-    int lda, ldb, ldc;
+    int ldbm, ldcm;
     int ldak, ldam, ldan;
     int tempkm, tempmm, tempnn, tempkn;
 
@@ -206,27 +206,30 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
                 A(k, k), ldak);
         }
         /*
-         *  ZSYMM
+         *  ZSYMM Right / Lower
          */
-        for (m = 0; m < C->mt; m++) {
-            tempmm = m == C->mt-1 ? C->m-m*C->mb : C->mb;
-            ldc = BLKLDD(C, m);
-            for (n = 0; n < C->nt; n++) {
-                tempnn = n == C->nt-1 ? C->n-n*C->nb : C->nb;
-                lda = BLKLDD(A, n);
-                ldb = BLKLDD(B, m);
-                for (k = 0; k < C->nt; k++) {
-                    tempkn = k == C->nt-1 ? C->n-k*C->nb : C->nb;
-                    ldak = BLKLDD(A, k);
-                    zbeta = k == 0 ? beta : zone;
+        for (k = 0; k < C->nt; k++) {
+            tempkn = k == C->nt-1 ? C->n-k*C->nb : C->nb;
+            ldak = BLKLDD(A, k);
+            zbeta = k == 0 ? beta : zone;
+
+            for (m = 0; m < C->mt; m++) {
+                tempmm = m == C->mt-1 ? C->m-m*C->mb : C->mb;
+                ldbm = BLKLDD(B, m);
+                ldcm = BLKLDD(C, m);
+
+                for (n = 0; n < C->nt; n++) {
+                    tempnn = n == C->nt-1 ? C->n-n*C->nb : C->nb;
+                    ldan = BLKLDD(A, n);
+
                     if (k < n) {
                        MORSE_TASK_zgemm(
                            &options,
                            MorseNoTrans, MorseTrans,
                            tempmm, tempnn, tempkn, A->mb,
-                           alpha, B(m, k), ldb,  /* ldb * K */
-                           A(n, k), lda,  /* lda * K */
-                           zbeta, C(m, n), ldc); /* ldc * Y */
+                           alpha, B(m, k), ldbm,  /* ldbm * K */
+                                  A(n, k), ldan,  /* ldan * K */
+                           zbeta, C(m, n), ldcm); /* ldcm * Y */
                     }
                     else {
                         if (k == n) {
@@ -234,21 +237,25 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
                                &options,
                                MorseRight, uplo,
                                tempmm, tempnn, A->mb,
-                               alpha, A(k, k), ldak, /* ldak * Y */
-                               B(m, k), ldb,  /* ldb  * Y */
-                               zbeta, C(m, n), ldc); /* ldc  * Y */
+                               alpha, A(k, k), ldak,  /* ldak * Y */
+                                      B(m, k), ldbm,  /* ldbm * Y */
+                               zbeta, C(m, n), ldcm); /* ldcm * Y */
                         }
                         else {
                             MORSE_TASK_zgemm(
                                 &options,
                                 MorseNoTrans, MorseNoTrans,
                                 tempmm, tempnn, tempkn, A->mb,
-                                alpha, B(m, k), ldb,  /* ldb  * K */
-                                A(k, n), ldak, /* ldak * Y */
-                                zbeta, C(m, n), ldc); /* ldc  * Y */
+                                alpha, B(m, k), ldbm,  /* ldbm * K */
+                                       A(k, n), ldak,  /* ldak * Y */
+                                zbeta, C(m, n), ldcm); /* ldcm * Y */
                         }
                     }
                 }
+                MORSE_TASK_dataflush( &options, B(m, k) );
+            }
+            for (n = 0; n <= k; n++) {
+                MORSE_TASK_dataflush( &options, A(k, n) );
             }
         }
     }
@@ -394,27 +401,30 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
                 A(k, k), ldak);
         }
         /*
-         *  ZSYMM
+         *  ZSYMM Right / Upper
          */
-        for (m = 0; m < C->mt; m++) {
-            tempmm = m == C->mt-1 ? C->m-m*C->mb : C->mb;
-            ldc = BLKLDD(C, m);
-            for (n = 0; n < C->nt; n++) {
-                tempnn = n == C->nt-1 ? C->n-n*C->nb : C->nb;
-                lda = BLKLDD(A, n);
-                ldb = BLKLDD(B, m);
-                for (k = 0; k < C->nt; k++) {
-                    tempkn = k == C->nt-1 ? C->n-k*C->nb : C->nb;
-                    ldak = BLKLDD(A, k);
-                    zbeta = k == 0 ? beta : zone;
+        for (k = 0; k < C->nt; k++) {
+            tempkn = k == C->nt-1 ? C->n-k*C->nb : C->nb;
+            ldak = BLKLDD(A, k);
+            zbeta = k == 0 ? beta : zone;
+
+            for (m = 0; m < C->mt; m++) {
+                tempmm = m == C->mt-1 ? C->m-m*C->mb : C->mb;
+                ldbm = BLKLDD(B, m);
+                ldcm = BLKLDD(C, m);
+
+                for (n = 0; n < C->nt; n++) {
+                    tempnn = n == C->nt-1 ? C->n-n*C->nb : C->nb;
+                    ldan = BLKLDD(A, n);
+
                     if (k < n) {
                         MORSE_TASK_zgemm(
                             &options,
                             MorseNoTrans, MorseNoTrans,
                             tempmm, tempnn, tempkn, A->mb,
-                            alpha, B(m, k), ldb,  /* ldb  * K */
-                            A(k, n), ldak, /* ldak * Y */
-                            zbeta, C(m, n), ldc); /* ldc  * Y */
+                            alpha, B(m, k), ldbm,  /* ldbm * K */
+                                   A(k, n), ldak,  /* ldak * Y */
+                            zbeta, C(m, n), ldcm); /* ldcm * Y */
                     }
                     else {
                         if (k == n) {
@@ -422,21 +432,25 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
                                 &options,
                                 MorseRight, uplo,
                                 tempmm, tempnn, A->mb,
-                                alpha, A(k, k), ldak, /* ldak * Y */
-                                B(m, k), ldb,  /* ldb  * Y */
-                                zbeta, C(m, n), ldc); /* ldc  * Y */
+                                alpha, A(k, k), ldak,  /* ldak * Y */
+                                       B(m, k), ldbm,  /* ldbm * Y */
+                                zbeta, C(m, n), ldcm); /* ldcm * Y */
                         }
                         else {
                             MORSE_TASK_zgemm(
                                 &options,
                                 MorseNoTrans, MorseTrans,
                                 tempmm, tempnn, tempkn, A->mb,
-                                alpha, B(m, k), ldb,  /* ldb * K */
-                                A(n, k), lda,  /* lda * K */
-                                zbeta, C(m, n), ldc); /* ldc * Y */
+                                alpha, B(m, k), ldbm,  /* ldbm * K */
+                                       A(n, k), ldan,  /* ldan * K */
+                                zbeta, C(m, n), ldcm); /* ldcm * Y */
                         }
                     }
                 }
+                MORSE_TASK_dataflush( &options, B(m, k) );
+            }
+            for (m = 0; m <= k; m++) {
+                MORSE_TASK_dataflush( &options, A(m, k) );
             }
         }
     }

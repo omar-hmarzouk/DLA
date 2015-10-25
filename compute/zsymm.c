@@ -286,9 +286,9 @@ int MORSE_zsymm_Tile(MORSE_enum side, MORSE_enum uplo,
     MORSE_zsymm_Tile_Async(side, uplo, alpha, A, B, beta, C, sequence, &request);
     morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu(A);
-        RUNTIME_desc_getoncpu(B);
-        RUNTIME_desc_getoncpu(C);
-    
+    RUNTIME_desc_getoncpu(B);
+    RUNTIME_desc_getoncpu(C);
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
