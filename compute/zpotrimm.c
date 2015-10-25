@@ -74,9 +74,9 @@
  *
  ******************************************************************************/
 int MORSE_zpotrimm(MORSE_enum uplo, int N,
-                  MORSE_Complex64_t *A, int LDA,
-                  MORSE_Complex64_t *B, int LDB,
-                  MORSE_Complex64_t *C, int LDC)
+                   MORSE_Complex64_t *A, int LDA,
+                   MORSE_Complex64_t *B, int LDB,
+                   MORSE_Complex64_t *C, int LDC)
 {
     int NB;
     int status;
@@ -310,17 +310,14 @@ int MORSE_zpotrimm_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
         return morse_request_fail(sequence, request, -1);
     }
     /* Quick return */
-/*
-    if (max(N, 0) == 0)
-        return MORSE_SUCCESS;
-*/
-    morse_pzpotrimm(uplo, A, B, C, sequence, request);
-
-
     /*
-    morse_pztrtri(uplo, MorseNonUnit, A, sequence, request);
-
-    morse_pzlauum(uplo, A, sequence, request);
+     if (max(N, 0) == 0)
+     return MORSE_SUCCESS;
+     */
+    morse_pzpotrimm(uplo, A, B, C, sequence, request);
+    /*
+     morse_pztrtri(uplo, MorseNonUnit, A, sequence, request);
+     morse_pzlauum(uplo, A, sequence, request);
     */
 
     return MORSE_SUCCESS;

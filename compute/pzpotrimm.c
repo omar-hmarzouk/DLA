@@ -19,11 +19,9 @@
  * @version 2.5.0
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
- * @author Jakub Kurzak
  * @author Hatem Ltaief
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
+ * @author Ali M Charara
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
@@ -47,7 +45,7 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
     int ldak, ldam, ldan;
     int tempkm, tempmm, tempnn, tempkn;
 
-    MORSE_Complex64_t alpha  = (MORSE_Complex64_t) 1.0;
+    MORSE_Complex64_t alpha = (MORSE_Complex64_t) 1.0;
     MORSE_Complex64_t beta  = (MORSE_Complex64_t) 0.0;
     MORSE_Complex64_t zbeta;
     MORSE_Complex64_t zone  = (MORSE_Complex64_t) 1.0;
