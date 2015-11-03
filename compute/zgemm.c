@@ -157,12 +157,12 @@ int MORSE_zgemm(MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
         morse_error("MORSE_zgemm", "illegal value of transB");
         return -2;
     }
-    if ( transA == MorseNoTrans ) { 
+    if ( transA == MorseNoTrans ) {
         Am = M; An = K;
     } else {
         Am = K; An = M;
     }
-    if ( transB == MorseNoTrans ) { 
+    if ( transB == MorseNoTrans ) {
         Bm = K; Bn = N;
     } else {
         Bm = N; Bn = K;

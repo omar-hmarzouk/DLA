@@ -47,9 +47,9 @@ void MORSE_TASK_dzasum(MORSE_option_t *options,
                        MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_desc_t *B, int Bm, int Bn);
 void MORSE_TASK_zgeadd(MORSE_option_t *options,
-                      int m, int n, MORSE_Complex64_t alpha,
-                      MORSE_desc_t *A, int Am, int An, int lda,
-                      MORSE_desc_t *B, int Bm, int Bn, int ldb);
+                       MORSE_enum trans, int m, int n, int nb,
+                       MORSE_Complex64_t alpha, MORSE_desc_t *A, int Am, int An, int lda,
+                       MORSE_Complex64_t beta,  MORSE_desc_t *B, int Bm, int Bn, int ldb);
 void MORSE_TASK_zbrdalg(MORSE_option_t *options,
                         MORSE_enum uplo,
                         int N, int NB,
@@ -310,6 +310,10 @@ void MORSE_TASK_ztrdalg(MORSE_option_t *options,
                         MORSE_desc_t *S, int Sm, int Sn,
                         int i, int j, int m, int grsiz, int BAND,
                         int *PCOL, int *ACOL, int *MCOL);
+void MORSE_TASK_ztradd(MORSE_option_t *options,
+                       MORSE_enum uplo, MORSE_enum trans, int m, int n, int nb,
+                       MORSE_Complex64_t alpha, MORSE_desc_t *A, int Am, int An, int lda,
+                       MORSE_Complex64_t beta,  MORSE_desc_t *B, int Bm, int Bn, int ldb);
 void MORSE_TASK_ztrasm(MORSE_option_t *options,
                        MORSE_enum storev, MORSE_enum uplo, MORSE_enum diag, int M, int N,
                        MORSE_desc_t *A, int Am, int An, int lda,

@@ -46,7 +46,7 @@ set(ZSRC
     core_zhemm.c
     core_zher2k.c
     core_zherk.c
-    core_zhessq.c    
+    core_zhessq.c
     core_zlacpy.c
     core_zlag2c.c
     core_zlange.c
@@ -69,6 +69,7 @@ set(ZSRC
     core_zsyrk.c
     core_zsyssq.c
     core_zsytf2_nopiv.c
+    core_ztradd.c
     core_ztrasm.c
     core_ztrmm.c
     core_ztrsm.c

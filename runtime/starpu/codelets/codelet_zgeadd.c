@@ -30,32 +30,48 @@
 #include "runtime/starpu/include/runtime_codelet_z.h"
 
 /**
+ ******************************************************************************
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- *  CORE_zgeadd adds to matrices together.
+ *  MORSE_TASK_zgeadd adds two general matrices together as in PBLAS pzgeadd.
  *
- *       B <- alpha * A  + B
+ *       B <- alpha * op(A)  + beta * B,
+ *
+ * where op(X) = X, X', or conj(X')
  *
  *******************************************************************************
  *
+ * @param[in] trans
+ *          Specifies whether the matrix A is non-transposed, transposed, or
+ *          conjugate transposed
+ *          = MorseNoTrans:   op(A) = A
+ *          = MorseTrans:     op(A) = A'
+ *          = MorseConjTrans: op(A) = conj(A')
+ *
  * @param[in] M
- *          Number of rows of the matrices A and B.
+ *          Number of rows of the matrices op(A) and B.
  *
  * @param[in] N
- *          Number of columns of the matrices A and B.
+ *          Number of columns of the matrices op(A) and B.
  *
  * @param[in] alpha
  *          Scalar factor of A.
  *
  * @param[in] A
- *          Matrix of size LDA-by-N.
+ *          Matrix of size LDA-by-N, if trans = MorseNoTrans, LDA-by-M
+ *          otherwise.
  *
  * @param[in] LDA
- *          Leading dimension of the array A. LDA >= max(1,M)
+ *          Leading dimension of the array A. LDA >= max(1,k), with k=M, if
+ *          trans = MorseNoTrans, and k=N otherwise.
+ *
+ * @param[in] beta
+ *          Scalar factor of B.
  *
  * @param[in,out] B
  *          Matrix of size LDB-by-N.
+ *          On exit, B = alpha * op(A) + beta * B
  *
  * @param[in] LDB
  *          Leading dimension of the array B. LDB >= max(1,M)
@@ -67,11 +83,10 @@
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
  ******************************************************************************/
-
 void MORSE_TASK_zgeadd(MORSE_option_t *options,
-                       int m, int n, MORSE_Complex64_t alpha,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *B, int Bm, int Bn, int ldb)
+                       MORSE_enum trans, int m, int n, int nb,
+                       MORSE_Complex64_t alpha, MORSE_desc_t *A, int Am, int An, int lda,
+                       MORSE_Complex64_t beta,  MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
     struct starpu_codelet *codelet = &cl_zgeadd;
     void (*callback)(void*) = options->profiling ? cl_zgeadd_callback : NULL;
@@ -81,11 +96,13 @@ void MORSE_TASK_zgeadd(MORSE_option_t *options,
     {
 	starpu_insert_task(
             codelet,
+            STARPU_VALUE,    &trans,              sizeof(MORSE_enum),
             STARPU_VALUE,    &m,                  sizeof(int),
             STARPU_VALUE,    &n,                  sizeof(int),
             STARPU_VALUE,    &alpha,              sizeof(MORSE_Complex64_t),
             STARPU_R,         RTBLKADDR(A, MORSE_Complex64_t, Am, An),
             STARPU_VALUE,    &lda,                sizeof(int),
+            STARPU_VALUE,    &beta,               sizeof(MORSE_Complex64_t),
             STARPU_RW,        RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),
             STARPU_VALUE,    &ldb,                sizeof(int),
             STARPU_PRIORITY,  options->priority,
@@ -97,18 +114,20 @@ void MORSE_TASK_zgeadd(MORSE_option_t *options,
 
 static void cl_zgeadd_cpu_func(void *descr[], void *cl_arg)
 {
+    MORSE_enum trans;
     int M;
     int N;
     MORSE_Complex64_t alpha;
     MORSE_Complex64_t *A;
     int LDA;
+    MORSE_Complex64_t beta;
     MORSE_Complex64_t *B;
     int LDB;
 
     A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
-    starpu_codelet_unpack_args(cl_arg, &M, &N, &alpha, &LDA, &LDB);
-    CORE_zgeadd(M, N, alpha, A, LDA, B, LDB);
+    starpu_codelet_unpack_args(cl_arg, &trans, &M, &N, &alpha, &LDA, &beta, &LDB);
+    CORE_zgeadd(trans, M, N, alpha, A, LDA, beta, B, LDB);
     return;
 }
 

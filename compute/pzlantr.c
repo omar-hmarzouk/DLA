@@ -128,9 +128,9 @@ void morse_pzlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
                     tempkn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
                     MORSE_TASK_dgeadd(
                         &options,
-                        1, tempkn, 1.0,
-                        VECNORMS_STEP1(m, n), 1,
-                        VECNORMS_STEP2(0, n), 1);
+                        MorseNoTrans, 1, tempkn, A->mb,
+                        1.0, VECNORMS_STEP1(m, n), 1,
+                        1.0, VECNORMS_STEP2(0, n), 1);
                 }
             }
         }
@@ -178,9 +178,9 @@ void morse_pzlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
                 for(m = n; m < A->mt; m++) {
                     MORSE_TASK_dgeadd(
                         &options,
-                        1, tempkn, 1.0,
-                        VECNORMS_STEP1(m, n), 1,
-                        VECNORMS_STEP2(0, n), 1);
+                        MorseNoTrans, 1, tempkn, A->mb,
+                        1.0, VECNORMS_STEP1(m, n), 1,
+                        1.0, VECNORMS_STEP2(0, n), 1);
                 }
             }
         }
@@ -292,9 +292,9 @@ void morse_pzlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
                 for(n = m; n < A->nt; n++) {
                     MORSE_TASK_dgeadd(
                         &options,
-                        tempkm, 1, 1.0,
-                        VECNORMS_STEP1(m, n), tempkm,
-                        VECNORMS_STEP2(m, 0), tempkm);
+                        MorseNoTrans, tempkm, 1, A->mb,
+                        1.0, VECNORMS_STEP1(m, n), tempkm,
+                        1.0, VECNORMS_STEP2(m, 0), tempkm);
                 }
 
             }
@@ -347,9 +347,9 @@ void morse_pzlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
                     tempkm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
                     MORSE_TASK_dgeadd(
                         &options,
-                        tempkm, 1, 1.0,
-                        VECNORMS_STEP1(m, n), tempkm,
-                        VECNORMS_STEP2(m, 0), tempkm);
+                        MorseNoTrans, tempkm, 1, A->mb,
+                        1.0, VECNORMS_STEP1(m, n), tempkm,
+                        1.0, VECNORMS_STEP2(m, 0), tempkm);
                 }
             }
         }

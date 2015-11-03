@@ -80,6 +80,7 @@ set(ZSRC
     ##################
     # OTHERS
     ##################
+    testing_zgeadd.c
     #testing_zgecfi.c
     #testing_zgesvd.c
     #testing_zgetmi.c

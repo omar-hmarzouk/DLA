@@ -160,9 +160,9 @@ void morse_pzlanhe(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A, double *re
             for(n = 0; n < A->nt; n++) {
                 MORSE_TASK_dgeadd(
                     &options,
-                    tempkm, 1, 1.0,
-                    VECNORMS_STEP1(m, n), tempkm,
-                    VECNORMS_STEP2(m, 0), tempkm);
+                    MorseNoTrans, tempkm, 1, A->mb,
+                    1.0, VECNORMS_STEP1(m, n), tempkm,
+                    1.0, VECNORMS_STEP2(m, 0), tempkm);
             }
             /*
              * Compute max norm of each segment of the final vector in the

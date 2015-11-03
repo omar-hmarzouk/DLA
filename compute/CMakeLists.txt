@@ -65,7 +65,9 @@ set(ZSRC
     pztrmm.c
     pztrsm.c
     pztrsmpl.c
+    pztradd.c
     ###
+    zgeadd.c
     zgemm.c
     zhemm.c
     zher2k.c
@@ -73,13 +75,13 @@ set(ZSRC
     zsymm.c
     zsyr2k.c
     zsyrk.c
+    ztradd.c
     ztrmm.c
     ztrsm.c
     ztrsmpl.c
     ##################
     # LAPACK
     ##################
-    pzgeadd.c
     pzgelqf.c
     pzgelqfrh.c
     pzgeqrf.c

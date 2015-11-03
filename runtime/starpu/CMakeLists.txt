@@ -151,6 +151,7 @@ set(ZSRC
     codelets/codelet_zssssm.c
     codelets/codelet_zsyssq.c
     codelets/codelet_zsytrf_nopiv.c
+    codelets/codelet_ztradd.c
     codelets/codelet_ztrasm.c
     codelets/codelet_ztrssq.c
     codelets/codelet_ztrtri.c

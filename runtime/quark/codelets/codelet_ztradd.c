@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelet_zgeadd.c
+ * @file codelet_ztradd.c
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -20,9 +20,7 @@
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
- * @date 2010-11-15
+ * @date 2011-11-03
  * @precisions normal z -> c d s
  *
  **/
@@ -33,13 +31,19 @@
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- *  MORSE_TASK_zgeadd adds two general matrices together as in PBLAS pzgeadd.
+ *  MORSE_TASK_ztradd adds two trapezoidal matrices together as in PBLAS pzgeadd.
  *
  *       B <- alpha * op(A)  + beta * B,
  *
  * where op(X) = X, X', or conj(X')
  *
  *******************************************************************************
+ *
+ * @param[in] uplo
+ *          Specifies the shape of A and B matrices:
+ *          = MorseUpperLower: A and B are general matrices.
+ *          = MorseUpper: op(A) and B are upper trapezoidal matrices.
+ *          = MorseLower: op(A) and B are lower trapezoidal matrices.
  *
  * @param[in] trans
  *          Specifies whether the matrix A is non-transposed, transposed, or
@@ -82,14 +86,15 @@
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
  ******************************************************************************/
-void MORSE_TASK_zgeadd(MORSE_option_t *options,
-                       MORSE_enum trans, int m, int n, int nb,
+void MORSE_TASK_ztradd(MORSE_option_t *options,
+                       MORSE_enum uplo, MORSE_enum trans, int m, int n, int nb,
                        MORSE_Complex64_t alpha, MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_Complex64_t beta,  MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_GEADD;
-    QUARK_Insert_Task(opt->quark, CORE_zgeadd_quark, (Quark_Task_Flags*)opt,
+    QUARK_Insert_Task(opt->quark, CORE_ztradd_quark, (Quark_Task_Flags*)opt,
+        sizeof(MORSE_enum),                 &uplo,  VALUE,
         sizeof(MORSE_enum),                 &trans, VALUE,
         sizeof(int),                        &m,     VALUE,
         sizeof(int),                        &n,     VALUE,
@@ -103,8 +108,9 @@ void MORSE_TASK_zgeadd(MORSE_option_t *options,
 }
 
 
-void CORE_zgeadd_quark(Quark *quark)
+void CORE_ztradd_quark(Quark *quark)
 {
+    MORSE_enum uplo;
     MORSE_enum trans;
     int M;
     int N;
@@ -115,8 +121,8 @@ void CORE_zgeadd_quark(Quark *quark)
     MORSE_Complex64_t *B;
     int LDB;
 
-    quark_unpack_args_9(quark, trans, M, N, alpha, A, LDA, beta, B, LDB);
-    CORE_zgeadd(trans, M, N, alpha, A, LDA, beta, B, LDB);
+    quark_unpack_args_9(quark, uplo, trans, M, N, alpha, A, LDA, beta, B, LDB);
+    CORE_ztradd(uplo, trans, M, N, alpha, A, LDA, beta, B, LDB);
     return;
 }
 

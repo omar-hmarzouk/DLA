@@ -42,6 +42,7 @@ extern "C" {
 /** ****************************************************************************
  *  Declarations of math functions (LAPACK layout) - alphabetical order
  **/
+int MORSE_zgeadd(MORSE_enum trans, int M, int N, MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t beta, MORSE_Complex64_t *B, int LDB);
 //int MORSE_zgebrd(int M, int N, MORSE_Complex64_t *A, int LDA, double *D, double *E, MORSE_desc_t *descT);
 //int MORSE_zgecon(MORSE_enum norm, int N, MORSE_Complex64_t *A, int LDA, double anorm, double *rcond);
 //int MORSE_zpocon(MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA, double anorm, double *rcond);
@@ -100,6 +101,7 @@ int MORSE_zsyrk(MORSE_enum uplo, MORSE_enum trans, int N, int K, MORSE_Complex64
 int MORSE_zsyr2k(MORSE_enum uplo, MORSE_enum trans, int N, int K, MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB, MORSE_Complex64_t beta, MORSE_Complex64_t *C, int LDC);
 int MORSE_zsysv(MORSE_enum uplo, int N, int NRHS, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB);
 int MORSE_zsytrs(MORSE_enum uplo, int N, int NRHS, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB);
+int MORSE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N, MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t beta, MORSE_Complex64_t *B, int LDB);
 int MORSE_ztrmm(MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag, int N, int NRHS, MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB);
 int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag, int N, int NRHS, MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB);
 int MORSE_ztrsmpl(int N, int NRHS, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descL, int *IPIV, MORSE_Complex64_t *B, int LDB);
@@ -116,6 +118,7 @@ int MORSE_zunmqr(MORSE_enum side, MORSE_enum trans, int M, int N, int K, MORSE_C
 /** ****************************************************************************
  *  Declarations of math functions (tile layout) - alphabetical order
  **/
+int MORSE_zgeadd_Tile(MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_Complex64_t beta, MORSE_desc_t *B);
 //int MORSE_zgebrd_Tile(MORSE_desc_t *A, double *D, double *E, MORSE_desc_t *T);
 //int MORSE_zgecon_Tile(MORSE_enum norm, MORSE_desc_t *A, double anorm, double *rcond);
 //int MORSE_zpocon_Tile(MORSE_enum uplo, MORSE_desc_t *A, double anorm, double *rcond);
@@ -174,6 +177,7 @@ int MORSE_zsyrk_Tile(MORSE_enum uplo, MORSE_enum trans, MORSE_Complex64_t alpha,
 int MORSE_zsyr2k_Tile(MORSE_enum uplo, MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_Complex64_t beta, MORSE_desc_t *C);
 int MORSE_zsysv_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B);
 int MORSE_zsytrs_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B);
+int MORSE_ztradd_Tile(MORSE_enum uplo, MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_Complex64_t beta, MORSE_desc_t *B);
 int MORSE_ztrmm_Tile(MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B);
 int MORSE_ztrsm_Tile(MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B);
 int MORSE_ztrsmpl_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_desc_t *B);
@@ -187,6 +191,7 @@ int MORSE_zunmqr_Tile(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_
 /** ****************************************************************************
  *  Declarations of math functions (tile layout, asynchronous execution) - alphabetical order
  **/
+int MORSE_zgeadd_Tile_Async(MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_Complex64_t beta, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 //int MORSE_zgebrd_Tile_Async(MORSE_desc_t *A, double *D, double *E, MORSE_desc_t *T, MORSE_sequence_t *sequence, MORSE_request_t *request);
 //int MORSE_zgecon_Tile_Async(MORSE_enum norm, MORSE_desc_t *A, double anorm, double *rcond, MORSE_sequence_t *sequence, MORSE_request_t *request);
 //int MORSE_zpocon_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, double anorm, double *rcond, MORSE_sequence_t *sequence, MORSE_request_t *request);
@@ -245,6 +250,7 @@ int MORSE_zsytrs_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, M
 int MORSE_zsymm_Tile_Async(MORSE_enum side, MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_Complex64_t beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zsyrk_Tile_Async(MORSE_enum uplo, MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_Complex64_t beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zsyr2k_Tile_Async(MORSE_enum uplo, MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_Complex64_t beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request);
+int MORSE_ztradd_Tile_Async(MORSE_enum uplo, MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_Complex64_t beta, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_ztrmm_Tile_Async(MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_ztrsm_Tile_Async(MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_ztrsmpl_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);

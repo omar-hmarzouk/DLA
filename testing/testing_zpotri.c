@@ -149,7 +149,7 @@ BLAS_dfpinfo(enum blas_cmach_type cmach) {
     l = 128;
     m = -125;
   } else {
-    t = 53; 
+    t = 53;
     l = 1024;
     m = -1021;
   }
@@ -207,7 +207,7 @@ int testing_zpotri(int argc, char **argv)
     eps = BLAS_dfpinfo( blas_eps );
 
     uplo = MorseUpper;
-    
+
     /*-------------------------------------------------------------
     *  TESTING ZPOTRI
     */
@@ -345,7 +345,7 @@ static int check_inverse(int N, MORSE_Complex64_t *A1, MORSE_Complex64_t *A2, in
              *(A2+j+i*LDA) = *(A2+i+j*LDA);
        cblas_zhemm(CblasColMajor, CblasLeft, CblasLower, N, N, CBLAS_SADDR(alpha), A2, LDA, A1, LDA, CBLAS_SADDR(beta), work, N);
     }
-    
+
     /* Add the identity matrix to work */
     for(i=0; i<N; i++)
         *(work+i+i*N) = *(work+i+i*N) + zone;

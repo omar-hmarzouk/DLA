@@ -114,9 +114,9 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
             for(m = 0; m < A->mt; m++) {
                 MORSE_TASK_dgeadd(
                     &options,
-                    1, tempkn, 1.0,
-                    VECNORMS_STEP1(m, n), 1,
-                    VECNORMS_STEP2(0, n), 1);
+                    MorseNoTrans, 1, tempkn, A->mb,
+                    1.0, VECNORMS_STEP1(m, n), 1,
+                    1.0, VECNORMS_STEP2(0, n), 1);
             }
 
             /*
@@ -215,18 +215,18 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
             for(n = A->myrank % A->q + A->q; n < A->nt; n+=A->q) {
                 MORSE_TASK_dgeadd(
                     &options,
-                    tempkm, 1, 1.0,
-                    VECNORMS_STEP1(m, n), tempkm,
-                    VECNORMS_STEP1(m, A->myrank % A->q), tempkm);
+                    MorseNoTrans, tempkm, 1, A->mb,
+                    1.0, VECNORMS_STEP1(m, n), tempkm,
+                    1.0, VECNORMS_STEP1(m, A->myrank % A->q), tempkm);
             }
 
             /* compute vector sums between tiles in rows between ranks */
             for(n = 0; n < A->q; n++) {
                 MORSE_TASK_dgeadd(
                     &options,
-                    tempkm, 1, 1.0,
-                    VECNORMS_STEP1(m, n), tempkm,
-                    VECNORMS_STEP2(m, 0), tempkm);
+                    MorseNoTrans, tempkm, 1, A->mb,
+                    1.0, VECNORMS_STEP1(m, n), tempkm,
+                    1.0, VECNORMS_STEP2(m, 0), tempkm);
             }
 
             /*

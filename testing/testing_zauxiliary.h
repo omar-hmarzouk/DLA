@@ -88,6 +88,7 @@ int testing_zsyr2k(int argc, char **argv);
 int testing_ztrmm(int argc, char **argv);
 int testing_ztrsm(int argc, char **argv);
 int testing_zpemv(int argc, char **argv);
+int testing_zgeadd(int argc, char **argv);
 
 int testing_zposv(int argc, char **argv);
 int testing_zgels(int argc, char **argv);

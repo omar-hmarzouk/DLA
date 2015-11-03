@@ -88,6 +88,7 @@ ZCODELETS_HEADER(unmqr)
  * Auxiliary functions
  */
 ZCODELETS_HEADER(geadd)
+ZCODELETS_HEADER(tradd)
 ZCODELETS_HEADER(lacpy)
 ZCODELETS_HEADER(lange)
 ZCODELETS_HEADER(lange_max)

@@ -84,7 +84,6 @@ int morse_zshift(MORSE_context_t *morse, int m, int n, MORSE_Complex64_t *A,
 /***************************************************************************//**
  *  Declarations of parallel functions (dynamic scheduling) - alphabetical order
  **/
-void morse_pzgeadd(MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzbarrier_tl2pnl(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzbarrier_pnl2tl(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzbarrier_tl2row(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
@@ -134,6 +133,7 @@ void morse_pzsymm(MORSE_enum side, MORSE_enum uplo, MORSE_Complex64_t alpha, MOR
 void morse_pzsyrk(MORSE_enum uplo, MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_Complex64_t beta,  MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzsyr2k(MORSE_enum uplo, MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_Complex64_t beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzsytrf(MORSE_enum uplo, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
+void morse_pztradd(MORSE_enum uplo, MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_Complex64_t beta, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pztrmm(MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pztrsm(MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pztrsmpl(MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *L, int *IPIV, MORSE_sequence_t *sequence, MORSE_request_t *request);

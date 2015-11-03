@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelet_zgeadd.c
+ * @file codelet_ztradd.c
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -20,26 +20,31 @@
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
- * @date 2010-11-15
+ * @date 2011-11-03
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "runtime/starpu/include/morse_starpu.h"
+#include "runtime/starpu/include/runtime_codelet_z.h"
 
 /**
  ******************************************************************************
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- *  MORSE_TASK_zgeadd adds two general matrices together as in PBLAS pzgeadd.
+ *  MORSE_TASK_ztradd adds two trapezoidal matrices together as in PBLAS pzgeadd.
  *
  *       B <- alpha * op(A)  + beta * B,
  *
  * where op(X) = X, X', or conj(X')
  *
  *******************************************************************************
+ *
+ * @param[in] uplo
+ *          Specifies the shape of A and B matrices:
+ *          = MorseUpperLower: A and B are general matrices.
+ *          = MorseUpper: op(A) and B are upper trapezoidal matrices.
+ *          = MorseLower: op(A) and B are lower trapezoidal matrices.
  *
  * @param[in] trans
  *          Specifies whether the matrix A is non-transposed, transposed, or
@@ -82,29 +87,39 @@
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
  ******************************************************************************/
-void MORSE_TASK_zgeadd(MORSE_option_t *options,
-                       MORSE_enum trans, int m, int n, int nb,
+void MORSE_TASK_ztradd(MORSE_option_t *options,
+                       MORSE_enum uplo, MORSE_enum trans, int m, int n, int nb,
                        MORSE_Complex64_t alpha, MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_Complex64_t beta,  MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
-    quark_option_t *opt = (quark_option_t*)(options->schedopt);
-    DAG_CORE_GEADD;
-    QUARK_Insert_Task(opt->quark, CORE_zgeadd_quark, (Quark_Task_Flags*)opt,
-        sizeof(MORSE_enum),                 &trans, VALUE,
-        sizeof(int),                        &m,     VALUE,
-        sizeof(int),                        &n,     VALUE,
-        sizeof(MORSE_Complex64_t),         &alpha, VALUE,
-        sizeof(MORSE_Complex64_t)*lda*n,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),             INPUT,
-        sizeof(int),                        &lda,   VALUE,
-        sizeof(MORSE_Complex64_t),         &beta,   VALUE,
-        sizeof(MORSE_Complex64_t)*ldb*n,    RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),             INOUT,
-        sizeof(int),                        &ldb,   VALUE,
-        0);
+    struct starpu_codelet *codelet = &cl_ztradd;
+    void (*callback)(void*) = options->profiling ? cl_zgeadd_callback : NULL;
+
+    if ( morse_desc_islocal( A, Am, An ) ||
+	 morse_desc_islocal( B, Bm, Bn ) )
+    {
+	starpu_insert_task(
+            codelet,
+            STARPU_VALUE,    &uplo,               sizeof(MORSE_enum),
+            STARPU_VALUE,    &trans,              sizeof(MORSE_enum),
+            STARPU_VALUE,    &m,                  sizeof(int),
+            STARPU_VALUE,    &n,                  sizeof(int),
+            STARPU_VALUE,    &alpha,              sizeof(MORSE_Complex64_t),
+            STARPU_R,         RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+            STARPU_VALUE,    &lda,                sizeof(int),
+            STARPU_VALUE,    &beta,               sizeof(MORSE_Complex64_t),
+            STARPU_RW,        RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),
+            STARPU_VALUE,    &ldb,                sizeof(int),
+            STARPU_PRIORITY,  options->priority,
+            STARPU_CALLBACK,  callback,
+            0);
+    }
 }
 
 
-void CORE_zgeadd_quark(Quark *quark)
+static void cl_ztradd_cpu_func(void *descr[], void *cl_arg)
 {
+    MORSE_enum uplo;
     MORSE_enum trans;
     int M;
     int N;
@@ -115,8 +130,14 @@ void CORE_zgeadd_quark(Quark *quark)
     MORSE_Complex64_t *B;
     int LDB;
 
-    quark_unpack_args_9(quark, trans, M, N, alpha, A, LDA, beta, B, LDB);
-    CORE_zgeadd(trans, M, N, alpha, A, LDA, beta, B, LDB);
+    A = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
+    B = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
+    starpu_codelet_unpack_args(cl_arg, &uplo, &trans, &M, &N, &alpha, &LDA, &beta, &LDB);
+    CORE_ztradd(uplo, trans, M, N, alpha, A, LDA, beta, B, LDB);
     return;
 }
 
+/*
+ * Codelet definition
+ */
+CODELETS_CPU(ztradd, 2, cl_ztradd_cpu_func)

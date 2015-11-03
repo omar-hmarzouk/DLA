@@ -219,6 +219,8 @@ int main (int argc, char **argv)
         info += testing_ztrsm( argc, argv );
     } else if ( strcmp(func, "PEMV") == 0 ) {
         info += testing_zpemv( argc, argv );
+    } else if ( strcmp(func, "GEADD") == 0 ) {
+        info = testing_zgeadd( argc, argv );
         /*
          * Linear system
          */
