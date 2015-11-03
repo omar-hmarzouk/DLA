@@ -26,6 +26,24 @@
  **/
 #include "runtime/quark/include/morse_quark.h"
 
+void CORE_ztradd_quark(Quark *quark)
+{
+    MORSE_enum uplo;
+    MORSE_enum trans;
+    int M;
+    int N;
+    MORSE_Complex64_t alpha;
+    MORSE_Complex64_t *A;
+    int LDA;
+    MORSE_Complex64_t beta;
+    MORSE_Complex64_t *B;
+    int LDB;
+
+    quark_unpack_args_10(quark, uplo, trans, M, N, alpha, A, LDA, beta, B, LDB);
+    CORE_ztradd(uplo, trans, M, N, alpha, A, LDA, beta, B, LDB);
+    return;
+}
+
 /**
  ******************************************************************************
  *
@@ -105,24 +123,5 @@ void MORSE_TASK_ztradd(MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*ldb*n,    RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),             INOUT,
         sizeof(int),                        &ldb,   VALUE,
         0);
-}
-
-
-void CORE_ztradd_quark(Quark *quark)
-{
-    MORSE_enum uplo;
-    MORSE_enum trans;
-    int M;
-    int N;
-    MORSE_Complex64_t alpha;
-    MORSE_Complex64_t *A;
-    int LDA;
-    MORSE_Complex64_t beta;
-    MORSE_Complex64_t *B;
-    int LDB;
-
-    quark_unpack_args_9(quark, uplo, trans, M, N, alpha, A, LDA, beta, B, LDB);
-    CORE_ztradd(uplo, trans, M, N, alpha, A, LDA, beta, B, LDB);
-    return;
 }
 

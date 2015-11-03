@@ -28,6 +28,23 @@
  **/
 #include "runtime/quark/include/morse_quark.h"
 
+void CORE_zgeadd_quark(Quark *quark)
+{
+    MORSE_enum trans;
+    int M;
+    int N;
+    MORSE_Complex64_t alpha;
+    MORSE_Complex64_t *A;
+    int LDA;
+    MORSE_Complex64_t beta;
+    MORSE_Complex64_t *B;
+    int LDB;
+
+    quark_unpack_args_9(quark, trans, M, N, alpha, A, LDA, beta, B, LDB);
+    CORE_zgeadd(trans, M, N, alpha, A, LDA, beta, B, LDB);
+    return;
+}
+
 /**
  ******************************************************************************
  *
@@ -101,22 +118,3 @@ void MORSE_TASK_zgeadd(MORSE_option_t *options,
         sizeof(int),                        &ldb,   VALUE,
         0);
 }
-
-
-void CORE_zgeadd_quark(Quark *quark)
-{
-    MORSE_enum trans;
-    int M;
-    int N;
-    MORSE_Complex64_t alpha;
-    MORSE_Complex64_t *A;
-    int LDA;
-    MORSE_Complex64_t beta;
-    MORSE_Complex64_t *B;
-    int LDB;
-
-    quark_unpack_args_9(quark, trans, M, N, alpha, A, LDA, beta, B, LDB);
-    CORE_zgeadd(trans, M, N, alpha, A, LDA, beta, B, LDB);
-    return;
-}
-
