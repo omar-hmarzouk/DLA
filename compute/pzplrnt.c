@@ -54,7 +54,7 @@ void morse_pzplrnt( MORSE_desc_t *A, unsigned long long int seed,
         for (n = 0; n < A->nt; n++) {
             tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
 
-            MORSE_TASK_zplrnt( 
+            MORSE_TASK_zplrnt(
                 &options,
                 tempmm, tempnn, A(m, n), ldam,
                 A->m, m*A->mb, n*A->nb, seed );

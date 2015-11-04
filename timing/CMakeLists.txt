@@ -159,6 +159,12 @@ if(CHAMELEON_SCHED_STARPU)
         )
     endif()
     link_directories(${STARPU_LIBRARY_DIRS})
+elseif(CHAMELEON_SCHED_PARSEC)
+    list(APPEND libs_for_timings
+      chameleon_parsec
+      ${PARSEC_LIBRARIES_DEP}
+      )
+    link_directories(${PARSEC_LIBRARY_DIRS_DEP})
 elseif(CHAMELEON_SCHED_QUARK)
     list(APPEND libs_for_timings
       chameleon_quark

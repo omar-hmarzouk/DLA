@@ -114,6 +114,12 @@ if(CHAMELEON_SCHED_STARPU)
         )
     endif()
     link_directories(${STARPU_LIBRARY_DIRS})
+elseif(CHAMELEON_SCHED_PARSEC)
+    list(APPEND libs_for_tests
+        chameleon_parsec
+        ${PARSEC_LIBRARIES_DEP}
+      )
+    link_directories(${PARSEC_LIBRARY_DIRS_DEP})
 elseif(CHAMELEON_SCHED_QUARK)
     list(APPEND libs_for_tests
         chameleon_quark
@@ -209,20 +215,30 @@ endforeach()
 if(CHAMELEON_SCHED_STARPU)
     # Copy launcher
     add_custom_target(testing_launcher_starpu ALL
-                     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/morse_testing_starpu.py
-                                                      ${CMAKE_CURRENT_BINARY_DIR}/morse_testing_starpu.py)
+                     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/chameleon_testing.py
+                                                      ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py)
     # install file
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/morse_testing_starpu.py
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/testing)
+endif()
+
+if(CHAMELEON_SCHED_PARSEC)
+    # Copy launcher
+    add_custom_target(testing_launcher_parsec ALL
+                     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/chameleon_testing.py
+                                                      ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py)
+    # install file
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py
             DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/testing)
 endif()
 
 if(CHAMELEON_SCHED_QUARK)
     # Copy launcher
     add_custom_target(testing_launcher_quark ALL
-                     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/morse_testing_quark.py
-                                                      ${CMAKE_CURRENT_BINARY_DIR}/morse_testing_quark.py)
+                     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/chameleon_testing.py
+                                                      ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py)
     # install file
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/morse_testing_quark.py
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py
             DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/testing)
 endif()
 

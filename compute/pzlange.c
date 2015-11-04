@@ -158,10 +158,7 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
             }
         }
         RUNTIME_sequence_wait(morse, sequence);
-        *result = *(double *)VECNORMS_STEP1->get_blkaddr(VECNORMS_STEP1, A->myrank / A->q, A->myrank % A->q );
-        MORSE_Desc_Destroy( &(VECNORMS_STEP1) );
         MORSE_Desc_Destroy( &(VECNORMS_STEP2) );
-        MORSE_Desc_Destroy( &(RESULT) );
         break;
 
         /*
@@ -278,10 +275,7 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
             }
         }
         RUNTIME_sequence_wait(morse, sequence);
-        *result = *(double *)VECNORMS_STEP1->get_blkaddr(VECNORMS_STEP1, A->myrank / A->q, A->myrank % A->q );
-        MORSE_Desc_Destroy( &(VECNORMS_STEP1) );
         MORSE_Desc_Destroy( &(VECNORMS_STEP2) );
-        MORSE_Desc_Destroy( &(RESULT) );
         break;
 
         /*
@@ -349,9 +343,6 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
         }
 
         RUNTIME_sequence_wait(morse, sequence);
-        *result = *(double *)VECNORMS_STEP1->get_blkaddr(VECNORMS_STEP1, A->myrank / A->q, A->myrank % A->q );
-        MORSE_Desc_Destroy( &(VECNORMS_STEP1) );
-        MORSE_Desc_Destroy( &(RESULT) );
         break;
 
         /*
@@ -413,10 +404,12 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
         }
 
         RUNTIME_sequence_wait(morse, sequence);
-        *result = *(double *)VECNORMS_STEP1->get_blkaddr(VECNORMS_STEP1, A->myrank / A->q, A->myrank % A->q );
-        MORSE_Desc_Destroy( &(VECNORMS_STEP1) );
-        MORSE_Desc_Destroy( &(RESULT) );
     }
+
+    *result = *(double *)VECNORMS_STEP1->get_blkaddr(VECNORMS_STEP1, A->myrank / A->q, A->myrank % A->q );
+
+    MORSE_Desc_Destroy( &(VECNORMS_STEP1) );
+    MORSE_Desc_Destroy( &(RESULT) );
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();

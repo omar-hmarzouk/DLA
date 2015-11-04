@@ -37,7 +37,7 @@
  *******************************************************************************
  *
  * @param[in] bump
- *          The value to add to the diagonal to be sure 
+ *          The value to add to the diagonal to be sure
  *          to have a positive definite matrix.
  *
  * @param[in] N
@@ -104,17 +104,16 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, int N,
         morse_error("MORSE_zplgsy", "morse_tune() failed");
         return status;
     }
-    
+
     /* Set NT */
     NB = MORSE_NB;
     morse_sequence_create(morse, &sequence);
-    
+
     morse_zdesc_alloc(descA, NB, NB, LDA, N, 0, 0, N, N, morse_desc_mat_free(&descA));
 
     /* Call the tile interface */
     MORSE_zplgsy_Tile_Async( bump, &descA, seed, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
     morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
     morse_sequence_wait(morse, sequence);
     morse_desc_mat_free(&descA);
@@ -138,7 +137,7 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, int N,
  *******************************************************************************
  *
  * @param[in] bump
- *          The value to add to the diagonal to be sure 
+ *          The value to add to the diagonal to be sure
  *          to have a positive definite matrix.
  *
  * @param[in] A

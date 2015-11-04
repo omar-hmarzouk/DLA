@@ -50,11 +50,11 @@ void morse_pzplgsy( MORSE_Complex64_t bump, MORSE_desc_t *A, unsigned long long 
     for (m = 0; m < A->mt; m++) {
         tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
         ldam = BLKLDD(A, m);
-        
+
         for (n = 0; n < A->nt; n++) {
             tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
-            
-            MORSE_TASK_zplgsy( 
+
+            MORSE_TASK_zplgsy(
                 &options,
                 bump, tempmm, tempnn, A(m, n), ldam,
                 A->m, m*A->mb, n*A->nb, seed );

@@ -45,7 +45,7 @@ execution=1;
 
 for o, a in opts:
    if o in ("-h", "--help"):
-      print sys.argv[0]+" [-h|--help] [-c n|--cores=n] [-g m|--gpus=m]"
+      print sys.argv[0]+" [-h|--help] [-c n|--cores=n] [-g m|--ngpus=m]"
       print "  -c Fix the number of cores"
       print "  -g Fix the number of gpus"
       print "  -n Print the commands only"
@@ -134,21 +134,21 @@ for dtype in range(4):
   print " "
   sys.stdout.flush()
 
-#  test0 = local_popen(f, cmdbase + " LANGE" + " 914 510 950")
-  test1 = local_popen(f, cmdbase + " GEMM"  + " 1.0 -2.0 600 500 550 650 625 700")
-  test2 = local_popen(f, cmdbase + " TRSM"  + " -2.0 600 500 650 625")
-  test3 = local_popen(f, cmdbase + " TRMM"  + " -2.0 600 500 650 625")
-  test4 = local_popen(f, cmdbase + " SYMM"  + " 1.0 -2.0 600 500 650 625 700")
-  test5 = local_popen(f, cmdbase + " SYRK"  + " 1.0 -2.0 600 500 650 625")
-  test6 = local_popen(f, cmdbase + " SYR2K" + " 1.0 -2.0 600 500 650 625 700")
+  test0 = local_popen(f, cmdbase + " LANGE" + " 914 510 950")
+  test1 = local_popen(f, cmdbase + " GEMM"  + " 1.0 -2.0 623 531 550 650 625 700")
+  test2 = local_popen(f, cmdbase + " TRSM"  + " -2.0 623 531 650 625")
+  test3 = local_popen(f, cmdbase + " TRMM"  + " -2.0 623 531 650 625")
+  test4 = local_popen(f, cmdbase + " SYMM"  + " 1.0 -2.0 623 531 650 625 700")
+  test5 = local_popen(f, cmdbase + " SYRK"  + " 1.0 -2.0 623 531 650 625")
+  test6 = local_popen(f, cmdbase + " SYR2K" + " 1.0 -2.0 623 531 650 625 700")
 
   if letter in ( "c", "z" ) :
-     test101 = local_popen(f, "%stesting " % letter + str(ncpus) + " " + str(ngpus) + " HEMM" + " 1.0 -2.0 600 500 650 625 600")
-     test102 = local_popen(f, "%stesting " % letter + str(ncpus) + " " + str(ngpus) + " HERK" + " 1.0 -2.0 600 500 650 625")
-     test102 = local_popen(f, "%stesting " % letter + str(ncpus) + " " + str(ngpus) + " HER2K"+ " 1.0 -2.0 600 500 650 625 700")
+     test101 = local_popen(f, "%stesting " % letter + str(ncpus) + " " + str(ngpus) + " HEMM" + " 1.0 -2.0 623 531 650 625 623")
+     test102 = local_popen(f, "%stesting " % letter + str(ncpus) + " " + str(ngpus) + " HERK" + " 1.0 -2.0 623 531 650 625")
+     test102 = local_popen(f, "%stesting " % letter + str(ncpus) + " " + str(ngpus) + " HER2K"+ " 1.0 -2.0 623 531 650 625 700")
 
-  test20 = local_popen(f, cmdbase + " POSV"  + " 500 600 25 700")
-  test21 = local_popen(f, cmdbase + " POTRI" + " 500 600")
+  test20 = local_popen(f, cmdbase + " POSV"  + " 531 623 25 700")
+  test21 = local_popen(f, cmdbase + " POTRI" + " 531 623")
   test22 = local_popen(f, cmdbase + " GELS"  + " 0 800 400 825 25 810")
   test23 = local_popen(f, cmdbase + " GELS"  + " 1 800 400 825 25 810 4")
   test24 = local_popen(f, cmdbase + " GELS"  + " 0 400 800 825 25 810")

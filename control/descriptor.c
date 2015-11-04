@@ -52,7 +52,7 @@ MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
     // Matrix properties
     desc.dtyp = dtyp;
     // seems useless
-    //desc.styp = MorseCCRB;
+    desc.styp = MorseCCRB;
     desc.mb = mb;
     desc.nb = nb;
     desc.bsiz = bsiz;
@@ -137,7 +137,7 @@ MORSE_desc_t morse_desc_init_diag(MORSE_enum dtyp, int mb, int nb, int bsiz,
     // Matrix properties
     desc.dtyp = dtyp;
     // seems useless
-    //desc.styp = MorseCCRB;
+    desc.styp = MorseCCRB;
     desc.mb = mb;
     desc.nb = nb;
     desc.bsiz = bsiz;
@@ -225,7 +225,7 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
     // Matrix properties
     desc.dtyp = dtyp;
     // seems useless
-    //desc.styp = MorseCCRB
+    desc.styp = MorseCCRB;
     desc.mb = mb;
     desc.nb = nb;
     desc.bsiz = bsiz;

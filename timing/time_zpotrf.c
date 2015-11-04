@@ -26,7 +26,7 @@
 #include "timing_zauxiliary.h"
 
 static int
-RunTest(int *iparam, double *dparam, morse_time_t *t_) 
+RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
     PASTE_CODE_IPARAM_LOCALS( iparam );
     int uplo = MorseLower;
@@ -57,7 +57,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         MORSE_zpotrs(uplo, N, NRHS, A, LDA, X, LDB);
 
         dparam[IPARAM_RES] = z_check_solution(N, N, NRHS, A2, LDA, B, X, LDB,
-                                              &(dparam[IPARAM_ANORM]), 
+                                              &(dparam[IPARAM_ANORM]),
                                               &(dparam[IPARAM_BNORM]),
                                               &(dparam[IPARAM_XNORM]));
 

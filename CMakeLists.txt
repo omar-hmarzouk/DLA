@@ -103,33 +103,49 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     # -----------------------------
 
     # Create a list of possible runtime
-    set(CHAMELEON_SCHED_list "STARPU" "QUARK")
+    set(CHAMELEON_SCHED_list "PARSEC" "STARPU" "QUARK")
 
-    # Initially StarPU runtime is enabled
+    # Initially PaRSEC runtime is enabled
+    option(CHAMELEON_SCHED_PARSEC
+        "Enable PaRSEC scheduler as the default runtime
+        (Conflict with other CHAMELEON_SCHED_* options)" OFF)
     option(CHAMELEON_SCHED_STARPU
         "Enable StarPU scheduler as the default runtime
-        (Conflict with other CHAMELEON_SCHED_* options)" ON)
+        (Conflict with other CHAMELEON_SCHED_* options)" OFF)
     option(CHAMELEON_SCHED_QUARK
         "Enable Quark scheduler as the default runtime
         (Conflict with other CHAMELEON_SCHED_* options)" OFF)
 
+    # For now, we are able to compile only one runtime at a time, so we disable combinations of runtimes
     if (CHAMELEON_SCHED_QUARK)
         set(CHAMELEON_SCHED_STARPU OFF)
+        set(CHAMELEON_SCHED_PARSEC OFF)
     elseif (CHAMELEON_SCHED_STARPU)
         set(CHAMELEON_SCHED_QUARK OFF)
+        set(CHAMELEON_SCHED_PARSEC OFF)
+    elseif (CHAMELEON_SCHED_PARSEC)
+        set(CHAMELEON_SCHED_QUARK OFF)
+        set(CHAMELEON_SCHED_STARPU OFF)
+    endif()
+    # Set default to StarPU if nothing specific is required by the user
+    if ( NOT CHAMELEON_SCHED_STARPU AND NOT CHAMELEON_SCHED_PARSEC AND NOT CHAMELEON_SCHED_QUARK )
+        set(CHAMELEON_SCHED_STARPU ON)
     endif()
     if (CHAMELEON_SCHED_STARPU)
-        message("-- ${BoldGreen}CHAMELEON_SCHED_STARPU is set to ON: CHAMELEON uses StarPU runtime${ColourReset}")
-        message("-- ${BoldGreen}To use CHAMELEON with QUARK runtime: set CHAMELEON_SCHED_QUARK"
-        "to ON (CHAMELEON_SCHED_STARPU will be disabled)${ColourReset}")
+        message("-- ${BoldGreen}CHAMELEON_SCHED_STARPU is set to ON: CHAMELEON uses StarPU runtime\n"
+                "  To use CHAMELEON with Quark  runtime: set CHAMELEON_SCHED_QUARK  to ON\n"
+                "  To use CHAMELEON with PaRSEC runtime: set CHAMELEON_SCHED_PARSEC to ON\n"
+                "  (CHAMELEON_SCHED_STARPU will be disabled)${ColourReset}")
     elseif(CHAMELEON_SCHED_QUARK)
-        message("-- ${BoldGreen}CHAMELEON_SCHED_QUARK is set to ON: CHAMELEON uses QUARK runtime${ColourReset}")
-        message("-- ${BoldGreen}To use CHAMELEON with StarPU runtime: set CHAMELEON_SCHED_STARPU"
-        "to ON (CHAMELEON_SCHED_QUARK will be disabled)${ColourReset}")
-    endif()
-
-    if (CHAMELEON_USE_MAGMA)
-        set(CHAMELEON_USE_CUDA ON)
+        message("-- ${BoldGreen}CHAMELEON_SCHED_QUARK is set to ON: CHAMELEON uses Quark runtime\n"
+                "  To use CHAMELEON with StarPU runtime: set CHAMELEON_SCHED_STARPU to ON\n"
+                "  To use CHAMELEON with PaRSEC runtime: set CHAMELEON_SCHED_PARSEC to ON\n"
+                "  (CHAMELEON_SCHED_QUARK will be disabled)${ColourReset}")
+    elseif(CHAMELEON_SCHED_PARSEC)
+        message("-- ${BoldGreen}CHAMELEON_SCHED_PARSEC is set to ON: CHAMELEON uses PaRSEC runtime\n"
+                "  To use CHAMELEON with StarPU runtime: set CHAMELEON_SCHED_STARPU to ON\n"
+                "  To use CHAMELEON with Quark  runtime: set CHAMELEON_SCHED_QUARK  to ON\n"
+                "  (CHAMELEON_SCHED_PARSEC will be disabled)${ColourReset}")
     endif()
 
     # Check that one, and only one, SCHED option is set to ON
@@ -146,54 +162,44 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 "the user should activate one (and only one) runtime. ")
     endif()
 
-    # Warning if not coherent options
-    if (CHAMELEON_USE_MPI AND NOT CHAMELEON_SCHED_STARPU)
-        message(WARNING "You have activated MPI but CHAMELEON_SCHED_STARPU is OFF.\n"
-        "You should use StarPU Runtime system if you want to benefit from MPI.\n"
-        "Use -DCHAMELEON_SCHED_QUARK=OFF -DCHAMELEON_SCHED_STARPU=ON at cmake \n"
-        "configure to do so.")
+    # Use intermediate variable since cmake_dependent_option doesn't have OR conditions
+    set(CHAMELEON_ENABLE_MPI OFF CACHE BOOL "Tells if MPI might be supported by the runtime")
+    if ( CHAMELEON_SCHED_PARSEC OR CHAMELEOM_SCHED_STARPU )
+         set(CHAMELEON_ENABLE_MPI ON)
     endif()
 
-    if(CHAMELEON_USE_CUDA AND NOT CHAMELEON_SCHED_STARPU)
-        message(WARNING "You have activated CUDA but CHAMELEON_SCHED_STARPU is OFF.\n"
-        "You should use StarPU Runtime system if you want to benefit from GPUs.\n"
-        "Use -DCHAMELEON_SCHED_QUARK=OFF -DCHAMELEON_SCHED_STARPU=ON at cmake \n"
-        "configure to do so.")
-    endif()
-
-    if(CHAMELEON_USE_MAGMA AND NOT CHAMELEON_SCHED_STARPU)
-        message(WARNING "You have activated MAGMA but CHAMELEON_SCHED_STARPU is OFF.\n"
-        "You should use StarPU Runtime system if you want to benefit from GPUs.\n"
-        "Use -DCHAMELEON_SCHED_QUARK=OFF -DCHAMELEON_SCHED_STARPU=ON at cmake \n"
-        "configure to do so.")
+    # Use intermediate variable since cmake_dependent_option doesn't have OR conditions
+    set(CHAMELEON_ENABLE_CUDA OFF CACHE BOOL "Tells if CUDA might be supported by the runtime")
+    if ( CHAMELEON_SCHED_PARSEC OR CHAMELEOM_SCHED_STARPU )
+         set(CHAMELEON_ENABLE_CUDA ON)
     endif()
 
     # Additional options
     # ------------------
 
-    # Enable the distributed interface (allowed only when StarPU is enabled)
+    # Enable the distributed interface (allowed only when StarPU or PaRSEC is enabled)
     # TODO: Default should be changed to ON/OFF when it will be ok
     cmake_dependent_option(CHAMELEON_USE_MPI
                         "Enable distributed memory through MPI" OFF
-                        "CHAMELEON_SCHED_STARPU" OFF)
-    if (NOT CHAMELEON_USE_MPI)
-        message("-- ${BoldGreen}CHAMELEON_USE_MPI is set to OFF, turn it ON to use MPI (only with StarPU)${ColourReset}")
+                        "CHAMELEON_ENABLE_MPI" OFF)
+    if (CHAMELEON_ENABLE_MPI AND NOT CHAMELEON_USE_MPI)
+        message("-- ${BoldGreen}CHAMELEON_USE_MPI is set to OFF, turn it ON to use MPI (unsupported by Quark)${ColourReset}")
     endif()
 
-    # Enable Cuda kernels if StarPU (only if StarPU runtime is enabled)
+    # Enable Cuda kernels if StarPU (only if StarPU or PaRSEC runtime is enabled)
     # TODO: Default should be changed to ON/OFF when it will be ok
     cmake_dependent_option(CHAMELEON_USE_CUDA
                         "Enable CUDA kernels" OFF
-                        "CHAMELEON_SCHED_STARPU" OFF)
-    if (NOT CHAMELEON_USE_CUDA)
-        message("-- ${BoldGreen}CHAMELEON_USE_CUDA is set to OFF, turn it ON to use CUDA (only with StarPU)${ColourReset}")
+                        "CHAMELEON_ENABLE_CUDA" OFF)
+    if (CHAMELEON_ENABLE_CUDA AND NOT CHAMELEON_USE_CUDA)
+        message("-- ${BoldGreen}CHAMELEON_USE_CUDA is set to OFF, turn it ON to use CUDA (unsupported by Quark)${ColourReset}")
     endif()
 
     # Enable MAGMA advanced kernels if CUDA is enabled
     cmake_dependent_option(CHAMELEON_USE_MAGMA
                         "Enable MAGMA Cuda kernels" OFF
                         "CHAMELEON_USE_CUDA" OFF)
-    if (NOT CHAMELEON_USE_MAGMA)
+    if (CHAMELEON_USE_CUDA AND NOT CHAMELEON_USE_MAGMA)
         message("-- ${BoldGreen}CHAMELEON_USE_MAGMA is set to OFF, turn it ON to use MAGMA (only with StarPU)${ColourReset}")
     endif()
 
@@ -681,8 +687,8 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                                 Print_Find_Library_Status(starpu ${starpu_lib})
                             endif ()
                         endforeach()
-                    endif()
-                endif()
+                    endif ()
+                endif ()
             else(MORSE_VERBOSE_FIND_PACKAGE)
                 message(WARNING "StarPU library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
                 "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
@@ -702,7 +708,89 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
     endif( CHAMELEON_SCHED_STARPU )
 
-    # try to find quark runtime
+    if( CHAMELEON_SCHED_PARSEC )
+
+        # create list of components in order to make a single call to find_package(starpu...)
+        set(PARSEC_COMPONENT_LIST "HWLOC")
+        if(CHAMELEON_USE_MPI)
+            list(APPEND PARSEC_COMPONENT_LIST "MPI")
+        endif()
+        if(CHAMELEON_USE_CUDA)
+            list(APPEND PARSEC_COMPONENT_LIST "CUDA")
+        endif()
+        # TODO: Add a CHAMELEON_WITH_PROFILING option that enables Fxt for StarPU, or PAPI for PaRSEC
+        #if(CHAMELEON_WITH_PROFILING)
+        #    list(APPEND PARSEC_COMPONENT_LIST "PAPI")
+        #endif()
+
+        find_package(PARSEC COMPONENTS ${PARSEC_COMPONENT_LIST})
+
+        # Add definition and include_dir if found
+        if(PARSEC_FOUND)
+            message("-- ${Blue}Add definition CHAMELEON_SCHED_PARSEC"
+            " - Activate PaRSEC in Chameleon${ColourReset}")
+
+          add_definitions(-DCHAMELEON_SCHED_PARSEC) # TODO: remove that
+          include_directories(${PARSEC_INCLUDE_DIRS_DEP})
+          include_directories(${PARSEC_INCLUDE_DIRS}/daguepp)
+          set(CMAKE_REQUIRED_INCLUDES "${PARSEC_INCLUDE_DIRS_DEP}")
+
+          if(PARSEC_LINKER_FLAGS)
+               list(APPEND CMAKE_EXE_LINKER_FLAGS "${PARSEC_LINKER_FLAGS}")
+          endif()
+          foreach(libdir ${PARSEC_LIBRARY_DIRS_DEP})
+              list(APPEND CMAKE_REQUIRED_FLAGS "-L${libdir}")
+          endforeach()
+          string(REPLACE ";" " " CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS}")
+          set(CMAKE_REQUIRED_LIBRARIES "${PARSEC_LIBRARIES_DEP}")
+
+          if(HWLOC_FOUND AND HWLOC_LIBRARY_DIRS)
+                # the RPATH to be used when installing
+              list(APPEND CMAKE_INSTALL_RPATH "${HWLOC_LIBRARY_DIRS}")
+          endif()
+          if(PARSEC_FOUND AND PARSEC_LIBRARY_DIRS_DEP)
+              # the RPATH to be used when installing
+              list(APPEND CMAKE_INSTALL_RPATH "${PARSEC_LIBRARY_DIRS_DEP}")
+          endif()
+        else ( PARSEC_FOUND )
+            if(MORSE_VERBOSE_FIND_PACKAGE)
+                if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
+                    if (NOT HWLOC_hwloc.h_DIRS)
+                        Print_Find_Header_Status(hwloc hwloc.h)
+                    endif ()
+                    if (NOT HWLOC_hwloc_LIBRARY)
+                        Print_Find_Library_Status(hwloc libhwloc)
+                    endif ()
+                endif()
+                if( (NOT PARSEC_FOUND) OR (NOT PARSEC_LIBRARIES_DEP) )
+                  foreach(parsec_hdr ${PARSEC_hdrs_to_find})
+                        if (NOT PARSEC_${parsec_hdr}_INCLUDE_DIRS)
+                            Print_Find_Header_Status(parsec ${parsec_hdr})
+                        endif ()
+                    endforeach()
+                    if(PARSEC_VERSION_STRING)
+                        foreach(parsec_lib ${PARSEC_libs_to_find})
+                            if (NOT PARSEC_${parsec_lib}_LIBRARY)
+                                Print_Find_Library_Status(parsec ${parsec_lib})
+                            endif ()
+                        endforeach()
+                    endif()
+                endif()
+            else(MORSE_VERBOSE_FIND_PACKAGE)
+                message(WARNING "PaRSEC library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
+                "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
+            endif(MORSE_VERBOSE_FIND_PACKAGE)
+            if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
+                message(FATAL_ERROR "hwloc library is required but has not been found")
+            endif()
+            if( (NOT PARSEC_FOUND) OR (NOT PARSEC_LIBRARIES_DEP) )
+                message(FATAL_ERROR "PaRSEC library is required but has not been found")
+            endif()
+        endif ( PARSEC_FOUND )
+
+    endif( CHAMELEON_SCHED_PARSEC )
+
+          # try to find quark runtime
     if( CHAMELEON_SCHED_QUARK )
 
         find_package(QUARK COMPONENTS HWLOC)
@@ -773,6 +861,12 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
               ${STARPU_SHM_LIBRARIES}
             )
         endif()
+    elseif(CHAMELEON_SCHED_PARSEC)
+        list(APPEND CHAMELEON_DEP
+          -lchameleon_parsec
+          ${PARSEC_LIBRARIES_DEP}
+          )
+        link_directories(${PARSEC_LIBRARY_DIRS_DEP})
     elseif(CHAMELEON_SCHED_QUARK)
         list(APPEND CHAMELEON_DEP
           -lchameleon_quark

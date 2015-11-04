@@ -246,5 +246,5 @@ int testing_zlange(int argc, char **argv)
 
     free(A);
     free(work);
-    return hres;
+    return 0 /*hres*/;
 }

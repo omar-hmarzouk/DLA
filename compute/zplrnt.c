@@ -107,7 +107,7 @@ int MORSE_zplrnt( int M, int N,
         morse_error("MORSE_zplrnt", "morse_tune() failed");
         return status;
     }
-    
+
     /* Set NT */
     NB = MORSE_NB;
     morse_sequence_create(morse, &sequence);
@@ -116,8 +116,7 @@ int MORSE_zplrnt( int M, int N,
     /* Call the tile interface */
     MORSE_zplrnt_Tile_Async( &descA, seed, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
-    morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N, sequence, &request);
     morse_sequence_wait(morse, sequence);
     morse_desc_mat_free(&descA);
 
@@ -213,7 +212,7 @@ int MORSE_zplrnt_Tile( MORSE_desc_t *A,
  ******************************************************************************/
 int MORSE_zplrnt_Tile_Async( MORSE_desc_t     *A,
                               unsigned long long int seed,
-                              MORSE_sequence_t *sequence, 
+                              MORSE_sequence_t *sequence,
                               MORSE_request_t  *request)
 {
     MORSE_context_t *morse;

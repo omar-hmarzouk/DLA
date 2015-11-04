@@ -2,7 +2,7 @@
 # Check Example basic_zposv
 #
 
-set(TESTLIST 
+set(TESTLIST
     posv_morse_functions
     posv_users_functions
     )

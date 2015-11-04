@@ -30,6 +30,8 @@
 # ----------------------------
 if( CHAMELEON_SCHED_QUARK )
     add_subdirectory(quark)
+elseif( CHAMELEON_SCHED_PARSEC )
+    add_subdirectory(parsec)
 elseif( CHAMELEON_SCHED_STARPU )
     add_subdirectory(starpu)
 endif()
