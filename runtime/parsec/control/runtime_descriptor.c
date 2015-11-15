@@ -9,6 +9,7 @@
  **/
 #include <stdlib.h>
 #include "runtime/parsec/include/morse_parsec.h"
+#include <dague/data.h>
 
 struct morse_parsec_desc_s {
     dague_ddesc_t  super;
@@ -116,10 +117,10 @@ morse_parsec_data_of(dague_ddesc_t *ddesc, ...)
     /* TODO: change displacement in data_map when in distributed */
     assert( mdesc->nodes == 1 );
 #endif
-    return dague_data_get( pdesc->data_map + n * mdesc->lmt + m, ddesc,
-                           morse_parsec_data_key( ddesc, m, n ),
-                           mdesc->get_blkaddr( mdesc, m, n ),
-                           mdesc->bsiz * MORSE_Element_Size(mdesc->dtyp) );
+    return dague_data_create( pdesc->data_map + n * mdesc->lmt + m, ddesc,
+                              morse_parsec_data_key( ddesc, m, n ),
+                              mdesc->get_blkaddr( mdesc, m, n ),
+                              mdesc->bsiz * MORSE_Element_Size(mdesc->dtyp) );
 }
 
 static dague_data_t*
@@ -134,9 +135,9 @@ morse_parsec_data_of_key(dague_ddesc_t *ddesc, dague_data_key_t key)
     /* TODO: change displacement in data_map when in distributed */
     assert( mdesc->nodes == 1 );
 #endif
-    return dague_data_get( pdesc->data_map + key, ddesc, key,
-                           mdesc->get_blkaddr( mdesc, m, n ),
-                           mdesc->bsiz * MORSE_Element_Size(mdesc->dtyp) );
+    return dague_data_create( pdesc->data_map + key, ddesc, key,
+                              mdesc->get_blkaddr( mdesc, m, n ),
+                              mdesc->bsiz * MORSE_Element_Size(mdesc->dtyp) );
 }
 
 #ifdef DAGUE_PROF_TRACE
@@ -194,7 +195,7 @@ void RUNTIME_desc_create( MORSE_desc_t *mdesc )
 #endif
     ddesc->memory_registration_status = MEMORY_STATUS_UNREGISTERED;
 
-    pdesc->data_map = calloc( mdesc->lmt * mdesc->lnt, sizeof(dague_data_t) );
+    pdesc->data_map = calloc( mdesc->lmt * mdesc->lnt, sizeof(dague_data_t*) );
 
     /* Double linking */
     pdesc->desc     = mdesc;
@@ -217,23 +218,13 @@ void RUNTIME_desc_destroy( MORSE_desc_t *mdesc )
 
         for(i=0; i<nb_local_tiles; i++, data++)
         {
-            if (*data != NULL)
-            {
-                /*
-                 * Need to call destruct before release due to circular
-                 * dependency between the dague_data_copy_t and the dague_data_t
-                 */
-                OBJ_DESTRUCT(*data);
-#if defined(DAGUE_DEBUG_ENABLE)
-                ((dague_object_t *) (*data))->obj_magic_id = DAGUE_OBJ_MAGIC_ID;
-#endif
-                OBJ_RELEASE(*data);
-            }
+            dague_data_destroy( *data );
         }
 
         free( pdesc->data_map );
         pdesc->data_map = NULL;
     }
+    free(pdesc);
     return;
 }
 

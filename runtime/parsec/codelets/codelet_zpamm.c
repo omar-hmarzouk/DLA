@@ -176,13 +176,13 @@ CORE_zpamm_parsec(dague_execution_unit_t *context, dague_execution_context_t *th
     int *N;
     int *K;
     int *L;
-    dague_data_copy_t *gA1;
+    MORSE_Complex64_t *A1;
     int *LDA1;
-    dague_data_copy_t *gA2;
+    MORSE_Complex64_t *A2;
     int *LDA2;
-    dague_data_copy_t *gV;
+    MORSE_Complex64_t *V;
     int *LDV;
-    dague_data_copy_t *gW;
+    MORSE_Complex64_t *W;
     int *LDW;
 
     dague_dtd_unpack_args(this_task,
@@ -193,20 +193,15 @@ CORE_zpamm_parsec(dague_execution_unit_t *context, dague_execution_context_t *th
                           UNPACK_VALUE, &N,
                           UNPACK_VALUE, &K,
                           UNPACK_VALUE, &L,
-                          UNPACK_DATA,  &gA1,
+                          UNPACK_DATA,  &A1,
                           UNPACK_VALUE, &LDA1,
-                          UNPACK_DATA,  &gA2,
+                          UNPACK_DATA,  &A2,
                           UNPACK_VALUE, &LDA2,
-                          UNPACK_DATA,  &gV,
+                          UNPACK_DATA,  &V,
                           UNPACK_VALUE, &LDV,
-                          UNPACK_DATA,  &gW,
+                          UNPACK_DATA,  &W,
                           UNPACK_VALUE, &LDW
                           );
-
-    void *A1 = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA1);
-    void *A2 = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA2);
-    void *V  = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gV);
-    void *W  = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gW);
 
     CORE_zpamm( *op, *side, *storev, *M, *N, *K, *L, A1, *LDA1, A2, *LDA2, V, *LDV, W, *LDW);
 

@@ -23,14 +23,14 @@
 #include "runtime/parsec/include/morse_parsec.h"
 
 static int
-CORE_ztile_zero_parsec(dague_execution_unit_t *context, dague_execution_context_t * this_task)
+CORE_ztile_zero_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
 {
     int *X1;
     int *X2;
     int *Y1;
     int *Y2;
-    dague_data_copy_t *A;
-    int lda;
+    MORSE_Complex64_t *A;
+    int *lda;
     int x, y;
 
     dague_dtd_unpack_args(this_task,
@@ -42,11 +42,9 @@ CORE_ztile_zero_parsec(dague_execution_unit_t *context, dague_execution_context_
                           UNPACK_VALUE, &lda
                         );
 
-    MORSE_Complex64_t *T = (MORSE_Complex64_t *)DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)A);
-
     for (x = *X1; x < *X2; x++)
         for (y = *Y1; y < *Y2; y++)
-            T[lda*x+y] = 0.0;
+            A[*lda*x+y] = 0.0;
 
     return 0;
 }

@@ -32,17 +32,16 @@ CORE_zlauum_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
 {
     MORSE_enum *uplo;
     int *N;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *LDA;
 
     dague_dtd_unpack_args(this_task,
                           UNPACK_VALUE, &uplo,
                           UNPACK_VALUE, &N,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &LDA
                           );
 
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
 
     CORE_zlauum(*uplo, *N, A, *LDA);
 

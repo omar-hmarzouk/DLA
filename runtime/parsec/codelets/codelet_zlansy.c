@@ -25,26 +25,24 @@
 static int
 CORE_zlansy_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
 {
-    double *gnormA;
     int *norm;
     MORSE_enum *uplo;
     int *N;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *LDA;
     double *work;
+    double *normA;
 
     dague_dtd_unpack_args(this_task,
                           UNPACK_VALUE, &norm,
                           UNPACK_VALUE, &uplo,
                           UNPACK_VALUE, &N,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &LDA,
                           UNPACK_SCRATCH, &work,
-                          UNPACK_DATA,  &gnormA
+                          UNPACK_DATA,  &normA
                         );
 
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
-    void *normA = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gnormA);
 
     CORE_zlansy( *norm, *uplo, *N, A, *LDA, work, normA);
 
@@ -67,6 +65,6 @@ void MORSE_TASK_zlansy(MORSE_option_t *options,
                              PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
                              sizeof(int),                   &LDA,           VALUE,
                              sizeof(double)*szeW,           NULL,           SCRATCH,
-                             PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     OUTPUT | REGION_FULL,
+                             PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT | REGION_FULL,
                              0);
 }

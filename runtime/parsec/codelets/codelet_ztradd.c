@@ -34,10 +34,10 @@ CORE_ztradd_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     int *M;
     int *N;
     MORSE_Complex64_t *alpha;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *LDA;
     MORSE_Complex64_t *beta;
-    dague_data_copy_t *gB;
+    MORSE_Complex64_t *B;
     int *LDB;
 
     dague_dtd_unpack_args(this_task,
@@ -46,16 +46,14 @@ CORE_ztradd_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
                           UNPACK_VALUE, &M,
                           UNPACK_VALUE, &N,
                           UNPACK_VALUE, &alpha,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &LDA,
                           UNPACK_VALUE, &beta,
-                          UNPACK_DATA,  &gB,
+                          UNPACK_DATA,  &B,
                           UNPACK_VALUE, &LDB
                         );
 
 
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
-    void *B = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gB);
 
     CORE_ztradd(*uplo, *trans, *M, *N, *alpha, A, *LDA, *beta, B, *LDB);
 

@@ -27,20 +27,17 @@ CORE_zhessq_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 {
     MORSE_enum *uplo;
     int *n;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *lda;
-    dague_data_copy_t *gSCALESUMSQ;
+    double *SCALESUMSQ;
 
     dague_dtd_unpack_args(this_task,
                           UNPACK_VALUE, &uplo,
                           UNPACK_VALUE, &n,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &lda,
-                          UNPACK_DATA,  &gSCALESUMSQ
+                          UNPACK_DATA,  &SCALESUMSQ
                         );
-
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
-    void *SCALESUMSQ = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gSCALESUMSQ);
 
     CORE_zhessq( *uplo, *n, A, *lda, &SCALESUMSQ[0], &SCALESUMSQ[1]);
 
@@ -57,8 +54,8 @@ void MORSE_TASK_zhessq( MORSE_option_t *options,
     insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zhessq_parsec, "hessq",
                              sizeof(int),           &uplo,               VALUE,
                              sizeof(int),           &n,                  VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),                               INPUT | REGION_FULL,
+                             PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),                    INPUT | REGION_FULL,
                              sizeof(int),           &lda,                VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( SCALESUMSQ, MORSE_Complex64_t, SCALESUMSQm, SCALESUMSQn ),    INOUT | REGION_FULL,
+                             PASSED_BY_REF,         RTBLKADDR( SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn ),    INOUT | REGION_FULL,
                              0);
 }

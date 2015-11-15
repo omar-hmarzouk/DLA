@@ -31,11 +31,11 @@ CORE_zunmqr_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     int *n;
     int *k;
     int *ib;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *lda;
-    dague_data_copy_t *gT;
+    MORSE_Complex64_t *T;
     int *ldt;
-    dague_data_copy_t *gC;
+    MORSE_Complex64_t *C;
     int *ldc;
     MORSE_Complex64_t *WORK;
     int *ldwork;
@@ -47,19 +47,16 @@ CORE_zunmqr_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
                           UNPACK_VALUE,   &n,
                           UNPACK_VALUE,   &k,
                           UNPACK_VALUE,   &ib,
-                          UNPACK_DATA,    &gA,
+                          UNPACK_DATA,    &A,
                           UNPACK_VALUE,   &lda,
-                          UNPACK_DATA,    &gT,
+                          UNPACK_DATA,    &T,
                           UNPACK_VALUE,   &ldt,
-                          UNPACK_DATA,    &gC,
+                          UNPACK_DATA,    &C,
                           UNPACK_VALUE,   &ldc,
                           UNPACK_SCRATCH, &WORK,
                           UNPACK_VALUE,   &ldwork
                         );
 
-    void *A = DAGUE_DATA_COPY_GET_PTR(gA);
-    void *T = DAGUE_DATA_COPY_GET_PTR(gT);
-    void *C = DAGUE_DATA_COPY_GET_PTR(gC);
 
     CORE_zunmqr(*side, *trans, *m, *n, *k, *ib,
                 A, *lda, T, *ldt, C, *ldc, WORK, *ldwork);

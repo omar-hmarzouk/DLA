@@ -23,16 +23,16 @@
 #include "runtime/parsec/include/morse_parsec.h"
 
 static int
-CORE_ztrasm_parsec(dague_execution_unit_t *context, dague_execution_context_t * this_task)
+CORE_ztrasm_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
 {
     MORSE_enum *storev;
     MORSE_enum *uplo;
     MORSE_enum *diag;
     int *M;
     int *N;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *lda;
-    dague_data_copy_t *gwork;
+    double *work;
 
     dague_dtd_unpack_args(this_task,
                           UNPACK_VALUE, &storev,
@@ -40,14 +40,10 @@ CORE_ztrasm_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
                           UNPACK_VALUE, &diag,
                           UNPACK_VALUE, &M,
                           UNPACK_VALUE, &N,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &lda,
-                          UNPACK_DATA,  &gwork
+                          UNPACK_DATA,  &work
                         );
-
-
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
-    void *work = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gwork);
 
     CORE_ztrasm(*storev, *uplo, *diag, *M, *N, A, *lda, work);
 
@@ -69,6 +65,6 @@ void MORSE_TASK_ztrasm(MORSE_option_t *options,
                             sizeof(int),            &N,                     VALUE,
                             PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
                             sizeof(int),            &lda,                   VALUE,
-                            PASSED_BY_REF,          RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT | REGION_FULL,
+                            PASSED_BY_REF,          RTBLKADDR( B, double, Bm, Bn ),     INOUT | REGION_FULL,
                              0);
 }

@@ -23,13 +23,13 @@
 #include "runtime/parsec/include/morse_parsec.h"
 
 static int
-CORE_ztrsm_parsec(dague_execution_unit_t *context, dague_execution_context_t * this_task)
+CORE_ztrsm_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
 {
     MORSE_enum *side, *uplo, *trans, *diag;
     int  *tempmm, *nb, *ldak, *ldam;
     MORSE_Complex64_t *alpha;
-    dague_data_copy_t *gT;
-    dague_data_copy_t *gC;
+    MORSE_Complex64_t *T;
+    MORSE_Complex64_t *C;
 
     dague_dtd_unpack_args(this_task,
                           UNPACK_VALUE, &side,
@@ -39,16 +39,11 @@ CORE_ztrsm_parsec(dague_execution_unit_t *context, dague_execution_context_t * t
                           UNPACK_VALUE, &tempmm,
                           UNPACK_VALUE, &nb,
                           UNPACK_VALUE, &alpha,
-                          UNPACK_DATA,  &gT,
+                          UNPACK_DATA,  &T,
                           UNPACK_VALUE, &ldak,
-                          UNPACK_DATA,  &gC,
+                          UNPACK_DATA,  &C,
                           UNPACK_VALUE, &ldam
                         );
-
-    void *T = DAGUE_DATA_COPY_GET_PTR(gT);
-    void *C = DAGUE_DATA_COPY_GET_PTR(gC);
-    (void) T;
-    (void) C;
 
     CORE_ztrsm(*side, *uplo, *trans, *diag,
            *tempmm, *nb, *alpha, T, *ldak,

@@ -32,23 +32,20 @@ CORE_zlag2c_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 {
     int *m;
     int *n;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *lda;
-    dague_data_copy_t *gB;
+    MORSE_Complex32_t *B;
     int *ldb;
     int info;
 
     dague_dtd_unpack_args(this_task,
                           UNPACK_VALUE, &m,
                           UNPACK_VALUE, &n,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &lda,
-                          UNPACK_DATA,  &gB,
+                          UNPACK_DATA,  &B,
                           UNPACK_VALUE, &ldb,
                           );
-
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
-    void *B = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gB);
 
     CORE_zlag2c( *m, *n, A, *lda, B, *ldb);
 
@@ -67,7 +64,7 @@ void MORSE_TASK_zlag2c(MORSE_option_t *options,
         sizeof(int),                        &n,         VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
         sizeof(int),                        &lda,       VALUE,
-        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     OUTPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex32_t, Bm, Bn ),     OUTPUT | REGION_FULL,
         sizeof(int),                        &ldb,       VALUE,
         0);
 }
@@ -82,22 +79,20 @@ CORE_clag2z_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 {
     int *m;
     int *n;
-    dague_data_copy_t *gA;
+    MORSE_Complex32_t *A;
     int *lda;
-    dague_data_copy_t *gB;
+    MORSE_Complex64_t *B;
     int *ldb;
 
     dague_dtd_unpack_args(this_task,
                           UNPACK_VALUE, &m,
                           UNPACK_VALUE, &n,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &lda,
-                          UNPACK_DATA,  &gB,
+                          UNPACK_DATA,  &B,
                           UNPACK_VALUE, &ldb,
                           );
 
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
-    void *B = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gB);
 
     CORE_clag2z( *m, *n, A, *lda, B, *ldb );
 
@@ -114,7 +109,7 @@ void MORSE_TASK_clag2z(MORSE_option_t *options,
     insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_clag2z_parsec,               "lag2z",
         sizeof(int),                        &m,         VALUE,
         sizeof(int),                        &n,         VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex32_t, Am, An ),     INPUT | REGION_FULL,
         sizeof(int),                        &lda,       VALUE,
         PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT | REGION_FULL,
         sizeof(int),                        &ldb,       VALUE,

@@ -23,15 +23,13 @@
 #include "runtime/parsec/include/morse_parsec.h"
 
 static int
-CORE_ztrtri_parsec(dague_execution_unit_t *context, dague_execution_context_t * this_task)
+CORE_ztrtri_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
 {
     MORSE_enum *uplo;
     MORSE_enum *diag;
     int *N;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *LDA;
-    MORSE_sequence_t *sequence;
-    MORSE_request_t *request;
     int *iinfo;
     int info;
 
@@ -39,14 +37,11 @@ CORE_ztrtri_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
                           UNPACK_VALUE, &uplo,
                           UNPACK_VALUE, &diag,
                           UNPACK_VALUE, &N,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &LDA,
-                          UNPACK_VALUE, &sequence,
-                          UNPACK_VALUE, &request,
                           UNPACK_VALUE, &iinfo
                         );
 
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
 
     CORE_ztrtri(*uplo, *diag, *N, A, *LDA, &info);
 
@@ -67,8 +62,6 @@ void MORSE_TASK_ztrtri(MORSE_option_t *options,
                             sizeof(int),                &n,                     VALUE,
                             PASSED_BY_REF,              RTBLKADDR( A, MORSE_Complex64_t, Am, An ),   INOUT | REGION_FULL,
                             sizeof(int),                &lda,                   VALUE,
-                            sizeof(MORSE_sequence_t*),  &(options->sequence),   VALUE,
-                            sizeof(MORSE_request_t*),   &(options->request),    VALUE,
                             sizeof(int),                &iinfo,                 VALUE,
                             0);
 }

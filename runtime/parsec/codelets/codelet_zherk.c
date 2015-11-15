@@ -36,10 +36,10 @@ CORE_zherk_parsec(dague_execution_unit_t *context, dague_execution_context_t * t
     int *n;
     int *k;
     double *alpha;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *lda;
     double *beta;
-    dague_data_copy_t *gC;
+    MORSE_Complex64_t *C;
     int *ldc;
 
     dague_dtd_unpack_args(this_task,
@@ -48,15 +48,13 @@ CORE_zherk_parsec(dague_execution_unit_t *context, dague_execution_context_t * t
                           UNPACK_VALUE, &n,
                           UNPACK_VALUE, &k,
                           UNPACK_VALUE, &alpha,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &lda,
                           UNPACK_VALUE, &beta,
-                          UNPACK_DATA,  &gC,
+                          UNPACK_DATA,  &C,
                           UNPACK_VALUE, &ldc
                         );
 
-    void *A = DAGUE_DATA_COPY_GET_PTR(gA);
-    void *C = DAGUE_DATA_COPY_GET_PTR(gC);
 
     CORE_zherk(*uplo, *trans, *n, *k,
                *alpha, A, *lda,

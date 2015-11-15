@@ -76,7 +76,7 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
                           workm, workn, 0, 0, workm, workn, A->p, A->q);
 
         MORSE_Desc_Create(&(VECNORMS_STEP2), NULL, MorseRealDouble, 1, A->nb, A->nb,
-                          1, workn, 0, 0, 1, workn, A->p, A->q);
+                          1,     workn, 0, 0, 1,     workn, A->p, A->q);
 
         MORSE_Desc_Create(&(RESULT), NULL, MorseRealDouble, 1, 1, 1,
                           1, 1, 0, 0, 1, 1, 1, 1);

@@ -23,16 +23,16 @@
 #include "runtime/parsec/include/morse_parsec.h"
 
 static int
-CORE_ztslqt_parsec(dague_execution_unit_t *context, dague_execution_context_t * this_task)
+CORE_ztslqt_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
 {
     int *m;
     int *n;
     int *ib;
-    dague_data_copy_t *gA1;
+    MORSE_Complex64_t *A1;
     int *lda1;
-    dague_data_copy_t *gA2;
+    MORSE_Complex64_t *A2;
     int *lda2;
-    dague_data_copy_t *gT;
+    MORSE_Complex64_t *T;
     int *ldt;
     MORSE_Complex64_t *TAU;
     MORSE_Complex64_t *WORK;
@@ -41,19 +41,16 @@ CORE_ztslqt_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
                           UNPACK_VALUE, &m,
                           UNPACK_VALUE, &n,
                           UNPACK_VALUE, &ib,
-                          UNPACK_DATA,  &gA1,
+                          UNPACK_DATA,  &A1,
                           UNPACK_VALUE, &lda1,
-                          UNPACK_DATA,  &gA2,
+                          UNPACK_DATA,  &A2,
                           UNPACK_VALUE, &lda2,
-                          UNPACK_DATA,  &gT,
+                          UNPACK_DATA,  &T,
                           UNPACK_VALUE, &ldt,
                           UNPACK_SCRATCH, &TAU,
                           UNPACK_SCRATCH, &WORK
                         );
 
-    void *A1 = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA1);
-    void *A2 = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA2);
-    void *T = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gT);
 
     CORE_ztslqt(*m, *n, *ib, A1, *lda1, A2, *lda2, T, *ldt, TAU, WORK);
 

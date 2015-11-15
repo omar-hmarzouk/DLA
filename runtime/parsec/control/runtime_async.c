@@ -32,11 +32,13 @@ int RUNTIME_sequence_create(MORSE_context_t *morse, MORSE_sequence_t *sequence)
  **/
 int RUNTIME_sequence_destroy(MORSE_context_t *morse, MORSE_sequence_t *sequence)
 {
+    dague_context_t    *dague = (dague_context_t *)morse->schedopt;
     dague_dtd_handle_t *dague_dtd_handle = (dague_dtd_handle_t *) sequence->schedopt;
     (void)morse;
 
     assert( dague_dtd_handle );
 
+    dague_dtd_context_wait_on_handle(dague, dague_dtd_handle);
     dague_dtd_handle_destruct(dague_dtd_handle);
     sequence->schedopt = NULL;
     return MORSE_SUCCESS;

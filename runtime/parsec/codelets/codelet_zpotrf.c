@@ -32,19 +32,18 @@ CORE_zpotrf_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 {
     MORSE_enum *uplo;
     int *tempkm, *ldak, *iinfo;
-    dague_data_copy_t *data;
+    MORSE_Complex64_t *A;
 
     dague_dtd_unpack_args(this_task,
                           UNPACK_VALUE, &uplo,
                           UNPACK_VALUE, &tempkm,
-                          UNPACK_DATA,  &data,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &ldak,
                           UNPACK_VALUE, &iinfo
                         );
 
-    void *TT = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)data);
 
-    CORE_zpotrf(*uplo, *tempkm, TT, *ldak, iinfo);
+    CORE_zpotrf(*uplo, *tempkm, A, *ldak, iinfo);
 
     return 0;
 }

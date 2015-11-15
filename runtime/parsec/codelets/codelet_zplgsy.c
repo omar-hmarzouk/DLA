@@ -28,7 +28,7 @@ CORE_zplgsy_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     MORSE_Complex64_t *bump;
     int *m;
     int *n;
-    dague_data_copy_t *A;
+    MORSE_Complex64_t *A;
     int *lda;
     int *bigM;
     int *m0;
@@ -47,9 +47,7 @@ CORE_zplgsy_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
                           UNPACK_VALUE, &seed
                         );
 
-    MORSE_Complex64_t *T = (MORSE_Complex64_t *)DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)A);
-
-    CORE_zplgsy( *bump, *m, *n, T, *lda, *bigM, *m0, *n0, *seed );
+    CORE_zplgsy( *bump, *m, *n, A, *lda, *bigM, *m0, *n0, *seed );
 
     return 0;
 }

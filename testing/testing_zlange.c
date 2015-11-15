@@ -60,7 +60,7 @@ int testing_zlange(int argc, char **argv)
     /* Allocate Data */
     MORSE_Complex64_t *A    = (MORSE_Complex64_t *)malloc(LDAxN*sizeof(MORSE_Complex64_t));
     double            *work = (double*) malloc(max(M,N)*sizeof(double));
-    double normmorse=0, normlapack, result;
+    double normmorse, normlapack, result;
 
     eps = LAPACKE_dlamch_work('e');
 

@@ -31,13 +31,13 @@ CORE_zssssm_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
     int *n2;
     int *k;
     int *ib;
-    dague_data_copy_t *gA1;
+    MORSE_Complex64_t *A1;
     int *lda1;
-    dague_data_copy_t *gA2;
+    MORSE_Complex64_t *A2;
     int *lda2;
-    dague_data_copy_t *gL1;
+    MORSE_Complex64_t *L1;
     int *ldl1;
-    dague_data_copy_t *gL2;
+    MORSE_Complex64_t *L2;
     int *ldl2;
     int *IPIV;
 
@@ -48,21 +48,17 @@ CORE_zssssm_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
                           UNPACK_VALUE, &n2,
                           UNPACK_VALUE, &k,
                           UNPACK_VALUE, &ib,
-                          UNPACK_DATA,  &gA1,
+                          UNPACK_DATA,  &A1,
                           UNPACK_VALUE, &lda1,
-                          UNPACK_DATA,  &gA2,
+                          UNPACK_DATA,  &A2,
                           UNPACK_VALUE, &lda2,
-                          UNPACK_DATA,  &gL1,
+                          UNPACK_DATA,  &L1,
                           UNPACK_VALUE, &ldl1,
-                          UNPACK_DATA,  &gL2,
+                          UNPACK_DATA,  &L2,
                           UNPACK_VALUE, &ldl2,
                           UNPACK_SCRATCH, &IPIV
                           );
 
-    void *A1 = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA1);
-    void *A2 = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA2);
-    void *L1 = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gL1);
-    void *L2 = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gL2);
 
     CORE_zssssm(*m1, *n1, *m2, *n2, *k, *ib, A1, *lda1, A2, *lda2, L1, *ldl1, L2, *ldl2, IPIV);
 

@@ -497,23 +497,24 @@ int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, i
     if (mat == NULL) {
 
 #if defined(CHAMELEON_SIMULATION) && !defined(CHAMELEON_USE_MPI)
-        (**desc).mat = (void*) 1;
+        (*desc)->mat = (void*) 1;
 #else
         /* TODO: a call to morse_desc_mat_alloc should be made, but require to
         move the call to RUNTIME_desc_create within the function */
         size_t size = (size_t)((*desc)->llm) * (size_t)((*desc)->lln)
             * (size_t)MORSE_Element_Size((*desc)->dtyp);
 
-        if (((**desc).mat = malloc(size)) == NULL) {
+        if (((*desc)->mat = malloc(size)) == NULL) {
             morse_error("MORSE_Desc_Create", "malloc() failed");
             return MORSE_ERR_OUT_OF_RESOURCES;
         }
+        (*desc)->alloc_mat = 1;
 #endif
 
     } else {
-        (**desc).mat = mat;
+        (*desc)->mat = mat;
         /* memory of the matrix is handle by users */
-        (**desc).alloc_mat = 0;
+        (*desc)->alloc_mat = 0;
     }
 
     /* Create scheduler structure like registering data */

@@ -90,9 +90,9 @@ CORE_zgeqrt_parsec (dague_execution_unit_t *context, dague_execution_context_t *
     int *m;
     int *n;
     int *ib;
-    dague_data_copy_t *A;
+    MORSE_Complex64_t *A;
     int *lda;
-    dague_data_copy_t *T;
+    MORSE_Complex64_t *T;
     int *ldt;
     MORSE_Complex64_t *TAU;
     MORSE_Complex64_t *WORK;
@@ -109,10 +109,8 @@ CORE_zgeqrt_parsec (dague_execution_unit_t *context, dague_execution_context_t *
                           UNPACK_SCRATCH, &WORK
                           );
 
-    void *AA = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)A);
-    void *TT = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)T);
 
-    CORE_zgeqrt(*m, *n, *ib, AA, *lda, TT, *ldt, TAU, WORK);
+    CORE_zgeqrt(*m, *n, *ib, A, *lda, T, *ldt, TAU, WORK);
 
     return 0;
 }

@@ -13,8 +13,6 @@
 
 #include <dague.h>
 #include <dague/insert_function.h>
-#include <dague/data_internal.h>
-#include <dague/profiling.h>
 
 #include "control/common.h"
 
@@ -24,7 +22,6 @@ typedef struct morse_parsec_desc_s morse_parsec_desc_t;
 /*
  * Access to block pointer and leading dimension
  */
-//#define RTBLKADDR( desc, type, m, n ) ( (type*)RUNTIME_desc_getaddr( desc, m, n ) )
-#define RTBLKADDR( desc, type, m, n ) ( tile_manage( DAGUE_dtd_handle, (desc)->schedopt, m, n ) )
+#define RTBLKADDR( desc, type, m, n ) ( dague_dtd_tile_of( DAGUE_dtd_handle, (desc)->schedopt, m, n ) )
 
 #endif /* _MORSE_PARSEC_H_ */

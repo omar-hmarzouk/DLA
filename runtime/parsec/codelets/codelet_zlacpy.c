@@ -33,23 +33,21 @@ CORE_zlacpy_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
     MORSE_enum *uplo;
     int *M;
     int *N;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *LDA;
-    dague_data_copy_t *gB;
+    MORSE_Complex64_t *B;
     int *LDB;
 
     dague_dtd_unpack_args(this_task,
                           UNPACK_VALUE, &uplo,
                           UNPACK_VALUE, &M,
                           UNPACK_VALUE, &N,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &LDA,
-                          UNPACK_DATA,  &gB,
+                          UNPACK_DATA,  &B,
                           UNPACK_VALUE, &LDB
                         );
 
-    MORSE_Complex64_t *A = (MORSE_Complex64_t *)DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
-    MORSE_Complex64_t *B = (MORSE_Complex64_t *)DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gB);
 
     CORE_zlacpy(*uplo, *M, *N, A, *LDA, B, *LDB);
 

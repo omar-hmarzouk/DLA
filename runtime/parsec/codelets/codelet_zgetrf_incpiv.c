@@ -82,7 +82,7 @@ CORE_zgetrf_incpiv_parsec(dague_execution_unit_t *context, dague_execution_conte
     int *m;
     int *n;
     int *ib;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *lda;
     int *IPIV;
     MORSE_bool *check_info;
@@ -94,7 +94,7 @@ CORE_zgetrf_incpiv_parsec(dague_execution_unit_t *context, dague_execution_conte
                           UNPACK_VALUE, &m,
                           UNPACK_VALUE, &n,
                           UNPACK_VALUE, &ib,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &lda,
                           UNPACK_SCRATCH, &IPIV,
                           UNPACK_VALUE, &check_info,
@@ -102,7 +102,6 @@ CORE_zgetrf_incpiv_parsec(dague_execution_unit_t *context, dague_execution_conte
                           );
 
 
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
 
     CORE_zgetrf_incpiv(*m, *n, *ib, A, *lda, IPIV, &info);
 

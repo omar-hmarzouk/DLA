@@ -65,7 +65,7 @@ CORE_zlaset_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
     int *N;
     MORSE_Complex64_t *alpha;
     MORSE_Complex64_t *beta;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *LDA;
 
     dague_dtd_unpack_args(this_task,
@@ -74,12 +74,11 @@ CORE_zlaset_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
                           UNPACK_VALUE, &N,
                           UNPACK_VALUE, &alpha,
                           UNPACK_VALUE, &beta,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &LDA
                         );
 
 
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
 
     CORE_zlaset(*uplo, *M, *N, *alpha, *beta, A, *LDA);
 

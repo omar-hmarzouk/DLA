@@ -33,13 +33,13 @@ CORE_ztsmqr_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     int *n2;
     int *k;
     int *ib;
-    dague_data_copy_t *gA1;
+    MORSE_Complex64_t *A1;
     int *lda1;
-    dague_data_copy_t *gA2;
+    MORSE_Complex64_t *A2;
     int *lda2;
-    dague_data_copy_t *gV;
+    MORSE_Complex64_t *V;
     int *ldv;
-    dague_data_copy_t *gT;
+    MORSE_Complex64_t *T;
     int *ldt;
     MORSE_Complex64_t *WORK;
     int *ldwork;
@@ -53,22 +53,18 @@ CORE_ztsmqr_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
                           UNPACK_VALUE, &n2,
                           UNPACK_VALUE, &k,
                           UNPACK_VALUE, &ib,
-                          UNPACK_DATA,  &gA1,
+                          UNPACK_DATA,  &A1,
                           UNPACK_VALUE, &lda1,
-                          UNPACK_DATA,  &gA2,
+                          UNPACK_DATA,  &A2,
                           UNPACK_VALUE, &lda2,
-                          UNPACK_DATA,  &gV,
+                          UNPACK_DATA,  &V,
                           UNPACK_VALUE, &ldv,
-                          UNPACK_DATA,  &gT,
+                          UNPACK_DATA,  &T,
                           UNPACK_VALUE, &ldt,
                           UNPACK_SCRATCH, &WORK,
                           UNPACK_VALUE, &ldwork
                         );
 
-    void *A1 = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA1);
-    void *A2 = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA2);
-    void *V = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gV);
-    void *T = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gT);
 
     CORE_ztsmqr(*side, *trans, *m1, *n1, *m2, *n2, *k, *ib,
                 A1, *lda1, A2, *lda2, V, *ldv, T, *ldt, WORK, *ldwork);

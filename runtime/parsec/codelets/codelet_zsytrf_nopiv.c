@@ -27,7 +27,7 @@ CORE_zsytrf_nopiv_parsec(dague_execution_unit_t *context, dague_execution_contex
 {
     MORSE_enum *uplo;
     int *n;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *lda;
     int *iinfo;
     int info;
@@ -35,12 +35,11 @@ CORE_zsytrf_nopiv_parsec(dague_execution_unit_t *context, dague_execution_contex
     dague_dtd_unpack_args(this_task,
                           UNPACK_VALUE, &uplo,
                           UNPACK_VALUE, &n,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &lda,
                           UNPACK_VALUE, &iinfo
                         );
 
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
 
     CORE_zsytf2_nopiv(*uplo, *n, A, *lda);
 

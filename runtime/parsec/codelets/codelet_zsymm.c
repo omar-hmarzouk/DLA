@@ -30,12 +30,12 @@ CORE_zsymm_parsec(dague_execution_unit_t *context, dague_execution_context_t * t
     int *M;
     int *N;
     MORSE_Complex64_t *alpha;
-    MORSE_Complex64_t *gA;
+    MORSE_Complex64_t *A;
     int *LDA;
-    MORSE_Complex64_t *gB;
+    MORSE_Complex64_t *B;
     int *LDB;
     MORSE_Complex64_t *beta;
-    MORSE_Complex64_t *gC;
+    MORSE_Complex64_t *C;
     int *LDC;
 
     dague_dtd_unpack_args(this_task,
@@ -44,19 +44,16 @@ CORE_zsymm_parsec(dague_execution_unit_t *context, dague_execution_context_t * t
                           UNPACK_VALUE, &M,
                           UNPACK_VALUE, &N,
                           UNPACK_VALUE, &alpha,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &LDA,
-                          UNPACK_DATA,  &gB,
+                          UNPACK_DATA,  &B,
                           UNPACK_VALUE, &LDB,
                           UNPACK_VALUE, &beta,
-                          UNPACK_DATA,  &gC,
+                          UNPACK_DATA,  &C,
                           UNPACK_VALUE, &LDC
                         );
 
 
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
-    void *B = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gB);
-    void *C = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gC);
 
     CORE_zsymm(*side, *uplo, *M, *N,
                 *alpha, A, *LDA,
@@ -86,7 +83,7 @@ void MORSE_TASK_zsymm(MORSE_option_t *options,
                             sizeof(int),            &lda,               VALUE,
                             PASSED_BY_REF,          RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INPUT | REGION_FULL,
                             sizeof(int),            &ldb,               VALUE,
-                            sizeof(double),         &beta,              VALUE,
+                            sizeof(MORSE_Complex64_t),  &beta,          VALUE,
                             PASSED_BY_REF,          RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | REGION_FULL,
                             sizeof(int),            &ldc,               VALUE,
                              0);

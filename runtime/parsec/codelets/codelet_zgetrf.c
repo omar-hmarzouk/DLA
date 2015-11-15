@@ -27,11 +27,9 @@ CORE_zgetrf_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 {
     int *m;
     int *n;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *lda;
     int *IPIV;
-    MORSE_sequence_t *sequence;
-    MORSE_request_t *request;
     MORSE_bool *check_info;
     int *iinfo;
     int info;
@@ -39,16 +37,13 @@ CORE_zgetrf_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     dague_dtd_unpack_args(this_task,
                           UNPACK_VALUE, &m,
                           UNPACK_VALUE, &n,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &lda,
                           UNPACK_SCRATCH, &IPIV,
-                          UNPACK_VALUE, &sequence,
-                          UNPACK_VALUE, &request,
                           UNPACK_VALUE, &check_info,
                           UNPACK_VALUE, &iinfo
                         );
 
-    void *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
 
     CORE_zgetrf( *m, *n, A, *lda, IPIV, &info );
 
@@ -69,8 +64,6 @@ void MORSE_TASK_zgetrf(MORSE_option_t *options,
                              PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
                              sizeof(int),           &lda,                        VALUE,
                              sizeof(int)*nb,        IPIV,                        SCRATCH,
-                             sizeof(MORSE_sequence_t*), &(options->sequence),    VALUE,
-                             sizeof(MORSE_request_t*),  &(options->request),     VALUE,
                              sizeof(MORSE_bool),    &check_info,                 VALUE,
                              sizeof(int),           &iinfo,                      VALUE,
                              0);

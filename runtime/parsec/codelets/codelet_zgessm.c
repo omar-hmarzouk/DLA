@@ -75,11 +75,11 @@ CORE_zgessm_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     int *k;
     int *ib;
     int *IPIV;
-    dague_data_copy_t *gL;
+    MORSE_Complex64_t *L;
     int *ldl;
-    dague_data_copy_t *gD;
+    MORSE_Complex64_t *D;
     int *ldd;
-    dague_data_copy_t *gA;
+    MORSE_Complex64_t *A;
     int *lda;
 
     dague_dtd_unpack_args(this_task,
@@ -88,17 +88,14 @@ CORE_zgessm_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
                           UNPACK_VALUE, &k,
                           UNPACK_VALUE, &ib,
                           UNPACK_SCRATCH, &IPIV,
-                          UNPACK_DATA,  &gL,
+                          UNPACK_DATA,  &L,
                           UNPACK_VALUE, &ldl,
-                          UNPACK_DATA,  &gD,
+                          UNPACK_DATA,  &D,
                           UNPACK_VALUE, &ldd,
-                          UNPACK_DATA,  &gA,
+                          UNPACK_DATA,  &A,
                           UNPACK_VALUE, &lda
                           );
 
-    //MORSE_Complex64_t *L = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gL);
-    MORSE_Complex64_t *D = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gD);
-    MORSE_Complex64_t *A = DAGUE_DATA_COPY_GET_PTR((dague_data_copy_t *)gA);
 
     CORE_zgessm(*m, *n, *k, *ib, IPIV, D, *ldd, A, *lda);
 
