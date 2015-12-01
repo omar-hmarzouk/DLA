@@ -98,7 +98,6 @@
 #include "control/descriptor.h"
 #include "control/tile.h"
 #include "control/async.h"
-#include "control/bulge.h"
 
 /** ****************************************************************************
  *  Determine FORTRAN names

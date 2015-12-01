@@ -42,7 +42,6 @@ precisions_rules_py(CHAMELEON_HDRS_GENERATED "${ZHDR}"
 set(CHAMELEON_HDRS
     async.h
     auxiliary.h
-    bulge.h
     common.h
     context.h
     descriptor.h

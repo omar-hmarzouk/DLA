@@ -47,7 +47,6 @@
 //#include "control/auxiliary.h"
 //#include "control/descriptor.h"
 //#include "control/tile.h"
-//#include "control/bulge.h"
 
 /** ****************************************************************************
  * CORE BLAS headers
