@@ -471,7 +471,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             # -DMPI_C_COMPILER=path/to/mpicc -DMPI_Fortran_COMPILER=path/to/mpif90
             # at cmake configure
             if(NOT MPI_C_COMPILER)
-		set(MPI_C_COMPILER mpicc)
+            set(MPI_C_COMPILER mpicc)
             endif()
             find_package(MPI REQUIRED)
 
@@ -619,7 +619,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             endif()
             if (CHAMELEON_USE_MPI AND STARPU_MPI_LIBRARIES)
                 # Check if a specific function exist
-                set(CMAKE_REQUIRED_LIBRARIES "${STARPU_MPI_LIBRARIES}")
+                set(CMAKE_REQUIRED_LIBRARIES "${STARPU_MPI_LIBRARIES} ${MPI_C_LIBRARIES}")
                 unset(STARPU_MPI_DATA_REGISTER_FOUND CACHE)
                 check_function_exists(starpu_mpi_data_register_comm STARPU_MPI_DATA_REGISTER_FOUND)
                 if ( STARPU_MPI_DATA_REGISTER_FOUND )
