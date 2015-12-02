@@ -11,12 +11,12 @@
 * Build process of CHAMELEON::
 @end menu
 
-CHAMELEON can be built and installed by the standard means of CMake 
+CHAMELEON can be built and installed by the standard means of CMake
 (@uref{http://www.cmake.org/}).
-General information about CMake, as well as installation binaries and CMake 
-source code are available from 
+General information about CMake, as well as installation binaries and CMake
+source code are available from
 @uref{http://www.cmake.org/cmake/resources/software.html}.
-The following chapter is intended to briefly remind how these tools can be used 
+The following chapter is intended to briefly remind how these tools can be used
 to install CHAMELEON.
 
 @node Downloading CHAMELEON
@@ -31,11 +31,11 @@ to install CHAMELEON.
 @node Getting Sources
 @subsection Getting Sources
 
-The latest official release tarballs of CHAMELEON sources are available for 
-download from 
+The latest official release tarballs of CHAMELEON sources are available for
+download from
 @uref{http://morse.gforge.inria.fr/chameleon-0.9.1.tar.gz, chameleon-0.9.1}.
 
-@c The latest development snapshot is available from  
+@c The latest development snapshot is available from
 @c @uref{http://hydra.bordeaux.inria.fr/job/hiepacs/morse-cmake/tarball/latest/
 @c download-by-type/file/source-dist}.
 
@@ -57,141 +57,141 @@ download from
 @node a BLAS implementation
 @subsubsection a BLAS implementation
 
-@uref{http://www.netlib.org/blas/, BLAS} (Basic Linear Algebra Subprograms), 
-are a de facto standard for basic linear algebra operations such as vector and 
-matrix multiplication. 
-FORTRAN implementation of BLAS is available from Netlib. 
-Also, C implementation of BLAS is included in GSL (GNU Scientific Library). 
-Both these implementations are reference implementation of BLAS, are not 
-optimized for modern processor architectures and provide an order of magnitude 
-lower performance than optimized implementations. 
-Highly optimized implementations of BLAS are available from many hardware 
-vendors, such as Intel MKL and AMD ACML. 
-Fast implementations are also available as academic packages, such as ATLAS and 
-Goto BLAS. 
+@uref{http://www.netlib.org/blas/, BLAS} (Basic Linear Algebra Subprograms),
+are a de facto standard for basic linear algebra operations such as vector and
+matrix multiplication.
+FORTRAN implementation of BLAS is available from Netlib.
+Also, C implementation of BLAS is included in GSL (GNU Scientific Library).
+Both these implementations are reference implementation of BLAS, are not
+optimized for modern processor architectures and provide an order of magnitude
+lower performance than optimized implementations.
+Highly optimized implementations of BLAS are available from many hardware
+vendors, such as Intel MKL and AMD ACML.
+Fast implementations are also available as academic packages, such as ATLAS and
+Goto BLAS.
 The standard interface to BLAS is the FORTRAN interface.
 
-@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
-the reference BLAS from NETLIB and the Intel MKL 11.1 from Intel distribution 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
+the reference BLAS from NETLIB and the Intel MKL 11.1 from Intel distribution
 2013_sp1.
 
 @node CBLAS
 @subsubsection CBLAS
 
-@uref{http://www.netlib.org/blas/#_cblas, CBLAS} is a C language interface to 
+@uref{http://www.netlib.org/blas/#_cblas, CBLAS} is a C language interface to
 BLAS.
-Most commercial and academic implementations of BLAS also provide CBLAS. 
-Netlib provides a reference implementation of CBLAS on top of FORTRAN BLAS 
-(Netlib CBLAS). 
+Most commercial and academic implementations of BLAS also provide CBLAS.
+Netlib provides a reference implementation of CBLAS on top of FORTRAN BLAS
+(Netlib CBLAS).
 Since GSL is implemented in C, it naturally provides CBLAS.
 
-@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
-the reference CBLAS from NETLIB and the Intel MKL 11.1 from Intel distribution 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
+the reference CBLAS from NETLIB and the Intel MKL 11.1 from Intel distribution
 2013_sp1.
 
 @node a LAPACK implementation
 @subsubsection a LAPACK implementation
 
-@uref{http://www.netlib.org/lapack/, LAPACK} (Linear Algebra PACKage) is a 
-software library for numerical linear algebra, a successor of LINPACK and 
-EISPACK and a predecessor of CHAMELEON. 
-LAPACK provides routines for solving linear systems of equations, linear least 
-square problems, eigenvalue problems and singular value problems. 
+@uref{http://www.netlib.org/lapack/, LAPACK} (Linear Algebra PACKage) is a
+software library for numerical linear algebra, a successor of LINPACK and
+EISPACK and a predecessor of CHAMELEON.
+LAPACK provides routines for solving linear systems of equations, linear least
+square problems, eigenvalue problems and singular value problems.
 Most commercial and academic BLAS packages also provide some LAPACK routines.
 
-@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
-the reference LAPACK from NETLIB and the Intel MKL 11.1 from Intel distribution 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
+the reference LAPACK from NETLIB and the Intel MKL 11.1 from Intel distribution
 2013_sp1.
 
 @node LAPACKE
 @subsubsection LAPACKE
 
-@uref{http://www.netlib.org/lapack/, LAPACKE} is a C language interface to 
-LAPACK (or CLAPACK). 
-It is produced by Intel in coordination with the LAPACK team and is available 
-in source code from Netlib in its original version (Netlib LAPACKE) and from 
-CHAMELEON website in an extended version (LAPACKE for CHAMELEON). 
-In addition to implementing the C interface, LAPACKE also provides routines 
-which automatically handle workspace allocation, making the use of LAPACK much 
+@uref{http://www.netlib.org/lapack/, LAPACKE} is a C language interface to
+LAPACK (or CLAPACK).
+It is produced by Intel in coordination with the LAPACK team and is available
+in source code from Netlib in its original version (Netlib LAPACKE) and from
+CHAMELEON website in an extended version (LAPACKE for CHAMELEON).
+In addition to implementing the C interface, LAPACKE also provides routines
+which automatically handle workspace allocation, making the use of LAPACK much
 more convenient.
 
-@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
-the reference LAPACKE from NETLIB. 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
+the reference LAPACKE from NETLIB.
 A stand-alone version of LAPACKE is required.
 
 @node libtmg
 @subsubsection libtmg
 
-@uref{http://www.netlib.org/lapack/, libtmg} is a component of the LAPACK 
-library, containing routines for generation 
-of input matrices for testing and timing of LAPACK. 
-The testing and timing suites of LAPACK require libtmg, but not the library 
+@uref{http://www.netlib.org/lapack/, libtmg} is a component of the LAPACK
+library, containing routines for generation
+of input matrices for testing and timing of LAPACK.
+The testing and timing suites of LAPACK require libtmg, but not the library
 itself. Note that the LAPACK library can be built and used without libtmg.
 
-@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
-the reference TMG from NETLIB and the Intel MKL 11.1 from Intel distribution 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
+the reference TMG from NETLIB and the Intel MKL 11.1 from Intel distribution
 2013_sp1.
 
 @node QUARK
 @subsubsection QUARK
 
-@uref{http://icl.cs.utk.edu/quark/, QUARK} (QUeuing And Runtime for Kernels) 
-provides a library that enables the dynamic execution of tasks with data 
-dependencies in a multi-core, multi-socket, shared-memory environment. 
-One of QUARK or StarPU Runtime systems has to be enabled in order to schedule 
+@uref{http://icl.cs.utk.edu/quark/, QUARK} (QUeuing And Runtime for Kernels)
+provides a library that enables the dynamic execution of tasks with data
+dependencies in a multi-core, multi-socket, shared-memory environment.
+One of QUARK or StarPU Runtime systems has to be enabled in order to schedule
 tasks on the architecture.
 If QUARK is enabled then StarPU is disabled and conversely.
 Note StarPU is enabled by default.
-When CHAMELEON is linked with QUARK, it is not possible to exploit neither 
+When CHAMELEON is linked with QUARK, it is not possible to exploit neither
 CUDA (for GPUs) nor MPI (distributed-memory environment).
 You can use StarPU to do so.
 
-@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
 the QUARK library from PLASMA release between versions 2.5.0 and 2.6.0.
 
 @node StarPU
 @subsubsection StarPU
 
-@uref{http://runtime.bordeaux.inria.fr/StarPU/, StarPU} is a task programming 
+@uref{http://runtime.bordeaux.inria.fr/StarPU/, StarPU} is a task programming
 library for hybrid architectures.
 StarPU handles run-time concerns such as:
 @itemize @bullet
 @item Task dependencies
 @item Optimized heterogeneous scheduling
-@item Optimized data transfers and replication between main memory and discrete 
+@item Optimized data transfers and replication between main memory and discrete
 memories
 @item Optimized cluster communications
 @end itemize
 StarPU can be used to benefit from GPUs and distributed-memory environment.
-One of QUARK or StarPU runtime system has to be enabled in order to schedule 
+One of QUARK or StarPU runtime system has to be enabled in order to schedule
 tasks on the architecture.
 If StarPU is enabled then QUARK is disabled and conversely.
 Note StarPU is enabled by default.
 
-@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
 StarPU-1.1 releases.
 
 @node hwloc
 @subsubsection hwloc
 
-@uref{http://www.open-mpi.org/projects/hwloc/, hwloc} (Portable Hardware 
-Locality) is a software package for accessing the  topology of a multicore 
-system including components like: cores, sockets, caches and NUMA nodes. 
-@c The topology discovery library, @code{hwloc}, is not mandatory to use StarPU 
-@c but strongly recommended. 
-It allows to increase performance, and to perform some topology aware 
+@uref{http://www.open-mpi.org/projects/hwloc/, hwloc} (Portable Hardware
+Locality) is a software package for accessing the  topology of a multicore
+system including components like: cores, sockets, caches and NUMA nodes.
+@c The topology discovery library, @code{hwloc}, is not mandatory to use StarPU
+@c but strongly recommended.
+It allows to increase performance, and to perform some topology aware
 scheduling.
-@code{hwloc} is available in major distributions and for most OSes and can be  
+@code{hwloc} is available in major distributions and for most OSes and can be
 downloaded from @uref{http://www.open-mpi.org/software/hwloc}.
 
-@strong{Caution about the compatibility:} hwloc should be compatible with the 
+@strong{Caution about the compatibility:} hwloc should be compatible with the
 version of StarPU used.
 
 @node pthread
 @subsubsection pthread
 
-POSIX threads library is required to run CHAMELEON on Unix-like systems. 
-It is a standard component of any such system. 
+POSIX threads library is required to run CHAMELEON on Unix-like systems.
+It is a standard component of any such system.
 @comment  Windows threads are used on Microsoft Windows systems.
 
 @node Optional dependencies
@@ -207,71 +207,71 @@ It is a standard component of any such system.
 @node OpenMPI
 @subsubsection OpenMPI
 
-@uref{http://www.open-mpi.org/, OpenMPI} is an open source Message Passing 
-Interface implementation for execution on multiple nodes with 
+@uref{http://www.open-mpi.org/, OpenMPI} is an open source Message Passing
+Interface implementation for execution on multiple nodes with
 distributed-memory environment.
 MPI can be enabled only if the runtime system chosen is StarPU (default).
-To use MPI through StarPU, it is necessary to compile StarPU with MPI 
+To use MPI through StarPU, it is necessary to compile StarPU with MPI
 enabled.
 
-@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
 OpenMPI releases from versions 1.4 to 1.6.
 
 @node Nvidia CUDA Toolkit
 @subsubsection Nvidia CUDA Toolkit
 
-@uref{https://developer.nvidia.com/cuda-toolkit, Nvidia CUDA Toolkit} provides 
-a 
-comprehensive development environment for C and C++ developers building 
-GPU-accelerated applications. 
-CHAMELEON can use a set of low level optimized kernels coming from cuBLAS to 
+@uref{https://developer.nvidia.com/cuda-toolkit, Nvidia CUDA Toolkit} provides
+a
+comprehensive development environment for C and C++ developers building
+GPU-accelerated applications.
+CHAMELEON can use a set of low level optimized kernels coming from cuBLAS to
 accelerate computations on GPUs.
-The @uref{http://docs.nvidia.com/cuda/cublas/, cuBLAS} library is an 
-implementation of BLAS (Basic Linear Algebra Subprograms) on top of the Nvidia 
+The @uref{http://docs.nvidia.com/cuda/cublas/, cuBLAS} library is an
+implementation of BLAS (Basic Linear Algebra Subprograms) on top of the Nvidia
 CUDA runtime.
 cuBLAS is normaly distributed with Nvidia CUDA Toolkit.
-CUDA/cuBLAS can be enabled in CHAMELEON only if the runtime system chosen 
+CUDA/cuBLAS can be enabled in CHAMELEON only if the runtime system chosen
 is StarPU (default).
-To use CUDA through StarPU, it is necessary to compile StarPU with CUDA 
+To use CUDA through StarPU, it is necessary to compile StarPU with CUDA
 enabled.
 
-@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
-CUDA releases from versions 4 to 6. 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
+CUDA releases from versions 4 to 6.
 MAGMA library must be compatible with CUDA.
 
 @node MAGMA
 @subsubsection MAGMA
 
-@uref{http://icl.cs.utk.edu/magma/, MAGMA} project aims to develop a dense 
-linear algebra library similar to LAPACK but for heterogeneous/hybrid 
+@uref{http://icl.cs.utk.edu/magma/, MAGMA} project aims to develop a dense
+linear algebra library similar to LAPACK but for heterogeneous/hybrid
 architectures, starting with current "Multicore+GPU" systems.
-CHAMELEON can use a set of high level MAGMA routines to accelerate 
+CHAMELEON can use a set of high level MAGMA routines to accelerate
 computations on GPUs.
-To fully benefit from GPUs, the user should enable MAGMA in addition to 
+To fully benefit from GPUs, the user should enable MAGMA in addition to
 CUDA/cuBLAS.
 
-@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with 
+@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
 MAGMA releases from versions 1.4 to 1.6.
 MAGMA library must be compatible with CUDA.
-MAGMA library should be built with sequential versions of BLAS/LAPACK. 
-We should not get some MAGMA link flags embarking multithreaded 
-BLAS/LAPACK because it could affect permformances (take care about the 
-MAGMA link flag @option{-lmkl_intel_thread} for example that we could heritate 
+MAGMA library should be built with sequential versions of BLAS/LAPACK.
+We should not get some MAGMA link flags embarking multithreaded
+BLAS/LAPACK because it could affect permformances (take care about the
+MAGMA link flag @option{-lmkl_intel_thread} for example that we could heritate
 from the pkg-config file @file{magma.pc}).
 
 @node FxT
 @subsubsection FxT
 
-@uref{http://download.savannah.gnu.org/releases/fkt/, FxT} stands for both 
-FKT (Fast Kernel Tracing) and FUT (Fast User Tracing). 
+@uref{http://download.savannah.gnu.org/releases/fkt/, FxT} stands for both
+FKT (Fast Kernel Tracing) and FUT (Fast User Tracing).
 This library provides efficient support for recording traces.
-CHAMELEON can trace kernels execution on the different workers and produce 
-.paje files if FxT is enabled. 
-FxT can only be used through StarPU and StarPU must be compiled with FxT 
-enabled, see how to use this feature here @ref{Use FxT profiling through 
+CHAMELEON can trace kernels execution on the different workers and produce
+.paje files if FxT is enabled.
+FxT can only be used through StarPU and StarPU must be compiled with FxT
+enabled, see how to use this feature here @ref{Use FxT profiling through
 StarPU}.
 
-@strong{Caution about the compatibility:} FxT should be compatible with the 
+@strong{Caution about the compatibility:} FxT should be compatible with the
 version of StarPU used.
 
 @node Build process of CHAMELEON
@@ -288,14 +288,14 @@ version of StarPU used.
 @node Setting up a build directory
 @subsection Setting up a build directory
 
-The CHAMELEON build process requires CMake version 2.8.0 or higher and 
+The CHAMELEON build process requires CMake version 2.8.0 or higher and
 working C and Fortran compilers.
-Compilation and link with CHAMELEON libraries have been tested with 
+Compilation and link with CHAMELEON libraries have been tested with
 @strong{gcc/gfortran 4.8.1} and @strong{icc/ifort 14.0.2}.
 On Unix-like operating systems, it also requires Make.
-The CHAMELEON project can not be configured for an in-source build. 
-You will get an error message if you try to compile in-source. 
-Please clean the root of your project by deleting the generated 
+The CHAMELEON project can not be configured for an in-source build.
+You will get an error message if you try to compile in-source.
+Please clean the root of your project by deleting the generated
 @file{CMakeCache.txt} file (and other CMake generated files).
 
 @example
@@ -304,7 +304,7 @@ cd build
 @end example
 
 @quotation
-You can create a build directory from any location you would like. It can be a 
+You can create a build directory from any location you would like. It can be a
 sub-directory of the CHAMELEON base source directory or anywhere else.
 @end quotation
 
@@ -314,10 +314,10 @@ sub-directory of the CHAMELEON base source directory or anywhere else.
 @example
 cmake <path to SOURCE_DIR> -DOPTION1= -DOPTION2= ...
 @end example
-@file{<path to SOURCE_DIR>} represents the root of CHAMELEON project where 
-stands 
+@file{<path to SOURCE_DIR>} represents the root of CHAMELEON project where
+stands
 the main (parent) @file{CMakeLists.txt} file.
-Details about options that are useful to give to @command{cmake <path to 
+Details about options that are useful to give to @command{cmake <path to
 SOURCE_DIR>} are given in @ref{Compilation configuration}.
 
 @node Building
@@ -331,7 +331,7 @@ do not hesitate to use @option{-j[ncores]} option to speedup the compilation
 @node Tests
 @subsection Tests
 
-In order to make sure that CHAMELEON is working properly on the system, it is 
+In order to make sure that CHAMELEON is working properly on the system, it is
 also possible to run a test suite.
 
 @example
@@ -345,13 +345,13 @@ ctest
 @node Installing
 @subsection Installing
 
-In order to install CHAMELEON at the location that was specified during 
+In order to install CHAMELEON at the location that was specified during
 configuration:
 
 @example
 make install
 @end example
-do not forget to specify the install directory with 
+do not forget to specify the install directory with
 @option{-DCMAKE_INSTALL_PREFIX} at cmake configure
 @example
 cmake <path to SOURCE_DIR> -DCMAKE_INSTALL_PREFIX=<path to INSTALL_DIR>
