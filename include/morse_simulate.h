@@ -29,7 +29,7 @@
 #if defined(CHAMELEON_SCHED_STARPU) && defined(CHAMELEON_SIMULATION)
 #include <starpu_simgrid_wrap.h>
 #if defined(CHAMELEON_USE_MPI)
-#define main smpi_simulated_main_
+#define starpu_main smpi_simulated_main_
 #endif
 #endif
 
