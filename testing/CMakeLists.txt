@@ -102,17 +102,10 @@ unset(libs_for_tests)
 list(APPEND libs_for_tests chameleon)
 
 if(CHAMELEON_SCHED_STARPU)
-    if ( CHAMELEON_USE_MPI )
-        list(APPEND libs_for_tests
-          chameleon_starpu
-          ${STARPU_MPI_LIBRARIES}
-        )
-    else()
-        list(APPEND libs_for_tests
-          chameleon_starpu
-          ${STARPU_SHM_LIBRARIES}
-        )
-    endif()
+    list(APPEND libs_for_tests
+      chameleon_starpu
+      ${STARPU_LIBRARIES_DEP}
+    )
     link_directories(${STARPU_LIBRARY_DIRS})
 elseif(CHAMELEON_SCHED_PARSEC)
     list(APPEND libs_for_tests

@@ -42,17 +42,10 @@ list(APPEND libs_for_ltm
 )
 
 if(CHAMELEON_SCHED_STARPU)
-    if ( CHAMELEON_USE_MPI )
-        list(APPEND libs_for_ltm
-             chameleon_starpu
-             ${STARPU_MPI_LIBRARIES}
-        )
-    else()
-        list(APPEND libs_for_ltm
-             chameleon_starpu
-             ${STARPU_SHM_LIBRARIES}
-        )
-    endif()
+    list(APPEND libs_for_ltm
+      chameleon_starpu
+      ${STARPU_LIBRARIES_DEP}
+    )
     link_directories(${STARPU_LIBRARY_DIRS})
 elseif(CHAMELEON_SCHED_PARSEC)
     list(APPEND libs_for_ltm

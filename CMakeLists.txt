@@ -523,6 +523,9 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             "numerical correctness of algorithms and kernels.${ColourReset}")
         endif ()
 
+        # Simulation mode: we depend on SimGrid
+        find_package(SIMGRID REQUIRED)
+
         # CHAMELEON depends on MPI
         #-------------------------
         if (CHAMELEON_USE_MPI)
@@ -534,7 +537,11 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 set(MPI_C_COMPILER smpicc)
             endif()
             if(NOT MPI_C_LIBRARIES)
-                set(MPI_C_LIBRARIES -lsimgrid)
+                set(MPI_C_LIBRARIES "${SIMGRID_LIBRARIES}")
+            endif()
+            if(NOT MPI_C_INCLUDE_PATH)
+                set(MPI_C_INCLUDE_PATH "${SIMGRID_INCLUDE_DIRS}")
+                list(APPEND MPI_C_INCLUDE_PATH "${SIMGRID_INCLUDE_DIRS}/smpi")
             endif()
             find_package(MPI REQUIRED)
 
@@ -559,7 +566,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
     if( CHAMELEON_SCHED_STARPU )
 
-        set(CHAMELEON_STARPU_VERSION "1.1" CACHE STRING "oldest STARPU version desired")
+      set(CHAMELEON_STARPU_VERSION "1.1" CACHE STRING "oldest STARPU version desired")
 
         # create list of components in order to make a single call to find_package(starpu...)
         if(NOT CHAMELEON_SIMULATION)
@@ -595,7 +602,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             endforeach()
             list(APPEND CMAKE_REQUIRED_FLAGS "-include" "starpu_simgrid_wrap.h")
             string(REPLACE ";" " " CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS}")
-            set(CMAKE_REQUIRED_LIBRARIES "${STARPU_SHM_LIBRARIES}")
+            set(CMAKE_REQUIRED_LIBRARIES "${STARPU_LIBRARIES_DEP}")
             check_function_exists(starpu_data_idle_prefetch_on_node STARPU_IDLE_PREFETCH_FOUND)
             if ( STARPU_IDLE_PREFETCH_FOUND )
                 add_definitions(-DCHAMELEON_USE_STARPU_IDLE_PREFETCH)
@@ -606,7 +613,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             endif()
             if(CHAMELEON_ENABLE_TRACING)
                 # check if fxt profiling is accessible in starpu and activate it in chameleon
-                set(CMAKE_REQUIRED_LIBRARIES "${STARPU_SHM_LIBRARIES}")
+                set(CMAKE_REQUIRED_LIBRARIES "${STARPU_LIBRARIES_DEP}")
                 unset(STARPU_FXT_START_PROFILING_FOUND CACHE)
                 check_function_exists(starpu_fxt_start_profiling STARPU_FXT_START_PROFILING_FOUND)
                 if ( STARPU_FXT_START_PROFILING_FOUND )
@@ -623,7 +630,12 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 # Check if a specific function exist
                 list(APPEND CMAKE_REQUIRED_INCLUDES "${MPI_C_INCLUDE_PATH}")
                 list(APPEND CMAKE_REQUIRED_FLAGS "${MPI_C_LINK_FLAGS}")
-                set(CMAKE_REQUIRED_LIBRARIES "${STARPU_MPI_LIBRARIES} -lmpi")
+                set(CMAKE_REQUIRED_LIBRARIES "${STARPU_LIBRARIES_DEP}")
+#                if (CHAMELEON_SIMULATION)
+#                    set(CMAKE_REQUIRED_LIBRARIES "${STARPU_LIBRARIES_DEP}")
+#                else()
+#                    set(CMAKE_REQUIRED_LIBRARIES "${STARPU_LIBRARIES_DEP} -lmpi")
+#                endif()
                 unset(STARPU_MPI_DATA_REGISTER_FOUND CACHE)
                 check_function_exists(starpu_mpi_data_register_comm STARPU_MPI_DATA_REGISTER_FOUND)
                 if ( STARPU_MPI_DATA_REGISTER_FOUND )
@@ -869,17 +881,10 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     # Save all dependencies (all required links)
     set(CHAMELEON_DEP -lchameleon)
     if(CHAMELEON_SCHED_STARPU)
-        if ( CHAMELEON_USE_MPI )
-            list(APPEND CHAMELEON_DEP
-              -lchameleon_starpu
-              ${STARPU_MPI_LIBRARIES}
-            )
-        else()
-            list(APPEND CHAMELEON_DEP
-              -lchameleon_starpu
-              ${STARPU_SHM_LIBRARIES}
-            )
-        endif()
+        list(APPEND CHAMELEON_DEP
+          -lchameleon_starpu
+          ${STARPU_LIBRARIES_DEP}
+        )
     elseif(CHAMELEON_SCHED_PARSEC)
         list(APPEND CHAMELEON_DEP
           -lchameleon_parsec
