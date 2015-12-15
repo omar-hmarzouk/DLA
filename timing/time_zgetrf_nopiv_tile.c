@@ -47,6 +47,8 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         MORSE_zlacpy_Tile(MorseUpperLower, descA, descAC);
     }
 
+    //RUNTIME_zlocality_onerestrict( MORSE_TRSM, STARPU_CPU );
+
     START_TIMING();
     MORSE_zgetrf_nopiv_Tile( descA );
     STOP_TIMING();

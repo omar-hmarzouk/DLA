@@ -57,12 +57,15 @@ void morse_pzgetrf_nopiv(MORSE_desc_t *A,
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
         ldak = BLKLDD(A, k);
+
+        options.priority = 2*A->nt - 2*k;
         MORSE_TASK_zgetrf_nopiv(
             &options,
             tempkm, tempkn, ib, A->mb,
             A(k, k), ldak, A->mb*k);
 
         for (m = k+1; m < A->mt; m++) {
+            options.priority = 2*A->nt - 2*k - m;
             tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
             ldam = BLKLDD(A, m);
             MORSE_TASK_ztrsm(
@@ -74,6 +77,7 @@ void morse_pzgetrf_nopiv(MORSE_desc_t *A,
         }
         for (n = k+1; n < A->nt; n++) {
             tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
+            options.priority = 2*A->nt - 2*k - n;
             MORSE_TASK_ztrsm(
                 &options,
                 MorseLeft, MorseLower, MorseNoTrans, MorseUnit,
@@ -83,6 +87,7 @@ void morse_pzgetrf_nopiv(MORSE_desc_t *A,
 
             for (m = k+1; m < A->mt; m++) {
                 tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
+                options.priority = 2*A->nt - 2*k  - n - m;
                 ldam = BLKLDD(A, m);
                 MORSE_TASK_zgemm(
                     &options,
