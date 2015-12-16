@@ -47,6 +47,12 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         MORSE_zlacpy_Tile(MorseUpperLower, descA, descAC);
     }
 
+    /**
+     * Consider this optimization on some heterogenous platforms and matrix sizes.
+     * Often, TRSM kernel on GPU yields significantly less performance rate than GEMM,
+     * while performances are similar on CPU. On this algorithm it is therefore
+     * recommended to execute all TRSMs (~low amount) on CPU to increase GPU efficiency.
+     */
     //RUNTIME_zlocality_onerestrict( MORSE_TRSM, STARPU_CPU );
 
     START_TIMING();
