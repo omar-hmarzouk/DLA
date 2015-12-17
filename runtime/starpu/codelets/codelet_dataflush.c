@@ -56,7 +56,7 @@ void MORSE_TASK_dataflush(MORSE_option_t *options,
 
         if (*ptrtile != NULL)
         {
-#if defined(CHAMELEON_USE_MPI) && !defined(CHAMELEON_SIMULATION)
+#if defined(CHAMELEON_USE_MPI)
             starpu_mpi_cache_flush(MPI_COMM_WORLD, *ptrtile);
 #endif
 
@@ -77,7 +77,7 @@ void MORSE_TASK_dataflush(MORSE_option_t *options,
 
 void MORSE_TASK_dataflush_all()
 {
-#if defined(CHAMELEON_USE_MPI) && !defined(CHAMELEON_SIMULATION)
+#if defined(CHAMELEON_USE_MPI)
     starpu_mpi_cache_flush_all_data(MPI_COMM_WORLD);
 #endif
 }
