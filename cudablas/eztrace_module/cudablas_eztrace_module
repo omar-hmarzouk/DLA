@@ -455,58 +455,6 @@ int CUDA_dssssm(
         double *dL1, void* lddl1,
         double *dL2, void* lddl2,
         void* *IPIV, void* info);
-int CUDA_dsymm_V2(
-        void* side, void* uplo,
-        int m, int n,
-        double *alpha,
-        const double *A, int lda,
-        const double *B, int ldb,
-        double *beta,
-        double *C, int ldc,
-        void* stream);
-int CUDA_dsymm(
-        void* side, void* uplo,
-        int m, int n,
-        double *alpha,
-        const double *A, int lda,
-        const double *B, int ldb,
-        double *beta,
-        double *C, int ldc,
-        void* stream);
-int CUDA_dsyr2k_V2(
-        void* uplo, void* trans,
-        int n, int k,
-        double *alpha,
-        const double *A, int lda,
-        const double *B, int ldb,
-        double *beta,
-        double *C, int ldc,
-        void* stream);
-int CUDA_dsyr2k(
-        void* uplo, void* trans,
-        int n, int k,
-        double *alpha,
-        const double *A, int lda,
-        const double *B, int ldb,
-        double *beta,
-        double *C, int ldc,
-        void* stream);
-int CUDA_dsyrk_V2(
-        void* uplo, void* trans,
-        int n, int k,
-        double *alpha,
-        const double *A, int lda,
-        double *beta,
-        double *C, int ldc,
-        void* stream);
-int CUDA_dsyrk(
-        void* uplo, void* trans,
-        int n, int k,
-        double *alpha,
-        const double *A, int lda,
-        double *beta,
-        double *C, int ldc,
-        void* stream);
 int CUDA_dtrmm_V2(
         void* side, void* uplo,
         void* transa, void* diag,
@@ -762,58 +710,6 @@ int CUDA_sssssm(
         float *dL1, void* lddl1,
         float *dL2, void* lddl2,
         void* *IPIV, void* info);
-int CUDA_ssymm_V2(
-        void* side, void* uplo,
-        int m, int n,
-        float *alpha,
-        const float *A, int lda,
-        const float *B, int ldb,
-        float *beta,
-        float *C, int ldc,
-        void* stream);
-int CUDA_ssymm(
-        void* side, void* uplo,
-        int m, int n,
-        float *alpha,
-        const float *A, int lda,
-        const float *B, int ldb,
-        float *beta,
-        float *C, int ldc,
-        void* stream);
-int CUDA_ssyr2k_V2(
-        void* uplo, void* trans,
-        int n, int k,
-        float *alpha,
-        const float *A, int lda,
-        const float *B, int ldb,
-        float *beta,
-        float *C, int ldc,
-        void* stream);
-int CUDA_ssyr2k(
-        void* uplo, void* trans,
-        int n, int k,
-        float *alpha,
-        const float *A, int lda,
-        const float *B, int ldb,
-        float *beta,
-        float *C, int ldc,
-        void* stream);
-int CUDA_ssyrk_V2(
-        void* uplo, void* trans,
-        int n, int k,
-        float *alpha,
-        const float *A, int lda,
-        float *beta,
-        float *C, int ldc,
-        void* stream);
-int CUDA_ssyrk(
-        void* uplo, void* trans,
-        int n, int k,
-        float *alpha,
-        const float *A, int lda,
-        float *beta,
-        float *C, int ldc,
-        void* stream);
 int CUDA_strmm_V2(
         void* side, void* uplo,
         void* transa, void* diag,
