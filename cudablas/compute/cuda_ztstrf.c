@@ -24,7 +24,7 @@
  **/
 #include "cudablas/include/cudablas.h"
 
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) && 0
 int CUDA_ztstrf(
         char storev, magma_int_t m, magma_int_t n, magma_int_t ib, magma_int_t nb,
         cuDoubleComplex *hU, magma_int_t ldhu, cuDoubleComplex *dU, magma_int_t lddu,
