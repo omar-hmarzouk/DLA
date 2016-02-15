@@ -4,7 +4,7 @@
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
 # @copyright (c) 2012-2014 Inria. All rights reserved.
-# @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+# @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
 #
@@ -542,6 +542,26 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             if(NOT MPI_C_INCLUDE_PATH)
                 set(MPI_C_INCLUDE_PATH "${SIMGRID_INCLUDE_DIRS}")
                 list(APPEND MPI_C_INCLUDE_PATH "${SIMGRID_INCLUDE_DIRS}/smpi")
+            endif()
+            if(NOT MPI_CXX_COMPILER)
+                set(MPI_CXX_COMPILER "${SIMGRID_DIR_FOUND}/bin/smpicxx")
+            endif()
+            if(NOT MPI_CXX_LIBRARIES)
+                set(MPI_CXX_LIBRARIES "${SIMGRID_LIBRARIES}")
+            endif()
+            if(NOT MPI_CXX_INCLUDE_PATH)
+                set(MPI_CXX_INCLUDE_PATH "${SIMGRID_INCLUDE_DIRS}")
+                list(APPEND MPI_CXX_INCLUDE_PATH "${SIMGRID_INCLUDE_DIRS}/smpi")
+            endif()
+            if(NOT MPI_Fortran_COMPILER)
+                set(MPI_Fortran_COMPILER "${SIMGRID_DIR_FOUND}/bin/smpicxx")
+            endif()
+            if(NOT MPI_Fortran_LIBRARIES)
+                set(MPI_Fortran_LIBRARIES "${SIMGRID_LIBRARIES}")
+            endif()
+            if(NOT MPI_Fortran_INCLUDE_PATH)
+                set(MPI_Fortran_INCLUDE_PATH "${SIMGRID_INCLUDE_DIRS}")
+                list(APPEND MPI_Fortran_INCLUDE_PATH "${SIMGRID_INCLUDE_DIRS}/smpi")
             endif()
             find_package(MPI REQUIRED)
 
