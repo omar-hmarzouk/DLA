@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -406,9 +406,10 @@ int morse_desc_mat_free( MORSE_desc_t *desc )
     if (desc->mat != NULL  &&
         desc->use_mat == 1 &&
         desc->alloc_mat == 1) {
-#if !defined(CHAMELEON_SIMULATION) || defined(CHAMELEON_USE_MPI)
-        free(desc->mat);
-#endif
+        size_t size = (size_t)(desc->llm) * (size_t)(desc->lln)
+            * (size_t)MORSE_Element_Size(desc->dtyp);
+
+        RUNTIME_mat_free(desc->mat, size);
         desc->mat = NULL;
     }
     return MORSE_SUCCESS;
@@ -496,20 +497,14 @@ int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, i
 
     if (mat == NULL) {
 
-#if defined(CHAMELEON_SIMULATION) && !defined(CHAMELEON_USE_MPI)
-        (*desc)->mat = (void*) 1;
-#else
-        /* TODO: a call to morse_desc_mat_alloc should be made, but require to
-        move the call to RUNTIME_desc_create within the function */
         size_t size = (size_t)((*desc)->llm) * (size_t)((*desc)->lln)
             * (size_t)MORSE_Element_Size((*desc)->dtyp);
 
-        if (((*desc)->mat = malloc(size)) == NULL) {
+        if (((*desc)->mat = RUNTIME_mat_alloc(size)) == NULL) {
             morse_error("MORSE_Desc_Create", "malloc() failed");
             return MORSE_ERR_OUT_OF_RESOURCES;
         }
         (*desc)->alloc_mat = 1;
-#endif
 
     } else {
         (*desc)->mat = mat;

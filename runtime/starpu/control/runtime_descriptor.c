@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -42,6 +42,34 @@ static int tag_sep   = 24;
 #endif
 
 #endif
+
+#ifdef STARPU_MALLOC_SIMULATION_FOLDED
+#define FOLDED STARPU_MALLOC_SIMULATION_FOLDED
+#else
+#define FOLDED 0
+#endif
+
+void *RUNTIME_mat_alloc( size_t size)
+{
+#if defined(CHAMELEON_SIMULATION) && !defined(STARPU_MALLOC_SIMULATION_FOLDED) && !defined(CHAMELEON_USE_MPI)
+    return (void*) 1;
+#else
+    void *mat;
+
+    if (starpu_malloc_flags(&mat, size, STARPU_MALLOC_PINNED|FOLDED) != 0)
+        return NULL;
+    return mat;
+#endif
+}
+
+void RUNTIME_mat_free( void *mat, size_t size)
+{
+#if defined(CHAMELEON_SIMULATION) && !defined(STARPU_MALLOC_SIMULATION_FOLDED) && !defined(CHAMELEON_USE_MPI)
+    return (void*) 1;
+#else
+    starpu_free_flags(mat, size, STARPU_MALLOC_PINNED|FOLDED);
+#endif
+}
 
 void RUNTIME_desc_create( MORSE_desc_t *desc )
 {

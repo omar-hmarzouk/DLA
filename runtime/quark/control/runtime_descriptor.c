@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -24,6 +24,18 @@
  **/
 #include <stdlib.h>
 #include "runtime/quark/include/morse_quark.h"
+
+void *RUNTIME_mat_alloc( size_t size)
+{
+    return malloc(size);
+}
+
+void RUNTIME_mat_free( void *mat, size_t size)
+{
+    (void)size;
+    free(mat);
+    return;
+}
 
 void RUNTIME_desc_init( MORSE_desc_t *desc )
 {

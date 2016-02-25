@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -60,6 +60,8 @@ void  RUNTIME_comm_size          (int*);
 /*******************************************************************************
  * RUNTIME Descriptor
  **/
+void* RUNTIME_mat_alloc      (size_t);
+void  RUNTIME_mat_free       (void*, size_t);
 void  RUNTIME_desc_init      (MORSE_desc_t*);
 void  RUNTIME_desc_create    (MORSE_desc_t*);
 void  RUNTIME_desc_destroy   (MORSE_desc_t*);

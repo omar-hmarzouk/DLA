@@ -4,12 +4,24 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2015 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 #include <stdlib.h>
 #include "runtime/parsec/include/morse_parsec.h"
 #include <dague/data.h>
+
+void *RUNTIME_mat_alloc( size_t size)
+{
+    return malloc(size);
+}
+
+void RUNTIME_mat_free( void *mat, size_t size)
+{
+    (void)size;
+    free(mat);
+    return;
+}
 
 struct morse_parsec_desc_s {
     dague_ddesc_t  super;
