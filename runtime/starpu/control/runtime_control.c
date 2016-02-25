@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -101,6 +101,10 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
         morse->nworkers = ncpus;
         morse->nthreads_per_worker = nthreads_per_worker;
     }
+
+#ifdef CHAMELEON_USE_STARPU_MALLOC_ON_NODE_SET_DEFAULT_FLAGS
+    starpu_malloc_on_node_set_default_flags(STARPU_MAIN_RAM, STARPU_MALLOC_PINNED | STARPU_MALLOC_COUNT | STARPU_MALLOC_SIMULATION_FOLDED);
+#endif
 
 #if defined(CHAMELEON_USE_MPI)
     {
