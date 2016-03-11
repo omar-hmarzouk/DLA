@@ -103,7 +103,11 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
     }
 
 #ifdef CHAMELEON_USE_STARPU_MALLOC_ON_NODE_SET_DEFAULT_FLAGS
-    starpu_malloc_on_node_set_default_flags(STARPU_MAIN_RAM, STARPU_MALLOC_PINNED | STARPU_MALLOC_COUNT | STARPU_MALLOC_SIMULATION_FOLDED);
+    starpu_malloc_on_node_set_default_flags(STARPU_MAIN_RAM, STARPU_MALLOC_PINNED | STARPU_MALLOC_COUNT
+#ifdef STARPU_MALLOC_SIMULATION_FOLDED
+            | STARPU_MALLOC_SIMULATION_FOLDED
+#endif
+            );
 #endif
 
 #if defined(CHAMELEON_USE_MPI)
