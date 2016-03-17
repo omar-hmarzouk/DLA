@@ -385,7 +385,7 @@ int morse_desc_mat_alloc( MORSE_desc_t *desc )
 
     size_t size = (size_t)(desc->llm) * (size_t)(desc->lln)
       * (size_t)MORSE_Element_Size(desc->dtyp);
-    if ((desc->mat = malloc(size)) == NULL) {
+    if ((desc->mat = RUNTIME_mat_alloc(size)) == NULL) {
         morse_error("morse_desc_mat_alloc", "malloc() failed");
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
