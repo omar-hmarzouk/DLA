@@ -115,7 +115,6 @@ int CUDA_zgemerge(
         for(i=0; i<N; i++){
             cola = A + i*LDA;
             colb = B + i*LDB;
-//            cublasZcopy(i+1, cola, 1, colb, 1);
             cudaMemcpyAsync(colb , cola,
                             (i+1)*sizeof(cuDoubleComplex),
                             cudaMemcpyDeviceToDevice, stream);
@@ -124,7 +123,6 @@ int CUDA_zgemerge(
         for(i=0; i<N; i++){
             cola = A + i*LDA;
             colb = B + i*LDB;
-//            cublasZcopy(M-i, cola + i, 1, colb + i, 1);
             cudaMemcpyAsync(colb+i , cola+i,
                             (M-i)*sizeof(cuDoubleComplex),
                             cudaMemcpyDeviceToDevice, stream);

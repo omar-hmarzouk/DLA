@@ -142,6 +142,7 @@ int CUDA_zgelqt(
       magma_zlarfb_gpu( MagmaRight, MagmaNoTrans, MagmaForward, MagmaRowwise,
                         rows, cols, ib, da_ref(i,i), ldda, dt_ref(0,i),
                         lddt, da_ref(i+ib,i), ldda, dwork, lddwork);
+      cudaThreadSynchronize();
       old_i = i;
       old_ib = ib;
       if (i+nb >= k){

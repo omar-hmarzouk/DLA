@@ -185,6 +185,7 @@ int CUDA_ztsqrt(
                     dwork, ib,
                     dwork + ib * cols, rows,
                     stream );
+            cudaThreadSynchronize();
             old_i = i;
             old_ib = ib;
         }
