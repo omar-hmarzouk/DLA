@@ -23,7 +23,6 @@
 #define _FADDS FADDS_GEQRF( M, N )
 
 #include "./timing.c"
-#include <starpu.h>
 
 static int
 RunTest(int *iparam, double *dparam, morse_time_t *t_)
@@ -36,14 +35,6 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descX,  ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descAC, ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDA, M, N    );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descB,  ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
-
-
-//    RUNTIME_zlocality_onerestrict( MORSE_GEQRT, STARPU_CUDA );
-//    RUNTIME_zlocality_onerestrict( MORSE_GEQRT, STARPU_CPU );
-//    RUNTIME_zlocality_onerestrict( MORSE_UNMQR, STARPU_CUDA );
-//    RUNTIME_zlocality_onerestrict( MORSE_TSQRT, STARPU_CPU );
-//    RUNTIME_zlocality_onerestrict( MORSE_TSMQR, STARPU_CUDA );
-//    RUNTIME_zlocality_allrestrict( STARPU_CUDA );
 
     MORSE_zplrnt_Tile( descA, 5373 );
 
