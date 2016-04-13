@@ -98,7 +98,7 @@ int CORE_zgesplit(MORSE_enum side, MORSE_enum diag,
     }
 
     LAPACKE_zlacpy_work(LAPACK_COL_MAJOR,
-                        morse_lapack_const(uplo),
+                        morse_lapack_const(MorseUpperLower),
                         M, N, A, LDA, B, LDB);
 
     LAPACKE_zlaset_work(LAPACK_COL_MAJOR,
