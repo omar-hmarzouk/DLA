@@ -23,6 +23,7 @@ set(TESTLIST
     getrf_incpiv
     getrf_nopiv
     geqrf
+    gelqf
     posv
     potrf
     potri

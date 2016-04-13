@@ -170,7 +170,7 @@ static void cl_ztslqt_cpu_func(void *descr[], void *cl_arg)
     CORE_ztslqt(m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK);
 }
 
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) && 0
 static void cl_ztslqt_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_starpu_ws_t *h_work;
@@ -216,7 +216,7 @@ static void cl_ztslqt_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION)
+#if (defined(CHAMELEON_USE_MAGMA) && 0) || defined(CHAMELEON_SIMULATION)
 CODELETS(ztslqt, 4, cl_ztslqt_cpu_func, cl_ztslqt_cuda_func, 0)
 #else
 CODELETS_CPU(ztslqt, 4, cl_ztslqt_cpu_func)

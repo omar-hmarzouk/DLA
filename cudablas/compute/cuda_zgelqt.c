@@ -43,7 +43,7 @@ int CUDA_zgelqt(
 #define dt_ref(a_1,a_2) ( dt+(a_2)*(lddt) + (a_1))
 #define t_ref(a_1,a_2)  ( t+(a_2)*(ldt) + (a_1))
 
-    int i, k, ib, lddwork, old_i, old_ib, rows, cols;
+    int i, k, ib, old_i, old_ib, rows, cols;
     double _Complex one=1.;
 
     if (m < 0) {
@@ -60,107 +60,110 @@ int CUDA_zgelqt(
     return MAGMA_SUCCESS;
     }
 
-    lddwork= m;
-
     /* lower parts of little T must be zero: memset to 0 for simplicity */
     memset(t_ref(0,0), 0, nb*n*sizeof(magmaDoubleComplex));
-    cudaMemset(dt_ref(0,0), 0, nb*n*sizeof(magmaDoubleComplex));
+    cudaMemsetAsync(dt_ref(0,0), 0, nb*n*sizeof(magmaDoubleComplex), stream);
 
-    /* copy first panel of A on the host */
-    cublasGetMatrix(min(m, nb), n, sizeof(magmaDoubleComplex),
-              da_ref(0, 0), ldda,
-              v, ldv);
+    if ( (nb > 1) && (nb < k) ) {
+        /* Use blocked code initially */
+        old_i = 0; old_ib = nb;
+        for (i = 0; i < k-nb; i += nb) {
 
-    /* Use blocked code initially */
-    for (i = 0; i < k; i += nb) {
+            ib = min(k-i, nb);
+            cols = n-i;
+            magma_zgetmatrix_async( ib, cols,
+                                    da_ref(i,i), ldda,
+                                    v_ref(0,i), ib, stream );
 
-    ib = min(k-i, nb);
-    if (i+nb >= m) ib = min(m-i, nb);
-    cols = n-i;
+            if (i>0){
+                /* Apply H' to A(i+2*ib:m, i:n) from the right */
+                rows = m-old_i-2*old_ib;
+                magma_zlarfb_gpu( MagmaRight, MagmaNoTrans, MagmaForward, MagmaRowwise,
+                                  rows, n-old_i, old_ib,
+                                  da_ref(old_i, old_i), ldda, dt_ref(0,old_i), lddt,
+                                  da_ref(old_i+2*old_ib, old_i), ldda,
+                                  dwork, rows);
 
-    if (i > 0){
+                /* store the diagonal */
+                magma_zsetmatrix_async( old_ib, old_ib,
+                                        d,                    old_ib,
+                                        da_ref(old_i, old_i), ldda, stream );
+            }
 
-      /* copy panel of A from device to host */
-      cublasGetMatrix(ib, n, sizeof(magmaDoubleComplex),
-                      da_ref(i, 0), ldda,
-                      v, ldv);
+            magma_queue_sync( stream );
+            /* Form the triangular factor of the block reflector on the host
+            H = H'(i+ib-1) . . . H(i+1) H(i) */
+            CORE_zgelqt(ib, cols, ib,
+                        (double _Complex*) v_ref(0,i), ib,
+                        (double _Complex*) t_ref(0,0), ib,
+                        (double _Complex*) tau+i,
+                        (double _Complex*) hwork);
 
-      /* Apply H' to A(i+2*ib:m, i:n) from the right */
-      rows = m-old_i-2*old_ib;
-      if (rows > 0){
-          magma_zlarfb_gpu( MagmaRight, MagmaNoTrans, MagmaForward, MagmaRowwise,
-                            rows, n-old_i, old_ib,
-                            da_ref(old_i, old_i), ldda, dt_ref(0,old_i), lddt,
-                            da_ref(old_i+2*old_ib, old_i), ldda,
-                            dwork, lddwork);
-      }
+            /* put 0s in the lower triangular part of a panel (and 1s on the
+              diagonal); copy the lower triangular in d */
+            CORE_zgesplit(MorseRight, MorseUnit, ib, min(ib,cols),
+                          (double _Complex*) v_ref(0,i), ib,
+                          (double _Complex*) d, ib);
 
-      /* copy the lower diag tile into d_A */
-      CUDA_zgemerge(MagmaRight, MagmaUnit, old_ib, old_ib,
-                    dd, ldd, da_ref(old_i, old_i), ldda, stream);
+            /* send the custom panel to the GPU */
+            magma_zsetmatrix( ib, cols,
+                              v_ref(0, i), ib,
+                              da_ref(i, i), ldda );
 
+            if ( i + ib < n ){
+                /* Send the triangular factor T to the GPU */
+                magma_zsetmatrix( ib, ib,
+                                  t_ref(0, 0), ib,
+                                  dt_ref(0, i), lddt );
+
+                if (i+nb < k-nb) {
+                    /* Apply H' to A(i+ib:i+2*ib, i:n) from the right */
+                    magma_zlarfb_gpu( MagmaRight, MagmaNoTrans, MagmaForward, MagmaRowwise,
+                                      ib, cols, ib,
+                                      da_ref(i,   i), ldda, dt_ref(0,i), lddt,
+                                      da_ref(i+ib,i), ldda, dwork, ib);
+                }
+                else {
+                    rows = m-i-ib;
+                    magma_zlarfb_gpu( MagmaRight, MagmaNoTrans, MagmaForward, MagmaRowwise,
+                                      rows, cols, ib,
+                                      da_ref(i,   i), ldda, dt_ref(0,i), lddt,
+                                      da_ref(i+ib,i), ldda, dwork, rows);
+                    cudaThreadSynchronize();
+                    /* Fix the diagonal block */
+                    magma_zsetmatrix_async( ib, ib,
+                                            d,            ib,
+                                            da_ref(i, i), ldda,
+                                            stream );
+                }
+                old_i  = i;
+                old_ib = ib;
+            }
+        }
+    } else {
+        i = 0;
     }
 
-    /* Form the triangular factor of the block reflector on the host
-    H = H'(i+ib-1) . . . H(i+1) H(i) */
-    CORE_zgelqt(ib, cols, ib,
-              (double _Complex*) v_ref(0,i), ldv,
-              (double _Complex*) t_ref(0,0), ldt,
-              (double _Complex*) tau+i,
-              (double _Complex*) hwork);
-
-    if ( i + ib < m ){
-      /* put 0s in the lower triangular part of a panel (and 1s on the
-       diagonal); copy the lower triangular in d */
-      CORE_zgesplit(MorseRight, MorseUnit, ib, min(cols,ib),
-                    (double _Complex*) v_ref(0,i), ldv,
-                    (double _Complex*) d, ldd);
-
-      /* copy from host to device a tile diag */
-      cublasSetMatrix( ib, min(cols,ib), sizeof(magmaDoubleComplex),
-                       d, ldd, dd, ldd );
-    }
-
-    /* Send the triangular factor T to the GPU */
-    cublasSetMatrix( ib, ib, sizeof(magmaDoubleComplex),
-                   t_ref(0,0), ldt, dt_ref(0,i), lddt );
-
-    /* A panel (with zeros in lower tri of its diag) is ready to be used
-    in input of zlarfb_gpu: we send the panel to the gpu */
-    cublasSetMatrix( ib, cols, sizeof(magmaDoubleComplex),
-                   v_ref(0,i), ldv, da_ref(i,i), ldda );
-
-    if (i + ib < m) {
-
-      if (i+2*ib < m){
-          rows = ib;
-      }
-      else{
-          rows = m-i-ib;
-      }
-      /* Apply H' to A(i+ib:i+2*ib, i:n) from the right */
-      magma_zlarfb_gpu( MagmaRight, MagmaNoTrans, MagmaForward, MagmaRowwise,
-                        rows, cols, ib, da_ref(i,i), ldda, dt_ref(0,i),
-                        lddt, da_ref(i+ib,i), ldda, dwork, lddwork);
-      cudaThreadSynchronize();
-      old_i = i;
-      old_ib = ib;
-      if (i+nb >= k){
-          /* Apply H' to A(i+2*ib:m, i:n) from the right */
-          rows = m-old_i-2*old_ib;
-          if (rows > 0){
-              magma_zlarfb_gpu( MagmaRight, MagmaNoTrans, MagmaForward, MagmaRowwise,
-                                rows, cols, old_ib,
-                                da_ref(old_i, old_i), ldda, dt_ref(0,old_i), lddt,
-                                da_ref(old_i+2*old_ib, old_i), ldda,
-                                dwork, lddwork);
-          }
-          /* copy the upper diag tile into d_A */
-          CUDA_zgemerge(MagmaRight, MagmaUnit, old_ib, old_ib,
-                        dd, ldd, da_ref(old_i, old_i), ldda, stream);
-      }
-    }
-
+    /* Use unblocked code to factor the last or only block. */
+    if (i < k) {
+        ib   = m-i;
+        cols = n-i;
+        magma_zgetmatrix( ib, cols,
+                          da_ref(i,i), ldda,
+                          v_ref(0,i), ib );
+        CORE_zgelqt(ib, cols, ib,
+                    (double _Complex*) v_ref(0,i), ib,
+                    (double _Complex*) t_ref(0,0), ib,
+                    (double _Complex*) tau+i,
+                    (double _Complex*) hwork);
+        /* send the last factorized panel to the GPU */
+        magma_zsetmatrix( ib, cols,
+                          v_ref(0, i), ib,
+                          da_ref(i, i), ldda );
+        /* Send the triangular factor T to the GPU */
+        magma_zsetmatrix( ib, cols,
+                          t_ref(0, 0), ib,
+                          dt_ref(0, i), lddt );
     }
 
 #undef da_ref

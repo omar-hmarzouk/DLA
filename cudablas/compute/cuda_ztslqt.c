@@ -24,7 +24,7 @@
  **/
 #include "cudablas/include/cudablas.h"
 
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) && 0
 int CUDA_ztslqt(
         magma_int_t m, magma_int_t n, magma_int_t nb,
         magmaDoubleComplex *da1, magma_int_t ldda1,
@@ -70,16 +70,16 @@ int CUDA_ztslqt(
     memset(t, 0, nb*n*sizeof(magmaDoubleComplex));
     cudaMemset(dt, 0, nb*n*sizeof(magmaDoubleComplex));
 
-    k = min(m, nb); // m can be lower than IB
+    //k = min(m, nb); // m can be lower than IB
     /* copy the first diag tile of A1 from device to host: da1 -> d */
-    cublasGetMatrix(k, k, sizeof(magmaDoubleComplex),
+    cublasGetMatrix(nb, nb, sizeof(magmaDoubleComplex),
                     da1_ref(0, 0), ldda1,
-                    d, ldd);
+                    d, nb);
 
     /* copy first panel of A2 from device to host: da2 -> a2 */
-    cublasGetMatrix(k, n, sizeof(magmaDoubleComplex),
+    cublasGetMatrix(nb, n, sizeof(magmaDoubleComplex),
                     da2_ref(0, 0), ldda2,
-                    a2, lda2);
+                    a2, nb);
 
     /* This is only blocked code for now */
     for (i = 0; i < m; i += nb) {
@@ -95,12 +95,12 @@ int CUDA_ztslqt(
             /* copy the diag tile of A1 from device to host: da1 -> d */
             cublasGetMatrix(ib, ib, sizeof(magmaDoubleComplex),
                             da1_ref(i, i), ldda1,
-                            d, ldd);
+                            d, ib);
 
             /* copy panel of A2 from device to host: da2 -> a2 */
             cublasGetMatrix(ib, cols, sizeof(magmaDoubleComplex),
                             da2_ref(i, 0), ldda2,
-                            a2, lda2);
+                            a2, ib);
 
             /* Apply H' to A(i+2*ib:m,i:n) from the left */
             rows = m-old_i-2*old_ib;
@@ -121,25 +121,25 @@ int CUDA_ztslqt(
 
         /* compute LQ factorization of the panel of A2 ib x cols */
         CORE_ztslqt(ib, cols, ib,
-                    (double _Complex*) d, ldd,
-                    (double _Complex*) a2, lda2,
-                    (double _Complex*) t, ldt,
+                    (double _Complex*) d, ib,
+                    (double _Complex*) a2, ib,
+                    (double _Complex*) t, ib,
                     (double _Complex*) tau,
                     (double _Complex*) hwork);
 
         /* Send the panel from A2 back to the GPU */
         cublasSetMatrix(ib, cols, sizeof(magmaDoubleComplex),
-                        a2, lda2,
+                        a2, ib,
                         da2_ref(i, 0), ldda2);
 
         /* Send the triangular factor T from hwork to the GPU */
-        cublasSetMatrix(ib, ib, sizeof(magmaDoubleComplex),
-                        t, ldt,
+        cublasSetMatrix(ib, cols, sizeof(magmaDoubleComplex),
+                        t, ib,
                         dt_ref(0, i), lddt);
 
         /* get back the diag tile in A1 from host to device: d -> da1 */
         cublasSetMatrix(ib, ib, sizeof(magmaDoubleComplex),
-                        d, ldd,
+                        d, ib,
                         da1_ref(i, i), ldda1);
 
         /* tsmlq update on one panel forward (look ahead 1) */

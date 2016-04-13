@@ -17,13 +17,12 @@
 #define _PREC  double
 #define _LAMCH LAPACKE_dlamch_work
 
-#define _NAME  "MORSE_zgeqrf_Tile"
+#define _NAME  "MORSE_zgelqf_Tile"
 /* See Lawn 41 page 120 */
-#define _FMULS FMULS_GEQRF( M, N )
-#define _FADDS FADDS_GEQRF( M, N )
+#define _FMULS FMULS_GELQF( M, N )
+#define _FADDS FADDS_GELQF( M, N )
 
 #include "./timing.c"
-#include <starpu.h>
 
 static int
 RunTest(int *iparam, double *dparam, morse_time_t *t_)
@@ -36,14 +35,6 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descX,  ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descAC, ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDA, M, N    );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descB,  ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
-
-
-//    RUNTIME_zlocality_onerestrict( MORSE_GEQRT, STARPU_CUDA );
-//    RUNTIME_zlocality_onerestrict( MORSE_GEQRT, STARPU_CPU );
-//    RUNTIME_zlocality_onerestrict( MORSE_UNMQR, STARPU_CUDA );
-//    RUNTIME_zlocality_onerestrict( MORSE_TSQRT, STARPU_CPU );
-//    RUNTIME_zlocality_onerestrict( MORSE_TSMQR, STARPU_CUDA );
-//    RUNTIME_zlocality_allrestrict( STARPU_CUDA );
 
     MORSE_zplrnt_Tile( descA, 5373 );
 
@@ -58,7 +49,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 
     /* MORSE ZGEQRF */
     START_TIMING();
-    MORSE_zgeqrf_Tile( descA, descT );
+    MORSE_zgelqf_Tile( descA, descT );
     STOP_TIMING();
 
     /* Check the solution */
@@ -69,7 +60,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         MORSE_zlacpy_Tile(MorseUpperLower, descX, descB);
 
         /* Compute the solution */
-        MORSE_zgeqrs_Tile( descA, descT, descX );
+        MORSE_zgelqs_Tile( descA, descT, descX );
 
         /* Check solution */
         dparam[IPARAM_ANORM] = MORSE_zlange_Tile(MorseInfNorm, descAC);

@@ -156,6 +156,22 @@ int CORE_zgelqt(int M, int N, int IB,
                 WORK, M-i-sb);
         }
     }
+    // print the matrices
+//    int i1, i2;
+//    printf("\nV \n");
+//    for (i1=0; i1<M; i1++){
+//        for (i2=0; i2<N; i2++){
+//            printf("%f ", A[i1+i2*LDA]);
+//        }
+//        printf("\n");
+//    }
+//    printf("\nT \n");
+//    for (i1=0; i1<IB; i1++){
+//        for (i2=0; i2<N; i2++){
+//            printf("%f ", T[i1+i2*LDT]);
+//        }
+//        printf("\n");
+//    }
     return MORSE_SUCCESS;
 }
 
