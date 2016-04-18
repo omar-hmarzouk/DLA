@@ -140,6 +140,10 @@ execution time on any architecture.
 This feature should be used to make experiments on the scheduler behaviors and
 performances not to produce solutions of linear systems.
 
+@item @option{-DCHAMELEON_SIMULATION_MAGMA=trigger} (default: @code{OFF})
+when using simulation mode (see CHAMELEON_SIMULATION), one can decide to enable
+the magma kernels or not.
+
 @item @option{-DCHAMELEON_ENABLE_DOCS=trigger} (default: @code{ON})
 to control build of the documentation contained in @file{docs/} sub-directory
 @item @option{-DCHAMELEON_ENABLE_EXAMPLE=trigger} (default: @code{ON})
@@ -339,3 +343,6 @@ Note that only POTRF kernels with block sizes of 320 or 960 (simple and double
 precision) on mirage machine are available for now.
 Database of models is subject to change, it should be enrich in a near future.
 @end itemize
+
+One can additionally decide to enable the magma kernels by setting the cmake
+option @option{-DCHAMELEON_SIMULATION_MAGMA=ON} .

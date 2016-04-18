@@ -4,7 +4,7 @@
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
 # @copyright (c) 2012-2014 Inria. All rights reserved.
-# @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+# @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
 #
@@ -56,6 +56,7 @@ set(dep_message "${dep_message}"
 "\n"
 "       Trace ...............: ${CHAMELEON_ENABLE_TRACING}\n"
 "       Simulation mode .....: ${CHAMELEON_SIMULATION}\n"
+"       Magma Simulation mode: ${CHAMELEON_SIMULATION_MAGMA}\n"
 "\n"
 "       Binaries to build\n"
 "       documentation ........: ${CHAMELEON_ENABLE_DOCS}\n"

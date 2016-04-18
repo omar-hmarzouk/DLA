@@ -237,6 +237,11 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             message("-- ${BoldGreen}CHAMELEON_SIMULATION is set to OFF, turn it ON to use"
                 "SIMULATION mode (only with StarPU compiled with SimGrid)${ColourReset}")
         endif()
+        option(CHAMELEON_SIMULATION_MAGMA "Enable magma kernels in simulation mode" OFF)
+        if (NOT CHAMELEON_SIMULATION_MAGMA)
+            message("-- ${BoldGreen}CHAMELEON_SIMULATION_MAGMA is set to OFF, turn it ON to enable MAGMA kernels in "
+                "SIMULATION mode${ColourReset}")
+        endif()
     endif()
 
     # Initially we need to generate files for different precisions
@@ -980,6 +985,11 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
         message("-- ${Blue}Add definition CHAMELEON_SIMULATION"
         " - Activate simulation mode in Chameleon (to use with StarPU+SimGrid)${ColourReset}")
         add_definitions(-DCHAMELEON_SIMULATION)
+    endif()
+    if ( CHAMELEON_SIMULATION_MAGMA )
+        message("-- ${Blue}Add definition CHAMELEON_SIMULATION_MAGMA"
+        " - Activate magma kernels in simulation mode${ColourReset}")
+        add_definitions(-DCHAMELEON_SIMULATION_MAGMA)
     endif()
     #------------------------------------------------------------------------------
 
