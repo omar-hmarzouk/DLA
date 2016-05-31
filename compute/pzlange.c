@@ -233,7 +233,7 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
             MORSE_TASK_dlange(
                 &options,
                 MorseMaxNorm, tempkm, 1, A->nb,
-                VECNORMS_STEP2(m, 0), 1,
+                VECNORMS_STEP2(m, 0), tempkm,
                 VECNORMS_STEP1(m, 0));
         }
 
