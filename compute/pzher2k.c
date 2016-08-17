@@ -92,7 +92,7 @@ void morse_pzher2k(MORSE_enum uplo, MORSE_enum trans,
                             &options,
                             trans, MorseConjTrans,
                             tempmm, tempnn, tempkn, A->mb,
-                            alpha, A(m, k), ldam,  /* ldam * K */
+                            conj(alpha), A(m, k), ldam,  /* ldam * K */
                                    B(n, k), ldbn,  /* ldan * K */
                             zbeta, C(m, n), ldcm); /* ldc  * N */
 
@@ -129,7 +129,7 @@ void morse_pzher2k(MORSE_enum uplo, MORSE_enum trans,
                             &options,
                             trans, MorseConjTrans,
                             tempnn, tempmm, tempkn, A->mb,
-                            alpha, B(n, k), ldan,  /* ldan * K */
+                            conj(alpha), B(n, k), ldan,  /* ldan * K */
                                    A(m, k), ldam,  /* ldam * M */
                             zone,  C(n, m), ldcn); /* ldc  * M */
                     }
@@ -206,7 +206,7 @@ void morse_pzher2k(MORSE_enum uplo, MORSE_enum trans,
                             &options,
                             trans, MorseNoTrans,
                             tempnn, tempmm, tempkm, A->mb,
-                            alpha, B(k, n), ldbk,  /* lda * K */
+                            conj(alpha), B(k, n), ldbk,  /* lda * K */
                                    A(k, m), ldak,  /* lda * M */
                             zone,  C(n, m), ldcn); /* ldc * M */
                     }
