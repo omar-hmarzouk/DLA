@@ -1069,6 +1069,9 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
     if(CHAMELEON_ENABLE_DOCS)
         add_subdirectory(docs)
+        if (DOXYGEN_EXECUTABLE AND MAKEINFO_COMPILER AND TEXI2DVI_COMPILER AND TEX_COMPILER)
+            add_custom_target(docs ALL DEPENDS doxygen-out doc-info-users_guide doc-html-users_guide doc-pdf-users_guide)
+        endif()
     endif()
     #------------------------------------------------------------------------------
 
@@ -1090,6 +1093,15 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     endif()
     #------------------------------------------------------------------------------
 
+    ###############################################################################
+    # Release source #
+    ##################
+    set(CPACK_SOURCE_GENERATOR "TGZ")
+    set(CPACK_PACKAGE_NAME "chameleon")
+    set(CPACK_PACKAGE_VERSION "${CHAMELEON_VERSION_MAJOR}.${CHAMELEON_VERSION_MINOR}.${CHAMELEON_VERSION_MICRO}")
+    set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}")
+    set(CPACK_SOURCE_IGNORE_FILES "build;.cproject;.dir-locals.el;.project;.pydevproject;.svn")
+    include(CPack)
 
     ###############################################################################
     # Print Options #

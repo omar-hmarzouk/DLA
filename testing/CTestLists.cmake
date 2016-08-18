@@ -26,7 +26,7 @@ foreach(cat  ${TEST_CATEGORIES})
         add_test(test_${cat}_${prec}syrk  ./${prec}${TEST_CMD_${cat}} SYRK  1.0 -2.0 600 500 650 625)
         add_test(test_${cat}_${prec}syr2k ./${prec}${TEST_CMD_${cat}} SYR2K 1.0 -2.0 600 500 650 625 700)
 
-        if ( "${prec}" STREQUAL "c" OR "${prec}" STREQUAL "z" )
+        if ( prec STREQUAL "c" OR prec STREQUAL "z" )
           add_test(test_${cat}_${prec}hemm  ./${prec}${TEST_CMD_${cat}} HEMM      1.0 -2.0 600 500 650 625 600)
           add_test(test_${cat}_${prec}herk  ./${prec}${TEST_CMD_${cat}} HERK      1.0 -2.0 600 500 650 625)
           add_test(test_${cat}_${prec}her2k ./${prec}${TEST_CMD_${cat}} HER2K     1.0 -2.0 600 500 650 625 700)
