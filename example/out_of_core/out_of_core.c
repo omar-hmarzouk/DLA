@@ -10,7 +10,7 @@
 
 /**
  *
- * @file step3.c
+ * @file ooc.c
  *
  *  MORSE example routines
  *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
@@ -22,15 +22,11 @@
  *
  **/
 
-#include "step3.h"
+#include "out_of_core.h"
 
 /*
- * @brief step3 indicates how to give your own tile matrix to MORSE.
- * @details This program is a copy of step2 but instead of using a predefined
- * way for accessing tile data (i.e with MORSE_Desc_Create), we will indicate
- * how to create a MORSE descriptor with an arbitrary tile matrix structure
- * by calling MORSE_Desc_Create_User function.
- * During this step we do not use classical LAPACK matrices (1D array) anymore.
+ * @brief ooc is driver example routine to test the out-of-core feature with StarPU
+ * @details TODO: write some details
  */
 int main(int argc, char *argv[]) {
 
@@ -43,9 +39,6 @@ int main(int argc, char *argv[]) {
 
     /* descriptors necessary for calling MORSE tile interface  */
     MORSE_desc_t *descA = NULL, *descAC = NULL, *descB = NULL, *descX = NULL;
-
-    /* Array of pointers to double arrays (representing tiles) */
-    double **matA = NULL;
 
     /* declarations to time the program and evaluate performances */
     double fmuls, fadds, flops, gflops, cpu_time;
@@ -62,6 +55,7 @@ int main(int argc, char *argv[]) {
     /* read arguments */
     read_args(argc, argv, iparam);
     N    = iparam[IPARAM_N];
+    NB   = iparam[IPARAM_NB];
     NRHS = iparam[IPARAM_NRHS];
 
     /* compute the algorithm complexity to evaluate performances */
@@ -71,9 +65,7 @@ int main(int argc, char *argv[]) {
     gflops = 0.0;
     cpu_time = 0.0;
 
-    /* initialize the number of thread if not given by the user in argv
-     * It makes sense only if this program is linked with pthread and
-     * multithreaded BLAS and LAPACK */
+    /* initialize the number of thread if not given by the user in argv */
     if ( iparam[IPARAM_THRDNBR] == -1 ) {
         get_thread_count( &(iparam[IPARAM_THRDNBR]) );
     }
@@ -83,52 +75,41 @@ int main(int argc, char *argv[]) {
     /* print informations to user */
     print_header( argv[0], iparam);
 
+    /* check that o direct will work */
+    if (iparam[IPARAM_OUTOFCORE] > 0) {
+        if (! will_o_direct_work(NB)) {
+            print_o_direct_wont_work();
+            return EXIT_FAILURE;
+        }
+        char maxMemoryAllowed[32];
+        sprintf (maxMemoryAllowed, "%d", iparam[IPARAM_OUTOFCORE]);
+        setenv ("STARPU_LIMIT_CPU_MEM", maxMemoryAllowed, 1);
+    }
+
      /* Initialize MORSE with main parameters */
     if ( MORSE_Init( NCPU, NGPU ) != MORSE_SUCCESS ) {
         fprintf(stderr, "Error initializing MORSE library\n");
         return EXIT_FAILURE;
     }
+    MORSE_Set(MORSE_TILE_SIZE, NB);
 
-    /* Question morse to get the block (tile) size (number of columns) */
-    MORSE_Get( MORSE_TILE_SIZE, &NB );
+    /* limit ram memory */
+    if (iparam[IPARAM_OUTOFCORE] > 0) {
+        int new_dd = starpu_disk_register (&starpu_disk_unistd_o_direct_ops,
+                                           (void*) "/tmp/starpu_ooc/", 1024*1024*10);
+    }
 
-    /* allocate tile data */
-    matA = allocate_tile_matrix(N, N, NB);
-
-    /*
-     * This function is very similar to MORSE_Desc_Create but the way to
-     * access matrix tiles can be controled by the user.
-     * To do so, three functions with a precise prototype must be given:
-     *     - void* get_blkaddr(const MORSE_desc_t *, int, int)
-     *     returns a pointer to the tile m, n
-     *     - int   get_blkldd (const MORSE_desc_t *, int)
-     *     returns the leading dimension of the tile m, n
-     *     - int   get_rankof (const MORSE_desc_t *, int, int)
-     *     returns the MPI rank of the tile m, n (0 here because we do not
-     *     intend to use this program with MPI)
-     */
-    MORSE_Desc_Create_User(&descA, matA, MorseRealDouble,
+    MORSE_Desc_Create_User(&descA, NULL, MorseRealDouble,
                            NB, NB, NB*NB, N, N, 0, 0, N, N, 1, 1,
-                           user_getaddr_arrayofpointers,
-                           user_getblkldd_arrayofpointers,
-                           user_getrankof_zero);
-
-    /*
-     * We use the classical MORSE way for accessing tiles for descripotrs
-     * B, X and AC. This to show you can define different way to consider tiles
-     * in your matrix. The only thing important is to have well defined
-     * functions get_blkaddr, get_blkldd, get_rankof corresponding to your data.
-     * Note that this call of MORSE_Desc_Create_User routine with
-     * morse_getaddr_ccrb, morse_getblkldd_ccrband morse_getrankof_2d functions
-     * is equivalent to a call to MORSE_Desc_Create (morse_get... are the
-     * functions used inside MORSE_Desc_Create).
-     */
-    MORSE_Desc_Create(&descB, NULL, MorseRealDouble,
-                      NB, NB, NB*NB, N, NRHS, 0, 0, N, NRHS, 1, 1);
-    MORSE_Desc_Create(&descX, NULL, MorseRealDouble,
-                      NB, NB, NB*NB, N, NRHS, 0, 0, N, NRHS, 1, 1);
+                           morse_getaddr_null,
+                           morse_getblkldd_ccrb,
+                           morse_getrankof_2d);
+    MORSE_Desc_Create(&descB,  NULL, MorseRealDouble,
+                      NB, NB,  NB*NB, N, NRHS, 0, 0, N, NRHS, 1, 1);
+    MORSE_Desc_Create(&descX,  NULL, MorseRealDouble,
+                      NB, NB,  NB*NB, N, NRHS, 0, 0, N, NRHS, 1, 1);
     MORSE_Desc_Create(&descAC, NULL, MorseRealDouble,
-                      NB, NB, NB*NB, N, N, 0, 0, N, N, 1, 1);
+                      NB, NB,  NB*NB, N, N, 0, 0, N, N, 1, 1);
 
     /* generate A matrix with random values such that it is spd */
     MORSE_dplgsy_Tile( (double)N, descA, 51 );
@@ -198,10 +179,6 @@ int main(int argc, char *argv[]) {
         printf( "%8.5e %8.5e %8.5e %8.5e                       %8.5e SUCCESS \n",
             res, anorm, xnorm, bnorm,
             res / N / eps / (anorm * xnorm + bnorm ));
-
-    /* free the matrix of tiles */
-    deallocate_tile_matrix(matA, N, N, NB);
-    descA->mat = NULL;
 
     /* free descriptors descA, descB, descX, descAC */
     MORSE_Desc_Destroy( &descA );

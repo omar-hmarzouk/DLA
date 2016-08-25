@@ -56,7 +56,7 @@ void *RUNTIME_mat_alloc( size_t size)
 #else
     void *mat;
 
-    if (starpu_malloc_flags(&mat, size, STARPU_MALLOC_PINNED|FOLDED) != 0)
+    if (starpu_malloc_flags(&mat, size, STARPU_MALLOC_PINNED|FOLDED|STARPU_MALLOC_COUNT) != 0)
         return NULL;
     return mat;
 #endif
@@ -67,7 +67,7 @@ void RUNTIME_mat_free( void *mat, size_t size)
 #if defined(CHAMELEON_SIMULATION) && !defined(STARPU_MALLOC_SIMULATION_FOLDED) && !defined(CHAMELEON_USE_MPI)
     return (void*) 1;
 #else
-    starpu_free_flags(mat, size, STARPU_MALLOC_PINNED|FOLDED);
+    starpu_free_flags(mat, size, STARPU_MALLOC_PINNED|FOLDED|STARPU_MALLOC_COUNT);
 #endif
 }
 
@@ -297,9 +297,16 @@ void *RUNTIME_desc_getaddr( MORSE_desc_t *desc, int m, int n )
         int tempnn = (n == desc->lnt-1) ? (desc->ln - n * desc->nb) : desc->nb;
 
         if ( myrank == owner ) {
-            starpu_matrix_data_register(ptrtile, 0,
-                                        (uintptr_t)desc->get_blkaddr(desc, m, n),
-                                        BLKLDD(desc, m), tempmm, tempnn, eltsze);
+            if ( desc->get_blkaddr(desc, m, n) == (void*)NULL ) {
+                starpu_matrix_data_register(ptrtile, -1,
+                                            (uintptr_t) NULL,
+                                            BLKLDD(desc, m), tempmm, tempnn, eltsze);
+            }
+            else {
+                starpu_matrix_data_register(ptrtile, 0,
+                                            (uintptr_t)desc->get_blkaddr(desc, m, n),
+                                            BLKLDD(desc, m), tempmm, tempnn, eltsze);
+            }
         }
         else {
             starpu_matrix_data_register(ptrtile, -1,

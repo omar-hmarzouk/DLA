@@ -1,5 +1,5 @@
 #
-# Check Example basic_zposv
+# Check Example lapack_to_morse
 #
 
 set(TESTLIST 

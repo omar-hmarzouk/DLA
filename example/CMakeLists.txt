@@ -28,11 +28,14 @@ add_subdirectory(basic_zposv)
 
 if (CHAMELEON_PREC_D)
     add_subdirectory(lapack_to_morse)
+    if (CHAMELEON_SCHED_STARPU)
+        add_subdirectory(out_of_core)
+    endif()
 else()
-    message(WARNING "CHAMELEON_PREC_D is set to OFF so that lapack_to_morse"
-    "tutorial cannot be built (use only double arithmetic precision).\n"
-    "Please set CHAMELEON_PREC_D to ON if you want to build executables of"
-    "this tutorial.")
+    message(WARNING "CHAMELEON_PREC_D is set to OFF so that lapack_to_morse "
+    "and out_core tutorials cannot be built (use only double arithmetic "
+    "precision).\n Please set CHAMELEON_PREC_D to ON if you want to build "
+    "executables of this tutorial.")
 endif()
 
 ###

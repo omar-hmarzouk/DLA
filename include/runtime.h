@@ -60,18 +60,18 @@ void  RUNTIME_comm_size          (int*);
 /*******************************************************************************
  * RUNTIME Descriptor
  **/
-void* RUNTIME_mat_alloc      (size_t);
-void  RUNTIME_mat_free       (void*, size_t);
-void  RUNTIME_desc_init      (MORSE_desc_t*);
-void  RUNTIME_desc_create    (MORSE_desc_t*);
-void  RUNTIME_desc_destroy   (MORSE_desc_t*);
-void  RUNTIME_desc_submatrix (MORSE_desc_t*);
-void* RUNTIME_desc_getaddr   (MORSE_desc_t*, int, int);
+void* RUNTIME_mat_alloc        (size_t);
+void  RUNTIME_mat_free         (void*, size_t);
+void  RUNTIME_desc_init        (MORSE_desc_t*);
+void  RUNTIME_desc_create      (MORSE_desc_t*);
+void  RUNTIME_desc_destroy     (MORSE_desc_t*);
+void  RUNTIME_desc_submatrix   (MORSE_desc_t*);
+void* RUNTIME_desc_getaddr     (MORSE_desc_t*, int, int);
 /* Acquire in main memory an up-to-date copy of the data described by the descriptor for read-write access. */
-int   RUNTIME_desc_acquire   (MORSE_desc_t*);
+int   RUNTIME_desc_acquire     (MORSE_desc_t*);
 /* Release the data described by the descriptor to be used by the StarPU tasks again. */
-int   RUNTIME_desc_release   (MORSE_desc_t*);
-int   RUNTIME_desc_getoncpu  (MORSE_desc_t*);
+int   RUNTIME_desc_release     (MORSE_desc_t*);
+int   RUNTIME_desc_getoncpu    (MORSE_desc_t*);
 
 /*******************************************************************************
  * RUNTIME Options
