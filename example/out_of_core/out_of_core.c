@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
     /* limit ram memory */
     if (iparam[IPARAM_OUTOFCORE] > 0) {
         int new_dd = starpu_disk_register (&starpu_disk_unistd_o_direct_ops,
-                                           (void*) "/tmp/starpu_ooc/", 1024*1024*10);
+                                           (void*) "./ooc/", 1024*1024*10);
     }
 
     MORSE_Desc_Create_User(&descA, NULL, MorseRealDouble,
