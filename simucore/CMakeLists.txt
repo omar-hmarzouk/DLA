@@ -25,6 +25,7 @@
 
 add_subdirectory(simucblas)
 add_subdirectory(simulapacke)
+install(DIRECTORY perfmodels DESTINATION share/chameleon/)
 
 ###
 ### END CMakeLists.txt
