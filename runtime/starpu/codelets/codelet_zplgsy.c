@@ -32,6 +32,7 @@
 #include "runtime/starpu/include/runtime_codelet_z.h"
 
 
+//  MORSE_TASK_zplgsy - Generate a tile for random symmetric (positive definite if 'bump' is large enough) matrix.
 
 void MORSE_TASK_zplgsy( MORSE_option_t *options,
                         MORSE_Complex64_t bump, int m, int n, MORSE_desc_t *A, int Am, int An, int lda,
@@ -60,6 +61,7 @@ void MORSE_TASK_zplgsy( MORSE_option_t *options,
     }
 }
 
+//  cl_zplgsy_cpu_func - Generate a tile for random symmetric (positive definite if 'bump' is large enough) matrix.
 
 static void cl_zplgsy_cpu_func(void *descr[], void *cl_arg)
 {

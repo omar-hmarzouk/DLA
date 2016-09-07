@@ -34,7 +34,7 @@
  *
  * @ingroup MORSE_Complex64_t
  *
- *  MORSE_zplghe2 - One 'half' of a random hermitian matrix by tiles.
+ *  MORSE_zplghe2 - Generate a random hermitian (positive definite if 'bump' is large enough) half-matrix by tiles.
  *
  *******************************************************************************
  *
@@ -132,7 +132,7 @@ int MORSE_zplghe2( double bump, int N,
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
- *  MORSE_zplghe2_Tile - Generate 'half' of a random hermitian matrix by tiles.
+ *  MORSE_zplghe2_Tile - Generate a random hermitian (positive definite if 'bump' is large enough) half-matrix by tiles.
  *  Tile equivalent of MORSE_zplghe2().
  *  Operates on matrices stored by tiles.
  *  All matrices are passed through descriptors.
@@ -193,7 +193,7 @@ int MORSE_zplghe2_Tile( double bump, MORSE_desc_t *A,
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *
- *  MORSE_zplghe2_Tile_Async - Generate a half random hermitian matrix by tiles.
+ *  MORSE_zplghe2_Tile_Async - Generate a random hermitian (positive definite if 'bump' is large enough) half-matrix by tiles.
  *  Non-blocking equivalent of MORSE_zplghe2_Tile().
  *  May return before the computation is finished.
  *  Allows for pipelining of operations at runtime.

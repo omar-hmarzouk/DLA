@@ -32,7 +32,7 @@
  *
  * @ingroup MORSE_Complex64_t
  *
- *  MORSE_zplgsy - Generate a random hermitian matrix by tiles.
+ *  MORSE_zplgsy - Generate a random symmetric (positive definite if 'bump' is large enough) matrix by tiles.
  *
  *******************************************************************************
  *
@@ -128,7 +128,7 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, int N,
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
- *  MORSE_zplgsy_Tile - Generate a random hermitian matrix by tiles.
+ *  MORSE_zplgsy_Tile - Generate a random symmetric (positive definite if 'bump' is large enough) matrix by tiles.
  *  Tile equivalent of MORSE_zplgsy().
  *  Operates on matrices stored by tiles.
  *  All matrices are passed through descriptors.
@@ -187,7 +187,7 @@ int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_desc_t *A,
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *
- *  MORSE_zplgsy_Tile_Async - Generate a random hermitian matrix by tiles.
+ *  MORSE_zplgsy_Tile_Async - Generate a random symmetric (positive definite if 'bump' is large enough) matrix by tiles.
  *  Non-blocking equivalent of MORSE_zplgsy_Tile().
  *  May return before the computation is finished.
  *  Allows for pipelining of operations at runtime.

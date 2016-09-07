@@ -32,7 +32,7 @@
 
 #define A(m,n) A,  m,  n
 /***************************************************************************//**
- *  Parallel tile random 'half' simetrical matrix generation- dynamic scheduling
+ *  morse_pzplgsy2 - Generate a random symmetric (positive definite if 'bump' is large enough) half-matrix by tiles.
  **/
 void morse_pzplgsy2( MORSE_Complex64_t bump, MORSE_desc_t *A,
                      unsigned long long int seed, MORSE_enum uplo,

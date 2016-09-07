@@ -32,7 +32,7 @@
 
 #define A(m,n) A,  m,  n
 /***************************************************************************//**
- *  Parallel tile Cholesky factorization - dynamic scheduling - half generation
+ *  morse_pzplghe - Generate a random hermitian (positive definite if 'bump' is large enough) half-matrix by tiles.
  **/
 void morse_pzplghe2( double bump, MORSE_desc_t *A, unsigned long long int seed,
                      MORSE_enum uplo, MORSE_sequence_t *sequence,

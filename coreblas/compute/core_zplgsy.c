@@ -72,6 +72,8 @@ Rnd64_jump(unsigned long long int n, unsigned long long int seed ) {
 }
 
 
+//  CORE_zplgsy - Generate a tile for random symmetric (positive definite if 'bump' is large enough) matrix.
+
 void CORE_zplgsy( MORSE_Complex64_t bump, int m, int n, MORSE_Complex64_t *A, int lda,
                   int bigM, int m0, int n0, unsigned long long int seed )
 {

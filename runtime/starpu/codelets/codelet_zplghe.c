@@ -31,6 +31,8 @@
 #include "runtime/starpu/include/morse_starpu.h"
 #include "runtime/starpu/include/runtime_codelet_z.h"
 
+//  MORSE_TASK_zplghe - Generate a tile for random hermitian (positive definite if bump is large enough) matrix.
+
 void MORSE_TASK_zplghe( MORSE_option_t *options,
                         double bump, int m, int n, MORSE_desc_t *A, int Am, int An, int lda,
                         int bigM, int m0, int n0, unsigned long long int seed )
@@ -58,6 +60,7 @@ void MORSE_TASK_zplghe( MORSE_option_t *options,
     }
 }
 
+//  cl_zplghe_cpu_func - Generate a tile for random hermitian (positive definite if bump is large enough) matrix.
 
 static void cl_zplghe_cpu_func(void *descr[], void *cl_arg)
 {

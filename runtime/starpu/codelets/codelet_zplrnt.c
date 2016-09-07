@@ -32,6 +32,7 @@
 #include "runtime/starpu/include/runtime_codelet_z.h"
 
 
+//  MORSE_TASK_zplrnt - Generate a tile for random matrix.
 
 void MORSE_TASK_zplrnt( MORSE_option_t *options,
                         int m, int n, MORSE_desc_t *A, int Am, int An, int lda,
@@ -58,6 +59,7 @@ void MORSE_TASK_zplrnt( MORSE_option_t *options,
     }
 }
 
+//  cl_zplrnt_cpu_func - Generate a tile for random matrix.
 
 static void cl_zplrnt_cpu_func(void *descr[], void *cl_arg)
 {
