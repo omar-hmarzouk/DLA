@@ -255,6 +255,7 @@ add_dependencies(chameleon
 
 set_property(TARGET chameleon PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET chameleon PROPERTY Fortran_MODULE_DIRECTORY "${CMAKE_BINARY_DIR}/include")
+set_property(TARGET chameleon PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 # installation
 # ------------

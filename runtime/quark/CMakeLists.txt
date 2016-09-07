@@ -161,6 +161,7 @@ set(RUNTIME_SRCS
 # -----------
 add_library(chameleon_quark ${RUNTIME_SRCS})
 set_property(TARGET chameleon_quark PROPERTY LINKER_LANGUAGE Fortran)
+set_property(TARGET chameleon_quark PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 add_dependencies(chameleon_quark
   chameleon_include

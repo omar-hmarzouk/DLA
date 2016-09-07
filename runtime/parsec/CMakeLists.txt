@@ -164,6 +164,7 @@ set(RUNTIME_SRCS
 # -----------
 add_library(chameleon_parsec ${RUNTIME_SRCS})
 set_property(TARGET chameleon_parsec PROPERTY LINKER_LANGUAGE Fortran)
+set_property(TARGET chameleon_parsec PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 add_dependencies(chameleon_parsec
   chameleon_include

@@ -182,6 +182,7 @@ set(RUNTIME_SRCS
 # -----------
 add_library(chameleon_starpu ${RUNTIME_SRCS})
 set_property(TARGET chameleon_starpu PROPERTY LINKER_LANGUAGE Fortran)
+set_property(TARGET chameleon_starpu PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 add_dependencies(chameleon_starpu
   chameleon_include

@@ -101,6 +101,7 @@ set(COREBLAS_SRCS
 add_library(coreblas ${COREBLAS_SRCS})
 add_dependencies(coreblas coreblas_include)
 set_property(TARGET coreblas PROPERTY LINKER_LANGUAGE Fortran)
+set_property(TARGET coreblas PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 # # Dependencies step
 # # -----------------
