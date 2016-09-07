@@ -122,10 +122,6 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
     }
 #endif
 
-#if defined(HAVE_STARPU_FXT_PROFILING)
-    starpu_fxt_stop_profiling();
-#endif
-
 #if defined(CHAMELEON_USE_CUDA)
     starpu_cublas_init();
 #endif

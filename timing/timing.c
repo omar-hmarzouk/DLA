@@ -602,6 +602,10 @@ main(int argc, char *argv[]) {
     MORSE_Init( iparam[IPARAM_THRDNBR],
                 iparam[IPARAM_NCUDAS] );
 
+    /* Stops profiling here to avoid profiling uninteresting routines.
+       It will be reactivated in the time_*.c routines with the macro START_TIMING() */
+    RUNTIME_stop_profiling();
+
     MORSE_Disable(MORSE_AUTOTUNING);
     MORSE_Set(MORSE_TILE_SIZE,        iparam[IPARAM_NB] );
     MORSE_Set(MORSE_INNER_BLOCK_SIZE, iparam[IPARAM_IB] );
