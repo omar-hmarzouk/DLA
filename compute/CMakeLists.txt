@@ -203,7 +203,12 @@ set(ZSRC
     #pzpack.c
     pztile.c
     ztile.c
-    )
+    ##################
+    # BUILD
+    ##################
+    zbuild.c
+    pzbuild.c
+)
 
 precisions_rules_py(CHAMELEON_SRCS_GENERATED "${ZSRC}"
                     PRECISIONS "${CHAMELEON_PRECISION}")

@@ -451,7 +451,9 @@ void MORSE_TASK_zunmqr(MORSE_option_t *options,
                        MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_desc_t *T, int Tm, int Tn, int ldt,
                        MORSE_desc_t *C, int Cm, int Cn, int ldc);
-
+void MORSE_TASK_zbuild( MORSE_option_t *options,
+                        MORSE_desc_t *A, int Am, int An, int lda,
+                        void *user_data, void* user_build_callback );
 
 
 #ifdef __cplusplus

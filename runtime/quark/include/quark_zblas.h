@@ -132,6 +132,8 @@ void CORE_zgemm_p2_quark(Quark* quark);
 void CORE_zgemm_p2f1_quark(Quark* quark);
 void CORE_zgemm_p3_quark(Quark* quark);
 
+void CORE_zbuild_quark(Quark *quark);
+
 #ifdef __cplusplus
 }
 #endif

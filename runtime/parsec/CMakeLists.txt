@@ -148,6 +148,10 @@ set(ZSRC
     codelets/codelet_zttqrt.c
     codelets/codelet_zunmlq.c
     codelets/codelet_zunmqr.c
+    ##################
+    # BUILD
+    ##################
+    codelets/codelet_zbuild.c
     )
 list(REMOVE_DUPLICATES ZSRC)
 

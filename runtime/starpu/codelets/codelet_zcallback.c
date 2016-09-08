@@ -55,6 +55,7 @@ CHAMELEON_CL_CB(zsytrf_nopiv,  starpu_matrix_get_nx(task->handles[0]), 0, 0,    
 #endif
 CHAMELEON_CL_CB(zplgsy,        starpu_matrix_get_nx(task->handles[0]), starpu_matrix_get_ny(task->handles[0]), 0,                                                M*N);
 CHAMELEON_CL_CB(zplrnt,        starpu_matrix_get_nx(task->handles[0]), starpu_matrix_get_ny(task->handles[0]), 0,                                                M*N);
+CHAMELEON_CL_CB(zbuild,        starpu_matrix_get_nx(task->handles[0]), starpu_matrix_get_ny(task->handles[0]), 0,                                                M*N);
 CHAMELEON_CL_CB(zplssq,                                             1,                                      1, 0,                                                4);
 CHAMELEON_CL_CB(zplssq2,                                            1,                                      1, 0,                                                1);
 CHAMELEON_CL_CB(zpotrf,        starpu_matrix_get_nx(task->handles[0]), 0, 0,                                                                           (1./3.)*M* M*M);

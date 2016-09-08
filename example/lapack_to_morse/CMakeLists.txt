@@ -32,6 +32,7 @@ set(LTM_SOURCES
     step4.c
     step5.c
     step6.c
+    step7.c
    )
 
 # Define what libraries we have to link with

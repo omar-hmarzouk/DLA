@@ -113,6 +113,7 @@ ZCODELETS_HEADER(asum)
  * CPU only functions
  */
 ZCODELETS_HEADER(plrnt)
+ZCODELETS_HEADER(build)
 
 #if defined(PRECISION_z) || defined(PRECISION_c)
 ZCODELETS_HEADER(hessq)

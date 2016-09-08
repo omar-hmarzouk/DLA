@@ -309,6 +309,13 @@ int MORSE_zTile_to_Lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA);
 int MORSE_zLapack_to_Tile_Async(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zTile_to_Lapack_Async(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA, MORSE_sequence_t *sequence, MORSE_request_t *request);
 
+/** ****************************************************************************
+ *  User Builder function prototypes
+ **/
+int MORSE_zbuild(MORSE_enum uplo, int M, int N, MORSE_Complex64_t *A, int LDA, void *user_data, void* user_build_callback);
+int MORSE_zbuild_Tile(MORSE_enum uplo,  MORSE_desc_t *A, void *user_data, void* user_build_callback );
+int MORSE_zbuild_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, void *user_data, void* user_build_callback, MORSE_sequence_t *sequence, MORSE_request_t  *request);
+
 #ifdef __cplusplus
 }
 #endif
