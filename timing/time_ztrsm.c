@@ -39,7 +39,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     PASTE_CODE_ALLOCATE_MATRIX( B2, check, MORSE_Complex64_t, LDB, NRHS);
 
      /* Initialiaze Data */
-    MORSE_zplgsy( (MORSE_Complex64_t)N, N, A, LDA, 453 );
+    MORSE_zplgsy( (MORSE_Complex64_t)N, MorseUpperLower, N, A, LDA, 453 );
     MORSE_zplrnt( N, NRHS, B, LDB, 5673 );
     LAPACKE_zlarnv_work(1, ISEED, 1, &alpha);
     alpha = 10.; /*alpha * N  /  2.;*/

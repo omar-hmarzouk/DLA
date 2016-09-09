@@ -124,11 +124,9 @@ void morse_pzlaswp(MORSE_desc_t *B, int *IPIV, int inc, MORSE_sequence_t *sequen
 void morse_pzlaswpc(MORSE_desc_t *B, int *IPIV, int inc, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzlauum(MORSE_enum uplo, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 #ifdef COMPLEX
-void morse_pzplghe(double bump, MORSE_desc_t *A, unsigned long long int seed, MORSE_sequence_t *sequence, MORSE_request_t *request);
-void morse_pzplghe2(double bump, MORSE_desc_t *A, unsigned long long int seed, MORSE_enum uplo, MORSE_sequence_t *sequence, MORSE_request_t *request );
+void morse_pzplghe(double bump, MORSE_enum uplo, MORSE_desc_t *A, unsigned long long int seed, MORSE_sequence_t *sequence, MORSE_request_t *request );
 #endif
-void morse_pzplgsy(MORSE_Complex64_t bump, MORSE_desc_t *A, unsigned long long int seed, MORSE_sequence_t *sequence, MORSE_request_t *request );
-void morse_pzplgsy2(MORSE_Complex64_t bump, MORSE_desc_t *A, unsigned long long int seed, MORSE_enum uplo, MORSE_sequence_t *sequence, MORSE_request_t *request );
+void morse_pzplgsy(MORSE_Complex64_t bump, MORSE_enum uplo, MORSE_desc_t *A, unsigned long long int seed, MORSE_sequence_t *sequence, MORSE_request_t *request );
 void morse_pzplrnt(MORSE_desc_t *A, unsigned long long int seed, MORSE_sequence_t *sequence, MORSE_request_t *request );
 void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request);

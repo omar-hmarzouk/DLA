@@ -102,7 +102,7 @@ int testing_zsymm(int argc, char **argv)
     */
 
     /* Initialize A */
-    MORSE_zplgsy( (double)0., MNmax, A, LDA, 51 );
+    MORSE_zplgsy( (double)0., MorseUpperLower, MNmax, A, LDA, 51 );
 
     /* Initialize B */
     LAPACKE_zlarnv_work(IONE, ISEED, LDBxN, B);

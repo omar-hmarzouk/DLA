@@ -42,7 +42,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
      * It's done in static to avoid having the same sequence than one 
      * the function we want to trace
      */
-    MORSE_zplghe_Tile( (double)N, descA, 51 );
+    MORSE_zplghe_Tile( (double)N, MorseUpperLower, descA, 51 );
 
     /* MORSE ZPOTRF / ZTRTRI / ZLAUUM  */
     /*

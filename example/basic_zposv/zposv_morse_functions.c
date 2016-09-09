@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
                       NB, NB, NB*NB, N, N, 0, 0, N, N, 1, 1);
 
     /* generate A matrix with random values such that it is hermitian */
-    MORSE_zplghe_Tile( (double)N, descA, 51 );
+    MORSE_zplghe_Tile( (double)N, MorseUpperLower, descA, 51 );
 
     /* generate RHS */
     MORSE_Desc_Create(&descB, NULL, MorseComplexDouble,

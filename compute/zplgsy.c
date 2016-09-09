@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -17,12 +17,15 @@
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
  * @version 2.5.0
- * @comment This file has been automatically generated
+ * @comment This file is a copy of zplgsy.c,
+ *          wich has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Mathieu Faverge
  * @author Emmanuel Agullo
  * @author Cedric Castagnede
- * @date 2010-11-15
+ * @author Rade Mathis
+ * @author Florent Pruvost
+ * @date 2016-08-01
  * @precisions normal z -> c d s
  *
  **/
@@ -32,7 +35,7 @@
  *
  * @ingroup MORSE_Complex64_t
  *
- *  MORSE_zplgsy - Generate a random symmetric (positive definite if 'bump' is large enough) matrix by tiles.
+ *  MORSE_zplgsy - Generate a random symmetric (positive definite if 'bump' is large enough) half-matrix by tiles.
  *
  *******************************************************************************
  *
@@ -42,6 +45,9 @@
  *
  * @param[in] N
  *          The order of the matrix A. N >= 0.
+ *
+ * @param[in] uplo
+ *          The half of the matrix that will be generated.
  *
  * @param[out] A
  *          On exit, The random hermitian matrix A generated.
@@ -65,11 +71,10 @@
  * @sa MORSE_cplgsy
  * @sa MORSE_dplgsy
  * @sa MORSE_splgsy
- * @sa MORSE_zplrnt
  * @sa MORSE_zplgsy
  *
  ******************************************************************************/
-int MORSE_zplgsy( MORSE_Complex64_t bump, int N,
+int MORSE_zplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, int N,
                   MORSE_Complex64_t *A, int LDA,
                   unsigned long long int seed )
 {
@@ -112,7 +117,7 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, int N,
     morse_zdesc_alloc(descA, NB, NB, LDA, N, 0, 0, N, N, morse_desc_mat_free(&descA));
 
     /* Call the tile interface */
-    MORSE_zplgsy_Tile_Async( bump, &descA, seed, sequence, &request );
+    MORSE_zplgsy_Tile_Async( bump, uplo, &descA, seed, sequence, &request );
 
     morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
     morse_sequence_wait(morse, sequence);
@@ -128,7 +133,7 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, int N,
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
- *  MORSE_zplgsy_Tile - Generate a random symmetric (positive definite if 'bump' is large enough) matrix by tiles.
+ *  MORSE_zplgsy_Tile - Generate a random symmetric (positive definite if 'bump' is large enough) half-matrix by tiles.
  *  Tile equivalent of MORSE_zplgsy().
  *  Operates on matrices stored by tiles.
  *  All matrices are passed through descriptors.
@@ -139,6 +144,9 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, int N,
  * @param[in] bump
  *          The value to add to the diagonal to be sure
  *          to have a positive definite matrix.
+ *
+ * @param[in] uplo
+ *          The half of the matrix that will be generated.
  *
  * @param[in] A
  *          On exit, The random hermitian matrix A generated.
@@ -158,11 +166,11 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, int N,
  * @sa MORSE_cplgsy_Tile
  * @sa MORSE_dplgsy_Tile
  * @sa MORSE_splgsy_Tile
- * @sa MORSE_zplrnt_Tile
  * @sa MORSE_zplgsy_Tile
  *
  ******************************************************************************/
-int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_desc_t *A,
+int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_enum uplo,
+		               MORSE_desc_t *A,
                        unsigned long long int seed )
 {
     MORSE_context_t *morse;
@@ -176,7 +184,7 @@ int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_desc_t *A,
         return MORSE_ERR_NOT_INITIALIZED;
     }
     morse_sequence_create(morse, &sequence);
-    MORSE_zplgsy_Tile_Async( bump, A, seed, sequence, &request );
+    MORSE_zplgsy_Tile_Async( bump, uplo, A, seed, sequence, &request );
     morse_sequence_wait(morse, sequence);
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -187,7 +195,7 @@ int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_desc_t *A,
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *
- *  MORSE_zplgsy_Tile_Async - Generate a random symmetric (positive definite if 'bump' is large enough) matrix by tiles.
+ *  MORSE_zplgsy_Tile_Async - Generate a random symmetric (positive definite if 'bump' is large enough) half-matrix by tiles.
  *  Non-blocking equivalent of MORSE_zplgsy_Tile().
  *  May return before the computation is finished.
  *  Allows for pipelining of operations at runtime.
@@ -212,11 +220,12 @@ int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_desc_t *A,
  * @sa MORSE_zplgsy_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zplgsy_Tile_Async( MORSE_Complex64_t          bump,
-                             MORSE_desc_t     *A,
+int MORSE_zplgsy_Tile_Async( MORSE_Complex64_t      bump,
+                             MORSE_enum             uplo,
+                             MORSE_desc_t             *A,
                              unsigned long long int seed,
-                             MORSE_sequence_t *sequence,
-                             MORSE_request_t  *request)
+                             MORSE_sequence_t  *sequence,
+                             MORSE_request_t    *request )
 {
     MORSE_context_t *morse;
 
@@ -254,7 +263,7 @@ int MORSE_zplgsy_Tile_Async( MORSE_Complex64_t          bump,
     if (min( A->m, A->n ) == 0)
         return MORSE_SUCCESS;
 
-    morse_pzplgsy(bump,        A, seed,   sequence,    request);
+    morse_pzplgsy(bump, uplo, A, seed, sequence, request);
 
     return MORSE_SUCCESS;
 }

@@ -37,7 +37,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descB,  check, MORSE_Complex64_t, MorseComplexDouble, LDB, N, NRHS );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descAC, check, MORSE_Complex64_t, MorseComplexDouble, LDA, N, N    );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descX,  check, MORSE_Complex64_t, MorseComplexDouble, LDB, N, NRHS );
-    MORSE_zplghe_Tile( (double)N, descA, 51 );
+    MORSE_zplghe_Tile( (double)N, MorseUpperLower, descA, 51 );
 
     /* Save A for check */
     if (check == 1){

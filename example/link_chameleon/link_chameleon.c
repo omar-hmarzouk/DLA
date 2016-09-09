@@ -273,7 +273,7 @@ int main(int argc, char *argv[]) {
     PASTE_CODE_ALLOCATE_MATRIX( Acpy, double, N, N );
 
     /* generate A matrix with random values such that it is spd */
-    MORSE_dplgsy( (double)N, N, A, N, 51 );
+    MORSE_dplgsy( (double)N, MorseUpperLower, N, A, N, 51 );
 
     /* generate RHS */
     MORSE_dplrnt( N, NRHS, B, N, 5673 );

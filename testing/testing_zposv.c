@@ -210,8 +210,8 @@ int testing_zposv(int argc, char **argv)
     *  TESTING ZPOSV
     */
 
-    /* Initialize A1 and A2 for Symmetric Positif Matrix */
-    MORSE_zplghe( (double)N, N, A1, LDA, 51 );
+    /* Initialize A1 and A2 for Symmetric Positive Matrix */
+    MORSE_zplghe( (double)N, MorseUpperLower, N, A1, LDA, 51 );
     MORSE_zlacpy( MorseUpperLower, N, N, A1, LDA, A2, LDA );
 
     /* Initialize B1 and B2 */
@@ -250,7 +250,7 @@ int testing_zposv(int argc, char **argv)
     */
 
     /* Initialize A1 and A2 for Symmetric Positif Matrix */
-    MORSE_zplghe( (double)N, N, A1, LDA, 51 );
+    MORSE_zplghe( (double)N, MorseUpperLower, N, A1, LDA, 51 );
     MORSE_zlacpy( MorseUpperLower, N, N, A1, LDA, A2, LDA );
 
     /* Initialize B1 and B2 */
@@ -290,7 +290,7 @@ int testing_zposv(int argc, char **argv)
     */
 
     /* Initialize A1 and A2 for Symmetric Positif Matrix */
-    MORSE_zplghe( (double)N, N, A1, LDA, 51 );
+    MORSE_zplghe( (double)N, MorseUpperLower, N, A1, LDA, 51 );
     MORSE_zlacpy( MorseUpperLower, N, N, A1, LDA, A2, LDA );
 
     /* Initialize B1 and B2 */

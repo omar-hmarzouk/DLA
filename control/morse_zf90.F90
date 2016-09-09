@@ -774,12 +774,13 @@ module morse_z
 
 #if defined(PRECISION_z) || defined(PRECISION_c)
       interface
-         function MORSE_zplghe_c(bump,N,A,LDA,seed) &
+         function MORSE_zplghe_c(bump,uplo,N,A,LDA,seed) &
           & bind(c, name='MORSE_zplghe')
             use iso_c_binding
             implicit none
             integer(kind=c_int) :: MORSE_zplghe_c
             real(kind=c_double), value :: bump
+            integer(kind=c_int), value :: uplo
             integer(kind=c_int), value :: N
             type(c_ptr), value :: A
             integer(kind=c_int), value :: LDA
@@ -789,12 +790,13 @@ module morse_z
 #endif
 
       interface
-         function MORSE_zplgsy_c(bump,N,A,LDA,seed) &
+         function MORSE_zplgsy_c(bump,uplo,N,A,LDA,seed) &
           & bind(c, name='MORSE_zplgsy')
             use iso_c_binding
             implicit none
             integer(kind=c_int) :: MORSE_zplgsy_c
             complex(kind=c_double_complex), value :: bump
+            integer(kind=c_int), value :: uplo
             integer(kind=c_int), value :: N
             type(c_ptr), value :: A
             integer(kind=c_int), value :: LDA
@@ -1600,12 +1602,13 @@ module morse_z
 
 #if defined(PRECISION_z) || defined(PRECISION_c)
       interface
-         function MORSE_zplghe_Tile_c(bump,A,seed) &
+         function MORSE_zplghe_Tile_c(bump,uplo,A,seed) &
           & bind(c, name='MORSE_zplghe_Tile')
             use iso_c_binding
             implicit none
             integer(kind=c_int) :: MORSE_zplghe_Tile_c
             real(kind=c_double), value :: bump
+            integer(kind=c_int), value :: uplo
             type(c_ptr), value :: A
             integer(kind=c_long_long), value :: seed
           end function MORSE_zplghe_Tile_c
@@ -1613,12 +1616,13 @@ module morse_z
 #endif
 
       interface
-         function MORSE_zplgsy_Tile_c(bump,A,seed) &
+         function MORSE_zplgsy_Tile_c(bump,uplo,A,seed) &
           & bind(c, name='MORSE_zplgsy_Tile')
             use iso_c_binding
             implicit none
             integer(kind=c_int) :: MORSE_zplgsy_Tile_c
             complex(kind=c_double_complex), value :: bump
+            integer(kind=c_int), value :: uplo
             type(c_ptr), value :: A
             integer(kind=c_long_long), value :: seed
           end function MORSE_zplgsy_Tile_c
@@ -2415,12 +2419,13 @@ module morse_z
 
 #if defined(PRECISION_z) || defined(PRECISION_c)
       interface
-         function MORSE_zplghe_Tile_Async_c(bump,A,seed,sequence,request) &
+         function MORSE_zplghe_Tile_Async_c(bump,uplo,A,seed,sequence,request) &
           & bind(c, name='MORSE_zplghe_Tile_Async')
             use iso_c_binding
             implicit none
             integer(kind=c_int) :: MORSE_zplghe_Tile_Async_c
             real(kind=c_double), value :: bump
+            integer(kind=c_int), value :: uplo
             type(c_ptr), value :: A
             integer(kind=c_long_long), value :: seed
             type(c_ptr), value :: sequence
@@ -2430,12 +2435,13 @@ module morse_z
 #endif
 
       interface
-         function MORSE_zplgsy_Tile_Async_c(bump,A,seed,sequence,request) &
+         function MORSE_zplgsy_Tile_Async_c(bump,uplo,A,seed,sequence,request) &
           & bind(c, name='MORSE_zplgsy_Tile_Async')
             use iso_c_binding
             implicit none
             integer(kind=c_int) :: MORSE_zplgsy_Tile_Async_c
             complex(kind=c_double_complex), value :: bump
+            integer(kind=c_int), value :: uplo
             type(c_ptr), value :: A
             integer(kind=c_long_long), value :: seed
             type(c_ptr), value :: sequence
@@ -3472,11 +3478,12 @@ module morse_z
       end subroutine MORSE_zlauum
 
 #if defined(PRECISION_z) || defined(PRECISION_c)
-      subroutine MORSE_zplghe(bump,N,A,LDA,seed,info) 
+      subroutine MORSE_zplghe(bump,uplo,N,A,LDA,seed,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          real(kind=c_double), intent(in) :: bump
+         integer(kind=c_int), intent(in) :: uplo
          integer(kind=c_int), intent(in) :: N
          integer(kind=c_int), intent(in) :: LDA
          integer(kind=c_long_long), intent(in) :: seed
@@ -3485,11 +3492,12 @@ module morse_z
        end subroutine MORSE_zplghe
 #endif
 
-      subroutine MORSE_zplgsy(bump,N,A,LDA,seed,info) 
+      subroutine MORSE_zplgsy(bump,uplo,N,A,LDA,seed,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          complex(kind=c_double_complex), intent(in) :: bump
+         integer(kind=c_int), intent(in) :: uplo
          integer(kind=c_int), intent(in) :: N
          integer(kind=c_int), intent(in) :: LDA
          integer(kind=c_long_long), intent(in) :: seed
@@ -4207,22 +4215,24 @@ module morse_z
       end subroutine MORSE_zlauum_Tile
 
 #if defined(PRECISION_z) || defined(PRECISION_c)
-      subroutine MORSE_zplghe_Tile(bump,A,seed,info) 
+      subroutine MORSE_zplghe_Tile(bump,uplo,A,seed,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          real(kind=c_double), intent(in) :: bump
+         integer(kind=c_int), intent(in) :: uplo
          integer(kind=c_long_long), intent(in) :: seed
          type(c_ptr), value :: A ! Arg managed by MORSE: opaque to Fortran
          info = MORSE_zplghe_Tile_c(bump,A,seed)
       end subroutine MORSE_zplghe_Tile
 #endif
 
-      subroutine MORSE_zplgsy_Tile(bump,A,seed,info) 
+      subroutine MORSE_zplgsy_Tile(bump,uplo,A,seed,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          complex(kind=c_double_complex), intent(in) :: bump
+         integer(kind=c_int), intent(in) :: uplo
          integer(kind=c_long_long), intent(in) :: seed
          type(c_ptr), value :: A ! Arg managed by MORSE: opaque to Fortran
          info = MORSE_zplgsy_Tile_c(bump,A,seed)
@@ -4931,11 +4941,12 @@ module morse_z
       end subroutine MORSE_zlauum_Tile_Async
 
 #if defined(PRECISION_z) || defined(PRECISION_c)
-      subroutine MORSE_zplghe_Tile_Async(bump,A,seed,sequence,request,info) 
+      subroutine MORSE_zplghe_Tile_Async(bump,uplo,A,seed,sequence,request,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          real(kind=c_double), intent(in) :: bump
+         integer(kind=c_int), intent(in) :: uplo
          integer(kind=c_long_long), intent(in) :: seed
          type(c_ptr), value :: A ! Arg managed by MORSE: opaque to Fortran
          type(c_ptr), value :: sequence ! Arg managed by MORSE: opaque to Fortran
@@ -4944,11 +4955,12 @@ module morse_z
       end subroutine MORSE_zplghe_Tile_Async
 #endif
 
-      subroutine MORSE_zplgsy_Tile_Async(bump,A,seed,sequence,request,info) 
+      subroutine MORSE_zplgsy_Tile_Async(bump,uplo,A,seed,sequence,request,info)
          use iso_c_binding
          implicit none
          integer(kind=c_int), intent(out) :: info
          complex(kind=c_double_complex), intent(in) :: bump
+         integer(kind=c_int), intent(in) :: uplo
          integer(kind=c_long_long), intent(in) :: seed
          type(c_ptr), value :: A ! Arg managed by MORSE: opaque to Fortran
          type(c_ptr), value :: sequence ! Arg managed by MORSE: opaque to Fortran

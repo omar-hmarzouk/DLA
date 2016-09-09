@@ -38,7 +38,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     PASTE_CODE_ALLOCATE_MATRIX( X, 1, MORSE_Complex64_t, LDB, NRHS );
     
     /* Initialiaze Data */
-    MORSE_zplghe((double)N, N, A, LDA, 51 );
+    MORSE_zplghe((double)N, MorseUpperLower, N, A, LDA, 51 );
     MORSE_zplrnt( N, NRHS, X, LDB, 5673 );
 
     /* Save A and b  */

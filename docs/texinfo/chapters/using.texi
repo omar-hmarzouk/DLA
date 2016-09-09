@@ -949,11 +949,12 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N, MORSE_Complex64_t alpha,
 int MORSE_zlauum(MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA);
 
 #ifdef COMPLEX
-int MORSE_zplghe( double bump, int N, MORSE_Complex64_t *A, int LDA,
+int MORSE_zplghe( double bump, MORSE_enum uplo, int N,
+                  MORSE_Complex64_t *A, int LDA,
                   unsigned long long int seed );
 #endif
 
-int MORSE_zplgsy( MORSE_Complex64_t bump, int N,
+int MORSE_zplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, int N,
                   MORSE_Complex64_t *A, int LDA,
                   unsigned long long int seed );
 
@@ -1102,11 +1103,11 @@ int MORSE_zlaset_Tile(MORSE_enum uplo, MORSE_Complex64_t alpha,
 int MORSE_zlauum_Tile(MORSE_enum uplo, MORSE_desc_t *A);
 
 #ifdef COMPLEX
-int MORSE_zplghe_Tile(double bump, MORSE_desc_t *A,
+int MORSE_zplghe_Tile(double bump, MORSE_enum uplo, MORSE_desc_t *A,
                       unsigned long long int seed);
 #endif
 
-int MORSE_zplgsy_Tile(MORSE_Complex64_t bump, MORSE_desc_t *A,
+int MORSE_zplgsy_Tile(MORSE_Complex64_t bump, MORSE_enum uplo, MORSE_desc_t *A,
                       unsigned long long int seed );
 
 int MORSE_zplrnt_Tile(MORSE_desc_t *A, unsigned long long int seed );
@@ -1284,13 +1285,13 @@ int MORSE_zlauum_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
                             MORSE_request_t *request);
 
 #ifdef COMPLEX
-int MORSE_zplghe_Tile_Async(double bump, MORSE_desc_t *A,
+int MORSE_zplghe_Tile_Async(double bump, MORSE_enum uplo, MORSE_desc_t *A,
                             unsigned long long int seed,
                             MORSE_sequence_t *sequence,
                             MORSE_request_t *request );
 #endif
 
-int MORSE_zplgsy_Tile_Async(MORSE_Complex64_t bump, MORSE_desc_t *A,
+int MORSE_zplgsy_Tile_Async(MORSE_Complex64_t bump, MORSE_enum uplo, MORSE_desc_t *A,
                             unsigned long long int seed,
                             MORSE_sequence_t *sequence,
                             MORSE_request_t *request );

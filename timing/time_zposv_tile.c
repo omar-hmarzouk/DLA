@@ -39,7 +39,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descB,  check, MORSE_Complex64_t, MorseComplexDouble, LDB, N, NRHS );
 
     /* Initialize AT and bT for Symmetric Positif Matrix */
-    MORSE_zplghe_Tile((double)N, descA, 51 );
+    MORSE_zplghe_Tile((double)N, MorseUpperLower, descA, 51 );
     MORSE_zplrnt_Tile( descX, 7732 );
 
     /* Save AT and bT for check */

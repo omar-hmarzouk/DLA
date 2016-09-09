@@ -148,7 +148,7 @@ int main(int argc, char *argv[]) {
      * precise partitionning called 2D cyclic (see the documentation) */
 
     /* generate A matrix with random values such that it is spd */
-    MORSE_dplgsy_Tile( (double)N, descA, 51 );
+    MORSE_dplgsy_Tile( (double)N, MorseUpperLower, descA, 51 );
 
     /* generate RHS */
     MORSE_dplrnt_Tile( descB, 5673 );

@@ -101,7 +101,7 @@ int testing_zherk(int argc, char **argv)
     LAPACKE_zlarnv_work(IONE, ISEED, LDAxK, A);
 
     /* Initialize C */
-    MORSE_zplgsy( (double)0., N, C, LDC, 51 );
+    MORSE_zplgsy( (double)0., MorseUpperLower, N, C, LDC, 51 );
 
     for (u=0; u<2; u++) {
         for (t=0; t<3; t++) {

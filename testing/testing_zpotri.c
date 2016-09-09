@@ -213,7 +213,7 @@ int testing_zpotri(int argc, char **argv)
     */
 
     /* Initialize A1 and A2 for Symmetric Positif Matrix */
-    MORSE_zplghe( (double)N, N, A1, LDA, 51 );
+    MORSE_zplghe( (double)N, MorseUpperLower, N, A1, LDA, 51 );
     MORSE_zlacpy( MorseUpperLower, N, N, A1, LDA, A2, LDA );
 
     printf("\n");

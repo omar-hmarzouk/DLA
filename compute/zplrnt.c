@@ -69,8 +69,8 @@
  *
  ******************************************************************************/
 int MORSE_zplrnt( int M, int N,
-                   MORSE_Complex64_t *A, int LDA,
-                   unsigned long long int seed )
+                  MORSE_Complex64_t *A, int LDA,
+                  unsigned long long int seed )
 {
     int NB;
     int status;
@@ -161,7 +161,7 @@ int MORSE_zplrnt( int M, int N,
  *
  ******************************************************************************/
 int MORSE_zplrnt_Tile( MORSE_desc_t *A,
-                        unsigned long long int seed )
+                       unsigned long long int seed )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -211,9 +211,9 @@ int MORSE_zplrnt_Tile( MORSE_desc_t *A,
  *
  ******************************************************************************/
 int MORSE_zplrnt_Tile_Async( MORSE_desc_t     *A,
-                              unsigned long long int seed,
-                              MORSE_sequence_t *sequence,
-                              MORSE_request_t  *request)
+                             unsigned long long int seed,
+                             MORSE_sequence_t *sequence,
+                             MORSE_request_t  *request)
 {
     MORSE_context_t *morse;
 
