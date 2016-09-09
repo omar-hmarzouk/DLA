@@ -57,6 +57,10 @@
 #include <mpi.h>
 #endif
 
+#if defined (CHAMELEON_SCHED_STARPU)
+#include <starpu.h>
+#endif
+
 static int RunTest(int *iparam, _PREC *dparam, double *t_);
 
 int ISEED[4] = {0,0,0,1};   /* initial seed for zlarnv() */
