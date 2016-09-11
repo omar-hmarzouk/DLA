@@ -167,6 +167,11 @@ add_library(chameleon_quark ${RUNTIME_SRCS})
 set_property(TARGET chameleon_quark PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET chameleon_quark PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
+target_link_libraries(chameleon_quark coreblas ${QUARK_LIBRARIES})
+if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+  target_link_libraries(chameleon_quark cudablas)
+endif(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+
 add_dependencies(chameleon_quark
   chameleon_include
   coreblas_include

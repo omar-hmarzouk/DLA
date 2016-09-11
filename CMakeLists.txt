@@ -912,6 +912,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
           -lchameleon_starpu
           ${STARPU_LIBRARIES_DEP}
         )
+        link_directories(${STARPU_LIBRARY_DIRS_DEP})
     elseif(CHAMELEON_SCHED_PARSEC)
         list(APPEND CHAMELEON_DEP
           -lchameleon_parsec

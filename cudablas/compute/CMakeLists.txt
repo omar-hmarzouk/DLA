@@ -68,6 +68,11 @@ add_library(cudablas ${CUDABLAS_SRCS})
 add_dependencies(cudablas cudablas_include)
 set_property(TARGET cudablas PROPERTY LINKER_LANGUAGE Fortran)
 
+target_link_libraries(cudablas coreblas ${CUDA_LIBRARIES})
+if(CHAMELEON_USE_MAGMA)
+  target_link_libraries(cudablas ${MAGMA_LIBRARIES})
+endif(CHAMELEON_USE_MAGMA)
+
 # installation
 # ------------
 install(TARGETS cudablas
