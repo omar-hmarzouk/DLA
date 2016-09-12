@@ -97,6 +97,10 @@ int main(int argc, char *argv[]) {
     if (iparam[IPARAM_OUTOFCORE] > 0) {
         int new_dd = starpu_disk_register (&starpu_disk_unistd_o_direct_ops,
                                            (void*) "./ooc/", 1024*1024*10);
+        if (new_dd == -ENOENT){
+            fprintf(stderr, "Can't write on ./ooc/\n");
+        	return EXIT_FAILURE;
+        }
     }
 
     MORSE_Desc_Create_User(&descA, NULL, MorseRealDouble,

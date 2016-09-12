@@ -76,9 +76,9 @@ void morse_pzbuild( MORSE_enum uplo, MORSE_desc_t *A, void *user_data, void* use
     ldam = BLKLDD(A, m);
     for (n = 0; n < A->nt; n++) {
 
-      if ( uplo == MorseUpper && m <= n ||
-           uplo == MorseLower && m >= n ||
-           uplo == MorseUpperLower)
+      if ( ( uplo == MorseUpper && m <= n ) ||
+           ( uplo == MorseLower && m >= n ) ||
+           ( uplo == MorseUpperLower ) )
         MORSE_TASK_zbuild(
               &options,
               A(m, n), ldam,

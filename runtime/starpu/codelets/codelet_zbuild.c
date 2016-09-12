@@ -69,8 +69,6 @@ void MORSE_TASK_zbuild( MORSE_option_t *options,
 
 static void cl_zbuild_cpu_func(void *descr[], void *cl_arg)
 {
-  int Am;
-  int An;
   MORSE_Complex64_t *A;
   int ld;
   void *user_data;

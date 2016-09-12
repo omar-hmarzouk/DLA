@@ -112,8 +112,6 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
      */
     {
         static int _tag_mpi_initialized_ = 0;
-        MORSE_context_t *morse;
-        int myrank = desc->myrank;
 
         if (!_tag_mpi_initialized_) {
             int *tag_ub = NULL;
