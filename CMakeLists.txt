@@ -235,12 +235,12 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
         option(CHAMELEON_SIMULATION "Enable simulation mode using Simgrid through StarPU" OFF)
         if (NOT CHAMELEON_SIMULATION)
             message("-- ${BoldGreen}CHAMELEON_SIMULATION is set to OFF, turn it ON to use"
-                "SIMULATION mode (only with StarPU compiled with SimGrid)${ColourReset}")
+                " SIMULATION mode (only with StarPU compiled with SimGrid)${ColourReset}")
         endif()
         option(CHAMELEON_SIMULATION_MAGMA "Enable magma kernels in simulation mode" OFF)
         if (NOT CHAMELEON_SIMULATION_MAGMA)
             message("-- ${BoldGreen}CHAMELEON_SIMULATION_MAGMA is set to OFF, turn it ON to enable MAGMA kernels in "
-                "SIMULATION mode${ColourReset}")
+                " SIMULATION mode${ColourReset}")
         endif()
     endif()
 
@@ -277,7 +277,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             list(APPEND EXTRA_LIBRARIES "${M_m_LIBRARY}")
         else()
             message(FATAL_ERROR "Could NOT find libm on your system."
-                "Are you sure to a have a C compiler installed?")
+                " Are you sure to a have a C compiler installed?")
         endif()
     endif()
 
@@ -333,8 +333,8 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                     endif ()
                 endif()
             else()
-                message(WARNING "CBLAS library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
-                "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
+                message(WARNING "CBLAS library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF."
+                " Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
             endif()
             message(FATAL_ERROR "A CBLAS library is required but has not been found")
         endif()
@@ -372,8 +372,8 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                     endif ()
                 endif()
             else()
-                message(WARNING "LAPACKE library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
-                "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
+                message(WARNING "LAPACKE library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF."
+                " Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
             endif()
             message(FATAL_ERROR "A LAPACKE library is required but has not been found")
         endif()
@@ -459,8 +459,8 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                             Print_Find_Library_Status(magma libmagma)
                         endif ()
                     else()
-                        message(WARNING "MAGMA library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
-                        "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
+                        message(WARNING "MAGMA library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF."
+                        " Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
                     endif()
                     message(FATAL_ERROR "MAGMA library is required but has not been found")
                 endif( MAGMA_FOUND )
@@ -511,21 +511,21 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
         if (CHAMELEON_USE_CUDA)
             set(CHAMELEON_USE_CUDA OFF)
             message("${BoldBlue}CHAMELEON_USE_CUDA is set to ON but we turn it OFF."
-            "Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
-            "we do not need to link with CUDA.${ColourReset}")
+            " Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
+            " we do not need to link with CUDA.${ColourReset}")
         endif ()
         if (CHAMELEON_USE_MAGMA)
             set(CHAMELEON_USE_MAGMA OFF)
             message("${BoldBlue}CHAMELEON_USE_MAGMA is set to ON but we turn it OFF."
-            "Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
-            "we do not need to link with MAGMA.${ColourReset}")
+            " Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
+            " we do not need to link with MAGMA.${ColourReset}")
         endif ()
         if (CHAMELEON_ENABLE_TESTING)
             set(CHAMELEON_ENABLE_TESTING OFF)
             message("${BoldBlue}CHAMELEON_ENABLE_TESTING is set to ON but we turn it OFF."
-            "Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
-            "there is no sense in compiling testing drivers that are used to check"
-            "numerical correctness of algorithms and kernels.${ColourReset}")
+            " Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
+            " there is no sense in compiling testing drivers that are used to check"
+            " numerical correctness of algorithms and kernels.${ColourReset}")
         endif ()
 
         # Simulation mode: we depend on SimGrid
@@ -667,7 +667,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 check_function_exists(starpu_mpi_data_register_comm STARPU_MPI_DATA_REGISTER_FOUND)
                 if ( STARPU_MPI_DATA_REGISTER_FOUND )
                     message("-- ${Blue}Add definition HAVE_STARPU_MPI_DATA_REGISTER - Activate"
-                    "use of starpu_mpi_data_register() in Chameleon with StarPU${ColourReset}")
+                    " use of starpu_mpi_data_register() in Chameleon with StarPU${ColourReset}")
                     add_definitions(-DHAVE_STARPU_MPI_DATA_REGISTER)
                 else()
                     message("-- ${Red}Looking for starpu with starpu_mpi_data_register"
@@ -678,7 +678,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 check_function_exists(starpu_mpi_comm_rank STARPU_MPI_COMM_RANK_FOUND)
                 if ( STARPU_MPI_COMM_RANK_FOUND )
                     message("-- ${Blue}Add definition HAVE_STARPU_MPI_COMM_RANK - Activate"
-                    "use of starpu_mpi_comm_rank() in Chameleon with StarPU${ColourReset}")
+                    " use of starpu_mpi_comm_rank() in Chameleon with StarPU${ColourReset}")
                     add_definitions(-DHAVE_STARPU_MPI_COMM_RANK)
                 else()
                     message("-- ${Red}Looking for starpu with starpu_mpi_comm_rank"
@@ -745,8 +745,8 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                     endif ()
                 endif ()
             else(MORSE_VERBOSE_FIND_PACKAGE)
-                message(WARNING "StarPU library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
-                "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
+                message(WARNING "StarPU library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF."
+                " Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
             endif(MORSE_VERBOSE_FIND_PACKAGE)
             if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
                 message(FATAL_ERROR "hwloc library is required but has not been found")
@@ -835,8 +835,8 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                     endif()
                 endif()
             else(MORSE_VERBOSE_FIND_PACKAGE)
-                message(WARNING "PaRSEC library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
-                "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
+                message(WARNING "PaRSEC library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF."
+                " Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
             endif(MORSE_VERBOSE_FIND_PACKAGE)
             if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
                 message(FATAL_ERROR "hwloc library is required but has not been found")
@@ -880,8 +880,8 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                     Print_Find_Library_Status(quark libquark)
                 endif ()
             else()
-                message(WARNING "QUARK library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF"
-                "Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
+                message(WARNING "QUARK library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF."
+                " Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
             endif()
             if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
                 message(FATAL_ERROR "hwloc library is required but has not been found")
@@ -1040,7 +1040,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     # should use SystemDetection.cmake module?
     string(REGEX MATCH ".*ifort$" _match_ifort ${CMAKE_Fortran_COMPILER})
     if(_match_ifort)
-        #message(STATUS "Add -nofor_main to the Fortran linker")
+        message(STATUS "Add -nofor_main to the Fortran linker (Intel compiler)")
         list(APPEND CMAKE_Fortran_FLAGS "-nofor_main")
     endif(_match_ifort)
 
@@ -1109,7 +1109,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
     if (CMAKE_INSTALL_PREFIX STREQUAL "/usr/local" OR CMAKE_INSTALL_PREFIX STREQUAL "C:/Program Files")
         message("-- ${Yellow}Your CMAKE_INSTALL_PREFIX is ${CMAKE_INSTALL_PREFIX} which is a default system path."
-        "You may want to change it: set the CMAKE_INSTALL_PREFIX variable to do so${ColourReset}")
+        " You may want to change it: set the CMAKE_INSTALL_PREFIX variable to do so${ColourReset}")
     else()
         message("-- ${Yellow}Your CMAKE_INSTALL_PREFIX is ${CMAKE_INSTALL_PREFIX}${ColourReset}")
     endif()
