@@ -29,33 +29,17 @@ set(SIMULAPACKE_SRCS
     simulapacke.c
     )
 
-# Define the list of headers
-# --------------------------
-set(SIMULAPACKE_HDRS
-    lapacke.h
-    lapacke_config.h
-    lapacke_mangling.h
-    )
-
-# include directories
-# -------------------
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-# Force generation of headers
-# ---------------------------
-add_custom_target(simulapacke_include ALL SOURCES ${SIMULAPACKE_HDRS})
-
 # Compile step
 # ------------
 add_library(simulapacke ${SIMULAPACKE_SRCS})
-add_dependencies(simulapacke simulapacke_include)
+# this library is theoreticaly independent from coreblas but in order to avoid 
+# the duplication of lapacke headers in here we rely on the ones lying in 
+# coreblas/include 
+add_dependencies(simulapacke coreblas_include)
 set_property(TARGET simulapacke PROPERTY LINKER_LANGUAGE Fortran)
 
 # installation
 # ------------
-install(FILES ${SIMULAPACKE_HDRS}
-        DESTINATION include/chameleon/simucore/simulapacke)
 install(TARGETS simulapacke
         DESTINATION lib)
 

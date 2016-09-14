@@ -133,19 +133,19 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     endif()
     if (CHAMELEON_SCHED_STARPU)
         message("-- ${BoldGreen}CHAMELEON_SCHED_STARPU is set to ON: CHAMELEON uses StarPU runtime\n"
-                "  To use CHAMELEON with Quark  runtime: set CHAMELEON_SCHED_QUARK  to ON\n"
-                "  To use CHAMELEON with PaRSEC runtime: set CHAMELEON_SCHED_PARSEC to ON\n"
-                "  (CHAMELEON_SCHED_STARPU will be disabled)${ColourReset}")
+                "   To use CHAMELEON with Quark  runtime: set CHAMELEON_SCHED_QUARK  to ON\n"
+                "   To use CHAMELEON with PaRSEC runtime: set CHAMELEON_SCHED_PARSEC to ON\n"
+                "   (CHAMELEON_SCHED_STARPU will be disabled)${ColourReset}")
     elseif(CHAMELEON_SCHED_QUARK)
         message("-- ${BoldGreen}CHAMELEON_SCHED_QUARK is set to ON: CHAMELEON uses Quark runtime\n"
-                "  To use CHAMELEON with StarPU runtime: set CHAMELEON_SCHED_STARPU to ON\n"
-                "  To use CHAMELEON with PaRSEC runtime: set CHAMELEON_SCHED_PARSEC to ON\n"
-                "  (CHAMELEON_SCHED_QUARK will be disabled)${ColourReset}")
+                "   To use CHAMELEON with StarPU runtime: set CHAMELEON_SCHED_STARPU to ON\n"
+                "   To use CHAMELEON with PaRSEC runtime: set CHAMELEON_SCHED_PARSEC to ON\n"
+                "   (CHAMELEON_SCHED_QUARK will be disabled)${ColourReset}")
     elseif(CHAMELEON_SCHED_PARSEC)
         message("-- ${BoldGreen}CHAMELEON_SCHED_PARSEC is set to ON: CHAMELEON uses PaRSEC runtime\n"
-                "  To use CHAMELEON with StarPU runtime: set CHAMELEON_SCHED_STARPU to ON\n"
-                "  To use CHAMELEON with Quark  runtime: set CHAMELEON_SCHED_QUARK  to ON\n"
-                "  (CHAMELEON_SCHED_PARSEC will be disabled)${ColourReset}")
+                "   To use CHAMELEON with StarPU runtime: set CHAMELEON_SCHED_STARPU to ON\n"
+                "   To use CHAMELEON with Quark  runtime: set CHAMELEON_SCHED_QUARK  to ON\n"
+                "   (CHAMELEON_SCHED_PARSEC will be disabled)${ColourReset}")
     endif()
 
     # Check that one, and only one, SCHED option is set to ON
@@ -498,15 +498,15 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
     else (NOT CHAMELEON_SIMULATION)
 
-        message("${BoldBlue}Simulation mode of CHAMELEON is activated (CHAMELEON_SIMULATION=ON)."
-            "\nThis mode allows you to simulate execution of algorithms with StarPU compiled with SimGrid."
-            "\nTo do so, we provide some perfmodels in the simucore/perfmodels/ directory of CHAMELEON sources."
-            "\nThe resulting directory where to find perfmodels is: ${CMAKE_CURRENT_SOURCE_DIR}/simucore/perfmodels."
-            "\nTo use these perfmodels, please set your STARPU_HOME environment variable to ${CMAKE_CURRENT_SOURCE_DIR}/simucore/perfmodels."
-            "\nFinally, you need to set your STARPU_HOSTNAME environment variable to the name of the machine to simulate."
-            "For example: STARPU_HOSTNAME=mirage."
-            "\nNote that only POTRF kernels with block sizes of 320 or 960 (simple and double precision) on mirage machine are available for now."
-            "\nDatabase of models is subject to change, it should be enrich in a near future.${ColourReset}")
+        message(STATUS "${BoldBlue}Simulation mode of CHAMELEON is activated (CHAMELEON_SIMULATION=ON)."
+                "\n   This mode allows you to simulate execution of algorithms with StarPU compiled with SimGrid."
+                "\n   To do so, we provide some perfmodels in the simucore/perfmodels/ directory of CHAMELEON sources."
+                "\n   The resulting directory where to find perfmodels is: ${CMAKE_CURRENT_SOURCE_DIR}/simucore/perfmodels."
+                "\n   To use these perfmodels, please set your STARPU_HOME environment variable to ${CMAKE_CURRENT_SOURCE_DIR}/simucore/perfmodels."
+                "\n   Finally, you need to set your STARPU_HOSTNAME environment variable to the name of the machine to simulate."
+                "\n   For example: STARPU_HOSTNAME=mirage."
+                "\n   Note that only POTRF kernels with block sizes of 320 or 960 (simple and double precision) on mirage machine are available for now."
+                "\n   Database of models is subject to change, it should be enrich in a near future.${ColourReset}")
 
         if (CHAMELEON_USE_CUDA)
             set(CHAMELEON_USE_CUDA OFF)
@@ -516,16 +516,16 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
         endif ()
         if (CHAMELEON_USE_MAGMA)
             set(CHAMELEON_USE_MAGMA OFF)
-            message("${BoldBlue}CHAMELEON_USE_MAGMA is set to ON but we turn it OFF."
-            " Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
-            " we do not need to link with MAGMA.${ColourReset}")
+            message(STATUS "${BoldBlue}CHAMELEON_USE_MAGMA is set to ON but we turn it OFF."
+                    "\n   Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
+                    "\n   we do not need to link with MAGMA.${ColourReset}")
         endif ()
         if (CHAMELEON_ENABLE_TESTING)
             set(CHAMELEON_ENABLE_TESTING OFF)
-            message("${BoldBlue}CHAMELEON_ENABLE_TESTING is set to ON but we turn it OFF."
-            " Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
-            " there is no sense in compiling testing drivers that are used to check"
-            " numerical correctness of algorithms and kernels.${ColourReset}")
+            message(STATUS "${BoldBlue}CHAMELEON_ENABLE_TESTING is set to ON but we turn it OFF."
+                    "\n   Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
+                    "\n   there is no sense in compiling testing drivers that are used to check"
+                    "\n   numerical correctness of algorithms and kernels.${ColourReset}")
         endif ()
 
         # Simulation mode: we depend on SimGrid

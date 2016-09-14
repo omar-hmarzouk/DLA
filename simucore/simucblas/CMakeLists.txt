@@ -32,31 +32,17 @@ set(SIMUCBLAS_SRCS
     simucblas.c
     )
 
-# Define the list of headers
-# --------------------------
-set(SIMUCBLAS_HDRS
-    cblas.h
-    )
-
-# include directories
-# -------------------
-include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-# Force generation of headers
-# ---------------------------
-add_custom_target(simucblas_include ALL SOURCES ${SIMUCBLAS_HDRS})
-
 # Compile step
 # ------------
 add_library(simucblas ${SIMUCBLAS_SRCS})
-add_dependencies(simucblas simucblas_include)
+# this library is theoreticaly independent from coreblas but in order to avoid 
+# the duplication of cblas headers in here we rely on the ones lying in 
+# coreblas/include 
+add_dependencies(simucblas coreblas_include)
 set_property(TARGET simucblas PROPERTY LINKER_LANGUAGE Fortran)
 
 # installation
 # ------------
-install(FILES ${SIMUCBLAS_HDRS}
-        DESTINATION include/chameleon/simucore/simucblas)
 install(TARGETS simucblas
         DESTINATION lib)
 
