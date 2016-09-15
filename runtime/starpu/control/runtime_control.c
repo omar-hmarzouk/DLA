@@ -27,6 +27,15 @@
 #include <stdlib.h>
 #include "runtime/starpu/include/morse_starpu.h"
 
+#if defined(CHAMELEON_SIMULATION)
+# ifndef STARPU_SIMGRID
+#  error "Starpu was not built with simgrid support (--enable-simgrid). Can not run Chameleon with simulation support."
+# endif
+#else
+# ifdef STARPU_SIMGRID
+#  warning "Starpu was built with simgrid support. Better build Chameleon with simulation support (-DCHAMELEON_SIMULATION=YES)."
+# endif
+#endif
 /*******************************************************************************
  * Thread rank.
  **/
