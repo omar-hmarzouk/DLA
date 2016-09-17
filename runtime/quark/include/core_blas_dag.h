@@ -35,6 +35,7 @@
 
 #define DAG_CORE_ASUM       DAG_SET_PROPERTIES( "ASUM"      , "white"   )
 #define DAG_CORE_AXPY       DAG_SET_PROPERTIES( "AXPY"      , "white"   )
+#define DAG_CORE_BUILD      DAG_SET_PROPERTIES( "BUILD"     , "white"   )
 #define DAG_CORE_GEADD      DAG_SET_PROPERTIES( "GEADD"     , "white"   )
 #define DAG_CORE_GELQT      DAG_SET_PROPERTIES( "GELQT"     , "green"   )
 #define DAG_CORE_GEMM       DAG_SET_PROPERTIES( "GEMM"      , "yellow"  )
