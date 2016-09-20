@@ -46,6 +46,8 @@ enum iparam_timing {
     IPARAM_NMPI,
     IPARAM_P,              /* Parameter for 2D cyclic distribution       */
     IPARAM_Q,              /* Parameter for 2D cyclic distribution       */
+
+    IPARAM_PROGRESS,       /* Use a progress indicator during computations */
     /* Added for StarPU version */
     IPARAM_PROFILE,
     IPARAM_PRINT_ERRORS,

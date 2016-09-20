@@ -348,6 +348,7 @@ show_help(char *prog_name) {
             "\n"
             "  --[a]sync        Enable/Disable synchronous calls in wrapper function such as POTRI. (default: async)\n"
             "  --[no]check      Check result (default: nocheck)\n"
+            "  --[no]progress   Display progress indicator (default: noprogress)\n"
             "  --[no]inv        Check on inverse (default: noinv)\n"
             "  --[no]warmup     Perform a warmup run to pre-load libraries (default: warmup)\n"
             "  --[no]trace      Enable/Disable trace generation (default: notrace)\n"
@@ -486,6 +487,7 @@ main(int argc, char *argv[]) {
     iparam[IPARAM_NMPI          ] = 1;
     iparam[IPARAM_P             ] = 1;
     iparam[IPARAM_Q             ] = 1;
+    iparam[IPARAM_PROGRESS      ] = 0;
     iparam[IPARAM_PROFILE       ] = 0;
     iparam[IPARAM_PRINT_ERRORS  ] = 0;
     iparam[IPARAM_PEAK          ] = 0;
@@ -524,6 +526,10 @@ main(int argc, char *argv[]) {
             iparam[IPARAM_TRACE] = 1;
         } else if (startswith( argv[i], "--notrace" )) {
             iparam[IPARAM_TRACE] = 0;
+        } else if (startswith( argv[i], "--progress" )) {
+            iparam[IPARAM_PROGRESS] = 1;
+        } else if (startswith( argv[i], "--noprogress" )) {
+            iparam[IPARAM_PROGRESS] = 0;
         } else if (startswith( argv[i], "--dag" )) {
             iparam[IPARAM_DAG] = 1;
         } else if (startswith( argv[i], "--nodag" )) {
@@ -627,6 +633,9 @@ main(int argc, char *argv[]) {
 
     if (iparam[IPARAM_PRINT_ERRORS] == 1)
         MORSE_Enable(MORSE_ERRORS);
+
+    if (iparam[IPARAM_PROGRESS] == 1)
+        MORSE_Enable(MORSE_PROGRESS);
 
 #if defined(CHAMELEON_USE_MPI)
     MORSE_Comm_size( &nbnode );
