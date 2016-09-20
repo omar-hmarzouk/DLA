@@ -131,6 +131,7 @@
 #define MORSE_PARALLEL_MODE   6
 #define MORSE_BOUND           7
 #define MORSE_PROGRESS        8
+#define MORSE_GEMM3M          9
 
 /** ****************************************************************************
  *  MORSE constants - configuration parameters

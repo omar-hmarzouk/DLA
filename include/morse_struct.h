@@ -132,6 +132,7 @@ typedef struct morse_context_s {
     MORSE_bool         parallel_enabled;
     MORSE_bool         profiling_enabled;
     MORSE_bool         progress_enabled;
+    MORSE_bool         gemm3m_enabled;
 
     MORSE_enum         householder;        // "domino" (flat) or tree-based (reduction) Householder
     MORSE_enum         translation;        // In place or Out of place layout conversion

@@ -48,6 +48,7 @@ enum iparam_timing {
     IPARAM_Q,              /* Parameter for 2D cyclic distribution       */
 
     IPARAM_PROGRESS,       /* Use a progress indicator during computations */
+    IPARAM_GEMM3M,         /* Use GEMM3M for complex matrix vector products */
     /* Added for StarPU version */
     IPARAM_PROFILE,
     IPARAM_PRINT_ERRORS,

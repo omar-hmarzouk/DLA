@@ -42,6 +42,18 @@ void CORE_zgemm(MORSE_enum transA, int transB,
                                           const MORSE_Complex64_t *B, int LDB,
                 MORSE_Complex64_t beta, MORSE_Complex64_t *C, int LDC)
 {
+#ifdef CBLAS_HAS_ZGEMM3M
+  MORSE_context_t *morse = morse_context_self();
+  if (morse->gemm3m_enabled)
+    cblas_zgemm3m(
+        CblasColMajor,
+        (CBLAS_TRANSPOSE)transA, (CBLAS_TRANSPOSE)transB,
+        M, N, K,
+        CBLAS_SADDR(alpha), A, LDA,
+        B, LDB,
+        CBLAS_SADDR(beta), C, LDC);
+  else
+#endif
     cblas_zgemm(
         CblasColMajor,
         (CBLAS_TRANSPOSE)transA, (CBLAS_TRANSPOSE)transB,

@@ -83,6 +83,7 @@ MORSE_context_t *morse_context_create()
     morse->parallel_enabled     = MORSE_FALSE;
     morse->profiling_enabled    = MORSE_FALSE;
     morse->progress_enabled     = MORSE_FALSE;
+    morse->gemm3m_enabled       = MORSE_FALSE;
 
     morse->householder        = MORSE_FLAT_HOUSEHOLDER;
     morse->translation        = MORSE_OUTOFPLACE;
@@ -132,6 +133,7 @@ int morse_context_destroy(){
  *          @arg MORSE_AUTOTUNING autotuning for tile size and inner block size.
  *          @arg MORSE_PROFILING_MODE  activate profiling of kernels
  *          @arg MORSE_PROGRESS  activate progress indicator
+ *          @arg MORSE_GEMM3M  Use z/cgemm3m for complexe matrix-matrix products
  *
  *******************************************************************************
  *
@@ -166,6 +168,13 @@ int MORSE_Enable(MORSE_enum option)
         case MORSE_PROGRESS:
             morse->progress_enabled = MORSE_TRUE;
             break;
+        case MORSE_GEMM3M:
+#ifdef CBLAS_HAS_ZGEMM3M
+            morse->gemm3m_enabled = MORSE_TRUE;
+#else
+            morse_error("MORSE_Enable", "cannot enable GEMM3M (not available in cblas)");
+#endif
+            break;
         /* case MORSE_PARALLEL: */
         /*     morse->parallel_enabled = MORSE_TRUE; */
         /*     break; */
@@ -197,6 +206,7 @@ int MORSE_Enable(MORSE_enum option)
  *          @arg MORSE_AUTOTUNING autotuning for tile size and inner block size.
  *          @arg MORSE_PROFILING_MODE  deactivate profiling of kernels
  *          @arg MORSE_PROGRESS  deactivate progress indicator
+ *          @arg MORSE_GEMM3M  Use z/cgemm3m for complexe matrix-matrix products
  *
  *******************************************************************************
  *
@@ -229,6 +239,9 @@ int MORSE_Disable(MORSE_enum option)
             break;
         case MORSE_PROGRESS:
             morse->progress_enabled = MORSE_FALSE;
+            break;
+        case MORSE_GEMM3M:
+            morse->gemm3m_enabled = MORSE_FALSE;
             break;
         case MORSE_PARALLEL_MODE:
             morse->parallel_enabled = MORSE_FALSE;
