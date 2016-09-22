@@ -33,13 +33,13 @@
  * ===========================================================================
  */
 float  cblas_sdsdot(const int N, const float alpha, const float *X,
-                    const int incX, const float *Y, const int incY){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
+                    const int incX, const float *Y, const int incY){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
 double cblas_dsdot(const int N, const float *X, const int incX, const float *Y,
-                   const int incY){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
+                   const int incY){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
 float  cblas_sdot(const int N, const float  *X, const int incX,
-                  const float  *Y, const int incY){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
+                  const float  *Y, const int incY){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
 double cblas_ddot(const int N, const double *X, const int incX,
-                  const double *Y, const int incY){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
+                  const double *Y, const int incY){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
 
 /*
  * Functions having prefixes Z and C only
@@ -58,26 +58,26 @@ void   cblas_zdotc_sub(const int N, const void *X, const int incX,
 /*
  * Functions having prefixes S D SC DZ
  */
-float  cblas_snrm2(const int N, const float *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
-float  cblas_sasum(const int N, const float *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
+float  cblas_snrm2(const int N, const float *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
+float  cblas_sasum(const int N, const float *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
 
-double cblas_dnrm2(const int N, const double *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
-double cblas_dasum(const int N, const double *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
+double cblas_dnrm2(const int N, const double *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
+double cblas_dasum(const int N, const double *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
 
-float  cblas_scnrm2(const int N, const void *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
-float  cblas_scasum(const int N, const void *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
+float  cblas_scnrm2(const int N, const void *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
+float  cblas_scasum(const int N, const void *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
 
-double cblas_dznrm2(const int N, const void *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
-double cblas_dzasum(const int N, const void *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
+double cblas_dznrm2(const int N, const void *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
+double cblas_dzasum(const int N, const void *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0.;}
 
 
 /*
  * Functions having standard 4 prefixes (S D C Z)
  */
-CBLAS_INDEX cblas_isamax(const int N, const float  *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
-CBLAS_INDEX cblas_idamax(const int N, const double *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
-CBLAS_INDEX cblas_icamax(const int N, const void   *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
-CBLAS_INDEX cblas_izamax(const int N, const void   *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR);}
+CBLAS_INDEX cblas_isamax(const int N, const float  *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0;}
+CBLAS_INDEX cblas_idamax(const int N, const double *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0;}
+CBLAS_INDEX cblas_icamax(const int N, const void   *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0;}
+CBLAS_INDEX cblas_izamax(const int N, const void   *X, const int incX){assert(0 && CHAMELEON_SIMUCBLAS_ERROR); return 0;}
 
 /*
  * ===========================================================================

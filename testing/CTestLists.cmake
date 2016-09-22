@@ -1,5 +1,5 @@
 #
-# Check BLAS/Lapack subroutines
+# Check testing/
 #
 
 set(TEST_CMD_shm    testing 4 0)

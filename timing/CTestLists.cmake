@@ -1,11 +1,11 @@
 #
-# Check BLAS/Lapack subroutines
+# Check timing/
 #
 
-set(TEST_CMD_shm    )
-set(TEST_CMD_shmgpu --gpus=1)
-set(TEST_CMD_mpi    --p=2)
-set(TEST_CMD_mpigpu --p=2 --gpus=1)
+set(TEST_CMD_shm    --n_range=500:2000:500 --nb=320 )
+set(TEST_CMD_shmgpu --n_range=500:2000:500 --nb=320 --gpus=1)
+set(TEST_CMD_mpi    --n_range=500:2000:500 --nb=320 --p=2)
+set(TEST_CMD_mpigpu --n_range=500:2000:500 --nb=320 --p=2 --gpus=1)
 
 set(MPI_CMD_shm )
 set(MPI_CMD_shmgpu )
