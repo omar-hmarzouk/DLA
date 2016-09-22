@@ -61,16 +61,15 @@ void update_progress(int currentValue, int maximumValue) {
   }
   // Print the percentage
   if (res.quot > progress)
-    printf("%3d%%\b\b\b\b", res.quot) ;
+    fprintf(stderr, "%3d%%\b\b\b\b", res.quot) ;
   progress=res.quot ;
 
   if (currentValue>=maximumValue) {
     progress=-1 ;
   }
-
-  fflush(stdout);
 }
 
+// no progress indicator for algorithms faster than 'PROGRESS_MINIMUM_DURATION' seconds
 #define PROGRESS_MINIMUM_DURATION 10
 
 /*******************************************************************************
@@ -89,7 +88,7 @@ int RUNTIME_progress( MORSE_context_t *morse)
   //  update_progress(0, max);
   while ((tasksLeft = starpu_task_nsubmitted()) > 0) {
     current = max - tasksLeft;
-    if (timer > PROGRESS_MINIMUM_DURATION) // no progress indicator for algorithms faster than 'PROGRESS_MINIMUM_DURATION' seconds
+    if (timer > PROGRESS_MINIMUM_DURATION)
       update_progress(current, max);
     sleep(1);
     timer++;
