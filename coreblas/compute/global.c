@@ -23,6 +23,15 @@
  *
  **/
 
+static int coreblas_gemm3m_enabled=0;
+
+void set_coreblas_gemm3m_enabled(int v) {
+  coreblas_gemm3m_enabled=v;
+}
+int get_coreblas_gemm3m_enabled(void) {
+  return coreblas_gemm3m_enabled;
+}
+
 /*******************************************************************************
  *  LAPACK Constants
  **/

@@ -83,7 +83,6 @@ MORSE_context_t *morse_context_create()
     morse->parallel_enabled     = MORSE_FALSE;
     morse->profiling_enabled    = MORSE_FALSE;
     morse->progress_enabled     = MORSE_FALSE;
-    morse->gemm3m_enabled       = MORSE_FALSE;
 
     morse->householder        = MORSE_FLAT_HOUSEHOLDER;
     morse->translation        = MORSE_OUTOFPLACE;
@@ -170,7 +169,7 @@ int MORSE_Enable(MORSE_enum option)
             break;
         case MORSE_GEMM3M:
 #ifdef CBLAS_HAS_ZGEMM3M
-            morse->gemm3m_enabled = MORSE_TRUE;
+            set_coreblas_gemm3m_enabled(1);
 #else
             morse_error("MORSE_Enable", "cannot enable GEMM3M (not available in cblas)");
 #endif
@@ -241,7 +240,7 @@ int MORSE_Disable(MORSE_enum option)
             morse->progress_enabled = MORSE_FALSE;
             break;
         case MORSE_GEMM3M:
-            morse->gemm3m_enabled = MORSE_FALSE;
+            set_coreblas_gemm3m_enabled(0);
             break;
         case MORSE_PARALLEL_MODE:
             morse->parallel_enabled = MORSE_FALSE;
