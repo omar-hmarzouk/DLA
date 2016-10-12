@@ -45,82 +45,8 @@ MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
                              int lm, int ln, int i, int j,
                              int m,  int n,  int p, int q)
 {
-    MORSE_desc_t desc;
-    desc.get_blkaddr = morse_getaddr_ccrb;
-    desc.get_blkldd  = morse_getblkldd_ccrb;
-    desc.get_rankof  = morse_getrankof_2d;
-    // Matrix properties
-    desc.dtyp = dtyp;
-    // seems useless
-    desc.styp = MorseCCRB;
-    desc.mb = mb;
-    desc.nb = nb;
-    desc.bsiz = bsiz;
-    // Large matrix parameters
-    desc.lm = lm;
-    desc.ln = ln;
-    // Large matrix derived parameters
-    desc.lmt = (lm%mb==0) ? (lm/mb) : (lm/mb+1);
-    desc.lnt = (ln%nb==0) ? (ln/nb) : (ln/nb+1);
-    // Submatrix parameters
-    desc.i = i;
-    desc.j = j;
-    desc.m = m;
-    desc.n = n;
-    // Submatrix derived parameters
-    desc.mt = (m == 0) ? 0 : (i+m-1)/mb - i/mb + 1;
-    desc.nt = (n == 0) ? 0 : (j+n-1)/nb - j/nb + 1;
-
-    desc.id = nbdesc; nbdesc++;
-    desc.occurences = 0;
-    desc.use_mat = 1;
-    desc.alloc_mat = 1;
-    desc.register_mat = 1;
-
-    RUNTIME_comm_rank( &(desc.myrank) );
-
-    // Grid size
-    desc.p = p;
-    desc.q = q;
-
-    // Local dimensions in tiles
-    if ( desc.myrank < (p*q) ) {
-        desc.llmt = (desc.lmt + p - 1) / p;
-        desc.llnt = (desc.lnt + q - 1) / q;
-
-        // Local dimensions
-        if ( ((desc.lmt-1) % p) == (desc.myrank / q) ) {
-            desc.llm  = ( desc.llmt - 1 ) * mb + ((lm%mb==0) ? mb : (lm%mb));
-        } else {
-            desc.llm  =  desc.llmt * mb;
-        }
-
-        if ( ((desc.lnt-1) % q) == (desc.myrank % q) ) {
-            desc.lln  = ( desc.llnt - 1 ) * nb + ((ln%nb==0) ? nb : (ln%nb));
-        } else {
-            desc.lln  =  desc.llnt * nb;
-        }
-
-        desc.llm1 = (desc.llm/mb);
-        desc.lln1 = (desc.lln/nb);
-    } else {
-      desc.llmt = 0;
-      desc.llnt = 0;
-      desc.llm  = 0;
-      desc.lln  = 0;
-      desc.llm1 = 0;
-      desc.lln1 = 0;
-    }
-
-    // Matrix address
-    desc.mat = NULL;
-    desc.A21 = (size_t)(desc.llm - desc.llm%mb)*(size_t)(desc.lln - desc.lln%nb);
-    desc.A12 = (size_t)(           desc.llm%mb)*(size_t)(desc.lln - desc.lln%nb) + desc.A21;
-    desc.A22 = (size_t)(desc.llm - desc.llm%mb)*(size_t)(           desc.lln%nb) + desc.A12;
-
-    RUNTIME_desc_init( &desc );
-
-    return desc;
+  return morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
+                              morse_getaddr_ccrb, morse_getblkldd_ccrb, morse_getrankof_2d);
 }
 
 /*******************************************************************************
@@ -130,82 +56,8 @@ MORSE_desc_t morse_desc_init_diag(MORSE_enum dtyp, int mb, int nb, int bsiz,
                                   int lm, int ln, int i, int j,
                                   int m,  int n,  int p, int q)
 {
-    MORSE_desc_t desc;
-    desc.get_blkaddr = morse_getaddr_ccrb;
-    desc.get_blkldd  = morse_getblkldd_ccrb;
-    desc.get_rankof  = morse_getrankof_2d_diag;
-    // Matrix properties
-    desc.dtyp = dtyp;
-    // seems useless
-    desc.styp = MorseCCRB;
-    desc.mb = mb;
-    desc.nb = nb;
-    desc.bsiz = bsiz;
-    // Large matrix parameters
-    desc.lm = lm;
-    desc.ln = ln;
-    // Large matrix derived parameters
-    desc.lmt = (lm%mb==0) ? (lm/mb) : (lm/mb+1);
-    desc.lnt = (ln%nb==0) ? (ln/nb) : (ln/nb+1);
-    // Submatrix parameters
-    desc.i = i;
-    desc.j = j;
-    desc.m = m;
-    desc.n = n;
-    // Submatrix derived parameters
-    desc.mt = (m == 0) ? 0 : (i+m-1)/mb - i/mb + 1;
-    desc.nt = (n == 0) ? 0 : (j+n-1)/nb - j/nb + 1;
-
-    desc.id = nbdesc; nbdesc++;
-    desc.occurences = 0;
-    desc.use_mat = 1;
-    desc.alloc_mat = 1;
-    desc.register_mat = 1;
-
-    RUNTIME_comm_rank( &(desc.myrank) );
-
-    // Grid size
-    desc.p = p;
-    desc.q = q;
-
-    // Local dimensions in tiles
-    if ( desc.myrank < (p*q) ) {
-        desc.llmt = (desc.lmt + p - 1) / p;
-        desc.llnt = (desc.lnt + q - 1) / q;
-
-        // Local dimensions
-        if ( ((desc.lmt-1) % p) == (desc.myrank / q) ) {
-            desc.llm  = ( desc.llmt - 1 ) * mb + ((lm%mb==0) ? mb : (lm%mb));
-        } else {
-            desc.llm  =  desc.llmt * mb;
-        }
-
-        if ( ((desc.lnt-1) % q) == (desc.myrank % q) ) {
-            desc.lln  = ( desc.llnt - 1 ) * nb + ((ln%nb==0) ? nb : (ln%nb));
-        } else {
-            desc.lln  =  desc.llnt * nb;
-        }
-
-        desc.llm1 = (desc.llm/mb);
-        desc.lln1 = (desc.lln/nb);
-    } else {
-      desc.llmt = 0;
-      desc.llnt = 0;
-      desc.llm  = 0;
-      desc.lln  = 0;
-      desc.llm1 = 0;
-      desc.lln1 = 0;
-    }
-
-    // Matrix address
-    desc.mat = NULL;
-    desc.A21 = (size_t)(desc.llm - desc.llm%mb)*(size_t)(desc.lln - desc.lln%nb);
-    desc.A12 = (size_t)(           desc.llm%mb)*(size_t)(desc.lln - desc.lln%nb) + desc.A21;
-    desc.A22 = (size_t)(desc.llm - desc.llm%mb)*(size_t)(           desc.lln%nb) + desc.A12;
-
-    RUNTIME_desc_init( &desc );
-
-    return desc;
+  return morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
+                              morse_getaddr_ccrb, morse_getblkldd_ccrb, morse_getrankof_2d_diag);
 }
 
 /*******************************************************************************
