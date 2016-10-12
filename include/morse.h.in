@@ -105,6 +105,7 @@ int MORSE_Enable  (MORSE_enum option);
 int MORSE_Disable (MORSE_enum option);
 int MORSE_Set     (MORSE_enum param, int  value);
 int MORSE_Get     (MORSE_enum param, int *value);
+int MORSE_Set_update_progress_callback(void (*p)(int, int)) ;
 
 /* Sequences */
 int MORSE_Sequence_Create  (MORSE_sequence_t **sequence);
