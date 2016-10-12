@@ -160,7 +160,8 @@ Test(int64_t n, int *iparam) {
     gflops = 0.0;
 
     if ( iparam[IPARAM_WARMUP] ) {
-        RunTest( iparam, dparam, &(t[0]));
+      int status = RunTest( iparam, dparam, &(t[0]));
+      if (status != MORSE_SUCCESS) return status;
     }
 
     sumgf  = 0.0;
@@ -178,15 +179,17 @@ Test(int64_t n, int *iparam) {
           if ( iparam[IPARAM_PROFILE] )
             iparam[IPARAM_PROFILE] = 2;
 
-          RunTest( iparam, dparam, &(t[iter]));
+          int status = RunTest( iparam, dparam, &(t[iter]));
+          if (status != MORSE_SUCCESS) return status;
 
           iparam[IPARAM_TRACE] = 0;
           iparam[IPARAM_DAG] = 0;
           iparam[IPARAM_PROFILE] = 0;
         }
-        else
-            RunTest( iparam, dparam, &(t[iter]));
-
+        else {
+          int status = RunTest( iparam, dparam, &(t[iter]));
+          if (status != MORSE_SUCCESS) return status;
+        }
         gflops = flops / t[iter];
 
 #if defined (CHAMELEON_SCHED_STARPU)
@@ -677,7 +680,8 @@ main(int argc, char *argv[]) {
 
     if (step < 1) step = 1;
 
-    Test( -1, iparam ); /* print header */
+    int status = Test( -1, iparam ); /* print header */
+    if (status != MORSE_SUCCESS) return status;
     for (i = start; i <= stop; i += step)
     {
         if ( nx > 0 ) {
@@ -691,7 +695,9 @@ main(int argc, char *argv[]) {
                 iparam[IPARAM_M] = i;
             iparam[IPARAM_N] = i;
         }
-        success += Test( iparam[IPARAM_N], iparam );
+        int status = Test( iparam[IPARAM_N], iparam );
+        if (status != MORSE_SUCCESS) return status;
+        success += status;
     }
 
     MORSE_Finalize();
