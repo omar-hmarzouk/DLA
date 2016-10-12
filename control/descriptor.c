@@ -71,9 +71,10 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
                                   int (*get_rankof)( const MORSE_desc_t*, int, int ))
 {
     MORSE_desc_t desc;
-    desc.get_blkaddr = get_blkaddr;
-    desc.get_blkldd  = get_blkldd;
-    desc.get_rankof  = get_rankof;
+    // If one of the function get_* is NULL, we switch back to the default, like in morse_desc_init()
+    desc.get_blkaddr = get_blkaddr ? get_blkaddr : morse_getaddr_ccrb;
+    desc.get_blkldd  = get_blkldd ? get_blkldd : morse_getblkldd_ccrb;
+    desc.get_rankof  = get_rankof ? get_rankof : morse_getrankof_2d;
     // Matrix properties
     desc.dtyp = dtyp;
     // seems useless
