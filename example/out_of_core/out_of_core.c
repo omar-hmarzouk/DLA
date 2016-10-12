@@ -105,7 +105,7 @@ int main(int argc, char *argv[]) {
 
     MORSE_Desc_Create_User(&descA, NULL, MorseRealDouble,
                            NB, NB, NB*NB, N, N, 0, 0, N, N, 1, 1,
-                           morse_getaddr_null,
+                           morse_getaddr_null, // specific function
                            morse_getblkldd_ccrb,
                            morse_getrankof_2d);
     MORSE_Desc_Create(&descB,  NULL, MorseRealDouble,

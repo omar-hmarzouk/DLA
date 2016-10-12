@@ -121,7 +121,7 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
  *          Descriptor of the MORSE matrix in tile layout.
  *
  * @param[in] Af77
- *          LAPACK matrix.
+ *          LAPACK matrix (only needed on proc 0).
  *
  * @param[in] LDA
  *          The leading dimension of the matrix Af77.

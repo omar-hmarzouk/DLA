@@ -301,7 +301,7 @@ void *RUNTIME_desc_getaddr( MORSE_desc_t *desc, int m, int n )
                                             BLKLDD(desc, m), tempmm, tempnn, eltsze);
             }
             else {
-                starpu_matrix_data_register(ptrtile, 0,
+                starpu_matrix_data_register(ptrtile, STARPU_MAIN_RAM,
                                             (uintptr_t)desc->get_blkaddr(desc, m, n),
                                             BLKLDD(desc, m), tempmm, tempnn, eltsze);
             }
