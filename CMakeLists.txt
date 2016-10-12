@@ -1041,7 +1041,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     string(REGEX MATCH ".*ifort$" _match_ifort ${CMAKE_Fortran_COMPILER})
     if(_match_ifort)
         message(STATUS "Add -nofor_main to the Fortran linker (Intel compiler)")
-        list(APPEND CMAKE_Fortran_FLAGS "-nofor_main")
+        set(CMAKE_Fortran_FLAGS  "${CMAKE_Fortran_FLAGS} -nofor_main")
     endif(_match_ifort)
 
     # Testing executables
