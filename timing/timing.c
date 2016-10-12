@@ -62,6 +62,10 @@
 #endif
 
 static int RunTest(int *iparam, _PREC *dparam, double *t_);
+static void* morse_getaddr_null(const MORSE_desc_t *A, int m, int n)
+{
+    return (void*)( NULL );
+}
 
 int ISEED[4] = {0,0,0,1};   /* initial seed for zlarnv() */
 
@@ -347,6 +351,7 @@ show_help(char *prog_name) {
             "  --gpus=X         Number of GPU workers (default: 0)\n"
             "\n"
             "  --[a]sync        Enable/Disable synchronous calls in wrapper function such as POTRI. (default: async)\n"
+            "  --[no]bigmat     Allocating one big mat or plenty of small (default: bigmat)\n"
             "  --[no]check      Check result (default: nocheck)\n"
             "  --[no]progress   Display progress indicator (default: noprogress)\n"
             "  --[no]gemm3m     Use gemm3m complex method (default: nogemm3m)\n"
@@ -468,6 +473,7 @@ main(int argc, char *argv[]) {
     iparam[IPARAM_NITER         ] = 1;
     iparam[IPARAM_WARMUP        ] = 1;
     iparam[IPARAM_CHECK         ] = 0;
+    iparam[IPARAM_BIGMAT        ] = 1;
     iparam[IPARAM_VERBOSE       ] = 0;
     iparam[IPARAM_AUTOTUNING    ] = 0;
     iparam[IPARAM_INPUTFMT      ] = 0;
@@ -512,6 +518,10 @@ main(int argc, char *argv[]) {
             iparam[IPARAM_CHECK] = 1;
         } else if (startswith( argv[i], "--nocheck" )) {
             iparam[IPARAM_CHECK] = 0;
+        } else if (startswith( argv[i], "--bigmat" )) {
+            iparam[IPARAM_BIGMAT] = 1;
+        } else if (startswith( argv[i], "--nobigmat" )) {
+            iparam[IPARAM_BIGMAT] = 0;
         } else if (startswith( argv[i], "--inv" )) {
             iparam[IPARAM_INVERSE] = 1;
         } else if (startswith( argv[i], "--noinv" )) {

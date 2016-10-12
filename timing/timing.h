@@ -12,6 +12,7 @@
 #define TIMING_H
 
 typedef double morse_time_t;
+static void* morse_getaddr_null(const MORSE_desc_t *A, int m, int n);
 
 enum iparam_timing {
     IPARAM_THRDNBR,        /* Number of cores                            */
@@ -28,6 +29,7 @@ enum iparam_timing {
     IPARAM_MB,             /* Number of rows in a tile                   */
     IPARAM_NITER,          /* Number of iteration of each test           */
     IPARAM_WARMUP,         /* Run one test to load dynamic libraries     */
+    IPARAM_BIGMAT,         /* Allocating one big mat or plenty of small  */
     IPARAM_CHECK,          /* Checking activated or not                  */
     IPARAM_VERBOSE,        /* How much noise do we want?                 */
     IPARAM_AUTOTUNING,     /* Disable/enable autotuning                  */
@@ -93,6 +95,7 @@ enum dparam_timing {
     int64_t Q     = iparam[IPARAM_Q];              \
     int64_t MT    = (M%MB==0) ? (M/MB) : (M/MB+1); \
     int64_t NT    = (N%NB==0) ? (N/NB) : (N/NB+1); \
+    int bigmat     = iparam[IPARAM_BIGMAT];         \
     int check     = iparam[IPARAM_CHECK];          \
     int loud      = iparam[IPARAM_VERBOSE];        \
     (void)M;(void)N;(void)K;(void)NRHS;            \
@@ -104,8 +107,12 @@ enum dparam_timing {
 #define PASTE_CODE_ALLOCATE_MATRIX_TILE(_desc_, _cond_, _type_, _type2_, _lda_, _m_, _n_) \
     MORSE_desc_t *_desc_ = NULL;                                        \
     if( _cond_ ) {                                                      \
-        MORSE_Desc_Create(&(_desc_), NULL, _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
-                          P, Q);          \
+       if (!bigmat) \
+           MORSE_Desc_Create_User(&(_desc_), NULL, _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
+                          P, Q, morse_getaddr_null, NULL, NULL);\
+       else \
+           MORSE_Desc_Create(&(_desc_), NULL, _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
+                    P, Q);\
     }
 
 #define PASTE_CODE_FREE_MATRIX(_desc_)                                  \
