@@ -123,7 +123,7 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
                 morse_error("RUNTIME_desc_create", "MPI_TAG_UB not known by MPI");
             }
 
-            while ( ((uintptr_t)(1UL<<tag_width) > (uint)(*tag_ub) )
+            while ( ((uintptr_t)(1UL<<tag_width - 1) > (uint)(*tag_ub) )
                     && (tag_width >= TAG_WIDTH_MIN) ) {
                 tag_width--;
                 tag_sep--;
