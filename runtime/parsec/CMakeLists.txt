@@ -170,7 +170,7 @@ add_library(chameleon_parsec ${RUNTIME_SRCS})
 set_property(TARGET chameleon_parsec PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET chameleon_parsec PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
-target_link_libraries(chameleon_parsec coreblas ${PARSEC_LIBRARIES})
+target_link_libraries(chameleon_parsec coreblas ${PARSEC_LIBRARIES_DEP})
 if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
   target_link_libraries(chameleon_parsec cudablas)
 endif(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
