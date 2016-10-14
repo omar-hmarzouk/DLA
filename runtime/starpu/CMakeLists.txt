@@ -188,7 +188,7 @@ add_library(chameleon_starpu ${RUNTIME_SRCS})
 set_property(TARGET chameleon_starpu PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET chameleon_starpu PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
-target_link_libraries(chameleon_starpu coreblas ${STARPU_LIBRARIES})
+target_link_libraries(chameleon_starpu coreblas ${STARPU_LIBRARIES_DEP})
 if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
   target_link_libraries(chameleon_starpu cudablas)
 endif(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
