@@ -11,6 +11,11 @@
 #include "runtime/parsec/include/morse_parsec.h"
 #include <dague/data.h>
 
+void RUNTIME_user_tag_size(int user_tag_width, int user_tag_sep) {
+  (void)user_tag_width;
+  (void)user_tag_sep;
+}
+
 void *RUNTIME_mat_alloc( size_t size)
 {
     return malloc(size);

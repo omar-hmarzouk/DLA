@@ -72,6 +72,7 @@ int   RUNTIME_desc_acquire     (MORSE_desc_t*);
 /* Release the data described by the descriptor to be used by the StarPU tasks again. */
 int   RUNTIME_desc_release     (MORSE_desc_t*);
 int   RUNTIME_desc_getoncpu    (MORSE_desc_t*);
+void  RUNTIME_user_tag_size    (int, int) ;
 
 /*******************************************************************************
  * RUNTIME Options

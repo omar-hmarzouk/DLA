@@ -28,10 +28,12 @@
 
 #if defined(CHAMELEON_USE_MPI)
 
-/* Take 24 bits for the tile id, and 7 bits for descriptor id */
+/* Take 24 bits for the tile id, and 7 bits for descriptor id.
+   These values can be changed through the call MORSE_user_tag_size(int tag_width, int tag_sep) */
 #define TAG_WIDTH_MIN 20
 static int tag_width = 31;
 static int tag_sep   = 24;
+static int _tag_mpi_initialized_ = 0;
 
 #ifndef HAVE_STARPU_MPI_DATA_REGISTER
 #define starpu_mpi_data_register( handle_, tag_, owner_ )        \
@@ -48,6 +50,15 @@ static int tag_sep   = 24;
 #else
 #define FOLDED 0
 #endif
+
+void RUNTIME_user_tag_size(int user_tag_width, int user_tag_sep) {
+  if (_tag_mpi_initialized_ == 0) {
+    tag_width=user_tag_width;
+    tag_sep=user_tag_sep;
+  } else
+    morse_error("RUNTIME_user_tag_size", "must be called before creating any Morse descriptor with MORSE_Desc_create(). The tag sizes will not be modified.");
+}
+
 
 void *RUNTIME_mat_alloc( size_t size)
 {
@@ -111,8 +122,6 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
      * Check that we are not going over MPI tag limitations
      */
     {
-        static int _tag_mpi_initialized_ = 0;
-
         if (!_tag_mpi_initialized_) {
             int *tag_ub = NULL;
             int ok = 0;

@@ -581,3 +581,31 @@ int MORSE_Desc_Release (MORSE_desc_t  *desc) {
 int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc) {
   return RUNTIME_desc_getoncpu( desc );
 }
+
+/** ***************************************************************************
+ *
+ * @ingroup Descriptor
+ *
+ *  MORSE_user_tag_size - Set the sizes for the MPI tags
+ *  Default value: tag_width=31, tag_sep=24, meaning that the MPI tag is stored in 31 bits,
+ *  with 24 bits for the tile tag and 7 for the descriptor.
+ *  This function must be called before any descriptor creation.
+ *
+ ******************************************************************************
+ *
+ * @param[in] user_tag_width
+ *          The new value for tag_width.
+ *
+ * @param[in] user_tag_sep
+ *          The new value for tag_sep.
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval none
+ *
+ *****************************************************************************/
+void MORSE_user_tag_size(int user_tag_width, int user_tag_sep) {
+  RUNTIME_user_tag_size(user_tag_width, user_tag_sep);
+  return;
+}
