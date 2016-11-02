@@ -1,0 +1,10 @@
+#+TITLE: README DEV
+#+LANGUAGE: en
+#+OPTIONS: H:3 num:t toc:t \n:nil @:t ::t |:t _:nil ^:nil -:t f:t *:t <:t
+#+OPTIONS: TeX:t LaTeX:t skip:nil d:nil pri:nil tags:not-in-toc html-style:nil
+
+* TODO List
+** update the documentation
+** release sources of chameleon directly with CMake/CPack
+** too many options for users: hide some advanced options
+** validate parsec
