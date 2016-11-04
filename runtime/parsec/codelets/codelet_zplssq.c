@@ -76,8 +76,8 @@ CORE_zplssq_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 }
 
 void MORSE_TASK_zplssq( const MORSE_option_t *options,
-                        MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn,
-                        MORSE_desc_t *SCLSSQ,     int SCLSSQm,     int SCLSSQn )
+                        const MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn,
+                        const MORSE_desc_t *SCLSSQ,     int SCLSSQm,     int SCLSSQn )
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
@@ -103,7 +103,7 @@ CORE_zplssq2_parsec(dague_execution_unit_t *context, dague_execution_context_t *
 }
 
 void MORSE_TASK_zplssq2( const MORSE_option_t *options,
-                         MORSE_desc_t *RESULT, int RESULTm, int RESULTn )
+                         const MORSE_desc_t *RESULT, int RESULTm, int RESULTn )
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 

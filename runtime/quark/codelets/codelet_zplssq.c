@@ -59,8 +59,8 @@
  *
  */
 void MORSE_TASK_zplssq( const MORSE_option_t *options,
-                        MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn,
-                        MORSE_desc_t *SCLSSQ,     int SCLSSQm,     int SCLSSQn )
+                        const MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn,
+                        const MORSE_desc_t *SCLSSQ,     int SCLSSQm,     int SCLSSQn )
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     QUARK_Insert_Task(opt->quark, CORE_zplssq_quark, (Quark_Task_Flags*)opt,
@@ -86,7 +86,7 @@ void CORE_zplssq_quark(Quark *quark)
 }
 
 void MORSE_TASK_zplssq2( const MORSE_option_t *options,
-                         MORSE_desc_t *RESULT, int RESULTm, int RESULTn )
+                         const MORSE_desc_t *RESULT, int RESULTm, int RESULTn )
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     QUARK_Insert_Task(opt->quark, CORE_zplssq2_quark, (Quark_Task_Flags*)opt,

@@ -40,7 +40,7 @@
 
 void MORSE_TASK_zlauum(const MORSE_option_t *options,
                        MORSE_enum uplo, int n, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda)
+                       const MORSE_desc_t *A, int Am, int An, int lda)
 {
     (void)nb;
     struct starpu_codelet *codelet = &cl_zlauum;

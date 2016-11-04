@@ -52,8 +52,8 @@ CORE_ztrssq_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 void MORSE_TASK_ztrssq( const MORSE_option_t *options,
                         MORSE_enum uplo, MORSE_enum diag,
                         int m, int n,
-                        MORSE_desc_t *A, int Am, int An, int lda,
-                        MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn )
+                        const MORSE_desc_t *A, int Am, int An, int lda,
+                        const MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn )
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 

@@ -29,8 +29,8 @@
 void MORSE_TASK_zlantr(const MORSE_option_t *options,
                        MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
                        int M, int N, int NB,
-                       MORSE_desc_t *A, int Am, int An, int LDA,
-                       MORSE_desc_t *B, int Bm, int Bn)
+                       const MORSE_desc_t *A, int Am, int An, int LDA,
+                       const MORSE_desc_t *B, int Bm, int Bn)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LANTR;

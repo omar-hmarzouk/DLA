@@ -34,7 +34,7 @@
 //  MORSE_TASK_zplghe - Generate a tile for random hermitian (positive definite if bump is large enough) matrix.
 
 void MORSE_TASK_zplghe( const MORSE_option_t *options,
-                        double bump, int m, int n, MORSE_desc_t *A, int Am, int An, int lda,
+                        double bump, int m, int n, const MORSE_desc_t *A, int Am, int An, int lda,
                         int bigM, int m0, int n0, unsigned long long int seed )
 {
 

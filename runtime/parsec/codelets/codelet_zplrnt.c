@@ -52,7 +52,7 @@ CORE_zplrnt_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 }
 
 void MORSE_TASK_zplrnt( const MORSE_option_t *options,
-                        int m, int n, MORSE_desc_t *A, int Am, int An, int lda,
+                        int m, int n, const MORSE_desc_t *A, int Am, int An, int lda,
                         int bigM, int m0, int n0, unsigned long long int seed )
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);

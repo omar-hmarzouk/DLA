@@ -40,9 +40,9 @@
 void MORSE_TASK_zsyr2k(const MORSE_option_t *options,
                        MORSE_enum uplo, MORSE_enum trans,
                        int n, int k, int nb,
-                       MORSE_Complex64_t alpha, MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *B, int Bm, int Bn, int ldb,
-                       MORSE_Complex64_t beta, MORSE_desc_t *C, int Cm, int Cn, int ldc)
+                       MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *B, int Bm, int Bn, int ldb,
+                       MORSE_Complex64_t beta, const MORSE_desc_t *C, int Cm, int Cn, int ldc)
 {
     (void)nb;
     struct starpu_codelet *codelet = &cl_zsyr2k;

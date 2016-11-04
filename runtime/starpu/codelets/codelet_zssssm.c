@@ -105,10 +105,10 @@
 
 void MORSE_TASK_zssssm(const MORSE_option_t *options,
                        int m1, int n1, int m2, int n2, int k, int ib, int nb,
-                       MORSE_desc_t *A1, int A1m, int A1n, int lda1,
-                       MORSE_desc_t *A2, int A2m, int A2n, int lda2,
-                       MORSE_desc_t *L1, int L1m, int L1n, int ldl1,
-                       MORSE_desc_t *L2, int L2m, int L2n, int ldl2,
+                       const MORSE_desc_t *A1, int A1m, int A1n, int lda1,
+                       const MORSE_desc_t *A2, int A2m, int A2n, int lda2,
+                       const MORSE_desc_t *L1, int L1m, int L1n, int ldl1,
+                       const MORSE_desc_t *L2, int L2m, int L2n, int ldl2,
                        const int *IPIV)
 {
     (void)nb;

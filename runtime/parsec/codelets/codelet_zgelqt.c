@@ -116,8 +116,8 @@ CORE_zgelqt_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 
 void MORSE_TASK_zgelqt(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *T, int Tm, int Tn, int ldt)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *T, int Tm, int Tn, int ldt)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 

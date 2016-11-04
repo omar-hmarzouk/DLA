@@ -56,8 +56,8 @@ CORE_zlacpy_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
 
 void MORSE_TASK_zlacpy(const MORSE_option_t *options,
                        MORSE_enum uplo, int m, int n, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *B, int Bm, int Bn, int ldb)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
 
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);

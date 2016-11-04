@@ -28,8 +28,8 @@
 
 void MORSE_TASK_dzasum(const MORSE_option_t *options,
                        MORSE_enum storev, MORSE_enum uplo, int M, int N,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *B, int Bm, int Bn)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *B, int Bm, int Bn)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_ASUM;

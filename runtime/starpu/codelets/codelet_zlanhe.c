@@ -31,8 +31,8 @@
 
 void MORSE_TASK_zlanhe(const MORSE_option_t *options,
                        MORSE_enum norm, MORSE_enum uplo, int N, int NB,
-                       MORSE_desc_t *A, int Am, int An, int LDA,
-                       MORSE_desc_t *B, int Bm, int Bn)
+                       const MORSE_desc_t *A, int Am, int An, int LDA,
+                       const MORSE_desc_t *B, int Bm, int Bn)
 {
     struct starpu_codelet *codelet = &cl_zlanhe;
     void (*callback)(void*) = options->profiling ? cl_zlange_callback : NULL;

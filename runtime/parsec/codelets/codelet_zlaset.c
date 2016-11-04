@@ -88,7 +88,7 @@ CORE_zlaset_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
 void MORSE_TASK_zlaset(const MORSE_option_t *options,
                        MORSE_enum uplo, int M, int N,
                        MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
-                       MORSE_desc_t *A, int Am, int An, int LDA)
+                       const MORSE_desc_t *A, int Am, int An, int LDA)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 

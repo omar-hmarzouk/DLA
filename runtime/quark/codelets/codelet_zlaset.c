@@ -70,7 +70,7 @@
 void MORSE_TASK_zlaset(const MORSE_option_t *options,
                        MORSE_enum uplo, int M, int N,
                        MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
-                       MORSE_desc_t *A, int Am, int An, int LDA)
+                       const MORSE_desc_t *A, int Am, int An, int LDA)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LASET;

@@ -39,8 +39,8 @@
 
 void MORSE_TASK_zlacpy(const MORSE_option_t *options,
                        MORSE_enum uplo, int m, int n, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *B, int Bm, int Bn, int ldb)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LACPY;

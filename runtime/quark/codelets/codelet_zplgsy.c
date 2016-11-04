@@ -33,7 +33,7 @@
 
 
 void MORSE_TASK_zplgsy( const MORSE_option_t *options,
-                        MORSE_Complex64_t bump, int m, int n, MORSE_desc_t *A, int Am, int An, int lda,
+                        MORSE_Complex64_t bump, int m, int n, const MORSE_desc_t *A, int Am, int An, int lda,
                         int bigM, int m0, int n0, unsigned long long int seed )
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);

@@ -51,8 +51,8 @@ CORE_zlange_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 
 void MORSE_TASK_zlange(const MORSE_option_t *options,
                        MORSE_enum norm, int M, int N, int NB,
-                       MORSE_desc_t *A, int Am, int An, int LDA,
-                       MORSE_desc_t *B, int Bm, int Bn)
+                       const MORSE_desc_t *A, int Am, int An, int LDA,
+                       const MORSE_desc_t *B, int Bm, int Bn)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
@@ -89,8 +89,8 @@ CORE_zlange_max_parsec(dague_execution_unit_t *context, dague_execution_context_
 }
 
 void MORSE_TASK_zlange_max(const MORSE_option_t *options,
-                           MORSE_desc_t *A, int Am, int An,
-                           MORSE_desc_t *B, int Bm, int Bn)
+                           const MORSE_desc_t *A, int Am, int An,
+                           const MORSE_desc_t *B, int Bm, int Bn)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 

@@ -60,8 +60,8 @@ CORE_zsyrk_parsec(dague_execution_unit_t *context, dague_execution_context_t *th
 void MORSE_TASK_zsyrk(const MORSE_option_t *options,
                       MORSE_enum uplo, MORSE_enum trans,
                       int n, int k, int nb,
-                      MORSE_Complex64_t alpha, MORSE_desc_t *A, int Am, int An, int lda,
-                      MORSE_Complex64_t beta, MORSE_desc_t *C, int Cm, int Cn, int ldc)
+                      MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,
+                      MORSE_Complex64_t beta, const MORSE_desc_t *C, int Cm, int Cn, int ldc)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 

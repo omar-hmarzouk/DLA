@@ -27,8 +27,8 @@
 
 void MORSE_TASK_zaxpy(const MORSE_option_t *options,
                       int M, MORSE_Complex64_t alpha,
-                      MORSE_desc_t *A, int Am, int An, int incA,
-                      MORSE_desc_t *B, int Bm, int Bn, int incB)
+                      const MORSE_desc_t *A, int Am, int An, int incA,
+                      const MORSE_desc_t *B, int Bm, int Bn, int incB)
 {
     struct starpu_codelet *codelet = &cl_zaxpy;
     void (*callback)(void*) = options->profiling ? cl_zaxpy_callback : NULL;

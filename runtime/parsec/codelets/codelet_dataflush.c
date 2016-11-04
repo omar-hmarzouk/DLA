@@ -23,7 +23,7 @@
 #include "runtime/parsec/include/morse_parsec.h"
 
 void MORSE_TASK_dataflush(const MORSE_option_t *options,
-                          MORSE_desc_t *A, int Am, int An)
+                          const MORSE_desc_t *A, int Am, int An)
 {
     (void)options; (void)A;
 

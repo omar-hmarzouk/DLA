@@ -101,8 +101,8 @@ void CORE_zgeadd_quark(Quark *quark)
  ******************************************************************************/
 void MORSE_TASK_zgeadd(const MORSE_option_t *options,
                        MORSE_enum trans, int m, int n, int nb,
-                       MORSE_Complex64_t alpha, MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_Complex64_t beta,  MORSE_desc_t *B, int Bm, int Bn, int ldb)
+                       MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,
+                       MORSE_Complex64_t beta,  const MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_GEADD;

@@ -74,10 +74,10 @@ CORE_zttmlq_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
 void MORSE_TASK_zttmlq(const MORSE_option_t *options,
                        MORSE_enum side, MORSE_enum trans,
                        int m1, int n1, int m2, int n2, int k, int ib, int nb,
-                       MORSE_desc_t *A1, int A1m, int A1n, int lda1,
-                       MORSE_desc_t *A2, int A2m, int A2n, int lda2,
-                       MORSE_desc_t *V, int Vm, int Vn, int ldv,
-                       MORSE_desc_t *T, int Tm, int Tn, int ldt)
+                       const MORSE_desc_t *A1, int A1m, int A1n, int lda1,
+                       const MORSE_desc_t *A2, int A2m, int A2n, int lda2,
+                       const MORSE_desc_t *V, int Vm, int Vn, int ldv,
+                       const MORSE_desc_t *T, int Tm, int Tn, int ldt)
 {
     int ldwork = side == MorseLeft ? ib : nb;
 

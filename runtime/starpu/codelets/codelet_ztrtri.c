@@ -41,7 +41,7 @@
 void MORSE_TASK_ztrtri(const MORSE_option_t *options,
                        MORSE_enum uplo, MORSE_enum diag,
                        int n, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *A, int Am, int An, int lda,
                        int iinfo)
 {
     (void)nb;

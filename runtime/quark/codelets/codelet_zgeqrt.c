@@ -96,8 +96,8 @@
 
 void MORSE_TASK_zgeqrt(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *T, int Tm, int Tn, int ldt)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *T, int Tm, int Tn, int ldt)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_GEQRT;

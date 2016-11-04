@@ -110,9 +110,9 @@
 
 void MORSE_TASK_zttqrt(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,
-                       MORSE_desc_t *A1, int A1m, int A1n, int lda1,
-                       MORSE_desc_t *A2, int A2m, int A2n, int lda2,
-                       MORSE_desc_t *T, int Tm, int Tn, int ldt)
+                       const MORSE_desc_t *A1, int A1m, int A1n, int lda1,
+                       const MORSE_desc_t *A2, int A2m, int A2n, int lda2,
+                       const MORSE_desc_t *T, int Tm, int Tn, int ldt)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_TTQRT;

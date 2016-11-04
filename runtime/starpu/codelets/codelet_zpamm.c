@@ -178,10 +178,10 @@ void
 MORSE_TASK_zpamm(const MORSE_option_t *options,
                  int op, MORSE_enum side, int storev,
                  int m, int n, int k, int l,
-                 MORSE_desc_t *A1, int A1m, int A1n, int lda1,
-                 MORSE_desc_t *A2, int A2m, int A2n, int lda2,
-                 MORSE_desc_t *V, int Vm, int Vn, int ldv,
-                 MORSE_desc_t *W, int Wm, int Wn, int ldw)
+                 const MORSE_desc_t *A1, int A1m, int A1n, int lda1,
+                 const MORSE_desc_t *A2, int A2m, int A2n, int lda2,
+                 const MORSE_desc_t *V, int Vm, int Vn, int ldv,
+                 const MORSE_desc_t *W, int Wm, int Wn, int ldw)
 {
     (void)nb;
     struct starpu_codelet *codelet = &cl_zpamm;

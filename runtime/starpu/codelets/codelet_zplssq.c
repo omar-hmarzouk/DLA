@@ -60,8 +60,8 @@
  *
  */
 void MORSE_TASK_zplssq( const MORSE_option_t *options,
-                        MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn,
-                        MORSE_desc_t *SCLSSQ,     int SCLSSQm,     int SCLSSQn )
+                        const MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn,
+                        const MORSE_desc_t *SCLSSQ,     int SCLSSQm,     int SCLSSQn )
 {
     struct starpu_codelet *codelet = &cl_zplssq;
     void (*callback)(void*) = options->profiling ? cl_zplssq_callback : NULL;
@@ -98,7 +98,7 @@ static void cl_zplssq_cpu_func(void *descr[], void *cl_arg)
 CODELETS_CPU(zplssq, 2, cl_zplssq_cpu_func)
 
 void MORSE_TASK_zplssq2( const MORSE_option_t *options,
-                         MORSE_desc_t *RESULT, int RESULTm, int RESULTn )
+                         const MORSE_desc_t *RESULT, int RESULTm, int RESULTn )
 {
     struct starpu_codelet *codelet = &cl_zplssq2;
     void (*callback)(void*) = options->profiling ? cl_zplssq2_callback : NULL;

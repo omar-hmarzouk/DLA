@@ -37,8 +37,8 @@
  **/
 void MORSE_TASK_zlag2c(const MORSE_option_t *options,
                        int m, int n, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *B, int Bm, int Bn, int ldb)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
     (void)nb;
     struct starpu_codelet *codelet = &cl_zlag2c;
@@ -78,8 +78,8 @@ static void cl_zlag2c_cpu_func(void *descr[], void *cl_arg)
 
 void MORSE_TASK_clag2z(const MORSE_option_t *options,
                        int m, int n, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *B, int Bm, int Bn, int ldb)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
     (void)nb;
     struct starpu_codelet *codelet = &cl_clag2z;

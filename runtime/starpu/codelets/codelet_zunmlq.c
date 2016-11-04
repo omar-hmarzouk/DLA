@@ -120,9 +120,9 @@
 void MORSE_TASK_zunmlq(const MORSE_option_t *options,
                        MORSE_enum side, MORSE_enum trans,
                        int m, int n, int k, int ib, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *T, int Tm, int Tn, int ldt,
-                       MORSE_desc_t *C, int Cm, int Cn, int ldc)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *T, int Tm, int Tn, int ldt,
+                       const MORSE_desc_t *C, int Cm, int Cn, int ldc)
 {
     struct starpu_codelet *codelet = &cl_zunmlq;
     void (*callback)(void*) = options->profiling ? cl_zunmlq_callback : NULL;

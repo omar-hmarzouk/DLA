@@ -97,8 +97,8 @@
 
 void MORSE_TASK_zgeqrt(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *T, int Tm, int Tn, int ldt)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *T, int Tm, int Tn, int ldt)
 {
     (void)nb;
     struct starpu_codelet *codelet = &cl_zgeqrt;

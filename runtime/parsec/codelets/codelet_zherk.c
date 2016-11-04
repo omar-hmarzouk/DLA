@@ -66,8 +66,8 @@ CORE_zherk_parsec(dague_execution_unit_t *context, dague_execution_context_t * t
 void MORSE_TASK_zherk(const MORSE_option_t *options,
                       MORSE_enum uplo, MORSE_enum trans,
                       int n, int k, int nb,
-                      double alpha, MORSE_desc_t *A, int Am, int An, int lda,
-                      double beta, MORSE_desc_t *C, int Cm, int Cn, int ldc)
+                      double alpha, const MORSE_desc_t *A, int Am, int An, int lda,
+                      double beta, const MORSE_desc_t *C, int Cm, int Cn, int ldc)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 

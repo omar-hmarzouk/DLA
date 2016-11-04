@@ -32,7 +32,7 @@
  **/
 void MORSE_TASK_ztile_zero(const const MORSE_option_t *options,
                            int X1, int X2, int Y1, int Y2,
-                           MORSE_desc_t *A, int Am, int An, int lda)
+                           const MORSE_desc_t *A, int Am, int An, int lda)
 {
     struct starpu_codelet *codelet;
     codelet = &cl_ztile_zero;

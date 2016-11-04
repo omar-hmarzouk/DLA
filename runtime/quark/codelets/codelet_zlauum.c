@@ -39,7 +39,7 @@
 
 void MORSE_TASK_zlauum(const MORSE_option_t *options,
                        MORSE_enum uplo, int n, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda)
+                       const MORSE_desc_t *A, int Am, int An, int lda)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LAUUM;

@@ -40,9 +40,9 @@
 void MORSE_TASK_zgemm(const MORSE_option_t *options,
                       MORSE_enum transA, int transB,
                       int m, int n, int k, int nb,
-                      MORSE_Complex64_t alpha, MORSE_desc_t *A, int Am, int An, int lda,
-                                               MORSE_desc_t *B, int Bm, int Bn, int ldb,
-                      MORSE_Complex64_t beta,  MORSE_desc_t *C, int Cm, int Cn, int ldc)
+                      MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,
+                                               const MORSE_desc_t *B, int Bm, int Bn, int ldb,
+                      MORSE_Complex64_t beta,  const MORSE_desc_t *C, int Cm, int Cn, int ldc)
 {
     (void)nb;
     struct starpu_codelet *codelet = &cl_zgemm;

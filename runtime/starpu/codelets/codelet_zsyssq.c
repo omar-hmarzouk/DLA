@@ -29,8 +29,8 @@
 
 void MORSE_TASK_zsyssq( const MORSE_option_t *options,
                         MORSE_enum uplo, int n,
-                        MORSE_desc_t *A, int Am, int An, int lda,
-                        MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn )
+                        const MORSE_desc_t *A, int Am, int An, int lda,
+                        const MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn )
 {
     struct starpu_codelet *codelet = &cl_zsyssq;
     void (*callback)(void*) = options->profiling ? cl_zgessq_callback : NULL;

@@ -51,7 +51,7 @@ CORE_ztile_zero_parsec(dague_execution_unit_t *context, dague_execution_context_
 
 void MORSE_TASK_ztile_zero(const const MORSE_option_t *options,
                            int X1, int X2, int Y1, int Y2,
-                           MORSE_desc_t *A, int Am, int An, int lda)
+                           const MORSE_desc_t *A, int Am, int An, int lda)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 

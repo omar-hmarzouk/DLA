@@ -33,7 +33,7 @@
 
 void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
                              MORSE_enum uplo, int n, int nb,
-                             MORSE_desc_t *A, int Am, int An, int lda,
+                             const MORSE_desc_t *A, int Am, int An, int lda,
                              int iinfo)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);

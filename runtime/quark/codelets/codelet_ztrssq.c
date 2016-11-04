@@ -29,8 +29,8 @@
 void MORSE_TASK_ztrssq( const MORSE_option_t *options,
                         MORSE_enum uplo, MORSE_enum diag,
                         int m, int n,
-                        MORSE_desc_t *A, int Am, int An, int lda,
-                        MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn )
+                        const MORSE_desc_t *A, int Am, int An, int lda,
+                        const MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn )
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     QUARK_Insert_Task(opt->quark, CORE_ztrssq_quark, (Quark_Task_Flags*)opt,

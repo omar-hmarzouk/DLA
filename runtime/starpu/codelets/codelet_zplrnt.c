@@ -35,7 +35,7 @@
 //  MORSE_TASK_zplrnt - Generate a tile for random matrix.
 
 void MORSE_TASK_zplrnt( const MORSE_option_t *options,
-                        int m, int n, MORSE_desc_t *A, int Am, int An, int lda,
+                        int m, int n, const MORSE_desc_t *A, int Am, int An, int lda,
                         int bigM, int m0, int n0, unsigned long long int seed )
 {
 

@@ -31,8 +31,8 @@
 
 void MORSE_TASK_zlange(const MORSE_option_t *options,
                        MORSE_enum norm, int M, int N, int NB,
-                       MORSE_desc_t *A, int Am, int An, int LDA,
-                       MORSE_desc_t *B, int Bm, int Bn)
+                       const MORSE_desc_t *A, int Am, int An, int LDA,
+                       const MORSE_desc_t *B, int Bm, int Bn)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LANGE;
@@ -64,8 +64,8 @@ void CORE_zlange_quark(Quark *quark)
 
 
 void MORSE_TASK_zlange_max(const MORSE_option_t *options,
-                           MORSE_desc_t *A, int Am, int An,
-                           MORSE_desc_t *B, int Bm, int Bn)
+                           const MORSE_desc_t *A, int Am, int An,
+                           const MORSE_desc_t *B, int Bm, int Bn)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LANGE_MAX;

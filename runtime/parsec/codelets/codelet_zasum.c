@@ -50,8 +50,8 @@ CORE_dzasum_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 
 void MORSE_TASK_dzasum(const MORSE_option_t *options,
                        MORSE_enum storev, MORSE_enum uplo, int M, int N,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *B, int Bm, int Bn)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *B, int Bm, int Bn)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 

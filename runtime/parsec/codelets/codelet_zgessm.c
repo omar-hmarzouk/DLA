@@ -105,9 +105,9 @@ CORE_zgessm_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 void MORSE_TASK_zgessm(const MORSE_option_t *options,
                        int m, int n, int k, int ib, int nb,
                        int *IPIV,
-                       MORSE_desc_t *L, int Lm, int Ln, int ldl,
-                       MORSE_desc_t *D, int Dm, int Dn, int ldd,
-                       MORSE_desc_t *A, int Am, int An, int lda)
+                       const MORSE_desc_t *L, int Lm, int Ln, int ldl,
+                       const MORSE_desc_t *D, int Dm, int Dn, int ldd,
+                       const MORSE_desc_t *A, int Am, int An, int lda)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 

@@ -31,7 +31,7 @@
 
 void MORSE_TASK_zgetrf(const MORSE_option_t *options,
                        int m, int n, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *A, int Am, int An, int lda,
                        int *IPIV,
                        MORSE_bool check_info, int iinfo)
 {

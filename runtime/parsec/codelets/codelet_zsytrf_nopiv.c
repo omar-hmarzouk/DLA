@@ -48,7 +48,7 @@ CORE_zsytrf_nopiv_parsec(dague_execution_unit_t *context, dague_execution_contex
 
 void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
                              MORSE_enum uplo, int n, int nb,
-                             MORSE_desc_t *A, int Am, int An, int lda,
+                             const MORSE_desc_t *A, int Am, int An, int lda,
                              int iinfo)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);

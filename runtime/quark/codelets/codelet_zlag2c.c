@@ -36,8 +36,8 @@
  **/
 void MORSE_TASK_zlag2c(const MORSE_option_t *options,
                        int m, int n, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *B, int Bm, int Bn, int ldb)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LAG2C;
@@ -81,8 +81,8 @@ void CORE_zlag2c_quark(Quark *quark)
 
 void MORSE_TASK_clag2z(const MORSE_option_t *options,
                        int m, int n, int nb,
-                       MORSE_desc_t *A, int Am, int An, int lda,
-                       MORSE_desc_t *B, int Bm, int Bn, int ldb)
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
     QUARK_Insert_Task(opt->quark, CORE_clag2z_quark, (Quark_Task_Flags*)opt,
         sizeof(int),                        &m,     VALUE,

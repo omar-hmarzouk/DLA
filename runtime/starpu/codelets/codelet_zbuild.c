@@ -35,7 +35,7 @@
 
 
 void MORSE_TASK_zbuild( const MORSE_option_t *options,
-                        MORSE_desc_t *A, int Am, int An, int lda,
+                        const MORSE_desc_t *A, int Am, int An, int lda,
                         void *user_data, void* user_build_callback )
 {
 

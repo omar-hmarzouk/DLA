@@ -50,8 +50,8 @@ CORE_zlanhe_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 
 void MORSE_TASK_zlanhe(const MORSE_option_t *options,
                        MORSE_enum norm, MORSE_enum uplo, int N, int NB,
-                       MORSE_desc_t *A, int Am, int An, int LDA,
-                       MORSE_desc_t *B, int Bm, int Bn)
+                       const MORSE_desc_t *A, int Am, int An, int LDA,
+                       const MORSE_desc_t *B, int Bm, int Bn)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 

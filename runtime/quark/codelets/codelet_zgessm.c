@@ -81,9 +81,9 @@
 void MORSE_TASK_zgessm(const MORSE_option_t *options,
                        int m, int n, int k, int ib, int nb,
                        int *IPIV,
-                       MORSE_desc_t *L, int Lm, int Ln, int ldl,
-                       MORSE_desc_t *D, int Dm, int Dn, int ldd,
-                       MORSE_desc_t *A, int Am, int An, int lda)
+                       const MORSE_desc_t *L, int Lm, int Ln, int ldl,
+                       const MORSE_desc_t *D, int Dm, int Dn, int ldd,
+                       const MORSE_desc_t *A, int Am, int An, int lda)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_GESSM;
