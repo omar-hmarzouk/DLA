@@ -52,11 +52,13 @@ static int _tag_mpi_initialized_ = 0;
 #endif
 
 void RUNTIME_user_tag_size(int user_tag_width, int user_tag_sep) {
+#if defined(CHAMELEON_USE_MPI)
   if (_tag_mpi_initialized_ == 0) {
     tag_width=user_tag_width;
     tag_sep=user_tag_sep;
   } else
     morse_error("RUNTIME_user_tag_size", "must be called before creating any Morse descriptor with MORSE_Desc_create(). The tag sizes will not be modified.");
+#endif
 }
 
 
