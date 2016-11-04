@@ -84,7 +84,7 @@ int RUNTIME_desc_getoncpu( MORSE_desc_t *desc )
     return MORSE_SUCCESS;
 }
 
-void *RUNTIME_desc_getaddr( MORSE_desc_t *desc, int m, int n )
+void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
 {
     return desc->get_blkaddr( desc, m, n );
 }

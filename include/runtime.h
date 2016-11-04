@@ -66,7 +66,7 @@ void  RUNTIME_desc_init        (MORSE_desc_t*);
 void  RUNTIME_desc_create      (MORSE_desc_t*);
 void  RUNTIME_desc_destroy     (MORSE_desc_t*);
 void  RUNTIME_desc_submatrix   (MORSE_desc_t*);
-void* RUNTIME_desc_getaddr     (MORSE_desc_t*, int, int);
+void* RUNTIME_desc_getaddr     (const MORSE_desc_t*, int, int);
 /* Acquire in main memory an up-to-date copy of the data described by the descriptor for read-write access. */
 int   RUNTIME_desc_acquire     (MORSE_desc_t*);
 /* Release the data described by the descriptor to be used by the StarPU tasks again. */

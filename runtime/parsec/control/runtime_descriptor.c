@@ -269,7 +269,7 @@ int RUNTIME_desc_getoncpu( MORSE_desc_t *desc )
     return MORSE_SUCCESS;
 }
 
-void *RUNTIME_desc_getaddr( MORSE_desc_t *desc, int m, int n )
+void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
 {
     assert(0); /* This should not be called because we also need the handle to match the address we need. */
     return desc->get_blkaddr( desc, m, n );

@@ -293,7 +293,7 @@ int RUNTIME_desc_getoncpu( MORSE_desc_t *desc )
     return MORSE_SUCCESS;
 }
 
-void *RUNTIME_desc_getaddr( MORSE_desc_t *desc, int m, int n )
+void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
 {
     starpu_data_handle_t *ptrtile = (starpu_data_handle_t*)(desc->schedopt);
     ptrtile += ((int64_t)(desc->lmt) * (int64_t)n + (int64_t)m);
