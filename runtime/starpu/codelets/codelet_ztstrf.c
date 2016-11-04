@@ -100,7 +100,7 @@
  *
  ******************************************************************************/
 
-void MORSE_TASK_ztstrf(MORSE_option_t *options,
+void MORSE_TASK_ztstrf(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,
                        MORSE_desc_t *U, int Um, int Un, int ldu,
                        MORSE_desc_t *A, int Am, int An, int lda,

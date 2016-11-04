@@ -117,7 +117,7 @@
  *
  ******************************************************************************/
 
-void MORSE_TASK_zunmlq(MORSE_option_t *options,
+void MORSE_TASK_zunmlq(const MORSE_option_t *options,
                        MORSE_enum side, MORSE_enum trans,
                        int m, int n, int k, int ib, int nb,
                        MORSE_desc_t *A, int Am, int An, int lda,

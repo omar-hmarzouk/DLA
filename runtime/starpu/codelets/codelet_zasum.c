@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -28,7 +28,7 @@
 #include "runtime/starpu/include/runtime_codelet_z.h"
 #include "runtime_z.h"
 
-void MORSE_TASK_dzasum(MORSE_option_t *options,
+void MORSE_TASK_dzasum(const MORSE_option_t *options,
                        MORSE_enum storev, MORSE_enum uplo, int M, int N,
                        MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_desc_t *B, int Bm, int Bn)

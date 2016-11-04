@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -58,7 +58,7 @@
  *          On exit, result contains scl * sqrt( ssq )
  *
  */
-void MORSE_TASK_zplssq( MORSE_option_t *options,
+void MORSE_TASK_zplssq( const MORSE_option_t *options,
                         MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn,
                         MORSE_desc_t *SCLSSQ,     int SCLSSQm,     int SCLSSQn )
 {
@@ -85,7 +85,7 @@ void CORE_zplssq_quark(Quark *quark)
     }
 }
 
-void MORSE_TASK_zplssq2( MORSE_option_t *options,
+void MORSE_TASK_zplssq2( const MORSE_option_t *options,
                          MORSE_desc_t *RESULT, int RESULTm, int RESULTn )
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);

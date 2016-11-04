@@ -76,7 +76,7 @@
  *
  ******************************************************************************/
 
-void MORSE_TASK_zgetrf_nopiv(MORSE_option_t *options,
+void MORSE_TASK_zgetrf_nopiv(const MORSE_option_t *options,
                               int m, int n, int ib, int nb,
                               MORSE_desc_t *A, int Am, int An, int lda,
                               int iinfo)

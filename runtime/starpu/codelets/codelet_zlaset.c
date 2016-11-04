@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -68,7 +68,7 @@
  *
  **/
 
-void MORSE_TASK_zlaset(MORSE_option_t *options,
+void MORSE_TASK_zlaset(const MORSE_option_t *options,
                        MORSE_enum uplo, int M, int N,
                        MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
                        MORSE_desc_t *A, int Am, int An, int LDA)

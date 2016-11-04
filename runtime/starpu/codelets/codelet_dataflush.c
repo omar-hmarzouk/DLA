@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -40,7 +40,7 @@ static void data_release(void *handle)
 }
 #endif
 
-void MORSE_TASK_dataflush(MORSE_option_t *options,
+void MORSE_TASK_dataflush(const MORSE_option_t *options,
                           MORSE_desc_t *A, int Am, int An)
 {
     (void)options;

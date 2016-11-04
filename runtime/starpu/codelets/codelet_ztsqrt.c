@@ -97,7 +97,7 @@
  *
  ******************************************************************************/
 
-void MORSE_TASK_ztsqrt(MORSE_option_t *options,
+void MORSE_TASK_ztsqrt(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,
                        MORSE_desc_t *A1, int A1m, int A1n, int lda1,
                        MORSE_desc_t *A2, int A2m, int A2n, int lda2,

@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2015 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -111,7 +111,7 @@ CORE_zgeadd_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
  ******************************************************************************/
-void MORSE_TASK_zgeadd(MORSE_option_t *options,
+void MORSE_TASK_zgeadd(const MORSE_option_t *options,
                        MORSE_enum trans, int m, int n, int nb,
                        MORSE_Complex64_t alpha, MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_Complex64_t beta,  MORSE_desc_t *B, int Bm, int Bn, int ldb)

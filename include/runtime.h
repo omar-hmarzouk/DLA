@@ -148,23 +148,23 @@ void RUNTIME_sdisplay_oneprofile (MORSE_kernel_t);
 #include "runtime_zc.h"
 #include "runtime_ds.h"
 
-void MORSE_TASK_ztile_zero(MORSE_option_t *options,
+void MORSE_TASK_ztile_zero(const MORSE_option_t *options,
                            int X1, int X2, int Y1, int Y2,
                            MORSE_desc_t *A, int Am, int An, int lda);
-void MORSE_TASK_dtile_zero(MORSE_option_t *options,
+void MORSE_TASK_dtile_zero(const MORSE_option_t *options,
                            int X1, int X2, int Y1, int Y2,
                            MORSE_desc_t *A, int Am, int An, int lda);
-void MORSE_TASK_ctile_zero(MORSE_option_t *options,
+void MORSE_TASK_ctile_zero(const MORSE_option_t *options,
                            int X1, int X2, int Y1, int Y2,
                            MORSE_desc_t *A, int Am, int An, int lda);
-void MORSE_TASK_stile_zero(MORSE_option_t *options,
+void MORSE_TASK_stile_zero(const MORSE_option_t *options,
                            int X1, int X2, int Y1, int Y2,
                            MORSE_desc_t *A, int Am, int An, int lda);
 
 /*
  * Mark a data as unused after this call
  */
-void MORSE_TASK_dataflush(MORSE_option_t *options,
+void MORSE_TASK_dataflush(const MORSE_option_t *options,
                           MORSE_desc_t *A, int Am, int An);
 void MORSE_TASK_dataflush_all();
 

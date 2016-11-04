@@ -79,7 +79,7 @@
  *
  ******************************************************************************/
 
-void MORSE_TASK_zgessm(MORSE_option_t *options,
+void MORSE_TASK_zgessm(const MORSE_option_t *options,
                        int m, int n, int k, int ib, int nb,
                        int *IPIV,
                        MORSE_desc_t *L, int Lm, int Ln, int ldl,

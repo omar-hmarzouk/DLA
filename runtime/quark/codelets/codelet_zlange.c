@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -29,7 +29,7 @@
 
 #include "runtime/quark/include/morse_quark.h"
 
-void MORSE_TASK_zlange(MORSE_option_t *options,
+void MORSE_TASK_zlange(const MORSE_option_t *options,
                        MORSE_enum norm, int M, int N, int NB,
                        MORSE_desc_t *A, int Am, int An, int LDA,
                        MORSE_desc_t *B, int Bm, int Bn)
@@ -63,7 +63,7 @@ void CORE_zlange_quark(Quark *quark)
 }
 
 
-void MORSE_TASK_zlange_max(MORSE_option_t *options,
+void MORSE_TASK_zlange_max(const MORSE_option_t *options,
                            MORSE_desc_t *A, int Am, int An,
                            MORSE_desc_t *B, int Bm, int Bn)
 {

@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2015 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -75,7 +75,7 @@ CORE_zplssq_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     return 0;
 }
 
-void MORSE_TASK_zplssq( MORSE_option_t *options,
+void MORSE_TASK_zplssq( const MORSE_option_t *options,
                         MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn,
                         MORSE_desc_t *SCLSSQ,     int SCLSSQm,     int SCLSSQn )
 {
@@ -102,7 +102,7 @@ CORE_zplssq2_parsec(dague_execution_unit_t *context, dague_execution_context_t *
     return 0;
 }
 
-void MORSE_TASK_zplssq2( MORSE_option_t *options,
+void MORSE_TASK_zplssq2( const MORSE_option_t *options,
                          MORSE_desc_t *RESULT, int RESULTm, int RESULTn )
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);

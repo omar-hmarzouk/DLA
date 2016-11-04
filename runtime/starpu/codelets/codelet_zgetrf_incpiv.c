@@ -87,7 +87,7 @@
  *
  ******************************************************************************/
 
-void MORSE_TASK_zgetrf_incpiv(MORSE_option_t *options,
+void MORSE_TASK_zgetrf_incpiv(const MORSE_option_t *options,
                               int m, int n, int ib, int nb,
                               MORSE_desc_t *A, int Am, int An, int lda,
                               MORSE_desc_t *L, int Lm, int Ln, int ldl,

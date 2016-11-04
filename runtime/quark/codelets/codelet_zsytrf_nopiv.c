@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -31,7 +31,7 @@
 #include "runtime/quark/include/morse_quark.h"
 
 
-void MORSE_TASK_zsytrf_nopiv(MORSE_option_t *options,
+void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
                              MORSE_enum uplo, int n, int nb,
                              MORSE_desc_t *A, int Am, int An, int lda,
                              int iinfo)

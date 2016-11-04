@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -35,7 +35,7 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-void MORSE_TASK_zlag2c(MORSE_option_t *options,
+void MORSE_TASK_zlag2c(const MORSE_option_t *options,
                        int m, int n, int nb,
                        MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_desc_t *B, int Bm, int Bn, int ldb)
@@ -76,7 +76,7 @@ static void cl_zlag2c_cpu_func(void *descr[], void *cl_arg)
     CORE_zlag2c( m, n, A, lda, B, ldb);
 }
 
-void MORSE_TASK_clag2z(MORSE_option_t *options,
+void MORSE_TASK_clag2z(const MORSE_option_t *options,
                        int m, int n, int nb,
                        MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_desc_t *B, int Bm, int Bn, int ldb)

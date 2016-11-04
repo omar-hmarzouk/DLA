@@ -133,7 +133,7 @@
  *
  ******************************************************************************/
 
-void MORSE_TASK_ztsmlq(MORSE_option_t *options,
+void MORSE_TASK_ztsmlq(const MORSE_option_t *options,
                        MORSE_enum side, MORSE_enum trans,
                        int m1, int n1, int m2, int n2, int k, int ib, int nb,
                        MORSE_desc_t *A1, int A1m, int A1n, int lda1,

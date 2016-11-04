@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -34,7 +34,7 @@
 
 //  MORSE_TASK_zplrnt - Generate a tile for random matrix.
 
-void MORSE_TASK_zplrnt( MORSE_option_t *options,
+void MORSE_TASK_zplrnt( const MORSE_option_t *options,
                         int m, int n, MORSE_desc_t *A, int Am, int An, int lda,
                         int bigM, int m0, int n0, unsigned long long int seed )
 {

@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -30,7 +30,7 @@
 #include "runtime/starpu/include/morse_starpu.h"
 #include "runtime/starpu/include/runtime_codelet_z.h"
 
-void MORSE_TASK_zlange(MORSE_option_t *options,
+void MORSE_TASK_zlange(const MORSE_option_t *options,
                        MORSE_enum norm, int M, int N, int NB,
                        MORSE_desc_t *A, int Am, int An, int LDA,
                        MORSE_desc_t *B, int Bm, int Bn)
@@ -76,7 +76,7 @@ static void cl_zlange_cpu_func(void *descr[], void *cl_arg)
  */
 CODELETS_CPU(zlange, 3, cl_zlange_cpu_func)
 
-void MORSE_TASK_zlange_max(MORSE_option_t *options,
+void MORSE_TASK_zlange_max(const MORSE_option_t *options,
                            MORSE_desc_t *A, int Am, int An,
                            MORSE_desc_t *B, int Bm, int Bn)
 {
