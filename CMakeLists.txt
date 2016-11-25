@@ -237,9 +237,12 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             message("-- ${BoldGreen}CHAMELEON_SIMULATION is set to OFF, turn it ON to use"
                 " SIMULATION mode (only with StarPU compiled with SimGrid)${ColourReset}")
         endif()
-        option(CHAMELEON_SIMULATION_MAGMA "Enable magma kernels in simulation mode" OFF)
-        if (NOT CHAMELEON_SIMULATION_MAGMA)
-            message("-- ${BoldGreen}CHAMELEON_SIMULATION_MAGMA is set to OFF, turn it ON to enable MAGMA kernels in "
+        option(CHAMELEON_SIMULATION_MAGMA "Enable cuda/magma kernels in simulation mode" OFF)
+        if (CHAMELEON_SIMULATION_MAGMA)
+            message("-- ${BoldGreen}CHAMELEON_SIMULATION_MAGMA is set to ON, turn it OFF to disable CUDA/MAGMA kernels in "
+                " SIMULATION mode${ColourReset}")
+        else()
+            message("-- ${BoldGreen}CHAMELEON_SIMULATION_MAGMA is set to OFF, turn it ON to enable CUDA/MAGMA kernels in "
                 " SIMULATION mode${ColourReset}")
         endif()
     endif()

@@ -77,7 +77,7 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     ws_worker = A->nb * (ib+1);
 
     /* Allocation of temporary (scratch) working space */
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
     /* Worker space
      *
      * zgeqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
@@ -127,7 +127,7 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
                 A(M, k), ldaM,
                 DIAG(M, k), ldaM );
 #endif
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
                 MORSE_TASK_zlaset(
                     &options,
                     MorseUpper, tempMm, A->nb,

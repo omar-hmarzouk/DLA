@@ -64,7 +64,7 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
     RUNTIME_options_init(&options, morse, sequence, request);
 
     ib = MORSE_IB;
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
     h_work_size  = sizeof(MORSE_Complex64_t)*( 2*ib + 2*L->nb )*2*A->mb;
     d_work_size  = sizeof(MORSE_Complex64_t)*(   ib           )*2*A->mb;
 #else
