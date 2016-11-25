@@ -4,6 +4,8 @@
 #+OPTIONS: TeX:t LaTeX:t skip:nil d:nil pri:nil tags:not-in-toc html-style:nil
 
 * TODO List
+** migrate chameleon svn to gitlab
+   https://gitlab.inria.fr/help/workflow/importing/migrating_from_svn.md
 ** update the documentation
 ** release sources of chameleon directly with CMake/CPack
 ** too many options for users: hide some advanced options
