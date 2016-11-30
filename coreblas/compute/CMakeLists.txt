@@ -100,6 +100,7 @@ set(COREBLAS_SRCS
 # Compile step
 # ------------
 add_library(coreblas ${COREBLAS_SRCS})
+list(INSERT CHAMELEON_DEP 0 -lcoreblas)
 add_dependencies(coreblas coreblas_include)
 set_property(TARGET coreblas PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET coreblas PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")

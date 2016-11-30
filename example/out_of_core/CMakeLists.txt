@@ -47,15 +47,9 @@ if(NOT CHAMELEON_SIMULATION)
         cudablas)
     endif()
     if(CHAMELEON_USE_CUDA)
-        list(APPEND libs_for_ooc
-             ${CUDA_LIBRARIES}
-        )
         link_directories(${CUDA_LIBRARY_DIRS})
     endif()
     if(CHAMELEON_USE_MAGMA)
-        list(APPEND libs_for_ooc
-             ${MAGMA_LIBRARIES}
-        )
         link_directories(${MAGMA_LIBRARY_DIRS})
     endif()
 

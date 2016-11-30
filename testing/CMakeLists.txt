@@ -129,15 +129,9 @@ if(NOT CHAMELEON_SIMULATION)
         )
     endif()
     if(CHAMELEON_USE_CUDA)
-        list(APPEND libs_for_tests
-        ${CUDA_LIBRARIES}
-        )
         link_directories(${CUDA_LIBRARY_DIRS})
     endif()
     if(CHAMELEON_USE_MAGMA)
-        list(APPEND libs_for_tests
-        ${MAGMA_LIBRARIES}
-        )
         link_directories(${MAGMA_LIBRARY_DIRS})
     endif()
 

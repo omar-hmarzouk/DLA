@@ -253,11 +253,15 @@ add_library(chameleon ${CHAMELEON_SRCS} ${CHAMELEON_SRCSF})
 target_link_libraries(chameleon coreblas)
 if(CHAMELEON_SCHED_STARPU)
   target_link_libraries(chameleon chameleon_starpu)
+  list(INSERT CHAMELEON_DEP 0 -lchameleon_starpu)
 elseif(CHAMELEON_SCHED_PARSEC)
   target_link_libraries(chameleon chameleon_parsec)
+  list(INSERT CHAMELEON_DEP 0 -lchameleon_parsec)
 elseif(CHAMELEON_SCHED_QUARK)
   target_link_libraries(chameleon chameleon_quark)
+  list(INSERT CHAMELEON_DEP 0 -lchameleon_quark)
 endif()
+list(INSERT CHAMELEON_DEP 0 -lchameleon)
 
 add_dependencies(chameleon
   chameleon_include

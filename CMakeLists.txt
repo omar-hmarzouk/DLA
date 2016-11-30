@@ -74,8 +74,6 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     # Parameters/Options #
     ######################
 
-    set(CHAMELEON_DEFINITIONS_LIST "")
-
     # Set the RPATH config
     # --------------------
 
@@ -256,7 +254,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     ###############################################################################
     # Look for dependencies #
     #########################
-
+    set(CHAMELEON_DEP "")
 
     # Check for Thread library
     # ------------------------
@@ -325,6 +323,13 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 # the RPATH to be used when installing
                 list(APPEND CMAKE_INSTALL_RPATH "${CBLAS_LIBRARY_DIRS}")
             endif()
+            if (CBLAS_LIBRARIES)
+                if (CBLAS_LIBRARIES_DEP)
+                    list(INSERT CHAMELEON_DEP 0 ${CBLAS_LIBRARIES_DEP})
+                else()
+                    list(INSERT CHAMELEON_DEP 0 ${CBLAS_LIBRARIES})
+                endif()
+            endif()
         else()
             if(MORSE_VERBOSE_FIND_PACKAGE)
                 if(CBLAS_STANDALONE OR NOT CBLAS_WORKS)
@@ -364,6 +369,13 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             if(LAPACKE_LINKER_FLAGS)
                 list(APPEND CMAKE_EXE_LINKER_FLAGS "${LAPACKE_LINKER_FLAGS}")
             endif()
+            if (LAPACKE_LIBRARIES)
+                if (LAPACKE_LIBRARIES_DEP)
+                    list(INSERT CHAMELEON_DEP 0 ${LAPACKE_LIBRARIES_DEP})
+                else()
+                    list(INSERT CHAMELEON_DEP 0 ${LAPACKE_LIBRARIES})
+                endif()
+            endif()
         else()
             if(MORSE_VERBOSE_FIND_PACKAGE)
                 if (LAPACKE_STANDALONE OR NOT LAPACKE_WORKS)
@@ -394,6 +406,13 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             if(TMG_LINKER_FLAGS)
                 list(APPEND CMAKE_EXE_LINKER_FLAGS "${TMG_LINKER_FLAGS}")
             endif()
+            if (TMG_LIBRARIES)
+                if (TMG_LIBRARIES_DEP)
+                    list(INSERT CHAMELEON_DEP 0 ${TMG_LIBRARIES_DEP})
+                else()
+                    list(INSERT CHAMELEON_DEP 0 ${TMG_LIBRARIES})
+                endif()
+            endif()
         endif()
 
         # CHAMELEON depends on CUDA/CUBLAS
@@ -405,31 +424,48 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
             if (CUDA_FOUND)
                 message("-- ${Blue}Add definition CHAMELEON_USE_CUDA"
                 " - Activate CUDA in Chameleon${ColourReset}")
+                set(EXTRA_LIBRARIES_CUDA)
                 add_definitions(-DCHAMELEON_USE_CUDA)
                 if(CUDA_VERSION VERSION_LESS "3.0")
                     set(CUDA_HOST_COMPILATION_CPP OFF)
                 endif(CUDA_VERSION VERSION_LESS "3.0")
                 set(CUDA_BUILD_EMULATION OFF)
-                include_directories(${CUDA_INCLUDE_DIRS})
-                list(APPEND EXTRA_LIBRARIES ${CUDA_LIBRARIES}) # need CUDA libs to link.
-                list(APPEND EXTRA_SOURCES src/gpu_data.c)
-                set(saved_include "${CMAKE_REQUIRED_INCLUDES}")
-                set(saved_libs "${CMAKE_REQUIRED_LIBRARIES}")
-                set(CMAKE_REQUIRED_INCLUDES  "${CMAKE_REQUIRED_INCLUDES};${CUDA_INCLUDE_DIRS}")
-                set(CMAKE_REQUIRED_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES};${CUDA_LIBRARIES}")
-                if(CUDA_VERSION VERSION_LESS "4.0")
-                    set(CUDA_HAVE_PEER_DEVICE_MEMORY_ACCESS 0)
+                if (CUDA_INCLUDE_DIRS)
+                    include_directories(${CUDA_INCLUDE_DIRS})
                 else()
-                    check_function_exists(cuDeviceCanAccessPeer CUDA_HAVE_PEER_DEVICE_MEMORY_ACCESS)
+                    message(WARNING "CHAMELEON_USE_CUDA requires"
+                    "\n   CUDA_INCLUDE_DIRS to be found. Be sure you have"
+                    "\n   cuda headers with your distribution of CUDA.")
                 endif()
-                set(CMAKE_REQUIRED_INCLUDES  "${saved_include}")
-                set(CMAKE_REQUIRED_LIBRARIES "${saved_libs}")
-                # Add cublas if found
-                if (CUDA_CUBLAS_LIBRARIES)
-                    message("-- ${Blue}Add definition CHAMELEON_USE_CUBLAS"
-                    " - Use GPU kernels from cuBLAS${ColourReset}")
-                    add_definitions(-DCHAMELEON_USE_CUBLAS)
-                    list(APPEND EXTRA_LIBRARIES ${CUDA_CUBLAS_LIBRARIES})
+                if (CUDA_LIBRARIES)
+                    list(APPEND EXTRA_SOURCES src/gpu_data.c)
+                    set(saved_include "${CMAKE_REQUIRED_INCLUDES}")
+                    set(saved_libs "${CMAKE_REQUIRED_LIBRARIES}")
+                    set(CMAKE_REQUIRED_INCLUDES  "${CMAKE_REQUIRED_INCLUDES};${CUDA_INCLUDE_DIRS}")
+                    set(CMAKE_REQUIRED_LIBRARIES "${CMAKE_REQUIRED_LIBRARIES};${CUDA_LIBRARIES}")
+                    if(CUDA_VERSION VERSION_LESS "4.0")
+                        set(CUDA_HAVE_PEER_DEVICE_MEMORY_ACCESS 0)
+                    else()
+                        check_function_exists(cuDeviceCanAccessPeer CUDA_HAVE_PEER_DEVICE_MEMORY_ACCESS)
+                    endif()
+                    set(CMAKE_REQUIRED_INCLUDES  "${saved_include}")
+                    set(CMAKE_REQUIRED_LIBRARIES "${saved_libs}")
+                    # Add cublas if found
+                    if (CUDA_CUBLAS_LIBRARIES)
+                        message("-- ${Blue}Add definition CHAMELEON_USE_CUBLAS"
+                        " - Use GPU kernels from cuBLAS${ColourReset}")
+                        add_definitions(-DCHAMELEON_USE_CUBLAS)
+                        list(APPEND EXTRA_LIBRARIES_CUDA ${CUDA_CUBLAS_LIBRARIES})
+                        list(APPEND EXTRA_LIBRARIES_CUDA ${CUDA_LIBRARIES}) # need CUDA libs to link.
+                    else()
+                        message(FATAL_ERROR "CHAMELEON_USE_CUDA requires"
+                        "\n   CUDA_CUBLAS_LIBRARIES to be found. Be sure you have"
+                        "\n   libcublas with your distribution of CUDA.")
+                    endif()
+                else()
+                    message(FATAL_ERROR "CHAMELEON_USE_CUDA requires"
+                    "\n   CUDA_LIBRARIES to be found. Be sure you have"
+                    "\n   libcuda with your distribution of CUDA.")
                 endif()
                 #FindHeader(CUDA cublas_v2.h)
                 #if(CUDA_cublas_v2.h_DIRS)
@@ -448,10 +484,15 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                     message("-- ${Blue}Add definition CHAMELEON_USE_MAGMA"
                     " - Use GPU kernels from MAGMA${ColourReset}")
                     add_definitions(-DCHAMELEON_USE_MAGMA)
-                    include_directories(${MAGMA_INCLUDE_DIRS})
+                    if(MAGMA_INCLUDE_DIRS)
+                        include_directories(${MAGMA_INCLUDE_DIRS})
+                    endif()
                     if(MAGMA_LIBRARY_DIRS)
                         # the RPATH to be used when installing
                         list(APPEND CMAKE_INSTALL_RPATH "${MAGMA_LIBRARY_DIRS}")
+                    endif()
+                    if (MAGMA_LIBRARIES)
+                        list(INSERT EXTRA_LIBRARIES_CUDA 0 ${MAGMA_LIBRARIES})
                     endif()
                 else( MAGMA_FOUND )
                     if(MORSE_VERBOSE_FIND_PACKAGE)
@@ -468,6 +509,8 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                     message(FATAL_ERROR "MAGMA library is required but has not been found")
                 endif( MAGMA_FOUND )
             endif()
+
+            list(APPEND EXTRA_LIBRARIES ${EXTRA_LIBRARIES_CUDA})
 
         endif(CHAMELEON_USE_CUDA)
 
@@ -501,34 +544,61 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
     else (NOT CHAMELEON_SIMULATION)
 
-        message(STATUS "${BoldBlue}Simulation mode of CHAMELEON is activated (CHAMELEON_SIMULATION=ON)."
-                "\n   This mode allows you to simulate execution of algorithms with StarPU compiled with SimGrid."
-                "\n   To do so, we provide some perfmodels in the simucore/perfmodels/ directory of CHAMELEON sources."
-                "\n   The resulting directory where to find perfmodels is: ${CMAKE_CURRENT_SOURCE_DIR}/simucore/perfmodels."
-                "\n   To use these perfmodels, please set your STARPU_HOME environment variable to ${CMAKE_CURRENT_SOURCE_DIR}/simucore/perfmodels."
-                "\n   Finally, you need to set your STARPU_HOSTNAME environment variable to the name of the machine to simulate."
-                "\n   For example: STARPU_HOSTNAME=mirage."
-                "\n   Note that only POTRF kernels with block sizes of 320 or 960 (simple and double precision) on mirage machine are available for now."
-                "\n   Database of models is subject to change, it should be enrich in a near future.${ColourReset}")
+        message("-- ${BoldBlue}Simulation mode of CHAMELEON is activated (CHAMELEON_SIMULATION=ON)."
+        "\n   This mode allows you to simulate execution of algorithms with StarPU compiled with SimGrid."
+        "\n   To do so, we provide some perfmodels in the simucore/perfmodels/ directory of CHAMELEON sources."
+        "\n   The resulting directory where to find perfmodels is: ${CMAKE_CURRENT_SOURCE_DIR}/simucore/perfmodels."
+        "\n   To use these perfmodels, please set your STARPU_HOME environment variable to ${CMAKE_CURRENT_SOURCE_DIR}/simucore/perfmodels."
+        "\n   Finally, you need to set your STARPU_HOSTNAME environment variable to the name of the machine to simulate."
+        "\n   For example: STARPU_HOSTNAME=mirage."
+        "\n   Note that only POTRF kernels with block sizes of 320 or 960 (simple and double precision) on mirage machine are available for now."
+        "\n   Database of models is subject to change, it should be enrich in a near future.${ColourReset}")
+
+        # Guard against mis-used simulation mode
+#        if (CHAMELEON_SIMULATION)
+#            if(NOT DEFINED CHAMELEON_SIMULATION_CUDA)
+#                message(FATAL_ERROR "${BoldBlue}In simulation mode" 
+#                "\n   CHAMELEON_USE_CUDA and CHAMELEON_USE_MAGMA must be set to"
+#                "\n   ensure that the user is aware of the version to be used."
+#                "\n   If Chameleon's kernels are available for NVIDIA CUDA GPUs and"
+#                "\n   if the according perfmodels are available in STARPU_HOME then"
+#                "\n   use CHAMELEON_USE_CUDA=ON else set CHAMELEON_USE_CUDA=OFF."
+#                "\n   The same idea is applicable with MAGMA.${ColourReset}")
+#            endif()
+#            if(NOT DEFINED CHAMELEON_SIMULATION_MAGMA)
+#                message(FATAL_ERROR "${BoldBlue}In simulation mode" 
+#                "\n   CHAMELEON_USE_CUDA and CHAMELEON_USE_MAGMA must be set to"
+#                "\n   ensure that the user is aware of the version to be used."
+#                "\n   If Chameleon's MAGMA kernels are available for NVIDIA CUDA"
+#                "\n   GPUs and if the according perfmodels are available in"
+#                "\n   STARPU_HOME then use CHAMELEON_USE_MAGMA=ON else set"
+#                "\n   CHAMELEON_USE_MAGMA=OFF.${ColourReset}")
+#            endif()
+#        endif()
+        
+        if (NOT CHAMELEON_SCHED_STARPU)
+            message(FATAL_ERROR "Simulation mode of Chameleon only works with"
+            "\n   the StarPU runtime. Please use CHAMELEON_SCHED_STARPU=ON.")
+        endif()
 
         if (CHAMELEON_USE_CUDA)
             set(CHAMELEON_USE_CUDA OFF)
-            message("${BoldBlue}CHAMELEON_USE_CUDA is set to ON but we turn it OFF."
-            " Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
-            " we do not need to link with CUDA.${ColourReset}")
+            message("-- ${BoldBlue}CHAMELEON_USE_CUDA is set to ON but we turn it OFF."
+                "\n   Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
+                "\n   we do not need to link with CUDA.${ColourReset}")
         endif ()
         if (CHAMELEON_USE_MAGMA)
             set(CHAMELEON_USE_MAGMA OFF)
-            message(STATUS "${BoldBlue}CHAMELEON_USE_MAGMA is set to ON but we turn it OFF."
-                    "\n   Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
-                    "\n   we do not need to link with MAGMA.${ColourReset}")
+            message("-- ${BoldBlue}CHAMELEON_USE_MAGMA is set to ON but we turn it OFF."
+                "\n   Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
+                "\n   we do not need to link with MAGMA.${ColourReset}")
         endif ()
         if (CHAMELEON_ENABLE_TESTING)
             set(CHAMELEON_ENABLE_TESTING OFF)
-            message(STATUS "${BoldBlue}CHAMELEON_ENABLE_TESTING is set to ON but we turn it OFF."
-                    "\n   Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
-                    "\n   there is no sense in compiling testing drivers that are used to check"
-                    "\n   numerical correctness of algorithms and kernels.${ColourReset}")
+            message("-- ${BoldBlue}CHAMELEON_ENABLE_TESTING is set to ON but we turn it OFF."
+                "\n   Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
+                "\n   there is no sense in compiling testing drivers that are used to check"
+                "\n   numerical correctness of algorithms and kernels.${ColourReset}")
         endif ()
 
         # Simulation mode: we depend on SimGrid
@@ -705,6 +775,13 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 # the RPATH to be used when installing
                 list(APPEND CMAKE_INSTALL_RPATH "${STARPU_LIBRARY_DIRS}")
             endif()
+            if (STARPU_LIBRARIES)
+                if (STARPU_LIBRARIES_DEP)
+                    list(INSERT CHAMELEON_DEP 0 ${STARPU_LIBRARIES_DEP})
+                else()
+                    list(INSERT CHAMELEON_DEP 0 ${STARPU_LIBRARIES})
+                endif()
+            endif()
         else ( STARPU_FOUND )
             if(MORSE_VERBOSE_FIND_PACKAGE)
                 if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
@@ -813,6 +890,13 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
               # the RPATH to be used when installing
               list(APPEND CMAKE_INSTALL_RPATH "${PARSEC_LIBRARY_DIRS_DEP}")
           endif()
+          if (PARSEC_LIBRARIES)
+              if (PARSEC_LIBRARIES_DEP)
+                  list(INSERT CHAMELEON_DEP 0 ${PARSEC_LIBRARIES_DEP})
+              else()
+                  list(INSERT CHAMELEON_DEP 0 ${PARSEC_LIBRARIES})
+              endif()
+          endif()
         else ( PARSEC_FOUND )
             if(MORSE_VERBOSE_FIND_PACKAGE)
                 if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
@@ -866,6 +950,13 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
                 # the RPATH to be used when installing
                 list(APPEND CMAKE_INSTALL_RPATH "${QUARK_LIBRARY_DIRS}")
             endif()
+            if (QUARK_LIBRARIES)
+                if (QUARK_LIBRARIES_DEP)
+                    list(INSERT CHAMELEON_DEP 0 ${QUARK_LIBRARIES_DEP})
+                else()
+                    list(INSERT CHAMELEON_DEP 0 ${QUARK_LIBRARIES})
+                endif()
+            endif()
         else(QUARK_FOUND)
             if(MORSE_VERBOSE_FIND_PACKAGE)
                 if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
@@ -908,63 +999,9 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     add_definitions(-DADD_)
 
     #------------------------------------------------------------------------------
-    # Save all dependencies (all required links)
-    set(CHAMELEON_DEP -lchameleon)
-    if(CHAMELEON_SCHED_STARPU)
-        list(APPEND CHAMELEON_DEP
-          -lchameleon_starpu
-          ${STARPU_LIBRARIES_DEP}
-        )
-        link_directories(${STARPU_LIBRARY_DIRS_DEP})
-    elseif(CHAMELEON_SCHED_PARSEC)
-        list(APPEND CHAMELEON_DEP
-          -lchameleon_parsec
-          ${PARSEC_LIBRARIES_DEP}
-          )
-        link_directories(${PARSEC_LIBRARY_DIRS_DEP})
-    elseif(CHAMELEON_SCHED_QUARK)
-        list(APPEND CHAMELEON_DEP
-          -lchameleon_quark
-          ${QUARK_LIBRARIES}
-          )
-        link_directories(${QUARK_LIBRARY_DIRS})
-    endif()
-    if(NOT CHAMELEON_SIMULATION)
-        if(CHAMELEON_USE_CUDA)
-            list(APPEND CHAMELEON_DEP
-            ${CUDA_LIBRARIES}
-            )
-            link_directories(${CUDA_LIBRARY_DIRS})
-        endif()
-        if(CHAMELEON_USE_MAGMA)
-            list(APPEND CHAMELEON_DEP
-            ${MAGMA_LIBRARIES}
-            )
-            link_directories(${MAGMA_LIBRARY_DIRS})
-        endif()
-        if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
-            list(APPEND CHAMELEON_DEP -lcudablas)
-        endif()
-
-        list(APPEND CHAMELEON_DEP
-        -lcoreblas
-        ${LAPACKE_LIBRARIES}
-        ${CBLAS_LIBRARIES}
-        ${LAPACK_SEQ_LIBRARIES}
-        ${BLAS_SEQ_LIBRARIES}
-        ${HWLOC_LIBRARIES}
-        ${EXTRA_LIBRARIES}
-        )
-    else()
-        list(APPEND CHAMELEON_DEP
-        -lcoreblas
-        -lsimulapacke
-        -lsimucblas
-        ${HWLOC_LIBRARIES}
-        ${EXTRA_LIBRARIES}
-        )
-    endif()
-    list(REMOVE_DUPLICATES CHAMELEON_DEP)
+    # Save extra dependencies (all required links)
+    list(APPEND CHAMELEON_DEP ${EXTRA_LIBRARIES})
+    list(REMOVE_DUPLICATES CHAMELEON_DEP) # WARNING: is it safe, respect order?
 
     # Check for the subdirectories
     # ----------------------------
