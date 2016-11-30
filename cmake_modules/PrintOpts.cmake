@@ -51,7 +51,8 @@ set(dep_message "${dep_message}"
 "       StarPU ..............: ${CHAMELEON_SCHED_STARPU}\n"
 "\n"
 "       Kernels specific\n"
-"       BLAS ................: ${BLA_VENDOR}\n"
+"       BLAS ................: ${BLAS_VENDOR_FOUND}\n"
+"       LAPACK...............: ${LAPACK_VENDOR_FOUND}\n"
 "       MAGMA ...............: ${CHAMELEON_USE_MAGMA}\n"
 "\n"
 "       Trace ...............: ${CHAMELEON_ENABLE_TRACING}\n"
@@ -77,10 +78,10 @@ set(dep_message "${dep_message}"
 "       INSTALL_PREFIX ......: ${CMAKE_INSTALL_PREFIX}\n\n")
 
 string(REPLACE ";" " " dep_message_wsc "${dep_message}")
-#message(${dep_message})
+message(${dep_message})
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/config.log "${dep_message_wsc}")
 message(STATUS "Configuration is done - A summary of the current configuration"
-"has been written in ${CMAKE_CURRENT_BINARY_DIR}/config.log")
+"\n   has been written in ${CMAKE_CURRENT_BINARY_DIR}/config.log")
 # installation
 # ------------
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/config.log DESTINATION share/chameleon)
