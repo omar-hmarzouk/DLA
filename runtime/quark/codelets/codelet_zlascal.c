@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelet_zlacpy.c
+ * @file codelet_zlascal.c
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -36,35 +36,35 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-static inline void CORE_zlacpy_quark(Quark *quark)
+static inline void CORE_zlascal_quark(Quark *quark)
 {
     MORSE_enum uplo;
     int M;
     int N;
+    MORSE_Complex64_t alpha;
     MORSE_Complex64_t *A;
     int LDA;
-    MORSE_Complex64_t *B;
-    int LDB;
 
-    quark_unpack_args_7(quark, uplo, M, N, A, LDA, B, LDB);
-    CORE_zlacpy(uplo, M, N, A, LDA, B, LDB);
+    quark_unpack_args_6(quark, uplo, M, N, alpha, A, LDA);
+    CORE_zlascal(uplo, M, N, alpha, A, LDA);
 }
 
-void MORSE_TASK_zlacpy(const MORSE_option_t *options,
-                       MORSE_enum uplo, int m, int n, int nb,
-                       const MORSE_desc_t *A, int Am, int An, int lda,
-                       const MORSE_desc_t *B, int Bm, int Bn, int ldb)
+void MORSE_TASK_zlascal(const MORSE_option_t *options,
+                        MORSE_enum uplo,
+                        int m, int n, int nb,
+                        MORSE_Complex64_t alpha,
+                        const MORSE_desc_t *A, int Am, int An, int lda)
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
-    DAG_CORE_LACPY;
-    QUARK_Insert_Task(opt->quark, CORE_zlacpy_quark, (Quark_Task_Flags*)opt,
-        sizeof(MORSE_enum),                &uplo,  VALUE,
+    DAG_CORE_LASCAL;
+    QUARK_Insert_Task(opt->quark, CORE_zlascal_quark, (Quark_Task_Flags*)opt,
+        sizeof(MORSE_enum),                 &uplo,  VALUE,
         sizeof(int),                        &m,     VALUE,
         sizeof(int),                        &n,     VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),             INPUT,
+        sizeof(MORSE_Complex64_t),          alpha,      VALUE,
+        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),             INOUT,
         sizeof(int),                        &lda,   VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),             OUTPUT,
-        sizeof(int),                        &ldb,   VALUE,
         0);
 }
+
 

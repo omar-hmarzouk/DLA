@@ -16,7 +16,7 @@
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 
+ * @version
  * @author Vijay Joshi
  * @author Cedric Castagnede
  * @date 2012-09-15

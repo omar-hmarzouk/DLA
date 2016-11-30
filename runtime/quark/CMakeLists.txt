@@ -10,8 +10,8 @@
 #
 #  @file CMakeLists.txt
 #
-#  @project MORSE
-#  MORSE is a software package provided by:
+#  @project CHAMELEON
+#  CHAMELEON is a software package provided by:
 #     Inria Bordeaux - Sud-Ouest,
 #     Univ. of Tennessee,
 #     King Abdullah Univesity of Science and Technology
@@ -22,6 +22,7 @@
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
+#  @author Florent Pruvost
 #  @date 13-07-2012
 #
 ###
@@ -107,6 +108,7 @@ set(ZSRC
     # LAPACK
     ##################
     codelets/codelet_zgeadd.c
+    codelets/codelet_zlascal.c
     codelets/codelet_zgelqt.c
     codelets/codelet_zgeqrt.c
     codelets/codelet_zgessm.c

@@ -118,6 +118,7 @@ void morse_pzlanhe(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A, double *re
 #endif
 void morse_pzlansy(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A, double *result, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A, double *result, MORSE_sequence_t *sequence, MORSE_request_t *request);
+void morse_pzlascal(MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzlaset( MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_Complex64_t beta, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzlaset2(MORSE_enum uplo, MORSE_Complex64_t alpha,                          MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzlaswp(MORSE_desc_t *B, int *IPIV, int inc, MORSE_sequence_t *sequence, MORSE_request_t *request);

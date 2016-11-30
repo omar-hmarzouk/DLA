@@ -27,6 +27,7 @@
 #
 ###
 
+cmake_minimum_required(VERSION 2.8)
 
 # check if magma_dgetrf_incpiv_gpu is accessible in libmagma and activate it in chameleon
 if ( CBLAS_FOUND AND LAPACKE_FOUND AND LAPACK_FOUND AND CUDA_FOUND AND CUDA_CUBLAS_LIBRARIES AND MAGMA_FOUND )
@@ -83,10 +84,10 @@ precisions_rules_py(RUNTIME_COMMON_GENERATED "${ZSRC}"
                     TARGETDIR "control")
 
 set(RUNTIME_COMMON
-    control/runtime_control.c
-    control/runtime_context.c
-    control/runtime_descriptor.c
     control/runtime_async.c
+    control/runtime_context.c
+    control/runtime_control.c
+    control/runtime_descriptor.c
     control/runtime_options.c
     control/runtime_profiling.c
     control/runtime_workspace.c
@@ -127,6 +128,7 @@ set(ZSRC
     # LAPACK
     ##################
     codelets/codelet_zgeadd.c
+    codelets/codelet_zlascal.c
     codelets/codelet_zgelqt.c
     codelets/codelet_zgeqrt.c
     codelets/codelet_zgessm.c
@@ -171,7 +173,6 @@ set(ZSRC
     ##################
     codelets/codelet_zbuild.c
     )
-list(REMOVE_DUPLICATES ZSRC)
 
 precisions_rules_py(RUNTIME_SRCS_GENERATED "${ZSRC}"
                     PRECISIONS "${CHAMELEON_PRECISION}"

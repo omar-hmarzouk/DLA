@@ -50,6 +50,11 @@ void MORSE_TASK_zgeadd(const MORSE_option_t *options,
                        MORSE_enum trans, int m, int n, int nb,
                        MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_Complex64_t beta,  const MORSE_desc_t *B, int Bm, int Bn, int ldb);
+void MORSE_TASK_zlascal(const MORSE_option_t *options,
+                        MORSE_enum uplo,
+                        int m, int n, int nb,
+                        MORSE_Complex64_t alpha,
+                        const MORSE_desc_t *A, int Am, int An, int lda);
 void MORSE_TASK_zbrdalg(const MORSE_option_t *options,
                         MORSE_enum uplo,
                         int N, int NB,

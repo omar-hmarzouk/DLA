@@ -69,7 +69,6 @@ void CORE_zher2k_quark(Quark *quark);
 void CORE_zhegst_quark(Quark *quark);
 void CORE_zherfb_quark(Quark *quark);
 void CORE_zhessq_quark(Quark *quark);
-void CORE_zlacpy_quark(Quark *quark);
 void CORE_zlatro_quark(Quark *quark);
 void CORE_zlange_quark(Quark *quark);
 void CORE_zlange_max_quark(Quark *quark);

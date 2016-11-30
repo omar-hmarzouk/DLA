@@ -69,6 +69,7 @@ typedef enum morse_kernel_e {
   MORSE_UNMQR,
 
   MORSE_GEADD,
+  MORSE_LASCAL,
   MORSE_LACPY,
   MORSE_LAG2C,
   MORSE_LAG2Z,

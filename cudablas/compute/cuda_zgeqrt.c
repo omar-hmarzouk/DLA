@@ -26,17 +26,17 @@
 
 #if defined(CHAMELEON_USE_MAGMA)
 int CUDA_zgeqrt(
-        magma_int_t m, magma_int_t n, magma_int_t nb,
-        magmaDoubleComplex *da, magma_int_t ldda,
-        magmaDoubleComplex *v,  magma_int_t ldv,
-        magmaDoubleComplex *dt, magma_int_t lddt,
-        magmaDoubleComplex *t,  magma_int_t ldt,
-        magmaDoubleComplex *dd,
-        magmaDoubleComplex *d,  magma_int_t ldd,
-        magmaDoubleComplex *tau,
-        magmaDoubleComplex *hwork,
-        magmaDoubleComplex *dwork,
-        CUstream stream)
+    magma_int_t m, magma_int_t n, magma_int_t nb,
+    magmaDoubleComplex *da, magma_int_t ldda,
+    magmaDoubleComplex *v,  magma_int_t ldv,
+    magmaDoubleComplex *dt, magma_int_t lddt,
+    magmaDoubleComplex *t,  magma_int_t ldt,
+    magmaDoubleComplex *dd,
+    magmaDoubleComplex *d,  magma_int_t ldd,
+    magmaDoubleComplex *tau,
+    magmaDoubleComplex *hwork,
+    magmaDoubleComplex *dwork,
+    CUstream stream)
 {
 #define da_ref(a_1,a_2) ( da+(a_2)*(ldda) + (a_1))
 #define v_ref(a_1,a_2)  ( v+(a_2)*(ldv) + (a_1))
@@ -45,7 +45,6 @@ int CUDA_zgeqrt(
 
     int i, k, ib, old_i, old_ib, rows, cols;
     double _Complex one=1.;
-    int i1, i2;
 
     if (m < 0) {
         return -1;
@@ -62,7 +61,7 @@ int CUDA_zgeqrt(
     }
 
     /* lower parts of little T must be zero: memset to 0 for simplicity */
-    memset(t_ref(0,0), 0, nb*nb*sizeof(magmaDoubleComplex));
+    memset(t_ref(0,0), 0, nb*n*sizeof(magmaDoubleComplex));
     cudaMemsetAsync(dt_ref(0,0), 0, nb*n*sizeof(magmaDoubleComplex), stream);
 
     if ( (nb > 1) && (nb < k) ) {
@@ -101,7 +100,7 @@ int CUDA_zgeqrt(
                         (double _Complex*) hwork);
 
             /* Put 0s in the upper triangular part of a panel (and 1s on the
-               diagonal); copy the upper triangular in d. */
+             diagonal); copy the upper triangular in d. */
             CORE_zgesplit(MorseLeft, MorseUnit, min(rows,ib), ib,
                           (double _Complex*) v_ref(i, 0), ldv,
                           (double _Complex*) d, ib);

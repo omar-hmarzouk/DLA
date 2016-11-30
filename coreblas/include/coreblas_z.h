@@ -63,6 +63,8 @@ int CORE_zgeadd(MORSE_enum trans, int M, int N,
                 const MORSE_Complex64_t *A, int LDA,
                       MORSE_Complex64_t beta,
                       MORSE_Complex64_t *B, int LDB);
+int CORE_zlascal( MORSE_enum uplo, int m, int n,
+              MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int lda );
 int  CORE_zgelqt(int M, int N, int IB,
                  MORSE_Complex64_t *A, int LDA,
                  MORSE_Complex64_t *T, int LDT,

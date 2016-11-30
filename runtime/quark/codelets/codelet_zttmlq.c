@@ -30,7 +30,7 @@
  **/
 #include "runtime/quark/include/morse_quark.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -102,7 +102,7 @@
  * @param[in] LDV
  *         The leading dimension of the array V. LDV >= max(1,K).
  *
- * @param[out] T
+ * @param[in] T
  *         The IB-by-N1 triangular factor T of the block reflector.
  *         T is upper triangular by block (economic storage);
  *         The rest of the array is not referenced.

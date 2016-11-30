@@ -26,17 +26,17 @@
 
 #if defined(CHAMELEON_USE_MAGMA)
 int CUDA_zgelqt(
-        magma_int_t m, magma_int_t n, magma_int_t nb,
-        magmaDoubleComplex *da, magma_int_t ldda,
-        magmaDoubleComplex *v,  magma_int_t ldv,
-        magmaDoubleComplex *dt, magma_int_t lddt,
-        magmaDoubleComplex *t,  magma_int_t ldt,
-        magmaDoubleComplex *dd,
-        magmaDoubleComplex *d,  magma_int_t ldd,
-        magmaDoubleComplex *tau,
-        magmaDoubleComplex *hwork,
-        magmaDoubleComplex *dwork,
-        CUstream stream)
+    magma_int_t m, magma_int_t n, magma_int_t nb,
+    magmaDoubleComplex *da, magma_int_t ldda,
+    magmaDoubleComplex *v,  magma_int_t ldv,
+    magmaDoubleComplex *dt, magma_int_t lddt,
+    magmaDoubleComplex *t,  magma_int_t ldt,
+    magmaDoubleComplex *dd,
+    magmaDoubleComplex *d,  magma_int_t ldd,
+    magmaDoubleComplex *tau,
+    magmaDoubleComplex *hwork,
+    magmaDoubleComplex *dwork,
+    CUstream stream)
 {
 #define da_ref(a_1,a_2) ( da+(a_2)*(ldda) + (a_1))
 #define v_ref(a_1,a_2)  ( v+(a_2)*(ldv) + (a_1))
@@ -47,17 +47,17 @@ int CUDA_zgelqt(
     double _Complex one=1.;
 
     if (m < 0) {
-    return -1;
+        return -1;
     } else if (n < 0) {
-    return -2;
+        return -2;
     } else if (ldda < max(1,m)) {
-    return -4;
+        return -4;
     }
 
     k = min(m,n);
     if (k == 0) {
-    hwork[0] = *((magmaDoubleComplex*) &one);
-    return MAGMA_SUCCESS;
+        hwork[0] = *((magmaDoubleComplex*) &one);
+        return MAGMA_SUCCESS;
     }
 
     /* lower parts of little T must be zero: memset to 0 for simplicity */
@@ -92,7 +92,7 @@ int CUDA_zgelqt(
 
             magma_queue_sync( stream );
             /* Form the triangular factor of the block reflector on the host
-            H = H'(i+ib-1) . . . H(i+1) H(i) */
+             H = H'(i+ib-1) . . . H(i+1) H(i) */
             CORE_zgelqt(ib, cols, ib,
                         (double _Complex*) v_ref(0,i), ib,
                         (double _Complex*) t_ref(0,0), ib,
@@ -100,7 +100,7 @@ int CUDA_zgelqt(
                         (double _Complex*) hwork);
 
             /* put 0s in the lower triangular part of a panel (and 1s on the
-              diagonal); copy the lower triangular in d */
+             diagonal); copy the lower triangular in d */
             CORE_zgesplit(MorseRight, MorseUnit, ib, min(ib,cols),
                           (double _Complex*) v_ref(0,i), ib,
                           (double _Complex*) d, ib);

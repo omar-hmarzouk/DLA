@@ -81,6 +81,7 @@ double MORSE_zlanhe(MORSE_enum norm, MORSE_enum uplo, int N, MORSE_Complex64_t *
 #endif
 double MORSE_zlansy(MORSE_enum norm, MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA);
 double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, int M, int N, MORSE_Complex64_t *A, int LDA);
+int MORSE_zlascal(MORSE_enum uplo, int M, int N, MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA);
 int MORSE_zlaset(MORSE_enum uplo, int M, int N, MORSE_Complex64_t alpha, MORSE_Complex64_t beta, MORSE_Complex64_t *A, int LDA);
 //int MORSE_zlaswp(int N, MORSE_Complex64_t *A, int LDA, int K1, int K2, int *IPIV, int INCX);
 //int MORSE_zlaswpc(int N, MORSE_Complex64_t *A, int LDA, int K1, int K2, int *IPIV, int INCX);
@@ -157,6 +158,7 @@ double MORSE_zlanhe_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A);
 #endif
 double MORSE_zlansy_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A);
 double MORSE_zlantr_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A);
+int MORSE_zlascal_Tile(MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_desc_t *A);
 int MORSE_zlaset_Tile(MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_Complex64_t beta, MORSE_desc_t *A);
 //int MORSE_zlaswp_Tile(MORSE_desc_t *A, int K1, int K2, int *IPIV, int INCX);
 //int MORSE_zlaswpc_Tile(MORSE_desc_t *A, int K1, int K2, int *IPIV, int INCX);
@@ -230,6 +232,7 @@ int MORSE_zlanhe_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A, d
 #endif
 int MORSE_zlansy_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A, double *value, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zlantr_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A, double *value, MORSE_sequence_t *sequence, MORSE_request_t *request);
+int MORSE_zlascal_Tile_Async(MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zlaset_Tile_Async(MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_Complex64_t beta, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 //int MORSE_zlaswp_Tile_Async(MORSE_desc_t *A, int K1, int K2, int *IPIV, int INCX, MORSE_sequence_t *sequence, MORSE_request_t *request);
 //int MORSE_zlaswpc_Tile_Async(MORSE_desc_t *A, int K1, int K2, int *IPIV, int INCX, MORSE_sequence_t *sequence, MORSE_request_t *request);

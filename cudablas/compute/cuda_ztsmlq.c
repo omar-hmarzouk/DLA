@@ -55,7 +55,7 @@ int CUDA_ztsmlq(
         NW = IB;
     }
     else {
-        NW = N1;
+        NW = M1;
     }
 
     if ((trans != MorseNoTrans) && (trans != MorseConjTrans)) {

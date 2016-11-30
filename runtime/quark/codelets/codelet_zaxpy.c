@@ -31,8 +31,8 @@ void MORSE_TASK_zaxpy(const MORSE_option_t *options,
                       const MORSE_desc_t *A, int Am, int An, int incA,
                       const MORSE_desc_t *B, int Bm, int Bn, int incB)
 {
-	quark_option_t *opt = (quark_option_t*)(options->schedopt);
-	DAG_CORE_AXPY;
+    quark_option_t *opt = (quark_option_t*)(options->schedopt);
+    DAG_CORE_AXPY;
     QUARK_Insert_Task(opt->quark, CORE_zaxpy_quark, (Quark_Task_Flags*)opt,
         sizeof(int),                        &M,         VALUE,
         sizeof(MORSE_Complex64_t),          alpha,      VALUE,

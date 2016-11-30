@@ -66,8 +66,10 @@ set(ZSRC
     pztrsm.c
     pztrsmpl.c
     pztradd.c
+    pzlascal.c
     ###
     zgeadd.c
+    zlascal.c
     zgemm.c
     zhemm.c
     zher2k.c

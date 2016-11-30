@@ -30,10 +30,8 @@
  **/
 
 #include "runtime/quark/include/morse_quark.h"
-#undef REAL
-#define COMPLEX
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -120,9 +118,9 @@ void MORSE_TASK_zttqrt(const MORSE_option_t *options,
         sizeof(int),                        &m,     VALUE,
         sizeof(int),                        &n,     VALUE,
         sizeof(int),                        &ib,    VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A1, MORSE_Complex64_t, A1m, A1n),            INOUT/**/,
+        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A1, MORSE_Complex64_t, A1m, A1n),            INOUT,
         sizeof(int),                        &lda1,  VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A2, MORSE_Complex64_t, A2m, A2n),            INOUT/**/|LOCALITY,
+        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A2, MORSE_Complex64_t, A2m, A2n),            INOUT | LOCALITY,
         sizeof(int),                        &lda2,  VALUE,
         sizeof(MORSE_Complex64_t)*ib*nb,    RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),             OUTPUT,
         sizeof(int),                        &ldt,   VALUE,

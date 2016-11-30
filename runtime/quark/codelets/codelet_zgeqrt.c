@@ -31,7 +31,7 @@
 
 #include "runtime/quark/include/morse_quark.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
