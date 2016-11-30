@@ -87,7 +87,9 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
      */
     ws_worker = max( ws_worker, ib * (ib + A->nb) );
     ws_worker = max( ws_worker, ib * A->nb * 2 );
+#endif
 
+#if defined(CHAMELEON_USE_MAGMA)
     /* Host space
      *
      * zgeqrt = ib * (A->nb+3*ib) + A->nb )
@@ -102,10 +104,12 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
 
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
+#if defined(CHAMELEON_COPY_DIAG)
     /* necessary to avoid dependencies between tasks regarding the diag tile */
     nblk = ( A->mt + BS -1 ) / BS;
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
     morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb, A->p, A->q);
+#endif
 
     K = min(A->mt, A->nt);
     for (k = 0; k < K; k++) {
@@ -126,13 +130,13 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
                 MorseLower, tempMm, A->nb, A->nb,
                 A(M, k), ldaM,
                 DIAG(M, k), ldaM );
-#endif
 #if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
                 MORSE_TASK_zlaset(
                     &options,
                     MorseUpper, tempMm, A->nb,
                     0., 1.,
                     DIAG(M, k), ldaM );
+#endif
 #endif
             }
             for (n = k+1; n < A->nt; n++) {
@@ -198,6 +202,9 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
+#if defined(CHAMELEON_COPY_DIAG)
+    MORSE_Sequence_Wait(sequence);
     morse_desc_mat_free(DIAG);
     free(DIAG);
+#endif
 }

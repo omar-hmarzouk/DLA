@@ -238,9 +238,9 @@ int testing_zgels(int argc, char **argv)
 
     int M     = atoi(argv[1]);
     int N     = atoi(argv[2]);
-    int LDA   = atoi(argv[3]);
+    int LDA   = max( atoi(argv[3]), M );
     int NRHS  = atoi(argv[4]);
-    int LDB   = atoi(argv[5]);
+    int LDB   = max( max( atoi(argv[5]), M ), N );
     int rh;
 
     int K = min(M, N);
@@ -290,10 +290,6 @@ int testing_zgels(int argc, char **argv)
     for (i = 0; i < M; i++)
         for (j = 0; j < NRHS; j++)
             B2[LDB*j+i] = B1[LDB*j+i] ;
-
-    memset((void*)Q, 0, LDA*N*sizeof(MORSE_Complex64_t));
-    for (i = 0; i < K; i++)
-        Q[LDA*i+i] = 1.0;
 
     /* MORSE ZGELS */
     MORSE_zgels(MorseNoTrans, M, N, NRHS, A2, LDA, T, B2, LDB);
@@ -347,10 +343,6 @@ int testing_zgels(int argc, char **argv)
     for (i = 0; i < M; i++)
         for (j = 0; j < NRHS; j++)
              B2[LDB*j+i] = B1[LDB*j+i];
-
-    memset((void*)Q, 0, LDA*N*sizeof(MORSE_Complex64_t));
-    for (i = 0; i < K; i++)
-        Q[LDA*i+i] = 1.0;
 
     if (M >= N) {
         printf("\n");
@@ -631,7 +623,7 @@ static int check_factorization(int M, int N, MORSE_Complex64_t *A1, MORSE_Comple
  * Check the solution
  */
 
-static int check_solution(int M, int N, int NRHS, MORSE_Complex64_t *A1, int LDA, MORSE_Complex64_t *B1, MORSE_Complex64_t *B2, int LDB, double eps)
+static int check_solution(int M, int N, int NRHS, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, MORSE_Complex64_t *X, int LDB, double eps)
 {
     int info_solution;
     double Rnorm, Anorm, Xnorm, Bnorm;
@@ -642,23 +634,23 @@ static int check_solution(int M, int N, int NRHS, MORSE_Complex64_t *A1, int LDA
     alpha = 1.0;
     beta  = -1.0;
 
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, M, N,    A1, LDA, &Anorm );
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, M, NRHS, B2, LDB, &Xnorm );
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, N, NRHS, B1, LDB, &Bnorm );
+    BLAS_zge_norm( blas_colmajor, blas_inf_norm, M, N,    A, LDA, &Anorm );
+    BLAS_zge_norm( blas_colmajor, blas_inf_norm, N, NRHS, B, LDB, &Bnorm );
+    BLAS_zge_norm( blas_colmajor, blas_inf_norm, M, NRHS, X, LDB, &Xnorm );
 
-    cblas_zgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, M, NRHS, N, CBLAS_SADDR(alpha), A1, LDA, B2, LDB, CBLAS_SADDR(beta), B1, LDB);
+    cblas_zgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, M, NRHS, N, CBLAS_SADDR(alpha), A, LDA, X, LDB, CBLAS_SADDR(beta), B, LDB);
 
     if (M >= N) {
        MORSE_Complex64_t *Residual = (MORSE_Complex64_t *)malloc(M*NRHS*sizeof(MORSE_Complex64_t));
        memset((void*)Residual, 0, M*NRHS*sizeof(MORSE_Complex64_t));
-       cblas_zgemm(CblasColMajor, CblasConjTrans, CblasNoTrans, N, NRHS, M, CBLAS_SADDR(alpha), A1, LDA, B1, LDB, CBLAS_SADDR(beta), Residual, M);
+       cblas_zgemm(CblasColMajor, CblasConjTrans, CblasNoTrans, N, NRHS, M, CBLAS_SADDR(alpha), A, LDA, B, LDB, CBLAS_SADDR(beta), Residual, M);
        BLAS_zge_norm( blas_colmajor, blas_inf_norm, M, NRHS, Residual, M, &Rnorm );
        free(Residual);
     }
     else {
        MORSE_Complex64_t *Residual = (MORSE_Complex64_t *)malloc(N*NRHS*sizeof(MORSE_Complex64_t));
        memset((void*)Residual, 0, N*NRHS*sizeof(MORSE_Complex64_t));
-       cblas_zgemm(CblasColMajor, CblasConjTrans, CblasNoTrans, N, NRHS, M, CBLAS_SADDR(alpha), A1, LDA, B1, LDB, CBLAS_SADDR(beta), Residual, N);
+       cblas_zgemm(CblasColMajor, CblasConjTrans, CblasNoTrans, N, NRHS, M, CBLAS_SADDR(alpha), A, LDA, B, LDB, CBLAS_SADDR(beta), Residual, N);
        BLAS_zge_norm( blas_colmajor, blas_inf_norm, N, NRHS, Residual, N, &Rnorm );
        free(Residual);
     }

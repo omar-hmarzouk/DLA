@@ -199,6 +199,7 @@ void MORSE_TASK_ztsmqr(const MORSE_option_t *options,
             STARPU_VALUE,    &ldwork,            sizeof(int),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
+            STARPU_NAME,      "ztsmqr",
 #if defined(CHAMELEON_USE_MPI)
             STARPU_EXECUTE_ON_NODE, execution_rank,
 #endif
@@ -242,7 +243,7 @@ static void cl_ztsmqr_cpu_func(void *descr[], void *cl_arg)
 }
 
 
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
 static void cl_ztsmqr_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
@@ -290,13 +291,13 @@ static void cl_ztsmqr_cuda_func(void *descr[], void *cl_arg)
     cudaStreamSynchronize( stream );
 #endif
 }
+#endif /* defined(CHAMELEON_USE_CUDA) */
 
-#endif
 
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
 CODELETS(ztsmqr, 5, cl_ztsmqr_cpu_func, cl_ztsmqr_cuda_func, STARPU_CUDA_ASYNC)
 #else
 CODELETS_CPU(ztsmqr, 5, cl_ztsmqr_cpu_func)

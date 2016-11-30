@@ -24,19 +24,18 @@
  **/
 #include "cudablas/include/cudablas.h"
 
-#if defined(CHAMELEON_USE_MAGMA)
 int CUDA_ztsmqr(
-        magma_side_t side, magma_trans_t trans,
-        magma_int_t M1, magma_int_t N1,
-        magma_int_t M2, magma_int_t N2,
-        magma_int_t K, magma_int_t IB,
-        magmaDoubleComplex *A1, magma_int_t LDA1,
-        magmaDoubleComplex *A2, magma_int_t LDA2,
-        const magmaDoubleComplex *V, magma_int_t LDV,
-        const magmaDoubleComplex *T, magma_int_t LDT,
-            magmaDoubleComplex *WORK,  magma_int_t LDWORK,
-            magmaDoubleComplex *WORKC, magma_int_t LDWORKC,
-        CUstream stream)
+        MORSE_enum side, MORSE_enum trans,
+        int M1, int N1,
+        int M2, int N2,
+        int K, int IB,
+              cuDoubleComplex *A1,    int LDA1,
+              cuDoubleComplex *A2,    int LDA2,
+        const cuDoubleComplex *V,     int LDV,
+        const cuDoubleComplex *T,     int LDT,
+              cuDoubleComplex *WORK,  int LDWORK,
+              cuDoubleComplex *WORKC, int LDWORKC,
+        CUBLAS_STREAM_PARAM)
 {
     int i, i1, i3;
     int NQ, NW;
@@ -47,12 +46,12 @@ int CUDA_ztsmqr(
     int ni = N1;
 
     /* Check input arguments */
-    if ((side != MagmaLeft) && (side != MagmaRight)) {
+    if ((side != MorseLeft) && (side != MorseRight)) {
         return -1;
     }
 
     /* NQ is the order of Q */
-    if (side == MagmaLeft) {
+    if (side == MorseLeft) {
         NQ = M2;
         NW = IB;
     }
@@ -61,7 +60,7 @@ int CUDA_ztsmqr(
         NW = M1;
     }
 
-    if ((trans != MagmaNoTrans) && (trans != MagmaConjTrans)) {
+    if ((trans != MorseNoTrans) && (trans != MorseConjTrans)) {
         return -2;
     }
     if (M1 < 0) {
@@ -71,16 +70,16 @@ int CUDA_ztsmqr(
         return -4;
     }
     if ( (M2 < 0) ||
-         ( (M2 != M1) && (side == MagmaRight) ) ){
+         ( (M2 != M1) && (side == MorseRight) ) ){
         return -5;
     }
     if ( (N2 < 0) ||
-         ( (N2 != N1) && (side == MagmaLeft) ) ){
+         ( (N2 != N1) && (side == MorseLeft) ) ){
         return -6;
     }
     if ((K < 0) ||
-        ( (side == MagmaLeft)  && (K > M1) ) ||
-        ( (side == MagmaRight) && (K > N1) ) ) {
+        ( (side == MorseLeft)  && (K > M1) ) ||
+        ( (side == MorseRight) && (K > N1) ) ) {
         return -7;
     }
     if (IB < 0) {
@@ -104,10 +103,10 @@ int CUDA_ztsmqr(
 
     /* Quick return */
     if ((M1 == 0) || (N1 == 0) || (M2 == 0) || (N2 == 0) || (K == 0) || (IB == 0))
-        return MAGMA_SUCCESS;
+        return MORSE_SUCCESS;
 
-    if (((side == MagmaLeft)  && (trans != MagmaNoTrans))
-        || ((side == MagmaRight) && (trans == MagmaNoTrans))) {
+    if (((side == MorseLeft)  && (trans != MorseNoTrans))
+        || ((side == MorseRight) && (trans == MorseNoTrans))) {
         i1 = 0;
         i3 = IB;
     }
@@ -119,7 +118,7 @@ int CUDA_ztsmqr(
     for(i = i1; (i > -1) && (i < K); i += i3) {
         kb = min(IB, K-i);
 
-        if (side == MagmaLeft) {
+        if (side == MorseLeft) {
             /*
              * H or H' is applied to C(i:m,1:n)
              */
@@ -133,18 +132,18 @@ int CUDA_ztsmqr(
             ni = N1 - i;
             jc = i;
         }
+
         /*
          * Apply H or H' (NOTE: CORE_zparfb used to be CORE_ztsrfb)
          */
         CUDA_zparfb(
-                side, trans, MagmaForward, MagmaColumnwise,
+                side, trans, MorseForward, MorseColumnwise,
                 mi, ni, M2, N2, kb, 0,
                 A1 + LDA1*jc+ic, LDA1,
                 A2, LDA2,
                 V + LDV*i, LDV,
                 T + LDT*i, LDT,
-                WORK, LDWORK, WORKC, LDWORKC, stream );
+                WORK, LDWORK, WORKC, LDWORKC, CUBLAS_STREAM_VALUE );
     }
     return MORSE_SUCCESS;
 }
-#endif

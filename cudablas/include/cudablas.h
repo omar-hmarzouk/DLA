@@ -25,29 +25,44 @@
 #ifndef _CUDA_BLAS_H_
 #define _CUDA_BLAS_H_
 
+#if !defined(CHAMELEON_USE_CUDA)
+#error "This file should not be included"
+#endif
+
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
 #include <assert.h>
 
-#if defined(CHAMELEON_USE_CUDA)
 #include <cuda.h>
 #include <cuComplex.h>
+
 #if defined(CHAMELEON_USE_CUBLAS_V2)
+
 #include <cublas_v2.h>
+#define CUBLAS_STREAM_PARAM cublasHandle_t handle
+#define CUBLAS_STREAM_VALUE handle
+#define CUBLAS_HANDLE handle,
+#define CUBLAS_SADDR(_a_) (&(_a_))
+#define CUBLAS_VALUE(_a_) (_a_)
+#define CUBLAS_GET_STREAM                       \
+    cudaStream_t stream;                        \
+    cublasGetStream( handle, &stream )
+
 #else
+
 #include <cublas.h>
-#endif
+#define CUBLAS_STREAM_PARAM cudaStream_t stream
+#define CUBLAS_STREAM_VALUE stream
+#define CUBLAS_HANDLE
+#define CUBLAS_SADDR(_a_) (_a_)
+#define CUBLAS_VALUE(_a_) (*(_a_))
+#define CUBLAS_GET_STREAM
+
+#endif /* defined(CHAMELEON_USE_CUBLAS_V2) */
+
 #if defined(CHAMELEON_USE_MAGMA)
 #include <magma.h>
-#endif
-/** ****************************************************************************
- * CUDA BLAS headers
- **/
-#include "cudablas/include/cudablas_z.h"
-#include "cudablas/include/cudablas_d.h"
-#include "cudablas/include/cudablas_c.h"
-#include "cudablas/include/cudablas_s.h"
 #endif
 
 /** ****************************************************************************
@@ -56,10 +71,17 @@
 #include "morse_types.h"
 #include "morse_struct.h"
 #include "morse_constants.h"
+//#include "control/auxiliary.h"
+//#include "control/descriptor.h"
+//#include "control/tile.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/** ****************************************************************************
+ * CUDA BLAS headers
+ **/
+#include "cudablas/include/cudablas_z.h"
+#include "cudablas/include/cudablas_d.h"
+#include "cudablas/include/cudablas_c.h"
+#include "cudablas/include/cudablas_s.h"
 
 /*******************************************************************************
  *  Global utilities
@@ -79,9 +101,5 @@ extern "C" {
  **/
 extern char *morse_lapack_constants[];
 #define morse_lapack_const(morse_const) morse_lapack_constants[morse_const][0]
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

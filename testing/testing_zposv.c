@@ -139,7 +139,7 @@ BLAS_dfpinfo(enum blas_cmach_type cmach) {
     l = 128;
     m = -125;
   } else {
-    t = 53; 
+    t = 53;
     l = 1024;
     m = -1021;
   }
@@ -205,7 +205,7 @@ int testing_zposv(int argc, char **argv)
     uplo = MorseUpper;
     trans1 = uplo == MorseUpper ? MorseConjTrans : MorseNoTrans;
     trans2 = uplo == MorseUpper ? MorseNoTrans : MorseConjTrans;
-    
+
     /*-------------------------------------------------------------
     *  TESTING ZPOSV
     */
@@ -299,9 +299,9 @@ int testing_zposv(int argc, char **argv)
 
     /* MORSE routines */
     MORSE_zpotrf(uplo, N, A2, LDA);
-    MORSE_ztrsm(MorseLeft, uplo, trans1, MorseNonUnit, 
+    MORSE_ztrsm(MorseLeft, uplo, trans1, MorseNonUnit,
                  N, NRHS, 1.0, A2, LDA, B2, LDB);
-    MORSE_ztrsm(MorseLeft, uplo, trans2, MorseNonUnit, 
+    MORSE_ztrsm(MorseLeft, uplo, trans2, MorseNonUnit,
                  N, NRHS, 1.0, A2, LDA, B2, LDB);
 
     printf("\n");
@@ -328,7 +328,7 @@ int testing_zposv(int argc, char **argv)
         printf("***************************************************\n");
     }
 
-    free(A1); free(A2); free(B1); free(B2); 
+    free(A1); free(A2); free(B1); free(B2);
 
     return hres;
 }

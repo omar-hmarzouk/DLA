@@ -91,11 +91,13 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
 
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
+#if defined(CHAMELEON_COPY_DIAG)
     /* necessary to avoid dependencies between tasks regarding the diag tile */
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
     morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, minMT*A->mb, A->nb, 0, 0, minMT*A->mb, A->nb, A->p, A->q);
+#endif
 
-    for (k = min(A->mt, A->nt)-1; k >= 0; k--) {
+    for (k = minMT-1; k >= 0; k--) {
         tempAkm  = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         tempAkn  = k == A->nt-1 ? A->n-k*A->nb : A->nb;
         tempkmin = min( tempAkn, tempAkm );
@@ -121,23 +123,23 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
             &options,
             MorseUpper, tempkmin, tempkn, A->nb,
             A(k, k), ldak,
-            DIAG(k), A->mb );
-#endif
+            DIAG(k), ldak );
 #if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
         MORSE_TASK_zlaset(
             &options,
             MorseLower, tempkmin, tempkn,
             0., 1.,
-            DIAG(k), A->mb );
+            DIAG(k), ldak );
 #endif
-        for (m = 0; m < Q->mt; m++) {
+#endif
+        for (m = k; m < Q->mt; m++) {
             tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
             ldqm = BLKLDD(Q, m);
             MORSE_TASK_zunmlq(
                 &options,
                 MorseRight, MorseNoTrans,
                 tempmm, tempkn, tempkmin, ib, T->nb,
-                DIAG(k), A->mb,
+                DIAG(k), ldak,
                 T(k, k), T->mb,
                 Q(m, k), ldqm);
         }
@@ -146,6 +148,9 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
+#if defined(CHAMELEON_COPY_DIAG)
+    MORSE_Sequence_Wait(sequence);
     morse_desc_mat_free(DIAG);
     free(DIAG);
+#endif
 }

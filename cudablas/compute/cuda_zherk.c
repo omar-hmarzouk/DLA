@@ -24,79 +24,17 @@
  **/
 #include "cudablas/include/cudablas.h"
 
-#if defined(CHAMELEON_USE_CUDA)
-#if defined(CHAMELEON_USE_CUBLAS_V2)
-int CUDA_zherk_V2(
-        MORSE_enum uplo, MORSE_enum trans,
-        int n, int k,
-        double *alpha,
-        const cuDoubleComplex *A, int lda,
-        double *beta,
-        cuDoubleComplex *B, int ldb,
-        CUstream stream)
+int CUDA_zherk( MORSE_enum uplo, MORSE_enum trans,
+                int n, int k,
+                double *alpha,
+                const cuDoubleComplex *A, int lda,
+                double *beta,
+                cuDoubleComplex *B, int ldb,
+                CUBLAS_STREAM_PARAM)
 {
-    cublasHandle_t handle;
-    cublasStatus_t stat;
-    cublasFillMode_t cublasUplo;
-    cublasOperation_t cublasTrans;
-
-    stat = cublasCreate(&handle);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-        printf ("CUBLAS initialization failed\n");
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
-
-    stat = cublasSetStream(handle, stream);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-        printf ("cublasSetStream failed\n");
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
-
-    if (uplo == MorseUpper){
-        cublasUplo = CUBLAS_FILL_MODE_UPPER;
-    }else if(uplo == MorseLower){
-        cublasUplo = CUBLAS_FILL_MODE_LOWER;
-    }else if(uplo == MorseUpperLower){
-        cublasUplo = 0;
-    }else{
-        fprintf(stderr, "Error in cl_zherk_cuda_func: bad uplo parameter %d\n", uplo);
-    }
-    if (trans == MorseNoTrans){
-        cublasTrans = CUBLAS_OP_N;
-    }else if(trans == MorseTrans){
-        cublasTrans = CUBLAS_OP_T;
-    }else if(trans == MorseConjTrans){
-        cublasTrans = CUBLAS_OP_C;
-    }else{
-        fprintf(stderr, "Error in cl_zherk_cuda_func: bad trans parameter %d\n", trans);
-    }
-
-    stat = cublasZherk(handle,
-        cublasUplo, cublasTrans,
-        n, k,
-        (const double *) &alpha, A, lda,
-        (const double *) &beta, B, ldb);
-    if (stat != CUBLAS_STATUS_SUCCESS){
-        printf ("cublasZherk failed");
-        cublasDestroy(handle);
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
-
-    cublasDestroy(handle);
-
-    return MORSE_SUCCESS;
-}
-#else /* CHAMELEON_USE_CUBLAS_V2 */
-int CUDA_zherk(
-        MORSE_enum uplo, MORSE_enum trans,
-        int n, int k,
-        double *alpha,
-        const cuDoubleComplex *A, int lda,
-        double *beta,
-        cuDoubleComplex *B, int ldb,
-        CUstream stream)
-{
+#if !defined(CHAMELEON_USE_CUBLAS_V2)
     cublasSetKernelStream( stream );
+#endif
 
     cublasZherk(
         morse_lapack_const(uplo), morse_lapack_const(trans),
@@ -108,5 +46,3 @@ int CUDA_zherk(
 
     return MORSE_SUCCESS;
 }
-#endif /* CHAMELEON_USE_CUBLAS_V2 */
-#endif /* CHAMELEON_USE_CUDA */

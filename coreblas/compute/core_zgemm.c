@@ -39,7 +39,7 @@
 void CORE_zgemm(MORSE_enum transA, int transB,
                 int M, int N, int K,
                 MORSE_Complex64_t alpha, const MORSE_Complex64_t *A, int LDA,
-                                          const MORSE_Complex64_t *B, int LDB,
+                                         const MORSE_Complex64_t *B, int LDB,
                 MORSE_Complex64_t beta, MORSE_Complex64_t *C, int LDC)
 {
 #ifdef CBLAS_HAS_ZGEMM3M

@@ -46,7 +46,7 @@
  *            triangle is unchange.
  *
  * @param[in] M
- *          The number of rows of the matrix A. M >= 0. 
+ *          The number of rows of the matrix A. M >= 0.
  *
  * @param[in] N
  *          The number of columns of the matrix A. N >= 0.
@@ -75,7 +75,7 @@
  *
  ******************************************************************************/
 int MORSE_zlaset(MORSE_enum uplo, int M, int N,
-                  MORSE_Complex64_t alpha, MORSE_Complex64_t beta, 
+                  MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
                   MORSE_Complex64_t *A, int LDA)
 {
     int NB;
@@ -91,7 +91,7 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N,
         return MORSE_ERR_NOT_INITIALIZED;
     }
     /* Check input arguments */
-    if ( (uplo != MorseUpperLower) && 
+    if ( (uplo != MorseUpperLower) &&
          (uplo != MorseUpper) &&
          (uplo != MorseLower) ) {
         morse_error("MORSE_zlaset", "illegal value of uplo");
@@ -185,8 +185,8 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N,
  * @sa MORSE_slaset_Tile
  *
  ******************************************************************************/
-int MORSE_zlaset_Tile(MORSE_enum uplo, 
-                       MORSE_Complex64_t alpha, MORSE_Complex64_t beta, 
+int MORSE_zlaset_Tile(MORSE_enum uplo,
+                       MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
                        MORSE_desc_t *A)
 {
     MORSE_context_t *morse;
@@ -231,8 +231,8 @@ int MORSE_zlaset_Tile(MORSE_enum uplo,
  * @sa MORSE_slaset_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zlaset_Tile_Async(MORSE_enum uplo, 
-                             MORSE_Complex64_t alpha, MORSE_Complex64_t beta, 
+int MORSE_zlaset_Tile_Async(MORSE_enum uplo,
+                             MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
                              MORSE_desc_t *A,
                              MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
@@ -268,7 +268,7 @@ int MORSE_zlaset_Tile_Async(MORSE_enum uplo,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Check input arguments */
-    if ( (uplo != MorseUpperLower) && 
+    if ( (uplo != MorseUpperLower) &&
          (uplo != MorseUpper) &&
          (uplo != MorseLower) ) {
         morse_error("MORSE_zlaset_Tile_Async", "illegal value of uplo");

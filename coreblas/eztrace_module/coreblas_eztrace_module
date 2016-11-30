@@ -28,7 +28,7 @@ int  CORE_cgelqt(int M, int N, int IB,
 void CORE_cgemm(int transA, int transB,
                 int M, int N, int K,
                 void *alpha, void *A, int LDA,
-                                          void *B, int LDB,
+                             void *B, int LDB,
                 void *beta,        void *C, int LDC);
 int  CORE_cgeqrt(int M, int N, int IB,
                  void *A, int LDA,

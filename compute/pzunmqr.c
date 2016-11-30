@@ -65,6 +65,14 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
 
     ib = MORSE_IB;
 
+    if (A->m > A->n) {
+        minM  = A->n;
+        minMT = A->nt;
+    } else {
+        minM  = A->m;
+        minMT = A->mt;
+    }
+
     /*
      * zunmqr = A->nb * ib
      * ztsmqr = A->nb * ib
@@ -86,22 +94,16 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
     /* necessary to avoid dependencies between tasks regarding the diag tile */
+#if defined(CHAMELEON_COPY_DIAG)
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb, A->p, A->q);
+    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, minMT*A->nb, A->nb, 0, 0, minMT*A->nb, A->nb, A->p, A->q);
+#endif
 
-    if (A->m > A->n) {
-        minM  = A->n;
-        minMT = A->nt;
-    } else {
-        minM  = A->m;
-        minMT = A->mt;
-    }
-
-    /*
-     *  MorseLeft / MorseConjTrans
-     */
     if (side == MorseLeft ) {
         if (trans == MorseConjTrans) {
+            /*
+             *  MorseLeft / MorseConjTrans
+             */
             for (k = 0; k < minMT; k++) {
                 tempkm   = k == B->mt-1 ? B->m-k*B->mb : B->mb;
                 tempkmin = k == minMT-1 ? minM-k*A->nb : A->nb;
@@ -113,13 +115,13 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
                     MorseLower, tempkm, tempkmin, A->nb,
                     A(k, k), ldak,
                     DIAG(k), ldak );
-#endif
 #if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
                 MORSE_TASK_zlaset(
                     &options,
                     MorseUpper, tempkm, tempkmin,
                     0., 1.,
                     DIAG(k), ldak );
+#endif
 #endif
                 for (n = 0; n < B->nt; n++) {
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
@@ -180,13 +182,13 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
                     MorseLower, tempkm, tempkmin, A->nb,
                     A(k, k), ldak,
                     DIAG(k), ldak );
-#endif
 #if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
                 MORSE_TASK_zlaset(
                     &options,
                     MorseUpper, tempkm, tempkmin,
                     0., 1.,
                     DIAG(k), ldak );
+#endif
 #endif
                 for (n = 0; n < B->nt; n++) {
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
@@ -233,13 +235,13 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
                     MorseLower, tempkn, tempkmin, A->nb,
                     A(k, k), ldak,
                     DIAG(k), ldak );
-#endif
 #if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
                 MORSE_TASK_zlaset(
                     &options,
                     MorseUpper, tempkn, tempkmin,
                     0., 1.,
                     DIAG(k), ldak );
+#endif
 #endif
                 for (m = 0; m < B->mt; m++) {
                     tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
@@ -268,13 +270,13 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
                     MorseLower, tempkn, tempkmin, A->nb,
                     A(k, k), ldak,
                     DIAG(k), ldak );
-#endif
 #if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
                 MORSE_TASK_zlaset(
                     &options,
                     MorseUpper, tempkn, tempkmin,
                     0., 1.,
                     DIAG(k), ldak );
+#endif
 #endif
                 for (m = 0; m < B->mt; m++) {
                     tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
@@ -306,11 +308,13 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
             }
         }
     }
-
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
+#if defined(CHAMELEON_COPY_DIAG)
+    MORSE_Sequence_Wait(sequence);
     morse_desc_mat_free(DIAG);
     free(DIAG);
+#endif
 }

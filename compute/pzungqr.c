@@ -55,7 +55,7 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
     int ldak, ldqk, ldam, ldqm;
     int tempmm, tempnn, tempkmin, tempkm;
     int tempAkm, tempAkn;
-    int ib;
+    int ib, minMT;
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
@@ -63,6 +63,12 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
     RUNTIME_options_init(&options, morse, sequence, request);
 
     ib = MORSE_IB;
+
+    if (A->m > A->n) {
+        minMT = A->nt;
+    } else {
+        minMT = A->mt;
+    }
 
     /*
      * zunmqr = A->nb * ib
@@ -85,11 +91,13 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
 
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
+#if defined(CHAMELEON_COPY_DIAG)
     /* necessary to avoid dependencies between tasks regarding the diag tile */
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb, A->p, A->q);
+    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, minMT*A->mb, A->nb, 0, 0, minMT*A->mb, A->nb, A->p, A->q);
+#endif
 
-    for (k = min(A->mt, A->nt)-1; k >= 0; k--) {
+    for (k = minMT-1; k >= 0; k--) {
         tempAkm  = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         tempAkn  = k == A->nt-1 ? A->n-k*A->nb : A->nb;
         tempkmin = min( tempAkn, tempAkm );
@@ -100,7 +108,7 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
             tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
             ldam = BLKLDD(A, m);
             ldqm = BLKLDD(Q, m);
-            for (n = 0; n < Q->nt; n++) {
+            for (n = k; n < Q->nt; n++) {
                 tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
                 MORSE_TASK_ztsmqr(
                     &options,
@@ -118,7 +126,6 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
             MorseLower, tempkm, tempkmin, A->nb,
             A(k, k), ldak,
             DIAG(k), ldak );
-#endif
 #if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
         MORSE_TASK_zlaset(
             &options,
@@ -126,7 +133,8 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
             0., 1.,
             DIAG(k), ldak );
 #endif
-        for (n = 0; n < Q->nt; n++) {
+#endif
+        for (n = k; n < Q->nt; n++) {
             tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
             MORSE_TASK_zunmqr(
                 &options,
@@ -141,6 +149,9 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
+#if defined(CHAMELEON_COPY_DIAG)
+    MORSE_Sequence_Wait(sequence);
     morse_desc_mat_free(DIAG);
     free(DIAG);
+#endif
 }

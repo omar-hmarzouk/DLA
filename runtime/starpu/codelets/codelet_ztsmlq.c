@@ -212,7 +212,7 @@ static void cl_ztsmlq_cpu_func(void *descr[], void *cl_arg)
                 A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
 }
 
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
 static void cl_ztsmlq_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
@@ -259,12 +259,12 @@ static void cl_ztsmlq_cuda_func(void *descr[], void *cl_arg)
     cudaStreamSynchronize( stream );
 #endif
 }
-#endif
+#endif /* defined(CHAMELEON_USE_CUDA) */
 
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
 CODELETS(ztsmlq, 5, cl_ztsmlq_cpu_func, cl_ztsmlq_cuda_func, STARPU_CUDA_ASYNC)
 #else
 CODELETS_CPU(ztsmlq, 5, cl_ztsmlq_cpu_func)

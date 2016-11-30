@@ -58,7 +58,7 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
     int k, m, n;
     int K, M, RD, lastRD;
     int ldaM, ldam, ldaMRD;
-    int ldbM, ldbm, ldbMRD;
+    int ldqM, ldqm, ldqMRD;
     int tempkn, tempMm, tempnn, tempmm, tempMRDm, tempkmin;
     int ib;
     int nblk;
@@ -91,10 +91,12 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
 
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
+#if defined(CHAMELEON_COPY_DIAG)
     /* necessary to avoid dependencies between tasks regarding the diag tile */
     nblk = ( A->mt + BS -1 ) / BS;
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
     morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb, A->p, A->q);
+#endif
 
     K = min(A->mt, A->nt);
     for (k = K-1; k >= 0; k--) {
@@ -105,18 +107,18 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
         for (RD = lastRD; RD >= BS; RD /= 2) {
             for (M = k; M+RD < A->mt; M += 2*RD) {
                 tempMRDm = M+RD == A->mt-1 ? A->m-(M+RD)*A->mb : A->mb;
-                ldbM   = BLKLDD(Q, M   );
-                ldbMRD = BLKLDD(Q, M+RD);
+                ldqM   = BLKLDD(Q, M   );
+                ldqMRD = BLKLDD(Q, M+RD);
                 ldaMRD = BLKLDD(A, M+RD);
-                for (n = 0; n < Q->nt; n++) {
+                for (n = k; n < Q->nt; n++) {
                     tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
                     MORSE_TASK_zttmqr(
                         &options,
                         MorseLeft, MorseNoTrans,
                         A->nb, tempnn, tempMRDm, tempnn,
                         tempkn, ib, T->nb,
-                        Q (M,    n), ldbM,
-                        Q (M+RD, n), ldbMRD,
+                        Q (M,    n), ldqM,
+                        Q (M+RD, n), ldqMRD,
                         A (M+RD, k), ldaMRD,
                         T2(M+RD, k), T->mb);
                 }
@@ -126,21 +128,21 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
             tempMm   = M == A->mt-1 ? A->m-M*A->mb : A->mb;
             tempkmin = min(tempMm, tempkn);
             ldaM = BLKLDD(A, M);
-            ldbM = BLKLDD(Q, M);
+            ldqM = BLKLDD(Q, M);
             for (m = min(M+BS, A->mt)-1; m > M; m--) {
                 tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
-                ldbm = BLKLDD(Q, m);
+                ldqm = BLKLDD(Q, m);
                 ldam = BLKLDD(A, m);
 
-                for (n = 0; n < Q->nt; n++) {
+                for (n = k; n < Q->nt; n++) {
                     tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
                     MORSE_TASK_ztsmqr(
                         &options,
                         MorseLeft, MorseNoTrans,
                         A->nb, tempnn, tempmm, tempnn,
                         tempkn, ib, T->nb,
-                        Q(M, n), ldbM,
-                        Q(m, n), ldbm,
+                        Q(M, n), ldqM,
+                        Q(m, n), ldqm,
                         A(m, k), ldam,
                         T(m, k), T->mb);
                 }
@@ -151,7 +153,6 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                 MorseLower, tempMm, tempkmin, A->nb,
                 A(M, k), ldaM,
                 DIAG(M, k), ldaM );
-#endif
 #if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
             MORSE_TASK_zlaset(
                 &options,
@@ -159,7 +160,8 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                 0., 1.,
                 DIAG(M, k), ldaM );
 #endif
-            for (n = 0; n < Q->nt; n++) {
+#endif
+            for (n = k; n < Q->nt; n++) {
                 tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
                 MORSE_TASK_zunmqr(
                     &options,
@@ -168,7 +170,7 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                     tempkmin, ib, T->nb,
                     DIAG(M, k), ldaM,
                     T(M, k), T->mb,
-                    Q(M, n), ldbM);
+                    Q(M, n), ldqM);
             }
         }
     }
@@ -176,6 +178,9 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
+#if defined(CHAMELEON_COPY_DIAG)
+    MORSE_Sequence_Wait(sequence);
     morse_desc_mat_free(DIAG);
     free(DIAG);
+#endif
 }

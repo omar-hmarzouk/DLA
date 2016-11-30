@@ -97,9 +97,11 @@ void morse_pzgeqrf(MORSE_desc_t *A, MORSE_desc_t *T,
 
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
+#if defined(CHAMELEON_COPY_DIAG)
     /* necessary to avoid dependencies between tsqrt and unmqr tasks regarding the diag tile */
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
     morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb, A->p, A->q);
+#endif
 
     for (k = 0; k < minMNT; k++) {
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
@@ -117,13 +119,13 @@ void morse_pzgeqrf(MORSE_desc_t *A, MORSE_desc_t *T,
                 MorseLower, A->mb, A->nb, A->nb,
                 A(k, k), ldak,
                 DIAG(k), ldak );
-#endif
 #if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
             MORSE_TASK_zlaset(
                 &options,
                 MorseUpper, A->mb, A->nb,
                 0., 1.,
                 DIAG(k), ldak );
+#endif
 #endif
         }
         for (n = k+1; n < A->nt; n++) {
@@ -162,6 +164,9 @@ void morse_pzgeqrf(MORSE_desc_t *A, MORSE_desc_t *T,
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
 
+#if defined(CHAMELEON_COPY_DIAG)
+    MORSE_Sequence_Wait(sequence);
     morse_desc_mat_free(DIAG);
     free(DIAG);
+#endif
 }

@@ -63,7 +63,7 @@ CHAMELEON_CL_CB(zssssm,        starpu_matrix_get_nx(task->handles[0]), starpu_ma
 CHAMELEON_CL_CB(zsymm,         starpu_matrix_get_nx(task->handles[2]), starpu_matrix_get_ny(task->handles[2]), 0,                                           2.*M*M *N);
 CHAMELEON_CL_CB(zsyr2k,        starpu_matrix_get_nx(task->handles[0]), starpu_matrix_get_ny(task->handles[0]), 0,                                      ( 1.+2.*M*N)*M);
 CHAMELEON_CL_CB(zsyrk,         starpu_matrix_get_nx(task->handles[0]), starpu_matrix_get_ny(task->handles[0]), 0,                                      ( 1.+   M)*M*N);
-CHAMELEON_CL_CB(ztrasm,       starpu_matrix_get_nx(task->handles[0]), starpu_matrix_get_ny(task->handles[0]), 0,                                               0.5*M*(M+1));
+CHAMELEON_CL_CB(ztrasm,        starpu_matrix_get_nx(task->handles[0]), starpu_matrix_get_ny(task->handles[0]), 0,                                               0.5*M*(M+1));
 CHAMELEON_CL_CB(ztrmm,         starpu_matrix_get_nx(task->handles[1]), starpu_matrix_get_ny(task->handles[1]), 0,                                               M*M*N);
 CHAMELEON_CL_CB(ztrsm,         starpu_matrix_get_nx(task->handles[1]), starpu_matrix_get_ny(task->handles[1]), 0,                                               M*M*N);
 CHAMELEON_CL_CB(ztrtri,        starpu_matrix_get_nx(task->handles[0]), starpu_matrix_get_nx(task->handles[0]), starpu_matrix_get_nx(task->handles[0]), (1./3.)*M *M*M);

@@ -296,6 +296,7 @@ int MORSE_zungqr_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q,
     if (N <= 0)
         return MORSE_SUCCESS;
 */
+    morse_pzlaset(MorseUpperLower, 0., 1., Q, sequence, request);
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
         morse_pzungqr(A, Q, T, sequence, request);
     }
