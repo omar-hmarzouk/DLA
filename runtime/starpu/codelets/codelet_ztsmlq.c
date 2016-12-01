@@ -212,10 +212,8 @@ static void cl_ztsmlq_cpu_func(void *descr[], void *cl_arg)
     CORE_ztsmlq(side, trans, m1, n1, m2, n2, k, ib,
                 A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 
 #if defined(CHAMELEON_USE_CUDA)
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_ztsmlq_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
@@ -262,8 +260,8 @@ static void cl_ztsmlq_cuda_func(void *descr[], void *cl_arg)
     cudaStreamSynchronize( stream );
 #endif
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #endif /* defined(CHAMELEON_USE_CUDA) */
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

@@ -295,37 +295,40 @@ int RUNTIME_desc_getoncpu( MORSE_desc_t *desc )
 
 void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
 {
+    int64_t im = m + (desc->i / desc->mb);
+    int64_t jn = n + (desc->j / desc->nb);
+
     starpu_data_handle_t *ptrtile = (starpu_data_handle_t*)(desc->schedopt);
-    ptrtile += ((int64_t)(desc->lmt) * (int64_t)n + (int64_t)m);
+    ptrtile += ((int64_t)(desc->lmt) * (int64_t)jn + (int64_t)im);
 
     if (*ptrtile == NULL) {
         int64_t eltsze = MORSE_Element_Size(desc->dtyp);
         int myrank = desc->myrank;
         int owner  = desc->get_rankof( desc, m, n );
-        int tempmm = (m == desc->lmt-1) ? (desc->lm - m * desc->mb) : desc->mb;
-        int tempnn = (n == desc->lnt-1) ? (desc->ln - n * desc->nb) : desc->nb;
+        int tempmm = (im == desc->lmt-1) ? (desc->lm - im * desc->mb) : desc->mb;
+        int tempnn = (jn == desc->lnt-1) ? (desc->ln - jn * desc->nb) : desc->nb;
 
         if ( myrank == owner ) {
             if ( desc->get_blkaddr(desc, m, n) == (void*)NULL ) {
                 starpu_matrix_data_register(ptrtile, -1,
                                             (uintptr_t) NULL,
-                                            BLKLDD(desc, m), tempmm, tempnn, eltsze);
+                                            BLKLDD(desc, im), tempmm, tempnn, eltsze);
             }
             else {
                 starpu_matrix_data_register(ptrtile, STARPU_MAIN_RAM,
                                             (uintptr_t)desc->get_blkaddr(desc, m, n),
-                                            BLKLDD(desc, m), tempmm, tempnn, eltsze);
+                                            BLKLDD(desc, im), tempmm, tempnn, eltsze);
             }
         }
         else {
             starpu_matrix_data_register(ptrtile, -1,
                                         (uintptr_t) NULL,
-                                        BLKLDD(desc, m), tempmm, tempnn, eltsze);
+                                        BLKLDD(desc, im), tempmm, tempnn, eltsze);
         }
 
 #if defined(CHAMELEON_USE_MPI)
         {
-            int64_t block_ind = desc->lmt * n + m;
+            int64_t block_ind = desc->lmt * jn + im;
             starpu_mpi_data_register(*ptrtile, (desc->id << tag_sep) | (block_ind), owner);
         }
 #endif /* defined(CHAMELEON_USE_MPI) */

@@ -81,10 +81,8 @@ static void cl_ztrtri_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &diag, &N, &LDA, &iinfo);
     CORE_ztrtri(uplo, diag, N, A, LDA, &info);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 
 #if defined(CHAMELEON_USE_MAGMA)
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_ztrtri_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;
@@ -101,8 +99,8 @@ static void cl_ztrtri_cuda_func(void *descr[], void *cl_arg)
     cudaThreadSynchronize();
     return;
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #endif
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

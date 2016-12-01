@@ -26,6 +26,18 @@
 #
 ###
 
+option(CHAMELEON_COPY_DIAG
+  "This options enables the duplication of the diagonal tiles in some algorithm to avoid anti-dependencies on lower/upper triangular parts (Might be useful to StarPU)" ON)
+mark_as_advanced(CHAMELEON_COPY_DIAG)
+
+if ( CHAMELEON_SCHED_QUARK )
+  # No need for those extra diagonale tiles
+  set( CHAMELEON_COPY_DIAG OFF )
+endif()
+
+if (CHAMELEON_COPY_DIAG)
+  add_definitions(-DCHAMELEON_COPY_DIAG)
+endif()
 
 # Define the list of sources
 # --------------------------

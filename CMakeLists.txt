@@ -161,15 +161,15 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
     endif()
 
     # Use intermediate variable since cmake_dependent_option doesn't have OR conditions
-    set(CHAMELEON_ENABLE_MPI OFF CACHE BOOL "Tells if MPI might be supported by the runtime")
+    set(CHAMELEON_ENABLE_MPI OFF CACHE INTERNAL "Tells if MPI might be supported by the runtime")
     if ( CHAMELEON_SCHED_PARSEC OR CHAMELEON_SCHED_STARPU )
-         set(CHAMELEON_ENABLE_MPI ON)
+         set(CHAMELEON_ENABLE_MPI ON FORCE)
     endif()
 
     # Use intermediate variable since cmake_dependent_option doesn't have OR conditions
-    set(CHAMELEON_ENABLE_CUDA OFF CACHE BOOL "Tells if CUDA might be supported by the runtime")
+    set(CHAMELEON_ENABLE_CUDA OFF CACHE INTERNAL "Tells if CUDA might be supported by the runtime")
     if ( CHAMELEON_SCHED_PARSEC OR CHAMELEON_SCHED_STARPU )
-         set(CHAMELEON_ENABLE_CUDA ON)
+         set(CHAMELEON_ENABLE_CUDA ON FORCE)
     endif()
 
     # Additional options

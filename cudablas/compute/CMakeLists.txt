@@ -27,33 +27,40 @@
 # ------------------------------------------------------
 set(CUDABLAS_SRCS_GENERATED "")
 set(ZSRC
-    cuda_zgelqt.c
     cuda_zgemerge.c
     cuda_zgemm.c
-    cuda_zgeqrt.c
-    cuda_zgessm.c
-    cuda_zgetrf.c
     cuda_zhemm.c
     cuda_zher2k.c
     cuda_zherk.c
-    cuda_zlauum.c
     cuda_zparfb.c
-    cuda_zpotrf.c
-    cuda_zssssm.c
     cuda_zsymm.c
     cuda_zsyr2k.c
     cuda_zsyrk.c
     cuda_ztrmm.c
     cuda_ztrsm.c
-    cuda_ztrtri.c
-    cuda_ztslqt.c
     cuda_ztsmlq.c
     cuda_ztsmqr.c
+    )
+
+if( CHAMELEON_USE_MAGMA )
+  set(ZSRC
+    ${ZSRC}
+    cuda_zgelqt.c
+    cuda_zgeqrt.c
+    cuda_zgessm.c
+    cuda_zgetrf.c
+    cuda_zlauum.c
+    cuda_zparfb.c
+    cuda_zpotrf.c
+    cuda_zssssm.c
+    cuda_ztrtri.c
+    cuda_ztslqt.c
     cuda_ztsqrt.c
     cuda_ztstrf.c
     cuda_zunmlqt.c
     cuda_zunmqrt.c
     )
+endif()
 
 precisions_rules_py(CUDABLAS_SRCS_GENERATED "${ZSRC}"
                     PRECISIONS "${CHAMELEON_PRECISION}")

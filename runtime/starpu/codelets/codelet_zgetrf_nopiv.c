@@ -119,13 +119,11 @@ static void cl_zgetrf_nopiv_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &iinfo);
     CORE_zgetrf_nopiv(m, n, ib, A, lda, &info);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet GPU
  */
 #if defined(CHAMELEON_USE_MAGMA)
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_zgetrf_nopiv_cuda_func(void *descr[], void *cl_arg)
 {
     int m;
@@ -142,8 +140,8 @@ static void cl_zgetrf_nopiv_cuda_func(void *descr[], void *cl_arg)
     CUDA_zgetrf_nopiv( m, n, dA, lda, &info );
     cudaThreadSynchronize();
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #endif
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

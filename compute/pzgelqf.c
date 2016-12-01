@@ -53,7 +53,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
     int k, m, n;
     int ldak, ldam;
     int tempkm, tempkn, tempmm, tempnn;
-    int ib;
+    int ib, minMT;
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
@@ -61,6 +61,12 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
     RUNTIME_options_init(&options, morse, sequence, request);
 
     ib = MORSE_IB;
+
+    if (A->m > A->n) {
+        minMT = A->nt;
+    } else {
+        minMT = A->mt;
+    }
 
     /*
      * zgelqt = A->nb * (ib+1)

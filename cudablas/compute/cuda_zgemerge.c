@@ -24,28 +24,15 @@
  **/
 #include "cudablas/include/cudablas.h"
 
-#if defined(CHAMELEON_USE_MAGMA)
-#if defined(CHAMELEON_USE_CUBLAS_V2)
-int CUDA_zgemerge( MORSE_enum side, MORSE_enum diag,
-		int M, int N, cuDoubleComplex *A, int LDA,
-		cuDoubleComplex *B, int LDB, CUBLAS_STREAM_PARAM)
+int
+CUDA_zgemerge( MORSE_enum side, MORSE_enum diag,
+               int M, int N,
+               cuDoubleComplex *A, int LDA,
+               cuDoubleComplex *B, int LDB,
+               CUBLAS_STREAM_PARAM)
 {
     int i, j;
-    magmaDoubleComplex *cola, *colb;
-    cublasHandle_t handle;
-    cublasStatus_t stat;
-
-    stat = cublasCreate(&handle);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-        printf ("CUBLAS initialization failed\n");
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
-
-    stat = cublasSetStream(handle, stream);
-    if (stat != CUBLAS_STATUS_SUCCESS) {
-        printf ("cublasSetStream failed\n");
-        assert( stat == CUBLAS_STATUS_SUCCESS );
-    }
+    cuDoubleComplex *cola, *colb;
 
     if (M < 0) {
         return -1;
@@ -60,55 +47,9 @@ int CUDA_zgemerge( MORSE_enum side, MORSE_enum diag,
         return -7;
     }
 
-    if (side == MagmaLeft){
-        for(i=0; i<N; i++){
-            cola = A + i*LDA;
-            colb = B + i*LDB;
-//            cublasZcopy(handle, i+1, cola, 1, colb, 1);
-            cudaMemcpyAsync(colb , cola,
-                            (i+1)*sizeof(cuDoubleComplex),
-                            cudaMemcpyDeviceToDevice, stream);
-        }
-    }else{
-        for(i=0; i<N; i++){
-            cola = A + i*LDA;
-            colb = B + i*LDB;
-//            cublasZcopy(handle, M-i, cola + i, 1, colb + i, 1);
-            cudaMemcpyAsync(colb+i , cola+i,
-                            (M-i)*sizeof(cuDoubleComplex),
-                            cudaMemcpyDeviceToDevice, stream);
-        }
-    }
+    CUBLAS_GET_STREAM;
 
-    cublasDestroy(handle);
-
-    return MORSE_SUCCESS;
-}
-#else /* CHAMELEON_USE_CUBLAS_V2 */
-int CUDA_zgemerge(
-        magma_side_t side, magma_diag_t diag,
-        magma_int_t M, magma_int_t N,
-        magmaDoubleComplex *A, magma_int_t LDA,
-        magmaDoubleComplex *B, magma_int_t LDB,
-        CUstream stream)
-{
-    int i, j;
-    magmaDoubleComplex *cola, *colb;
-
-    if (M < 0) {
-        return -1;
-    }
-    if (N < 0) {
-        return -2;
-    }
-    if ( (LDA < max(1,M)) && (M > 0) ) {
-        return -5;
-    }
-    if ( (LDB < max(1,M)) && (M > 0) ) {
-        return -7;
-    }
-
-    if (side == MagmaLeft){
+    if (side == MorseLeft){
         for(i=0; i<N; i++){
             cola = A + i*LDA;
             colb = B + i*LDB;
@@ -128,5 +69,3 @@ int CUDA_zgemerge(
 
     return MORSE_SUCCESS;
 }
-#endif /* CHAMELEON_USE_CUBLAS_V2 */
-#endif

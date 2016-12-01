@@ -184,10 +184,8 @@ static void cl_zunmlq_cpu_func(void *descr[], void *cl_arg)
     CORE_zunmlq(side, trans, m, n, k, ib,
                 A, lda, T, ldt, C, ldc, WORK, ldwork);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 
 #if defined(CHAMELEON_USE_MAGMA)
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_zunmlq_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_starpu_ws_t *d_work;
@@ -215,8 +213,8 @@ static void cl_zunmlq_cuda_func(void *descr[], void *cl_arg)
 
     cudaThreadSynchronize();
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #endif
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

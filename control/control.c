@@ -145,12 +145,13 @@ int MORSE_Finalize(void)
 #if defined(CHAMELEON_USE_MAGMA) && !defined(CHAMELEON_SIMULATION)
     magma_finalize();
 #endif
-    morse_context_destroy();
+
 #if defined(CHAMELEON_USE_MPI)
     if (!morse->mpi_outer_init)
         MPI_Finalize();
 #endif
 
+    morse_context_destroy();
     return MORSE_SUCCESS;
 }
 

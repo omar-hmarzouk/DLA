@@ -170,10 +170,8 @@ static void cl_zssssm_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m1, &n1, &m2, &n2, &k, &ib, &lda1, &lda2, &ldl1, &ldl2, &IPIV);
     CORE_zssssm(m1, n1, m2, n2, k, ib, A1, lda1, A2, lda2, L1, ldl1, L2, ldl2, IPIV);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 
 #if defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_zssssm_cuda_func(void *descr[], void *cl_arg)
 {
     int m1;
@@ -213,8 +211,8 @@ static void cl_zssssm_cuda_func(void *descr[], void *cl_arg)
 
     cudaThreadSynchronize();
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #endif
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

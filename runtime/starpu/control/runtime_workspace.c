@@ -52,14 +52,12 @@ static void RUNTIME_allocate_workspace_on_workers(void *arg)
         }
     }
     else
-    {
 #endif
+    {
         /* This buffer should only be used within the CPU kernel, so
          * there is no point in using pinned memory here. */
         workspace->workspaces[id] = malloc(workspace->size);
-#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
     }
-#endif
 
     assert(workspace->workspaces[id]);
 }
@@ -87,12 +85,10 @@ static void RUNTIME_free_workspace_on_workers(void *arg)
         }
     }
     else
+#endif
     {
-#endif
         free(workspace->workspaces[id]);
-#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
     }
-#endif
 
     workspace->workspaces[id] = NULL;
 }

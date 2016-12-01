@@ -102,7 +102,7 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_seq
 void morse_pzgetrf_nopiv(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzgetrf_reclap(MORSE_desc_t *A, int *IPIV, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzgetrf_rectil(MORSE_desc_t *A, int *IPIV, MORSE_sequence_t *sequence, MORSE_request_t *request);
-void morse_pzhbcpy_t2bl(MORSE_enum uplo, MORSE_desc_t *A, MORSE_Complex64_t *AB, int LDAB, MORSE_sequence_t *sequence, MORSE_request_t *request);
+void morse_pzhbcpy_t2bl(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *AB, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzhegst(MORSE_enum itype, MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 #ifdef COMPLEX
 void morse_pzhemm(MORSE_enum side, MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_Complex64_t beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request);

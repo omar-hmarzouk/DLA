@@ -161,10 +161,8 @@ static void cl_ztsqrt_cpu_func(void *descr[], void *cl_arg)
     WORK = TAU + max( m, n );
     CORE_ztsqrt(m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 
 #if defined(CHAMELEON_USE_MAGMA)
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_ztsqrt_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_starpu_ws_t *h_work;
@@ -203,8 +201,9 @@ static void cl_ztsqrt_cuda_func(void *descr[], void *cl_arg)
             h_W, d_W, stream);
     cudaThreadSynchronize();
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #endif
+#endif //!defined(CHAMELEON_SIMULATION)
+
 /*
  * Codelet definition
  */

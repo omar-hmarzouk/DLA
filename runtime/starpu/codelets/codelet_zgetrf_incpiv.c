@@ -171,13 +171,12 @@ static void cl_zgetrf_incpiv_cpu_func(void *descr[], void *cl_arg)
     }
 #endif
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+
 
 /*
  * Codelet GPU
  */
 #if defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_zgetrf_incpiv_cuda_func(void *descr[], void *cl_arg)
 {
     int m;
@@ -228,8 +227,8 @@ static void cl_zgetrf_incpiv_cuda_func(void *descr[], void *cl_arg)
 
     cudaThreadSynchronize();
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #endif //defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
+#endif //!defined(CHAMELEON_SIMULATION)
 
 
 /*

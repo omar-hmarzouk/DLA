@@ -177,6 +177,7 @@ inline static int morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n)
  **/
 inline static int morse_getrankof_2d_diag(const MORSE_desc_t *desc, int m, int n)
 {
+    assert( n == 0 );
     return (m % desc->p) * desc->q + (m % desc->q);
 }
 

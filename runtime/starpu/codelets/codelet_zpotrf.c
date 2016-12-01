@@ -79,10 +79,8 @@ static void cl_zpotrf_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &n, &lda, &iinfo);
     CORE_zpotrf(uplo, n, A, lda, &info);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 
 #ifdef CHAMELEON_USE_MAGMA
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_zpotrf_cuda_func(void *descr[], void *cl_arg)
 {
     cudaStream_t stream[2], currentt_stream;
@@ -115,8 +113,8 @@ static void cl_zpotrf_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #endif
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

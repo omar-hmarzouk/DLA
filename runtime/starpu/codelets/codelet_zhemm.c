@@ -99,11 +99,9 @@ static void cl_zhemm_cpu_func(void *descr[], void *cl_arg)
         B, LDB,
         beta, C, LDC);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 
 #ifdef CHAMELEON_USE_CUDA
 #if defined(CHAMELEON_USE_CUBLAS_V2)
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_zhemm_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
@@ -143,9 +141,7 @@ static void cl_zhemm_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #else /* CHAMELEON_USE_CUBLAS_V2 */
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_zhemm_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
@@ -183,9 +179,9 @@ static void cl_zhemm_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #endif /* CHAMELEON_USE_CUBLAS_V2 */
 #endif /* CHAMELEON_USE_CUDA */
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

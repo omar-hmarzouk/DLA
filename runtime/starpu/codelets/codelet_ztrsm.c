@@ -116,11 +116,9 @@ static void cl_ztrsm_cpu_func(void *descr[], void *cl_arg)
         alpha, A, lda,
         B, ldb);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 
 #ifdef CHAMELEON_USE_CUDA
 #if defined(CHAMELEON_USE_CUBLAS_V2)
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_ztrsm_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
@@ -156,9 +154,7 @@ static void cl_ztrsm_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #else /* CHAMELEON_USE_CUBLAS_V2 */
-#if !defined(CHAMELEON_SIMULATION)
 static void cl_ztrsm_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
@@ -193,9 +189,9 @@ static void cl_ztrsm_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
-#endif //!defined(CHAMELEON_SIMULATION)
 #endif /* CHAMELEON_USE_CUBLAS_V2 */
 #endif /* CHAMELEON_USE_CUDA */
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition
