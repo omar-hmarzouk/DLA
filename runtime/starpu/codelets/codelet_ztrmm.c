@@ -96,7 +96,6 @@ static void cl_ztrmm_cpu_func(void *descr[], void *cl_arg)
 }
 
 #ifdef CHAMELEON_USE_CUDA
-#if defined(CHAMELEON_USE_CUBLAS_V2)
 static void cl_ztrmm_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
@@ -118,41 +117,6 @@ static void cl_ztrmm_cuda_func(void *descr[], void *cl_arg)
 
     stream = starpu_cuda_get_local_stream();
 
-    CUDA_ztrmm_V2(
-        side, uplo, transA, diag,
-        M, N,
-        &alpha, A, LDA,
-        B, LDB, B, LDB,
-        stream);
-
-#ifndef STARPU_CUDA_ASYNC
-    cudaStreamSynchronize( stream );
-#endif
-
-    return;
-}
-#else /* CHAMELEON_USE_CUBLAS_V2 */
-static void cl_ztrmm_cuda_func(void *descr[], void *cl_arg)
-{
-    MORSE_enum side;
-    MORSE_enum uplo;
-    MORSE_enum transA;
-    MORSE_enum diag;
-    int M;
-    int N;
-    cuDoubleComplex alpha;
-    const cuDoubleComplex *A;
-    int LDA;
-    cuDoubleComplex *B;
-    int LDB;
-    CUstream stream;
-
-    A = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    B = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
-    starpu_codelet_unpack_args(cl_arg, &side, &uplo, &transA, &diag, &M, &N, &alpha, &LDA, &LDB);
-
-    stream = starpu_cuda_get_local_stream();
-
     CUDA_ztrmm(
         side, uplo,
         transA, diag,
@@ -167,7 +131,6 @@ static void cl_ztrmm_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
-#endif /* CHAMELEON_USE_CUBLAS_V2 */
 #endif /* CHAMELEON_USE_CUDA */
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
