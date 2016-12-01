@@ -82,7 +82,7 @@ static void cl_zlacpy_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &M, &N, &LDA, &LDB);
     CORE_zlacpy(uplo, M, N, A, LDA, B, LDB);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

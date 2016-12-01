@@ -50,7 +50,7 @@ void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
             STARPU_RW,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),
             STARPU_VALUE,    &lda,                       sizeof(int),
             STARPU_VALUE,    &iinfo,                     sizeof(int),
-            //STARPU_SCRATCH,   options->ws_worker,
+            /* STARPU_SCRATCH,   options->ws_worker, */
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
             0);
@@ -72,7 +72,7 @@ static void cl_zsytrf_nopiv_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &n, &lda, &iinfo);
     CORE_zsytf2_nopiv(uplo, n, A, lda);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

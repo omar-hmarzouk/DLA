@@ -68,7 +68,7 @@ static void cl_ztrssq_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &diag, &m, &n, &lda);
     CORE_ztrssq( uplo, diag, m, n, A, lda, &SCALESUMSQ[0], &SCALESUMSQ[1]);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

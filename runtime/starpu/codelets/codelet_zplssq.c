@@ -93,7 +93,7 @@ static void cl_zplssq_cpu_func(void *descr[], void *cl_arg)
         SCLSSQ[1] = SCLSSQ[1]     + (SCALESUMSQ[1] * (( SCALESUMSQ[0] / SCLSSQ[0] ) * ( SCALESUMSQ[0] / SCLSSQ[0] )));
     }
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
@@ -124,7 +124,7 @@ static void cl_zplssq2_cpu_func(void *descr[], void *cl_arg)
 
     RESULT[0] = RESULT[0] * sqrt( RESULT[1] );
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

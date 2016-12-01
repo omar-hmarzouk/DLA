@@ -71,7 +71,7 @@ static void cl_zlansy_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &norm, &uplo, &N, &LDA);
     CORE_zlansy( norm, uplo, N, A, LDA, work, normA);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

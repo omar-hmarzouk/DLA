@@ -195,8 +195,8 @@ static void cl_zgeqrt_cuda_func(void *descr[], void *cl_arg)
 
     cudaThreadSynchronize();
 }
-#endif //defined(CHAMELEON_USE_MAGMA)
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* defined(CHAMELEON_USE_MAGMA) */
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

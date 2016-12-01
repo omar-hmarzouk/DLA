@@ -260,7 +260,7 @@ static void cl_ztstrf_cuda_func(void *descr[], void *cl_arg)
     cudaThreadSynchronize();
 }
 #endif
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

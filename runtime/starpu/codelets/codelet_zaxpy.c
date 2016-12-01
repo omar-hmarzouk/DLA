@@ -65,7 +65,7 @@ static void cl_zaxpy_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &M, &alpha, &incA, &incB);
     CORE_zaxpy(M, alpha, A, incA, B, incB);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

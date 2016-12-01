@@ -66,7 +66,7 @@ static void cl_dzasum_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &storev, &uplo, &M, &N, &lda);
     CORE_dzasum(storev, uplo, M, N, A, lda, work);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

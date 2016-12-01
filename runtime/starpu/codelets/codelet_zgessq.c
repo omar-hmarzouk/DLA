@@ -63,7 +63,7 @@ static void cl_zgessq_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &lda);
     CORE_zgessq( m, n, A, lda, &SCALESUMSQ[0], &SCALESUMSQ[1] );
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

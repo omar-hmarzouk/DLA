@@ -32,7 +32,7 @@
 #include "runtime/starpu/include/runtime_codelet_z.h"
 
 
-//  MORSE_TASK_zplgsy - Generate a tile for random symmetric (positive definite if 'bump' is large enough) matrix.
+/*   MORSE_TASK_zplgsy - Generate a tile for random symmetric (positive definite if 'bump' is large enough) matrix. */
 
 void MORSE_TASK_zplgsy( const MORSE_option_t *options,
                         MORSE_Complex64_t bump, int m, int n, const MORSE_desc_t *A, int Am, int An, int lda,
@@ -61,7 +61,7 @@ void MORSE_TASK_zplgsy( const MORSE_option_t *options,
     }
 }
 
-//  cl_zplgsy_cpu_func - Generate a tile for random symmetric (positive definite if 'bump' is large enough) matrix.
+/*   cl_zplgsy_cpu_func - Generate a tile for random symmetric (positive definite if 'bump' is large enough) matrix. */
 
 #if !defined(CHAMELEON_SIMULATION)
 static void cl_zplgsy_cpu_func(void *descr[], void *cl_arg)
@@ -80,7 +80,7 @@ static void cl_zplgsy_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &bump, &m, &n, &lda, &bigM, &m0, &n0, &seed );
     CORE_zplgsy( bump, m, n, A, lda, bigM, m0, n0, seed );
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

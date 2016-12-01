@@ -56,7 +56,7 @@ void MORSE_TASK_zpotrf(const MORSE_option_t *options,
             STARPU_RW,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),
             STARPU_VALUE,    &lda,                       sizeof(int),
             STARPU_VALUE,    &iinfo,                     sizeof(int),
-            //STARPU_SCRATCH,   options->ws_worker,
+            /* STARPU_SCRATCH,   options->ws_worker, */
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
             0);
@@ -100,21 +100,21 @@ static void cl_zpotrf_cuda_func(void *descr[], void *cl_arg)
     /*  *\/ */
     /* hA = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]); */
 
-//     stream[0] = starpu_cuda_get_local_stream();
-//     if ( cudaStreamCreate( stream+1 ) != CUDA_SUCCESS ){
-//         fprintf(stderr, "Error while creating stream in codelet_zpotrf\n");
-//         exit(-1);
-//     }
+/*      stream[0] = starpu_cuda_get_local_stream(); */
+/*      if ( cudaStreamCreate( stream+1 ) != CUDA_SUCCESS ){ */
+/*          fprintf(stderr, "Error while creating stream in codelet_zpotrf\n"); */
+/*          exit(-1); */
+/*      } */
 
     CUDA_zpotrf( uplo, n, A, lda, &info);
 
     cudaThreadSynchronize();
-//     cudaStreamDestroy( stream[1] );
+/*      cudaStreamDestroy( stream[1] ); */
 
     return;
 }
 #endif
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

@@ -261,7 +261,7 @@ static void cl_ztsmlq_cuda_func(void *descr[], void *cl_arg)
 #endif
 }
 #endif /* defined(CHAMELEON_USE_CUDA) */
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

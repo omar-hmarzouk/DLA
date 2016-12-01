@@ -179,7 +179,7 @@ static void cl_zsymm_cuda_func(void *descr[], void *cl_arg)
 }
 #endif /* CHAMELEON_USE_CUBLAS_V2 */
 #endif /* CHAMELEON_USE_CUDA */
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

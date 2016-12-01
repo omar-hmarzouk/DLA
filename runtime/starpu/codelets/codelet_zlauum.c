@@ -90,7 +90,7 @@ static void cl_zlauum_cuda_func(void *descr[], void *cl_arg)
     return;
 }
 #endif
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

@@ -69,7 +69,7 @@ static void cl_zlantr_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &norm, &uplo, &diag, &M, &N, &LDA);
     CORE_zlantr( norm, uplo, diag, M, N, A, LDA, work, normA);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

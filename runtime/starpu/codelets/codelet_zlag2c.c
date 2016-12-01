@@ -76,7 +76,7 @@ static void cl_zlag2c_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &lda, &ldb);
     CORE_zlag2c( m, n, A, lda, B, ldb);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 void MORSE_TASK_clag2z(const MORSE_option_t *options,
                        int m, int n, int nb,
@@ -120,7 +120,7 @@ static void cl_clag2z_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &lda, &ldb);
     CORE_clag2z( m, n, A, lda, B, ldb);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

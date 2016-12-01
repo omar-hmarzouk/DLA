@@ -152,7 +152,7 @@ void MORSE_TASK_ztsmqr(const MORSE_option_t *options,
     int rank_changed=0;
     (void)execution_rank;
 
-    // force execution on the rank owning the largest data (tile)
+    /*  force execution on the rank owning the largest data (tile) */
     int threshold;
     char* env = getenv("MORSE_COMM_FACTOR_THRESHOLD");
     if (env != NULL)
@@ -293,7 +293,7 @@ static void cl_ztsmqr_cuda_func(void *descr[], void *cl_arg)
 #endif
 }
 #endif /* defined(CHAMELEON_USE_CUDA) */
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 
 /*

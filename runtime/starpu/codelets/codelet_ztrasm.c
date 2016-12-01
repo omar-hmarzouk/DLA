@@ -67,7 +67,7 @@ static void cl_ztrasm_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &storev, &uplo, &diag, &M, &N, &lda);
     CORE_ztrasm(storev, uplo, diag, M, N, A, lda, work);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

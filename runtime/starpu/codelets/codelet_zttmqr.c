@@ -145,7 +145,7 @@ void MORSE_TASK_zttmqr(const MORSE_option_t *options,
     int rank_changed=0;
     (void)execution_rank;
 
-    // force execution on the rank owning the largest data (tile)
+    /*  force execution on the rank owning the largest data (tile) */
     int threshold;
     char* env = getenv("MORSE_COMM_FACTOR_THRESHOLD");
     if (env != NULL)
@@ -234,7 +234,7 @@ static void cl_zttmqr_cpu_func(void *descr[], void *cl_arg)
     CORE_zttmqr(side, trans, m1, n1, m2, n2, k, ib,
                 A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

@@ -205,7 +205,7 @@ static void cl_zttmlq_cpu_func(void *descr[], void *cl_arg)
     CORE_zttmlq(side, trans, m1, n1, m2, n2, k, ib, A1, lda1,
                 A2, lda2, V, ldv, T, ldt, WORK, ldwork);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

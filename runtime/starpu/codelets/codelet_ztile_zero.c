@@ -77,7 +77,7 @@ static void cl_ztile_zero_cpu_func(void *descr[], void *cl_arg)
             A[lda*x+y] = 0.0;
 
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

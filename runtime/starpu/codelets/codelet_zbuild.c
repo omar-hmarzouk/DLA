@@ -86,7 +86,7 @@ static void cl_zbuild_cpu_func(void *descr[], void *cl_arg)
   user_build_callback(row_min, row_max, col_min, col_max, A, ld, user_data);
 
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

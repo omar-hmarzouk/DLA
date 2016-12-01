@@ -137,7 +137,7 @@ static void cl_ztradd_cpu_func(void *descr[], void *cl_arg)
     CORE_ztradd(uplo, trans, M, N, alpha, A, LDA, beta, B, LDB);
     return;
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

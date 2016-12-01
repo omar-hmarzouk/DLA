@@ -131,7 +131,7 @@ static void cl_zgeadd_cpu_func(void *descr[], void *cl_arg)
     CORE_zgeadd(trans, M, N, alpha, A, LDA, beta, B, LDB);
     return;
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

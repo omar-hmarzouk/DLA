@@ -227,8 +227,8 @@ static void cl_zgetrf_incpiv_cuda_func(void *descr[], void *cl_arg)
 
     cudaThreadSynchronize();
 }
-#endif //defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU) */
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 
 /*

@@ -103,7 +103,7 @@ static void cl_zlascal_cpu_func(void *descr[], void *cl_arg)
     CORE_zlascal(uplo, M, N, alpha, A, LDA);
     return;
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

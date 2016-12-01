@@ -71,7 +71,7 @@ static void cl_zlange_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &norm, &M, &N, &LDA);
     CORE_zlange( norm, M, N, A, LDA, work, normA);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
@@ -107,7 +107,7 @@ static void cl_zlange_max_cpu_func(void *descr[], void *cl_arg)
     if ( *A > *normA )
         *normA = *A;
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

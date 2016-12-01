@@ -133,7 +133,7 @@ void MORSE_TASK_zunmqr(const MORSE_option_t *options,
     int rank_changed=0;
     (void)execution_rank;
 
-    // force execution on the rank owning the largest data (tile)
+    /*  force execution on the rank owning the largest data (tile) */
     int threshold;
     char* env = getenv("MORSE_COMM_FACTOR_THRESHOLD");
     if (env != NULL)
@@ -240,7 +240,7 @@ static void cl_zunmqr_cuda_func(void *descr[], void *cl_arg)
     cudaThreadSynchronize();
 }
 #endif
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

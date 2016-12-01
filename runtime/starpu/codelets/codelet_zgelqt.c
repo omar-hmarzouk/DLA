@@ -149,7 +149,7 @@ static void cl_zgelqt_cpu_func(void *descr[], void *cl_arg)
     WORK = TAU + max( m, n );
     CORE_zgelqt(m, n, ib, A, lda, T, ldt, TAU, WORK);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 #if defined(CHAMELEON_USE_MAGMA)
 #if !defined(CHAMELEON_SIMULATION)
@@ -194,8 +194,8 @@ static void cl_zgelqt_cuda_func(void *descr[], void *cl_arg)
 
     cudaThreadSynchronize();
 }
-#endif //defined(CHAMELEON_USE_MAGMA)
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* defined(CHAMELEON_USE_MAGMA) */
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition

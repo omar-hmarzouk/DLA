@@ -105,7 +105,7 @@ static void cl_zlaset2_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &M, &N, &alpha, &LDA);
     CORE_zlaset2(uplo, M, N, alpha, A, LDA);
 }
-#endif //!defined(CHAMELEON_SIMULATION)
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
