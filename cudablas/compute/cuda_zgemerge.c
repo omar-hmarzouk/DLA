@@ -26,12 +26,9 @@
 
 #if defined(CHAMELEON_USE_MAGMA)
 #if defined(CHAMELEON_USE_CUBLAS_V2)
-int CUDA_zgemerge(
-        magma_side_t side, magma_diag_t diag,
-        magma_int_t M, magma_int_t N,
-        magmaDoubleComplex *A, magma_int_t LDA,
-        magmaDoubleComplex *B, magma_int_t LDB,
-        CUstream stream)
+int CUDA_zgemerge( MORSE_enum side, MORSE_enum diag,
+		int M, int N, cuDoubleComplex *A, int LDA,
+		cuDoubleComplex *B, int LDB, CUBLAS_STREAM_PARAM)
 {
     int i, j;
     magmaDoubleComplex *cola, *colb;
