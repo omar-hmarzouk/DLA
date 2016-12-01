@@ -47,7 +47,7 @@
 /** ****************************************************************************
  * Implementation headers
  **/
-#if defined(CHAMELEON_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
 #include <cuda.h>
 #include <cuda_runtime.h>
 #include <cuda_runtime_api.h>
@@ -58,7 +58,7 @@
 #endif
 #endif
 
-#if defined(CHAMELEON_USE_OPENCL)
+#if defined(CHAMELEON_USE_OPENCL) && !defined(CHAMELEON_SIMULATION)
 #include <OpenCL/cl.h>
 #endif
 
@@ -70,7 +70,7 @@
 /** ****************************************************************************
  * Linear Algebra headers
  **/
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) && !defined(CHAMELEON_SIMULATION)
 #include <magma.h>
 #endif
 
@@ -88,7 +88,7 @@
 #include "morse.h"
 
 #include "coreblas/include/coreblas.h"
-#if defined(CHAMELEON_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
 #include "cudablas/include/cudablas.h"
 #endif
 

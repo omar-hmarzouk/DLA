@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -101,7 +101,7 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
     assert(desc->schedopt);
     tiles = (starpu_data_handle_t*)(desc->schedopt);
 
-#if defined(CHAMELEON_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
     if (desc->use_mat == 1 && desc->register_mat == 1){
         /*
          * Register allocated memory as CUDA pinned memory
@@ -191,7 +191,7 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
                 handle++;
             }
 
-#if defined(CHAMELEON_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
         if (desc->use_mat == 1 && desc->register_mat == 1){
             int64_t eltsze = MORSE_Element_Size(desc->dtyp);
             size_t size = (size_t)(desc->llm) * (size_t)(desc->lln) * eltsze;

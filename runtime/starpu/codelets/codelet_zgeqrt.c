@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -129,6 +129,7 @@ void MORSE_TASK_zgeqrt(const MORSE_option_t *options,
 }
 
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zgeqrt_cpu_func(void *descr[], void *cl_arg)
 {
     MORSE_starpu_ws_t *h_work;
@@ -150,9 +151,10 @@ static void cl_zgeqrt_cpu_func(void *descr[], void *cl_arg)
     WORK = TAU + max( m, n );
     CORE_zgeqrt(m, n, ib, A, lda, T, ldt, TAU, WORK);
 }
-
+#endif //!defined(CHAMELEON_SIMULATION)
 
 #if defined(CHAMELEON_USE_MAGMA)
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zgeqrt_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_starpu_ws_t *h_work;
@@ -194,13 +196,13 @@ static void cl_zgeqrt_cuda_func(void *descr[], void *cl_arg)
 
     cudaThreadSynchronize();
 }
-
-#endif
+#endif //!defined(CHAMELEON_SIMULATION)
+#endif //defined(CHAMELEON_USE_MAGMA)
 
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 CODELETS(zgeqrt, 3, cl_zgeqrt_cpu_func, cl_zgeqrt_cuda_func, 0)
 #else
 CODELETS_CPU(zgeqrt, 3, cl_zgeqrt_cpu_func)

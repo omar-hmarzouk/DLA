@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -41,6 +41,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     normmorse = MORSE_zlange_Tile(norm, descA);
     STOP_TIMING();
 
+#if !defined(CHAMELEON_SIMULATION)
     /* Check the solution */
     if ( check )
     {
@@ -75,7 +76,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         free( work );
         free( A );
     }
-
+#endif
     PASTE_CODE_FREE_MATRIX( descA );
 
     return 0;

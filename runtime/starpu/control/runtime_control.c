@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -133,7 +133,7 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
     }
 #endif
 
-#if defined(CHAMELEON_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
     starpu_cublas_init();
 #endif
 
@@ -155,7 +155,7 @@ void RUNTIME_finalize_scheduler( MORSE_context_t *morse )
 #if defined(CHAMELEON_USE_MPI)
     starpu_mpi_shutdown();
 #endif
-#if defined(CHAMELEON_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
     starpu_cublas_shutdown();
 #endif
 

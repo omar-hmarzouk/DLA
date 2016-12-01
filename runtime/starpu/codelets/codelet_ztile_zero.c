@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -57,6 +57,7 @@ void MORSE_TASK_ztile_zero(const const MORSE_option_t *options,
 /*****************************************************************************
  *
  **/
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_ztile_zero_cpu_func(void *descr[], void *cl_arg)
 {
     int X1;
@@ -76,6 +77,7 @@ static void cl_ztile_zero_cpu_func(void *descr[], void *cl_arg)
             A[lda*x+y] = 0.0;
 
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

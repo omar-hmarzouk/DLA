@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -52,6 +52,7 @@ void MORSE_TASK_zlanhe(const MORSE_option_t *options,
     }
 }
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zlanhe_cpu_func(void *descr[], void *cl_arg)
 {
     double *normA;
@@ -68,6 +69,7 @@ static void cl_zlanhe_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &norm, &uplo, &N, &LDA);
     CORE_zlanhe( norm, uplo, N, A, LDA, work, normA);
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

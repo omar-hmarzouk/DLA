@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -88,6 +88,7 @@ void MORSE_TASK_zlascal(const MORSE_option_t *options,
 }
 
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zlascal_cpu_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;
@@ -102,6 +103,7 @@ static void cl_zlascal_cpu_func(void *descr[], void *cl_arg)
     CORE_zlascal(uplo, M, N, alpha, A, LDA);
     return;
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

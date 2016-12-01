@@ -3,7 +3,7 @@
 # @copyright (c) 2009-2014 The University of Tennessee and The University
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
-# @copyright (c) 2012-2014 Inria. All rights reserved.
+# @copyright (c) 2012-2016 Inria. All rights reserved.
 # @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
@@ -189,10 +189,13 @@ add_library(chameleon_starpu ${RUNTIME_SRCS})
 set_property(TARGET chameleon_starpu PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET chameleon_starpu PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
-target_link_libraries(chameleon_starpu coreblas ${STARPU_LIBRARIES_DEP})
-if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
-  target_link_libraries(chameleon_starpu cudablas)
-endif(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+target_link_libraries(chameleon_starpu ${STARPU_LIBRARIES_DEP})
+if (NOT CHAMELEON_SIMULATION)
+    target_link_libraries(chameleon_starpu coreblas)
+endif()
+if(CHAMELEON_USE_CUDA AND NOT CHAMELEON_SIMULATION)
+    target_link_libraries(chameleon_starpu cudablas)
+endif(CHAMELEON_USE_CUDA AND NOT CHAMELEON_SIMULATION)
 
 add_dependencies(chameleon_starpu
   chameleon_include
@@ -200,10 +203,12 @@ add_dependencies(chameleon_starpu
   control_include
   runtime_starpu_include
 )
-if (CHAMELEON_USE_CUDA)
-    add_dependencies(chameleon_starpu
-      cudablas_include
-    )
+if (NOT CHAMELEON_SIMULATION)
+    add_dependencies(chameleon_starpu coreblas_include)
+endif()
+ 
+if (CHAMELEON_USE_CUDA AND NOT CHAMELEON_SIMULATION)
+    add_dependencies(chameleon_starpu cudablas_include)
 endif()
 
 # installation

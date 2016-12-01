@@ -130,7 +130,6 @@ CHAMELEON_ENABLE_TRACING=ON|OFF (default OFF)
 CHAMELEON_SCHED_STARPU=ON|OFF (default ON)
 CHAMELEON_SCHED_QUARK=ON|OFF (default OFF)
 CHAMELEON_SIMULATION=ON|OFF (default OFF)
-CHAMELEON_SIMULATION_MAGMA=ON|OFF (default OFF)
 
 Libraries detected with an official cmake module (see module files in CMAKE_ROOT/Modules/):
 CUDA - MPI - Threads 

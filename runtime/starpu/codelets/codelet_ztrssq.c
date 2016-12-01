@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -52,6 +52,7 @@ void MORSE_TASK_ztrssq( const MORSE_option_t *options,
 }
 
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_ztrssq_cpu_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;
@@ -67,6 +68,8 @@ static void cl_ztrssq_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &diag, &m, &n, &lda);
     CORE_ztrssq( uplo, diag, m, n, A, lda, &SCALESUMSQ[0], &SCALESUMSQ[1]);
 }
+#endif //!defined(CHAMELEON_SIMULATION)
+
 /*
  * Codelet definition
  */

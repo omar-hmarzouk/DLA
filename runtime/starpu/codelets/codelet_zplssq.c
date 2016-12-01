@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -77,6 +77,7 @@ void MORSE_TASK_zplssq( const MORSE_option_t *options,
 }
 
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zplssq_cpu_func(void *descr[], void *cl_arg)
 {
     double *SCALESUMSQ;
@@ -92,6 +93,8 @@ static void cl_zplssq_cpu_func(void *descr[], void *cl_arg)
         SCLSSQ[1] = SCLSSQ[1]     + (SCALESUMSQ[1] * (( SCALESUMSQ[0] / SCLSSQ[0] ) * ( SCALESUMSQ[0] / SCLSSQ[0] )));
     }
 }
+#endif //!defined(CHAMELEON_SIMULATION)
+
 /*
  * Codelet definition
  */
@@ -112,6 +115,7 @@ void MORSE_TASK_zplssq2( const MORSE_option_t *options,
 }
 
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zplssq2_cpu_func(void *descr[], void *cl_arg)
 {
     double *RESULT;
@@ -120,6 +124,8 @@ static void cl_zplssq2_cpu_func(void *descr[], void *cl_arg)
 
     RESULT[0] = RESULT[0] * sqrt( RESULT[1] );
 }
+#endif //!defined(CHAMELEON_SIMULATION)
+
 /*
  * Codelet definition
  */

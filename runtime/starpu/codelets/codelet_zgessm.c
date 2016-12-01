@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -114,6 +114,7 @@ void MORSE_TASK_zgessm(const MORSE_option_t *options,
 }
 
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zgessm_cpu_func(void *descr[], void *cl_arg)
 {
     int m;
@@ -132,8 +133,10 @@ static void cl_zgessm_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &k, &ib, &IPIV, &ldl, &ldd, &lda);
     CORE_zgessm(m, n, k, ib, IPIV, D, ldd, A, lda);
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 
 #if defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zgessm_cuda_func(void *descr[], void *cl_arg)
 {
     int m;
@@ -160,12 +163,13 @@ static void cl_zgessm_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
-#endif
+#endif //!defined(CHAMELEON_SIMULATION)
+#endif //defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
 
 /*
  * Codelet definition
  */
-#if (defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)) || defined(CHAMELEON_SIMULATION_MAGMA)
+#if (defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU))
 CODELETS(zgessm, 3, cl_zgessm_cpu_func, cl_zgessm_cuda_func, 0)
 #else
 CODELETS_CPU(zgessm, 3, cl_zgessm_cpu_func)

@@ -70,17 +70,9 @@ if(NOT CHAMELEON_SIMULATION)
 
 else()
 
-    list(APPEND libs_for_ooc
-         coreblas
-         simulapacke
-         simucblas
-         ${HWLOC_LIBRARIES}
-         ${EXTRA_LIBRARIES}
-    )
+    list(APPEND libs_for_ooc ${EXTRA_LIBRARIES})
 
 endif()
-
-link_directories(${HWLOC_LIBRARY_DIRS})
 
 
 # message(STATUS "libs examples: ${libs_for_ooc}")

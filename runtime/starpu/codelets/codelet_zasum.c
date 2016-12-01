@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -50,6 +50,7 @@ void MORSE_TASK_dzasum(const MORSE_option_t *options,
 }
 
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_dzasum_cpu_func(void *descr[], void *cl_arg)
 {
     MORSE_enum storev;
@@ -65,6 +66,7 @@ static void cl_dzasum_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &storev, &uplo, &M, &N, &lda);
     CORE_dzasum(storev, uplo, M, N, A, lda, work);
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

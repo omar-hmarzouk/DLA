@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -74,8 +74,13 @@
         cl_##cl_name.model = &cl_##cl_name##_model;                           \
     }
 
+#if defined(CHAMELEON_SIMULATION)
+#define CODELETS_CPU(name, _nbuffers, cpu_func_name)                          \
+  CODELETS_ALL( name, _nbuffers, (starpu_cpu_func_t) 1, NULL, STARPU_CPU, 0 )
+#else
 #define CODELETS_CPU(name, _nbuffers, cpu_func_name)                          \
   CODELETS_ALL( name, _nbuffers, cpu_func_name, NULL, STARPU_CPU, 0 )
+#endif
 
 #define CODELETS_GPU(name, _nbuffers, cpu_func_name, cuda_func_name, cuda_flags) \
   CODELETS_ALL( name, _nbuffers, cpu_func_name, cuda_func_name, STARPU_CPU  | STARPU_CUDA, cuda_flags )
@@ -89,14 +94,21 @@
      void cl_##name##_restrict_where(uint32_t where);                         \
      void cl_##name##_restore_where(void);
 
+#if defined(CHAMELEON_SIMULATION)
 #if defined(CHAMELEON_USE_CUDA)
 #define CODELETS(name, _nbuffers, cpu_func_name, cuda_func_name, cuda_flags) \
-    CODELETS_GPU(name, _nbuffers, cpu_func_name, cuda_func_name, cuda_flags)
+    CODELETS_GPU(name, _nbuffers, (starpu_cpu_func_t) 1, (starpu_cuda_func_t) 1, cuda_flags)
 
 #define CODELETS_HEADER(name)  CODELETS_ALL_HEADER(name)
-#elif defined(CHAMELEON_SIMULATION)
+#else
 #define CODELETS(name, _nbuffers, cpu_func_name, cuda_func_name, cuda_flags) \
-    CODELETS_GPU(name, _nbuffers, cpu_func_name, (starpu_cuda_func_t) 1, cuda_flags)
+    CODELETS_CPU(name, _nbuffers, (starpu_cpu_func_t) 1)
+
+#define CODELETS_HEADER(name)  CODELETS_ALL_HEADER(name)
+#endif
+#elif defined(CHAMELEON_USE_CUDA)
+#define CODELETS(name, _nbuffers, cpu_func_name, cuda_func_name, cuda_flags) \
+    CODELETS_GPU(name, _nbuffers, cpu_func_name, cuda_func_name, cuda_flags)
 
 #define CODELETS_HEADER(name)  CODELETS_ALL_HEADER(name)
 #else

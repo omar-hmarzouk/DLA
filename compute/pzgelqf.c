@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -71,7 +71,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
     ws_worker = A->nb * (ib+1);
 
     /* Allocation of temporary (scratch) working space */
-#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     /* Worker space
      *
      * zgelqt = max( A->nb * (ib+1), ib * (ib + A->nb) )
@@ -118,7 +118,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
                 MorseUpper, A->mb, A->nb, A->nb,
                 A(k, k), ldak,
                 DIAG(k), ldak );
-#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
             MORSE_TASK_zlaset(
                 &options,
                 MorseLower, A->mb, A->nb,

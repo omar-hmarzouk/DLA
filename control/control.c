@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -111,7 +111,7 @@ int MORSE_InitPar(int ncpus, int ncudas, int nthreads_per_worker)
     }
 #  endif
 #endif
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) && !defined(CHAMELEON_SIMULATION)
     magma_init();
 #endif
     RUNTIME_init_scheduler( morse, ncpus, ncudas, nthreads_per_worker );
@@ -142,7 +142,7 @@ int MORSE_Finalize(void)
     RUNTIME_barrier(morse);
 #  endif
     RUNTIME_finalize_scheduler( morse );
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA) && !defined(CHAMELEON_SIMULATION)
     magma_finalize();
 #endif
     morse_context_destroy();

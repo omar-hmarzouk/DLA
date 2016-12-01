@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -104,6 +104,7 @@ void MORSE_TASK_zgetrf_nopiv(const MORSE_option_t *options,
 /*
  * Codelet CPU
  */
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zgetrf_nopiv_cpu_func(void *descr[], void *cl_arg)
 {
     int m;
@@ -118,11 +119,13 @@ static void cl_zgetrf_nopiv_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &iinfo);
     CORE_zgetrf_nopiv(m, n, ib, A, lda, &info);
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet GPU
  */
 #if defined(CHAMELEON_USE_MAGMA)
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zgetrf_nopiv_cuda_func(void *descr[], void *cl_arg)
 {
     int m;
@@ -139,12 +142,13 @@ static void cl_zgetrf_nopiv_cuda_func(void *descr[], void *cl_arg)
     CUDA_zgetrf_nopiv( m, n, dA, lda, &info );
     cudaThreadSynchronize();
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 #endif
 
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 CODELETS(zgetrf_nopiv, 1, cl_zgetrf_nopiv_cpu_func, cl_zgetrf_nopiv_cuda_func, 0)
 #else
 CODELETS_CPU(zgetrf_nopiv, 1, cl_zgetrf_nopiv_cpu_func)

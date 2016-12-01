@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -102,6 +102,7 @@ void MORSE_TASK_zgemm(const MORSE_option_t *options,
 
 
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zgemm_cpu_func(void *descr[], void *cl_arg)
 {
     MORSE_enum transA;
@@ -128,9 +129,11 @@ static void cl_zgemm_cpu_func(void *descr[], void *cl_arg)
         B, ldb,
         beta, C, ldc);
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 
 #ifdef CHAMELEON_USE_CUDA
 #if defined(CHAMELEON_USE_CUBLAS_V2)
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum transA;
@@ -169,7 +172,9 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 #else /* CHAMELEON_USE_CUBLAS_V2 */
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum transA;
@@ -208,6 +213,7 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 #endif /* CHAMELEON_USE_CUBLAS_V2 */
 #endif /* CHAMELEON_USE_CUDA */
 

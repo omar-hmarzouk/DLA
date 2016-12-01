@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -33,7 +33,7 @@ static void RUNTIME_allocate_workspace_on_workers(void *arg)
 
     int id = starpu_worker_get_id();
 
-#ifdef CHAMELEON_USE_CUDA
+#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
     type = starpu_worker_get_type(id);
     if (type == STARPU_CUDA_WORKER)
     {
@@ -57,7 +57,7 @@ static void RUNTIME_allocate_workspace_on_workers(void *arg)
         /* This buffer should only be used within the CPU kernel, so
          * there is no point in using pinned memory here. */
         workspace->workspaces[id] = malloc(workspace->size);
-#ifdef CHAMELEON_USE_CUDA
+#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
     }
 #endif
 
@@ -72,7 +72,7 @@ static void RUNTIME_free_workspace_on_workers(void *arg)
     (void)type;
     int id = starpu_worker_get_id();
 
-#ifdef CHAMELEON_USE_CUDA
+#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
     type = starpu_worker_get_type(id);
     if (type == STARPU_CUDA_WORKER)
     {
@@ -90,7 +90,7 @@ static void RUNTIME_free_workspace_on_workers(void *arg)
     {
 #endif
         free(workspace->workspaces[id]);
-#ifdef CHAMELEON_USE_CUDA
+#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
     }
 #endif
 

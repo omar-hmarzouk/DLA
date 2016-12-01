@@ -3,7 +3,7 @@
 # @copyright (c) 2009-2014 The University of Tennessee and The University
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
-# @copyright (c) 2012-2014 Inria. All rights reserved.
+# @copyright (c) 2012-2016 Inria. All rights reserved.
 # @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
@@ -152,17 +152,9 @@ if(NOT CHAMELEON_SIMULATION)
 
 else()
 
-    list(APPEND libs_for_tests
-    coreblas
-    simulapacke
-    simucblas
-    ${HWLOC_LIBRARIES}
-    ${EXTRA_LIBRARIES}
-    )
+    list(APPEND libs_for_tests ${EXTRA_LIBRARIES})
 
 endif()
-
-link_directories(${HWLOC_LIBRARY_DIRS})
 
 # message("LAPACKE_LIBRARY_DIRS: ${LAPACKE_LIBRARY_DIRS}")
 # message("LAPACK_LIBRARY_DIRS: ${LAPACK_LIBRARY_DIRS}")

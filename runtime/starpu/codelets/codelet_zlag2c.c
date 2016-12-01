@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -61,6 +61,7 @@ void MORSE_TASK_zlag2c(const MORSE_option_t *options,
     }
 }
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zlag2c_cpu_func(void *descr[], void *cl_arg)
 {
     int m;
@@ -75,6 +76,7 @@ static void cl_zlag2c_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &lda, &ldb);
     CORE_zlag2c( m, n, A, lda, B, ldb);
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 
 void MORSE_TASK_clag2z(const MORSE_option_t *options,
                        int m, int n, int nb,
@@ -103,6 +105,7 @@ void MORSE_TASK_clag2z(const MORSE_option_t *options,
 }
 
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_clag2z_cpu_func(void *descr[], void *cl_arg)
 {
     int m;
@@ -117,6 +120,7 @@ static void cl_clag2z_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &lda, &ldb);
     CORE_clag2z( m, n, A, lda, B, ldb);
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

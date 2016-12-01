@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -617,6 +617,13 @@ main(int argc, char *argv[]) {
             fprintf( stderr, "Unknown option: %s\n", argv[i] );
         }
     }
+#if !defined(CHAMELEON_USE_CUDA)
+    if (iparam[IPARAM_NCUDAS] != 0){
+    	fprintf(stderr, "ERROR: CHAMELEON_USE_CUDA is not defined. "
+    			"The number of CUDA devices must be set to 0 (--gpus=0).\n");
+    	return EXIT_FAILURE;
+    }
+#endif
 
     if ( iparam[IPARAM_THRDNBR] == -1 ) {
       get_thread_count( &(iparam[IPARAM_THRDNBR]) );

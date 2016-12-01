@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -64,7 +64,7 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
     RUNTIME_options_init(&options, morse, sequence, request);
 
     ib = MORSE_IB;
-#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
     h_work_size  = sizeof(MORSE_Complex64_t)*( 2*ib + 2*L->nb )*2*A->mb;
     d_work_size  = sizeof(MORSE_Complex64_t)*(   ib           )*2*A->mb;
 #else

@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -61,6 +61,7 @@ void MORSE_TASK_zplrnt( const MORSE_option_t *options,
 
 //  cl_zplrnt_cpu_func - Generate a tile for random matrix.
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zplrnt_cpu_func(void *descr[], void *cl_arg)
 {
     int m;
@@ -76,6 +77,7 @@ static void cl_zplrnt_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &lda, &bigM, &m0, &n0, &seed );
     CORE_zplrnt( m, n, A, lda, bigM, m0, n0, seed );
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 
 /*
  * Codelet definition

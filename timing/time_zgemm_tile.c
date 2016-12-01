@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -45,8 +45,10 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_zplrnt_Tile( descB, 7672 );
     MORSE_zplrnt_Tile( descC, 6387 );
 
+#if !defined(CHAMELEON_SIMULATION)
     LAPACKE_zlarnv_work(1, ISEED, 1, &alpha);
     LAPACKE_zlarnv_work(1, ISEED, 1, &beta);
+#endif
 
     /* Save C for check */
     PASTE_TILE_TO_LAPACK( descC, C2, check, MORSE_Complex64_t, LDC, N );
@@ -55,6 +57,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_zgemm_Tile( MorseNoTrans, MorseNoTrans, alpha, descA, descB, beta, descC );
     STOP_TIMING();
 
+#if !defined(CHAMELEON_SIMULATION)
     /* Check the solution */
     if (check)
     {
@@ -70,6 +73,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 
         free(A); free(B); free(C); free(C2);
     }
+#endif
 
     PASTE_CODE_FREE_MATRIX( descA );
     PASTE_CODE_FREE_MATRIX( descB );

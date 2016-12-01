@@ -3,7 +3,7 @@
 # @copyright (c) 2009-2014 The University of Tennessee and The University
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
-# @copyright (c) 2012-2014 Inria. All rights reserved.
+# @copyright (c) 2012-2016 Inria. All rights reserved.
 # @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
@@ -234,14 +234,6 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
         if (NOT CHAMELEON_SIMULATION)
             message("-- ${BoldGreen}CHAMELEON_SIMULATION is set to OFF, turn it ON to use"
                 " SIMULATION mode (only with StarPU compiled with SimGrid)${ColourReset}")
-        endif()
-        option(CHAMELEON_SIMULATION_MAGMA "Enable cuda/magma kernels in simulation mode" OFF)
-        if (CHAMELEON_SIMULATION_MAGMA)
-            message("-- ${BoldGreen}CHAMELEON_SIMULATION_MAGMA is set to ON, turn it OFF to disable CUDA/MAGMA kernels in "
-                " SIMULATION mode${ColourReset}")
-        else()
-            message("-- ${BoldGreen}CHAMELEON_SIMULATION_MAGMA is set to OFF, turn it ON to enable CUDA/MAGMA kernels in "
-                " SIMULATION mode${ColourReset}")
         endif()
     endif()
 
@@ -554,44 +546,48 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
         "\n   Note that only POTRF kernels with block sizes of 320 or 960 (simple and double precision) on mirage machine are available for now."
         "\n   Database of models is subject to change, it should be enrich in a near future.${ColourReset}")
 
+        message("-- ${Blue}Add definition CHAMELEON_SIMULATION"
+        " - Activate simulation mode in Chameleon (to use with StarPU+SimGrid)${ColourReset}")
+        add_definitions(-DCHAMELEON_SIMULATION)
+
+        add_subdirectory(simucore)
+
         # Guard against mis-used simulation mode
-#        if (CHAMELEON_SIMULATION)
-#            if(NOT DEFINED CHAMELEON_SIMULATION_CUDA)
-#                message(FATAL_ERROR "${BoldBlue}In simulation mode" 
-#                "\n   CHAMELEON_USE_CUDA and CHAMELEON_USE_MAGMA must be set to"
-#                "\n   ensure that the user is aware of the version to be used."
-#                "\n   If Chameleon's kernels are available for NVIDIA CUDA GPUs and"
-#                "\n   if the according perfmodels are available in STARPU_HOME then"
-#                "\n   use CHAMELEON_USE_CUDA=ON else set CHAMELEON_USE_CUDA=OFF."
-#                "\n   The same idea is applicable with MAGMA.${ColourReset}")
-#            endif()
-#            if(NOT DEFINED CHAMELEON_SIMULATION_MAGMA)
-#                message(FATAL_ERROR "${BoldBlue}In simulation mode" 
-#                "\n   CHAMELEON_USE_CUDA and CHAMELEON_USE_MAGMA must be set to"
-#                "\n   ensure that the user is aware of the version to be used."
-#                "\n   If Chameleon's MAGMA kernels are available for NVIDIA CUDA"
-#                "\n   GPUs and if the according perfmodels are available in"
-#                "\n   STARPU_HOME then use CHAMELEON_USE_MAGMA=ON else set"
-#                "\n   CHAMELEON_USE_MAGMA=OFF.${ColourReset}")
-#            endif()
-#        endif()
+        if(NOT DEFINED CHAMELEON_USE_CUDA)
+            message(FATAL_ERROR "${BoldBlue}"
+            "In simulation mode CHAMELEON_USE_CUDA and CHAMELEON_USE_MAGMA should be set to"
+            "   ensure that the user is aware of the version to be used. If Chameleon's"
+            "   kernels are available for NVIDIA CUDA GPUs and if the according"
+            "   perfmodels are available in STARPU_HOME then use CHAMELEON_USE_CUDA=ON"
+            "   else set CHAMELEON_USE_CUDA=OFF. The same idea is applicable with MAGMA."
+            "${ColourReset}")
+        endif()
+        if(NOT CHAMELEON_USE_MAGMA)
+            message(WARNING "${BoldBlue}"
+            "In simulation mode CHAMELEON_USE_CUDA and CHAMELEON_USE_MAGMA should be set to"
+            "   ensure that the user is aware of the version to be used. If Chameleon's"
+            "   MAGMA kernels are available for NVIDIA CUDA GPUs and if the according"
+            "   perfmodels are available in STARPU_HOME then use CHAMELEON_USE_MAGMA=ON"
+            "   else set CHAMELEON_USE_MAGMA=OFF.${ColourReset}")
+        endif()
         
+        # Add CUDA definition if required
+        if (CHAMELEON_USE_CUDA)
+            add_definitions(-DCHAMELEON_USE_CUDA)
+            # Add MAGMA definition if required
+            if (CHAMELEON_USE_MAGMA)
+                add_definitions(-DCHAMELEON_USE_MAGMA)
+            endif()
+        endif()
+
         if (NOT CHAMELEON_SCHED_STARPU)
             message(FATAL_ERROR "Simulation mode of Chameleon only works with"
             "\n   the StarPU runtime. Please use CHAMELEON_SCHED_STARPU=ON.")
         endif()
 
-        if (CHAMELEON_USE_CUDA)
-            set(CHAMELEON_USE_CUDA OFF)
-            message("-- ${BoldBlue}CHAMELEON_USE_CUDA is set to ON but we turn it OFF."
-                "\n   Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
-                "\n   we do not need to link with CUDA.${ColourReset}")
-        endif ()
-        if (CHAMELEON_USE_MAGMA)
-            set(CHAMELEON_USE_MAGMA OFF)
-            message("-- ${BoldBlue}CHAMELEON_USE_MAGMA is set to ON but we turn it OFF."
-                "\n   Because we are compiling the simulation mode (CHAMELEON_SIMULATION=ON),"
-                "\n   we do not need to link with MAGMA.${ColourReset}")
+        if (CHAMELEON_ENABLE_EXAMPLE)
+            set(CHAMELEON_ENABLE_EXAMPLE OFF)
+            message("-- ${BoldBlue}CHAMELEON_ENABLE_EXAMPLE is set to ON but we turn it OFF.")
         endif ()
         if (CHAMELEON_ENABLE_TESTING)
             set(CHAMELEON_ENABLE_TESTING OFF)
@@ -603,7 +599,7 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
         # Simulation mode: we depend on SimGrid
         find_package(SIMGRID REQUIRED)
-
+        
         # CHAMELEON depends on MPI
         #-------------------------
         if (CHAMELEON_USE_MPI)
@@ -1015,24 +1011,6 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
 
     ###############################################################################
-    # simucore libraries #
-    ######################
-
-    if ( CHAMELEON_SIMULATION )
-        add_subdirectory(simucore)
-        message("-- ${Blue}Add definition CHAMELEON_SIMULATION"
-        " - Activate simulation mode in Chameleon (to use with StarPU+SimGrid)${ColourReset}")
-        add_definitions(-DCHAMELEON_SIMULATION)
-    endif()
-    if ( CHAMELEON_SIMULATION_MAGMA )
-        message("-- ${Blue}Add definition CHAMELEON_SIMULATION_MAGMA"
-        " - Activate magma kernels in simulation mode${ColourReset}")
-        add_definitions(-DCHAMELEON_SIMULATION_MAGMA)
-    endif()
-    #------------------------------------------------------------------------------
-
-
-    ###############################################################################
     # Coreblas library (kernels for CPUs) #
     #######################################
 
@@ -1074,7 +1052,6 @@ if (MORSE_DISTRIB_DIR OR EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/")
 
     enable_testing()
     include(CTest)
-    #enable_testing()
 
     # Necessary to compile executables (temporary)
     # should use SystemDetection.cmake module?

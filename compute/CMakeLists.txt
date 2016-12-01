@@ -3,7 +3,7 @@
 # @copyright (c) 2009-2014 The University of Tennessee and The University
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
-# @copyright (c) 2012-2014 Inria. All rights reserved.
+# @copyright (c) 2012-2016 Inria. All rights reserved.
 # @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
@@ -249,8 +249,6 @@ endif(HAVE_ISO_C_BINDING)
 # Compile step
 # ------------
 add_library(chameleon ${CHAMELEON_SRCS} ${CHAMELEON_SRCSF})
-
-target_link_libraries(chameleon coreblas)
 if(CHAMELEON_SCHED_STARPU)
   target_link_libraries(chameleon chameleon_starpu)
   list(INSERT CHAMELEON_DEP 0 -lchameleon_starpu)
@@ -261,6 +259,9 @@ elseif(CHAMELEON_SCHED_QUARK)
   target_link_libraries(chameleon chameleon_quark)
   list(INSERT CHAMELEON_DEP 0 -lchameleon_quark)
 endif()
+if (NOT CHAMELEON_SIMULATION)
+    target_link_libraries(chameleon coreblas)
+endif()
 list(INSERT CHAMELEON_DEP 0 -lchameleon)
 
 add_dependencies(chameleon
@@ -268,6 +269,9 @@ add_dependencies(chameleon
   coreblas_include
   control_include
 )
+if (NOT CHAMELEON_SIMULATION)
+    add_dependencies(chameleon coreblas_include)
+endif()
 
 set_property(TARGET chameleon PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET chameleon PROPERTY Fortran_MODULE_DIRECTORY "${CMAKE_BINARY_DIR}/include")

@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -61,6 +61,7 @@ void MORSE_TASK_zlauum(const MORSE_option_t *options,
 }
 
 
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zlauum_cpu_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;
@@ -72,8 +73,10 @@ static void cl_zlauum_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &N, &LDA);
     CORE_zlauum(uplo, N, A, LDA);
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 
 #if defined(CHAMELEON_USE_MAGMA)
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zlauum_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;
@@ -88,12 +91,13 @@ static void cl_zlauum_cuda_func(void *descr[], void *cl_arg)
     cudaThreadSynchronize();
     return;
 }
+#endif //!defined(CHAMELEON_SIMULATION)
 #endif
 
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA) || defined(CHAMELEON_SIMULATION_MAGMA)
+#if defined(CHAMELEON_USE_MAGMA)
 CODELETS(zlauum, 1, cl_zlauum_cpu_func, cl_zlauum_cuda_func, 0)
 #else
 CODELETS_CPU(zlauum, 1, cl_zlauum_cpu_func)
