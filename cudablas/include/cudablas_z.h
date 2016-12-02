@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2015 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -47,8 +47,6 @@ int CUDA_ztrmm(  MORSE_enum side, MORSE_enum uplo, MORSE_enum transa, MORSE_enum
 int CUDA_ztrsm(  MORSE_enum side, MORSE_enum uplo, MORSE_enum transa, MORSE_enum diag, int m, int n, cuDoubleComplex *alpha, const cuDoubleComplex *A, int lda, cuDoubleComplex *B, int ldb, CUBLAS_STREAM_PARAM);
 int CUDA_ztsmlq( MORSE_enum side, MORSE_enum trans, int M1, int N1, int M2, int N2, int K, int IB, cuDoubleComplex *A1, int LDA1, cuDoubleComplex *A2, int LDA2, const cuDoubleComplex *V, int LDV, const cuDoubleComplex *T, int LDT, cuDoubleComplex *WORK, int LDWORK, cuDoubleComplex *WORKC, int LDWORKC, CUBLAS_STREAM_PARAM);
 int CUDA_ztsmqr( MORSE_enum side, MORSE_enum trans, int M1, int N1, int M2, int N2, int K, int IB, cuDoubleComplex *A1, int LDA1, cuDoubleComplex *A2, int LDA2, const cuDoubleComplex *V, int LDV, const cuDoubleComplex *T, int LDT, cuDoubleComplex *WORK, int LDWORK, cuDoubleComplex *WORKC, int LDWORKC, CUBLAS_STREAM_PARAM);
-int CUDA_zunmlqt( MORSE_enum side, MORSE_enum trans, int M, int N, int K, int IB, const cuDoubleComplex *A, int LDA, const cuDoubleComplex *T, int LDT, cuDoubleComplex *C, int LDC, cuDoubleComplex *WORK, int LDWORK, CUBLAS_STREAM_PARAM );
-int CUDA_zunmqrt( MORSE_enum side, MORSE_enum trans, int M, int N, int K, int IB, const cuDoubleComplex *A, int LDA, const cuDoubleComplex *T, int LDT, cuDoubleComplex *C, int LDC, cuDoubleComplex *WORK, int LDWORK, CUBLAS_STREAM_PARAM );
 
 #if defined(CHAMELEON_USE_MAGMA)
 int CUDA_zgelqt( magma_int_t m, magma_int_t n, magma_int_t nb, magmaDoubleComplex *da, magma_int_t ldda, magmaDoubleComplex *v, magma_int_t ldv, magmaDoubleComplex *dt, magma_int_t lddt, magmaDoubleComplex *t, magma_int_t ldt, magmaDoubleComplex *dd, magmaDoubleComplex *d, magma_int_t ldd, magmaDoubleComplex *tau, magmaDoubleComplex *hwork, magmaDoubleComplex *dwork, CUBLAS_STREAM_PARAM);
@@ -63,6 +61,8 @@ int CUDA_ztrtri( magma_uplo_t uplo, magma_diag_t diag, magma_int_t n, magmaDoubl
 int CUDA_ztslqt( magma_int_t m, magma_int_t n, magma_int_t nb, magmaDoubleComplex *da1, magma_int_t ldda1, magmaDoubleComplex *da2, magma_int_t ldda2, magmaDoubleComplex *a2, magma_int_t lda2, magmaDoubleComplex *dt, magma_int_t lddt, magmaDoubleComplex *t, magma_int_t ldt, magmaDoubleComplex *dd, magmaDoubleComplex *d, magma_int_t ldd, magmaDoubleComplex *tau, magmaDoubleComplex *hwork, magmaDoubleComplex *dwork, CUBLAS_STREAM_PARAM);
 int CUDA_ztsqrt( magma_int_t m, magma_int_t n, magma_int_t nb, magmaDoubleComplex *da1, magma_int_t ldda1, magmaDoubleComplex *da2, magma_int_t ldda2, magmaDoubleComplex *a2, magma_int_t lda2, magmaDoubleComplex *dt, magma_int_t lddt, magmaDoubleComplex *t, magma_int_t ldt, magmaDoubleComplex *dd, magmaDoubleComplex *d, magma_int_t ldd, magmaDoubleComplex *tau, magmaDoubleComplex *hwork, magmaDoubleComplex *dwork, CUBLAS_STREAM_PARAM);
 int CUDA_ztstrf( char storev, magma_int_t m, magma_int_t n, magma_int_t ib, magma_int_t nb, cuDoubleComplex *hU, magma_int_t ldhu, cuDoubleComplex *dU, magma_int_t lddu, cuDoubleComplex *hA, magma_int_t ldha, cuDoubleComplex *dA, magma_int_t ldda, cuDoubleComplex *hL, magma_int_t ldhl, cuDoubleComplex *dL, magma_int_t lddl, magma_int_t *ipiv, cuDoubleComplex *hwork, magma_int_t ldhwork, cuDoubleComplex *dwork, magma_int_t lddwork, magma_int_t *info);
+int CUDA_zunmlqt( magma_side_t side, magma_trans_t trans, magma_int_t M, magma_int_t N, magma_int_t K, magma_int_t IB, const magmaDoubleComplex *A, magma_int_t LDA, const magmaDoubleComplex *T,    magma_int_t LDT, magmaDoubleComplex *C, magma_int_t LDC, magmaDoubleComplex *WORK, magma_int_t LDWORK );
+int CUDA_zunmqrt( magma_side_t side, magma_trans_t trans, magma_int_t M, magma_int_t N, magma_int_t K, magma_int_t IB, const magmaDoubleComplex *A, magma_int_t LDA, const magmaDoubleComplex *T,    magma_int_t LDT, magmaDoubleComplex *C, magma_int_t LDC, magmaDoubleComplex *WORK, magma_int_t LDWORK );
 #endif
 
 #ifdef __cplusplus
