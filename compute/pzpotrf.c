@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
+ * @copyright (c) 2012-2016 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -24,6 +24,7 @@
  * @author Mathieu Faverge
  * @author Emmanuel Agullo
  * @author Cedric Castagnede
+ * @author Florent Pruvost
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
@@ -56,7 +57,9 @@ void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A,
 #ifdef CHAMELEON_USE_MAGMA
     if (0) /* Disable the workspace as long as it is is not used*/
     {
+#if !defined(CHAMELEON_SIMULATION)
         int nb = magma_get_zpotrf_nb(A->nb);
+#endif
         ws_host = sizeof(MORSE_Complex64_t)*nb*nb;
     }
 #endif
