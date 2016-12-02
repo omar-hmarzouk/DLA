@@ -59,6 +59,8 @@ void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A,
     {
 #if !defined(CHAMELEON_SIMULATION)
         int nb = magma_get_zpotrf_nb(A->nb);
+#else
+        nb = A->nb;
 #endif
         ws_host = sizeof(MORSE_Complex64_t)*nb*nb;
     }
