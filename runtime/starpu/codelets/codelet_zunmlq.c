@@ -198,6 +198,7 @@ static void cl_zunmlq_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex *A, *T, *C, *WORK;
     int lda, ldt, ldc, ldwork;
     int info = 0;
+    CUstream stream;
 
     starpu_codelet_unpack_args(cl_arg, &side, &trans, &m, &n, &k, &ib,
                                &lda, &ldt, &ldc, &ldwork);
