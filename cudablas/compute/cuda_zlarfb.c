@@ -90,15 +90,22 @@ CUDA_zlarfb(MORSE_enum side, MORSE_enum trans,
     else
         uplo = MorseLower;
 
+    if (storev == MorseColumnwise) {
+        notransV = MorseNoTrans;
+        transV   = MorseConjTrans;
+    }
+    else {
+        notransV = MorseConjTrans;
+        transV   = MorseNoTrans;
+    }
+
     if ( side == MorseLeft ) {
         // Form H C or H^H C
         // Comments assume H C. When forming H^H C, T gets transposed via transT.
 
-        transV = (storev == MorseColumnwise) ? MorseNoTrans : MorseConjTrans;
-
         // W = C^H V
         cublasZgemm( CUBLAS_HANDLE
-                     morse_lapack_const(MorseConjTrans), morse_lapack_const(transV),
+                     morse_lapack_const(MorseConjTrans), morse_lapack_const(notransV),
                      N, K, M,
                      CUBLAS_SADDR(zone),  C, LDC,
                                           V, LDV,
@@ -114,7 +121,7 @@ CUDA_zlarfb(MORSE_enum side, MORSE_enum trans,
 
         // C = C - V W^H = C - V T V^H C = (I - V T V^H) C = H C
         cublasZgemm( CUBLAS_HANDLE
-                     morse_lapack_const(transV), morse_lapack_const(MorseConjTrans),
+                     morse_lapack_const(notransV), morse_lapack_const(MorseConjTrans),
                      M, N, K,
                      CUBLAS_SADDR(mzone), V,    LDV,
                                           WORK, LDWORK,
@@ -124,11 +131,9 @@ CUDA_zlarfb(MORSE_enum side, MORSE_enum trans,
         // Form C H or C H^H
         // Comments assume C H. When forming C H^H, T gets transposed via trans.
 
-        transV = (storev == MorseColumnwise) ? MorseConjTrans : MorseNoTrans;
-
         // W = C V
         cublasZgemm( CUBLAS_HANDLE
-                     morse_lapack_const(MorseNoTrans), morse_lapack_const(transV),
+                     morse_lapack_const(MorseNoTrans), morse_lapack_const(notransV),
                      M, K, N,
                      CUBLAS_SADDR(zone),  C, LDC,
                                           V, LDV,

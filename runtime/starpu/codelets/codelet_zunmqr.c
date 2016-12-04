@@ -251,8 +251,4 @@ static void cl_zunmqr_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_CUDA)
-CODELETS(zunmqr, 4, cl_zunmqr_cpu_func, cl_zunmqr_cuda_func, 0)
-#else
-CODELETS_CPU(zunmqr, 4, cl_zunmqr_cpu_func)
-#endif
+CODELETS(zunmqr, 4, cl_zunmqr_cpu_func, cl_zunmqr_cuda_func, STARPU_CUDA_ASYNC)

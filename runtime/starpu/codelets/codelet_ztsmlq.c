@@ -266,8 +266,4 @@ static void cl_ztsmlq_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_CUDA)
 CODELETS(ztsmlq, 5, cl_ztsmlq_cpu_func, cl_ztsmlq_cuda_func, STARPU_CUDA_ASYNC)
-#else
-CODELETS_CPU(ztsmlq, 5, cl_ztsmlq_cpu_func)
-#endif
