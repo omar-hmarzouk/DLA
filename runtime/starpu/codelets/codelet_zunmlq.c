@@ -185,7 +185,7 @@ static void cl_zunmlq_cpu_func(void *descr[], void *cl_arg)
                 A, lda, T, ldt, C, ldc, WORK, ldwork);
 }
 
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
 static void cl_zunmlq_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_starpu_ws_t *d_work;
@@ -207,19 +207,24 @@ static void cl_zunmlq_cuda_func(void *descr[], void *cl_arg)
     C    = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
     WORK = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[3]); /* ib * nb */
 
+    stream = starpu_cuda_get_local_stream();
+    cublasSetKernelStream( stream );
+
     CUDA_zunmlqt(
             side, trans, m, n, k, ib,
-            A, lda, T, ldt, C, ldc, WORK, ldwork );
+            A, lda, T, ldt, C, ldc, WORK, ldwork, stream );
 
-    cudaThreadSynchronize();
-}
+#ifndef STARPU_CUDA_ASYNC
+    cudaStreamSynchronize( stream );
 #endif
+}
+#endif /* defined(CHAMELEON_USE_CUDA) */
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
 CODELETS(zunmlq, 4, cl_zunmlq_cpu_func, cl_zunmlq_cuda_func, 0)
 #else
 CODELETS_CPU(zunmlq, 4, cl_zunmlq_cpu_func)
