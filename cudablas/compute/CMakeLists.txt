@@ -32,6 +32,7 @@ set(ZSRC
     cuda_zhemm.c
     cuda_zher2k.c
     cuda_zherk.c
+    cuda_zlarfb.c
     cuda_zparfb.c
     cuda_zsymm.c
     cuda_zsyr2k.c
@@ -40,6 +41,8 @@ set(ZSRC
     cuda_ztrsm.c
     cuda_ztsmlq.c
     cuda_ztsmqr.c
+    cuda_zunmlqt.c
+    cuda_zunmqrt.c
     )
 
 if( CHAMELEON_USE_MAGMA )
@@ -50,15 +53,12 @@ if( CHAMELEON_USE_MAGMA )
     cuda_zgessm.c
     cuda_zgetrf.c
     cuda_zlauum.c
-    cuda_zparfb.c
     cuda_zpotrf.c
     cuda_zssssm.c
     cuda_ztrtri.c
     cuda_ztslqt.c
     cuda_ztsqrt.c
     cuda_ztstrf.c
-    cuda_zunmlqt.c
-    cuda_zunmqrt.c
     )
 endif()
 

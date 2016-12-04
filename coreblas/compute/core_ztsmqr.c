@@ -254,10 +254,10 @@ int CORE_ztsmqr(MORSE_enum side, MORSE_enum trans,
         CORE_zparfb(
             side, trans, MorseForward, MorseColumnwise,
             mi, ni, M2, N2, kb, 0,
-            &A1[LDA1*jc+ic], LDA1,
+            A1 + LDA1*jc+ic, LDA1,
             A2, LDA2,
-            &V[LDV*i], LDV,
-            &T[LDT*i], LDT,
+            V + LDV*i, LDV,
+            T + LDT*i, LDT,
             WORK, LDWORK);
     }
     return MORSE_SUCCESS;

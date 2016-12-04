@@ -132,7 +132,6 @@ int CUDA_ztsmqr(
             ni = N1 - i;
             jc = i;
         }
-
         /*
          * Apply H or H' (NOTE: CORE_zparfb used to be CORE_ztsrfb)
          */
