@@ -79,16 +79,22 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     ws_worker = A->nb * (ib+1);
 
     /* Allocation of temporary (scratch) working space */
+#if defined(CHAMELEON_USE_CUDA)
+    /* Worker space
+     *
+     * zunmqr = A->nb * ib
+     * ztsmqr = 2 * A->nb * ib
+     */
+    ws_worker = max( ws_worker, ib * A->nb * 2 );
+#endif
+
 #if defined(CHAMELEON_USE_MAGMA)
     /* Worker space
      *
-     * zgelqt = max( A->nb * (ib+1), ib * (ib + A->nb) )
-     * zunmlq = A->nb * ib
-     * ztslqt = max( A->nb * (ib+1), ib * (ib + A->nb) )
-     * ztsmlq = 2 * A->nb * ib
+     * zgeqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
+     * ztsqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
      */
     ws_worker = max( ws_worker, ib * (ib + A->nb) );
-    ws_worker = max( ws_worker, ib * A->nb * 2 );
 
     /* Host space
      *
@@ -129,7 +135,7 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
                 MorseUpper, tempkm, tempNn, A->nb,
                 A(k, N), ldak,
                 DIAG(k, N), ldak );
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
             MORSE_TASK_zlaset(
                 &options,
                 MorseLower, tempkm, tempNn,

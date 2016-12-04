@@ -79,7 +79,7 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
      */
     ws_worker = A->mb * ib;
 
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
     /* Worker space
      *
      * zunmlq = A->mb * ib
@@ -115,7 +115,7 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                     MorseUpper, tempkmin, tempkm, A->nb,
                     A(k, k), ldak,
                     DIAG(k), ldak );
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
                 MORSE_TASK_zlaset(
                     &options,
                     MorseLower, tempkmin, tempkm,
@@ -180,7 +180,7 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                     MorseUpper, tempkmin, tempkm, A->nb,
                     A(k, k), ldak,
                     DIAG(k), ldak );
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
                 MORSE_TASK_zlaset(
                     &options,
                     MorseLower, tempkmin, tempkm,
@@ -231,7 +231,7 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                     MorseUpper, tempkmin, tempkn, A->nb,
                     A(k, k), ldak,
                     DIAG(k), ldak );
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
                 MORSE_TASK_zlaset(
                     &options,
                     MorseLower, tempkmin, tempkn,
@@ -266,7 +266,7 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                     MorseUpper, tempkmin, tempkn, A->nb,
                     A(k, k), ldak,
                     DIAG(k), ldak );
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
                 MORSE_TASK_zlaset(
                     &options,
                     MorseLower, tempkmin, tempkn,

@@ -75,7 +75,7 @@ void morse_pzunglqrh(MORSE_desc_t *A, MORSE_desc_t *Q,
      */
     ws_worker = A->nb * ib;
 
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
     /* Worker space
      *
      * zunmqr = A->nb * ib
@@ -147,7 +147,7 @@ void morse_pzunglqrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                 MorseUpper, tempkmin, tempNn, A->nb,
                 A(k, N), ldak,
                 DIAG(k, N), ldak );
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
             MORSE_TASK_zlaset(
                 &options,
                 MorseLower, tempkmin, tempNn,

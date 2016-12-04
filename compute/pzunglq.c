@@ -77,7 +77,7 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
     ws_worker = A->nb * ib;
 
     /* Allocation of temporary (scratch) working space */
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
     /* Worker space
      *
      * zunmlq = A->nb * ib
@@ -124,7 +124,7 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
             MorseUpper, tempkmin, tempkn, A->nb,
             A(k, k), ldak,
             DIAG(k), ldak );
-#if defined(CHAMELEON_USE_MAGMA)
+#if defined(CHAMELEON_USE_CUDA)
         MORSE_TASK_zlaset(
             &options,
             MorseLower, tempkmin, tempkn,
