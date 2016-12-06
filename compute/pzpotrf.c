@@ -55,12 +55,11 @@ void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A,
     RUNTIME_options_init(&options, morse, sequence, request);
 
 #ifdef CHAMELEON_USE_MAGMA
-    if (0) /* Disable the workspace as long as it is is not used*/
+    if (0) /* Disable the workspace as long as it is is not used (See StarPU codelet) */
     {
+        int nb = MORSE_IB; /* Approximate nb for simulation */
 #if !defined(CHAMELEON_SIMULATION)
-        int nb = magma_get_zpotrf_nb(A->nb);
-#else
-        int nb = A->nb;
+        nb = magma_get_zpotrf_nb(A->nb);
 #endif
         ws_host = sizeof(MORSE_Complex64_t)*nb*nb;
     }
