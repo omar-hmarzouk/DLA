@@ -107,6 +107,9 @@ int  CORE_zgetrf_reclap(int M, int N,
 int  CORE_zgetrf_rectil(const MORSE_desc_t A, int *IPIV, int *info);
 void CORE_zgetrip(int m, int n, MORSE_Complex64_t *A,
                   MORSE_Complex64_t *work);
+void CORE_zhe2ge(MORSE_enum uplo, int M, int N,
+                 const MORSE_Complex64_t *A, int LDA,
+                 MORSE_Complex64_t *B, int LDB);
 int CORE_zhbelr(MORSE_enum uplo, int N,
                 MORSE_desc_t *A, MORSE_Complex64_t *V, MORSE_Complex64_t *TAU,
                 int st, int ed, int eltsize);
@@ -315,14 +318,6 @@ int  CORE_ztsmlq(MORSE_enum side, MORSE_enum trans,
                  const MORSE_Complex64_t *V, int LDV,
                  const MORSE_Complex64_t *T, int LDT,
                  MORSE_Complex64_t *WORK, int LDWORK);
-int CORE_ztsmlq_corner( int m1, int n1, int m2, int n2, int m3, int n3,
-                        int k, int ib, int nb,
-                        MORSE_Complex64_t *A1, int lda1,
-                        MORSE_Complex64_t *A2, int lda2,
-                        MORSE_Complex64_t *A3, int lda3,
-                        const MORSE_Complex64_t *V, int ldv,
-                        const MORSE_Complex64_t *T, int ldt,
-                        MORSE_Complex64_t *WORK, int ldwork);
 int CORE_ztsmlq_hetra1( MORSE_enum side, MORSE_enum trans,
                         int m1, int n1, int m2, int n2,
                         int k, int ib,
@@ -338,14 +333,6 @@ int  CORE_ztsmqr(MORSE_enum side, MORSE_enum trans,
                  const MORSE_Complex64_t *V, int LDV,
                  const MORSE_Complex64_t *T, int LDT,
                  MORSE_Complex64_t *WORK, int LDWORK);
-int CORE_ztsmqr_corner( int m1, int n1, int m2, int n2, int m3, int n3,
-                        int k, int ib, int nb,
-                        MORSE_Complex64_t *A1, int lda1,
-                        MORSE_Complex64_t *A2, int lda2,
-                        MORSE_Complex64_t *A3, int lda3,
-                        const MORSE_Complex64_t *V, int ldv,
-                        const MORSE_Complex64_t *T, int ldt,
-                        MORSE_Complex64_t *WORK, int ldwork);
 int CORE_ztsmqr_hetra1( MORSE_enum side, MORSE_enum trans,
                         int m1, int n1, int m2, int n2,
                         int k, int ib,

@@ -53,7 +53,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
     int k, m, n;
     int ldak, ldam;
     int tempkm, tempkn, tempmm, tempnn;
-    int ib, minMT;
+    int ib, minMNT;
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
@@ -63,9 +63,9 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
     ib = MORSE_IB;
 
     if (A->m > A->n) {
-        minMT = A->nt;
+        minMNT = A->nt;
     } else {
-        minMT = A->mt;
+        minMNT = A->mt;
     }
 
     /*
@@ -114,7 +114,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
     morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb, A->p, A->q);
 #endif
 
-    for (k = 0; k < min(A->mt, A->nt); k++) {
+    for (k = 0; k < minMNT; k++) {
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
         ldak = BLKLDD(A, k);
@@ -181,4 +181,5 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif
+    (void)DIAG;
 }

@@ -154,4 +154,5 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif
+    (void)DIAG;
 }

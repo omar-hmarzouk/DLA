@@ -44,6 +44,8 @@ set(ZSRC
     core_zgetrf.c
     core_zgetrf_incpiv.c
     core_zgetrf_nopiv.c
+    core_zhe2ge.c
+    core_zherfb.c
     core_zhemm.c
     core_zher2k.c
     core_zherk.c
@@ -56,6 +58,7 @@ set(ZSRC
     core_zlantr.c
     core_zlaset2.c
     core_zlaset.c
+    core_zlatro.c
     core_zlauum.c
     core_zpamm.c
     core_zparfb.c
@@ -79,6 +82,8 @@ set(ZSRC
     core_ztslqt.c
     core_ztsmlq.c
     core_ztsmqr.c
+    core_ztsmlq_hetra1.c
+    core_ztsmqr_hetra1.c
     core_ztsqrt.c
     core_ztstrf.c
     core_zttlqt.c

@@ -136,6 +136,8 @@ set(ZSRC
     codelets/codelet_zgetrf.c
     codelets/codelet_zgetrf_incpiv.c
     codelets/codelet_zgetrf_nopiv.c
+    codelets/codelet_zhe2ge.c
+    codelets/codelet_zherfb.c
     codelets/codelet_zhessq.c
     codelets/codelet_zlacpy.c
     codelets/codelet_zlange.c
@@ -144,6 +146,7 @@ set(ZSRC
     codelets/codelet_zlantr.c
     codelets/codelet_zlaset2.c
     codelets/codelet_zlaset.c
+    codelets/codelet_zlatro.c
     codelets/codelet_zlauum.c
     codelets/codelet_zplghe.c
     codelets/codelet_zplgsy.c
@@ -160,6 +163,8 @@ set(ZSRC
     codelets/codelet_ztslqt.c
     codelets/codelet_ztsmlq.c
     codelets/codelet_ztsmqr.c
+    codelets/codelet_ztsmlq_hetra1.c
+    codelets/codelet_ztsmqr_hetra1.c
     codelets/codelet_ztsqrt.c
     codelets/codelet_ztstrf.c
     codelets/codelet_zttlqt.c
@@ -206,7 +211,7 @@ add_dependencies(chameleon_starpu
 if (NOT CHAMELEON_SIMULATION)
     add_dependencies(chameleon_starpu coreblas_include)
 endif()
- 
+
 if (CHAMELEON_USE_CUDA AND NOT CHAMELEON_SIMULATION)
     add_dependencies(chameleon_starpu cudablas_include)
 endif()

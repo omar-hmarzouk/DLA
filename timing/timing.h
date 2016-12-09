@@ -42,6 +42,7 @@ enum iparam_timing {
     IPARAM_NX,             /* */
     IPARAM_RHBLK,          /* Householder reduction parameter for QR/LQ  */
     IPARAM_INPLACE,        /* InPlace/OutOfPlace translation mode        */
+    IPARAM_MODE,           /* Eigenvalue generation mode                 */
 
     IPARAM_INVERSE,
     IPARAM_NCUDAS,
@@ -101,7 +102,7 @@ enum dparam_timing {
     (void)M;(void)N;(void)K;(void)NRHS;            \
     (void)LDA;(void)LDB;(void)LDC;                 \
     (void)IB;(void)MB;(void)NB;(void)P;(void)Q;    \
-    (void)MT;(void)NT;(void)check;(void)loud;
+    (void)MT;(void)NT;(void)check;(void)loud;(void)bigmat;
 
 /* Paste code to allocate a matrix in desc if cond_init is true */
 #define PASTE_CODE_ALLOCATE_MATRIX_TILE(_desc_, _cond_, _type_, _type2_, _lda_, _m_, _n_) \

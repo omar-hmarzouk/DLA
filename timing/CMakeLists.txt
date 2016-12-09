@@ -118,10 +118,10 @@ if (NOT CHAMELEON_SIMULATION)
         time_zlange_tile.c
         #time_zgebrd_tile.c
         #time_zgecfi.c
-        #time_zgesvd_tile.c
+        time_zgesvd_tile.c
         #time_zgetrf_reclap.c
         #time_zgetrf_rectil.c
-        #time_zheevd_tile.c
+        time_zheevd_tile.c
         #time_zheev_tile.c
         #time_zhegv_tile.c
         #time_zlapack2tile.c
@@ -237,6 +237,7 @@ if(NOT CHAMELEON_SIMULATION)
     list(APPEND libs_for_timings
     coreblas
     ${LAPACKE_LIBRARIES}
+    ${TMG_LIBRARIES}
     ${CBLAS_LIBRARIES}
     ${LAPACK_SEQ_LIBRARIES}
     ${BLAS_SEQ_LIBRARIES}
@@ -245,6 +246,7 @@ if(NOT CHAMELEON_SIMULATION)
     )
 
     link_directories(${LAPACKE_LIBRARY_DIRS})
+    link_directories(${TMG_LIBRARY_DIRS})
     link_directories(${LAPACK_LIBRARY_DIRS})
     link_directories(${CBLAS_LIBRARY_DIRS})
     link_directories(${BLAS_LIBRARY_DIRS})

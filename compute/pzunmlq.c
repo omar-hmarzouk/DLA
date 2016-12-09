@@ -312,4 +312,5 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif
+    (void)DIAG;
 }

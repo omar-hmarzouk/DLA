@@ -59,7 +59,6 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     int ldak, ldam;
     int tempkmin, tempkm, tempNn, tempnn, tempmm, tempNRDn;
     int ib;
-    int nblk;
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
@@ -112,9 +111,11 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
 
 #if defined(CHAMELEON_COPY_DIAG)
     /* necessary to avoid dependencies between tasks regarding the diag tile */
-    nblk = ( A->nt + BS -1 ) / BS;
-    DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb, A->p, A->q);
+    {
+        int nblk = ( A->nt + BS -1 ) / BS;
+        DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+        morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb, A->p, A->q);
+    }
 #endif
 
     for (k = 0; k < min(A->mt, A->nt); k++) {
@@ -212,4 +213,5 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif
+    (void)DIAG;
 }

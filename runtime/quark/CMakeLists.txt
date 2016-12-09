@@ -3,7 +3,7 @@
 # @copyright (c) 2009-2014 The University of Tennessee and The University
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
-# @copyright (c) 2012-2014 Inria. All rights reserved.
+# @copyright (c) 2012-2016 Inria. All rights reserved.
 # @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
@@ -116,6 +116,8 @@ set(ZSRC
     codelets/codelet_zgetrf.c
     codelets/codelet_zgetrf_incpiv.c
     codelets/codelet_zgetrf_nopiv.c
+    codelets/codelet_zhe2ge.c
+    codelets/codelet_zherfb.c
     codelets/codelet_zhessq.c
     codelets/codelet_zlacpy.c
     codelets/codelet_zlange.c
@@ -124,6 +126,7 @@ set(ZSRC
     codelets/codelet_zlantr.c
     codelets/codelet_zlaset2.c
     codelets/codelet_zlaset.c
+    codelets/codelet_zlatro.c
     codelets/codelet_zlauum.c
     codelets/codelet_zplghe.c
     codelets/codelet_zplgsy.c
@@ -140,6 +143,8 @@ set(ZSRC
     codelets/codelet_ztslqt.c
     codelets/codelet_ztsmlq.c
     codelets/codelet_ztsmqr.c
+    codelets/codelet_ztsmlq_hetra1.c
+    codelets/codelet_ztsmqr_hetra1.c
     codelets/codelet_ztsqrt.c
     codelets/codelet_ztstrf.c
     codelets/codelet_zttlqt.c
@@ -180,6 +185,9 @@ add_dependencies(chameleon_quark
   control_include
   runtime_quark_include
 )
+if (NOT CHAMELEON_SIMULATION)
+    add_dependencies(chameleon_quark coreblas_include)
+endif()
 
 # installation
 # ------------

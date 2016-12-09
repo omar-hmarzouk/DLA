@@ -190,17 +190,17 @@ static void cl_zunmqr_cpu_func(void *descr[], void *cl_arg)
     int n;
     int k;
     int ib;
-    MORSE_Complex64_t *A;
+    const MORSE_Complex64_t *A;
     int lda;
-    MORSE_Complex64_t *T;
+    const MORSE_Complex64_t *T;
     int ldt;
     MORSE_Complex64_t *C;
     int ldc;
     MORSE_Complex64_t *WORK;
     int ldwork;
 
-    A    = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
-    T    = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
+    A    = (const MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[0]);
+    T    = (const MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
     C    = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[2]);
     WORK = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[3]); /* ib * nb */
 
@@ -221,7 +221,8 @@ static void cl_zunmqr_cuda_func(void *descr[], void *cl_arg)
     int n;
     int k;
     int ib;
-    cuDoubleComplex *A, *T, *C, *WORK;
+    const cuDoubleComplex *A, *T;
+    cuDoubleComplex *C, *WORK;
     int lda, ldt, ldc, ldwork;
     int info = 0;
     CUstream stream;
@@ -229,8 +230,8 @@ static void cl_zunmqr_cuda_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &side, &trans, &m, &n, &k, &ib,
                                &lda, &ldt, &ldc, &ldwork);
 
-    A    = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    T    = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
+    A    = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
+    T    = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     C    = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
     WORK = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[3]); /* ib * nb */
 

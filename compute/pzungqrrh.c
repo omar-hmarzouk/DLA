@@ -61,7 +61,6 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
     int ldqM, ldqm, ldqMRD;
     int tempkn, tempMm, tempnn, tempmm, tempMRDm, tempkmin;
     int ib;
-    int nblk;
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
@@ -92,10 +91,12 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
 #if defined(CHAMELEON_COPY_DIAG)
-    /* necessary to avoid dependencies between tasks regarding the diag tile */
-    nblk = ( A->mt + BS -1 ) / BS;
-    DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb, A->p, A->q);
+    {
+        /* necessary to avoid dependencies between tasks regarding the diag tile */
+        int nblk = ( A->mt + BS -1 ) / BS;
+        DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+        morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb, A->p, A->q);
+    }
 #endif
 
     K = min(A->mt, A->nt);
@@ -183,4 +184,5 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif
+    (void)DIAG;
 }

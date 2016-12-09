@@ -179,16 +179,16 @@ set(ZSRC
     ##################
     # OTHERS
     ##################
-    #pzgebrd_ge2tb.c
-    #pzgebrd_tb2bd.c
+    pztile2band.c
+    #pzgebrd_gb2bd.c
+    pzgebrd_ge2gb.c
     #pzgetmi2.c
     #pzgetrf_reclap.c
     #pzgetrf_rectil.c
-    #pzhbcpy_t2bl.c
     #pzhegst.c
     #pzherbt.c
-    #pzhetrd_hb2st.c
-    #pzhetrd_he2hb.c
+    #pzhetrd_hb2ht.c
+    pzhetrd_he2hb.c
     #pzlarft_blgtrd.c
     #pzlaswp.c
     #pzlaswpc.c
@@ -198,16 +198,16 @@ set(ZSRC
     #zgebrd.c
     #zgecfi.c
     #zgecfi2.c
-    #zgesvd.c
+    zgesvd.c
     #zgetmi.c
     #zgetri.c
     #zgetrs.c
     #zheev.c
-    #zheevd.c
+    zheevd.c
     #zhegst.c
     #zhegv.c
     #zhegvd.c
-    #zhetrd.c
+    zhetrd.c
     #zlaswp.c
     #zlaswpc.c
     #ztrsmrv.c

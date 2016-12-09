@@ -175,4 +175,5 @@ void morse_pzgeqrf(MORSE_desc_t *A, MORSE_desc_t *T,
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif
+    (void)DIAG;
 }

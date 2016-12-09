@@ -100,8 +100,6 @@ void MORSE_TASK_zgemm(const MORSE_option_t *options,
     }
 }
 
-
-
 #if !defined(CHAMELEON_SIMULATION)
 static void cl_zgemm_cpu_func(void *descr[], void *cl_arg)
 {
@@ -169,7 +167,7 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
 
     return;
 }
-#endif /* CHAMELEON_USE_CUDA */
+#endif /* defined(CHAMELEON_USE_CUDA) */
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*

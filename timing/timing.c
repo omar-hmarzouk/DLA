@@ -491,6 +491,7 @@ main(int argc, char *argv[]) {
     iparam[IPARAM_NX            ] = -1;
     iparam[IPARAM_RHBLK         ] = 0;
     iparam[IPARAM_INPLACE       ] = MORSE_OUTOFPLACE;
+    iparam[IPARAM_MODE          ] = 0;
 
     iparam[IPARAM_INVERSE       ] = 0;
     iparam[IPARAM_NCUDAS        ] = 0;
@@ -613,6 +614,12 @@ main(int argc, char *argv[]) {
             iparam[IPARAM_BOUND] = 1;
         } else if (startswith( argv[i], "--p=" )) {
             sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_P]) );
+        } else if (startswith( argv[i], "--mode=" )) {
+            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_MODE]) );
+            if (iparam[IPARAM_MODE] < 0 || iparam[IPARAM_MODE] > 20){
+                fprintf( stderr, "Invalid mode: %s from 0 to 20\n", argv[i] );
+                exit(0);
+            }
         } else {
             fprintf( stderr, "Unknown option: %s\n", argv[i] );
         }

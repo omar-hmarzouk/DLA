@@ -82,10 +82,10 @@ set(ZSRC
     ##################
     testing_zgeadd.c
     #testing_zgecfi.c
-    #testing_zgesvd.c
+    testing_zgesvd.c
     #testing_zgetmi.c
     #testing_zheev.c
-    #testing_zheevd.c
+    testing_zheevd.c
     #testing_zhegst.c
     #testing_zhegv.c
     #testing_zhegvd.c
@@ -138,6 +138,7 @@ if(NOT CHAMELEON_SIMULATION)
     list(APPEND libs_for_tests
     coreblas
     ${LAPACKE_LIBRARIES}
+    ${TMG_LIBRARIES}
     ${LAPACK_LIBRARIES}
     ${CBLAS_LIBRARIES}
     ${BLAS_LIBRARIES}
@@ -146,6 +147,7 @@ if(NOT CHAMELEON_SIMULATION)
     )
 
     link_directories(${LAPACKE_LIBRARY_DIRS})
+    link_directories(${TMG_LIBRARY_DIRS})
     link_directories(${LAPACK_LIBRARY_DIRS})
     link_directories(${CBLAS_LIBRARY_DIRS})
     link_directories(${BLAS_LIBRARY_DIRS})

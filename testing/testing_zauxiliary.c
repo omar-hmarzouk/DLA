@@ -194,99 +194,117 @@ int main (int argc, char **argv)
      */
     if ( strcmp(func, "LANGE") == 0 ) {
         info += testing_zlange( argc, argv );
-        /*
-         * Blas Level 3
-         */
-    } else if ( strcmp(func, "GEMM") == 0 ) {
+    }
+    /*
+     * Blas Level 3
+     */
+    else if ( strcmp(func, "GEMM") == 0 ) {
         info += testing_zgemm( argc, argv );
+    }
 #ifdef COMPLEX
-    } else if ( strcmp(func, "HEMM") == 0 ) {
+    else if ( strcmp(func, "HEMM") == 0 ) {
         info += testing_zhemm( argc, argv );
-    } else if ( strcmp(func, "HERK") == 0 ) {
+    }
+    else if ( strcmp(func, "HERK") == 0 ) {
         info += testing_zherk( argc, argv );
-    } else if ( strcmp(func, "HER2K") == 0 ) {
+    }
+    else if ( strcmp(func, "HER2K") == 0 ) {
         info += testing_zher2k( argc, argv );
+    }
 #endif
-    } else if ( strcmp(func, "SYMM") == 0 ) {
+    else if ( strcmp(func, "SYMM") == 0 ) {
         info += testing_zsymm( argc, argv );
-    } else if ( strcmp(func, "SYRK") == 0 ) {
+    }
+    else if ( strcmp(func, "SYRK") == 0 ) {
         info += testing_zsyrk( argc, argv );
-    } else if ( strcmp(func, "SYR2K") == 0 ) {
+    }
+    else if ( strcmp(func, "SYR2K") == 0 ) {
         info += testing_zsyr2k( argc, argv );
-    } else if ( strcmp(func, "TRMM") == 0 ) {
+    }
+    else if ( strcmp(func, "TRMM") == 0 ) {
         info += testing_ztrmm( argc, argv );
-    } else if ( strcmp(func, "TRSM") == 0 ) {
+    }
+    else if ( strcmp(func, "TRSM") == 0 ) {
         info += testing_ztrsm( argc, argv );
-    } else if ( strcmp(func, "PEMV") == 0 ) {
+    }
+    else if ( strcmp(func, "PEMV") == 0 ) {
         info += testing_zpemv( argc, argv );
-    } else if ( strcmp(func, "GEADD") == 0 ) {
+    }
+    else if ( strcmp(func, "GEADD") == 0 ) {
         info = testing_zgeadd( argc, argv );
-        /*
-         * Linear system
-         */
-    } else if ( strcmp(func, "POSV") == 0 ) {
+    }
+    /*
+     * Linear system
+     */
+    else if ( strcmp(func, "POSV") == 0 ) {
         info += testing_zposv( argc, argv );
-    } else if ( strcmp(func, "GELS") == 0 ) {
+    }
+    else if ( strcmp(func, "GELS") == 0 ) {
         info += testing_zgels( argc, argv );
-    } else if ( strcmp(func, "GESV_INCPIV") == 0 ) {
+    }
+    else if ( strcmp(func, "GESV_INCPIV") == 0 ) {
         info += testing_zgesv_incpiv( argc, argv );
-        /*
-         } else if ( strcmp(func, "GESV") == 0 ) {
-         info += testing_zgesv( argc, argv );
-         */
-        /*
-         * Matrix inversion
-         */
-
-    } else if ( strcmp(func, "POTRI") == 0 ) {
+    }
+    /* else if ( strcmp(func, "GESV") == 0 ) { */
+    /*     info += testing_zgesv( argc, argv ); */
+    /* } */
+    /*
+     * Matrix inversion
+     */
+    else if ( strcmp(func, "POTRI") == 0 ) {
         info += testing_zpotri( argc, argv );
-        /*
-         } else if ( strcmp(func, "GETRI") == 0 ) {
-         info += testing_zgetri( argc, argv );
-         */
-        /*
-         * Eigenvalue Problems
-         */
-        /*
-         } else if ( strcmp(func, "HEEV") == 0 ) {
-         info += testing_zheev( argc, argv );
-         } else if ( strcmp(func, "HEEVD") == 0 ) {
-         info += testing_zheevd( argc, argv );
-         } else if ( strcmp(func, "HEGV") == 0 ) {
-         info += testing_zhegv( argc, argv );
-         } else if ( strcmp(func, "HEGVD") == 0 ) {
-         info += testing_zhegv( argc, argv );
-         } else if ( strcmp(func, "HEGST") == 0 ) {
-         info += testing_zhegst( argc, argv );
-         */
-        /*
-         * Singular Value Decomposition
-         */
-        /*
-         } else if ( strcmp(func, "GESVD") == 0 ) {
-         info += testing_zgesvd( argc, argv );
-         */
+    }
+    /* else if ( strcmp(func, "GETRI") == 0 ) { */
+    /*      info += testing_zgetri( argc, argv ); */
+    /* } */
+    /*
+     * Eigenvalue Problems
+     */
+    /* else if ( strcmp(func, "HEEV") == 0 ) { */
+    /*     info += testing_zheev( argc, argv ); */
+    /* } */
+    else if ( strcmp(func, "HEEVD") == 0 ) {
+        info += testing_zheevd( argc, argv );
+    }
+    /* else if ( strcmp(func, "HEGV") == 0 ) { */
+    /*     info += testing_zhegv( argc, argv ); */
+    /* } */
+    /* else if ( strcmp(func, "HEGVD") == 0 ) { */
+    /*     info += testing_zhegv( argc, argv ); */
+    /* } */
+    /* else if ( strcmp(func, "HEGST") == 0 ) { */
+    /*     info += testing_zhegst( argc, argv ); */
+    /* } */
+    /*
+     * Singular Value Decomposition
+     */
+    else if ( strcmp(func, "GESVD") == 0 ) {
+        info += testing_zgesvd( argc, argv );
+    }
 #ifdef DOUBLE
-        /*
-         * Mixed precision
-         */
-        /*
-         } else if ( strcmp(func, "CPOSV") == 0 ) {
-         info += testing_zcposv( argc, argv );
-         } else if ( strcmp(func, "CGESV") == 0 ) {
-         info += testing_zcgesv( argc, argv );
-         } else if ( strcmp(func, "CUNGESV") == 0 ) {
-         info += testing_zcungesv( argc, argv );
-         */
+    /*
+     * Mixed precision
+     */
+    /* else if ( strcmp(func, "CPOSV") == 0 ) { */
+    /*     info += testing_zcposv( argc, argv ); */
+    /* } */
+    /* else if ( strcmp(func, "CGESV") == 0 ) { */
+    /*     info += testing_zcgesv( argc, argv ); */
+    /* } */
+    /* else if ( strcmp(func, "CUNGESV") == 0 ) { */
+    /*     info += testing_zcungesv( argc, argv ); */
+    /* } */
 #endif
-        /* Layout Transformation */
-        /*
-         } else if ( strcmp(func, "GECFI") == 0 ) {
-         info += testing_zgecfi( argc, argv );
-         } else if ( strcmp(func, "GETMI") == 0 ) {
-         info += testing_zgetmi( argc, argv );
-         */
-    } else {
+    /*
+     * Layout Transformation
+     */
+    /* else if ( strcmp(func, "GECFI") == 0 ) { */
+    /*     info += testing_zgecfi( argc, argv ); */
+    /* } */
+    /* else if ( strcmp(func, "GETMI") == 0 ) { */
+    /*     info += testing_zgetmi( argc, argv ); */
+    /* } */
+    else {
         fprintf(stderr, "Function unknown\n");
     }
 
