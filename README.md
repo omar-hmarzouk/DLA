@@ -78,7 +78,7 @@ TODO
 
 ### Contributions
 
-TODO
+https://gitlab.inria.fr/solverstack/chameleon/blob/master/CONTRIBUTING.md
 
 ### Authors
 
@@ -90,4 +90,4 @@ TODO
 
 ### Licence
 
-TODO
+https://gitlab.inria.fr/solverstack/chameleon/blob/master/LICENCE.txt
