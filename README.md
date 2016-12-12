@@ -26,7 +26,7 @@ Get Chameleon
 ---------------------
 
 To use last development states of Chameleon, please clone the master
-branch hosted here, /i.e./:
+branch hosted here, *i.e.*:
 
     git clone git@gitlab.inria.fr:solverstack/chameleon.git
 
@@ -62,7 +62,7 @@ to get configuration information.
 ### Distribution of Chameleon
 To get support to install a full distribution (Chameleon +
 dependencies) we encourage users to use the morse branch of
-*Spack*.
+**Spack**.
 
 Please read these documentations:
 
