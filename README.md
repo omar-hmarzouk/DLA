@@ -82,7 +82,26 @@ https://gitlab.inria.fr/solverstack/chameleon/blob/master/CONTRIBUTING.md
 
 ### Authors
 
-TODO
+First, since the Chameleon library started as an extension of the PLASMA library 
+to support multiple runtime systems, all developpers of the PLASMA library are 
+developpers of the Chameleon library.
+
+The following people contributed to the development of Chameleon:
+    * Emmanuel Agullo, PI
+	* Olivier Aumage
+	* Cedric castagnede
+	* Terry Cojean
+	* Mathieu Faverge, PI
+	* Nathalie Furmento
+	* Reazul Hoque, PaRSEC support
+	* Gregoire Pichon, Two-sided algorithms
+	* Florent Pruvost, PI, Cmake and spack 
+	* Marc Sergent
+	* Guillaume Sylvand
+	* Samuel Thibault, StarPU support
+	* Omar Zenati
+
+If we forgot your name, please let us know that we can fix that mistake.
 
 ### Citing Chameleon
 
