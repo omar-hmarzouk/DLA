@@ -78,7 +78,7 @@ void MORSE_TASK_ztsmlq_hetra1(const MORSE_option_t *options,
     }
 }
 
-#if defined(CHAMELEON_SIMULATION)
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_ztsmlq_hetra1_cpu_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
