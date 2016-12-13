@@ -45,13 +45,13 @@ set(MORSE_CMAKE_DIR "" CACHE PATH "Directory of MORSE CMake modules, can be exte
 
 # Add extra cmake module path and initialize morse cmake modules
 # --------------------------------------------------------------
-list(APPEND CMAKE_MODULE_PATH ${MORSE_CMAKE_DIR}/cmake_modules)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake_modules)
 if(MORSE_CMAKE_DIR)
-    list(APPEND CMAKE_MODULE_PATH "${MORSE_CMAKE_DIR}/cmake_modules/morse_cmake")
-    set(MORSE_CMAKE_MODULE_PATH ${MORSE_CMAKE_DIR}/cmake_modules/morse_cmake )
+    list(APPEND CMAKE_MODULE_PATH "${MORSE_CMAKE_DIR}/cmake_modules/morse_cmake/modules")
+    set(MORSE_CMAKE_MODULE_PATH ${MORSE_CMAKE_DIR}/cmake_modules/morse_cmake/modules )
 elseif(EXISTS "${CMAKE_SOURCE_DIR}/cmake_modules/morse_cmake")
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/morse_cmake")
-    set(MORSE_CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake_modules/morse_cmake )
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules/morse_cmake/modules")
+    set(MORSE_CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake_modules/morse_cmake/modules )
 else()
   message(FATAL_ERROR "Chameleon CMake system relies on morse_cmake modules developed here: "
     "https://gitlab.inria.fr/solverstack/morse_cmake. Please set MORSE_CMAKE_DIR to this source "
