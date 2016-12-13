@@ -68,7 +68,7 @@ void MORSE_TASK_zlatro(const MORSE_option_t *options,
     (void)mb;
 }
 
-#if defined(CHAMELEON_SIMULATION)
+#if !defined(CHAMELEON_SIMULATION)
 static void cl_zlatro_cpu_func(void *descr[], void *cl_arg)
 {
     MORSE_enum uplo;
