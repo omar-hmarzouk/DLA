@@ -61,7 +61,9 @@ void MORSE_TASK_zherfb(const MORSE_option_t *options,
             STARPU_VALUE,    &nb,                sizeof(int),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
-            STARPU_NAME,      "zherfb",
+#ifdef STARPU_12
+            STARPU_NAME, "zherfb",
+#endif
             0);
     }
 }

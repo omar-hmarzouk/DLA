@@ -123,7 +123,9 @@ void MORSE_TASK_zgeqrt(const MORSE_option_t *options,
             STARPU_VALUE,    &h_work,            sizeof(MORSE_starpu_ws_t *),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
-            STARPU_NAME,      "zgeqrt",
+#ifdef STARPU_12
+            STARPU_NAME, "zgeqrt",
+#endif
             0);
     }
 }

@@ -62,7 +62,9 @@ void MORSE_TASK_zlatro(const MORSE_option_t *options,
             STARPU_VALUE,   &ldb,     sizeof(int),
             STARPU_PRIORITY, options->priority,
             STARPU_CALLBACK, callback,
-            STARPU_NAME,     "zlatro",
+#ifdef STARPU_12
+            STARPU_NAME, "zlatro",
+#endif
             0);
     }
     (void)mb;

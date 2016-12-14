@@ -657,7 +657,7 @@ endif(NOT CHAMELEON_SIMULATION)
 
 if( CHAMELEON_SCHED_STARPU )
 
-  set(CHAMELEON_STARPU_VERSION "1.2" CACHE STRING "oldest STARPU version desired")
+  set(CHAMELEON_STARPU_VERSION "1.1" CACHE STRING "oldest STARPU version desired")
 
     # create list of components in order to make a single call to find_package(starpu...)
     if(NOT CHAMELEON_SIMULATION)
@@ -691,6 +691,8 @@ if( CHAMELEON_SCHED_STARPU )
         foreach(libdir ${STARPU_LIBRARY_DIRS_DEP})
             list(APPEND CMAKE_REQUIRED_FLAGS "-L${libdir}")
         endforeach()
+        add_definitions("-DSTARPU_${STARPU_VERSION_MAJOR}${STARPU_VERSION_MINOR}")
+        message("-- ${Blue}Add definition STARPU_${STARPU_VERSION_MAJOR}${STARPU_VERSION_MINOR}${ColourReset}")
         set(CMAKE_REQUIRED_LIBRARIES "${STARPU_LIBRARIES_DEP}")
         if (CHAMELEON_USE_MPI)
             list(APPEND CMAKE_REQUIRED_INCLUDES "${MPI_C_INCLUDE_PATH}")

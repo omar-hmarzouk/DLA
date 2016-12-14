@@ -73,7 +73,9 @@ void MORSE_TASK_ztsmqr_hetra1(const MORSE_option_t *options,
             STARPU_VALUE,    &ldwork,            sizeof(int),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
-            STARPU_NAME,      "ztsmqr_hetra1",
+#ifdef STARPU_12
+            STARPU_NAME, "ztsmqr_hetra1",
+#endif
             0);
     }
 }

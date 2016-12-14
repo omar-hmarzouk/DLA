@@ -315,9 +315,15 @@ void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
                                             BLKLDD(desc, im), tempmm, tempnn, eltsze);
             }
             else {
+#ifdef STARPU_12
                 starpu_matrix_data_register(ptrtile, STARPU_MAIN_RAM,
                                             (uintptr_t)desc->get_blkaddr(desc, m, n),
                                             BLKLDD(desc, im), tempmm, tempnn, eltsze);
+#else
+                starpu_matrix_data_register(ptrtile, 0,
+                                            (uintptr_t)desc->get_blkaddr(desc, m, n),
+                                            BLKLDD(desc, im), tempmm, tempnn, eltsze);
+#endif
             }
         }
         else {
