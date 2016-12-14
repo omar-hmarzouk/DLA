@@ -29,6 +29,9 @@ To use last development states of Chameleon, please clone the master
 branch hosted here, *i.e.*:
 
     git clone git@gitlab.inria.fr:solverstack/chameleon.git
+    cd chameleon
+    git submodule init
+    git submodule update
 
 Last releases of Chameleon are hosted on the
 [gforge.inria.fr](https://gforge.inria.fr/frs/?group_id=2884) for now.
@@ -82,8 +85,8 @@ https://gitlab.inria.fr/solverstack/chameleon/blob/master/CONTRIBUTING.md
 
 ### Authors
 
-First, since the Chameleon library started as an extension of the PLASMA library 
-to support multiple runtime systems, all developpers of the PLASMA library are 
+First, since the Chameleon library started as an extension of the PLASMA library
+to support multiple runtime systems, all developpers of the PLASMA library are
 developpers of the Chameleon library.
 
 The following people contributed to the development of Chameleon:
@@ -95,7 +98,7 @@ The following people contributed to the development of Chameleon:
   * Nathalie Furmento
   * Reazul Hoque, PaRSEC support
   * Gregoire Pichon, Two-sided algorithms
-  * Florent Pruvost, PI, Cmake and spack 
+  * Florent Pruvost, PI, CMake and Spack
   * Marc Sergent
   * Guillaume Sylvand
   * Samuel Thibault, StarPU support
