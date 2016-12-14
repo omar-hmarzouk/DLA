@@ -1,2 +1,21 @@
-job1:
-  script: "/home/ci/gitlab/test.sh"
+variables:
+  GIT_STRATEGY: fetch
+  GIT_DEPTH: "3"
+
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script:
+    - git submodule init
+    - git submodule update
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make -j2
+
+test:
+  stage: test
+  script: ctest
