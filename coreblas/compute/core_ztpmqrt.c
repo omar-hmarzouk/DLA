@@ -148,8 +148,7 @@ int CORE_ztpmqrt( MORSE_enum side, MORSE_enum trans,
                   MORSE_Complex64_t *B, int LDB,
                   MORSE_Complex64_t *WORK )
 {
-    int m1;
-    int n1;
+    int m1, n1, ldwork;
 
     /* Check input arguments */
     if ((side != MorseLeft) && (side != MorseRight)) {
@@ -160,7 +159,7 @@ int CORE_ztpmqrt( MORSE_enum side, MORSE_enum trans,
     if ( side == MorseLeft ) {
         m1 = K;
         n1 = N;
-        ldwork = ib;
+        ldwork = IB;
     }
     else {
         m1 = M;

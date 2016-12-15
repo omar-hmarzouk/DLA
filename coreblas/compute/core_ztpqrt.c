@@ -102,12 +102,6 @@ int CORE_ztpqrt( int M, int N, int L, int IB,
                  MORSE_Complex64_t *T, int LDT,
                  MORSE_Complex64_t *WORK )
 {
-    static MORSE_Complex64_t zone  = 1.0;
-    static MORSE_Complex64_t zzero = 0.0;
-
-    MORSE_Complex64_t alpha;
-    int i, ii, sb;
-
 #if !defined(NDEBUG)
      /* Check input arguments */
     if (M < 0) {
@@ -144,7 +138,7 @@ int CORE_ztpqrt( int M, int N, int L, int IB,
     if ((M == 0) || (N == 0) || (IB == 0))
         return MORSE_SUCCESS;
 
-    if ( L == O ) {
+    if ( L == 0 ) {
         CORE_ztsqrt( M, N, IB, A, LDA, B, LDB, T, LDT, WORK, WORK+N );
     }
     else if (L == M) {
