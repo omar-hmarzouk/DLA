@@ -9,6 +9,7 @@ stages:
 build:
   stage: build
   script:
+    - ssh-agent
     - ssh-add
     - ssh -vvv git@gitlab.inria.fr
     - git submodule init
