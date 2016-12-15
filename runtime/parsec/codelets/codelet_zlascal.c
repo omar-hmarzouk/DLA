@@ -47,13 +47,14 @@ CORE_zlascal_parsec(dague_execution_unit_t    *context,
     MORSE_Complex64_t *A;
     int *LDA;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &uplo,
-                          UNPACK_VALUE, &M,
-                          UNPACK_VALUE, &N,
-                          UNPACK_VALUE, &alpha,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &LDA);
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &uplo,
+        UNPACK_VALUE, &M,
+        UNPACK_VALUE, &N,
+        UNPACK_VALUE, &alpha,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &LDA);
 
     CORE_zlascal(*uplo, *M, *N, *alpha, A, *LDA);
 }
@@ -68,12 +69,12 @@ void MORSE_TASK_zlascal(const MORSE_option_t *options,
 
     dague_insert_task(
         DAGUE_dtd_handle, CORE_zlascal_parsec, "lascal",
-        sizeof(MORSE_enum),              &uplo,  VALUE,
-        sizeof(int),                     &m,     VALUE,
-        sizeof(int),                     &n,     VALUE,
-        sizeof(MORSE_Complex64_t),       &alpha, VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,  RTBLKADDR(A, MORSE_Complex64_t, Am, An), INOUT | REGION_FULL,
-        sizeof(int),                     &lda,   VALUE,
+        sizeof(MORSE_enum),        &uplo,  VALUE,
+        sizeof(int),               &m,     VALUE,
+        sizeof(int),               &n,     VALUE,
+        sizeof(MORSE_Complex64_t), &alpha, VALUE,
+        PASSED_BY_REF,              RTBLKADDR(A, MORSE_Complex64_t, Am, An), INOUT | REGION_FULL,
+        sizeof(int),               &lda,   VALUE,
         0);
 }
 

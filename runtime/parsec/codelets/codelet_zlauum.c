@@ -35,13 +35,12 @@ CORE_zlauum_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
     MORSE_Complex64_t *A;
     int *LDA;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &uplo,
-                          UNPACK_VALUE, &N,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &LDA
-                          );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &uplo,
+        UNPACK_VALUE, &N,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &LDA );
 
     CORE_zlauum(*uplo, *N, A, *LDA);
 
@@ -54,10 +53,11 @@ void MORSE_TASK_zlauum(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    dague_insert_task(DAGUE_dtd_handle,      CORE_zlauum_parsec,    "lauum",
-                             sizeof(MORSE_enum),    &uplo,                  VALUE,
-                             sizeof(int),           &n,                     VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
-                             sizeof(int),           &lda,                   VALUE,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_zlauum_parsec, "lauum",
+        sizeof(MORSE_enum),    &uplo,                  VALUE,
+        sizeof(int),           &n,                     VALUE,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
+        sizeof(int),           &lda,                   VALUE,
+        0);
 }

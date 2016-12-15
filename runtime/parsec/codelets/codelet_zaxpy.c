@@ -32,15 +32,14 @@ CORE_zaxpy_parsec(dague_execution_unit_t *context, dague_execution_context_t *th
     MORSE_Complex64_t *B;
     int *incB;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &M,
-                          UNPACK_VALUE, &alpha,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &incA,
-                          UNPACK_DATA,  &B,
-                          UNPACK_VALUE, &incB
-                        );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &M,
+        UNPACK_VALUE, &alpha,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &incA,
+        UNPACK_DATA,  &B,
+        UNPACK_VALUE, &incB );
 
     CORE_zaxpy(*M, *alpha, A, *incA, B, *incB);
 
@@ -54,12 +53,13 @@ void MORSE_TASK_zaxpy(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    dague_insert_task(DAGUE_dtd_handle,      CORE_zaxpy_parsec,      "axpy",
-                             sizeof(int),                        &M,         VALUE,
-                             sizeof(MORSE_Complex64_t),          alpha,      VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
-                             sizeof(int),           &incA,                   VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT | REGION_FULL,
-                             sizeof(int),           &incB,                   VALUE,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_zaxpy_parsec, "axpy",
+        sizeof(int),               &M,     VALUE,
+        sizeof(MORSE_Complex64_t), &alpha, VALUE,
+        PASSED_BY_REF,  RTBLKADDR( A, MORSE_Complex64_t, Am, An ), INPUT | REGION_FULL,
+        sizeof(int),               &incA, VALUE,
+        PASSED_BY_REF,  RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ), INOUT | REGION_FULL,
+        sizeof(int),               &incB, VALUE,
+        0);
 }

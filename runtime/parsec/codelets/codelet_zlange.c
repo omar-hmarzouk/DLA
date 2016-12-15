@@ -33,16 +33,15 @@ CORE_zlange_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     double *work;
     double *normA;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &norm,
-                          UNPACK_VALUE, &M,
-                          UNPACK_VALUE, &N,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &LDA,
-                          UNPACK_SCRATCH, &work,
-                          UNPACK_DATA,  &normA
-                        );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE,   &norm,
+        UNPACK_VALUE,   &M,
+        UNPACK_VALUE,   &N,
+        UNPACK_DATA,    &A,
+        UNPACK_VALUE,   &LDA,
+        UNPACK_SCRATCH, &work,
+        UNPACK_DATA,    &normA );
 
     CORE_zlange( *norm, *M, *N, A, *LDA, work, normA );
 
@@ -58,15 +57,16 @@ void MORSE_TASK_zlange(const MORSE_option_t *options,
 
     int szeW = max( M, N );
 
-    dague_insert_task(DAGUE_dtd_handle,      CORE_zlange_parsec,    "lange",
-                             sizeof(MORSE_enum),            &norm,          VALUE,
-                             sizeof(int),                   &M,             VALUE,
-                             sizeof(int),                   &N,             VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
-                             sizeof(int),                   &LDA,           VALUE,
-                             sizeof(double)*szeW,           NULL,           SCRATCH,
-                             PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT | REGION_FULL,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_zlange_parsec, "lange",
+        sizeof(MORSE_enum),            &norm,          VALUE,
+        sizeof(int),                   &M,             VALUE,
+        sizeof(int),                   &N,             VALUE,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        sizeof(int),                   &LDA,           VALUE,
+        sizeof(double)*szeW,           NULL,           SCRATCH,
+        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT | REGION_FULL,
+        0);
 }
 
 #if defined(PRECISION_d) || defined(PRECISION_s)
@@ -76,11 +76,10 @@ CORE_zlange_max_parsec(dague_execution_unit_t *context, dague_execution_context_
     double *A;
     double *normA;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_DATA,  &A,
-                          UNPACK_DATA,  &normA
-                        );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_DATA,  &A,
+        UNPACK_DATA,  &normA );
 
     if ( *A > *normA )
         *normA = *A;
@@ -94,10 +93,11 @@ void MORSE_TASK_zlange_max(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    dague_insert_task(DAGUE_dtd_handle,      CORE_zlange_max_parsec,               "lange_max",
-                             PASSED_BY_REF,         RTBLKADDR( A, double, Am, An ), INPUT | REGION_FULL,
-                             PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ), OUTPUT | REGION_FULL,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_zlange_max_parsec, "lange_max",
+        PASSED_BY_REF,         RTBLKADDR( A, double, Am, An ), INPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ), OUTPUT | REGION_FULL,
+        0);
 }
 
 #endif /* defined(PRECISION_d) || defined(PRECISION_s) */

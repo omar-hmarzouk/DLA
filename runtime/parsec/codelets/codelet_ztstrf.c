@@ -43,24 +43,23 @@ CORE_ztstrf_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
 
     int info;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &m,
-                          UNPACK_VALUE, &n,
-                          UNPACK_VALUE, &ib,
-                          UNPACK_VALUE, &nb,
-                          UNPACK_DATA,  &U,
-                          UNPACK_VALUE, &ldu,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &lda,
-                          UNPACK_DATA,  &L,
-                          UNPACK_VALUE, &ldl,
-                          UNPACK_SCRATCH, &IPIV,
-                          UNPACK_SCRATCH, &WORK,
-                          UNPACK_VALUE, &ldwork,
-                          UNPACK_VALUE, &check_info,
-                          UNPACK_VALUE, &iinfo
-                        );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE,   &m,
+        UNPACK_VALUE,   &n,
+        UNPACK_VALUE,   &ib,
+        UNPACK_VALUE,   &nb,
+        UNPACK_DATA,    &U,
+        UNPACK_VALUE,   &ldu,
+        UNPACK_DATA,    &A,
+        UNPACK_VALUE,   &lda,
+        UNPACK_DATA,    &L,
+        UNPACK_VALUE,   &ldl,
+        UNPACK_SCRATCH, &IPIV,
+        UNPACK_SCRATCH, &WORK,
+        UNPACK_VALUE,   &ldwork,
+        UNPACK_VALUE,   &check_info,
+        UNPACK_VALUE,   &iinfo );
 
     CORE_ztstrf(*m, *n, *ib, *nb, U, *ldu, A, *lda, L, *ldl, IPIV, WORK, *ldwork, &info);
 
@@ -77,21 +76,22 @@ void MORSE_TASK_ztstrf(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    dague_insert_task(DAGUE_dtd_handle,      CORE_ztstrf_parsec,               "tstrf",
-                             sizeof(int),           &m,                                VALUE,
-                             sizeof(int),           &n,                                VALUE,
-                             sizeof(int),           &ib,                               VALUE,
-                             sizeof(int),           &nb,                               VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( U, MORSE_Complex64_t, Um, Un ),     INOUT | REGION_FULL,
-                             sizeof(int),           &ldu,                              VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
-                             sizeof(int),           &lda,                              VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( L, MORSE_Complex64_t, Lm, Ln ),     OUTPUT | REGION_FULL,
-                             sizeof(int),           &ldl,                              VALUE,
-                             sizeof(int)*nb,        IPIV,                              SCRATCH,
-                             sizeof(MORSE_Complex64_t)*ib*nb,    NULL,                 SCRATCH,
-                             sizeof(int),           &nb,                               VALUE,
-                             sizeof(int),           &check_info,                       VALUE,
-                             sizeof(int),           &iinfo,                            VALUE,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_ztstrf_parsec, "tstrf",
+        sizeof(int),           &m,                                VALUE,
+        sizeof(int),           &n,                                VALUE,
+        sizeof(int),           &ib,                               VALUE,
+        sizeof(int),           &nb,                               VALUE,
+        PASSED_BY_REF,         RTBLKADDR( U, MORSE_Complex64_t, Um, Un ),     INOUT | REGION_FULL,
+        sizeof(int),           &ldu,                              VALUE,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
+        sizeof(int),           &lda,                              VALUE,
+        PASSED_BY_REF,         RTBLKADDR( L, MORSE_Complex64_t, Lm, Ln ),     OUTPUT | REGION_FULL,
+        sizeof(int),           &ldl,                              VALUE,
+        sizeof(int)*nb,        IPIV,                              SCRATCH,
+        sizeof(MORSE_Complex64_t)*ib*nb,    NULL,                 SCRATCH,
+        sizeof(int),           &nb,                               VALUE,
+        sizeof(int),           &check_info,                       VALUE,
+        sizeof(int),           &iinfo,                            VALUE,
+        0);
 }

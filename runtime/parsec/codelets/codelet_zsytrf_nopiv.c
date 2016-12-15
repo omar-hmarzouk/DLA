@@ -32,14 +32,13 @@ CORE_zsytrf_nopiv_parsec(dague_execution_unit_t *context, dague_execution_contex
     int *iinfo;
     int info;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &uplo,
-                          UNPACK_VALUE, &n,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &lda,
-                          UNPACK_VALUE, &iinfo
-                        );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &uplo,
+        UNPACK_VALUE, &n,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &lda,
+        UNPACK_VALUE, &iinfo );
 
     CORE_zsytf2_nopiv(*uplo, *n, A, *lda);
 
@@ -53,7 +52,8 @@ void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    dague_insert_task(DAGUE_dtd_handle,      CORE_zsytrf_nopiv_parsec,               "sytrf_nopiv",
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_zsytrf_nopiv_parsec, "sytrf_nopiv",
         sizeof(MORSE_enum),              &uplo,                VALUE,
         sizeof(int),                     &n,                   VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,

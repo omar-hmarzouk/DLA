@@ -80,15 +80,14 @@ CORE_zgetrf_nopiv_parsec(dague_execution_unit_t *context, dague_execution_contex
     int *iinfo;
     int info;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &m,
-                          UNPACK_VALUE, &n,
-                          UNPACK_VALUE, &ib,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &lda,
-                          UNPACK_VALUE, &iinfo
-                        );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &m,
+        UNPACK_VALUE, &n,
+        UNPACK_VALUE, &ib,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &lda,
+        UNPACK_VALUE, &iinfo );
 
     CORE_zgetrf_nopiv(*m, *n, *ib, A, *lda, &info);
 
@@ -102,12 +101,13 @@ void MORSE_TASK_zgetrf_nopiv(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    dague_insert_task(DAGUE_dtd_handle,      CORE_zgetrf_nopiv_parsec,   "getrf_nopiv",
-                             sizeof(int),           &m,                          VALUE,
-                             sizeof(int),           &n,                          VALUE,
-                             sizeof(int),           &ib,                         VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
-                             sizeof(int),           &lda,                        VALUE,
-                             sizeof(int),           &iinfo,                      VALUE,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_zgetrf_nopiv_parsec, "getrf_nopiv",
+        sizeof(int),           &m,                          VALUE,
+        sizeof(int),           &n,                          VALUE,
+        sizeof(int),           &ib,                         VALUE,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
+        sizeof(int),           &lda,                        VALUE,
+        sizeof(int),           &iinfo,                      VALUE,
+        0);
 }

@@ -36,15 +36,16 @@ CORE_zlatro_parsec(dague_execution_unit_t    *context,
     MORSE_Complex64_t *B;
     int *LDB;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &uplo,
-                          UNPACK_VALUE, &trans,
-                          UNPACK_VALUE, &M,
-                          UNPACK_VALUE, &N,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &LDA,
-                          UNPACK_DATA,  &B,
-                          UNPACK_VALUE, &LDB);
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &uplo,
+        UNPACK_VALUE, &trans,
+        UNPACK_VALUE, &M,
+        UNPACK_VALUE, &N,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &LDA,
+        UNPACK_DATA,  &B,
+        UNPACK_VALUE, &LDB);
 
     CORE_zlatro(*uplo, *trans, *M, *N,
                 A, *LDA, B, *LDB);
@@ -63,13 +64,13 @@ void MORSE_TASK_zlatro(const MORSE_option_t *options,
 
     dague_insert_task(
         DAGUE_dtd_handle, CORE_zlatro_parsec, "latro",
-        sizeof(MORSE_enum),              &uplo,  VALUE,
-        sizeof(MORSE_enum),              &trans, VALUE,
-        sizeof(int),                     &m,     VALUE,
-        sizeof(int),                     &n,     VALUE,
-        sizeof(MORSE_Complex64_t)*mb*mb,  RTBLKADDR(A, MORSE_Complex64_t, Am, An), INPUT  | REGION_FULL,
-        sizeof(int),                     &lda,   VALUE,
-        sizeof(MORSE_Complex64_t)*mb*mb,  RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn), OUTPUT | REGION_FULL,
-        sizeof(int),                     &ldb,   VALUE,
+        sizeof(MORSE_enum), &uplo,  VALUE,
+        sizeof(MORSE_enum), &trans, VALUE,
+        sizeof(int),        &m,     VALUE,
+        sizeof(int),        &n,     VALUE,
+        PASSED_BY_REF,       RTBLKADDR(A, MORSE_Complex64_t, Am, An), INPUT  | REGION_FULL,
+        sizeof(int),        &lda,   VALUE,
+        PASSED_BY_REF,       RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn), OUTPUT | REGION_FULL,
+        sizeof(int),        &ldb,   VALUE,
         0);
 }
