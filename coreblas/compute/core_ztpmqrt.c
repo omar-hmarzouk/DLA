@@ -98,7 +98,7 @@
  *
  * @param[out] WORK
  *         Workspace array of size LDWORK-by-NB.
- *         LDWORK = N if side =MorseLeft, or  M if side = MorseRight.
+ *         LDWORK = N if side = MorseLeft, or  M if side = MorseRight.
  *
  *******************************************************************************
  *

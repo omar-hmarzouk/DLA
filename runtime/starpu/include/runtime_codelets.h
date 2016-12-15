@@ -87,7 +87,7 @@
 
 
 #define CODELETS_ALL_HEADER(name)                                             \
-     CHAMELEON_CL_CB_HEADER(name)                                             \
+     CHAMELEON_CL_CB_HEADER(name);                                            \
      void cl_##name##_load_fake_model(void);                                  \
      void cl_##name##_restore_model(void);                                    \
      extern struct starpu_codelet cl_##name;                                  \
