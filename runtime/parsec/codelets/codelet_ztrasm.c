@@ -34,16 +34,16 @@ CORE_ztrasm_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     int *lda;
     double *work;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &storev,
-                          UNPACK_VALUE, &uplo,
-                          UNPACK_VALUE, &diag,
-                          UNPACK_VALUE, &M,
-                          UNPACK_VALUE, &N,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &lda,
-                          UNPACK_DATA,  &work
-                        );
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &storev,
+        UNPACK_VALUE, &uplo,
+        UNPACK_VALUE, &diag,
+        UNPACK_VALUE, &M,
+        UNPACK_VALUE, &N,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &lda,
+        UNPACK_DATA,  &work );
 
     CORE_ztrasm(*storev, *uplo, *diag, *M, *N, A, *lda, work);
 
@@ -57,14 +57,15 @@ void MORSE_TASK_ztrasm(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_ztrasm_parsec,    "trasm",
-                            sizeof(MORSE_enum),     &storev,                VALUE,
-                            sizeof(MORSE_enum),     &uplo,                  VALUE,
-                            sizeof(MORSE_enum),     &diag,                  VALUE,
-                            sizeof(int),            &M,                     VALUE,
-                            sizeof(int),            &N,                     VALUE,
-                            PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
-                            sizeof(int),            &lda,                   VALUE,
-                            PASSED_BY_REF,          RTBLKADDR( B, double, Bm, Bn ),     INOUT | REGION_FULL,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_ztrasm_parsec, "trasm",
+        sizeof(MORSE_enum),     &storev,                VALUE,
+        sizeof(MORSE_enum),     &uplo,                  VALUE,
+        sizeof(MORSE_enum),     &diag,                  VALUE,
+        sizeof(int),            &M,                     VALUE,
+        sizeof(int),            &N,                     VALUE,
+        PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        sizeof(int),            &lda,                   VALUE,
+        PASSED_BY_REF,          RTBLKADDR( B, double, Bm, Bn ),     INOUT | REGION_FULL,
+        0);
 }

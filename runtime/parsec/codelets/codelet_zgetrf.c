@@ -34,16 +34,15 @@ CORE_zgetrf_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     int *iinfo;
     int info;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &m,
-                          UNPACK_VALUE, &n,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &lda,
-                          UNPACK_SCRATCH, &IPIV,
-                          UNPACK_VALUE, &check_info,
-                          UNPACK_VALUE, &iinfo
-                        );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &m,
+        UNPACK_VALUE, &n,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &lda,
+        UNPACK_SCRATCH, &IPIV,
+        UNPACK_VALUE, &check_info,
+        UNPACK_VALUE, &iinfo );
 
     CORE_zgetrf( *m, *n, A, *lda, IPIV, &info );
 
@@ -58,13 +57,14 @@ void MORSE_TASK_zgetrf(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zgetrf_parsec,         "getrf",
-                             sizeof(int),           &m,                          VALUE,
-                             sizeof(int),           &n,                          VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
-                             sizeof(int),           &lda,                        VALUE,
-                             sizeof(int)*nb,        IPIV,                        SCRATCH,
-                             sizeof(MORSE_bool),    &check_info,                 VALUE,
-                             sizeof(int),           &iinfo,                      VALUE,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_zgetrf_parsec, "getrf",
+        sizeof(int),        &m,                          VALUE,
+        sizeof(int),        &n,                          VALUE,
+        PASSED_BY_REF,       RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
+        sizeof(int),        &lda,                        VALUE,
+        sizeof(int)*nb,      IPIV,                        SCRATCH,
+        sizeof(MORSE_bool), &check_info,                 VALUE,
+        sizeof(int),        &iinfo,                      VALUE,
+        0);
 }

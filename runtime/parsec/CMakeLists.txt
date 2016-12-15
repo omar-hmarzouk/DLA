@@ -27,6 +27,7 @@
 #
 ###
 
+cmake_minimum_required(VERSION 2.8)
 
 # check if magma_dgetrf_incpiv_gpu is accessible in libmagma and activate it in chameleon
 if ( CBLAS_FOUND AND LAPACKE_FOUND AND LAPACK_FOUND AND CUDA_FOUND AND CUDA_CUBLAS_LIBRARIES AND MAGMA_FOUND )
@@ -73,10 +74,10 @@ precisions_rules_py(RUNTIME_COMMON_GENERATED "${ZSRC}"
                     TARGETDIR "control")
 
 set(RUNTIME_COMMON
-    control/runtime_control.c
-    control/runtime_context.c
-    control/runtime_descriptor.c
     control/runtime_async.c
+    control/runtime_context.c
+    control/runtime_control.c
+    control/runtime_descriptor.c
     control/runtime_options.c
     control/runtime_profiling.c
     codelets/codelet_dataflush.c
@@ -109,6 +110,7 @@ set(ZSRC
     # LAPACK
     ##################
     codelets/codelet_zgeadd.c
+    codelets/codelet_zlascal.c
     codelets/codelet_zgelqt.c
     codelets/codelet_zgeqrt.c
     codelets/codelet_zgessm.c
@@ -116,6 +118,8 @@ set(ZSRC
     codelets/codelet_zgetrf.c
     codelets/codelet_zgetrf_incpiv.c
     codelets/codelet_zgetrf_nopiv.c
+    codelets/codelet_zhe2ge.c
+    codelets/codelet_zherfb.c
     codelets/codelet_zhessq.c
     codelets/codelet_zlacpy.c
     codelets/codelet_zlange.c
@@ -124,6 +128,7 @@ set(ZSRC
     codelets/codelet_zlantr.c
     codelets/codelet_zlaset2.c
     codelets/codelet_zlaset.c
+    codelets/codelet_zlatro.c
     codelets/codelet_zlauum.c
     codelets/codelet_zplghe.c
     codelets/codelet_zplgsy.c
@@ -140,6 +145,8 @@ set(ZSRC
     codelets/codelet_ztslqt.c
     codelets/codelet_ztsmlq.c
     codelets/codelet_ztsmqr.c
+    codelets/codelet_ztsmlq_hetra1.c
+    codelets/codelet_ztsmqr_hetra1.c
     codelets/codelet_ztsqrt.c
     codelets/codelet_ztstrf.c
     codelets/codelet_zttlqt.c
@@ -153,7 +160,6 @@ set(ZSRC
     ##################
     codelets/codelet_zbuild.c
     )
-list(REMOVE_DUPLICATES ZSRC)
 
 precisions_rules_py(RUNTIME_SRCS_GENERATED "${ZSRC}"
                     PRECISIONS "${CHAMELEON_PRECISION}"
@@ -171,9 +177,9 @@ set_property(TARGET chameleon_parsec PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET chameleon_parsec PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 target_link_libraries(chameleon_parsec coreblas ${PARSEC_LIBRARIES_DEP})
-if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+if(CHAMELEON_USE_CUDA)
   target_link_libraries(chameleon_parsec cudablas)
-endif(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+endif(CHAMELEON_USE_CUDA)
 
 add_dependencies(chameleon_parsec
   chameleon_include
@@ -181,6 +187,10 @@ add_dependencies(chameleon_parsec
   control_include
   runtime_parsec_include
 )
+
+if (CHAMELEON_USE_CUDA AND NOT CHAMELEON_SIMULATION)
+    add_dependencies(chameleon_starpu cudablas_include)
+endif()
 
 # installation
 # ------------

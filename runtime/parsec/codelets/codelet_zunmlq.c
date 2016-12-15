@@ -40,23 +40,22 @@ CORE_zunmlq_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     MORSE_Complex64_t *WORK;
     int *ldwork;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &side,
-                          UNPACK_VALUE, &trans,
-                          UNPACK_VALUE, &m,
-                          UNPACK_VALUE, &n,
-                          UNPACK_VALUE, &k,
-                          UNPACK_VALUE, &ib,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &lda,
-                          UNPACK_DATA,  &T,
-                          UNPACK_VALUE, &ldt,
-                          UNPACK_DATA,  &C,
-                          UNPACK_VALUE, &ldc,
-                          UNPACK_SCRATCH, &WORK,
-                          UNPACK_VALUE, &ldwork
-                        );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE,   &side,
+        UNPACK_VALUE,   &trans,
+        UNPACK_VALUE,   &m,
+        UNPACK_VALUE,   &n,
+        UNPACK_VALUE,   &k,
+        UNPACK_VALUE,   &ib,
+        UNPACK_DATA,    &A,
+        UNPACK_VALUE,   &lda,
+        UNPACK_DATA,    &T,
+        UNPACK_VALUE,   &ldt,
+        UNPACK_DATA,    &C,
+        UNPACK_VALUE,   &ldc,
+        UNPACK_SCRATCH, &WORK,
+        UNPACK_VALUE,   &ldwork );
 
     CORE_zunmlq(*side, *trans, *m, *n, *k, *ib,
                 A, *lda, T, *ldt, C, *ldc, WORK, *ldwork);
@@ -73,21 +72,21 @@ void MORSE_TASK_zunmlq(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zunmlq_parsec,            "unmlq",
-                            sizeof(MORSE_enum),                 &side,              VALUE,
-                            sizeof(MORSE_enum),                 &trans,             VALUE,
-                            sizeof(int),                        &m,                 VALUE,
-                            sizeof(int),                        &n,                 VALUE,
-                            sizeof(int),                        &k,                 VALUE,
-                            sizeof(int),                        &ib,                VALUE,
-                            PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
-                            sizeof(int),                        &lda,               VALUE,
-                            PASSED_BY_REF,         RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ),     INPUT | REGION_FULL,
-                            sizeof(int),                        &ldt,               VALUE,
-                            PASSED_BY_REF,         RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | REGION_FULL,
-                            sizeof(int),                        &ldc,               VALUE,
-                            sizeof(MORSE_Complex64_t)*ib*nb,    NULL,               SCRATCH,
-                            sizeof(int),                        &nb,                VALUE,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_zunmlq_parsec, "unmlq",
+        sizeof(MORSE_enum),                 &side,              VALUE,
+        sizeof(MORSE_enum),                 &trans,             VALUE,
+        sizeof(int),                        &m,                 VALUE,
+        sizeof(int),                        &n,                 VALUE,
+        sizeof(int),                        &k,                 VALUE,
+        sizeof(int),                        &ib,                VALUE,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        sizeof(int),                        &lda,               VALUE,
+        PASSED_BY_REF,         RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ),     INPUT | REGION_FULL,
+        sizeof(int),                        &ldt,               VALUE,
+        PASSED_BY_REF,         RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | REGION_FULL,
+        sizeof(int),                        &ldc,               VALUE,
+        sizeof(MORSE_Complex64_t)*ib*nb,    NULL,               SCRATCH,
+        sizeof(int),                        &nb,                VALUE,
+        0);
 }

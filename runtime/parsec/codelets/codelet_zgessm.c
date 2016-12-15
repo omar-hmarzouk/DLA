@@ -82,20 +82,19 @@ CORE_zgessm_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     MORSE_Complex64_t *A;
     int *lda;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &m,
-                          UNPACK_VALUE, &n,
-                          UNPACK_VALUE, &k,
-                          UNPACK_VALUE, &ib,
-                          UNPACK_SCRATCH, &IPIV,
-                          UNPACK_DATA,  &L,
-                          UNPACK_VALUE, &ldl,
-                          UNPACK_DATA,  &D,
-                          UNPACK_VALUE, &ldd,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &lda
-                          );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &m,
+        UNPACK_VALUE, &n,
+        UNPACK_VALUE, &k,
+        UNPACK_VALUE, &ib,
+        UNPACK_SCRATCH, &IPIV,
+        UNPACK_DATA,  &L,
+        UNPACK_VALUE, &ldl,
+        UNPACK_DATA,  &D,
+        UNPACK_VALUE, &ldd,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &lda );
 
     CORE_zgessm(*m, *n, *k, *ib, IPIV, D, *ldd, A, *lda);
 
@@ -111,17 +110,18 @@ void MORSE_TASK_zgessm(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zgessm_parsec,               "gessm",
-                             sizeof(int),           &m,                                VALUE,
-                             sizeof(int),           &n,                                VALUE,
-                             sizeof(int),           &k,                                VALUE,
-                             sizeof(int),           &ib,                               VALUE,
-                             sizeof(int)*nb,        IPIV,                              SCRATCH,
-                             PASSED_BY_REF,         RTBLKADDR( L, MORSE_Complex64_t, Lm, Ln ),     INPUT | REGION_FULL,
-                             sizeof(int),           &ldl,                              VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( D, MORSE_Complex64_t, Dm, Dn ),     INPUT | REGION_FULL,
-                             sizeof(int),           &ldd,                              VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
-                             sizeof(int),           &lda,                              VALUE,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_zgessm_parsec, "gessm",
+        sizeof(int),           &m,                                VALUE,
+        sizeof(int),           &n,                                VALUE,
+        sizeof(int),           &k,                                VALUE,
+        sizeof(int),           &ib,                               VALUE,
+        sizeof(int)*nb,        IPIV,                              SCRATCH,
+        PASSED_BY_REF,         RTBLKADDR( L, MORSE_Complex64_t, Lm, Ln ),     INPUT | REGION_FULL,
+        sizeof(int),           &ldl,                              VALUE,
+        PASSED_BY_REF,         RTBLKADDR( D, MORSE_Complex64_t, Dm, Dn ),     INPUT | REGION_FULL,
+        sizeof(int),           &ldd,                              VALUE,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
+        sizeof(int),           &lda,                              VALUE,
+        0);
 }

@@ -35,18 +35,17 @@ CORE_zplghe_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     int *n0;
     unsigned long long int *seed;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &bump,
-                          UNPACK_VALUE, &m,
-                          UNPACK_VALUE, &n,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &lda,
-                          UNPACK_VALUE, &bigM,
-                          UNPACK_VALUE, &m0,
-                          UNPACK_VALUE, &n0,
-                          UNPACK_VALUE, &seed
-                        );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &bump,
+        UNPACK_VALUE, &m,
+        UNPACK_VALUE, &n,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &lda,
+        UNPACK_VALUE, &bigM,
+        UNPACK_VALUE, &m0,
+        UNPACK_VALUE, &n0,
+        UNPACK_VALUE, &seed );
 
     CORE_zplghe( *bump, *m, *n, A, *lda, *bigM, *m0, *n0, *seed );
 
@@ -59,15 +58,16 @@ void MORSE_TASK_zplghe( const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,  CORE_zplghe_parsec,            "zplghe",
-                             sizeof(double),    &bump,                          VALUE,
-                             sizeof(int),       &m,                             VALUE,
-                             sizeof(int),       &n,                             VALUE,
-                             PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT | REGION_FULL,
-                             sizeof(int),       &lda,                           VALUE,
-                             sizeof(int),       &bigM,                          VALUE,
-                             sizeof(int),       &m0,                            VALUE,
-                             sizeof(int),       &n0,                            VALUE,
-                             sizeof(unsigned long long int),       &seed,       VALUE,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_zplghe_parsec, "zplghe",
+        sizeof(double),    &bump,                          VALUE,
+        sizeof(int),       &m,                             VALUE,
+        sizeof(int),       &n,                             VALUE,
+        PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT | REGION_FULL,
+        sizeof(int),       &lda,                           VALUE,
+        sizeof(int),       &bigM,                          VALUE,
+        sizeof(int),       &m0,                            VALUE,
+        sizeof(int),       &n0,                            VALUE,
+        sizeof(unsigned long long int),       &seed,       VALUE,
+        0);
 }

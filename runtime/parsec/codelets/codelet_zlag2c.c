@@ -38,14 +38,14 @@ CORE_zlag2c_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     int *ldb;
     int info;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &m,
-                          UNPACK_VALUE, &n,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &lda,
-                          UNPACK_DATA,  &B,
-                          UNPACK_VALUE, &ldb,
-                          );
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &m,
+        UNPACK_VALUE, &n,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &lda,
+        UNPACK_DATA,  &B,
+        UNPACK_VALUE, &ldb );
 
     CORE_zlag2c( *m, *n, A, *lda, B, *ldb);
 
@@ -59,7 +59,7 @@ void MORSE_TASK_zlag2c(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zlag2c_parsec,               "lag2c",
+    dague_insert_task(DAGUE_dtd_handle, CORE_zlag2c_parsec, "lag2c",
         sizeof(int),                        &m,         VALUE,
         sizeof(int),                        &n,         VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
@@ -84,15 +84,14 @@ CORE_clag2z_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     MORSE_Complex64_t *B;
     int *ldb;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &m,
-                          UNPACK_VALUE, &n,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &lda,
-                          UNPACK_DATA,  &B,
-                          UNPACK_VALUE, &ldb,
-                          );
-
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &m,
+        UNPACK_VALUE, &n,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &lda,
+        UNPACK_DATA,  &B,
+        UNPACK_VALUE, &ldb );
 
     CORE_clag2z( *m, *n, A, *lda, B, *ldb );
 
@@ -106,7 +105,8 @@ void MORSE_TASK_clag2z(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_clag2z_parsec,               "lag2z",
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_clag2z_parsec, "lag2z",
         sizeof(int),                        &m,         VALUE,
         sizeof(int),                        &n,         VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex32_t, Am, An ),     INPUT | REGION_FULL,

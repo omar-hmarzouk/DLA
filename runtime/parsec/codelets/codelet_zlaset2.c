@@ -65,14 +65,14 @@ CORE_zlaset2_parsec(dague_execution_unit_t *context, dague_execution_context_t *
     MORSE_Complex64_t *A;
     int *LDA;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &uplo,
-                          UNPACK_VALUE, &M,
-                          UNPACK_VALUE, &N,
-                          UNPACK_VALUE, &alpha,
-                          UNPACK_DATA,  &A,
-                          UNPACK_VALUE, &LDA
-                        );
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &uplo,
+        UNPACK_VALUE, &M,
+        UNPACK_VALUE, &N,
+        UNPACK_VALUE, &alpha,
+        UNPACK_DATA,  &A,
+        UNPACK_VALUE, &LDA );
 
     CORE_zlaset2(*uplo, *M, *N, *alpha, A, *LDA);
 
@@ -85,12 +85,13 @@ void MORSE_TASK_zlaset2(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zlaset2_parsec,   "laset2",
-                             sizeof(MORSE_enum),                &uplo,      VALUE,
-                             sizeof(int),                       &M,         VALUE,
-                             sizeof(int),                       &N,         VALUE,
-                             sizeof(MORSE_enum),                &alpha,     VALUE,
-                             PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT | REGION_FULL,
-                             sizeof(int),                       &LDA,       VALUE,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_zlaset2_parsec, "laset2",
+        sizeof(MORSE_enum),                &uplo,      VALUE,
+        sizeof(int),                       &M,         VALUE,
+        sizeof(int),                       &N,         VALUE,
+        sizeof(MORSE_enum),                &alpha,     VALUE,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT | REGION_FULL,
+        sizeof(int),                       &LDA,       VALUE,
+        0);
 }

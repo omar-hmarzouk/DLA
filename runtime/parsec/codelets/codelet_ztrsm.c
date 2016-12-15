@@ -31,19 +31,19 @@ CORE_ztrsm_parsec(dague_execution_unit_t *context, dague_execution_context_t *th
     MORSE_Complex64_t *T;
     MORSE_Complex64_t *C;
 
-    dague_dtd_unpack_args(this_task,
-                          UNPACK_VALUE, &side,
-                          UNPACK_VALUE, &uplo,
-                          UNPACK_VALUE, &trans,
-                          UNPACK_VALUE, &diag,
-                          UNPACK_VALUE, &tempmm,
-                          UNPACK_VALUE, &nb,
-                          UNPACK_VALUE, &alpha,
-                          UNPACK_DATA,  &T,
-                          UNPACK_VALUE, &ldak,
-                          UNPACK_DATA,  &C,
-                          UNPACK_VALUE, &ldam
-                        );
+    dague_dtd_unpack_args(
+        this_task,
+        UNPACK_VALUE, &side,
+        UNPACK_VALUE, &uplo,
+        UNPACK_VALUE, &trans,
+        UNPACK_VALUE, &diag,
+        UNPACK_VALUE, &tempmm,
+        UNPACK_VALUE, &nb,
+        UNPACK_VALUE, &alpha,
+        UNPACK_DATA,  &T,
+        UNPACK_VALUE, &ldak,
+        UNPACK_DATA,  &C,
+        UNPACK_VALUE, &ldam );
 
     CORE_ztrsm(*side, *uplo, *trans, *diag,
            *tempmm, *nb, *alpha, T, *ldak,
@@ -60,17 +60,18 @@ void MORSE_TASK_ztrsm(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_ztrsm_parsec,        "Trsm",
-                             sizeof(MORSE_enum),    &side,                     VALUE,
-                             sizeof(MORSE_enum),    &uplo,                     VALUE,
-                             sizeof(MORSE_enum),    &transA,                   VALUE,
-                             sizeof(MORSE_enum),    &diag,                     VALUE,
-                             sizeof(int),           &m,                        VALUE,
-                             sizeof(int),           &n,                        VALUE,
-                             sizeof(MORSE_Complex64_t),           &alpha,      VALUE,
-                             PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
-                             sizeof(int),           &lda,                      VALUE,
-                             PASSED_BY_REF,     RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT | REGION_FULL,
-                             sizeof(int),           &ldb,                      VALUE,
-                             0);
+    dague_insert_task(
+        DAGUE_dtd_handle, CORE_ztrsm_parsec, "Trsm",
+        sizeof(MORSE_enum),    &side,                     VALUE,
+        sizeof(MORSE_enum),    &uplo,                     VALUE,
+        sizeof(MORSE_enum),    &transA,                   VALUE,
+        sizeof(MORSE_enum),    &diag,                     VALUE,
+        sizeof(int),           &m,                        VALUE,
+        sizeof(int),           &n,                        VALUE,
+        sizeof(MORSE_Complex64_t),           &alpha,      VALUE,
+        PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        sizeof(int),           &lda,                      VALUE,
+        PASSED_BY_REF,     RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT | REGION_FULL,
+        sizeof(int),           &ldb,                      VALUE,
+        0);
 }
