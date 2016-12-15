@@ -315,6 +315,18 @@ void MORSE_TASK_zswptr_ontile(const MORSE_option_t *options,
                               const MORSE_desc_t descA, const MORSE_desc_t *Aij, int Aijm, int Aijn,
                               int i1,  int i2, int *ipiv, int inc,
                               const MORSE_desc_t *Akk, int Akkm, int Akkn, int ldak);
+void MORSE_TASK_ztpmqrt(const MORSE_option_t *options,
+                        MORSE_enum side, MORSE_enum trans,
+                        int m, int n, int k, int l, int ib, int nb,
+                        const MORSE_desc_t *V, int Vm, int Vn, int ldv,
+                        const MORSE_desc_t *T, int Tm, int Tn, int ldt,
+                        const MORSE_desc_t *A, int Am, int An, int lda,
+                        const MORSE_desc_t *B, int Bm, int Bn, int ldb );
+void MORSE_TASK_ztpqrt(const MORSE_option_t *options,
+                       int m, int n, int l, int ib, int nb,
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *B, int Bm, int Bn, int ldb,
+                       const MORSE_desc_t *T, int Tm, int Tn, int ldt );
 void MORSE_TASK_ztrdalg(const MORSE_option_t *options,
                         MORSE_enum uplo,
                         int N, int NB,
