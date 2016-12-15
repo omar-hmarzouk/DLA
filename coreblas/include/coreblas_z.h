@@ -352,6 +352,18 @@ int  CORE_ztstrf(int M, int N, int IB, int NB,
                  MORSE_Complex64_t *L, int LDL,
                  int *IPIV, MORSE_Complex64_t *WORK,
                  int LDWORK, int *INFO);
+int CORE_ztpqrt( int M, int N, int L, int IB,
+                 MORSE_Complex64_t *A, int LDA,
+                 MORSE_Complex64_t *B, int LDB,
+                 MORSE_Complex64_t *T, int LDT,
+                 MORSE_Complex64_t *WORK );
+int CORE_ztpmqrt( MORSE_enum side, MORSE_enum trans,
+                  int M, int N, int K, int L, int IB,
+                  const MORSE_Complex64_t *V, int LDV,
+                  const MORSE_Complex64_t *T, int LDT,
+                  MORSE_Complex64_t *A, int LDA,
+                  MORSE_Complex64_t *B, int LDB,
+                  MORSE_Complex64_t *WORK );
 int  CORE_zttmqr(MORSE_enum side, MORSE_enum trans,
                  int M1, int N1, int M2, int N2, int K, int IB,
                  MORSE_Complex64_t *A1, int LDA1,
