@@ -23,7 +23,8 @@
 #include "runtime/parsec/include/morse_parsec.h"
 
 static int
-CORE_dzasum_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_dzasum_parsec(dague_execution_unit_t    *context,
+                   dague_execution_context_t *this_task)
 {
     MORSE_enum *storev;
     MORSE_enum *uplo;

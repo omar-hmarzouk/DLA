@@ -28,7 +28,8 @@
  *
  **/
 static int
-CORE_zgemm_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zgemm_parsec(dague_execution_unit_t    *context,
+                  dague_execution_context_t *this_task)
 {
     MORSE_enum *transA;
     MORSE_enum *transB;
