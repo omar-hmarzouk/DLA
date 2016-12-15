@@ -16,7 +16,7 @@
 int RUNTIME_sequence_create(MORSE_context_t *morse, MORSE_sequence_t *sequence)
 {
     dague_context_t    *dague = (dague_context_t *)morse->schedopt;
-    dague_dtd_handle_t *dague_dtd_handle = dague_dtd_handle_new((dague_context_t *)morse->schedopt, 1);
+    dague_dtd_handle_t *dague_dtd_handle = dague_dtd_handle_new((dague_context_t *)morse->schedopt);
 
     dague_enqueue(dague, (dague_handle_t*) dague_dtd_handle);
     sequence->schedopt = dague_dtd_handle;
