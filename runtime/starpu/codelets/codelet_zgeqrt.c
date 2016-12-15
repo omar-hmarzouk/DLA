@@ -123,7 +123,7 @@ void MORSE_TASK_zgeqrt(const MORSE_option_t *options,
             STARPU_VALUE,    &h_work,            sizeof(MORSE_starpu_ws_t *),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
-#if (STARPU_MAJOR_VERSION > 1) || ((STARPU_MAJOR_VERSION == 1) && (STARPU_MINOR_VERSION > 1))
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
             STARPU_NAME, "zgeqrt",
 #endif
             0);

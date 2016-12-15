@@ -64,6 +64,13 @@ typedef struct starpu_conf starpu_conf_t;
 #endif
 
 /*
+ * Enable codelets names
+ */
+#if (STARPU_MAJOR_VERSION > 1) || ((STARPU_MAJOR_VERSION == 1) && (STARPU_MINOR_VERSION > 1))
+#define CHAMELEON_CODELETS_HAVE_NAME
+#endif
+
+/**
  * Access to block pointer and leading dimension
  */
 #define RTBLKADDR( desc, type, m, n ) ( (starpu_data_handle_t)RUNTIME_desc_getaddr( desc, m, n ) )

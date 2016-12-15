@@ -129,7 +129,7 @@ void MORSE_TASK_ztsqrt(const MORSE_option_t *options,
             STARPU_VALUE,    &h_work,            sizeof(MORSE_starpu_ws_t *),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
-#if (STARPU_MAJOR_VERSION > 1) || ((STARPU_MAJOR_VERSION == 1) && (STARPU_MINOR_VERSION > 1))
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
             STARPU_NAME, "ztsqrt",
 #endif
             STARPU_EXECUTE_ON_NODE, A2->get_rankof(A2, A2m, A2n),

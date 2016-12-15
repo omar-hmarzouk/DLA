@@ -150,7 +150,7 @@ void MORSE_TASK_zunmlq(const MORSE_option_t *options,
             STARPU_VALUE,    &nb,                sizeof(int),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
-#if (STARPU_MAJOR_VERSION > 1) || ((STARPU_MAJOR_VERSION == 1) && (STARPU_MINOR_VERSION > 1))
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
             STARPU_NAME, "zunmlq",
 #endif
             0);
