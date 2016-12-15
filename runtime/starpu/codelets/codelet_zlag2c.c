@@ -57,6 +57,9 @@ void MORSE_TASK_zlag2c(const MORSE_option_t *options,
             STARPU_VALUE,    &ldb,               sizeof(int),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+            STARPU_NAME, "zlag2c",
+#endif
             0);
     }
 }
@@ -100,6 +103,9 @@ void MORSE_TASK_clag2z(const MORSE_option_t *options,
             STARPU_VALUE,    &ldb,               sizeof(int),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+            STARPU_NAME, "clag2z",
+#endif
             0);
     }
 }

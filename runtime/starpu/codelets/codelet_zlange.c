@@ -50,6 +50,9 @@ void MORSE_TASK_zlange(const MORSE_option_t *options,
                            STARPU_W,        RTBLKADDR(B, double, Bm, Bn),
                            STARPU_PRIORITY, options->priority,
                            STARPU_CALLBACK, callback,
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+                           STARPU_NAME, "zlange",
+#endif
                            0);
     }
 }
@@ -91,6 +94,9 @@ void MORSE_TASK_zlange_max(const MORSE_option_t *options,
                            STARPU_RW,       RTBLKADDR(B, double, Bm, Bn),
                            STARPU_PRIORITY, options->priority,
                            STARPU_CALLBACK, callback,
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+                           STARPU_NAME, "zlange_max",
+#endif
                            0);
     }
 }

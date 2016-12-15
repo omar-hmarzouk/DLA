@@ -109,6 +109,9 @@ void MORSE_TASK_zgessm(const MORSE_option_t *options,
             STARPU_VALUE,   &lda,                        sizeof(int),
             STARPU_PRIORITY,    options->priority,
             STARPU_CALLBACK,    callback,
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+            STARPU_NAME, "zgessm",
+#endif
             0);
     }
 }

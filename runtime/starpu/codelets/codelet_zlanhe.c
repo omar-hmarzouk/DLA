@@ -48,6 +48,9 @@ void MORSE_TASK_zlanhe(const MORSE_option_t *options,
             STARPU_W,        RTBLKADDR(B, double, Bm, Bn),
             STARPU_PRIORITY, options->priority,
             STARPU_CALLBACK, callback,
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+            STARPU_NAME, "zlanhe",
+#endif
             0);
     }
 }

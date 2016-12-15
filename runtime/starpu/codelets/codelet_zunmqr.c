@@ -172,11 +172,11 @@ void MORSE_TASK_zunmqr(const MORSE_option_t *options,
             STARPU_VALUE,    &nb,                sizeof(int),
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
-#ifdef STARPU_12
-            STARPU_NAME, "zunmqr",
-#endif
 #if defined(CHAMELEON_USE_MPI)
             STARPU_EXECUTE_ON_NODE, execution_rank,
+#endif
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+            STARPU_NAME, "zunmqr",
 #endif
             0);
     }

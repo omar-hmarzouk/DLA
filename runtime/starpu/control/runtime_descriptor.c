@@ -268,6 +268,13 @@ int RUNTIME_desc_release( MORSE_desc_t *desc )
     return MORSE_SUCCESS;
 }
 
+/**
+ * For older revision of StarPU, STARPU_MAIN_RAM is not defined
+ */
+#ifndef STARPU_MAIN_RAM
+#define STARPU_MAIN_RAM 0
+#endif
+
 int RUNTIME_desc_getoncpu( MORSE_desc_t *desc )
 {
     starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);
@@ -315,15 +322,9 @@ void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
                                             BLKLDD(desc, im), tempmm, tempnn, eltsze);
             }
             else {
-#ifdef STARPU_12
                 starpu_matrix_data_register(ptrtile, STARPU_MAIN_RAM,
                                             (uintptr_t)desc->get_blkaddr(desc, m, n),
                                             BLKLDD(desc, im), tempmm, tempnn, eltsze);
-#else
-                starpu_matrix_data_register(ptrtile, 0,
-                                            (uintptr_t)desc->get_blkaddr(desc, m, n),
-                                            BLKLDD(desc, im), tempmm, tempnn, eltsze);
-#endif
             }
         }
         else {

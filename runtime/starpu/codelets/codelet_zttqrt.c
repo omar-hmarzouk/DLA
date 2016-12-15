@@ -136,6 +136,9 @@ void MORSE_TASK_zttqrt(const MORSE_option_t *options,
             STARPU_SCRATCH,   options->ws_worker,
             STARPU_PRIORITY,  options->priority,
             STARPU_CALLBACK,  callback,
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+            STARPU_NAME, "zttqrt",
+#endif
             0);
     }
 }
