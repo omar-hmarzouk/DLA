@@ -127,7 +127,7 @@ void MORSE_TASK_ztradd(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(
+    dague_insert_task(
         DAGUE_dtd_handle, CORE_ztradd_parsec, "tradd",
         sizeof(MORSE_enum),        &uplo,  VALUE,
         sizeof(MORSE_enum),        &trans, VALUE,

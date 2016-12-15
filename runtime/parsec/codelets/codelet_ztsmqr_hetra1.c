@@ -25,9 +25,9 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_parsec.h"
+#include "runtime/parsec/include/morse_parsec.h"
 
-static int
+static inline int
 CORE_ztsmqr_hetra1_parsec(dague_execution_unit_t    *context,
                           dague_execution_context_t *this_task)
 {
@@ -70,10 +70,10 @@ CORE_ztsmqr_hetra1_parsec(dague_execution_unit_t    *context,
                           UNPACK_SCRATCH, &WORK,
                           UNPACK_VALUE,   &ldwork);
 
-    CORE_ztsmqr_hetra1(side, trans, m1, n1, m2, n2, k, ib,
-                       A1, lda1, A2, lda2,
-                       V, ldv, T, ldt,
-                       WORK, ldwork);
+    CORE_ztsmqr_hetra1(*side, *trans, *m1, *n1, *m2, *n2, *k, *ib,
+                       A1, *lda1, A2, *lda2,
+                       V, *ldv, T, *ldt,
+                       WORK, *ldwork);
 }
 
 void MORSE_TASK_ztsmqr_hetra1(const MORSE_option_t *options,
@@ -85,8 +85,9 @@ void MORSE_TASK_ztsmqr_hetra1(const MORSE_option_t *options,
                               const MORSE_desc_t *T, int Tm, int Tn, int ldt)
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    int ldwork = side == MorseLeft ? ib : nb;
 
-    insert_task_generic_fptr(
+    dague_insert_task(
         DAGUE_dtd_handle, CORE_ztsmqr_hetra1_parsec, "tsmqr_hetra1",
         sizeof(MORSE_enum),              &side,   VALUE,
         sizeof(MORSE_enum),              &trans,  VALUE,

@@ -55,7 +55,7 @@ void MORSE_TASK_ztile_zero(const const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,  CORE_ztile_zero_parsec,   "tile zero",
+    dague_insert_task(DAGUE_dtd_handle,  CORE_ztile_zero_parsec,   "tile zero",
                              sizeof(int),       &X1,                       VALUE,
                              sizeof(int),       &X2,                       VALUE,
                              sizeof(int),       &Y1,                       VALUE,

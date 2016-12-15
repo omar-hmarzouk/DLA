@@ -29,7 +29,7 @@
  *
  **/
 
-#include "runtime/quark/include/morse_parsec.h"
+#include "runtime/parsec/include/morse_parsec.h"
 
 /***************************************************************************//**
  *
@@ -55,7 +55,7 @@ CORE_zlascal_parsec(dague_execution_unit_t    *context,
                           UNPACK_DATA,  &A,
                           UNPACK_VALUE, &LDA);
 
-    CORE_zlascal(uplo, M, N, alpha, A, LDA);
+    CORE_zlascal(*uplo, *M, *N, *alpha, A, *LDA);
 }
 
 void MORSE_TASK_zlascal(const MORSE_option_t *options,
@@ -66,7 +66,7 @@ void MORSE_TASK_zlascal(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(
+    dague_insert_task(
         DAGUE_dtd_handle, CORE_zlascal_parsec, "lascal",
         sizeof(MORSE_enum),              &uplo,  VALUE,
         sizeof(int),                     &m,     VALUE,

@@ -219,7 +219,7 @@ MORSE_TASK_zpamm(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zpamm_parsec, "pamm",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_zpamm_parsec, "pamm",
                 sizeof(int),                        &op,                VALUE,
                 sizeof(MORSE_enum),                 &side,              VALUE,
                 sizeof(MORSE_enum),                 &storev,            VALUE,

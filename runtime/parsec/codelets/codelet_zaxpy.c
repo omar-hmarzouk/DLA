@@ -54,7 +54,7 @@ void MORSE_TASK_zaxpy(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zaxpy_parsec,      "axpy",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_zaxpy_parsec,      "axpy",
                              sizeof(int),                        &M,         VALUE,
                              sizeof(MORSE_Complex64_t),          alpha,      VALUE,
                              PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,

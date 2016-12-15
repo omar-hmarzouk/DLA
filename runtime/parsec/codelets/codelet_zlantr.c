@@ -60,7 +60,7 @@ void MORSE_TASK_zlantr(const MORSE_option_t *options,
 
     int szeW = max( 1, N );
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zlantr_parsec,    "lantr",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_zlantr_parsec,    "lantr",
                              sizeof(MORSE_enum),            &norm,          VALUE,
                              sizeof(MORSE_enum),            &uplo,          VALUE,
                              sizeof(MORSE_enum),            &diag,          VALUE,

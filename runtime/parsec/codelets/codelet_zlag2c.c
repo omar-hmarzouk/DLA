@@ -59,7 +59,7 @@ void MORSE_TASK_zlag2c(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zlag2c_parsec,               "lag2c",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_zlag2c_parsec,               "lag2c",
         sizeof(int),                        &m,         VALUE,
         sizeof(int),                        &n,         VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
@@ -106,7 +106,7 @@ void MORSE_TASK_clag2z(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_clag2z_parsec,               "lag2z",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_clag2z_parsec,               "lag2z",
         sizeof(int),                        &m,         VALUE,
         sizeof(int),                        &n,         VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex32_t, Am, An ),     INPUT | REGION_FULL,

@@ -69,7 +69,7 @@ void MORSE_TASK_ztrmm(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_ztrmm_parsec,     "trmm",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_ztrmm_parsec,     "trmm",
                             sizeof(MORSE_enum),     &side,                  VALUE,
                             sizeof(MORSE_enum),     &uplo,                  VALUE,
                             sizeof(MORSE_enum),     &transA,                VALUE,

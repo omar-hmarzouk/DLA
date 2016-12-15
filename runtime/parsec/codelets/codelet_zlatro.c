@@ -23,8 +23,7 @@
  **/
 #include "runtime/parsec/include/morse_parsec.h"
 
-
-static int
+static inline int
 CORE_zlatro_parsec(dague_execution_unit_t    *context,
                    dague_execution_context_t *this_task)
 {
@@ -47,8 +46,8 @@ CORE_zlatro_parsec(dague_execution_unit_t    *context,
                           UNPACK_DATA,  &B,
                           UNPACK_VALUE, &LDB);
 
-    CORE_zlatro(uplo, trans, M, N,
-                A, LDA, B, LDB);
+    CORE_zlatro(*uplo, *trans, *M, *N,
+                A, *LDA, B, *LDB);
 }
 
 /***************************************************************************//**
@@ -62,7 +61,7 @@ void MORSE_TASK_zlatro(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(
+    dague_insert_task(
         DAGUE_dtd_handle, CORE_zlatro_parsec, "latro",
         sizeof(MORSE_enum),              &uplo,  VALUE,
         sizeof(MORSE_enum),              &trans, VALUE,

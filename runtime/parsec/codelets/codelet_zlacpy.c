@@ -62,7 +62,7 @@ void MORSE_TASK_zlacpy(const MORSE_option_t *options,
 
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zlacpy_parsec,        "lacpy",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_zlacpy_parsec,        "lacpy",
                              sizeof(MORSE_enum),    &uplo,                      VALUE,
                              sizeof(int),           &m,                         VALUE,
                              sizeof(int),           &n,                         VALUE,

@@ -53,7 +53,7 @@ void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zsytrf_nopiv_parsec,               "sytrf_nopiv",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_zsytrf_nopiv_parsec,               "sytrf_nopiv",
         sizeof(MORSE_enum),              &uplo,                VALUE,
         sizeof(int),                     &n,                   VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,

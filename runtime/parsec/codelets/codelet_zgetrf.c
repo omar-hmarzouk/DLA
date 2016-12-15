@@ -58,7 +58,7 @@ void MORSE_TASK_zgetrf(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zgetrf_parsec,         "getrf",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_zgetrf_parsec,         "getrf",
                              sizeof(int),           &m,                          VALUE,
                              sizeof(int),           &n,                          VALUE,
                              PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,

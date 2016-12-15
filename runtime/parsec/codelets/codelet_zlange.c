@@ -58,7 +58,7 @@ void MORSE_TASK_zlange(const MORSE_option_t *options,
 
     int szeW = max( M, N );
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zlange_parsec,    "lange",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_zlange_parsec,    "lange",
                              sizeof(MORSE_enum),            &norm,          VALUE,
                              sizeof(int),                   &M,             VALUE,
                              sizeof(int),                   &N,             VALUE,
@@ -94,7 +94,7 @@ void MORSE_TASK_zlange_max(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zlange_max_parsec,               "lange_max",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_zlange_max_parsec,               "lange_max",
                              PASSED_BY_REF,         RTBLKADDR( A, double, Am, An ), INPUT | REGION_FULL,
                              PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ), OUTPUT | REGION_FULL,
                              0);

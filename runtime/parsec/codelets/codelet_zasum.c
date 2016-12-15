@@ -56,7 +56,7 @@ void MORSE_TASK_dzasum(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_dzasum_parsec,               "zasum",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_dzasum_parsec,               "zasum",
                              sizeof(MORSE_enum),    &storev,                           VALUE,
                              sizeof(MORSE_enum),    &uplo,                             VALUE,
                              sizeof(int),           &M,                                VALUE,

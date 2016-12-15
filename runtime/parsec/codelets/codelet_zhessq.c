@@ -51,7 +51,7 @@ void MORSE_TASK_zhessq( const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zhessq_parsec, "hessq",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_zhessq_parsec, "hessq",
                              sizeof(int),           &uplo,               VALUE,
                              sizeof(int),           &n,                  VALUE,
                              PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),                    INPUT | REGION_FULL,

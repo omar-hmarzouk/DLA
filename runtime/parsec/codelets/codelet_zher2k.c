@@ -76,7 +76,7 @@ void MORSE_TASK_zher2k(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,      CORE_zher2k_parsec,    "her2k",
+    dague_insert_task(DAGUE_dtd_handle,      CORE_zher2k_parsec,    "her2k",
                              sizeof(MORSE_enum),                 &uplo,     VALUE,
                              sizeof(MORSE_enum),                 &trans,    VALUE,
                              sizeof(int),                        &n,        VALUE,

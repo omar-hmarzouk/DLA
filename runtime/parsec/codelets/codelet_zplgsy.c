@@ -58,7 +58,7 @@ void MORSE_TASK_zplgsy( const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    insert_task_generic_fptr(DAGUE_dtd_handle,          CORE_zplgsy_parsec,            "zplgsy",
+    dague_insert_task(DAGUE_dtd_handle,          CORE_zplgsy_parsec,            "zplgsy",
                              sizeof(MORSE_Complex64_t), &bump,                          VALUE,
                              sizeof(int),               &m,                             VALUE,
                              sizeof(int),               &n,                             VALUE,
