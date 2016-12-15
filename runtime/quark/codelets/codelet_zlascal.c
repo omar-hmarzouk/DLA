@@ -58,12 +58,12 @@ void MORSE_TASK_zlascal(const MORSE_option_t *options,
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LASCAL;
     QUARK_Insert_Task(opt->quark, CORE_zlascal_quark, (Quark_Task_Flags*)opt,
-        sizeof(MORSE_enum),                 &uplo,  VALUE,
-        sizeof(int),                        &m,     VALUE,
-        sizeof(int),                        &n,     VALUE,
-        sizeof(MORSE_Complex64_t),          alpha,      VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),             INOUT,
-        sizeof(int),                        &lda,   VALUE,
+        sizeof(MORSE_enum),              &uplo,  VALUE,
+        sizeof(int),                     &m,     VALUE,
+        sizeof(int),                     &n,     VALUE,
+        sizeof(MORSE_Complex64_t),       &alpha, VALUE,
+        sizeof(MORSE_Complex64_t)*nb*nb,  RTBLKADDR(A, MORSE_Complex64_t, Am, An), INOUT,
+        sizeof(int),                     &lda,   VALUE,
         0);
 }
 
