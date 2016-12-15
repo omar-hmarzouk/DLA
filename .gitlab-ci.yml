@@ -1,3 +1,7 @@
+variables:
+  SSH_AUTH_SOCK: "/tmp/ssh-jCGBqSUZJU8o/agent.25566"
+  SSH_AUTH_PID: "25567"
+
 stages:
   - build
   - test
@@ -5,6 +9,7 @@ stages:
 build:
   stage: build
   script:
+    - ssh-add
     - ssh -vvv git@gitlab.inria.fr
     - git submodule init
     - git submodule update
