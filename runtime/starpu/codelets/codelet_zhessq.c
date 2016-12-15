@@ -44,6 +44,9 @@ void MORSE_TASK_zhessq( const MORSE_option_t *options,
             STARPU_RW,       RTBLKADDR(SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn),
             STARPU_PRIORITY, options->priority,
             STARPU_CALLBACK, callback,
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+            STARPU_NAME, "zhessq",
+#endif
             0);
     }
 }

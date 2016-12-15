@@ -55,6 +55,9 @@ void MORSE_TASK_zplrnt( const MORSE_option_t *options,
             STARPU_VALUE, &seed,   sizeof(unsigned long long int),
             STARPU_PRIORITY,    options->priority,
             STARPU_CALLBACK,    callback,
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+            STARPU_NAME, "zplrnt",
+#endif
             0);
     }
 }

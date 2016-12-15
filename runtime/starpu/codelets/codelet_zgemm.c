@@ -96,6 +96,9 @@ void MORSE_TASK_zgemm(const MORSE_option_t *options,
 #if defined(CHAMELEON_USE_MPI)
             STARPU_EXECUTE_ON_NODE, execution_rank,
 #endif
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+            STARPU_NAME, "zgemm",
+#endif
             0);
     }
 }

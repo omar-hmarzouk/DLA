@@ -72,6 +72,9 @@ void MORSE_TASK_zplssq( const MORSE_option_t *options,
             STARPU_RW, RTBLKADDR(SCLSSQ,     double, SCLSSQm,     SCLSSQn),
             STARPU_PRIORITY,    options->priority,
             STARPU_CALLBACK,    callback,
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+            STARPU_NAME, "zplssq",
+#endif
             0);
     }
 }
@@ -110,6 +113,9 @@ void MORSE_TASK_zplssq2( const MORSE_option_t *options,
             STARPU_RW, RTBLKADDR(RESULT, double, RESULTm, RESULTn),
             STARPU_PRIORITY,    options->priority,
             STARPU_CALLBACK,    callback,
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+            STARPU_NAME, "zplssq2",
+#endif
             0);
     }
 }
