@@ -130,6 +130,7 @@ set(ZSRC
     pzunmlqrh.c
     pzunmqr.c
     pzunmqrrh.c
+    pztpqrt.c
     ###
     zgels.c
     zgelqf.c
@@ -167,6 +168,7 @@ set(ZSRC
     zungqr.c
     zunmlq.c
     zunmqr.c
+    ztpqrt.c
     ##################
     # MIXED PRECISION
     ##################
