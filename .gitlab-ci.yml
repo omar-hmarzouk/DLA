@@ -5,7 +5,6 @@ stages:
 build:
   stage: build
   script:
-    - ssh -vvv git@gitlab.inria.fr
     - git submodule init
     - git submodule update
     - mkdir build
