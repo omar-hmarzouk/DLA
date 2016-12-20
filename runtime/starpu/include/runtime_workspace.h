@@ -26,10 +26,10 @@
 #ifndef _MORSE_STARPU_WORKSPACE_H_
 #define _MORSE_STARPU_WORKSPACE_H_
 
-/* 
- * Allocate workspace in host memory: CPU for any worker 
+/*
+ * Allocate workspace in host memory: CPU for any worker
  * or allocate workspace in worker's memory: main memory for cpu workers,
- * and embedded memory for CUDA devices. 
+ * and embedded memory for CUDA devices.
  */
 #define MORSE_HOST_MEM    0
 #define MORSE_WORKER_MEM  1
@@ -48,7 +48,7 @@ typedef struct morse_starpu_ws_s MORSE_starpu_ws_t;
  * (eg. MORSE_CUDA|MORSE_CPU for all CPU and GPU workers).  The
  * memory_location argument indicates whether this should be a buffer in host
  * memory or in worker's memory (MORSE_HOST_MEM or MORSE_WORKER_MEM). This function
- * returns 0 upon successful completion. 
+ * returns 0 upon successful completion.
  */
 int   RUNTIME_starpu_ws_alloc   ( MORSE_starpu_ws_t **workspace, size_t size, int which_workers, int memory_location);
 int   RUNTIME_starpu_ws_free    ( MORSE_starpu_ws_t  *workspace);

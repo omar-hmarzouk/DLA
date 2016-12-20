@@ -119,6 +119,6 @@
     extern struct starpu_perfmodel cl_##name##_fake;    \
     void cl_##name##_callback();                        \
     void profiling_display_##name##_info(void);         \
-    void estimate_##name##_sustained_peak(double *res);
+    void estimate_##name##_sustained_peak(double *res)
 
 #endif /* __CODELET_PROFILE_H__ */
