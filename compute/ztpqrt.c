@@ -215,7 +215,8 @@ int MORSE_ztpqrt( int M, int N, int L,
     return status;
 }
 
-/***************************************************************************//**
+/**
+ *******************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
@@ -268,6 +269,7 @@ int MORSE_ztpqrt_Tile( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T 
     morse_sequence_create(morse, &sequence);
     MORSE_ztpqrt_Tile_Async(L, A, B, T, sequence, &request);
     morse_sequence_wait(morse, sequence);
+    RUNTIME_desc_getoncpu(A);
     RUNTIME_desc_getoncpu(B);
 
     status = sequence->status;
@@ -275,7 +277,8 @@ int MORSE_ztpqrt_Tile( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T 
     return status;
 }
 
-/***************************************************************************//**
+/**
+ *******************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *

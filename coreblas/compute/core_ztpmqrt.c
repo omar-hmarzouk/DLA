@@ -46,7 +46,7 @@
  * @param[in] M
  *         The number of rows of the tile B. M >= 0.
  *
- * @param[in] N1
+ * @param[in] N
  *         The number of columns of the tile B. N >= 0.
  *
  * @param[in] K
@@ -63,7 +63,7 @@
  * @param[in] V
  *         The i-th row must contain the vector which defines the
  *         elementary reflector H(i), for i = 1,2,...,k, as returned by
- *         CORE_ZTTQRT in the first k rows of its array argument V.
+ *         CORE_ZTPQRT in the first k rows of its array argument V.
  *
  * @param[in] LDV
  *         The leading dimension of the array V. LDV >= max(1,K).
@@ -84,7 +84,7 @@
  *         Q*C or Q**H*C or C*Q or C*Q**H.  See Further Details.
  *
  * @param[in] LDA
- *         The leading dimension of the array A. LDA1 >= max(1,M1).
+ *         The leading dimension of the array A. LDA >= max(1,M).
  *         If side = MorseLeft,  LDA >= max(1,K);
  *         If side = Morseright, LDA >= max(1,M).
  *

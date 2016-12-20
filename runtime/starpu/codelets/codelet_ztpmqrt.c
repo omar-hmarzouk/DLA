@@ -69,6 +69,8 @@ void MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
 #endif
             0);
     }
+
+    (void)ib; (void)nb;
 }
 
 
