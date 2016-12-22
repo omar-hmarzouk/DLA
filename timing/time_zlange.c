@@ -45,7 +45,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     /* Check the solution */
     if ( check )
     {
-        double *work = (double*) malloc(max(M,N)*sizeof(double));
+        double *work = (double*) malloc(chameleon_max(M,N)*sizeof(double));
         normlapack = LAPACKE_zlange_work(LAPACK_COL_MAJOR, morse_lapack_const(norm), M, N, A, LDA, work);
         result = fabs(normmorse - normlapack);
         switch(norm) {

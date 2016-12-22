@@ -55,7 +55,7 @@ void MORSE_TASK_zlanhe(const MORSE_option_t *options,
 {
     dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
 
-    int szeW = max( 1, N );
+    int szeW = chameleon_max( 1, N );
 
     dague_insert_task(
         DAGUE_dtd_handle, CORE_zlanhe_parsec, "LANHE",

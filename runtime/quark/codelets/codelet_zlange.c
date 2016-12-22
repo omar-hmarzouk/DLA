@@ -36,16 +36,17 @@ void MORSE_TASK_zlange(const MORSE_option_t *options,
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LANGE;
-    int szeW = max( M, N );
-	QUARK_Insert_Task(opt->quark, CORE_zlange_quark, (Quark_Task_Flags*)opt,
-		sizeof(MORSE_enum),              &norm,  VALUE,
-		sizeof(int),                     &M,     VALUE,
-		sizeof(int),                     &N,     VALUE,
-		sizeof(MORSE_Complex64_t)*NB*NB, RTBLKADDR(A, MORSE_Complex64_t, Am, An), INPUT,
-		sizeof(int),                     &LDA,   VALUE,
-		sizeof(double)*szeW,             NULL,   SCRATCH,
-		sizeof(double),                  RTBLKADDR(B, double, Bm, Bn), OUTPUT,
-		0);
+    int szeW = chameleon_max( M, N );
+    QUARK_Insert_Task(
+        opt->quark, CORE_zlange_quark, (Quark_Task_Flags*)opt,
+        sizeof(MORSE_enum),              &norm,  VALUE,
+        sizeof(int),                     &M,     VALUE,
+        sizeof(int),                     &N,     VALUE,
+        sizeof(MORSE_Complex64_t)*NB*NB, RTBLKADDR(A, MORSE_Complex64_t, Am, An), INPUT,
+        sizeof(int),                     &LDA,   VALUE,
+        sizeof(double)*szeW,             NULL,   SCRATCH,
+        sizeof(double),                  RTBLKADDR(B, double, Bm, Bn), OUTPUT,
+        0);
 }
 
 void CORE_zlange_quark(Quark *quark)
@@ -69,10 +70,11 @@ void MORSE_TASK_zlange_max(const MORSE_option_t *options,
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LANGE_MAX;
-	QUARK_Insert_Task(opt->quark, CORE_zlange_max_quark, (Quark_Task_Flags*)opt,
-		sizeof(double), RTBLKADDR(A, double, Am, An), INPUT,
-		sizeof(double), RTBLKADDR(B, double, Bm, Bn), OUTPUT,
-		0);
+    QUARK_Insert_Task(
+        opt->quark, CORE_zlange_max_quark, (Quark_Task_Flags*)opt,
+        sizeof(double), RTBLKADDR(A, double, Am, An), INPUT,
+        sizeof(double), RTBLKADDR(B, double, Bm, Bn), OUTPUT,
+        0);
 }
 
 
@@ -82,7 +84,7 @@ void CORE_zlange_max_quark(Quark *quark)
     double *normA;
 
     quark_unpack_args_2(quark, A, normA);
-	if ( A[0] > *normA )
-		*normA = A[0];
+    if ( A[0] > *normA )
+        *normA = A[0];
 }
 
