@@ -100,7 +100,7 @@ int MORSE_zgetrf_nopiv(int M, int N,
         return -4;
     }
     /* Quick return */
-    if (min(M, N) == 0)
+    if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on M, N & NRHS; Set NBNBSIZE */

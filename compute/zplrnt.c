@@ -98,7 +98,7 @@ int MORSE_zplrnt( int M, int N,
         return -4;
     }
     /* Quick return */
-    if (min(M, N) == 0)
+    if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
@@ -248,7 +248,7 @@ int MORSE_zplrnt_Tile_Async( MORSE_desc_t     *A,
     }
 
     /* Quick return */
-    if (min( A->m, A->n ) == 0)
+    if (chameleon_min( A->m, A->n ) == 0)
         return MORSE_SUCCESS;
 
     morse_pzplrnt(A, seed, sequence, request);

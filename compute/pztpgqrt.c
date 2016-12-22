@@ -58,7 +58,7 @@ void morse_pztpgqrt( int L, MORSE_desc_t *V, MORSE_desc_t *T, MORSE_desc_t *A, M
     ib = MORSE_IB;
 
     /*
-     * ztsmqr = A->nb * ib
+     * ztpmqrt = A->nb * ib
      */
     ws_worker = A->nb * ib;
 
@@ -66,7 +66,7 @@ void morse_pztpgqrt( int L, MORSE_desc_t *V, MORSE_desc_t *T, MORSE_desc_t *A, M
 #if defined(CHAMELEON_USE_CUDA)
     /* Worker space
      *
-     * ztsmqr = 2 * A->nb * ib
+     * ztpmqrt = 2 * A->nb * ib
      */
     ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif

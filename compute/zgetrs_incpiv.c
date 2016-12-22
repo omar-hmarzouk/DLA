@@ -126,7 +126,7 @@ int MORSE_zgetrs_incpiv(MORSE_enum trans, int N, int NRHS,
         return -9;
     }
     /* Quick return */
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on N & NRHS; Set NBNBSIZE */
@@ -309,7 +309,7 @@ int MORSE_zgetrs_incpiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, 
     }
     /* Quick return */
 /*
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 */
     morse_pztrsmpl(A, B, L, IPIV, sequence, request);

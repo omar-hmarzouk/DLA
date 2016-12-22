@@ -130,7 +130,7 @@ int MORSE_zsysv(MORSE_enum uplo, int N, int NRHS,
     }
     /* Quick return - currently NOT equivalent to LAPACK's
      * LAPACK does not have such check for Dsysv */
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB depending on M, N & NRHS; Set NBNBSIZE */
@@ -315,7 +315,7 @@ int MORSE_zsysv_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
     /* Quick return - currently NOT equivalent to LAPACK's
      * LAPACK does not have such check for Dsysv */
 /*
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 */
     morse_pzsytrf(uplo, A, sequence, request);

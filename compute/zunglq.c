@@ -295,7 +295,7 @@ int MORSE_zunglq_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q,
     /* Quick return - currently NOT equivalent to LAPACK's:
      * CALL DLASET( 'Full', MAX( M, N ), NRHS, ZERO, ZERO, Q, LDQ ) */
 /*
-    if (min(M, N) == 0)
+    if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 */
     morse_pzlaset(MorseUpperLower, 0., 1., Q, sequence, request);

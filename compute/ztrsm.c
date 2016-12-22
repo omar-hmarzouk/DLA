@@ -159,7 +159,7 @@ int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
         return -10;
     }
     /* Quick return */
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */

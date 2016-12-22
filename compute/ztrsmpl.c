@@ -114,7 +114,7 @@ int MORSE_ztrsmpl(int N, int NRHS,
         return -8;
     }
     /* Quick return */
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on N & NRHS; Set NBNB */
@@ -294,7 +294,7 @@ int MORSE_ztrsmpl_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_
     }
     /* Quick return */
 /*
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 */
     morse_pztrsmpl(A, B, L, IPIV, sequence, request);

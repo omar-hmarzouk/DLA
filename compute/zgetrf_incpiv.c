@@ -107,7 +107,7 @@ int MORSE_zgetrf_incpiv(int M, int N,
         return -4;
     }
     /* Quick return */
-    if (min(M, N) == 0)
+    if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on M, N & NRHS; Set NBNBSIZE */
@@ -278,7 +278,7 @@ int MORSE_zgetrf_incpiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
     }
     /* Quick return */
 /*
-    if (min(M, N) == 0)
+    if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 */
 

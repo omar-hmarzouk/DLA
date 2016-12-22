@@ -44,7 +44,7 @@
  *            = MorseLower: Lower triangular part
  *
  * @param[in] M
- *          The number of rows of the matrix A. M >= 0. 
+ *          The number of rows of the matrix A. M >= 0.
  *
  * @param[in] N
  *          The number of columns of the matrix A. N >= 0.
@@ -90,7 +90,7 @@ int MORSE_zlacpy(MORSE_enum uplo, int M, int N,
         return MORSE_ERR_NOT_INITIALIZED;
     }
     /* Check input arguments */
-    if ( (uplo != MorseUpperLower) && 
+    if ( (uplo != MorseUpperLower) &&
          (uplo != MorseUpper) &&
          (uplo != MorseLower) ) {
         morse_error("MORSE_zlacpy", "illegal value of uplo");
@@ -114,7 +114,7 @@ int MORSE_zlacpy(MORSE_enum uplo, int M, int N,
     }
 
     /* Quick return */
-    if (min(N, M) == 0)
+    if (chameleon_min(N, M) == 0)
       return (double)0.0;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
@@ -281,14 +281,14 @@ int MORSE_zlacpy_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Check input arguments */
-    if ( (uplo != MorseUpperLower) && 
+    if ( (uplo != MorseUpperLower) &&
          (uplo != MorseUpper) &&
          (uplo != MorseLower) ) {
         morse_error("MORSE_zlacpy_Tile_Async", "illegal value of uplo");
         return -1;
     }
     /* Quick return */
-    if (min(A->m, A->n) == 0) {
+    if (chameleon_min(A->m, A->n) == 0) {
         return MORSE_SUCCESS;
     }
 

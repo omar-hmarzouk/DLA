@@ -105,7 +105,7 @@ int MORSE_zgeqrf(int M, int N,
     }
 
     /* Quick return */
-    if (min(M, N) == 0)
+    if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on M, N & NRHS; Set NBNBSIZE */
@@ -273,7 +273,7 @@ int MORSE_zgeqrf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
     }
     /* Quick return */
 /*
-    if (min(M, N) == 0)
+    if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 */
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {

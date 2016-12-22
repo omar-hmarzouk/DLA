@@ -106,7 +106,7 @@ int MORSE_zgelqf(int M, int N,
     }
 
     /* Quick return */
-    if (min(M, N) == 0)
+    if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on M, N & NRHS; Set NBNBSIZE */
@@ -120,7 +120,7 @@ int MORSE_zgelqf(int M, int N,
     NB = MORSE_NB;
 
     morse_sequence_create(morse, &sequence);
- 
+
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
         morse_zooplap2tile( descA, A, NB, NB, LDA, N, 0, 0, M, N, sequence, &request,
                              morse_desc_mat_free(&(descA)) );
@@ -200,7 +200,7 @@ int MORSE_zgelqf_Tile(MORSE_desc_t *A, MORSE_desc_t *T)
     MORSE_zgelqf_Tile_Async(A, T, sequence, &request);
     morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu(A);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -274,7 +274,7 @@ int MORSE_zgelqf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
     }
     /* Quick return */
 /*
-    if (min(M, N) == 0)
+    if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 */
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
