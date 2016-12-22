@@ -150,13 +150,13 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
 
         /* Check that we won't create overflow in tags used */
         if ( (lnt*lmt) > ((uintptr_t)(1UL<<tag_sep)) ) {
-            morse_error("RUNTIME_desc_create", "Too many tiles in the descriptor for MPI tags");
+            morse_fatal_error("RUNTIME_desc_create", "Too many tiles in the descriptor for MPI tags");
             return;
         }
         assert(lmt*lmt<=(1<<tag_sep));
 
         if (desc->id >= 1UL<<(tag_width-tag_sep)) {
-            morse_error("RUNTIME_desc_create", "Number of descriptor available in MPI mode out of stock");
+            morse_fatal_error("RUNTIME_desc_create", "Number of descriptor available in MPI mode out of stock");
             return;
         }
         assert( desc->id < (1UL<<(tag_width-tag_sep)) );
