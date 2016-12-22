@@ -88,19 +88,6 @@
  **/
 #define cudablas_error(k, str) fprintf(stderr, "%s: Parameter %d / %s\n", __func__, k, str)
 
-/*******************************************************************************
- *  Global utilities
- **/
-#ifndef max
-#define max(a, b) ((a) > (b) ? (a) : (b))
-#endif
-#ifndef min
-#define min(a, b) ((a) < (b) ? (a) : (b))
-#endif
-#ifndef roundup
-#define roundup(a, b) (b <= 0) ? (a) : (((a) + (b)-1) & ~((b)-1))
-#endif
-
 /** ****************************************************************************
  *  LAPACK Constants
  **/

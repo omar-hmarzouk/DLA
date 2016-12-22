@@ -301,7 +301,7 @@ int MORSE_Set(MORSE_enum param, int value)
                 morse_warning("MORSE_Set", "autotuning has been automatically disable\n");
             }
             /* Limit ib to nb */
-            morse->ib = min( morse->nb, morse->ib );
+            morse->ib = chameleon_min( morse->nb, morse->ib );
             break;
         case MORSE_INNER_BLOCK_SIZE:
             if (value <= 0) {

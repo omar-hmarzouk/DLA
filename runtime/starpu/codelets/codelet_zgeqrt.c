@@ -150,7 +150,7 @@ static void cl_zgeqrt_cpu_func(void *descr[], void *cl_arg)
 
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &ldt, &h_work);
 
-    WORK = TAU + max( m, n );
+    WORK = TAU + chameleon_max( m, n );
     CORE_zgeqrt(m, n, ib, A, lda, T, ldt, TAU, WORK);
 }
 
@@ -182,7 +182,7 @@ static void cl_zgeqrt_cuda_func(void *descr[], void *cl_arg)
     /* Gather pointer to scratch data on host */
     h_T   = h_A   + m*ib;
     h_TAU = h_T   + ib*ib;
-    h_W   = h_TAU + max(m,n);
+    h_W   = h_TAU + chameleon_max(m,n);
     h_D   = h_W   + ib*ib;
 
     stream = starpu_cuda_get_local_stream();

@@ -166,7 +166,7 @@ static void cl_zttqrt_cpu_func(void *descr[], void *cl_arg)
 
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda1, &lda2, &ldt);
 
-    WORK = TAU + max( m, n );
+    WORK = TAU + chameleon_max( m, n );
 
     CORE_zttqrt(m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK);
 }

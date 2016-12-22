@@ -160,7 +160,7 @@ static void cl_ztsqrt_cpu_func(void *descr[], void *cl_arg)
 
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda1, &lda2, &ldt, &h_work);
 
-    WORK = TAU + max( m, n );
+    WORK = TAU + chameleon_max( m, n );
     CORE_ztsqrt(m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK);
 }
 
@@ -190,7 +190,7 @@ static void cl_ztsqrt_cuda_func(void *descr[], void *cl_arg)
     h_A2  = (cuDoubleComplex*)RUNTIME_starpu_ws_getlocal(h_work);
     h_T   = h_A2  + m*ib;
     h_TAU = h_T   + ib*ib;
-    h_W   = h_TAU + max(m,n);
+    h_W   = h_TAU + chameleon_max(m,n);
     h_D   = h_W   + ib*n;
 
     stream = starpu_cuda_get_local_stream();

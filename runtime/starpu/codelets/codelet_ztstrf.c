@@ -187,7 +187,7 @@ static void cl_ztstrf_cpu_func(void *descr[], void *cl_arg)
     {
         int i, sb;
         for (i=0; i<n; i+=ib) {
-            sb = min( ib, n-i );
+            sb = chameleon_min( ib, n-i );
             CORE_zlacpy(MorseUpperLower, sb, sb, L+(i*ldl), ldl, L+(i*ldl)+ib, ldl );
 
             CORE_ztrtri( MorseLower, MorseUnit, sb, L+(i*ldl)+ib, ldl, &info );

@@ -162,7 +162,7 @@ static void cl_zgetrf_incpiv_cpu_func(void *descr[], void *cl_arg)
 
             L += ib;
             for (i=0; i<n; i+=ib) {
-                sb = min( ib, n-i );
+                sb = chameleon_min( ib, n-i );
                 CORE_zlacpy(MorseUpperLower, sb, sb, A+(i*lda+i), lda, L+(i*ldl), ldl );
 
                 CORE_ztrtri( MorseLower, MorseUnit, sb, L+(i*ldl), ldl, &info );
