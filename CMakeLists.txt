@@ -995,6 +995,21 @@ message("-- ${Blue}Add definition ADD_"
 add_definitions(-DADD_)
 
 #------------------------------------------------------------------------------
+    if(CHAMELEON_SCHED_STARPU)
+        link_directories(${STARPU_LIBRARY_DIRS_DEP})
+    elseif(CHAMELEON_SCHED_PARSEC)
+        link_directories(${PARSEC_LIBRARY_DIRS_DEP})
+    elseif(CHAMELEON_SCHED_QUARK)
+        link_directories(${QUARK_LIBRARY_DIRS})
+    endif()
+    if(NOT CHAMELEON_SIMULATION)
+        if(CHAMELEON_USE_CUDA)
+            link_directories(${CUDA_LIBRARY_DIRS})
+        endif()
+        if(CHAMELEON_USE_MAGMA)
+            link_directories(${MAGMA_LIBRARY_DIRS})
+        endif()
+    endif()
 # Save extra dependencies (all required links)
 list(APPEND CHAMELEON_DEP ${EXTRA_LIBRARIES})
 list(REMOVE_DUPLICATES CHAMELEON_DEP) # WARNING: is it safe, respect order?
