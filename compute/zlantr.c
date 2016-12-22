@@ -132,7 +132,7 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
         morse_error("MORSE_zlantr", "illegal value of N");
         return -5;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zlantr", "illegal value of LDA");
         return -7;
     }

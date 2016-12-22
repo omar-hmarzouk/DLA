@@ -72,7 +72,7 @@ CORE_zlascal( MORSE_enum uplo, int m, int n,
         coreblas_error(3, "Illegal value of n");
         return -3;
     }
-    if ( (lda < max(1,m)) && (m > 0) ) {
+    if ( (lda < chameleon_max(1,m)) && (m > 0) ) {
         coreblas_error(6, "Illegal value of lda");
         return -6;
     }
@@ -80,13 +80,13 @@ CORE_zlascal( MORSE_enum uplo, int m, int n,
     switch ( uplo ) {
     case MorseUpper:
         for(i=0; i<n; i++) {
-            cblas_zscal( min( i+1, m ), CBLAS_SADDR(alpha), A+i*lda, 1 );
+            cblas_zscal( chameleon_min( i+1, m ), CBLAS_SADDR(alpha), A+i*lda, 1 );
         }
         break;
 
     case MorseLower:
         for(i=0; i<n; i++) {
-            cblas_zscal( max( m, m-i ), CBLAS_SADDR(alpha), A+i*lda, 1 );
+            cblas_zscal( chameleon_max( m, m-i ), CBLAS_SADDR(alpha), A+i*lda, 1 );
         }
         break;
     default:

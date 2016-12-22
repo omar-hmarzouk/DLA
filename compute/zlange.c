@@ -112,7 +112,7 @@ double MORSE_zlange(MORSE_enum norm, int M, int N,
         morse_error("MORSE_zlange", "illegal value of N");
         return -3;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zlange", "illegal value of LDA");
         return -5;
     }

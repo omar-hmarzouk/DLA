@@ -81,7 +81,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
      * zunmlq = A->nb * ib
      * ztsmlq = 2 * A->nb * ib
      */
-    ws_worker = max( ws_worker, ib * A->nb * 2 );
+    ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif
 
     ws_worker *= sizeof(MORSE_Complex64_t);
@@ -98,7 +98,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
     }
 #endif
 
-    K = min(A->mt, A->nt);
+    K = chameleon_min(A->mt, A->nt);
     if (side == MorseLeft ) {
         if (trans == MorseNoTrans) {
             /*
@@ -109,7 +109,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                 ldak = BLKLDD(A, k);
                 for (N = k; N < A->nt; N += BS) {
                     tempNn   = N == A->nt-1 ? A->n-N*A->nb : A->nb;
-                    tempkmin = min(tempkm,tempNn);
+                    tempkmin = chameleon_min(tempkm,tempNn);
                     ldbN = BLKLDD(B, N);
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
@@ -136,7 +136,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                             T(k, N), T->mb,
                             B(N, n), ldbN);
                     }
-                    for (m = N+1; m < min(N+BS, A->nt); m++) {
+                    for (m = N+1; m < chameleon_min(N+BS, A->nt); m++) {
                         tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                         ldbm = BLKLDD(B, m);
                         for (n = 0; n < B->nt; n++) {
@@ -204,9 +204,9 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                 }
                 for (N = k; N < A->nt; N += BS) {
                     tempNn   = N == A->nt-1 ? A->n-N*A->nb : A->nb;
-                    tempkmin = min(tempkm,tempNn);
+                    tempkmin = chameleon_min(tempkm,tempNn);
                     ldbN = BLKLDD(B, N);
-                    for (m = min(N+BS, A->nt)-1; m > N; m--) {
+                    for (m = chameleon_min(N+BS, A->nt)-1; m > N; m--) {
                         tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                         ldbm = BLKLDD(B, m);
                         for (n = 0; n < B->nt; n++) {
@@ -282,8 +282,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                 }
                 for (N = k; N < A->nt; N += BS) {
                     tempNn   = N == A->nt-1 ? A->n-N*A->nb : A->nb;
-                    tempkmin = min(tempkm,tempNn);
-                    for (n = min(N+BS, A->nt)-1; n > N; n--) {
+                    tempkmin = chameleon_min(tempkm,tempNn);
+                    for (n = chameleon_min(N+BS, A->nt)-1; n > N; n--) {
                         tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                         for (m = 0; m < B->mt; m++) {
                             tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
@@ -336,7 +336,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                 ldak = BLKLDD(A, k);
                 for (N = k; N < A->nt; N += BS) {
                     tempNn = N == A->nt-1 ? A->n-N*A->nb : A->nb;
-                    tempkmin = min(tempkm,tempNn);
+                    tempkmin = chameleon_min(tempkm,tempNn);
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
@@ -363,7 +363,7 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                             T(k, N), T->mb,
                             B(m, N), ldbm);
                     }
-                    for (n = N+1; n < min(N+BS, A->nt); n++) {
+                    for (n = N+1; n < chameleon_min(N+BS, A->nt); n++) {
                         tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                         for (m = 0; m < B->mt; m++) {
                             tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;

@@ -76,7 +76,7 @@ void morse_pzlansy(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A, double *re
         RUNTIME_options_ws_alloc( &options, A->mb, 0 );
 
         workm = A->m;
-        workn = max( A->nt, A->q );
+        workn = chameleon_max( A->nt, A->q );
         MORSE_Desc_Create(&(VECNORMS_STEP1), NULL, MorseRealDouble, A->mb, 1, A->mb,
                           workm, workn, 0, 0, workm, workn, A->p, A->q);
 

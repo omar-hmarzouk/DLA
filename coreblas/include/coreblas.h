@@ -76,19 +76,6 @@ extern "C" {
 #define CBLAS_DIAG      enum CBLAS_DIAG
 #define CBLAS_SIDE      enum CBLAS_SIDE
 
-/*******************************************************************************
- *  Global utilities
- **/
-#ifndef max
-#define max(a, b) ((a) > (b) ? (a) : (b))
-#endif
-#ifndef min
-#define min(a, b) ((a) < (b) ? (a) : (b))
-#endif
-#ifndef roundup
-#define roundup(a, b) (b <= 0) ? (a) : (((a) + (b)-1) & ~((b)-1))
-#endif
-
 /** ****************************************************************************
  *  LAPACK Constants
  **/

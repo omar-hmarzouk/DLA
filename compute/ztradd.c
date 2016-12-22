@@ -136,11 +136,11 @@ int MORSE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
         morse_error("MORSE_ztradd", "illegal value of N");
         return -4;
     }
-    if (LDA < max(1, Am)) {
+    if (LDA < chameleon_max(1, Am)) {
         morse_error("MORSE_ztradd", "illegal value of LDA");
         return -7;
     }
-    if (LDB < max(1, M)) {
+    if (LDB < chameleon_max(1, M)) {
         morse_error("MORSE_ztradd", "illegal value of LDB");
         return -10;
     }

@@ -150,11 +150,11 @@ int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrsm", "illegal value of NRHS");
         return -6;
     }
-    if (LDA < max(1, NA)) {
+    if (LDA < chameleon_max(1, NA)) {
         morse_error("MORSE_ztrsm", "illegal value of LDA");
         return -8;
     }
-    if (LDB < max(1, N)) {
+    if (LDB < chameleon_max(1, N)) {
         morse_error("MORSE_ztrsm", "illegal value of LDB");
         return -10;
     }

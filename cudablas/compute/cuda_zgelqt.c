@@ -23,6 +23,7 @@
  *
  **/
 #include "cudablas/include/cudablas.h"
+#include "cudablas/include/cudablas_z.h"
 
 #if defined(CHAMELEON_USE_MAGMA)
 int CUDA_zgelqt(
@@ -50,11 +51,11 @@ int CUDA_zgelqt(
         return -1;
     } else if (n < 0) {
         return -2;
-    } else if (ldda < max(1,m)) {
+    } else if (ldda < chameleon_max(1,m)) {
         return -4;
     }
 
-    k = min(m,n);
+    k = chameleon_min(m,n);
     if (k == 0) {
         hwork[0] = *((magmaDoubleComplex*) &one);
         return MAGMA_SUCCESS;
@@ -69,7 +70,7 @@ int CUDA_zgelqt(
         old_i = 0; old_ib = nb;
         for (i = 0; i < k-nb; i += nb) {
 
-            ib = min(k-i, nb);
+            ib = chameleon_min(k-i, nb);
             cols = n-i;
             magma_zgetmatrix_async( ib, cols,
                                     da_ref(i,i), ldda,
@@ -101,7 +102,7 @@ int CUDA_zgelqt(
 
             /* put 0s in the lower triangular part of a panel (and 1s on the
              diagonal); copy the lower triangular in d */
-            CORE_zgesplit(MorseRight, MorseUnit, ib, min(ib,cols),
+            CORE_zgesplit(MorseRight, MorseUnit, ib, chameleon_min(ib,cols),
                           (double _Complex*) v_ref(0,i), ib,
                           (double _Complex*) d, ib);
 

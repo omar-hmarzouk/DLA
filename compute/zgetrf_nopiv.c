@@ -95,7 +95,7 @@ int MORSE_zgetrf_nopiv(int M, int N,
         morse_error("MORSE_zgetrf_nopiv", "illegal value of N");
         return -2;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zgetrf_nopiv", "illegal value of LDA");
         return -4;
     }

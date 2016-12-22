@@ -50,7 +50,7 @@ void MORSE_TASK_zpotrf(const MORSE_option_t *options,
     if ( morse_desc_islocal( A, Am, An ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &uplo,                      sizeof(MORSE_enum),
             STARPU_VALUE,    &n,                         sizeof(int),
             STARPU_RW,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),

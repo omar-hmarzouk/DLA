@@ -100,7 +100,7 @@ int MORSE_zgelqf(int M, int N,
         morse_error("MORSE_zgelqf", "illegal value of N");
         return -2;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zgelqf", "illegal value of LDA");
         return -4;
     }

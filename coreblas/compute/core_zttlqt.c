@@ -136,7 +136,7 @@ int CORE_zttlqt(int M, int N, int IB,
         coreblas_error(3, "Illegal value of IB");
         return -3;
     }
-    if ((LDA2 < max(1,M)) && (M > 0)) {
+    if ((LDA2 < chameleon_max(1,M)) && (M > 0)) {
         coreblas_error(7, "Illegal value of LDA2");
         return -7;
     }
@@ -151,11 +151,11 @@ int CORE_zttlqt(int M, int N, int IB,
                  0., 0., T, LDT);
 
     for(ii = 0; ii < M; ii += IB) {
-        sb = min(M-ii, IB);
+        sb = chameleon_min(M-ii, IB);
         for(i = 0; i < sb; i++) {
             j  = ii + i;
             mi = sb-i-1;
-            ni = min( j + 1, N);
+            ni = chameleon_min( j + 1, N);
             /*
              * Generate elementary reflector H( II*IB+I ) to annihilate A( II*IB+I, II*IB+I:M ).
              */
@@ -200,12 +200,12 @@ int CORE_zttlqt(int M, int N, int IB,
 
             if (i > 0 ) {
 
-                l = min(i, max(0, N-ii));
+                l = chameleon_min(i, chameleon_max(0, N-ii));
                 alpha = -(TAU[j]);
 
                 CORE_zpemv(
                         MorseNoTrans, MorseRowwise,
-                        i , min(j, N), l,
+                        i , chameleon_min(j, N), l,
                         alpha, &A2[ii], LDA2,
                         &A2[j], LDA2,
                         zzero, &T[LDT*j], 1,
@@ -232,8 +232,8 @@ int CORE_zttlqt(int M, int N, int IB,
         /* Apply Q to the rest of the matrix to the right */
         if (M > ii+sb) {
             mi = M-(ii+sb);
-            ni = min(ii+sb, N);
-            l  = min(sb, max(0, ni-ii));
+            ni = chameleon_min(ii+sb, N);
+            l  = chameleon_min(sb, chameleon_max(0, ni-ii));
             CORE_zparfb(
                 MorseRight, MorseNoTrans,
                 MorseForward, MorseRowwise,

@@ -134,13 +134,13 @@ int CORE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
         coreblas_error(4, "Illegal value of N");
         return -4;
     }
-    if ( ((trans == MorseNoTrans) && (LDA < max(1,M)) && (M > 0)) ||
-         ((trans != MorseNoTrans) && (LDA < max(1,N)) && (N > 0)) )
+    if ( ((trans == MorseNoTrans) && (LDA < chameleon_max(1,M)) && (M > 0)) ||
+         ((trans != MorseNoTrans) && (LDA < chameleon_max(1,N)) && (N > 0)) )
     {
         coreblas_error(7, "Illegal value of LDA");
         return -7;
     }
-    if ( (LDB < max(1,M)) && (M > 0) ) {
+    if ( (LDB < chameleon_max(1,M)) && (M > 0) ) {
         coreblas_error(9, "Illegal value of LDB");
         return -9;
     }
@@ -189,7 +189,7 @@ int CORE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
 #if defined(PRECISION_z) || defined(PRECISION_c)
         case MorseConjTrans:
             for (j=0; j<N; j++, A++) {
-                int mm = min( j+1, M );
+                int mm = chameleon_min( j+1, M );
                 for(i=0; i<mm; i++, B++) {
                     *B = beta * (*B) + alpha * conj(A[LDA*i]);
                 }
@@ -200,7 +200,7 @@ int CORE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
 
         case MorseTrans:
             for (j=0; j<N; j++, A++) {
-                int mm = min( j+1, M );
+                int mm = chameleon_min( j+1, M );
                 for(i=0; i<mm; i++, B++) {
                     *B = beta * (*B) + alpha * (A[LDA*i]);
                 }
@@ -211,7 +211,7 @@ int CORE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
         case MorseNoTrans:
         default:
             for (j=0; j<N; j++) {
-                int mm = min( j+1, M );
+                int mm = chameleon_min( j+1, M );
                 for(i=0; i<mm; i++, B++, A++) {
                     *B = beta * (*B) + alpha * (*A);
                 }

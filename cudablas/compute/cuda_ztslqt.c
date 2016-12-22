@@ -23,6 +23,7 @@
  *
  **/
 #include "cudablas/include/cudablas.h"
+#include "cudablas/include/cudablas_z.h"
 
 #if defined(CHAMELEON_USE_MAGMA) && 0
 int CUDA_ztslqt(
@@ -54,11 +55,11 @@ int CUDA_ztslqt(
         return -1;
     } else if (n < 0) {
         return -2;
-    } else if (ldda2 < max(1,m)) {
+    } else if (ldda2 < chameleon_max(1,m)) {
         return -4;
     }
 
-    k = min(m,n);
+    k = chameleon_min(m,n);
     if (k == 0) {
         hwork[0] = *((magmaDoubleComplex*) &one);
         return MAGMA_SUCCESS;
@@ -70,7 +71,7 @@ int CUDA_ztslqt(
     memset(t, 0, nb*n*sizeof(magmaDoubleComplex));
     cudaMemset(dt, 0, nb*n*sizeof(magmaDoubleComplex));
 
-    //k = min(m, nb); // m can be lower than IB
+    //k = chameleon_min(m, nb); // m can be lower than IB
     /* copy the first diag tile of A1 from device to host: da1 -> d */
     cublasGetMatrix(nb, nb, sizeof(magmaDoubleComplex),
                     da1_ref(0, 0), ldda1,
@@ -84,7 +85,7 @@ int CUDA_ztslqt(
     /* This is only blocked code for now */
     for (i = 0; i < m; i += nb) {
 
-        ib = min(m-i, nb);
+        ib = chameleon_min(m-i, nb);
         cols = n;
 
         /* Send the next panel (diagonal block of A1 & block column of A2)

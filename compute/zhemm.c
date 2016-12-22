@@ -142,15 +142,15 @@ int MORSE_zhemm(MORSE_enum side, MORSE_enum uplo, int M, int N,
         morse_error("MORSE_zhemm", "illegal value of N");
         return -4;
     }
-    if (LDA < max(1, Am)) {
+    if (LDA < chameleon_max(1, Am)) {
         morse_error("MORSE_zhemm", "illegal value of LDA");
         return -7;
     }
-    if (LDB < max(1, M)) {
+    if (LDB < chameleon_max(1, M)) {
         morse_error("MORSE_zhemm", "illegal value of LDB");
         return -9;
     }
-    if (LDC < max(1, M)) {
+    if (LDC < chameleon_max(1, M)) {
         morse_error("MORSE_zhemm", "illegal value of LDC");
         return -12;
     }

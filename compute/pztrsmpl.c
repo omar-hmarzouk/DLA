@@ -54,10 +54,10 @@ void morse_pztrsmpl(MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *L, int *IPIV
     RUNTIME_options_init(&options, morse, sequence, request);
 
     ib = MORSE_IB;
-    for (k = 0; k < min(A->mt, A->nt); k++) {
+    for (k = 0; k < chameleon_min(A->mt, A->nt); k++) {
         tempkm   = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         tempkn   = k == A->nt-1 ? A->n-k*A->nb : A->nb;
-        tempkmin = k == min(A->mt, A->nt)-1 ? min(A->m, A->n)-k*A->mb : A->mb;
+        tempkmin = k == chameleon_min(A->mt, A->nt)-1 ? chameleon_min(A->m, A->n)-k*A->mb : A->mb;
         ldak = BLKLDD(A, k);
         ldbk = BLKLDD(B, k);
         for (n = 0; n < B->nt; n++) {

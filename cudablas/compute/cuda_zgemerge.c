@@ -23,6 +23,7 @@
  *
  **/
 #include "cudablas/include/cudablas.h"
+#include "cudablas/include/cudablas_z.h"
 
 int
 CUDA_zgemerge( MORSE_enum side, MORSE_enum diag,
@@ -31,7 +32,7 @@ CUDA_zgemerge( MORSE_enum side, MORSE_enum diag,
                cuDoubleComplex *B, int LDB,
                CUBLAS_STREAM_PARAM)
 {
-    int i, j;
+    int i;
     cuDoubleComplex *cola, *colb;
 
     if (M < 0) {
@@ -40,10 +41,10 @@ CUDA_zgemerge( MORSE_enum side, MORSE_enum diag,
     if (N < 0) {
         return -2;
     }
-    if ( (LDA < max(1,M)) && (M > 0) ) {
+    if ( (LDA < chameleon_max(1,M)) && (M > 0) ) {
         return -5;
     }
-    if ( (LDB < max(1,M)) && (M > 0) ) {
+    if ( (LDB < chameleon_max(1,M)) && (M > 0) ) {
         return -7;
     }
 
@@ -67,5 +68,6 @@ CUDA_zgemerge( MORSE_enum side, MORSE_enum diag,
         }
     }
 
+    (void)diag;
     return MORSE_SUCCESS;
 }

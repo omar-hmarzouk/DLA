@@ -134,7 +134,7 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
                 morse_error("RUNTIME_desc_create", "MPI_TAG_UB not known by MPI");
             }
 
-            while ( ((uintptr_t)(1UL<<tag_width - 1) > (uint)(*tag_ub) )
+            while ( ((uintptr_t)((1UL<<tag_width) - 1) > (uintptr_t)(*tag_ub) )
                     && (tag_width >= TAG_WIDTH_MIN) ) {
                 tag_width--;
                 tag_sep--;
@@ -149,17 +149,17 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
         }
 
         /* Check that we won't create overflow in tags used */
-        if ( (lnt*lmt) > ((uintptr_t)(1UL<<tag_sep)) ) {
+        if ( ((uintptr_t)(lnt*lmt)) > ((uintptr_t)(1UL<<tag_sep)) ) {
             morse_fatal_error("RUNTIME_desc_create", "Too many tiles in the descriptor for MPI tags");
             return;
         }
         assert(lmt*lmt<=(1<<tag_sep));
 
-        if (desc->id >= 1UL<<(tag_width-tag_sep)) {
+        if ( ((uintptr_t)desc->id) >= (uintptr_t)(1UL<<(tag_width-tag_sep)) ) {
             morse_fatal_error("RUNTIME_desc_create", "Number of descriptor available in MPI mode out of stock");
             return;
         }
-        assert( desc->id < (1UL<<(tag_width-tag_sep)) );
+        assert( ((uintptr_t)desc->id) < (uintptr_t)(1UL<<(tag_width-tag_sep)) );
     }
 #endif
 }
@@ -193,9 +193,6 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
 
 #if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
         if (desc->use_mat == 1 && desc->register_mat == 1){
-            int64_t eltsze = MORSE_Element_Size(desc->dtyp);
-            size_t size = (size_t)(desc->llm) * (size_t)(desc->lln) * eltsze;
-
             /* Unmap the pinned memory associated to the matrix */
             if (cudaHostUnregister(desc->mat) != cudaSuccess)
             {

@@ -147,15 +147,15 @@ int MORSE_zsyr2k(MORSE_enum uplo, MORSE_enum trans, int N, int K,
         morse_error("MORSE_zsyr2k", "illegal value of K");
         return -4;
     }
-    if (LDA < max(1, Am)) {
+    if (LDA < chameleon_max(1, Am)) {
         morse_error("MORSE_zsyr2k", "illegal value of LDA");
         return -7;
     }
-    if (LDB < max(1, Am)) {
+    if (LDB < chameleon_max(1, Am)) {
         morse_error("MORSE_zsyr2k", "illegal value of LDB");
         return -9;
     }
-    if (LDC < max(1, N)) {
+    if (LDC < chameleon_max(1, N)) {
         morse_error("MORSE_zsyr2k", "illegal value of LDC");
         return -12;
     }

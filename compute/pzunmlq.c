@@ -85,7 +85,7 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
      * zunmlq = A->mb * ib
      * ztsmlq = 2 * A->mb * ib
      */
-    ws_worker = max( ws_worker, ib * A->mb * 2 );
+    ws_worker = chameleon_max( ws_worker, ib * A->mb * 2 );
 #endif
 
     ws_worker *= sizeof(MORSE_Complex64_t);

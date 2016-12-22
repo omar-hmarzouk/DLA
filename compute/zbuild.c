@@ -110,7 +110,7 @@ int MORSE_zbuild( MORSE_enum uplo, int M, int N,
     morse_error("MORSE_zbuild", "illegal value of N");
     return -2;
   }
-  if (LDA < max(1, M)) {
+  if (LDA < chameleon_max(1, M)) {
     morse_error("MORSE_zbuild", "illegal value of LDA");
     return -4;
   }

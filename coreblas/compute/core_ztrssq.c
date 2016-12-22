@@ -105,16 +105,16 @@ int CORE_ztrssq(MORSE_enum uplo, MORSE_enum diag, int M, int N,
     double *ptr;
 
     if ( diag == MorseUnit ){
-        tmp = sqrt( min(M, N) );
+        tmp = sqrt( chameleon_min(M, N) );
         UPDATE( 1., tmp );
     }
 
     if  (uplo == MorseUpper ) {
-        M = min(M, N);
+        M = chameleon_min(M, N);
 
         for(j=0; j<N; j++) {
             ptr = (double*) ( A + j * LDA );
-            imax = min(j+1-idiag, M);
+            imax = chameleon_min(j+1-idiag, M);
 
             for(i=0; i<imax; i++, ptr++) {
                 tmp = fabs(*ptr);
@@ -129,7 +129,7 @@ int CORE_ztrssq(MORSE_enum uplo, MORSE_enum diag, int M, int N,
         }
     }
     else {
-        N = min(M, N);
+        N = chameleon_min(M, N);
 
         for(j=0; j<N; j++) {
             ptr = (double*) ( A + j * (LDA+1) + idiag );

@@ -110,17 +110,17 @@ int MORSE_zunglq(int M, int N, int K,
         morse_error("MORSE_zunglq", "illegal value of K");
         return -3;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zunglq", "illegal value of LDA");
         return -5;
     }
-    if (LDQ < max(1, M)) {
+    if (LDQ < chameleon_max(1, M)) {
         morse_error("MORSE_zunglq", "illegal value of LDQ");
         return -8;
     }
     /* Quick return - currently NOT equivalent to LAPACK's:
      * CALL DLASET( 'Full', MAX( M, N ), NRHS, ZERO, ZERO, B, LDQ ) */
-    if (min(M, min(N, K)) == 0)
+    if (chameleon_min(M, chameleon_min(N, K)) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on M, N & NRHS; Set NBNB */

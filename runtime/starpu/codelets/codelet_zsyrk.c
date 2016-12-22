@@ -51,7 +51,7 @@ void MORSE_TASK_zsyrk(const MORSE_option_t *options,
          morse_desc_islocal( C, Cm, Cn ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,      &uplo,                sizeof(MORSE_enum),
             STARPU_VALUE,     &trans,                sizeof(MORSE_enum),
             STARPU_VALUE,         &n,                        sizeof(int),

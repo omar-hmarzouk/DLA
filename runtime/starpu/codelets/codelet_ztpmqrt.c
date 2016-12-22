@@ -42,7 +42,7 @@ void MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
          morse_desc_islocal( T, Tm, Tn ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE, &side,  sizeof(MORSE_enum),
             STARPU_VALUE, &trans, sizeof(MORSE_enum),
             STARPU_VALUE, &M,     sizeof(int),
@@ -114,7 +114,6 @@ static void cl_ztpmqrt_cuda_func(void *descr[], void *cl_arg)
     int N;
     int K;
     int L;
-    int k;
     int ib;
     const cuDoubleComplex *V;
     int ldv;
@@ -137,11 +136,10 @@ static void cl_ztpmqrt_cuda_func(void *descr[], void *cl_arg)
                                 &ldv, &ldt, &lda, &ldb );
 
     stream = starpu_cuda_get_local_stream();
-    cublasSetKernelStream( stream );
 
     CUDA_ztpmqrt(
             side, trans, M, N, K, L, ib,
-            A, lda, B, ldb, V, ldv, T, ldt,
+            V, ldv, T, ldt, A, lda, B, ldb,
             W, stream );
 
 #ifndef STARPU_CUDA_ASYNC

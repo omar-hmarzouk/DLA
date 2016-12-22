@@ -190,23 +190,23 @@ int CORE_zttmqr(MORSE_enum side, MORSE_enum trans,
         coreblas_error(8, "Illegal value of IB");
         return -8;
     }
-    if (LDA1 < max(1,M1)){
+    if (LDA1 < chameleon_max(1,M1)){
         coreblas_error(10, "Illegal value of LDA1");
         return -10;
     }
-    if (LDA2 < max(1,M2)){
+    if (LDA2 < chameleon_max(1,M2)){
         coreblas_error(12, "Illegal value of LDA2");
         return -12;
     }
-    if (LDV < max(1,NQ)){
+    if (LDV < chameleon_max(1,NQ)){
         coreblas_error(14, "Illegal value of LDV");
         return -14;
     }
-    if (LDT < max(1,IB)){
+    if (LDT < chameleon_max(1,IB)){
         coreblas_error(16, "Illegal value of LDT");
         return -16;
     }
-    if (LDWORK < max(1,NW)){
+    if (LDWORK < chameleon_max(1,NW)){
         coreblas_error(18, "Illegal value of LDWORK");
         return -18;
     }
@@ -226,18 +226,18 @@ int CORE_zttmqr(MORSE_enum side, MORSE_enum trans,
     }
 
     for (i = i1; (i > -1) && (i < K); i+=i3) {
-        kb = min(IB, K-i);
+        kb = chameleon_min(IB, K-i);
 
         if (side == MorseLeft) {
             mi1 = kb;
-            mi2 = min(i+kb, M2);
-            l   = min(kb, max(0, M2-i));
+            mi2 = chameleon_min(i+kb, M2);
+            l   = chameleon_min(kb, chameleon_max(0, M2-i));
             ic  = i;
         }
         else {
             ni1 = kb;
-            ni2 = min(i+kb, N2);
-            l   = min(kb, max(0, N2-i));
+            ni2 = chameleon_min(i+kb, N2);
+            l   = chameleon_min(kb, chameleon_max(0, N2-i));
             jc  = i;
         }
 

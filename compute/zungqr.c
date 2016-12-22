@@ -111,15 +111,15 @@ int MORSE_zungqr(int M, int N, int K,
         morse_error("MORSE_zungqr", "illegal value of K");
         return -3;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zungqr", "illegal value of LDA");
         return -5;
     }
-    if (LDQ < max(1, M)) {
+    if (LDQ < chameleon_max(1, M)) {
         morse_error("MORSE_zungqr", "illegal value of LDQ");
         return -8;
     }
-    if (min(M, min(N, K)) == 0)
+    if (chameleon_min(M, chameleon_min(N, K)) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on M & N; Set NBNB */

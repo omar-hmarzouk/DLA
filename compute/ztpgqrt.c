@@ -128,7 +128,7 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
     MORSE_desc_t descA, descB, descV;
-    int minMK = min( M, K );
+    int minMK = chameleon_min( M, K );
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -153,15 +153,15 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
         morse_error("MORSE_ztpgqrt", "illegal value of N");
         return -4;
     }
-    if (LDV < max(1, M)) {
+    if (LDV < chameleon_max(1, M)) {
         morse_error("MORSE_ztpgqrt", "illegal value of LDV");
         return -6;
     }
-    if (LDA < max(1, K)) {
+    if (LDA < chameleon_max(1, K)) {
         morse_error("MORSE_ztpgqrt", "illegal value of LDA");
         return -9;
     }
-    if (LDB < max(1, M)) {
+    if (LDB < chameleon_max(1, M)) {
         morse_error("MORSE_ztpgqrt", "illegal value of LDB");
         return -11;
     }

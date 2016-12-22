@@ -93,7 +93,7 @@ int MORSE_zplrnt( int M, int N,
         morse_error("MORSE_zplrnt", "illegal value of N");
         return -2;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zplrnt", "illegal value of LDA");
         return -4;
     }

@@ -99,20 +99,20 @@ int MORSE_zpotrimm(MORSE_enum uplo, int N,
         morse_error("MORSE_zpotrimm", "illegal value of N");
         return -2;
     }
-    if (LDA < max(1, N)) {
+    if (LDA < chameleon_max(1, N)) {
         morse_error("MORSE_zpotrimm", "illegal value of LDA");
         return -4;
     }
-    if (LDB < max(1, N)) {
+    if (LDB < chameleon_max(1, N)) {
         morse_error("MORSE_zpotrimm", "illegal value of LDB");
         return -6;
     }
-    if (LDC < max(1, N)) {
+    if (LDC < chameleon_max(1, N)) {
         morse_error("MORSE_zpotrimm", "illegal value of LDC");
         return -8;
     }
     /* Quick return */
-    if (max(N, 0) == 0)
+    if (chameleon_max(N, 0) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
@@ -311,7 +311,7 @@ int MORSE_zpotrimm_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
     }
     /* Quick return */
     /*
-     if (max(N, 0) == 0)
+     if (chameleon_max(N, 0) == 0)
      return MORSE_SUCCESS;
      */
     morse_pzpotrimm(uplo, A, B, C, sequence, request);

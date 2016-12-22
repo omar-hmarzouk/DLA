@@ -132,7 +132,7 @@ void MORSE_TASK_zunmlq(const MORSE_option_t *options,
          morse_desc_islocal( C, Cm, Cn ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &side,              sizeof(MORSE_enum),
             STARPU_VALUE,    &trans,             sizeof(MORSE_enum),
             STARPU_VALUE,    &m,                 sizeof(int),
@@ -191,7 +191,6 @@ static void cl_zunmlq_cpu_func(void *descr[], void *cl_arg)
 #if defined(CHAMELEON_USE_CUDA)
 static void cl_zunmlq_cuda_func(void *descr[], void *cl_arg)
 {
-    MORSE_starpu_ws_t *d_work;
     MORSE_enum side;
     MORSE_enum trans;
     int m;
@@ -201,7 +200,6 @@ static void cl_zunmlq_cuda_func(void *descr[], void *cl_arg)
     const cuDoubleComplex *A, *T;
     cuDoubleComplex *C, *WORK;
     int lda, ldt, ldc, ldwork;
-    int info = 0;
     CUstream stream;
 
     starpu_codelet_unpack_args(cl_arg, &side, &trans, &m, &n, &k, &ib,
@@ -229,4 +227,4 @@ static void cl_zunmlq_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-CODELETS(zunmlq, 4, cl_zunmlq_cpu_func, cl_zunmlq_cuda_func, STARPU_CUDA_ASYNC);
+CODELETS(zunmlq, 4, cl_zunmlq_cpu_func, cl_zunmlq_cuda_func, STARPU_CUDA_ASYNC)

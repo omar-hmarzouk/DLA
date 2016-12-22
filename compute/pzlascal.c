@@ -27,7 +27,7 @@ void morse_pzlascal(MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_desc_t *A,
     int tempmm, tempnn, tempmn, tempnm;
     int m, n;
     int ldam, ldan;
-    int minmnt = min(A->mt, A->nt);
+    int minmnt = chameleon_min(A->mt, A->nt);
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)

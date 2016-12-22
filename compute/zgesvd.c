@@ -179,7 +179,7 @@ int MORSE_zgesvd(MORSE_enum jobu, MORSE_enum jobvt,
         morse_error("MORSE_zgesvd", "illegal value of N");
         return -4;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zgesvd", "illegal value of LDA");
         return -6;
     }
@@ -192,7 +192,7 @@ int MORSE_zgesvd(MORSE_enum jobu, MORSE_enum jobvt,
         return -11;
     }
     /* Quick return */
-    if (min(M, N) == 0) {
+    if (chameleon_min(M, N) == 0) {
         return MORSE_SUCCESS;
     }
 
@@ -455,7 +455,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
 
     M     = descA.m;
     N     = descA.n;
-    MINMN = min(M, N);
+    MINMN = chameleon_min(M, N);
     NB    = descA.mb;
     LDAB  = NB + 1;
     uplo  = M >= N ? MorseUpper : MorseLower;

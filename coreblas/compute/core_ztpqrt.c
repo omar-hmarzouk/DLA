@@ -112,7 +112,7 @@ int CORE_ztpqrt( int M, int N, int L, int IB,
         coreblas_error(2, "Illegal value of N");
         return -2;
     }
-    if( (L < 0) || ((L > min(M, N)) && (min(M,N) > 0))) {
+    if( (L < 0) || ((L > chameleon_min(M, N)) && (chameleon_min(M,N) > 0))) {
         coreblas_error(3, "Illegal value of L");
         return -3;
     }
@@ -120,15 +120,15 @@ int CORE_ztpqrt( int M, int N, int L, int IB,
         coreblas_error(4, "Illegal value of IB");
         return -4;
     }
-    if ((LDA < max(1,N)) && (N > 0)) {
+    if ((LDA < chameleon_max(1,N)) && (N > 0)) {
         coreblas_error(6, "Illegal value of LDA");
         return -6;
     }
-    if ((LDB < max(1,M)) && (M > 0)) {
+    if ((LDB < chameleon_max(1,M)) && (M > 0)) {
         coreblas_error(6, "Illegal value of LDB");
         return -8;
     }
-    if ((LDT < max(1,IB)) && (IB > 0)) {
+    if ((LDT < chameleon_max(1,IB)) && (IB > 0)) {
         coreblas_error(6, "Illegal value of LDT");
         return -10;
     }

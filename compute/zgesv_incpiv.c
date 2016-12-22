@@ -111,11 +111,11 @@ int MORSE_zgesv_incpiv(int N, int NRHS,
         morse_error("MORSE_zgesv_incpiv", "illegal value of NRHS");
         return -2;
     }
-    if (LDA < max(1, N)) {
+    if (LDA < chameleon_max(1, N)) {
         morse_error("MORSE_zgesv_incpiv", "illegal value of LDA");
         return -4;
     }
-    if (LDB < max(1, N)) {
+    if (LDB < chameleon_max(1, N)) {
         morse_error("MORSE_zgesv_incpiv", "illegal value of LDB");
         return -8;
     }

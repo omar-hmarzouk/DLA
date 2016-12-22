@@ -82,7 +82,7 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
      * zunmqr = A->nb * ib
      * ztsmqr = 2 * A->nb * ib
      */
-    ws_worker = max( ws_worker, ib * A->nb * 2 );
+    ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif
 
 #if defined(CHAMELEON_USE_MAGMA)
@@ -91,15 +91,15 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
      * zgeqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
      * ztsqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
      */
-    ws_worker = max( ws_worker, ib * (ib + A->nb) );
+    ws_worker = chameleon_max( ws_worker, ib * (ib + A->nb) );
 
     /* Host space
      *
      * zgeqrt = ib * (A->nb+3*ib) + A->nb )
      * ztsqrt = 2 * ib * (A->nb+ib) + A->nb
      */
-    ws_host = max( ws_host, ib * (A->mb + 3 * ib) + A->mb );
-    ws_host = max( ws_host,  2 * ib * (A->nb + ib) + A->nb );
+    ws_host = chameleon_max( ws_host, ib * (A->mb + 3 * ib) + A->mb );
+    ws_host = chameleon_max( ws_host,  2 * ib * (A->nb + ib) + A->nb );
 #endif
 
     ws_worker *= sizeof(MORSE_Complex64_t);
@@ -116,12 +116,12 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     }
 #endif
 
-    K = min(A->mt, A->nt);
+    K = chameleon_min(A->mt, A->nt);
     for (k = 0; k < K; k++) {
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
         for (M = k; M < A->mt; M += BS) {
             tempMm = M == A->mt-1 ? A->m-M*A->mb : A->mb;
-            tempkmin = min(tempMm, tempkn);
+            tempkmin = chameleon_min(tempMm, tempkn);
             ldaM = BLKLDD(A, M);
             MORSE_TASK_zgeqrt(
                 &options,
@@ -154,7 +154,7 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
                     T(M, k), T->mb,
                     A(M, n), ldaM);
             }
-            for (m = M+1; m < min(M+BS, A->mt); m++) {
+            for (m = M+1; m < chameleon_min(M+BS, A->mt); m++) {
                 tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
                 ldam = BLKLDD(A, m);
                 MORSE_TASK_ztsqrt(

@@ -111,11 +111,11 @@ int MORSE_zgetrs_nopiv(MORSE_enum trans, int N, int NRHS,
         morse_error("MORSE_zgetrs_nopiv", "illegal value of NRHS");
         return -3;
     }
-    if (LDA < max(1, N)) {
+    if (LDA < chameleon_max(1, N)) {
         morse_error("MORSE_zgetrs_nopiv", "illegal value of LDA");
         return -5;
     }
-    if (LDB < max(1, N)) {
+    if (LDB < chameleon_max(1, N)) {
         morse_error("MORSE_zgetrs_nopiv", "illegal value of LDB");
         return -9;
     }

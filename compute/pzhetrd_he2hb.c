@@ -82,7 +82,7 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
      * ztsmqr = 2 * A->nb * ib
      * zherfb = A->nb * ib
      */
-    ws_worker = max( ws_worker, ib * A->nb * 2 );
+    ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif
 
 #if defined(CHAMELEON_USE_MAGMA)
@@ -91,15 +91,15 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
      * zgeqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
      * ztsqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
      */
-    ws_worker = max( ws_worker, ib * (ib + A->nb) );
+    ws_worker = chameleon_max( ws_worker, ib * (ib + A->nb) );
 
     /* Host space
      *
      * zgeqrt = ib * (A->mb+3*ib) + A->mb )
      * ztsqrt = 2 * ib * (A->nb+ib) + A->nb
      */
-    ws_host = max( ws_host, ib * (A->mb + 3 * ib) + A->mb );
-    ws_host = max( ws_host,  2 * ib * (A->nb + ib) + A->nb );
+    ws_host = chameleon_max( ws_host, ib * (A->mb + 3 * ib) + A->mb );
+    ws_host = chameleon_max( ws_host,  2 * ib * (A->nb + ib) + A->nb );
 #endif
 
     ws_worker *= sizeof(MORSE_Complex64_t);
@@ -110,17 +110,17 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
 #if defined(CHAMELEON_COPY_DIAG)
     /* Copy of the extra-diagonal to generate more parallelism by releasing anti-dependencies on UNMQR/TSMQR triangle conflict */
     E = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*E, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb, A->p, A->q);
+    morse_zdesc_alloc_diag(*E, A->mb, A->nb, chameleon_min(A->m, A->n), A->nb, 0, 0, chameleon_min(A->m, A->n), A->nb, A->p, A->q);
 #endif
 
     /* Copy of the diagonal tiles to keep the general version of the tile all along the computation */
     D = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*D, A->mb, A->nb, min(A->m, A->n) - A->mb, A->nb, 0, 0, min(A->m, A->n) - A->mb, A->nb, A->p, A->q);
+    morse_zdesc_alloc_diag(*D, A->mb, A->nb, chameleon_min(A->m, A->n) - A->mb, A->nb, 0, 0, chameleon_min(A->m, A->n) - A->mb, A->nb, A->p, A->q);
 
     AT = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
     *AT = morse_desc_init(
         MorseComplexDouble, A->mb, A->nb, (A->mb*A->nb),
-        min(A->mt, A->nt) * A->mb, A->nb, 0, 0, min(A->mt, A->nt) * A->mb, A->nb, 1, 1);
+        chameleon_min(A->mt, A->nt) * A->mb, A->nb, 0, 0, chameleon_min(A->mt, A->nt) * A->mb, A->nb, 1, 1);
     morse_desc_mat_alloc( AT );
 
     /* Let's extract the diagonal in a temporary copy that contains A and A' */

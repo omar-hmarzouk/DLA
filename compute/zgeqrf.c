@@ -99,7 +99,7 @@ int MORSE_zgeqrf(int M, int N,
         morse_error("MORSE_zgeqrf", "illegal value of N");
         return -2;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zgeqrf", "illegal value of LDA");
         return -4;
     }
@@ -119,7 +119,7 @@ int MORSE_zgeqrf(int M, int N,
     NB = MORSE_NB;
 
     morse_sequence_create(morse, &sequence);
- 
+
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
         morse_zooplap2tile( descA, A, NB, NB, LDA, N, 0, 0, M, N, sequence, &request,
                              morse_desc_mat_free(&(descA)) );

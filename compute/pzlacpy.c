@@ -98,7 +98,7 @@ void morse_pzlacpy(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
                     A(m, m), ldam,
                     B(m, m), ldbm);
             }
-            for (n = 0; n < min(m, A->nt); n++) {
+            for (n = 0; n < chameleon_min(m, A->nt); n++) {
                 Y = n == A->nt-1 ? A->n-n*A->nb : A->nb;
                 MORSE_TASK_zlacpy(
                     &options,

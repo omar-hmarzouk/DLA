@@ -137,11 +137,11 @@ int MORSE_zherk(MORSE_enum uplo, MORSE_enum trans, int N, int K,
         morse_error("MORSE_zherk", "illegal value of K");
         return -4;
     }
-    if (LDA < max(1, Am)) {
+    if (LDA < chameleon_max(1, Am)) {
         morse_error("MORSE_zherk", "illegal value of LDA");
         return -7;
     }
-    if (LDC < max(1, N)) {
+    if (LDC < chameleon_max(1, N)) {
         morse_error("MORSE_zherk", "illegal value of LDC");
         return -10;
     }

@@ -83,6 +83,11 @@
 #include "cudablas/include/cudablas_c.h"
 #include "cudablas/include/cudablas_s.h"
 
+/** ****************************************************************************
+ * Coreblas Error
+ **/
+#define cudablas_error(k, str) fprintf(stderr, "%s: Parameter %d / %s\n", __func__, k, str)
+
 /*******************************************************************************
  *  Global utilities
  **/

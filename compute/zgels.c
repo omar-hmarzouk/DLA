@@ -142,17 +142,17 @@ int MORSE_zgels(MORSE_enum trans, int M, int N, int NRHS,
         morse_error("MORSE_zgels", "illegal value of NRHS");
         return -4;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zgels", "illegal value of LDA");
         return -6;
     }
-    if (LDB < max(1, max(M, N))) {
+    if (LDB < chameleon_max(1, chameleon_max(M, N))) {
         morse_error("MORSE_zgels", "illegal value of LDB");
         return -9;
     }
     /* Quick return */
-    if (min(M, min(N, NRHS)) == 0) {
-        for (i = 0; i < max(M, N); i++)
+    if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
+        for (i = 0; i < chameleon_max(M, N); i++)
             for (j = 0; j < NRHS; j++)
                 B[j*LDB+i] = 0.0;
         return MORSE_SUCCESS;
@@ -371,8 +371,8 @@ int MORSE_zgels_Tile_Async(MORSE_enum trans, MORSE_desc_t *A,
         return morse_request_fail(sequence, request, MORSE_ERR_NOT_SUPPORTED);
     }
     /* Quick return  - currently NOT equivalent to LAPACK's:
-    if (min(M, min(N, NRHS)) == 0) {
-        for (i = 0; i < max(M, N); i++)
+    if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
+        for (i = 0; i < chameleon_max(M, N); i++)
             for (j = 0; j < NRHS; j++)
                 B[j*LDB+i] = 0.0;
         return MORSE_SUCCESS;

@@ -109,12 +109,12 @@ int MORSE_ztrtri(MORSE_enum uplo, MORSE_enum diag, int N,
         morse_error("MORSE_ztrtri", "illegal value of N");
         return -3;
     }
-    if (LDA < max(1, N)) {
+    if (LDA < chameleon_max(1, N)) {
         morse_error("MORSE_ztrtri", "illegal value of LDA");
         return -5;
     }
     /* Quick return */
-    if (max(N, 0) == 0)
+    if (chameleon_max(N, 0) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
@@ -299,7 +299,7 @@ int MORSE_ztrtri_Tile_Async(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
     }
     /* Quick return */
 /*
-    if (max(N, 0) == 0)
+    if (chameleon_max(N, 0) == 0)
         return MORSE_SUCCESS;
 */
     morse_pztrtri(uplo, diag, A, sequence, request);

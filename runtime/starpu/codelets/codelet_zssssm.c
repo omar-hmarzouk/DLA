@@ -121,7 +121,7 @@ void MORSE_TASK_zssssm(const MORSE_option_t *options,
          morse_desc_islocal( L2, L2m, L2n ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &m1,                        sizeof(int),
             STARPU_VALUE,    &n1,                        sizeof(int),
             STARPU_VALUE,    &m2,                        sizeof(int),

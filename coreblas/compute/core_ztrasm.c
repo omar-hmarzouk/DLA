@@ -84,12 +84,12 @@ void CORE_ztrasm(MORSE_enum storev, MORSE_enum uplo, MORSE_enum diag,
      * MorseUpper / MorseColumnwise
      */
     if  (uplo == MorseUpper ) {
-        M = min(M, N);
+        M = chameleon_min(M, N);
 
         if (storev == MorseColumnwise) {
             for (j = 0; j < N; j++) {
                 tmpA = A+(j*lda);
-                imax = min(j+1-idiag, M);
+                imax = chameleon_min(j+1-idiag, M);
 
                 if ( j < M )
                     work[j] += idiag;
@@ -111,7 +111,7 @@ void CORE_ztrasm(MORSE_enum storev, MORSE_enum uplo, MORSE_enum diag,
             }
             for (j = 0; j < N; j++) {
                 tmpA = A+(j*lda);
-                imax = min(j+1-idiag, M);
+                imax = chameleon_min(j+1-idiag, M);
 
                 for (i = 0; i < imax; i++) {
                     work[i] += cabs(*tmpA);
@@ -120,7 +120,7 @@ void CORE_ztrasm(MORSE_enum storev, MORSE_enum uplo, MORSE_enum diag,
             }
         }
     } else {
-        N = min(M, N);
+        N = chameleon_min(M, N);
 
         /*
          * MorseLower / MorseColumnwise

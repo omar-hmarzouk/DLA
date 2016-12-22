@@ -53,7 +53,7 @@ void MORSE_TASK_zhemm(const MORSE_option_t *options,
          morse_desc_islocal( C, Cm, Cn ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &side,                sizeof(MORSE_enum),
             STARPU_VALUE,    &uplo,                sizeof(MORSE_enum),
             STARPU_VALUE,       &m,                        sizeof(int),

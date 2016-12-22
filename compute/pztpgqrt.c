@@ -68,7 +68,7 @@ void morse_pztpgqrt( int L, MORSE_desc_t *V, MORSE_desc_t *T, MORSE_desc_t *A, M
      *
      * ztsmqr = 2 * A->nb * ib
      */
-    ws_worker = max( ws_worker, ib * A->nb * 2 );
+    ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif
 
     ws_worker *= sizeof(MORSE_Complex64_t);
@@ -80,7 +80,7 @@ void morse_pztpgqrt( int L, MORSE_desc_t *V, MORSE_desc_t *T, MORSE_desc_t *A, M
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
         ldak = BLKLDD(A, k);
 
-        maxmtk = min( B->mt, maxmt+k ) - 1;
+        maxmtk = chameleon_min( B->mt, maxmt+k ) - 1;
         for (m = maxmtk; m > -1; m--) {
             tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
             templm = m == maxmtk  ? tempmm       : 0;

@@ -70,7 +70,7 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
         /* Init workspace handle for the call to zlange but unused */
         RUNTIME_options_ws_alloc( &options, 1, 0 );
 
-        workm = max( A->mt, A->p );
+        workm = chameleon_max( A->mt, A->p );
         workn = A->n;
         MORSE_Desc_Create(&(VECNORMS_STEP1), NULL, MorseRealDouble, 1, A->nb, A->nb,
                           workm, workn, 0, 0, workm, workn, A->p, A->q);
@@ -169,7 +169,7 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
         RUNTIME_options_ws_alloc( &options, A->mb, 0 );
 
         workm = A->m;
-        workn = max( A->nt, A->q );
+        workn = chameleon_max( A->nt, A->q );
         MORSE_Desc_Create(&(VECNORMS_STEP1), NULL, MorseRealDouble, A->mb, 1, A->mb,
                           workm, workn, 0, 0, workm, workn, A->p, A->q);
 
@@ -283,8 +283,8 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
          */
     case MorseFrobeniusNorm:
 
-        workm = max( A->mt, A->p );
-        workn = max( A->nt, A->q );
+        workm = chameleon_max( A->mt, A->p );
+        workn = chameleon_max( A->nt, A->q );
 
         MORSE_Desc_Create(&(VECNORMS_STEP1), NULL, MorseRealDouble, 1, 2, 2,
                           workm, 2*workn, 0, 0, workm, 2*workn, A->p, A->q);
@@ -353,8 +353,8 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
         /* Init workspace handle for the call to zlange but unused */
         RUNTIME_options_ws_alloc( &options, 1, 0 );
 
-        workm = max( A->mt, A->p );
-        workn = max( A->nt, A->q );
+        workm = chameleon_max( A->mt, A->p );
+        workn = chameleon_max( A->nt, A->q );
 
         MORSE_Desc_Create(&(VECNORMS_STEP1), NULL, MorseRealDouble, 1, 1, 1,
                           workm, workn, 0, 0, workm, workn, A->p, A->q);

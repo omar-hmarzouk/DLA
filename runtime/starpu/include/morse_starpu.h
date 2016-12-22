@@ -60,7 +60,14 @@ typedef struct starpu_conf starpu_conf_t;
  */
 #if defined(CHAMELEON_USE_MPI)
 #undef STARPU_REDUX
-#define starpu_insert_task(...) starpu_mpi_insert_task(MPI_COMM_WORLD, __VA_ARGS__)
+//#define starpu_insert_task(...) starpu_mpi_insert_task(MPI_COMM_WORLD, __VA_ARGS__)
+#define starpu_insert_task starpu_mpi_insert_task
+#define starpu_mpi_codelet(_codelet_) MPI_COMM_WORLD, _codelet_
+
+#else
+
+#define starpu_mpi_codelet(_codelet_) _codelet_
+
 #endif
 
 /*

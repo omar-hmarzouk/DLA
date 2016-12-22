@@ -36,16 +36,16 @@
  * @ingroup MORSE_Complex64_t
  *
  *  MORSE_zunmlq - Overwrites the general complex M-by-N matrix C with
- * 
+ *
  *                  SIDE = 'L'     SIDE = 'R'
  *  TRANS = 'N':      Q * C          C * Q
  *  TRANS = 'C':      Q**H * C       C * Q**H
- * 
+ *
  *  where Q is a complex unitary matrix defined as the product of k
  *  elementary reflectors
- * 
+ *
  *        Q = H(1) H(2) . . . H(k)
- * 
+ *
  *  as returned by MORSE_zgeqrf. Q is of order M if SIDE = MorseLeft
  *  and of order N if SIDE = MorseRight.
  *
@@ -124,7 +124,7 @@ int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
 
     if (side == MorseLeft)
         An = M;
-    else 
+    else
         An = N;
 
     /* Check input arguments */
@@ -148,17 +148,17 @@ int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
         morse_error("MORSE_zunmlq", "illegal value of K");
         return -5;
     }
-    if (LDA < max(1, K)) {
+    if (LDA < chameleon_max(1, K)) {
         morse_error("MORSE_zunmlq", "illegal value of LDA");
         return -7;
     }
-    if (LDC < max(1, M)) {
+    if (LDC < chameleon_max(1, M)) {
         morse_error("MORSE_zunmlq", "illegal value of LDC");
         return -10;
     }
     /* Quick return - currently NOT equivalent to LAPACK's:
      * CALL DLASET( 'Full', MAX( M, N ), NRHS, ZERO, ZERO, C, LDC ) */
-    if (min(M, min(N, K)) == 0)
+    if (chameleon_min(M, chameleon_min(N, K)) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on M, N & NRHS; Set NBNB */
@@ -270,7 +270,7 @@ int MORSE_zunmlq_Tile(MORSE_enum side, MORSE_enum trans,
     morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu(A);
         RUNTIME_desc_getoncpu(C);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -355,7 +355,7 @@ int MORSE_zunmlq_Tile_Async(MORSE_enum side, MORSE_enum trans,
     /* Quick return - currently NOT equivalent to LAPACK's:
      * CALL DLASET( 'Full', MAX( M, N ), NRHS, ZERO, ZERO, C, LDC ) */
 /*
-    if (min(M, min(N, K)) == 0)
+    if (chameleon_min(M, chameleon_min(N, K)) == 0)
         return MORSE_SUCCESS;
 */
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {

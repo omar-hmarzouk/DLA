@@ -109,13 +109,13 @@ int CORE_zgeadd(MORSE_enum trans, int M, int N,
         coreblas_error(3, "Illegal value of N");
         return -3;
     }
-    if ( ((trans == MorseNoTrans) && (LDA < max(1,M)) && (M > 0)) ||
-         ((trans != MorseNoTrans) && (LDA < max(1,N)) && (N > 0)) )
+    if ( ((trans == MorseNoTrans) && (LDA < chameleon_max(1,M)) && (M > 0)) ||
+         ((trans != MorseNoTrans) && (LDA < chameleon_max(1,N)) && (N > 0)) )
     {
         coreblas_error(6, "Illegal value of LDA");
         return -6;
     }
-    if ( (LDB < max(1,M)) && (M > 0) ) {
+    if ( (LDB < chameleon_max(1,M)) && (M > 0) ) {
         coreblas_error(8, "Illegal value of LDB");
         return -8;
     }

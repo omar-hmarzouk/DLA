@@ -77,7 +77,7 @@ void MORSE_TASK_zgemm(const MORSE_option_t *options,
        )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &transA,            sizeof(MORSE_enum),
             STARPU_VALUE,    &transB,            sizeof(MORSE_enum),
             STARPU_VALUE,    &m,                 sizeof(int),
@@ -176,4 +176,4 @@ static void cl_zgemm_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-CODELETS(zgemm, 3, cl_zgemm_cpu_func, cl_zgemm_cuda_func, STARPU_CUDA_ASYNC);
+CODELETS(zgemm, 3, cl_zgemm_cpu_func, cl_zgemm_cuda_func, STARPU_CUDA_ASYNC)

@@ -179,15 +179,15 @@ int MORSE_zgemm(MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
         morse_error("MORSE_zgemm", "illegal value of N");
         return -5;
     }
-    if (LDA < max(1, Am)) {
+    if (LDA < chameleon_max(1, Am)) {
         morse_error("MORSE_zgemm", "illegal value of LDA");
         return -8;
     }
-    if (LDB < max(1, Bm)) {
+    if (LDB < chameleon_max(1, Bm)) {
         morse_error("MORSE_zgemm", "illegal value of LDB");
         return -10;
     }
-    if (LDC < max(1, M)) {
+    if (LDC < chameleon_max(1, M)) {
         morse_error("MORSE_zgemm", "illegal value of LDC");
         return -13;
     }
