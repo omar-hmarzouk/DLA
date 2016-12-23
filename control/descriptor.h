@@ -68,7 +68,7 @@ int morse_desc_mat_free (MORSE_desc_t *desc);
 #define BLKLDD(A, k) A->get_blkldd( A,k )
 
 /*******************************************************************************
- *  Internal function to return address of block (m,n)
+ *  Internal function to return address of block (m,n) with m,n = block indices
  **/
 inline static void* morse_getaddr_ccrb(const MORSE_desc_t *A, int m, int n)
 {
@@ -100,7 +100,7 @@ inline static void* morse_getaddr_ccrb(const MORSE_desc_t *A, int m, int n)
 }
 
 /*******************************************************************************
- *  Internal function to return address of block (m,n)
+ *  Internal function to return address of block (m,n) with m,n = block indices
  **/
 inline static void *morse_getaddr_cm(const MORSE_desc_t *A, int m, int n)
 {
@@ -120,9 +120,9 @@ inline static void *morse_getaddr_cm(const MORSE_desc_t *A, int m, int n)
 }
 
 /*******************************************************************************
- *  Internal function to return address of element A(m,n)
+ *  Internal function to return address of element A(m,n) with m,n = matrix indices
  **/
-inline static void* morse_geteltaddr(const MORSE_desc_t *A, int m, int n, int eltsize)
+inline static void* morse_geteltaddr(const MORSE_desc_t *A, int m, int n, int eltsize) // Not used anywhere ?!
 {
     size_t mm = (m + A->i)/A->mb;
     size_t nn = (n + A->j)/A->nb;
@@ -150,7 +150,7 @@ inline static void* morse_geteltaddr(const MORSE_desc_t *A, int m, int n, int el
 }
 
 /*******************************************************************************
- *  Internal function to return the leading dimension of element A(m,*)
+ *  Internal function to return the leading dimension of element A(m,*) with m,n = block indices
  **/
 inline static int morse_getblkldd_ccrb(const MORSE_desc_t *A, int m)
 {
@@ -165,7 +165,7 @@ inline static int morse_getblkldd_cm(const MORSE_desc_t *A, int m) {
 
 
 /*******************************************************************************
- *  Internal function to return MPI rank of element A(m,n)
+ *  Internal function to return MPI rank of element A(m,n) with m,n = block indices
  **/
 inline static int morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n)
 {
@@ -173,7 +173,7 @@ inline static int morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n)
 }
 
 /*******************************************************************************
- *  Internal function to return MPI rank of element DIAG(m,0)
+ *  Internal function to return MPI rank of element DIAG(m,0) with m,n = block indices
  **/
 inline static int morse_getrankof_2d_diag(const MORSE_desc_t *desc, int m, int n)
 {
