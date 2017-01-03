@@ -90,7 +90,7 @@ int MORSE_zlascal(MORSE_enum uplo, int M, int N,
         morse_error("MORSE_zlascal", "illegal value of N");
         return -3;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zlascal", "illegal value of LDA");
         return -6;
     }

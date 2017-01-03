@@ -30,7 +30,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     PASTE_CODE_IPARAM_LOCALS( iparam );
     int uplo = MorseUpper;
 
-    LDA = max(LDA, N);
+    LDA = chameleon_max(LDA, N);
     check = 1;
 
     /* Allocate Data */

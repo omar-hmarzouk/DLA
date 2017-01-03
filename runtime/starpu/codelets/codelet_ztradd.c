@@ -99,7 +99,7 @@ void MORSE_TASK_ztradd(const MORSE_option_t *options,
 	 morse_desc_islocal( B, Bm, Bn ) )
     {
 	starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &uplo,               sizeof(MORSE_enum),
             STARPU_VALUE,    &trans,              sizeof(MORSE_enum),
             STARPU_VALUE,    &m,                  sizeof(int),
@@ -117,6 +117,8 @@ void MORSE_TASK_ztradd(const MORSE_option_t *options,
 #endif
             0);
     }
+
+    (void)nb;
 }
 
 

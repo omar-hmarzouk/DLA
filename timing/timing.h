@@ -86,9 +86,9 @@ enum dparam_timing {
     int64_t N     = iparam[IPARAM_N];              \
     int64_t K     = iparam[IPARAM_K];              \
     int64_t NRHS  = K;                             \
-    int64_t LDA   = max(M, iparam[IPARAM_LDA]);    \
-    int64_t LDB   = max(N, iparam[IPARAM_LDB]);    \
-    int64_t LDC   = max(K, iparam[IPARAM_LDC]);    \
+    int64_t LDA   = chameleon_max(M, iparam[IPARAM_LDA]);    \
+    int64_t LDB   = chameleon_max(N, iparam[IPARAM_LDB]);    \
+    int64_t LDC   = chameleon_max(K, iparam[IPARAM_LDC]);    \
     int64_t IB    = iparam[IPARAM_IB];             \
     int64_t MB    = iparam[IPARAM_MB];             \
     int64_t NB    = iparam[IPARAM_NB];             \

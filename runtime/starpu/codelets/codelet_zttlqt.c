@@ -122,7 +122,7 @@ void MORSE_TASK_zttlqt(const MORSE_option_t *options,
          morse_desc_islocal( T,  Tm,  Tn  ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &m,                 sizeof(int),
             STARPU_VALUE,    &n,                 sizeof(int),
             STARPU_VALUE,    &ib,                sizeof(int),
@@ -166,7 +166,7 @@ static void cl_zttlqt_cpu_func(void *descr[], void *cl_arg)
 
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda1, &lda2, &ldt);
 
-    WORK = TAU + max( m, n );
+    WORK = TAU + chameleon_max( m, n );
 
     CORE_zttlqt(m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK);
 }

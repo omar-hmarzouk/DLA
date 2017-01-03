@@ -105,16 +105,16 @@ int MORSE_ztrsmpl(int N, int NRHS,
         morse_error("MORSE_ztrsmpl", "illegal value of NRHS");
         return -2;
     }
-    if (LDA < max(1, N)) {
+    if (LDA < chameleon_max(1, N)) {
         morse_error("MORSE_ztrsmpl", "illegal value of LDA");
         return -4;
     }
-    if (LDB < max(1, N)) {
+    if (LDB < chameleon_max(1, N)) {
         morse_error("MORSE_ztrsmpl", "illegal value of LDB");
         return -8;
     }
     /* Quick return */
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on N & NRHS; Set NBNB */
@@ -294,7 +294,7 @@ int MORSE_ztrsmpl_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_
     }
     /* Quick return */
 /*
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 */
     morse_pztrsmpl(A, B, L, IPIV, sequence, request);

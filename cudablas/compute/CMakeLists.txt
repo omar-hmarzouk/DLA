@@ -38,6 +38,7 @@ set(ZSRC
     cuda_zsymm.c
     cuda_zsyr2k.c
     cuda_zsyrk.c
+    cuda_ztpmqrt.c
     cuda_ztrmm.c
     cuda_ztrsm.c
     cuda_ztsmlq.c

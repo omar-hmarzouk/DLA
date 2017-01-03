@@ -44,7 +44,7 @@ void MORSE_TASK_zplghe( const MORSE_option_t *options,
     if ( morse_desc_islocal( A, Am, An ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE, &bump,                   sizeof(double),
             STARPU_VALUE,    &m,                      sizeof(int),
             STARPU_VALUE,    &n,                      sizeof(int),
@@ -87,4 +87,4 @@ static void cl_zplghe_cpu_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-CODELETS_CPU(zplghe, 1, cl_zplghe_cpu_func);
+CODELETS_CPU(zplghe, 1, cl_zplghe_cpu_func)

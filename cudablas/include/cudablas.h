@@ -83,18 +83,10 @@
 #include "cudablas/include/cudablas_c.h"
 #include "cudablas/include/cudablas_s.h"
 
-/*******************************************************************************
- *  Global utilities
+/** ****************************************************************************
+ * Coreblas Error
  **/
-#ifndef max
-#define max(a, b) ((a) > (b) ? (a) : (b))
-#endif
-#ifndef min
-#define min(a, b) ((a) < (b) ? (a) : (b))
-#endif
-#ifndef roundup
-#define roundup(a, b) (b <= 0) ? (a) : (((a) + (b)-1) & ~((b)-1))
-#endif
+#define cudablas_error(k, str) fprintf(stderr, "%s: Parameter %d / %s\n", __func__, k, str)
 
 /** ****************************************************************************
  *  LAPACK Constants

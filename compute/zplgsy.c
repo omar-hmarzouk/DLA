@@ -95,12 +95,12 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, int N,
         morse_error("MORSE_zplgsy", "illegal value of N");
         return -2;
     }
-    if (LDA < max(1, N)) {
+    if (LDA < chameleon_max(1, N)) {
         morse_error("MORSE_zplgsy", "illegal value of LDA");
         return -4;
     }
     /* Quick return */
-    if (max(0, N) == 0)
+    if (chameleon_max(0, N) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
@@ -260,7 +260,7 @@ int MORSE_zplgsy_Tile_Async( MORSE_Complex64_t      bump,
     }
 
     /* Quick return */
-    if (min( A->m, A->n ) == 0)
+    if (chameleon_min( A->m, A->n ) == 0)
         return MORSE_SUCCESS;
 
     morse_pzplgsy(bump, uplo, A, seed, sequence, request);

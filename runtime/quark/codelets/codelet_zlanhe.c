@@ -36,16 +36,17 @@ void MORSE_TASK_zlanhe(const MORSE_option_t *options,
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LANHE;
-    int szeW = max( 1, N );
-	QUARK_Insert_Task(opt->quark, CORE_zlanhe_quark, (Quark_Task_Flags*)opt,
-		sizeof(MORSE_enum),              &norm,  VALUE,
-		sizeof(MORSE_enum),              &uplo,  VALUE,
-		sizeof(int),                     &N,     VALUE,
-		sizeof(MORSE_Complex64_t)*NB*NB, RTBLKADDR(A, MORSE_Complex64_t, Am, An), INPUT,
-		sizeof(int),                     &LDA,   VALUE,
-		sizeof(double)*szeW,             NULL,   SCRATCH,
-		sizeof(double),                  RTBLKADDR(B, double, Bm, Bn), OUTPUT,
-		0);
+    int szeW = chameleon_max( 1, N );
+    QUARK_Insert_Task(
+        opt->quark, CORE_zlanhe_quark, (Quark_Task_Flags*)opt,
+        sizeof(MORSE_enum),              &norm,  VALUE,
+        sizeof(MORSE_enum),              &uplo,  VALUE,
+        sizeof(int),                     &N,     VALUE,
+        sizeof(MORSE_Complex64_t)*NB*NB, RTBLKADDR(A, MORSE_Complex64_t, Am, An), INPUT,
+        sizeof(int),                     &LDA,   VALUE,
+        sizeof(double)*szeW,             NULL,   SCRATCH,
+        sizeof(double),                  RTBLKADDR(B, double, Bm, Bn), OUTPUT,
+        0);
 }
 
 void CORE_zlanhe_quark(Quark *quark)

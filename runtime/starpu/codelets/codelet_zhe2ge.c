@@ -43,7 +43,7 @@ void MORSE_TASK_zhe2ge(const MORSE_option_t *options,
          morse_desc_islocal( B, Bm, Bn ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,  &uplo,                sizeof(MORSE_enum),
             STARPU_VALUE,     &m,                        sizeof(int),
             STARPU_VALUE,     &n,                        sizeof(int),

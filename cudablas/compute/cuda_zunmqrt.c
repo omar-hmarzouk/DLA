@@ -23,6 +23,7 @@
  *
  **/
 #include "cudablas/include/cudablas.h"
+#include "cudablas/include/cudablas_z.h"
 
 int
 CUDA_zunmqrt(MORSE_enum side, MORSE_enum trans,
@@ -72,13 +73,13 @@ CUDA_zunmqrt(MORSE_enum side, MORSE_enum trans,
     if ((IB < 0) || ( (IB == 0) && ((M > 0) && (N > 0)) )) {
         return -6;
     }
-    if ((LDA < max(1,nq)) && (nq > 0)) {
+    if ((LDA < chameleon_max(1,nq)) && (nq > 0)) {
         return -8;
     }
-    if ((LDC < max(1,M)) && (M > 0)) {
+    if ((LDC < chameleon_max(1,M)) && (M > 0)) {
         return -12;
     }
-    if ((LDWORK < max(1,nw)) && (nw > 0)) {
+    if ((LDWORK < chameleon_max(1,nw)) && (nw > 0)) {
         return -14;
     }
 
@@ -97,7 +98,7 @@ CUDA_zunmqrt(MORSE_enum side, MORSE_enum trans,
     }
 
     for(i = i1; (i >- 1) && (i < K); i+=i3 ) {
-        kb = min(IB, K-i);
+        kb = chameleon_min(IB, K-i);
 
         if (side == MorseLeft) {
             /*

@@ -42,7 +42,7 @@ void morse_pztile2band(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
     int j;
     int ldaj, ldx;
     int tempjm, tempjn;
-    int minmnt = min(A->mt, A->nt);
+    int minmnt = chameleon_min(A->mt, A->nt);
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
@@ -56,7 +56,7 @@ void morse_pztile2band(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
      */
     if ( uplo == MorseLower ) {
        for (j = 0; j < minmnt; j++){
-           /* Compute dimension on N with B since it is dimensioned with min(A->m, A->n) */
+           /* Compute dimension on N with B since it is dimensioned with chameleon_min(A->m, A->n) */
            assert( A->m == B->n );
            assert( A->n >= B->n );
 
@@ -89,7 +89,7 @@ void morse_pztile2band(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
     }
     else if ( uplo == MorseUpper ) {
        for (j = 0; j < minmnt; j++){
-           /* Compute dimension on M with B since it is dimensioned with min(A->m, A->n) */
+           /* Compute dimension on M with B since it is dimensioned with chameleon_min(A->m, A->n) */
            assert( A->n == B->n );
            assert( A->m >= B->n );
            tempjn = j == A->nt-1 ? A->n - j * A->nb : A->nb;

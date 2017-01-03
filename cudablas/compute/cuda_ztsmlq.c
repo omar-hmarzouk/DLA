@@ -23,6 +23,7 @@
  *
  **/
 #include "cudablas/include/cudablas.h"
+#include "cudablas/include/cudablas_z.h"
 
 int CUDA_ztsmlq(
         MORSE_enum side, MORSE_enum trans,
@@ -83,19 +84,19 @@ int CUDA_ztsmlq(
     if (IB < 0) {
         return -8;
     }
-    if (LDA1 < max(1,M1)){
+    if (LDA1 < chameleon_max(1,M1)){
         return -10;
     }
-    if (LDA2 < max(1,M2)){
+    if (LDA2 < chameleon_max(1,M2)){
         return -12;
     }
-    if (LDV < max(1,K)){
+    if (LDV < chameleon_max(1,K)){
         return -14;
     }
-    if (LDT < max(1,IB)){
+    if (LDT < chameleon_max(1,IB)){
         return -16;
     }
-    if (LDWORK < max(1,NW)){
+    if (LDWORK < chameleon_max(1,NW)){
         return -18;
     }
 
@@ -121,7 +122,7 @@ int CUDA_ztsmlq(
     }
 
     for(i = i1; (i > -1) && (i < K); i += i3) {
-        kb = min(IB, K-i);
+        kb = chameleon_min(IB, K-i);
 
         if (side == MorseLeft) {
             /*

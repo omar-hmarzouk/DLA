@@ -35,8 +35,10 @@ void MORSE_TASK_zsyssq( const MORSE_option_t *options,
     struct starpu_codelet *codelet = &cl_zsyssq;
     void (*callback)(void*) = options->profiling ? cl_zgessq_callback : NULL;
     if ( morse_desc_islocal( A, Am, An ) ||
-         morse_desc_islocal( SCALESUMSQ, SCALESUMSQm, SCALESUMSQn ) ){
-        starpu_insert_task(codelet,
+         morse_desc_islocal( SCALESUMSQ, SCALESUMSQm, SCALESUMSQn ) )
+    {
+        starpu_insert_task(
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &uplo,                       sizeof(MORSE_enum),
             STARPU_VALUE,    &n,                          sizeof(int),
             STARPU_R,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),

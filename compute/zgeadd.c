@@ -126,11 +126,11 @@ int MORSE_zgeadd(MORSE_enum trans, int M, int N,
         morse_error("MORSE_zgeadd", "illegal value of N");
         return -3;
     }
-    if (LDA < max(1, Am)) {
+    if (LDA < chameleon_max(1, Am)) {
         morse_error("MORSE_zgeadd", "illegal value of LDA");
         return -6;
     }
-    if (LDB < max(1, M)) {
+    if (LDB < chameleon_max(1, M)) {
         morse_error("MORSE_zgeadd", "illegal value of LDB");
         return -9;
     }

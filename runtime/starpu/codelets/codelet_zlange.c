@@ -38,22 +38,25 @@ void MORSE_TASK_zlange(const MORSE_option_t *options,
     (void)NB;
     struct starpu_codelet *codelet = &cl_zlange;
     void (*callback)(void*) = options->profiling ? cl_zlange_callback : NULL;
+
     if ( morse_desc_islocal( A, Am, An ) ||
-         morse_desc_islocal( B, Bm, Bn ) ){
-        starpu_insert_task(codelet,
-                           STARPU_VALUE,    &norm,              sizeof(MORSE_enum),
-                           STARPU_VALUE,    &M,                 sizeof(int),
-                           STARPU_VALUE,    &N,                 sizeof(int),
-                           STARPU_R,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),
-                           STARPU_VALUE,    &LDA,               sizeof(int),
-                           STARPU_SCRATCH,  options->ws_worker,
-                           STARPU_W,        RTBLKADDR(B, double, Bm, Bn),
-                           STARPU_PRIORITY, options->priority,
-                           STARPU_CALLBACK, callback,
+         morse_desc_islocal( B, Bm, Bn ) )
+    {
+        starpu_insert_task(
+            starpu_mpi_codelet(codelet),
+            STARPU_VALUE,    &norm,              sizeof(MORSE_enum),
+            STARPU_VALUE,    &M,                 sizeof(int),
+            STARPU_VALUE,    &N,                 sizeof(int),
+            STARPU_R,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+            STARPU_VALUE,    &LDA,               sizeof(int),
+            STARPU_SCRATCH,  options->ws_worker,
+            STARPU_W,        RTBLKADDR(B, double, Bm, Bn),
+            STARPU_PRIORITY, options->priority,
+            STARPU_CALLBACK, callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-                           STARPU_NAME, "zlange",
+            STARPU_NAME, "zlange",
 #endif
-                           0);
+            0);
     }
 }
 
@@ -87,17 +90,20 @@ void MORSE_TASK_zlange_max(const MORSE_option_t *options,
 {
     struct starpu_codelet *codelet = &cl_zlange_max;
     void (*callback)(void*) = options->profiling ? cl_zlange_callback : NULL;
+
     if ( morse_desc_islocal( A, Am, An ) ||
-         morse_desc_islocal( B, Bm, Bn ) ){
-        starpu_insert_task(codelet,
-                           STARPU_R,        RTBLKADDR(A, double, Am, An),
-                           STARPU_RW,       RTBLKADDR(B, double, Bm, Bn),
-                           STARPU_PRIORITY, options->priority,
-                           STARPU_CALLBACK, callback,
+         morse_desc_islocal( B, Bm, Bn ) )
+    {
+        starpu_insert_task(
+            starpu_mpi_codelet(codelet),
+            STARPU_R,        RTBLKADDR(A, double, Am, An),
+            STARPU_RW,       RTBLKADDR(B, double, Bm, Bn),
+            STARPU_PRIORITY, options->priority,
+            STARPU_CALLBACK, callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-                           STARPU_NAME, "zlange_max",
+            STARPU_NAME, "zlange_max",
 #endif
-                           0);
+            0);
     }
 }
 
@@ -112,6 +118,8 @@ static void cl_zlange_max_cpu_func(void *descr[], void *cl_arg)
 
     if ( *A > *normA )
         *normA = *A;
+
+    (void)cl_arg;
 }
 #endif /* !defined(CHAMELEON_SIMULATION) */
 

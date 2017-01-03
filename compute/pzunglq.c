@@ -83,7 +83,7 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
      * zunmlq = A->nb * ib
      * ztsmlq = 2 * A->nb * ib
      */
-    ws_worker = max( ws_worker, ib * A->nb * 2 );
+    ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif
 
     ws_worker *= sizeof(MORSE_Complex64_t);
@@ -100,7 +100,7 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
     for (k = minMT-1; k >= 0; k--) {
         tempAkm  = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         tempAkn  = k == A->nt-1 ? A->n-k*A->nb : A->nb;
-        tempkmin = min( tempAkn, tempAkm );
+        tempkmin = chameleon_min( tempAkn, tempAkm );
         tempkn   = k == Q->nt-1 ? Q->n-k*Q->nb : Q->nb;
         ldak = BLKLDD(A, k);
         for (n = Q->nt-1; n > k; n--) {

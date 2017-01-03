@@ -35,16 +35,16 @@
  * @ingroup MORSE_Complex64_t
  *
  *  MORSE_zunmqr - Overwrites the general complex M-by-N matrix C with
- * 
+ *
  *                  SIDE = 'L'     SIDE = 'R'
  *  TRANS = 'N':      Q * C          C * Q
  *  TRANS = 'C':      Q**H * C       C * Q**H
- * 
+ *
  *  where Q is a complex unitary matrix defined as the product of k
  *  elementary reflectors
- * 
+ *
  *        Q = H(1) H(2) . . . H(k)
- * 
+ *
  *  as returned by MORSE_zgeqrf. Q is of order M if SIDE = MorseLeft
  *  and of order N if SIDE = MorseRight.
  *
@@ -76,7 +76,7 @@
  *          Details of the QR factorization of the original matrix A as returned by MORSE_zgeqrf.
  *
  * @param[in] LDA
- *          The leading dimension of the array A. 
+ *          The leading dimension of the array A.
  *          If side == MorseLeft,  LDA >= max(1,M).
  *          If side == MorseRight, LDA >= max(1,N).
  *
@@ -151,17 +151,17 @@ int MORSE_zunmqr(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
         morse_error("MORSE_zunmqr", "illegal value of K");
         return -5;
     }
-    if (LDA < max(1, Am)) {
+    if (LDA < chameleon_max(1, Am)) {
         morse_error("MORSE_zunmqr", "illegal value of LDA");
         return -7;
     }
-    if (LDC < max(1, M)) {
+    if (LDC < chameleon_max(1, M)) {
         morse_error("MORSE_zunmqr", "illegal value of LDC");
         return -10;
     }
     /* Quick return - currently NOT equivalent to LAPACK's:
      * CALL DLASET( 'Full', MAX( M, N ), NRHS, ZERO, ZERO, C, LDC ) */
-    if (min(M, min(N, K)) == 0)
+    if (chameleon_min(M, chameleon_min(N, K)) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on M, K & N; Set NBNB */
@@ -274,7 +274,7 @@ int MORSE_zunmqr_Tile(MORSE_enum side, MORSE_enum trans,
     morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu(A);
         RUNTIME_desc_getoncpu(C);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -359,7 +359,7 @@ int MORSE_zunmqr_Tile_Async(MORSE_enum side, MORSE_enum trans,
     /* Quick return - currently NOT equivalent to LAPACK's:
      * CALL DLASET( 'Full', MAX( M, N ), NRHS, ZERO, ZERO, C, LDC ) */
 /*
-    if (min(M, min(N, K)) == 0)
+    if (chameleon_min(M, chameleon_min(N, K)) == 0)
         return MORSE_SUCCESS;
 */
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {

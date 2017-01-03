@@ -30,8 +30,8 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
     MORSE_Complex64_t alpha;
     PASTE_CODE_IPARAM_LOCALS( iparam );
-    
-    LDA = max( LDA, N );
+
+    LDA = chameleon_max( LDA, N );
 
     /* Allocate Data */
     PASTE_CODE_ALLOCATE_MATRIX( A,      1, MORSE_Complex64_t, LDA, N   );
@@ -57,10 +57,10 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     /* Check the solution */
     if (check)
     {
-        dparam[IPARAM_RES] = z_check_trsm( MorseLeft, MorseUpper, MorseNoTrans, MorseUnit, 
+        dparam[IPARAM_RES] = z_check_trsm( MorseLeft, MorseUpper, MorseNoTrans, MorseUnit,
                                            N, NRHS,
                                            alpha, A, LDA, B, B2, LDB,
-                                           &(dparam[IPARAM_ANORM]), 
+                                           &(dparam[IPARAM_ANORM]),
                                            &(dparam[IPARAM_BNORM]),
                                            &(dparam[IPARAM_XNORM]));
         free(B2);

@@ -38,9 +38,12 @@ void MORSE_TASK_zlansy(const MORSE_option_t *options,
     (void)NB;
     struct starpu_codelet *codelet = &cl_zlansy;
     void (*callback)(void*) = options->profiling ? cl_zlange_callback : NULL;
+
     if ( morse_desc_islocal( A, Am, An ) ||
-         morse_desc_islocal( B, Bm, Bn ) ){
-        starpu_insert_task(codelet,
+         morse_desc_islocal( B, Bm, Bn ) )
+    {
+        starpu_insert_task(
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &norm,              sizeof(MORSE_enum),
             STARPU_VALUE,    &uplo,              sizeof(MORSE_enum),
             STARPU_VALUE,    &N,                 sizeof(int),

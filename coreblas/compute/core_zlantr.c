@@ -108,7 +108,7 @@ void CORE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
     int i, j, imax;
     int idiag = (diag == MorseUnit) ? 1 : 0;
 
-    if ( min(M, N) == 0 ) {
+    if ( chameleon_min(M, N) == 0 ) {
         *normA = 0;
         return;
     }
@@ -122,10 +122,10 @@ void CORE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
         }
 
         if ( uplo == MorseUpper ) {
-            M = min(M, N);
+            M = chameleon_min(M, N);
             for (j = 0; j < N; j++) {
                 tmpA = A+(j*LDA);
-                imax = min(j+1-idiag, M);
+                imax = chameleon_min(j+1-idiag, M);
 
                 for (i = 0; i < imax; i++) {
                     value = cabs( *tmpA );
@@ -134,7 +134,7 @@ void CORE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
                 }
             }
         } else {
-            N = min(M, N);
+            N = chameleon_min(M, N);
             for (j = 0; j < N; j++) {
                 tmpA = A + j * (LDA+1) + idiag;
 
@@ -151,7 +151,7 @@ void CORE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
         CORE_ztrasm( MorseColumnwise, uplo, diag, M, N,
                      A, LDA, work );
         if ( uplo == MorseLower )
-            N = min(M,N);
+            N = chameleon_min(M,N);
 
         *normA = 0;
         for (i = 0; i < N; i++) {
@@ -163,7 +163,7 @@ void CORE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
         CORE_ztrasm( MorseRowwise, uplo, diag, M, N,
                      A, LDA, work );
         if ( uplo == MorseUpper )
-            M = min(M,N);
+            M = chameleon_min(M,N);
 
         *normA = 0;
         for (i = 0; i < M; i++) {

@@ -25,6 +25,7 @@
  *
  **/
 #include "cudablas/include/cudablas.h"
+#include "cudablas/include/cudablas_z.h"
 
 int
 CUDA_zlarfb(MORSE_enum side, MORSE_enum trans,
@@ -46,10 +47,11 @@ CUDA_zlarfb(MORSE_enum side, MORSE_enum trans,
     double mzone = -1.0;
 #endif /* defined(PRECISION_z) || defined(PRECISION_c) */
 
-    int j;
     MORSE_enum transT, uplo, notransV, transV;
 
-    CUBLAS_GET_STREAM;
+#if !defined(CHAMELEON_USE_CUBLAS_V2)
+    cublasSetKernelStream( stream );
+#endif
 
     /* Check input arguments */
     if ((side != MorseLeft) && (side != MorseRight)) {

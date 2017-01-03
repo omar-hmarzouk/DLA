@@ -23,6 +23,7 @@
  *
  **/
 #include "cudablas/include/cudablas.h"
+#include "cudablas/include/cudablas_z.h"
 
 #if defined(CHAMELEON_USE_MAGMA)
 int CUDA_zpotrf(

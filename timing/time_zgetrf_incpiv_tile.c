@@ -25,7 +25,7 @@
 #include "./timing.c"
 
 static int
-RunTest(int *iparam, double *dparam, morse_time_t *t_) 
+RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
     MORSE_desc_t *descL;
     int *piv;
@@ -52,7 +52,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_zplrnt_Tile(descA, 3456);
 
     /* Allocate Workspace */
-    MORSE_Alloc_Workspace_zgesv_incpiv_Tile(min(M,N), &descL, &piv, P, Q);
+    MORSE_Alloc_Workspace_zgesv_incpiv_Tile(chameleon_min(M,N), &descL, &piv, P, Q);
 
     /* Save A for check */
     if (check == 1){

@@ -98,7 +98,7 @@ int CORE_zgetrf_nopiv(int M, int N, int IB,
         coreblas_error(3, "Illegal value of IB");
         return -3;
     }
-    if ((LDA < max(1,M)) && (M > 0)) {
+    if ((LDA < chameleon_max(1,M)) && (M > 0)) {
         coreblas_error(5, "Illegal value of LDA");
         return -5;
     }
@@ -107,9 +107,9 @@ int CORE_zgetrf_nopiv(int M, int N, int IB,
     if ((M == 0) || (N == 0) || (IB == 0))
         return MORSE_SUCCESS;
 
-    k = min(M, N);
+    k = chameleon_min(M, N);
     for(i =0 ; i < k; i += IB) {
-        sb = min(IB, k-i);
+        sb = chameleon_min(IB, k-i);
         /*
          * Factor diagonal and subdiagonal blocks and test for exact singularity.
          */

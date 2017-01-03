@@ -83,7 +83,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
      * zunmqr = A->nb * ib
      * ztsmqr = 2 * A->nb * ib
      */
-    ws_worker = max( ws_worker, ib * A->nb * 2 );
+    ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif
 
 #if defined(CHAMELEON_USE_MAGMA)
@@ -92,15 +92,15 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
      * zgeqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
      * ztsqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
      */
-    ws_worker = max( ws_worker, ib * (ib + A->nb) );
+    ws_worker = chameleon_max( ws_worker, ib * (ib + A->nb) );
 
     /* Host space
      *
      * zgelqt =     ib * A->nb + 3 * ib * ib + A->nb
      * ztslqt = 3 * ib * A->nb +     ib * ib + A->nb
      */
-    ws_host = max( ws_host,     ib * A->nb + 3 * ib * ib + A->nb );
-    ws_host = max( ws_host, 3 * ib * A->nb +     ib * ib + A->nb );
+    ws_host = chameleon_max( ws_host,     ib * A->nb + 3 * ib * ib + A->nb );
+    ws_host = chameleon_max( ws_host, 3 * ib * A->nb +     ib * ib + A->nb );
 #endif
 
     ws_worker *= sizeof(MORSE_Complex64_t);
@@ -111,7 +111,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T,
 #if defined(CHAMELEON_COPY_DIAG)
     /* necessary to avoid dependencies between tslqt and unmlq tasks regarding the diag tile */
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb, A->p, A->q);
+    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, chameleon_min(A->m, A->n), A->nb, 0, 0, chameleon_min(A->m, A->n), A->nb, A->p, A->q);
 #endif
 
     for (k = 0; k < minMNT; k++) {

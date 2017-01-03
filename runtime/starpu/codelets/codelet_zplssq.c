@@ -65,9 +65,12 @@ void MORSE_TASK_zplssq( const MORSE_option_t *options,
 {
     struct starpu_codelet *codelet = &cl_zplssq;
     void (*callback)(void*) = options->profiling ? cl_zplssq_callback : NULL;
+
     if ( morse_desc_islocal( SCALESUMSQ, SCALESUMSQm, SCALESUMSQn ) ||
-         morse_desc_islocal( SCLSSQ,     SCLSSQm,     SCLSSQn ) ){
-        starpu_insert_task(codelet,
+         morse_desc_islocal( SCLSSQ,     SCLSSQm,     SCLSSQn ) )
+    {
+        starpu_insert_task(
+            starpu_mpi_codelet(codelet),
             STARPU_R,  RTBLKADDR(SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn),
             STARPU_RW, RTBLKADDR(SCLSSQ,     double, SCLSSQm,     SCLSSQn),
             STARPU_PRIORITY,    options->priority,
@@ -95,6 +98,8 @@ static void cl_zplssq_cpu_func(void *descr[], void *cl_arg)
     } else {
         SCLSSQ[1] = SCLSSQ[1]     + (SCALESUMSQ[1] * (( SCALESUMSQ[0] / SCLSSQ[0] ) * ( SCALESUMSQ[0] / SCLSSQ[0] )));
     }
+
+    (void)cl_arg;
 }
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
@@ -108,8 +113,10 @@ void MORSE_TASK_zplssq2( const MORSE_option_t *options,
 {
     struct starpu_codelet *codelet = &cl_zplssq2;
     void (*callback)(void*) = options->profiling ? cl_zplssq2_callback : NULL;
-    if ( morse_desc_islocal( RESULT, RESULTm, RESULTn ) ){
-        starpu_insert_task(codelet,
+
+    if ( morse_desc_islocal( RESULT, RESULTm, RESULTn ) ) {
+        starpu_insert_task(
+            starpu_mpi_codelet(codelet),
             STARPU_RW, RTBLKADDR(RESULT, double, RESULTm, RESULTn),
             STARPU_PRIORITY,    options->priority,
             STARPU_CALLBACK,    callback,
@@ -129,6 +136,8 @@ static void cl_zplssq2_cpu_func(void *descr[], void *cl_arg)
     RESULT = (double *)STARPU_MATRIX_GET_PTR(descr[0]);
 
     RESULT[0] = RESULT[0] * sqrt( RESULT[1] );
+
+    (void)cl_arg;
 }
 #endif /* !defined(CHAMELEON_SIMULATION) */
 

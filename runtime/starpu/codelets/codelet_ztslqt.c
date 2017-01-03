@@ -124,7 +124,7 @@ void MORSE_TASK_ztslqt(const MORSE_option_t *options,
          morse_desc_islocal( T,  Tm,  Tn  ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &m,                 sizeof(int),
             STARPU_VALUE,    &n,                 sizeof(int),
             STARPU_VALUE,    &ib,                sizeof(int),
@@ -170,7 +170,7 @@ static void cl_ztslqt_cpu_func(void *descr[], void *cl_arg)
 
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda1, &lda2, &ldt, &h_work);
 
-    WORK = TAU + max( m, n );
+    WORK = TAU + chameleon_max( m, n );
     CORE_ztslqt(m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK);
 }
 
@@ -200,7 +200,7 @@ static void cl_ztslqt_cuda_func(void *descr[], void *cl_arg)
     h_A2  = (cuDoubleComplex*)RUNTIME_starpu_ws_getlocal(h_work);
     h_T   = h_A2  + ib*n;
     h_TAU = h_T   + ib*n;
-    h_W   = h_TAU + max(m,n);
+    h_W   = h_TAU + chameleon_max(m,n);
     h_D   = h_W   + ib*m;
 
     stream = starpu_cuda_get_local_stream();

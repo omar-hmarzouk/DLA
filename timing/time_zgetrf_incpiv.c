@@ -26,7 +26,7 @@
 #include "timing_zauxiliary.h"
 
 static int
-RunTest(int *iparam, double *dparam, morse_time_t *t_) 
+RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
     MORSE_desc_t *L;
     int *piv;
@@ -44,7 +44,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_zplrnt(M, N, A, LDA, 3456);
 
     /* Allocate Workspace */
-    MORSE_Alloc_Workspace_zgesv_incpiv( min(M,N), &L, &piv, P, Q);
+    MORSE_Alloc_Workspace_zgesv_incpiv( chameleon_min(M,N), &L, &piv, P, Q);
 
     /* Save AT in lapack layout for check */
     PASTE_CODE_ALLOCATE_COPY( Acpy, check, MORSE_Complex64_t, A, LDA, N );
@@ -63,8 +63,8 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         MORSE_zgetrs_incpiv( MorseNoTrans, N, NRHS, A, LDA, L, piv, X, LDB );
 
         dparam[IPARAM_RES] = z_check_solution(M, N, NRHS, Acpy, LDA, B, X, LDB,
-                                              &(dparam[IPARAM_ANORM]), 
-                                              &(dparam[IPARAM_BNORM]), 
+                                              &(dparam[IPARAM_ANORM]),
+                                              &(dparam[IPARAM_BNORM]),
                                               &(dparam[IPARAM_XNORM]));
 
         free( Acpy ); free( B ); free( X );

@@ -111,11 +111,11 @@ int CORE_zlatro(MORSE_enum uplo, MORSE_enum trans,
         coreblas_error(4, "Illegal value of N");
         return -4;
     }
-    if ( (LDA < max(1,M)) && (M > 0) ) {
+    if ( (LDA < chameleon_max(1,M)) && (M > 0) ) {
         coreblas_error(6, "Illegal value of LDA");
         return -6;
     }
-    if ( (LDB < max(1,N)) && (N > 0) ) {
+    if ( (LDB < chameleon_max(1,N)) && (N > 0) ) {
         coreblas_error(8, "Illegal value of LDB");
         return -8;
     }
@@ -127,7 +127,7 @@ int CORE_zlatro(MORSE_enum uplo, MORSE_enum trans,
         if (trans == MorseConjTrans) {
             if(uplo == MorseUpper) {
                 for(j=0; j<N; j++)
-                    for(i=0; i<min(j+1,M); i++)
+                    for(i=0; i<chameleon_min(j+1,M); i++)
                         B[j+i*LDB] = conj(A[i+j*LDA]);
             }
             else if(uplo == MorseLower) {
@@ -144,7 +144,7 @@ int CORE_zlatro(MORSE_enum uplo, MORSE_enum trans,
         else {
             if(uplo==MorseUpper) {
                 for(j=0;j<N;j++)
-                    for(i=0;i<min(j+1,M);i++)
+                    for(i=0;i<chameleon_min(j+1,M);i++)
                         B[j+i*LDB] = A[i+j*LDA];
             }
             else if(uplo==MorseLower) {

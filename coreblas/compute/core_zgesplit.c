@@ -82,11 +82,11 @@ int CORE_zgesplit(MORSE_enum side, MORSE_enum diag,
         coreblas_error(2, "Illegal value of N");
         return -2;
     }
-    if ( (LDA < max(1,M)) && (M > 0) ) {
+    if ( (LDA < chameleon_max(1,M)) && (M > 0) ) {
         coreblas_error(5, "Illegal value of LDA");
         return -5;
     }
-    if ( (LDB < max(1,M)) && (M > 0) ) {
+    if ( (LDB < chameleon_max(1,M)) && (M > 0) ) {
         coreblas_error(7, "Illegal value of LDB");
         return -7;
     }
@@ -105,5 +105,6 @@ int CORE_zgesplit(MORSE_enum side, MORSE_enum diag,
                         morse_lapack_const(uplo),
                         M, N, 0., 1., A, LDA);
 
+    (void)diag;
     return MORSE_SUCCESS;
 }

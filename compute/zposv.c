@@ -123,17 +123,17 @@ int MORSE_zposv(MORSE_enum uplo, int N, int NRHS,
         morse_error("MORSE_zposv", "illegal value of NRHS");
         return -3;
     }
-    if (LDA < max(1, N)) {
+    if (LDA < chameleon_max(1, N)) {
         morse_error("MORSE_zposv", "illegal value of LDA");
         return -5;
     }
-    if (LDB < max(1, N)) {
+    if (LDB < chameleon_max(1, N)) {
         morse_error("MORSE_zposv", "illegal value of LDB");
         return -7;
     }
     /* Quick return - currently NOT equivalent to LAPACK's
      * LAPACK does not have such check for DPOSV */
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB depending on M, N & NRHS; Set NBNBSIZE */
@@ -324,7 +324,7 @@ int MORSE_zposv_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
     /* Quick return - currently NOT equivalent to LAPACK's
      * LAPACK does not have such check for DPOSV */
 /*
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 */
     morse_pzpotrf(uplo, A, sequence, request);

@@ -110,16 +110,16 @@ int MORSE_zgelqs(int M, int N, int NRHS,
         morse_error("MORSE_zgelqs", "illegal value of N");
         return -3;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zgelqs", "illegal value of LDA");
         return -5;
     }
-    if (LDB < max(1, max(1, N))) {
+    if (LDB < chameleon_max(1, chameleon_max(1, N))) {
         morse_error("MORSE_zgelqs", "illegal value of LDB");
         return -8;
     }
     /* Quick return */
-    if (min(M, min(N, NRHS)) == 0) {
+    if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
         return MORSE_SUCCESS;
     }
 
@@ -303,7 +303,7 @@ int MORSE_zgelqs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
     }
     /* Quick return */
 /*
-    if (min(M, min(N, NRHS)) == 0) {
+    if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
         return MORSE_SUCCESS;
     }
 */

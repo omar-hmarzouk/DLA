@@ -143,7 +143,7 @@ int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **des
     lm = IB * MT;
     ln = NB * NT;
 
-    size = (size_t)(min(MT, NT) * NB * NT * sizeof(int));
+    size = (size_t)(chameleon_min(MT, NT) * NB * NT * sizeof(int));
     if (size <= 0) {
         *IPIV = NULL;
         return MORSE_SUCCESS;

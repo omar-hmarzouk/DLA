@@ -84,7 +84,7 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
      * zunmqr = A->nb * ib
      * ztsmqr = 2 * A->nb * ib
      */
-    ws_worker = max( ws_worker, ib * A->nb * 2 );
+    ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif
 
 #if defined(CHAMELEON_USE_MAGMA)
@@ -93,15 +93,15 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
      * zgeqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
      * ztsqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
      */
-    ws_worker = max( ws_worker, ib * (ib + A->nb) );
+    ws_worker = chameleon_max( ws_worker, ib * (ib + A->nb) );
 
     /* Host space
      *
      * zgelqt =     ib * A->nb + 3 * ib * ib + A->nb
      * ztslqt = 3 * ib * A->nb +     ib * ib + A->nb
      */
-    ws_host = max( ws_host,     ib * A->nb + 3 * ib * ib + A->nb );
-    ws_host = max( ws_host, 3 * ib * A->nb +     ib * ib + A->nb );
+    ws_host = chameleon_max( ws_host,     ib * A->nb + 3 * ib * ib + A->nb );
+    ws_host = chameleon_max( ws_host, 3 * ib * A->nb +     ib * ib + A->nb );
 #endif
 
     ws_worker *= sizeof(MORSE_Complex64_t);
@@ -118,12 +118,12 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     }
 #endif
 
-    for (k = 0; k < min(A->mt, A->nt); k++) {
+    for (k = 0; k < chameleon_min(A->mt, A->nt); k++) {
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         ldak = BLKLDD(A, k);
         for (N = k; N < A->nt; N += BS) {
             tempNn = N == A->nt-1 ? A->n-N*A->nb : A->nb;
-            tempkmin = min(tempkm, tempNn);
+            tempkmin = chameleon_min(tempkm, tempNn);
             MORSE_TASK_zgelqt(
                 &options,
                 tempkm, tempNn, ib, T->nb,
@@ -156,7 +156,7 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
                     T(k, N), T->mb,
                     A(m, N), ldam);
             }
-            for (n = N+1; n < min(N+BS, A->nt); n++) {
+            for (n = N+1; n < chameleon_min(N+BS, A->nt); n++) {
                 tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
                 MORSE_TASK_ztslqt(
                     &options,

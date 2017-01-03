@@ -53,7 +53,7 @@ void morse_pzgetrf_nopiv(MORSE_desc_t *A,
 
     ib = MORSE_IB;
 
-    for (k = 0; k < min(A->mt, A->nt); k++) {
+    for (k = 0; k < chameleon_min(A->mt, A->nt); k++) {
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
         ldak = BLKLDD(A, k);

@@ -45,7 +45,7 @@ void MORSE_TASK_zplgsy( const MORSE_option_t *options,
     if ( morse_desc_islocal( A, Am, An ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE, &bump,       sizeof(MORSE_Complex64_t),
             STARPU_VALUE,    &m,                      sizeof(int),
             STARPU_VALUE,    &n,                      sizeof(int),

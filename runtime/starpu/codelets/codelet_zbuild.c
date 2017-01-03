@@ -51,7 +51,7 @@ void MORSE_TASK_zbuild( const MORSE_option_t *options,
     col_min = An*A->nb ;
     col_max = An == A->nt-1 ? A->n-1 : col_min+A->nb-1 ;
     starpu_insert_task(
-          codelet,
+          starpu_mpi_codelet(codelet),
           STARPU_VALUE,    &row_min,                      sizeof(int),
           STARPU_VALUE,    &row_max,                      sizeof(int),
           STARPU_VALUE,    &col_min,                      sizeof(int),

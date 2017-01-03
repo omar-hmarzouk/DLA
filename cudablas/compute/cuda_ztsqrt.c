@@ -23,6 +23,7 @@
  *
  **/
 #include "cudablas/include/cudablas.h"
+#include "cudablas/include/cudablas_z.h"
 
 #if defined(CHAMELEON_USE_MAGMA)
 int CUDA_ztsqrt(
@@ -56,11 +57,11 @@ int CUDA_ztsqrt(
         return -1;
     } else if (n < 0) {
         return -2;
-    } else if (ldda2 < max(1,m)) {
+    } else if (ldda2 < chameleon_max(1,m)) {
         return -4;
     }
 
-    k = min(m,n);
+    k = chameleon_min(m,n);
     if (k == 0) {
         hwork[0] = *((magmaDoubleComplex*) &one);
         return MAGMA_SUCCESS;
@@ -91,7 +92,7 @@ int CUDA_ztsqrt(
     /* This is only blocked code for now */
     for (i = 0; i < n; i += nb) {
 
-        ib = min(n-i, nb);
+        ib = chameleon_min(n-i, nb);
         rows = m;
 
         /* Send the next panel (diagonal block of A1 & block column of A2)

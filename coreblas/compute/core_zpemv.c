@@ -167,11 +167,11 @@ int CORE_zpemv(MORSE_enum trans, int storev,
         coreblas_error(4, "Illegal value of N");
         return -4;
     }
-    if (L > min(M ,N)) {
+    if (L > chameleon_min(M ,N)) {
         coreblas_error(5, "Illegal value of L");
         return -5;
     }
-    if (LDA < max(1,M)) {
+    if (LDA < chameleon_max(1,M)) {
         coreblas_error(8, "Illegal value of LDA");
         return -8;
     }

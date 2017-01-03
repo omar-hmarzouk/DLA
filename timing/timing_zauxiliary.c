@@ -33,7 +33,7 @@ int z_check_orthogonality(int M, int N, int LDQ, MORSE_Complex64_t *Q)
     double normQ;
     int info_ortho;
     int i;
-    int minMN = min(M, N);
+    int minMN = chameleon_min(M, N);
     double eps;
     double *work = (double *)malloc(minMN*sizeof(double));
 
@@ -89,7 +89,7 @@ int z_check_QRfactorization(int M, int N, MORSE_Complex64_t *A1, MORSE_Complex64
 
     MORSE_Complex64_t *Ql       = (MORSE_Complex64_t *)malloc(M*N*sizeof(MORSE_Complex64_t));
     MORSE_Complex64_t *Residual = (MORSE_Complex64_t *)malloc(M*N*sizeof(MORSE_Complex64_t));
-    double *work              = (double *)malloc(max(M,N)*sizeof(double));
+    double *work              = (double *)malloc(chameleon_max(M,N)*sizeof(double));
 
     alpha=1.0;
     beta=0.0;
@@ -226,7 +226,7 @@ double z_check_gemm(MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
 {
     MORSE_Complex64_t beta_const = -1.0;
     double Rnorm;
-    double *work = (double *)malloc(max(K,max(M, N))* sizeof(double));
+    double *work = (double *)malloc(chameleon_max(K,chameleon_max(M, N))* sizeof(double));
 
     *Cinitnorm   = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', M, N, Cref,    LDC, work);
     *Cmorsenorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', M, N, Cmorse, LDC, work);
@@ -256,7 +256,7 @@ double z_check_trsm(MORSE_enum side, MORSE_enum uplo, MORSE_enum trans, MORSE_en
 {
     MORSE_Complex64_t beta_const = -1.0;
     double Rnorm;
-    double *work = (double *)malloc(max(M, NRHS)* sizeof(double));
+    double *work = (double *)malloc(chameleon_max(M, NRHS)* sizeof(double));
     /*double eps = LAPACKE_dlamch_work('e');*/
 
     *Binitnorm   = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'i', M, NRHS, Bref,    LDB, work);
@@ -272,7 +272,7 @@ double z_check_trsm(MORSE_enum side, MORSE_enum uplo, MORSE_enum trans, MORSE_en
 
     Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'i', M, NRHS, Bref, LDB, work);
     Rnorm = Rnorm / *Blapacknorm;
-    /* max(M,NRHS) * eps);*/
+    /* chameleon_max(M,NRHS) * eps);*/
 
     free(work);
 
@@ -291,7 +291,7 @@ double z_check_solution(int M, int N, int NRHS, MORSE_Complex64_t *A, int LDA,
     double Rnorm = -1.00;
     MORSE_Complex64_t zone  =  1.0;
     MORSE_Complex64_t mzone = -1.0;
-    double *work = (double *)malloc(max(M, N)* sizeof(double));
+    double *work = (double *)malloc(chameleon_max(M, N)* sizeof(double));
 
     *anorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', M, N,    A, LDA, work);
     *xnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'I', M, NRHS, X, LDB, work);

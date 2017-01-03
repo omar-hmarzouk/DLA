@@ -115,11 +115,11 @@ int CORE_zgeqrt(int M, int N, int IB,
         coreblas_error(3, "Illegal value of IB");
         return -3;
     }
-    if ((LDA < max(1,M)) && (M > 0)) {
+    if ((LDA < chameleon_max(1,M)) && (M > 0)) {
         coreblas_error(5, "Illegal value of LDA");
         return -5;
     }
-    if ((LDT < max(1,IB)) && (IB > 0)) {
+    if ((LDT < chameleon_max(1,IB)) && (IB > 0)) {
         coreblas_error(7, "Illegal value of LDT");
         return -7;
     }
@@ -128,10 +128,10 @@ int CORE_zgeqrt(int M, int N, int IB,
     if ((M == 0) || (N == 0) || (IB == 0))
         return MORSE_SUCCESS;
 
-    k = min(M, N);
+    k = chameleon_min(M, N);
 
     for(i = 0; i < k; i += IB) {
-        sb = min(IB, k-i);
+        sb = chameleon_min(IB, k-i);
 
         LAPACKE_zgeqr2_work(LAPACK_COL_MAJOR, M-i, sb,
                             &A[LDA*i+i], LDA, &TAU[i], WORK);

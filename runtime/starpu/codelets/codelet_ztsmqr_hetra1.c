@@ -52,7 +52,7 @@ void MORSE_TASK_ztsmqr_hetra1(const MORSE_option_t *options,
          morse_desc_islocal( V,  Vm,  Vn  ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &side,              sizeof(MORSE_enum),
             STARPU_VALUE,    &trans,             sizeof(MORSE_enum),
             STARPU_VALUE,    &m1,                sizeof(int),

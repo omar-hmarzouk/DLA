@@ -53,7 +53,7 @@ void morse_pztradd(MORSE_enum uplo, MORSE_enum trans,
     switch(uplo){
     case MorseLower:
         if (trans == MorseNoTrans) {
-            for (n = 0; n < min(B->mt,B->nt); n++) {
+            for (n = 0; n < chameleon_min(B->mt,B->nt); n++) {
                 tempnm = n == B->mt-1 ? B->m-n*B->mb : B->mb;
                 tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                 ldan = BLKLDD(A, n);
@@ -79,7 +79,7 @@ void morse_pztradd(MORSE_enum uplo, MORSE_enum trans,
             }
         }
         else {
-            for (n = 0; n < min(B->mt,B->nt); n++) {
+            for (n = 0; n < chameleon_min(B->mt,B->nt); n++) {
                 tempnm = n == B->mt-1 ? B->m-n*B->mb : B->mb;
                 tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                 ldan = BLKLDD(A, n);
@@ -106,7 +106,7 @@ void morse_pztradd(MORSE_enum uplo, MORSE_enum trans,
         break;
     case MorseUpper:
         if (trans == MorseNoTrans) {
-            for (m = 0; m < min(B->mt,B->nt); m++) {
+            for (m = 0; m < chameleon_min(B->mt,B->nt); m++) {
                 tempmm = m == B->mt-1 ? B->m-B->mb*m : B->nb;
                 tempmn = m == B->nt-1 ? B->n-m*B->nb : B->nb;
                 ldam = BLKLDD(A, m);
@@ -130,7 +130,7 @@ void morse_pztradd(MORSE_enum uplo, MORSE_enum trans,
             }
         }
         else {
-            for (m = 0; m < min(B->mt,B->nt); m++) {
+            for (m = 0; m < chameleon_min(B->mt,B->nt); m++) {
                 tempmm = m == B->mt-1 ? B->m-B->mb*m : B->nb;
                 tempmn = m == B->nt-1 ? B->n-m*B->nb : B->nb;
                 ldam = BLKLDD(A, m);

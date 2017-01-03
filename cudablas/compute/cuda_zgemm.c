@@ -23,6 +23,7 @@
  *
  **/
 #include "cudablas/include/cudablas.h"
+#include "cudablas/include/cudablas_z.h"
 
 int CUDA_zgemm(MORSE_enum transa, MORSE_enum transb,
                int m, int n, int k,
@@ -33,6 +34,7 @@ int CUDA_zgemm(MORSE_enum transa, MORSE_enum transb,
                cuDoubleComplex *C, int ldc,
                CUBLAS_STREAM_PARAM)
 {
+
 #if !defined(CHAMELEON_USE_CUBLAS_V2)
     cublasSetKernelStream( stream );
 #endif

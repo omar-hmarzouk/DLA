@@ -26,13 +26,13 @@
 #include "timing_zauxiliary.h"
 
 static int
-RunTest(int *iparam, double *dparam, morse_time_t *t_) 
+RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
     MORSE_Complex64_t alpha, beta;
     PASTE_CODE_IPARAM_LOCALS( iparam );
 
-    LDB = max(K, iparam[IPARAM_LDB]);
-    LDC = max(M, iparam[IPARAM_LDC]);
+    LDB = chameleon_max(K, iparam[IPARAM_LDB]);
+    LDC = chameleon_max(M, iparam[IPARAM_LDC]);
 
     /* Allocate Data */
     PASTE_CODE_ALLOCATE_MATRIX( A,      1, MORSE_Complex64_t, LDA, K   );

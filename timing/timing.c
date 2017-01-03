@@ -700,9 +700,9 @@ main(int argc, char *argv[]) {
     {
         if ( nx > 0 ) {
             iparam[IPARAM_M] = i;
-            iparam[IPARAM_N] = max(1, i/nx);
+            iparam[IPARAM_N] = chameleon_max(1, i/nx);
         } else if ( mx > 0 ) {
-            iparam[IPARAM_M] = max(1, i/mx);
+            iparam[IPARAM_M] = chameleon_max(1, i/mx);
             iparam[IPARAM_N] = i;
         } else {
             if ( m == -1 )

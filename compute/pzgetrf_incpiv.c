@@ -56,7 +56,7 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
     int ldak, ldam;
     int tempkm, tempkn, tempmm, tempnn;
     int ib;
-    int minMNT = min(A->mt, A->nt);
+    int minMNT = chameleon_min(A->mt, A->nt);
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
@@ -75,7 +75,7 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
 
     /* necessary to avoid dependencies between tasks regarding the diag tile */
     DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, min(A->m, A->n), A->nb, 0, 0, min(A->m, A->n), A->nb, A->p, A->q);
+    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, chameleon_min(A->m, A->n), A->nb, 0, 0, chameleon_min(A->m, A->n), A->nb, A->p, A->q);
 
     for (k = 0; k < minMNT; k++) {
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;

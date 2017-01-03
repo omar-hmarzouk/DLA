@@ -132,13 +132,13 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
         morse_error("MORSE_zlantr", "illegal value of N");
         return -5;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zlantr", "illegal value of LDA");
         return -7;
     }
 
     /* Quick return */
-    if (min(N, M) == 0)
+    if (chameleon_min(N, M) == 0)
       return (double)0.0;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
@@ -315,7 +315,7 @@ int MORSE_zlantr_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
     }
 
     /* Quick return */
-    if (min(A->m, A->n) == 0) {
+    if (chameleon_min(A->m, A->n) == 0) {
         *value = 0.0;
         return MORSE_SUCCESS;
     }

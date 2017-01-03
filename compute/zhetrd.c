@@ -143,7 +143,7 @@ int MORSE_zhetrd(MORSE_enum jobz, MORSE_enum uplo, int N,
         morse_error("MORSE_zhetrd", "illegal value of N");
         return -2;
     }
-    if (LDA < max(1, N)) {
+    if (LDA < chameleon_max(1, N)) {
         morse_error("MORSE_zhetrd", "illegal value of LDA");
         return -4;
     }

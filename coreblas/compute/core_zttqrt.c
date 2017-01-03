@@ -134,7 +134,7 @@ int CORE_zttqrt(int M, int N, int IB,
         coreblas_error(3, "Illegal value of IB");
         return -3;
     }
-    if ((LDA2 < max(1,M)) && (M > 0)) {
+    if ((LDA2 < chameleon_max(1,M)) && (M > 0)) {
         coreblas_error(7, "Illegal value of LDA2");
         return -7;
     }
@@ -149,10 +149,10 @@ int CORE_zttqrt(int M, int N, int IB,
                  0., 0., T, LDT);
 
     for (ii = 0; ii < N; ii += IB) {
-        sb = min(N-ii, IB);
+        sb = chameleon_min(N-ii, IB);
         for (i = 0; i < sb; i++) {
             j  = ii + i;
-            mi = min( j + 1, M );
+            mi = chameleon_min( j + 1, M );
             ni = sb-i-1;
 
             /*
@@ -206,12 +206,12 @@ int CORE_zttqrt(int M, int N, int IB,
 
             if ( i > 0 ) {
 
-                l = min(i, max(0, M-ii));
+                l = chameleon_min(i, chameleon_max(0, M-ii));
                 alpha = -(TAU[j]);
 
                 CORE_zpemv(
                         MorseConjTrans, MorseColumnwise,
-                        min(j, M), i, l,
+                        chameleon_min(j, M), i, l,
                         alpha, &A2[LDA2*ii], LDA2,
                                &A2[LDA2*j],  1,
                         zzero, &T[LDT*j],    1,
@@ -232,9 +232,9 @@ int CORE_zttqrt(int M, int N, int IB,
 
         /* Apply Q' to the rest of the matrix to the left  */
         if (N > ii+sb) {
-            mi = min(ii+sb, M);
+            mi = chameleon_min(ii+sb, M);
             ni = N-(ii+sb);
-            l  = min(sb, max(0, mi-ii));
+            l  = chameleon_min(sb, chameleon_max(0, mi-ii));
             CORE_zparfb(
                 MorseLeft, MorseConjTrans,
                 MorseForward, MorseColumnwise,

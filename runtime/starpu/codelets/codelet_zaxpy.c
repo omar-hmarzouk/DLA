@@ -36,7 +36,7 @@ void MORSE_TASK_zaxpy(const MORSE_option_t *options,
     if ( morse_desc_islocal( A, Am, An ) ||
          morse_desc_islocal( B, Bm, Bn ) ){
         starpu_insert_task(
-                codelet,
+                starpu_mpi_codelet(codelet),
                 STARPU_VALUE,    &M,                           sizeof(int),
                 STARPU_VALUE,    alpha,                       sizeof(MORSE_Complex64_t),
                 STARPU_R,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),

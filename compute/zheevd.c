@@ -126,7 +126,7 @@ int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N,
         morse_error("MORSE_zheevd", "illegal value of N");
         return -3;
     }
-    if (LDA < max(1, N)) {
+    if (LDA < chameleon_max(1, N)) {
         morse_error("MORSE_zheevd", "illegal value of LDA");
         return -5;
     }
@@ -393,7 +393,7 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
     }
 
     N   = descA.m;
-    NB  = min(descA.mb,descA.m);
+    NB  = chameleon_min(descA.mb,descA.m);
 
     /* Allocate data structures for reduction to tridiagonal form */
     E = malloc( (N - 1) * sizeof(double) );

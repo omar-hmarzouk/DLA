@@ -23,6 +23,7 @@
  *
  **/
 #include "cudablas/include/cudablas.h"
+#include "cudablas/include/cudablas_z.h"
 
 int
 CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
@@ -264,5 +265,6 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
         return MORSE_ERR_NOT_SUPPORTED;
     }
 
+    (void)L;
     return MORSE_SUCCESS;
 }

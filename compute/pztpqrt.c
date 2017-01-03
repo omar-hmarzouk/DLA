@@ -56,10 +56,8 @@ void morse_pztpqrt( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T,
     ib = MORSE_IB;
 
     /*
-     * zgeqrt = A->nb * (ib+1)
-     * zunmqr = A->nb * ib
-     * ztsqrt = A->nb * (ib+1)
-     * ztsmqr = A->nb * ib
+     * ztsqrt  = A->nb * (ib+1)
+     * ztpmqrt = A->nb * ib
      */
     ws_worker = A->nb * (ib+1);
 
@@ -67,27 +65,24 @@ void morse_pztpqrt( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T,
 #if defined(CHAMELEON_USE_CUDA)
     /* Worker space
      *
-     * zunmqr = A->nb * ib
-     * ztsmqr = 2 * A->nb * ib
+     * ztpmqrt = 2 * A->nb * ib
      */
-    ws_worker = max( ws_worker, ib * A->nb * 2 );
+    ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif
 
 #if defined(CHAMELEON_USE_MAGMA)
     /* Worker space
      *
-     * zgeqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
-     * ztsqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
+     * ztpqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
      */
-    ws_worker = max( ws_worker, ib * (ib + A->nb) );
+    ws_worker = chameleon_max( ws_worker, ib * (ib + A->nb) );
 
     /* Host space
      *
-     * zgeqrt = ib * (A->mb+3*ib) + A->mb )
-     * ztsqrt = 2 * ib * (A->nb+ib) + A->nb
+     * ztpqrt = 2 * ib * (A->nb+ib) + A->nb
      */
-    ws_host = max( ws_host, ib * (A->mb + 3 * ib) + A->mb );
-    ws_host = max( ws_host,  2 * ib * (A->nb + ib) + A->nb );
+    ws_host = chameleon_max( ws_host, ib * (A->mb + 3 * ib) + A->mb );
+    ws_host = chameleon_max( ws_host,  2 * ib * (A->nb + ib) + A->nb );
 #endif
 
     ws_worker *= sizeof(MORSE_Complex64_t);
@@ -124,7 +119,7 @@ void morse_pztpqrt( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T,
             }
         }
 
-        maxmt = min( B->mt, maxmt+1 );
+        maxmt = chameleon_min( B->mt, maxmt+1 );
     }
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);

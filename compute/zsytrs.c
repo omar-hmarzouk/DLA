@@ -107,16 +107,16 @@ int MORSE_zsytrs(MORSE_enum uplo, int N, int NRHS,
         morse_error("MORSE_zsytrs", "illegal value of NRHS");
         return -3;
     }
-    if (LDA < max(1, N)) {
+    if (LDA < chameleon_max(1, N)) {
         morse_error("MORSE_zsytrs", "illegal value of LDA");
         return -5;
     }
-    if (LDB < max(1, N)) {
+    if (LDB < chameleon_max(1, N)) {
         morse_error("MORSE_zsytrs", "illegal value of LDB");
         return -7;
     }
     /* Quick return */
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
@@ -292,7 +292,7 @@ int MORSE_zsytrs_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
     }
     /* Quick return */
 /*
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 */
     morse_pztrsm(MorseLeft, uplo, uplo == MorseUpper ? MorseTrans : MorseNoTrans, MorseNonUnit, 1.0, A, B, sequence, request);

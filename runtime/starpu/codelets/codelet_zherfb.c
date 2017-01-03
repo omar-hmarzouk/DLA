@@ -45,7 +45,7 @@ void MORSE_TASK_zherfb(const MORSE_option_t *options,
          morse_desc_islocal( C, Cm, Cn ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &uplo,              sizeof(MORSE_enum),
             STARPU_VALUE,    &n,                 sizeof(int),
             STARPU_VALUE,    &k,                 sizeof(int),
@@ -112,6 +112,7 @@ static void cl_zherfb_cuda_func(void *descr[], void *cl_arg)
     int ldc;
     cuDoubleComplex *WORK;
     int ldwork;
+    CUstream stream;
 
     stream = starpu_cuda_get_local_stream();
 
@@ -122,7 +123,7 @@ static void cl_zherfb_cuda_func(void *descr[], void *cl_arg)
 
     starpu_codelet_unpack_args(cl_arg, &uplo, &n, &k, &ib, &nb, &lda, &ldt, &ldc, &ldwork);
 
-    CUDA_zherfb(uplo, n, k, ib, nb, A, lda, T, ldt, C, ldc, WORK, ldwork);
+    CUDA_zherfb( uplo, n, k, ib, nb, A, lda, T, ldt, C, ldc, WORK, ldwork, stream );
 
 #ifndef STARPU_CUDA_ASYNC
     cudaStreamSynchronize( stream );
@@ -134,4 +135,4 @@ static void cl_zherfb_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-CODELETS(zherfb, 4, cl_zherfb_cpu_func, cl_zherfb_cuda_func, STARPU_CUDA_ASYNC);
+CODELETS(zherfb, 4, cl_zherfb_cpu_func, cl_zherfb_cuda_func, STARPU_CUDA_ASYNC)

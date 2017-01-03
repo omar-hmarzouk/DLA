@@ -120,4 +120,15 @@ extern double creal(MORSE_Complex64_t z);
 
 #endif /* MORSE_HAS_COMPLEX_H*/
 
+/*******************************************************************************
+ *  Global utilities
+ **/
+static inline int chameleon_max( int a, int b ) {
+    if ( a > b ) return a; else return b;
+}
+
+static inline int chameleon_min( int a, int b ) {
+    if ( a < b ) return a; else return b;
+}
+
 #endif /* __CHAMELEON_H__ */

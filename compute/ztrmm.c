@@ -133,9 +133,9 @@ int MORSE_ztrmm(MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrmm", "illegal value of uplo");
         return -2;
     }
-    if (transA != MorseConjTrans && 
-        transA != MorseNoTrans   && 
-        transA != MorseTrans ) 
+    if (transA != MorseConjTrans &&
+        transA != MorseNoTrans   &&
+        transA != MorseTrans )
     {
         morse_error("MORSE_ztrmm", "illegal value of transA");
         return -3;
@@ -152,16 +152,16 @@ int MORSE_ztrmm(MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrmm", "illegal value of NRHS");
         return -6;
     }
-    if (LDA < max(1, NA)) {
+    if (LDA < chameleon_max(1, NA)) {
         morse_error("MORSE_ztrmm", "illegal value of LDA");
         return -8;
     }
-    if (LDB < max(1, N)) {
+    if (LDB < chameleon_max(1, N)) {
         morse_error("MORSE_ztrmm", "illegal value of LDB");
         return -10;
     }
     /* Quick return */
-    if (min(N, NRHS) == 0)
+    if (chameleon_min(N, NRHS) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
@@ -288,7 +288,7 @@ int MORSE_ztrmm_Tile(MORSE_enum side, MORSE_enum uplo,
     morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu(A);
         RUNTIME_desc_getoncpu(B);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

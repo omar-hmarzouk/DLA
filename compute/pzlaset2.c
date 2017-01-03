@@ -45,7 +45,7 @@ void morse_pzlaset2(MORSE_enum uplo, MORSE_Complex64_t alpha,
     int ldai, ldaj;
     int tempim;
     int tempjm, tempjn;
-    int minmn = min(A->mt, A->nt);
+    int minmn = chameleon_min(A->mt, A->nt);
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
@@ -76,7 +76,7 @@ void morse_pzlaset2(MORSE_enum uplo, MORSE_Complex64_t alpha,
     else if (uplo == MorseUpper) {
        for (j = 1; j < A->nt; j++){
            tempjn = j == A->nt-1 ? A->n-j*A->nb : A->nb;
-           for (i = 0; i < min(j, A->mt); i++){
+           for (i = 0; i < chameleon_min(j, A->mt); i++){
                tempim = i == A->mt-1 ? A->m-i*A->mb : A->mb;
                ldai = BLKLDD(A, i);
                MORSE_TASK_zlaset2(

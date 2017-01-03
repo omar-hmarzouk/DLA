@@ -48,7 +48,7 @@ void MORSE_TASK_zlag2c(const MORSE_option_t *options,
          morse_desc_islocal( B, Bm, Bn ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &m,                 sizeof(int),
             STARPU_VALUE,    &n,                 sizeof(int),
             STARPU_R,         RTBLKADDR(A, MORSE_Complex64_t, Am, An),
@@ -94,7 +94,7 @@ void MORSE_TASK_clag2z(const MORSE_option_t *options,
          morse_desc_islocal( B, Bm, Bn ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &m,                 sizeof(int),
             STARPU_VALUE,    &n,                 sizeof(int),
             STARPU_R,         RTBLKADDR(A, MORSE_Complex32_t, Am, An),

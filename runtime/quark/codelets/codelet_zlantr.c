@@ -34,8 +34,9 @@ void MORSE_TASK_zlantr(const MORSE_option_t *options,
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_LANTR;
-    int szeW = max( 1, N );
-    QUARK_Insert_Task(opt->quark, CORE_zlantr_quark, (Quark_Task_Flags*)opt,
+    int szeW = chameleon_max( 1, N );
+    QUARK_Insert_Task(
+        opt->quark, CORE_zlantr_quark, (Quark_Task_Flags*)opt,
         sizeof(MORSE_enum),              &norm,  VALUE,
         sizeof(MORSE_enum),              &uplo,  VALUE,
         sizeof(MORSE_enum),              &diag,  VALUE,

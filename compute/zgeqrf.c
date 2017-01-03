@@ -99,13 +99,13 @@ int MORSE_zgeqrf(int M, int N,
         morse_error("MORSE_zgeqrf", "illegal value of N");
         return -2;
     }
-    if (LDA < max(1, M)) {
+    if (LDA < chameleon_max(1, M)) {
         morse_error("MORSE_zgeqrf", "illegal value of LDA");
         return -4;
     }
 
     /* Quick return */
-    if (min(M, N) == 0)
+    if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 
     /* Tune NB & IB depending on M, N & NRHS; Set NBNBSIZE */
@@ -119,7 +119,7 @@ int MORSE_zgeqrf(int M, int N,
     NB = MORSE_NB;
 
     morse_sequence_create(morse, &sequence);
- 
+
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
         morse_zooplap2tile( descA, A, NB, NB, LDA, N, 0, 0, M, N, sequence, &request,
                              morse_desc_mat_free(&(descA)) );
@@ -273,7 +273,7 @@ int MORSE_zgeqrf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
     }
     /* Quick return */
 /*
-    if (min(M, N) == 0)
+    if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 */
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {

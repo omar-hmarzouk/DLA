@@ -110,12 +110,12 @@ int MORSE_zbuild( MORSE_enum uplo, int M, int N,
     morse_error("MORSE_zbuild", "illegal value of N");
     return -2;
   }
-  if (LDA < max(1, M)) {
+  if (LDA < chameleon_max(1, M)) {
     morse_error("MORSE_zbuild", "illegal value of LDA");
     return -4;
   }
   /* Quick return */
-  if (min(M, N) == 0)
+  if (chameleon_min(M, N) == 0)
     return MORSE_SUCCESS;
 
   /* Tune NB depending on M, N & NRHS; Set NBNB */
@@ -280,7 +280,7 @@ int MORSE_zbuild_Tile_Async( MORSE_enum uplo, MORSE_desc_t     *A,
   }
 
   /* Quick return */
-  if (min( A->m, A->n ) == 0)
+  if (chameleon_min( A->m, A->n ) == 0)
     return MORSE_SUCCESS;
 
   morse_pzbuild(uplo, A, user_data, user_build_callback, sequence,  request);

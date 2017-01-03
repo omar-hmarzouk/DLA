@@ -92,7 +92,7 @@ CORE_zgetf2_nopiv(int M, int N,
         coreblas_error(2, "Illegal value of N");
         return -2;
     }
-    if ((LDA < max(1,M)) && (M > 0)) {
+    if ((LDA < chameleon_max(1,M)) && (M > 0)) {
         coreblas_error(5, "Illegal value of LDA");
         return -5;
     }
@@ -102,7 +102,7 @@ CORE_zgetf2_nopiv(int M, int N,
         return MORSE_SUCCESS;
 
     sfmin = LAPACKE_dlamch_work('S');
-    k = min(M, N);
+    k = chameleon_min(M, N);
     for(i=0 ; i < k; i++) {
         alpha = A[i*LDA+i];
         if ( alpha != (MORSE_Complex64_t)0.0 ) {

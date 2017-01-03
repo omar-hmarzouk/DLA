@@ -35,9 +35,12 @@ void MORSE_TASK_zlantr(const MORSE_option_t *options,
 {
     struct starpu_codelet *codelet = &cl_zlantr;
     void (*callback)(void*) = options->profiling ? cl_zlange_callback : NULL;
+
     if ( morse_desc_islocal( A, Am, An ) ||
-         morse_desc_islocal( B, Bm, Bn ) ){
-        starpu_insert_task(codelet,
+         morse_desc_islocal( B, Bm, Bn ) )
+    {
+        starpu_insert_task(
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &norm,              sizeof(MORSE_enum),
             STARPU_VALUE,    &uplo,              sizeof(MORSE_enum),
             STARPU_VALUE,    &diag,              sizeof(MORSE_enum),
@@ -54,6 +57,8 @@ void MORSE_TASK_zlantr(const MORSE_option_t *options,
 #endif
             0);
     }
+
+    (void)NB;
 }
 
 #if !defined(CHAMELEON_SIMULATION)

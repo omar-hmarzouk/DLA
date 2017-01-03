@@ -181,8 +181,8 @@ int CORE_ztpmqrt( MORSE_enum side, MORSE_enum trans,
     }
     else {
         //LAPACKE_ztpmqrt_work( LAPACK_COL_MAJOR, M, N, K, L, IB, V, LDV, T, LDT, A, LDA, B, LDB, WORK );
-        coreblas_error( 3, "Illegal value of L (only 0 or M handled for now)");
-        return -3;
+        coreblas_error( 6, "Illegal value of L (only 0 or M handled for now)");
+        return -6;
     }
 
     return MORSE_SUCCESS;

@@ -39,7 +39,7 @@ void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
          morse_desc_islocal( T, Tm, Tn ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE, &M,     sizeof(int),
             STARPU_VALUE, &N,     sizeof(int),
             STARPU_VALUE, &L,     sizeof(int),

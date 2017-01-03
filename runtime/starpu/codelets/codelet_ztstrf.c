@@ -118,7 +118,7 @@ void MORSE_TASK_ztstrf(const MORSE_option_t *options,
          morse_desc_islocal( L, Lm, Ln ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &m,                         sizeof(int),
             STARPU_VALUE,    &n,                         sizeof(int),
             STARPU_VALUE,    &ib,                        sizeof(int),
@@ -187,7 +187,7 @@ static void cl_ztstrf_cpu_func(void *descr[], void *cl_arg)
     {
         int i, sb;
         for (i=0; i<n; i+=ib) {
-            sb = min( ib, n-i );
+            sb = chameleon_min( ib, n-i );
             CORE_zlacpy(MorseUpperLower, sb, sb, L+(i*ldl), ldl, L+(i*ldl)+ib, ldl );
 
             CORE_ztrtri( MorseLower, MorseUnit, sb, L+(i*ldl)+ib, ldl, &info );

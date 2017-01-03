@@ -108,7 +108,7 @@ void MORSE_TASK_zgelqt(const MORSE_option_t *options,
          morse_desc_islocal( T, Tm, Tn ) )
     {
         starpu_insert_task(
-            codelet,
+            starpu_mpi_codelet(codelet),
             STARPU_VALUE,    &m,                 sizeof(int),
             STARPU_VALUE,    &n,                 sizeof(int),
             STARPU_VALUE,    &ib,                sizeof(int),
@@ -149,7 +149,7 @@ static void cl_zgelqt_cpu_func(void *descr[], void *cl_arg)
 
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &ldt, &h_work);
 
-    WORK = TAU + max( m, n );
+    WORK = TAU + chameleon_max( m, n );
     CORE_zgelqt(m, n, ib, A, lda, T, ldt, TAU, WORK);
 }
 #endif /* !defined(CHAMELEON_SIMULATION) */
@@ -182,7 +182,7 @@ static void cl_zgelqt_cuda_func(void *descr[], void *cl_arg)
     /* Gather pointer to scratch data on host */
     h_T   = h_A   + ib*n;
     h_TAU = h_T   + ib*ib;
-    h_W   = h_TAU + max(m,n);
+    h_W   = h_TAU + chameleon_max(m,n);
     h_D   = h_W   + ib*ib;
 
     stream = starpu_cuda_get_local_stream();
