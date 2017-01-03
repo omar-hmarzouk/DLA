@@ -83,8 +83,6 @@ MACRO(GENERATE_PKGCONFIG_FILE _file)
 
         list(APPEND CHAMELEON_PKGCONFIG_LIBS 
         -lcoreblas
-        -lsimulapacke
-        -lsimucblas
         ${EXTRA_LIBRARIES}
         )
 

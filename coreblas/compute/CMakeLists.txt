@@ -114,8 +114,6 @@ set_property(TARGET coreblas PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/
 
 if(NOT CHAMELEON_SIMULATION)
   target_link_libraries(coreblas ${LAPACKE_LIBRARIES} ${CBLAS_LIBRARIES})
-else(NOT CHAMELEON_SIMULATION)
-  target_link_libraries(coreblas simulapacke simucblas)
 endif(NOT CHAMELEON_SIMULATION)
 
 # # Dependencies step
