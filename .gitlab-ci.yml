@@ -1,9 +1,4 @@
-stages:
-  - build
-  - test
-
-build:
-  stage: build
+buildandtest:
   script:
     - git submodule init
     - git submodule update
@@ -11,7 +6,4 @@ build:
     - cd build
     - cmake ..
     - make -j2
-
-test:
-  stage: test
-  script: ctest
+    - ctest -R test_shm_s
