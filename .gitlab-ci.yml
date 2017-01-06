@@ -1,9 +1,19 @@
-buildandtest:
+starpu:
   script:
     - git submodule init
     - git submodule update
     - mkdir build
     - cd build
     - cmake ..
+    - make -j2
+    - ctest -R test_shm_s
+
+quark:
+  script:
+    - git submodule init
+    - git submodule update
+    - mkdir build
+    - cd build
+    - cmake .. -DCHAMELEON_SCHED_QUARK=ON -DQUARK_DIR=/home/ci/quark-0.9.0/install
     - make -j2
     - ctest -R test_shm_s
