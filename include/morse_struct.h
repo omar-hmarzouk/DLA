@@ -33,11 +33,12 @@
 /** ****************************************************************************
  * RUNTIME headers to include types of :
  *         - QUARK
+ *         - PaRSEC
  *         - StarPU
  **/
 typedef enum morse_sched_e {
-  RUNTIME_SCHED_PARSEC,
   RUNTIME_SCHED_QUARK,
+  RUNTIME_SCHED_PARSEC,
   RUNTIME_SCHED_STARPU,
 } MORSE_sched_t;
 

@@ -32,14 +32,11 @@
 #define MORSE_VERSION_MINOR @MORSE_VERSION_MINOR@
 #define MORSE_VERSION_MICRO @MORSE_VERSION_MICRO@
 
-#define CHAMELEON_VERSION_MAJOR @CHAMELEON_VERSION_MAJOR@
-#define CHAMELEON_VERSION_MINOR @CHAMELEON_VERSION_MINOR@
-#define CHAMELEON_VERSION_MICRO @CHAMELEON_VERSION_MICRO@
-
 
 /* ****************************************************************************
  * MORSE types and constants
  */
+#include "morse_config.h"
 #include "morse_types.h"
 #include "morse_struct.h"
 #include "morse_constants.h"

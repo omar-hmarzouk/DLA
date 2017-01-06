@@ -36,7 +36,7 @@ if ( CBLAS_FOUND AND LAPACKE_FOUND AND LAPACK_FOUND AND CUDA_FOUND AND CUDA_CUBL
     check_function_exists(magma_dgetrf_incpiv_gpu MAGMA_DGETRF_INCPIV_GPU_FOUND)
     if ( MAGMA_DGETRF_INCPIV_GPU_FOUND )
         message(STATUS "Set HAVE_MAGMA_GETRF_INCPIV_GPU")
-        add_definitions(-DHAVE_MAGMA_GETRF_INCPIV_GPU)
+        set (HAVE_MAGMA_GETRF_INCPIV_GPU 1)
     endif()
 endif()
 

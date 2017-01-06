@@ -16,7 +16,7 @@
 void RUNTIME_context_create(MORSE_context_t *morse)
 {
     /* In case of PaRSEC, this is done in init */
-    morse->scheduler = CHAMELEON_SCHED_PARSEC;
+    morse->scheduler = RUNTIME_SCHED_PARSEC;
     return;
 }
 
