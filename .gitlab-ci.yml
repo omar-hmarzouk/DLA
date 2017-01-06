@@ -14,6 +14,6 @@ quark:
     - git submodule update
     - mkdir build
     - cd build
-    - cmake .. -DCHAMELEON_SCHED_QUARK=ON -DQUARK_DIR=/home/ci/quark-0.9.0/install
+    - cmake .. -DCHAMELEON_SCHED_QUARK=ON
     - make -j2
     - ctest -R test_shm_s
