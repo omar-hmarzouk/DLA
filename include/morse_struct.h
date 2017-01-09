@@ -28,6 +28,7 @@
 #ifndef _MORSE_STRUCT_H_
 #define _MORSE_STRUCT_H_
 
+#include "include/chameleon_config.h"
 #include "morse_types.h"
 
 /** ****************************************************************************

@@ -37,11 +37,16 @@ set(ZHDR
 precisions_rules_py(CHAMELEON_HDRS_GENERATED "${ZHDR}"
                     PRECISIONS "s;d;c;z;ds;zc")
 
+configure_file("config.h.in"
+               "config.h"
+               @ONLY)
+
 # Define the list of headers
 # --------------------------
 set(CHAMELEON_HDRS
     async.h
     auxiliary.h
+    config.h
     common.h
     context.h
     descriptor.h
