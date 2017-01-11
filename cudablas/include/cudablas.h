@@ -37,6 +37,8 @@
 #include <cuda.h>
 #include <cuComplex.h>
 
+#include "include/chameleon_config.h"
+
 #if defined(CHAMELEON_USE_CUBLAS_V2)
 
 #include <cublas_v2.h>

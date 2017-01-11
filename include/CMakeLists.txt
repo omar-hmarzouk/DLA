@@ -3,7 +3,7 @@
 # @copyright (c) 2009-2014 The University of Tennessee and The University
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
-# @copyright (c) 2012-2014 Inria. All rights reserved.
+# @copyright (c) 2012-2017 Inria. All rights reserved.
 # @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
@@ -22,6 +22,7 @@
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
+#  @author Florent Pruvost
 #  @date 13-07-2012
 #
 ###
@@ -40,8 +41,8 @@ set(ZHDR
 precisions_rules_py(CHAMELEON_HDRS_GENERATED "${ZHDR}"
                     PRECISIONS "z;c;d;s;zc;ds")
 
-configure_file("morse_config.h.in"
-               "morse_config.h"
+configure_file("chameleon_config.h.in"
+               "chameleon_config.h"
                @ONLY)
 configure_file("morse.h.in"
                "morse.h"
@@ -50,12 +51,12 @@ configure_file("morse.h.in"
 # Define the list of headers
 # --------------------------
 set(CHAMELEON_HDRS
+    chameleon_config.h
     morse_constants.h
     morse_kernels.h
     morse_simulate.h
     morse_struct.h
     morse_types.h
-    morse_config.h
     morse.h
     runtime.h
     ${CHAMELEON_HDRS_GENERATED}
@@ -83,7 +84,7 @@ set(HDR_INSTALL
 foreach( hdr_file ${CHAMELEON_HDRS_GENERATED} )
     list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
 endforeach()
-list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/morse.h ${CMAKE_CURRENT_BINARY_DIR}/morse_config.h)
+list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/morse.h ${CMAKE_CURRENT_BINARY_DIR}/chameleon_config.h)
 
 # installation
 # ------------

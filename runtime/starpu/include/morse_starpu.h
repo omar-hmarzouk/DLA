@@ -32,6 +32,8 @@
 #ifndef _MORSE_STARPU_H_
 #define _MORSE_STARPU_H_
 
+#include "include/chameleon_config.h"
+
 #if defined(CHAMELEON_USE_MPI)
 #include <starpu_mpi.h>
 #else

@@ -25,6 +25,7 @@
 #ifndef _MORSE_CUDA_ZBLAS_H_
 #define _MORSE_CUDA_ZBLAS_H_
 
+#include "include/chameleon_config.h"
 #include "morse_types.h"
 
 #ifdef __cplusplus

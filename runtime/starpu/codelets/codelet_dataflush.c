@@ -26,8 +26,8 @@
  **/
 #include "runtime/starpu/include/morse_starpu.h"
 
-#ifdef CHAMELEON_USE_STARPU_DATA_WONT_USE
-#elif defined CHAMELEON_USE_STARPU_IDLE_PREFETCH
+#ifdef HAVE_STARPU_DATA_WONT_USE
+#elif defined HAVE_STARPU_IDLE_PREFETCH
 static void data_flush(void *handle)
 {
         starpu_data_idle_prefetch_on_node(handle, STARPU_MAIN_RAM, 1);
@@ -63,9 +63,9 @@ void MORSE_TASK_dataflush(const MORSE_option_t *options,
             if ( A->myrank == A->get_rankof( A, Am, An ) )
             {
                 /* Push data to main memory when we have time to */
-#ifdef CHAMELEON_USE_STARPU_DATA_WONT_USE
+#ifdef HAVE_STARPU_DATA_WONT_USE
                 starpu_data_wont_use(*ptrtile);
-#elif defined CHAMELEON_USE_STARPU_IDLE_PREFETCH
+#elif defined HAVE_STARPU_IDLE_PREFETCH
                 starpu_data_acquire_on_node_cb(*ptrtile, -1, STARPU_R, data_flush, *ptrtile);
 #else
                 starpu_data_acquire_cb(*ptrtile, STARPU_R, data_release, *ptrtile);
