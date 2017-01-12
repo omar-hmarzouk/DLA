@@ -4,9 +4,11 @@ starpu:
     - git submodule update
     - mkdir build
     - cd build
-    - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$PWD/install
+    - cmake ..
     - make -j2
     - ctest -R test_shm_s
+    - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$PWD/install
+    - make -j2
     - ctest -R mpi_s
 
 quark:
