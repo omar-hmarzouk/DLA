@@ -391,7 +391,7 @@ int MORSE_ztpgqrt_Tile_Async( int L,
         morse_error("MORSE_ztpgqrt_Tile", "only square tiles supported");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
-    if (((Q2->m - L) % Q2->mb) != 0) {
+    if ( (L != 0) && (((Q2->m - L) % Q2->mb) != 0) ) {
         morse_error("MORSE_ztpgqrt_Tile", "Triangular part must be aligned with tiles");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
