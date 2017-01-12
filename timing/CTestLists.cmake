@@ -17,7 +17,7 @@ if (CHAMELEON_USE_CUDA AND CUDA_FOUND)
    set( TEST_CATEGORIES ${TEST_CATEGORIES} shmgpu )
 endif()
 
-set(TESTLIST 
+set(TESTLIST
     gels
     gemm
     getrf_incpiv
@@ -57,8 +57,8 @@ endforeach()
 
 if (CHAMELEON_USE_MPI AND MPI_C_FOUND)
     set( TEST_CATEGORIES mpi )
-    set( TEST_CMD_mpi    --p=2 --n_range=2000:2000:1)
-    set( TEST_CMD_mpigpu --p=2 --n_range=2000:2000:1 --gpus=1)
+    set( TEST_CMD_mpi    --p=2 --n_range=2000:2000:1 --nb==32)
+    set( TEST_CMD_mpigpu --p=2 --n_range=2000:2000:1 --nb==32 --gpus=1)
     #set( TEST_CATEGORIES ${TEST_CATEGORIES} mpi )
     #if (CHAMELEON_USE_CUDA AND CUDA_FOUND)
     #    set( TEST_CATEGORIES ${TEST_CATEGORIES} mpigpu )
@@ -78,4 +78,3 @@ if (CHAMELEON_USE_MPI AND MPI_C_FOUND)
         endforeach()
     endforeach()
 endif()
-
