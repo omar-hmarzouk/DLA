@@ -67,7 +67,7 @@ int testing_zgeqrf_qdwh(int argc, char **argv)
     int LDA = 2*M;
     double eps;
     int info_ortho, info_solution, info_factorization;
-    int i, j, rc;
+    int i, j;
 
     /**
      * Compute A = QR with
@@ -109,17 +109,14 @@ int testing_zgeqrf_qdwh(int argc, char **argv)
     LAPACKE_zlacpy_work( LAPACK_COL_MAJOR, 'A', M, M, A2, M, A + M, LDA );
 
     /* Factorize A */
-    rc = MORSE_zgeqrf( M, M, A1, M, T1 );
-    assert( rc == 0 );
-    rc = MORSE_ztpqrt( M, M, optid ? M : 0,
-                       A1, M,
-                       A2, M, T2 );
-    assert( rc == 0 );
+    MORSE_zgeqrf( M, M, A1, M, T1 );
+    MORSE_ztpqrt( M, M, optid ? M : 0,
+                  A1, M,
+                  A2, M, T2 );
 
     /* Generate the Q */
-    rc = MORSE_ztpgqrt( M, M, M, (optid) ? M : 0,
-                        A1, M, T1, A2, M, T2, Q1, M, Q2, M );
-    assert( rc == 0 );
+    MORSE_ztpgqrt( M, M, M, (optid) ? M : 0,
+                   A1, M, T1, A2, M, T2, Q1, M, Q2, M );
 
     /* Copy Q in a single matrix */
     Q = (MORSE_Complex64_t *)malloc(2*M*M*sizeof(MORSE_Complex64_t));
