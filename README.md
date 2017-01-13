@@ -30,13 +30,13 @@ branch. Note that Chameleon contains a `git submodule` **morse_cmake**.
 To get sources please use these commands:
 
     # if git version >= 1.9
-    git clone --recursive git@gitlab.inria.fr:solverstack/chameleon.git
-    cd chameleon
+      git clone --recursive git@gitlab.inria.fr:solverstack/chameleon.git
+      cd chameleon
     # else
-    git clone git@gitlab.inria.fr:solverstack/chameleon.git
-    cd chameleon
-    git submodule init
-    git submodule update
+      git clone git@gitlab.inria.fr:solverstack/chameleon.git
+      cd chameleon
+      git submodule init
+      git submodule update
 
 Last releases of Chameleon are hosted on the
 [gforge.inria.fr](https://gforge.inria.fr/frs/?group_id=2884) for now.
