@@ -304,6 +304,9 @@ int main (int argc, char **argv)
     /* else if ( strcmp(func, "GETMI") == 0 ) { */
     /*     info += testing_zgetmi( argc, argv ); */
     /* } */
+    else if ( strcmp(func, "GEQRF_QDWH") == 0 ) {
+        info += testing_zgeqrf_qdwh( argc, argv );
+    }
     else {
         fprintf(stderr, "Function unknown\n");
     }

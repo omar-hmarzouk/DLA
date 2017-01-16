@@ -108,6 +108,8 @@ int testing_zhegst(int argc, char **argv);
 int testing_zgecfi(int argc, char **argv);
 int testing_zgetmi(int argc, char **argv);
 
+int testing_zgeqrf_qdwh(int argc, char **argv);
+
 #ifdef DOUBLE
 int testing_zcposv(int argc, char **argv);
 int testing_zcgesv(int argc, char **argv);
