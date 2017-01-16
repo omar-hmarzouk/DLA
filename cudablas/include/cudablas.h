@@ -25,6 +25,8 @@
 #ifndef _CUDA_BLAS_H_
 #define _CUDA_BLAS_H_
 
+#include "include/chameleon_config.h"
+
 #if !defined(CHAMELEON_USE_CUDA)
 #error "This file should not be included"
 #endif
@@ -36,8 +38,6 @@
 
 #include <cuda.h>
 #include <cuComplex.h>
-
-#include "include/chameleon_config.h"
 
 #if defined(CHAMELEON_USE_CUBLAS_V2)
 
