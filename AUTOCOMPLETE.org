@@ -3,6 +3,13 @@
 #+begin_src sh :results output :exports both
 sudo aptitude install clang
 #+end_src
+** Installing cc_args.py
+We assume ~/bin/ is in the PATH environment variable
+#+begin_src sh :results output :exports both
+cd ~/bin/
+wget https://raw.githubusercontent.com/Rip-Rip/clang_complete/master/bin/cc_args.py
+chmod +x cc_args.py
+#+end_src
 ** Enabling c-c++ layer in spacemacs
 Enable [[https://github.com/syl20bnr/spacemacs/tree/master/layers/%2Blang/c-c%2B%2B][c-c++ spacemacs layer]] with clang support:
 #+begin_src emacs-lisp
@@ -24,7 +31,8 @@ spack load chameleon ; spack load cmake ; spack load fxt ; spack load openmpi ; 
 cd $CHAMELEON_DIR
 mkdir spack-cc_args-build
 cd spack-cc_args-build
-CC='cc_args.py gcc'
+CC='cc_args.py gcc' cmake ..
+make
 #+end_src
 ** Gathering the clang_complete information to the src directory
 We now gather, sort and unify the .clang_complete information we obtained from
