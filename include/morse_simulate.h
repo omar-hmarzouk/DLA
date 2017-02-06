@@ -3,7 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2015 Inria. All rights reserved.
+ * @copyright (c) 2012-2017 Inria. All rights reserved.
  * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
@@ -25,7 +25,7 @@
 #ifndef _MORSE_SIMULATE_H_
 #define _MORSE_SIMULATE_H_
 
-#include "include/chameleon_config.h"
+#include "chameleon_config.h"
 
 /* we need this when starpu is compiled with simgrid enabled */
 #if defined(CHAMELEON_SCHED_STARPU) && defined(CHAMELEON_SIMULATION)
