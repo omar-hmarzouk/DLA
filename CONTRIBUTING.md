@@ -13,7 +13,14 @@ git clone git@gitlab.inria.fr:username/forkname.git
 Once this is done, you can setup the chameleon repository as the upstream of your clone to simplify the update of your fork repository.
 ```
 #!shell
-git remote add upstream git@bitbucket.org:solverstack/chameleon.git
+git remote add upstream git@gitlab.inria.fr:solverstack/chameleon.git
+```
+
+To update your fork with the upstream chameleon's state:
+```
+#!shell
+git pull upstream master
+git push -u origin master
 ```
 
 Now, you have your repository configured, and you want to create a new pull request. The first step is to create a branch from the HEAD of the your fork repository.
@@ -51,4 +58,3 @@ Than apply the patch on your local copy
 
 git apply pr#PR.patch
 ```
-
