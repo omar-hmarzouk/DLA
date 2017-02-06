@@ -84,7 +84,7 @@ static void cl_zbuild_cpu_func(void *descr[], void *cl_arg)
 
   /* The callback 'user_build_callback' is expected to build the block of matrix [row_min, row_max] x [col_min, col_max]
    * (with both min and max values included in the intervals, index start at 0 like in C, NOT 1 like in Fortran)
-   * and store it at the adresse 'buffer' with leading dimension 'ld'
+   * and store it at the address 'buffer' with leading dimension 'ld'
    */
   user_build_callback(row_min, row_max, col_min, col_max, A, ld, user_data);
 
