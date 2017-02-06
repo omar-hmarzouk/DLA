@@ -1,7 +1,7 @@
 @c -*-texinfo-*-
 
 @c This file is part of the MORSE Handbook.
-@c Copyright (C) 2014 Inria
+@c Copyright (C) 2017 Inria
 @c Copyright (C) 2014 The University of Tennessee
 @c Copyright (C) 2014 King Abdullah University of Science and Technology
 @c See the file ../chameleon.texi for copying conditions.
@@ -139,10 +139,6 @@ This option must be used with StarPU compiled with
 execution time on any architecture.
 This feature should be used to make experiments on the scheduler behaviors and
 performances not to produce solutions of linear systems.
-
-@item @option{-DCHAMELEON_SIMULATION_MAGMA=trigger} (default: @code{OFF})
-when using simulation mode (see CHAMELEON_SIMULATION), one can decide to enable
-the magma kernels or not.
 
 @item @option{-DCHAMELEON_ENABLE_DOCS=trigger} (default: @code{ON})
 to control build of the documentation contained in @file{docs/} sub-directory
@@ -318,6 +314,8 @@ The trace file will be named paje.trace (use -o option to specify an output
 name).
 @end itemize
 
+Alternatively, one can also generate directly .paje trace files after the execution
+by setting @env{STARPU_GENERATE_TRACE=1}.
 
 @node Use simulation mode with StarPU-SimGrid
 @section Use simulation mode with StarPU-SimGrid

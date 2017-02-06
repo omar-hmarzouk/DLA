@@ -307,7 +307,9 @@ a code that most users should easily understand.
 Then, the different interfaces CHAMELEON provides are exposed, from the
 simplest API (step1) to more complicated ones (until step4).
 The way some important parameters are set is discussed in step5.
-Finally step6 is an example about distributed computation with MPI.
+step6 is an example about distributed computation with MPI.
+Finally step7 shows how to let Chameleon initialize user's data
+(matrices/vectors) in parallel.
 
 Source files can be found in the @file{example/lapack_to_morse/}
 directory.
@@ -332,12 +334,13 @@ Lets comment the different steps of the tutorial
 @menu
 * Step0:: a simple Cholesky example using the C interface of
 BLAS/LAPACK
-* Step1:: introduces the LAPACK equivalent interface of MORSE
+* Step1:: introduces the LAPACK equivalent interface of Chameleon
 * Step2:: introduces the tile interface
-* Step3:: indicates how to give your own tile matrix to MORSE
+* Step3:: indicates how to give your own tile matrix to Chameleon
 * Step4:: introduces the tile async interface
 * Step5:: shows how to set some important parameters
-* Step6:: introduces how to benefit from MPI in MORSE.
+* Step6:: introduces how to benefit from MPI in Chameleon
+* Step7:: introduces how to let Chameleon initialize the user's matrix data
 @end menu
 
 @node Step0
@@ -707,6 +710,36 @@ but they have sense only for 2-D block-cyclic distribution and then using
 @code{morse_getrankof_2d} function.
 Of course it could be used with other distributions, being no more the
 parameters of a 2-D block-cyclic grid but of another distribution.
+
+@node Step7
+@subsubsection Step7
+
+This program is a copy of step6 with some additional calls to
+build a matrix from within chameleon using a function provided by the user.
+This can be seen as a replacement of the function like @code{MORSE_dplgsy_Tile()} that can be used
+to fill the matrix with random data, @code{MORSE_dLapack_to_Tile()} to fill the matrix
+with data stored in a lapack-like buffer, or @code{MORSE_Desc_Create_User()} that can be used
+to describe an arbitrary tile matrix structure.
+In this example, the build callback function are just wrapper towards @code{CORE_xxx()} functions, so the output
+of the program step7 should be exactly similar to that of step6.
+The difference is that the function used to fill the tiles is provided by the user,
+and therefore this approach is much more flexible.
+
+The new function to understand is @code{MORSE_dbuild_Tile}, e.g.
+@verbatim
+struct data_pl data_A={(double)N, 51, N};
+MORSE_dbuild_Tile(MorseUpperLower, descA, (void*)&data_A, Morse_build_callback_plgsy);
+@end verbatim
+The idea here is to let Chameleon fill the matrix data in a task-based fashion
+(parallel) by using a function given by the user.
+First, the user should define if all the blocks must be entirelly filled or just
+the upper/lower part with, e.g. @code{MorseUpperLower}.
+We still relies on the same structure @code{MORSE_desc_t} which must be
+initialized with the proper parameters, by calling for example
+@code{MORSE_Desc_Create}.
+Then, an opaque pointer is used to let the user give some extra data used by
+his function.
+The last parameter is the pointer to the user's function.
 
 @node List of available routines
 @subsection List of available routines
