@@ -7,7 +7,7 @@ developers must follow and that should be read by contributors.
 Gitlab flow
 ---------------------
 
-TODO - Right here how to use git and gitlab to push modifications into
+TODO - Write here how to use git and gitlab to push modifications into
 Chameleon.
 
 ### Update submodules
@@ -29,12 +29,12 @@ git push --recurse-submodules=check
 Documentation
 ---------------------
 
-TODO - Right here how to generate the documentation.
+TODO - Write here how to generate the documentation.
 
 Packaging
 ---------------------
 
-TODO - Right here the steps to create a new release:
+TODO - Write here the steps to create a new release:
  - what needs to be checked (ctest, docummentation, version, ...)
  - how to generate the package .tar.gz
  - what and where to publish externally
@@ -42,4 +42,4 @@ TODO - Right here the steps to create a new release:
 Naming and writting conventions
 ---------------------
 
-TODO - Right here the rules and conventions used in the source code.
+TODO - Write here the rules and conventions used in the source code.
