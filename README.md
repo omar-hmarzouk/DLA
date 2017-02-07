@@ -26,7 +26,7 @@ Get Chameleon
 ---------------------
 
 To use last development states of Chameleon, please clone the master
-branch. Note that Chameleon contains a `git submodule` **morse_cmake**. 
+branch. Note that Chameleon contains a `git submodule` **morse_cmake**.
 To get sources please use these commands:
 
     # if git version >= 1.9
