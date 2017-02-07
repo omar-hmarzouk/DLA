@@ -3,7 +3,7 @@
 # @copyright (c) 2009-2014 The University of Tennessee and The University
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
-# @copyright (c) 2012-2014 Inria. All rights reserved.
+# @copyright (c) 2012-2017 Inria. All rights reserved.
 # @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
@@ -18,7 +18,7 @@
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver. 
 #
-#  @version 0.9.0
+#  @version 0.9.1
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
@@ -29,105 +29,156 @@
 
 ###
 #
-# GENERATE_PKGCONFIG_FILE: generate a file .pc according to the options
+# CONVERT_LIBSTYLE_TO_PKGCONFIG: convert a libraries list to follow the pkg-config style
+#                                used in CLEAN_LIB_LIST
 #
 ###
-MACRO(GENERATE_PKGCONFIG_FILE _file)
+MACRO(CONVERT_LIBSTYLE_TO_PKGCONFIG _liblist)
+    set(${_liblist}_CPY "${${_liblist}}")
+    set(${_liblist} "")
+    foreach(_dep ${${_liblist}_CPY})
+        if (${_dep} MATCHES "^/")
+            get_filename_component(dep_libname ${_dep} NAME)
+            get_filename_component(dep_libdir  ${_dep} DIRECTORY)
+            STRING(REPLACE "lib"    "" dep_libname "${dep_libname}")
+            STRING(REPLACE ".so"    "" dep_libname "${dep_libname}")
+            STRING(REPLACE ".a"     "" dep_libname "${dep_libname}")
+            STRING(REPLACE ".dylib" "" dep_libname "${dep_libname}")
+            STRING(REPLACE ".dll"   "" dep_libname "${dep_libname}")
+            list(APPEND ${_liblist} -L${dep_libdir} -l${dep_libname})
+        elseif(NOT ${_dep} MATCHES "^-")
+            list(APPEND ${_liblist} "-l${_dep}")
+        else()
+            list(APPEND ${_liblist} ${_dep})
+        endif()
+    endforeach()
+ENDMACRO(CONVERT_LIBSTYLE_TO_PKGCONFIG)
+
+###
+#
+# CLEAN_LIB_LIST: clean libraries lists to follow the pkg-config style
+#                 used in GENERATE_PKGCONFIG_FILE 
+#
+###
+MACRO(CLEAN_LIB_LIST _package)
+    list(REMOVE_DUPLICATES ${_package}_PKGCONFIG_LIBS)
+    list(REMOVE_DUPLICATES ${_package}_PKGCONFIG_LIBS_PRIVATE)
+    list(REMOVE_DUPLICATES ${_package}_PKGCONFIG_REQUIRED)
+    list(REMOVE_DUPLICATES ${_package}_PKGCONFIG_REQUIRED_PRIVATE)
+    CONVERT_LIBSTYLE_TO_PKGCONFIG(${_package}_PKGCONFIG_LIBS)
+    CONVERT_LIBSTYLE_TO_PKGCONFIG(${_package}_PKGCONFIG_LIBS_PRIVATE)
+    STRING(REPLACE ";" " " ${_package}_PKGCONFIG_LIBS "${${_package}_PKGCONFIG_LIBS}")
+    STRING(REPLACE ";" " " ${_package}_PKGCONFIG_LIBS_PRIVATE "${${_package}_PKGCONFIG_LIBS_PRIVATE}")
+    STRING(REPLACE ";" " " ${_package}_PKGCONFIG_REQUIRED "${${_package}_PKGCONFIG_REQUIRED}")
+    STRING(REPLACE ";" " " ${_package}_PKGCONFIG_REQUIRED_PRIVATE "${${_package}_PKGCONFIG_REQUIRED_PRIVATE}")
+ENDMACRO(CLEAN_LIB_LIST)
+
+###
+#
+# GENERATE_PKGCONFIG_FILE: generate files chameleon.pc, coreblas.pc and cudablas.pc
+#
+###
+MACRO(GENERATE_PKGCONFIG_FILE)
 
     # The link flags specific to this package and any required libraries
     # that don't support PkgConfig
-    set(CHAMELEON_PKGCONFIG_LIBS "")
+    set(CHAMELEON_PKGCONFIG_LIBS "-lchameleon")
+    set(COREBLAS_PKGCONFIG_LIBS  "-lcoreblas")
+    set(CUDABLAS_PKGCONFIG_LIBS  "-lcudablas")
+
     # The link flags for private libraries required by this package but not
     # exposed to applications
     set(CHAMELEON_PKGCONFIG_LIBS_PRIVATE "")
+    set(COREBLAS_PKGCONFIG_LIBS_PRIVATE  "")
+    set(CUDABLAS_PKGCONFIG_LIBS_PRIVATE  "")
+
     # A list of packages required by this package
     set(CHAMELEON_PKGCONFIG_REQUIRED "")
+    set(COREBLAS_PKGCONFIG_REQUIRED  "")
+    set(CUDABLAS_PKGCONFIG_REQUIRED  "")
+    
     # A list of private packages required by this package but not exposed to
     # applications
     set(CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE "")
+    set(COREBLAS_PKGCONFIG_REQUIRED_PRIVATE  "")
+    set(CUDABLAS_PKGCONFIG_REQUIRED_PRIVATE  "")
 
-    list(APPEND CHAMELEON_PKGCONFIG_LIBS -lchameleon)
     if(CHAMELEON_SCHED_STARPU)
         list(APPEND CHAMELEON_PKGCONFIG_LIBS -lchameleon_starpu)
         if ( CHAMELEON_USE_MPI )
-            list(APPEND CHAMELEON_PKGCONFIG_REQUIRED libstarpumpi)
+            list(APPEND CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE libstarpumpi)
         else()
-            list(APPEND CHAMELEON_PKGCONFIG_REQUIRED libstarpu)
+            list(APPEND CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE libstarpu)
         endif()
     elseif(CHAMELEON_SCHED_QUARK)
         list(APPEND CHAMELEON_PKGCONFIG_LIBS -lchameleon_quark)
-        list(APPEND CHAMELEON_PKGCONFIG_LIBS "-l${QUARK_quark_LIBRARY}")
+        list(APPEND CHAMELEON_PKGCONFIG_LIBS_PRIVATE "${QUARK_LIBRARIES_DEP}")
     endif()
-
 
     if(NOT CHAMELEON_SIMULATION)
 
-        if(CHAMELEON_USE_CUDA)
-            list(APPEND CHAMELEON_PKGCONFIG_LIBS ${CUDA_LIBRARIES})
-        endif()
-
-        if(CHAMELEON_USE_MAGMA)
-            list(APPEND CHAMELEON_PKGCONFIG_REQUIRED magma)
-        endif()
-
-        list(APPEND CHAMELEON_PKGCONFIG_LIBS
-        -lcoreblas
-        ${LAPACKE_LIBRARIES}
-        ${CBLAS_LIBRARIES}
+        list(APPEND COREBLAS_PKGCONFIG_LIBS_PRIVATE
+        ${LAPACKE_LIBRARIES_DEP}
+        ${CBLAS_LIBRARIES_DEP}
+        )
+        list(APPEND CHAMELEON_PKGCONFIG_LIBS_PRIVATE
         ${EXTRA_LIBRARIES}
         )
+        list(APPEND CHAMELEON_PKGCONFIG_REQUIRED "coreblas")
 
-        list(APPEND CHAMELEON_PKGCONFIG_REQUIRED hwloc)
+        if(CHAMELEON_USE_CUDA)
+            if(CHAMELEON_USE_MAGMA)
+                list(APPEND CUDABLAS_PKGCONFIG_REQUIRED_PRIVATE  magma)
+                list(APPEND CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE magma)
+            else()
+                
+            endif()
+            list(APPEND CUDABLAS_PKGCONFIG_LIBS_PRIVATE ${CUDA_LIBRARIES})
+            list(APPEND CHAMELEON_PKGCONFIG_REQUIRED "cudablas")
+        endif()
 
     else(NOT CHAMELEON_SIMULATION)
 
+        if(CHAMELEON_USE_CUDA)
+            list(APPEND CHAMELEON_PKGCONFIG_LIBS -lcudablas)
+        endif()
         list(APPEND CHAMELEON_PKGCONFIG_LIBS 
         -lcoreblas
         ${EXTRA_LIBRARIES}
         )
 
-        list(APPEND CHAMELEON_PKGCONFIG_REQUIRED hwloc)
-
     endif(NOT CHAMELEON_SIMULATION)
+
+    list(APPEND CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE hwloc)
 
     # Define required package
     # -----------------------
-    set(CHAMELEON_PKGCONFIG_LIBS_CPY "${CHAMELEON_PKGCONFIG_LIBS}")
-    set(CHAMELEON_PKGCONFIG_LIBS "")
-    foreach(_dep ${CHAMELEON_PKGCONFIG_LIBS_CPY})
-        if (NOT ${_dep} MATCHES "^-L")
-            get_filename_component(dep_we ${_dep} NAME)
-            message(STATUS "dep_we : ${dep_we}")
-            STRING(REPLACE "lib"    "-l" dep_we "${dep_we}")
-            STRING(REPLACE ".so"    ""   dep_we "${dep_we}")
-            STRING(REPLACE ".a"     ""   dep_we "${dep_we}")
-            STRING(REPLACE ".dylib" ""   dep_we "${dep_we}")
-            STRING(REPLACE ".dll"   ""   dep_we "${dep_we}")
-            list(APPEND CHAMELEON_PKGCONFIG_LIBS ${dep_we})
-        else()
-            list(APPEND CHAMELEON_PKGCONFIG_LIBS ${_dep})
-        endif()
-    endforeach()
-
-    list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_LIBS)
-    list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_LIBS_PRIVATE)
-    list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_REQUIRED)
-    list(REMOVE_DUPLICATES CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE)
-
-    STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_LIBS "${CHAMELEON_PKGCONFIG_LIBS}")
-    STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_LIBS_PRIVATE "${CHAMELEON_PKGCONFIG_LIBS_PRIVATE}")
-    STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_REQUIRED "${CHAMELEON_PKGCONFIG_REQUIRED}")
-    STRING(REPLACE ";" " " CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE "${CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE}")
-
+    CLEAN_LIB_LIST(CHAMELEON)
+    CLEAN_LIB_LIST(COREBLAS)
+    if(CHAMELEON_USE_CUDA)
+        CLEAN_LIB_LIST(CUDABLAS)
+    endif()
+    
     # Create .pc file
     # ---------------
-    SET(_output_file "${CMAKE_BINARY_DIR}/chameleon.pc")
+    SET(_output_chameleon_file "${CMAKE_BINARY_DIR}/chameleon.pc")
+    SET(_output_coreblas_file "${CMAKE_BINARY_DIR}/coreblas.pc")
+    if(CHAMELEON_USE_CUDA)
+        SET(_output_cudablas_file "${CMAKE_BINARY_DIR}/cudablas.pc")
+    endif()
+
     # TODO: add url of MORSE releases in .pc file
-    CONFIGURE_FILE("${_file}" "${_output_file}" @ONLY)
+    CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/lib/pkgconfig/chameleon.pc.in" "${_output_chameleon_file}" @ONLY)
+    CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/lib/pkgconfig/coreblas.pc.in"  "${_output_coreblas_file}" @ONLY)
+    if(CHAMELEON_USE_CUDA)
+        CONFIGURE_FILE("${CMAKE_CURRENT_SOURCE_DIR}/lib/pkgconfig/cudablas.pc.in"  "${_output_cudablas_file}" @ONLY)
+    endif()
 
     # installation
     # ------------
-    INSTALL(FILES ${_output_file} DESTINATION lib/pkgconfig)
+    INSTALL(FILES ${_output_chameleon_file} DESTINATION lib/pkgconfig)
+    INSTALL(FILES ${_output_coreblas_file}  DESTINATION lib/pkgconfig)
+    INSTALL(FILES ${_output_cudablas_file}  DESTINATION lib/pkgconfig)
 
 ENDMACRO(GENERATE_PKGCONFIG_FILE)
 

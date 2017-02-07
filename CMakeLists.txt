@@ -1113,15 +1113,7 @@ endif()
 
 # Create file morse_starpu.pc
 # ---------------------------
-if(CHAMELEON_SCHED_STARPU)
-    generate_pkgconfig_file("${CMAKE_CURRENT_SOURCE_DIR}/lib/pkgconfig/chameleon-starpu.pc.in")
-endif()
-
-# # Create file morse_quark.pc
-# # --------------------------
-if(CHAMELEON_SCHED_QUARK)
-    generate_pkgconfig_file("${CMAKE_CURRENT_SOURCE_DIR}/lib/pkgconfig/chameleon-quark.pc.in")
-endif()
+generate_pkgconfig_file()
 #------------------------------------------------------------------------------
 
 ###############################################################################
