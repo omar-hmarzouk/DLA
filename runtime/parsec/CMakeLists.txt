@@ -119,7 +119,7 @@ add_dependencies(chameleon_parsec
 )
 
 if (CHAMELEON_USE_CUDA AND NOT CHAMELEON_SIMULATION)
-    add_dependencies(chameleon_starpu cudablas_include)
+    add_dependencies(chameleon_parsec cudablas_include)
 endif()
 
 # installation

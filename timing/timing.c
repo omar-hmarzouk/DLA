@@ -45,13 +45,13 @@
 #include <sys/resource.h>
 #endif
 
-#include <coreblas/include/cblas.h>
-#include <coreblas/include/lapacke.h>
+#include "coreblas/include/cblas.h"
+#include "coreblas/include/lapacke.h"
 #include <morse.h>
-#include <coreblas/include/coreblas.h>
+#include "coreblas/include/coreblas.h"
 #include "flops.h"
 #include "timing.h"
-#include <control/auxiliary.h>
+#include "control/auxiliary.h"
 
 #if defined(CHAMELEON_USE_MPI)
 #include <mpi.h>
