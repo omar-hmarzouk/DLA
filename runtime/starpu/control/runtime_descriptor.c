@@ -279,6 +279,10 @@ int RUNTIME_desc_getoncpu( MORSE_desc_t *desc )
     int lnt = desc->lnt;
     int m, n;
 
+    if (desc->ooc)
+        /* May not even fit */
+        return MORSE_SUCCESS;
+
     for (n = 0; n < lnt; n++)
         for (m = 0; m < lmt; m++)
         {

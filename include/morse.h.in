@@ -85,6 +85,10 @@ int MORSE_Element_Size(int type);
 int MORSE_Desc_Create  (MORSE_desc_t **desc, void *mat, MORSE_enum dtyp,
                         int mb, int nb, int bsiz, int lm, int ln,
                         int i, int j, int m, int n, int p, int q);
+int MORSE_Desc_Create_OOC (MORSE_desc_t **desc, MORSE_enum dtyp,
+                           int mb, int nb, int bsiz, int lm, int ln,
+                           int i, int j, int m, int n, int p, int q,
+                           int (*get_rankof)( const MORSE_desc_t*, int, int ));
 int MORSE_Desc_Create_User(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, int nb, int bsiz,
                            int lm, int ln, int i, int j, int m, int n, int p, int q,
                            void* (*get_blkaddr)( const MORSE_desc_t*, int, int ),

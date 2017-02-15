@@ -108,6 +108,7 @@ struct morse_desc_s {
     int alloc_mat;    // 1 if we handle the allocation of mat - else 0
     int register_mat; // 1 if we have to register mat - else 0 (handled by the application)
     int myrank;       // MPI rank of the descriptor
+    int ooc;          // 1 if the matrix is not to fit in memory
     void *schedopt;   // scheduler (QUARK|StarPU) specific structure
 };
 

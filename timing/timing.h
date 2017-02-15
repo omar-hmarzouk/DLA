@@ -38,6 +38,7 @@ enum iparam_timing {
     IPARAM_TRACE,          /* Generate trace on the first non warmup run */
     IPARAM_DAG,            /* Do we require to output the DOT file?      */
     IPARAM_ASYNC,          /* Asynchronous calls                         */
+    IPARAM_OOC,            /* Out of Core                                */
     IPARAM_MX,             /* */
     IPARAM_NX,             /* */
     IPARAM_RHBLK,          /* Householder reduction parameter for QR/LQ  */
@@ -97,6 +98,7 @@ enum dparam_timing {
     int64_t MT    = (M%MB==0) ? (M/MB) : (M/MB+1); \
     int64_t NT    = (N%NB==0) ? (N/NB) : (N/NB+1); \
     int bigmat     = iparam[IPARAM_BIGMAT];         \
+    int ooc       = iparam[IPARAM_OOC];            \
     int check     = iparam[IPARAM_CHECK];          \
     int loud      = iparam[IPARAM_VERBOSE];        \
     (void)M;(void)N;(void)K;(void)NRHS;            \
@@ -109,7 +111,10 @@ enum dparam_timing {
     MORSE_desc_t *_desc_ = NULL;                                        \
     int status ## _desc_ ; \
     if( _cond_ ) {                                                      \
-       if (!bigmat) \
+       if (ooc) \
+           status ## _desc_ = MORSE_Desc_Create_OOC(&(_desc_), _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
+                   P, Q, NULL);\
+       else if (!bigmat) \
            status ## _desc_ = MORSE_Desc_Create_User(&(_desc_), NULL, _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
                           P, Q, morse_getaddr_null, NULL, NULL);\
        else \
