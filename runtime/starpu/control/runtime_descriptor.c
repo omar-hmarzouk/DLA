@@ -22,6 +22,7 @@
  *
  **/
 #include <stdlib.h>
+#include <unistd.h>
 #include "runtime/starpu/include/morse_starpu.h"
 
 #if defined(CHAMELEON_USE_MPI)
@@ -118,6 +119,21 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
         }
     }
 #endif
+    if (desc->ooc) {
+        int lastmm = desc->lm - (desc->lmt-1) * desc->mb;
+        int lastnn = desc->ln - (desc->lnt-1) * desc->nb;
+        int64_t eltsze = MORSE_Element_Size(desc->dtyp);
+        int pagesize = getpagesize();
+
+        if ((desc->mb * desc->nb * eltsze) % pagesize != 0
+         || (lastmm   * desc->nb * eltsze) % pagesize != 0
+         || (desc->mb * lastnn   * eltsze) % pagesize != 0
+         || (lastmm   * lastnn   * eltsze) % pagesize != 0)
+        {
+            morse_error("RUNTIME_desc_create", "Matrix and tile size not suitable for out-of-core: all tiles have to be multiples of 4096. Tip : choose 'n' and 'nb' as both multiples of 32.");
+            return;
+        }
+    }
 
 #if defined(CHAMELEON_USE_MPI)
     /*
