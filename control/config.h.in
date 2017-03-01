@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2017 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2015, 2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -35,6 +35,7 @@
 #cmakedefine HAVE_STARPU_FXT_PROFILING
 #cmakedefine HAVE_STARPU_IDLE_PREFETCH
 #cmakedefine HAVE_STARPU_DATA_WONT_USE
+#cmakedefine HAVE_STARPU_DATA_SET_COORDINATES
 #cmakedefine HAVE_STARPU_MALLOC_ON_NODE_SET_DEFAULT_FLAGS
 #cmakedefine HAVE_STARPU_MPI_DATA_REGISTER
 #cmakedefine HAVE_STARPU_MPI_COMM_RANK

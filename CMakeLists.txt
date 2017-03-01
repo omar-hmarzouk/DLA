@@ -4,7 +4,7 @@
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
 # @copyright (c) 2012-2016 Inria. All rights reserved.
-# @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+# @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
 #
@@ -710,6 +710,11 @@ if( CHAMELEON_SCHED_STARPU )
         if ( STARPU_DATA_WONT_USE_FOUND )
             set(HAVE_STARPU_DATA_WONT_USE 1)
             message("-- ${Blue}Add definition HAVE_STARPU_DATA_WONT_USE${ColourReset}")
+        endif()
+        check_function_exists(starpu_data_set_coordinates STARPU_DATA_SET_COORDINATES_FOUND)
+        if ( STARPU_DATA_SET_COORDINATES_FOUND )
+            set(HAVE_STARPU_DATA_SET_COORDINATES 1)
+            message("-- ${Blue}Add definition HAVE_STARPU_DATA_SET_COORDINATES${ColourReset}")
         endif()
         check_function_exists(starpu_malloc_on_node_set_default_flags STARPU_MALLOC_ON_NODE_SET_DEFAULT_FLAGS)
         if ( STARPU_MALLOC_ON_NODE_SET_DEFAULT_FLAGS )

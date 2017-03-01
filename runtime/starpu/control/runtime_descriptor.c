@@ -4,7 +4,7 @@
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
  * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2014, 2016-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -329,6 +329,10 @@ void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
                                         (uintptr_t) NULL,
                                         BLKLDD(desc, im), tempmm, tempnn, eltsze);
         }
+
+#ifdef HAVE_STARPU_DATA_SET_COORDINATES
+        starpu_data_set_coordinates(*ptrtile, 2, m, n);
+#endif
 
 #if defined(CHAMELEON_USE_MPI)
         {
