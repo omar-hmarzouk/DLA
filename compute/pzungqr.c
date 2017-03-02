@@ -98,7 +98,7 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
 #endif
 
     for (k = minMT-1; k >= 0; k--) {
-        RUNTIME_set_iteration(k);
+        RUNTIME_set_iteration(morse, k);
 
         tempAkm  = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         tempAkn  = k == A->nt-1 ? A->n-k*A->nb : A->nb;

@@ -107,7 +107,7 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
              *  MorseLeft / MorseConjTrans
              */
             for (k = 0; k < K; k++) {
-                RUNTIME_set_iteration(k);
+                RUNTIME_set_iteration(morse, k);
 
                 tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
                 for (M = k; M < A->mt; M += BS) {
@@ -184,7 +184,7 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
              *  MorseLeft / MorseNoTrans
              */
             for (k = K-1; k >= 0; k--) {
-                RUNTIME_set_iteration(k);
+                RUNTIME_set_iteration(morse, k);
 
                 tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
                 lastRD = 0;
@@ -266,7 +266,7 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
              *  MorseRight / MorseConjTrans
              */
             for (k = K-1; k >= 0; k--) {
-                RUNTIME_set_iteration(k);
+                RUNTIME_set_iteration(morse, k);
 
                 tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
                 lastRD = 0;
@@ -346,7 +346,7 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
              *  MorseRight / MorseNoTrans
              */
             for (k = 0; k < K; k++) {
-                RUNTIME_set_iteration(k);
+                RUNTIME_set_iteration(morse, k);
 
                 tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
                 for (M = k; M < A->mt; M += BS) {

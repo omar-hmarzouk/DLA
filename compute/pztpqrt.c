@@ -91,7 +91,7 @@ void morse_pztpqrt( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T,
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
     for (k = 0; k < A->nt; k++) {
-        RUNTIME_set_iteration(k);
+        RUNTIME_set_iteration(morse, k);
 
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;

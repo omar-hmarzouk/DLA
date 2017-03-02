@@ -99,7 +99,7 @@ void morse_pzunglqrh(MORSE_desc_t *A, MORSE_desc_t *Q,
 
     K = chameleon_min(A->mt, A->nt);
     for (k = K-1; k >= 0; k--) {
-        RUNTIME_set_iteration(k);
+        RUNTIME_set_iteration(morse, k);
 
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         ldak = BLKLDD(A, k);
