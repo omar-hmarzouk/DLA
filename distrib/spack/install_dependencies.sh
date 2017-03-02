@@ -1,10 +1,8 @@
 #!/bin/sh
 
-git clone https://github.com/fpruvost/spack.git
-cd spack
-export SPACK_ROOT=$PWD
-. $SPACK_ROOT/share/spack/setup-env.sh
-cd -
+# Please follow http://morse.gforge.inria.fr/spack/spack.html for further instructions
+git clone https://github.com/solverstack/spack.git
+. spack/share/spack/setup-env.sh
 spack install -v openblas
 spack install -v starpu
 spack load openblas
