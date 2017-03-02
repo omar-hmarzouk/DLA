@@ -126,7 +126,7 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
          *  ZTRTRI
          */
         for (k = 0; k < A->nt; k++) {
-            RUNTIME_set_iteration(A->nt + k);
+            RUNTIME_set_iteration(morse, A->nt + k);
 
             tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
             ldak = BLKLDD(A, k);
@@ -174,7 +174,7 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
          *  ZLAUUM
          */
         for (k = 0; k < A->mt; k++) {
-            RUNTIME_set_iteration(2*A->nt + k);
+            RUNTIME_set_iteration(morse, 2*A->nt + k);
 
             tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
             ldak = BLKLDD(A, k);
@@ -217,7 +217,7 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
          *  ZSYMM Right / Lower
          */
         for (k = 0; k < C->nt; k++) {
-            RUNTIME_set_iteration(3*A->nt + k);
+            RUNTIME_set_iteration(morse, 3*A->nt + k);
 
             tempkn = k == C->nt-1 ? C->n-k*C->nb : C->nb;
             ldak = BLKLDD(A, k);
@@ -327,7 +327,7 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
          *  ZTRTRI
          */
         for (k = 0; k < A->mt; k++) {
-            RUNTIME_set_iteration(A->nt + k);
+            RUNTIME_set_iteration(morse, A->nt + k);
 
             tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
             ldak = BLKLDD(A, k);
@@ -375,7 +375,7 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
          *  ZLAUUM
          */
         for (k = 0; k < A->mt; k++) {
-            RUNTIME_set_iteration(2*A->nt + k);
+            RUNTIME_set_iteration(morse, 2*A->nt + k);
 
             tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
             ldak = BLKLDD(A, k);
@@ -420,7 +420,7 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
          *  ZSYMM Right / Upper
          */
         for (k = 0; k < C->nt; k++) {
-            RUNTIME_set_iteration(3*A->nt + k);
+            RUNTIME_set_iteration(morse, 3*A->nt + k);
 
             tempkn = k == C->nt-1 ? C->n-k*C->nb : C->nb;
             ldak = BLKLDD(A, k);
