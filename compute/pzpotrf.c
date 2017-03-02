@@ -71,6 +71,8 @@ void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A,
      */
     if (uplo == MorseLower) {
         for (k = 0; k < A->mt; k++) {
+            RUNTIME_set_iteration(k);
+
             tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
             ldak = BLKLDD(A, k);
 
@@ -128,6 +130,8 @@ void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A,
      */
     else {
         for (k = 0; k < A->nt; k++) {
+            RUNTIME_set_iteration(k);
+
             tempkm = k == A->nt-1 ? A->n-k*A->nb : A->nb;
             ldak = BLKLDD(A, k);
 

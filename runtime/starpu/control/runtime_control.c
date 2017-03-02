@@ -176,6 +176,24 @@ void RUNTIME_barrier( MORSE_context_t *morse )
 }
 
 /*******************************************************************************
+ *  Set iteration numbers for traces
+ **/
+void RUNTIME_set_iteration( MORSE_context_t *morse, unsigned long iteration )
+{
+    (void)morse;
+#if defined(HAVE_STARPU_SET_ITERATION)
+    starpu_set_iteration(iteration);
+#endif
+}
+void RUNTIME_set_subiteration( MORSE_context_t *morse, unsigned long subiteration )
+{
+    (void)morse;
+#if defined(HAVE_STARPU_SET_ITERATION)
+    starpu_set_subiteration(subiteration);
+#endif
+}
+
+/*******************************************************************************
  *  To suspend the processing of new tasks by workers
  **/
 void RUNTIME_pause( MORSE_context_t *morse )

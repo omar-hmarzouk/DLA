@@ -101,6 +101,8 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
 
     K = chameleon_min(A->mt, A->nt);
     for (k = K-1; k >= 0; k--) {
+        RUNTIME_set_iteration(k);
+
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
         lastRD = 0;
         for (RD = BS; RD < A->mt-k; RD *= 2)

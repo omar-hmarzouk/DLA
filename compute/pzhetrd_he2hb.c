@@ -137,6 +137,8 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
 
     if (uplo == MorseLower) {
        for (k = 0; k < A->nt-1; k++){
+           RUNTIME_set_iteration(k);
+
            tempkm = k+1 == A->mt-1 ? A->m-(k+1)*A->mb : A->mb;
            tempkn = k   == A->nt-1 ? A->n- k   *A->nb : A->nb;
            ldak1 = BLKLDD(A, k+1);
@@ -290,6 +292,8 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
     }
     else {
        for (k = 0; k < A->nt-1; k++){
+           RUNTIME_set_iteration(k);
+
            tempkn = k+1 == A->nt-1 ? A->n-(k+1)*A->nb : A->nb;
            tempkm = k   == A->mt-1 ? A->m- k   *A->mb : A->mb;
            ldak  = BLKLDD(A, k);

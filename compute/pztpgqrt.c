@@ -101,6 +101,8 @@ void morse_pztpgqrt( int L,
 #endif
 
     for (k = V1->nt-1; k >= 0; k--) {
+        RUNTIME_set_iteration(k);
+
         tempkm = k == V1->mt-1 ? V1->m-k*V1->mb : V1->mb;
         tempkk = k == V1->nt-1 ? V1->n-k*V1->nb : V1->nb;
         tempkn = k == Q1->nt-1 ? Q1->n-k*Q1->nb : Q1->nb;
