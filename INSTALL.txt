@@ -1,6 +1,6 @@
-**********************************************
-   Some instructions about CHAMELEON usage   
-**********************************************
+****************************************************
+   Some instructions about CHAMELEON installation
+****************************************************
 
 This is a brief discussion about CHAMELEON usage.
 For more information, please read the document users_guide.
@@ -31,12 +31,11 @@ example : cmake /home/toto/chameleon -DCMAKE_INSTALL_PREFIX=/home/toto/install
 
 threads : pthread
 
-blas    : refblas (http://www.netlib.org/blas/) or intel mkl
-cblas   : refblas (http://www.netlib.org/blas/#_cblas) or intel mkl
-lapack  : refblas (http://www.netlib.org/lapack/) or intel mkl
-lapacke : refblas (http://www.netlib.org/lapack/#_standard_c_language_apis_for_lapack)
-          or the lapacke compiled in PLASMA project (http://icl.cs.utk.edu/plasma/)
-tmg     : refblas (contained in lapack) or intel mkl
+blas    : netlib, openblas, eigen or intel mkl
+cblas   : netlib, openblas or intel mkl
+lapack  : netlib, openblas, eigen or intel mkl
+lapacke : netlib, openblas or intel mkl
+tmg     : netlib, openblas or intel mkl
 
 runtime : quark (http://icl.cs.utk.edu/quark/) or 
           starpu (http://runtime.bordeaux.inria.fr/StarPU/)
@@ -47,10 +46,12 @@ optional libraries
 
 cuda   : (https://developer.nvidia.com/cuda-downloads)
 cublas : comes with cuda (http://docs.nvidia.com/cuda/cublas/)
-magma  : (http://icl.cs.utk.edu/magma/)
+magma  : (http://icl.cs.utk.edu/magma/) (version 1.6.2 recommended)
 mpi    : openmpi (http://www.open-mpi.org/)
 FxT    : linux package (libfxt) or releases here http://download.savannah.gnu.org/releases/fkt/
 
+These packages must be installed on the system before trying to configure/build chameleon.
+Please look at the distrib/ directory which gives some hints for the installation of dependencies for Unix systems.
 
 -----------------------------------------
 
