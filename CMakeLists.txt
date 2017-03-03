@@ -1121,9 +1121,18 @@ generate_pkgconfig_file()
 ##################
 set(CPACK_SOURCE_GENERATOR "TGZ")
 set(CPACK_PACKAGE_NAME "chameleon")
-set(CPACK_PACKAGE_VERSION "${CHAMELEON_VERSION_MAJOR}.${CHAMELEON_VERSION_MINOR}.${CHAMELEON_VERSION_MICRO}")
+set(CPACK_PACKAGE_DESCRIPTION_FILE ${CMAKE_CURRENT_SOURCE_DIR}/README.md)
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Chameleon is a C library providing parallel algorithms to perform BLAS/LAPACK "
+                                      " operations exploiting fully modern architectures.")
+set(CHAMELEON_VERSION_PATCH ${CHAMELEON_VERSION_MICRO})
+set(CPACK_PACKAGE_VERSION "${CHAMELEON_VERSION_MAJOR}.${CHAMELEON_VERSION_MINOR}.${CHAMELEON_VERSION_PATCH}")
 set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}")
-set(CPACK_SOURCE_IGNORE_FILES "build;.cproject;.dir-locals.el;.project;.pydevproject;.svn")
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}")
+set(CPACK_PACKAGE_VENDOR "Inria")
+set(CPACK_PACKAGE_CONTACT "morse-devel@lists.gforge.inria.fr")
+set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_SOURCE_DIR}/README.md)
+set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/LICENCE.txt)
+set(CPACK_SOURCE_IGNORE_FILES "plasma-conversion;build;.cproject;.settings;.dir-locals.el;.project;.pydevproject;.svn;.git;.gitmodules;.gitlab-ci.yml")
 include(CPack)
 
 ###############################################################################
