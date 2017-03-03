@@ -26,10 +26,10 @@ developers must follow and that should be read by contributors.
    #+end_src
 
 * Documentation
-
+  <<sec:doc>>
 ** Generate the documentation
 
-***  Prerequisites
+*** Prerequisites
 
      To generate the documentation you need to have [[http://www.stack.nl/~dimitri/doxygen/][Doxygen]] and
      [[https://www.gnu.org/software/texinfo/][Texinfo]] installed on your system.
@@ -66,7 +66,8 @@ developers must follow and that should be read by contributors.
    chameleon-major.minor.patch.tar.gz, which:
    1) has been properly tested,
    2) contains a generated documentation corresponding to the released version,
-   3) is published on internet.
+   3) has an up-to-date ChangeLog file,
+   4) is published on internet.
 
 ** Test Chameleon before packaging
 
@@ -77,13 +78,25 @@ developers must follow and that should be read by contributors.
 
 ** Source tarball generation
 
+   This step requires to generate the [[sec:doc][documentation]].
+
    #+begin_src sh
    export CHAMELEON_ROOT=/path/to/chameleon/sources/to/be/released
    cmake $CHAMELEON_ROOT -DCHAMELEON_ENABLE_DOCS=ON
    make docs && cp docs/texinfo/users_guide.pdf $CHAMELEON_ROOT && make package_source
    #+end_src
 
+   A tarball chameleon-major.minor.patch.tar.gz should be generated
+   and contains the users_guide documentation.
+
 ** Publish the release on internet
 
-   TODO - Write how to publish the source tarball, especially where
-   (gforge, gitlab, elsewhere?).
+   A git tag must be first created, for example
+   #+begin_src sh
+   git tag -a v1.0.0 -m 'Version 1.0.0'
+   git push --tags
+   #+end_src
+
+   Then in the Chameleon *Tags* tab,
+   https://gitlab.inria.fr/solverstack/chameleon/tags, edit the
+   release notes and attach the tarball previously generated.
