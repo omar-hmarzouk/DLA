@@ -101,7 +101,7 @@ void morse_pztpgqrt( int L,
 #endif
 
     for (k = V1->nt-1; k >= 0; k--) {
-        RUNTIME_set_iteration(morse, k);
+        RUNTIME_iteration_push(morse, k);
 
         tempkm = k == V1->mt-1 ? V1->m-k*V1->mb : V1->mb;
         tempkk = k == V1->nt-1 ? V1->n-k*V1->nb : V1->nb;
@@ -171,6 +171,8 @@ void morse_pztpgqrt( int L,
                 T1(k, k), T1->mb,
                 Q1(k, n), ldqk);
         }
+
+        RUNTIME_iteration_pop(morse);
     }
 
     RUNTIME_options_ws_free(&options);

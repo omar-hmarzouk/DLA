@@ -118,7 +118,7 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
 
     K = chameleon_min(A->mt, A->nt);
     for (k = 0; k < K; k++) {
-        RUNTIME_set_iteration(morse, k);
+        RUNTIME_iteration_push(morse, k);
 
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
         for (M = k; M < A->mt; M += BS) {
@@ -204,6 +204,8 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
                 }
             }
         }
+
+        RUNTIME_iteration_pop(morse);
     }
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);

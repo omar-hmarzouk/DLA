@@ -70,12 +70,12 @@ void RUNTIME_barrier(MORSE_context_t *morse)
 /*******************************************************************************
  *  Set iteration numbers for traces
  **/
-void RUNTIME_set_iteration( MORSE_context_t *morse, unsigned long iteration )
+void RUNTIME_iteration_push( MORSE_context_t *morse, unsigned long iteration )
 {
     (void)morse;
     return;
 }
-void RUNTIME_set_subiteration( MORSE_context_t *morse, unsigned long subiteration )
+void RUNTIME_iteration_pop( MORSE_context_t *morse )
 {
     (void)morse;
     return;

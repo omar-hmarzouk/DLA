@@ -78,7 +78,7 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
     morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, chameleon_min(A->m, A->n), A->nb, 0, 0, chameleon_min(A->m, A->n), A->nb, A->p, A->q);
 
     for (k = 0; k < minMNT; k++) {
-        RUNTIME_set_iteration(morse, k);
+        RUNTIME_iteration_push(morse, k);
 
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
@@ -135,6 +135,8 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
                     IPIV(m, k));
             }
         }
+
+        RUNTIME_iteration_pop(morse);
     }
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
