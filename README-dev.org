@@ -1,0 +1,89 @@
+#+TITLE: README for developers
+#+LANGUAGE:  en
+#+OPTIONS: H:3 num:t \n:nil @:t ::t |:t _:nil ^:nil -:t f:t *:t <:t
+#+OPTIONS: TeX:t LaTeX:t skip:nil d:nil pri:nil tags:not-in-toc html-style:nil
+
+This page is dedicated to rules and conventions that Chameleon's
+developers must follow and that should be read by contributors.
+
+* Gitlab flow: how to contribute to Chameleon
+
+  Please read and follow guidelines given in the [[https://gitlab.inria.fr/solverstack/chameleon/blob/master/CONTRIBUTING.md][CONTRIBUTING file]].
+
+** Update submodules
+
+   Chameleon git project depends on a "submodule" git, located in
+   cmake_modules/morse_cmake and hosted here
+   https://gitlab.inria.fr/solverstack/morse_cmake.
+
+   To update this submodule to the last development state, follow
+   these steps:
+
+   #+begin_src sh
+   git submodule update --remote cmake_modules/morse_cmake
+   git commit cmake_modules/morse_cmake -m "update morse_cmake submodule"
+   git push --recurse-submodules=check
+   #+end_src
+
+* Documentation
+
+** Generate the documentation
+
+***  Prerequisites
+
+     To generate the documentation you need to have [[http://www.stack.nl/~dimitri/doxygen/][Doxygen]] and
+     [[https://www.gnu.org/software/texinfo/][Texinfo]] installed on your system.
+
+     For example, on Debian systems:
+     #+begin_src sh
+     sudo apt install doxygen texinfo
+     #+end_src
+
+*** configure + make documentation
+
+    Enter into the Chameleon's source root directory and configure
+    with *CHAMELEON_ENABLE_DOCS=ON*, then generate the documentation
+    with ~make docs~
+
+    #+begin_src sh
+    cd chameleon
+    mkdir build && cd build
+    cmake .. -DCHAMELEON_ENABLE_DOCS=ON
+    make docs
+    #+end_src
+
+** Rules about source code documentation
+
+   TODO - Write here the rules to document source code inside chameleon.
+
+* Naming and writting conventions
+
+  TODO - Write here the rules and conventions used in the source code.
+
+* Packaging
+
+   A Chameleon's release is a source package, of the form
+   chameleon-major.minor.patch.tar.gz, which:
+   1) has been properly tested,
+   2) contains a generated documentation corresponding to the released version,
+   3) is published on internet.
+
+** Test Chameleon before packaging
+
+   TODO - Write the way we could systematically test Chameleon before
+   packaging, for example writting a script (generated from this
+   org-mode file) to be used on PlaFRIM plus some specific ctest
+   tests.
+
+** Source tarball generation
+
+   #+begin_src sh
+   export CHAMELEON_ROOT=/path/to/chameleon/sources/to/be/released
+   cmake $CHAMELEON_ROOT -DCHAMELEON_ENABLE_DOCS=ON
+   make docs && cp docs/texinfo/users_guide.pdf $CHAMELEON_ROOT && make package_source
+   #+end_src
+
+** Publish the release on internet
+
+   TODO - Write how to publish the source tarball, especially where
+   (gforge, gitlab, elsewhere?).
