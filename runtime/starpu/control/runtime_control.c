@@ -229,3 +229,11 @@ void RUNTIME_comm_size( int *size )
 #endif
     return;
 }
+
+/*******************************************************************************
+ *  This returns the number of workers
+ **/
+int RUNTIME_get_thread_nbr()
+{
+    return starpu_worker_get_count_by_type( STARPU_CPU );
+}

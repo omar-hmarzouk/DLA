@@ -56,6 +56,7 @@ void  RUNTIME_pause              (MORSE_context_t*);
 void  RUNTIME_resume             (MORSE_context_t*);
 void  RUNTIME_comm_rank          (int*);
 void  RUNTIME_comm_size          (int*);
+int   RUNTIME_get_thread_nbr     (void);
 
 /*******************************************************************************
  * RUNTIME Descriptor
