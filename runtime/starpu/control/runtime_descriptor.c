@@ -330,6 +330,10 @@ void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
                                         BLKLDD(desc, im), tempmm, tempnn, eltsze);
         }
 
+#ifdef HAVE_STARPU_DATA_SET_COORDINATES
+        starpu_data_set_coordinates(*ptrtile, 2, m, n);
+#endif
+
 #if defined(CHAMELEON_USE_MPI)
         {
             int64_t block_ind = desc->lmt * jn + im;
