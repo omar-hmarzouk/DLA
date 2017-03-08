@@ -52,8 +52,13 @@ int   RUNTIME_rank               (MORSE_context_t*);
 int   RUNTIME_init_scheduler     (MORSE_context_t*, int, int, int);
 void  RUNTIME_finalize_scheduler (MORSE_context_t*);
 void  RUNTIME_barrier            (MORSE_context_t*);
+#ifdef CHAMELEON_ENABLE_TRACING
 void  RUNTIME_iteration_push     (MORSE_context_t*, unsigned long iteration);
 void  RUNTIME_iteration_pop      (MORSE_context_t*);
+#else
+#define RUNTIME_iteration_push(c,i) ((void)0)
+#define RUNTIME_iteration_pop(c)    ((void)0)
+#endif
 void  RUNTIME_pause              (MORSE_context_t*);
 void  RUNTIME_resume             (MORSE_context_t*);
 void  RUNTIME_comm_rank          (int*);
