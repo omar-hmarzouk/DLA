@@ -50,6 +50,10 @@ dedicated to dense linear algebra.
   The documentation of Chameleon's last release is available here:
   [[http://morse.gforge.inria.fr/chameleon/0.9.1/chameleon_users_guide-0.9.1.html][chameleon-0.9.1 documentation]].
 
+** For developers
+
+   [[file:READMEDEV.org][READMEDEV]]
+
 * Installation
 
 ** Distribution of Chameleon
