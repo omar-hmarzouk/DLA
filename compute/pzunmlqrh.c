@@ -105,6 +105,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
              *  MorseLeft / MorseNoTrans
              */
             for (k = 0; k < K; k++) {
+                RUNTIME_iteration_push(morse, k);
+
                 tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
                 ldak = BLKLDD(A, k);
                 for (N = k; N < A->nt; N += BS) {
@@ -172,12 +174,16 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                         }
                     }
                 }
+
+                RUNTIME_iteration_pop(morse);
             }
         } else {
             /*
              *  MorseLeft / MorseConjTrans
              */
             for (k = K-1; k >= 0; k--) {
+                RUNTIME_iteration_push(morse, k);
+
                 tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
                 ldak = BLKLDD(A, k);
                 lastRD = 0;
@@ -248,6 +254,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                             B(N, n), ldbN);
                     }
                 }
+
+                RUNTIME_iteration_pop(morse);
             }
 
         }
@@ -257,6 +265,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
              *  MorseRight / MorseNoTrans
              */
             for (k = K-1; k >= 0; k--) {
+                RUNTIME_iteration_push(morse, k);
+
                 tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
                 ldak = BLKLDD(A, k);
                 lastRD = 0;
@@ -326,12 +336,16 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                             B(m, N), ldbm);
                     }
                 }
+
+                RUNTIME_iteration_pop(morse);
             }
         } else {
             /*
              *  MorseRight / MorseConjTrans
              */
             for (k = 0; k < K; k++) {
+                RUNTIME_iteration_push(morse, k);
+
                 tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
                 ldak = BLKLDD(A, k);
                 for (N = k; N < A->nt; N += BS) {
@@ -398,6 +412,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                         }
                     }
                 }
+
+                RUNTIME_iteration_pop(morse);
             }
         }
     }

@@ -176,6 +176,26 @@ void RUNTIME_barrier( MORSE_context_t *morse )
 }
 
 /*******************************************************************************
+ *  Set iteration numbers for traces
+ **/
+#ifdef CHAMELEON_ENABLE_TRACING
+void RUNTIME_iteration_push( MORSE_context_t *morse, unsigned long iteration )
+{
+    (void)morse;
+#if defined(HAVE_STARPU_ITERATION_PUSH)
+    starpu_iteration_push(iteration);
+#endif
+}
+void RUNTIME_iteration_pop( MORSE_context_t *morse )
+{
+    (void)morse;
+#if defined(HAVE_STARPU_ITERATION_PUSH)
+    starpu_iteration_pop();
+#endif
+}
+#endif
+
+/*******************************************************************************
  *  To suspend the processing of new tasks by workers
  **/
 void RUNTIME_pause( MORSE_context_t *morse )

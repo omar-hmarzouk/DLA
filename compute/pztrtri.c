@@ -56,6 +56,8 @@ void morse_pztrtri(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
      */
     if (uplo == MorseLower) {
         for (k = 0; k < A->nt; k++) {
+            RUNTIME_iteration_push(morse, k);
+
             tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
             ldak = BLKLDD(A, k);
             for (m = k+1; m < A->mt; m++) {
@@ -97,6 +99,8 @@ void morse_pztrtri(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
                 uplo, diag,
                 tempkn, A->mb,
                 A(k, k), ldak, A->nb*k);
+
+            RUNTIME_iteration_pop(morse);
         }
     }
     /*
@@ -104,6 +108,8 @@ void morse_pztrtri(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
      */
     else {
         for (k = 0; k < A->mt; k++) {
+            RUNTIME_iteration_push(morse, k);
+
             tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
             ldak = BLKLDD(A, k);
             for (n = k+1; n < A->nt; n++) {
@@ -145,6 +151,8 @@ void morse_pztrtri(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
                 uplo, diag,
                 tempkm, A->mb,
                 A(k, k), ldak, A->mb*k);
+
+            RUNTIME_iteration_pop(morse);
         }
     }
     RUNTIME_options_finalize(&options, morse);
