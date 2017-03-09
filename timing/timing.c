@@ -492,7 +492,7 @@ main(int argc, char *argv[]) {
     iparam[IPARAM_GEMM3M        ] = 0;
     iparam[IPARAM_PROGRESS      ] = 0;
     iparam[IPARAM_PROFILE       ] = 0;
-    iparam[IPARAM_PRINT_ERRORS  ] = 0;
+    iparam[IPARAM_PRINT_WARNINGS] = 1;
     iparam[IPARAM_PEAK          ] = 0;
     iparam[IPARAM_PARALLEL_TASKS] = 0;
     iparam[IPARAM_NO_CPU        ] = 0;
@@ -586,8 +586,8 @@ main(int argc, char *argv[]) {
             iparam[IPARAM_PEAK] = 1;
         } else if (startswith( argv[i], "--noprofile" )) {
             iparam[IPARAM_PROFILE] = 0;
-        } else if (startswith( argv[i], "--printerrors" )) {
-            iparam[IPARAM_PRINT_ERRORS] = 1;
+        } else if (startswith( argv[i], "--nowarnings" )) {
+            iparam[IPARAM_PRINT_WARNINGS] = 0;
 /*         } else if (startswith( argv[i], "--parallel=" )) { */
 /*             sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_PARALLEL_TASKS]) ); */
 /*         } else if (startswith( argv[i], "--noparallel" )) { */
@@ -653,11 +653,11 @@ main(int argc, char *argv[]) {
     if (iparam[IPARAM_PROFILE] == 1)
         MORSE_Enable(MORSE_PROFILING_MODE);
 
-    if (iparam[IPARAM_PRINT_ERRORS] == 1)
-        MORSE_Enable(MORSE_ERRORS);
-
     if (iparam[IPARAM_PROGRESS] == 1)
         MORSE_Enable(MORSE_PROGRESS);
+
+    if (iparam[IPARAM_PRINT_WARNINGS] == 0)
+        MORSE_Disable(MORSE_WARNINGS);
 
     if (iparam[IPARAM_GEMM3M] == 1)
         MORSE_Enable(MORSE_GEMM3M);
