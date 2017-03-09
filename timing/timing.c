@@ -631,7 +631,7 @@ main(int argc, char *argv[]) {
     MORSE_Init( iparam[IPARAM_THRDNBR],
                 iparam[IPARAM_NCUDAS] );
 
-    /* Get thenumber of thread set by the runtime */
+    /* Get the number of threads set by the runtime */
     iparam[IPARAM_THRDNBR] = MORSE_GetThreadNbr();
 
     /* Stops profiling here to avoid profiling uninteresting routines.
