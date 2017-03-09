@@ -8,7 +8,7 @@ developers must follow and that should be read by contributors.
 
 * Gitlab flow: how to contribute to Chameleon
 
-  Please read and follow guidelines given in the [[https://gitlab.inria.fr/solverstack/chameleon/blob/master/CONTRIBUTING.md][CONTRIBUTING file]].
+  Please read and follow guidelines given in the [[file:CONTRIBUTING.org][CONTRIBUTING file]].
 
 ** Update submodules
 
@@ -54,11 +54,12 @@ developers must follow and that should be read by contributors.
 
 ** Rules about source code documentation
 
-   TODO - Write here the rules to document source code inside chameleon.
+   Please refer to this file for the documentation guidelines [[file:docs/doxygen/README.org][README]].
 
 * Naming and writting conventions
 
-  TODO - Write here the rules and conventions used in the source code.
+  Chameleon library started as an extension of the PLASMA library so
+  that code naming and writting conventions should follow [[https://bitbucket.org/icl/plasma][PLASMA]] ones.
 
 * Packaging
 
