@@ -283,3 +283,21 @@ int MORSE_Comm_rank( int *rank )
     RUNTIME_comm_rank (rank);
     return MORSE_SUCCESS;
 }
+
+/** ***************************************************************************
+ *
+ * @ingroup Control
+ *
+ *  MORSE_GetThreadNbr - Return the number of CPU workers initialized by the
+ *  runtime
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval The number of CPU workers started
+ *
+ *****************************************************************************/
+int MORSE_GetThreadNbr( )
+{
+    return RUNTIME_get_thread_nbr();
+}

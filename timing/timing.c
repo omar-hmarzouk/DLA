@@ -440,15 +440,6 @@ print_header(char *prog_name, int * iparam) {
     return;
 }
 
-static void
-get_thread_count(int *thrdnbr) {
-#if defined WIN32 || defined WIN64
-    sscanf( getenv( "NUMBER_OF_PROCESSORS" ), "%d", thrdnbr );
-#else
-    *thrdnbr = sysconf(_SC_NPROCESSORS_ONLN);
-#endif
-}
-
 int
 main(int argc, char *argv[]) {
     int i, m, mx, nx;
@@ -632,11 +623,6 @@ main(int argc, char *argv[]) {
     }
 #endif
 
-    if ( iparam[IPARAM_THRDNBR] == -1 ) {
-      get_thread_count( &(iparam[IPARAM_THRDNBR]) );
-      iparam[IPARAM_THRDNBR] -= iparam[IPARAM_NCUDAS];
-    }
-
     m  = iparam[IPARAM_M];
     mx = iparam[IPARAM_MX];
     nx = iparam[IPARAM_NX];
@@ -644,6 +630,9 @@ main(int argc, char *argv[]) {
     /* Initialize MORSE */
     MORSE_Init( iparam[IPARAM_THRDNBR],
                 iparam[IPARAM_NCUDAS] );
+
+    /* Get the number of threads set by the runtime */
+    iparam[IPARAM_THRDNBR] = MORSE_GetThreadNbr();
 
     /* Stops profiling here to avoid profiling uninteresting routines.
        It will be reactivated in the time_*.c routines with the macro START_TIMING() */

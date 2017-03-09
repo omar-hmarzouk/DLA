@@ -120,3 +120,15 @@ void RUNTIME_comm_size( int *size )
     *size = 1;
     return;
 }
+
+/*******************************************************************************
+ *  This returns the number of workers
+ **/
+int RUNTIME_get_thread_nbr()
+{
+    /*
+     * TODO: should add a function to Quark to get the number of thread from the
+     * data structure and not from the system function
+     */
+    return quark_get_numthreads();
+}

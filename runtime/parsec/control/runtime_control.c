@@ -127,3 +127,11 @@ void RUNTIME_comm_size( int *size )
 #endif
     return;
 }
+
+/*******************************************************************************
+ *  This returns the number of workers
+ **/
+int RUNTIME_get_thread_nbr()
+{
+    return vpmap_get_nb_total_threads();
+}
