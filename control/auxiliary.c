@@ -80,14 +80,7 @@ void morse_warning(const char *func_name, char* msg_text)
  ******************************************************************************/
 void morse_error(const char *func_name, char* msg_text)
 {
-    MORSE_context_t *morse;
-
-    morse = morse_context_self();
-    if (morse == NULL)
-        morse_fatal_error("morse_error", "MORSE not initialized");
-    if (morse->errors_enabled)
-        fprintf(stderr, "MORSE ERROR: %s(): %s\n", func_name, msg_text);
-
+    fprintf(stderr, "MORSE ERROR: %s(): %s\n", func_name, msg_text);
 }
 
 /*******************************************************************************
