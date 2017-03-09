@@ -121,7 +121,33 @@ dedicated to dense linear algebra.
 
 * Citing Chameleon
 
-  TODO
+Feel free to use the following publications to reference Chameleon:
+
+  * Original paper that initiated Chameleon and the principles:
+    - Agullo, Emmanuel and Augonnet, Cédric and Dongarra, Jack and
+      Ltaief, Hatem and Namyst, Raymond and Thibault, Samuel and Tomov,
+      Stanimire, *Faster, Cheaper, Better -- a Hybridization Methodology
+      to Develop Linear Algebra Software for GPUs*, /GPU Computing Gems/,
+      [[https://hal.inria.fr/inria-00547847][First Online: 17 December 2010]].
+  * Design of the QR algorithms:
+    - Agullo, Emmanuel and Augonnet, Cédric and Dongarra, Jack and
+      Faverge, Mathieu and Ltaief, Hatem and Thibault, Samuel an
+      Tomov, Stanimire, *QR Factorization on a Multicore Node Enhanced
+      with Multiple GPU Accelerators*, /25th IEEE International Parallel
+      & Distributed Processing Symposium/, [[https://hal.inria.fr/inria-00547614][First Online: 16 December
+      2010]].
+  * Design of the LU algorithms:
+    - Agullo, Emmanuel and Augonnet, Cédric and Dongarra, Jack and
+      Faverge, Mathieu and Langou, Julien and Ltaief, Hatem and Tomov,
+      Stanimire, *LU Factorization for Accelerator-based Systems*,
+      /9th ACS/IEEE International Conference on Computer Systems and
+      Applications (AICCSA 11)/, [[https://hal.inria.fr/hal-00654193][First Online: 21 December 2011]].
+  * Regarding distributed memory:
+    - Agullo, Emmanuel and Aumage, Olivier and Faverge, Mathieu and
+      Furmento, Nathalie and Pruvost, Florent and Sergent, Marc and
+      Thibault, Samuel, *Achieving High Performance on Supercomputers
+      with a Sequential Task-based Programming Model*, /Research Report/,
+      [[https://hal.inria.fr/hal-01332774][First Online: 16 June 2016]].
 
 * Licence
 
