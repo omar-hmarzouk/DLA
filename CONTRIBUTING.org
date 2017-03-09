@@ -48,6 +48,9 @@
   to the solverstack/chameleon repository*. By default the checkbox is
   not checked, and the default repository is your fork.
 
+  If the pull request is made to fix an issue, please name the branch
+  "issueXX" so it is automatically linked to the issue.
+
 * To review locally a private pull request submitted by someone else
 
    Get the patch from the pull request (Need to update that !!!!
