@@ -105,16 +105,18 @@ dedicated to dense linear algebra.
  The following people contributed to the development of Chameleon:
  * Emmanuel Agullo, PI
  * Olivier Aumage
- * Cedric castagnede
+ * Cedric Castagnede
  * Terry Cojean
  * Mathieu Faverge, PI
  * Nathalie Furmento
  * Reazul Hoque, PaRSEC support
+ * Hatem Ltaief
  * Gregoire Pichon, Two-sided algorithms
  * Florent Pruvost, PI, CMake and Spack
  * Marc Sergent
  * Guillaume Sylvand
  * Samuel Thibault, StarPU support
+ * Stanimire Tomov
  * Omar Zenati
 
  If we forgot your name, please let us know that we can fix that mistake.
