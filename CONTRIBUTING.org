@@ -1,4 +1,4 @@
-* To contribute to the project, you need to do it through pull/merge request
+* To contribute to the project, you need to do it through merge request
 
   First you need to fork the repository into your own account. You can
   do that simply by clicking the fork button on the gitlab interface.
@@ -45,11 +45,34 @@
   request, and push the button !!!
 
   *Be careful to check the 'close after merge' check box, and to push
-  to the solverstack/chameleon repository*. By default the checkbox is
-  not checked, and the default repository is your fork.
+  to the solverstack/chameleon repository*. By default the checkbox
+  may not be checked, and the default repository is your fork.
 
   If the pull request is made to fix an issue, please name the branch
-  "issueXX" so it is automatically linked to the issue.
+  "issueXX" so it is automatically linked to the issue. In addition,
+  please add "fix issue #xx" in the comment of the pull request to
+  automatically close the issue when the PR is merged.
+
+** Rebase on top of 'master'
+
+   In some cases your "feature" branch you want to merge into "master"
+   has a long life span so that your branch and the master branch
+   could make some conflicts. To avoid having to handle the possible
+   conflicts at *merge request* time, please rebase your "feature" on
+   top of "master" before pushing the button *merge request*.
+
+   To do that, just go at the HEAD of your "feature" branch and rebase
+   #+begin_src sh
+   git checkout feature
+   git rebase master
+   #+end_src
+
+   Then force to push on your origin
+   #+begin_src sh
+   git push --force origin feature
+   #+end_src
+
+   Then push the button *merge request*.
 
 * To review locally a private pull request submitted by someone else
 
