@@ -112,7 +112,7 @@ dedicated to dense linear algebra.
  * Reazul Hoque
  * Hatem Ltaief
  * Gregoire Pichon
- * Florent Pruvost, PIz
+ * Florent Pruvost, PI
  * Marc Sergent
  * Guillaume Sylvand
  * Samuel Thibault
