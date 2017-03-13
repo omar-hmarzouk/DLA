@@ -109,13 +109,13 @@ dedicated to dense linear algebra.
  * Terry Cojean
  * Mathieu Faverge, PI
  * Nathalie Furmento
- * Reazul Hoque, PaRSEC support
+ * Reazul Hoque
  * Hatem Ltaief
- * Gregoire Pichon, Two-sided algorithms
- * Florent Pruvost, PI, CMake and Spack
+ * Gregoire Pichon
+ * Florent Pruvost, PIz
  * Marc Sergent
  * Guillaume Sylvand
- * Samuel Thibault, StarPU support
+ * Samuel Thibault
  * Stanimire Tomov
  * Omar Zenati
 
