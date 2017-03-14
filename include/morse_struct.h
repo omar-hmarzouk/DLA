@@ -128,7 +128,6 @@ typedef struct morse_context_s {
     int                group_size;
 
     /* Boolean flags */
-    MORSE_bool         errors_enabled;
     MORSE_bool         warnings_enabled;
     MORSE_bool         autotuning_enabled;
     MORSE_bool         parallel_enabled;

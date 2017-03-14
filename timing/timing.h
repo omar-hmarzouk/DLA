@@ -54,7 +54,7 @@ enum iparam_timing {
     IPARAM_GEMM3M,         /* Use GEMM3M for complex matrix vector products */
     /* Added for StarPU version */
     IPARAM_PROFILE,
-    IPARAM_PRINT_ERRORS,
+    IPARAM_PRINT_WARNINGS,
     IPARAM_PEAK,
     IPARAM_PARALLEL_TASKS,
     IPARAM_NO_CPU,

@@ -77,8 +77,7 @@ MORSE_context_t *morse_context_create()
     morse->ncudas             = 0;
     morse->nthreads_per_worker= 1;
 
-    morse->errors_enabled       = MORSE_FALSE;
-    morse->warnings_enabled     = MORSE_FALSE;
+    morse->warnings_enabled     = MORSE_TRUE;
     morse->autotuning_enabled   = MORSE_TRUE;
     morse->parallel_enabled     = MORSE_FALSE;
     morse->profiling_enabled    = MORSE_FALSE;
@@ -128,7 +127,6 @@ int morse_context_destroy(){
  * @param[in] option
  *          Feature to be enabled:
  *          @arg MORSE_WARNINGS   printing of warning messages,
- *          @arg MORSE_ERRORS     printing of error messages,
  *          @arg MORSE_AUTOTUNING autotuning for tile size and inner block size.
  *          @arg MORSE_PROFILING_MODE  activate profiling of kernels
  *          @arg MORSE_PROGRESS  activate progress indicator
@@ -154,9 +152,6 @@ int MORSE_Enable(MORSE_enum option)
     {
         case MORSE_WARNINGS:
             morse->warnings_enabled = MORSE_TRUE;
-            break;
-        case MORSE_ERRORS:
-            morse->errors_enabled = MORSE_TRUE;
             break;
         case MORSE_AUTOTUNING:
             morse->autotuning_enabled = MORSE_TRUE;
@@ -201,7 +196,6 @@ int MORSE_Enable(MORSE_enum option)
  * @param[in] option
  *          Feature to be disabled:
  *          @arg MORSE_WARNINGS   printing of warning messages,
- *          @arg MORSE_ERRORS     printing of error messages,
  *          @arg MORSE_AUTOTUNING autotuning for tile size and inner block size.
  *          @arg MORSE_PROFILING_MODE  deactivate profiling of kernels
  *          @arg MORSE_PROGRESS  deactivate progress indicator
@@ -226,9 +220,6 @@ int MORSE_Disable(MORSE_enum option)
     {
         case MORSE_WARNINGS:
             morse->warnings_enabled = MORSE_FALSE;
-            break;
-        case MORSE_ERRORS:
-            morse->errors_enabled = MORSE_FALSE;
             break;
         case MORSE_AUTOTUNING:
             morse->autotuning_enabled = MORSE_FALSE;
