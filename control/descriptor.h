@@ -220,7 +220,7 @@ inline static int morse_desc_islocal( const MORSE_desc_t *A, int m, int n )
     if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1; \
     RUNTIME_ACCESS_RW(A, Am, An)
 
-#define MORSE_RANK_CHANGED __morse_need_submit = 1;
+#define MORSE_RANK_CHANGED(rank) __morse_need_submit = 1;
 
 #define MORSE_END_ACCESS_DECLARATION \
     RUNTIME_END_ACCESS_DECLARATION \

@@ -176,7 +176,7 @@ void MORSE_TASK_ztsmqr(const MORSE_option_t *options,
     MORSE_ACCESS_R(V, Vm, Vn);
     MORSE_ACCESS_R(T, Tm, Tn);
     if (rank_changed)
-        MORSE_RANK_CHANGED;
+        MORSE_RANK_CHANGED(execution_rank);
     MORSE_END_ACCESS_DECLARATION;
 
     starpu_insert_task(
