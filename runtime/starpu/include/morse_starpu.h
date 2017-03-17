@@ -86,4 +86,10 @@ typedef struct starpu_conf starpu_conf_t;
 
 void RUNTIME_set_reduction_methods(starpu_data_handle_t handle, MORSE_enum dtyp);
 
+#define RUNTIME_ACCESS_R(A, Am, An)
+
+#define RUNTIME_ACCESS_W(A, Am, An)
+
+#define RUNTIME_ACCESS_RW(A, Am, An)
+
 #endif /* _MORSE_STARPU_H_ */

@@ -208,13 +208,16 @@ inline static int morse_desc_islocal( const MORSE_desc_t *A, int m, int n )
     unsigned __morse_need_submit = 0;
 
 #define MORSE_ACCESS_R(A, Am, An) \
-    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1;
+    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1; \
+    RUNTIME_ACCESS_R(A, Am, An)
 
 #define MORSE_ACCESS_W(A, Am, An) \
-    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1;
+    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1; \
+    RUNTIME_ACCESS_W(A, Am, An)
 
 #define MORSE_ACCESS_RW(A, Am, An) \
-    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1;
+    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1; \
+    RUNTIME_ACCESS_RW(A, Am, An)
 
 #define MORSE_RANK_CHANGED __morse_need_submit = 1;
 

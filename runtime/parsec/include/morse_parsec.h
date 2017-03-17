@@ -24,4 +24,10 @@ typedef struct morse_parsec_desc_s morse_parsec_desc_t;
  */
 #define RTBLKADDR( desc, type, m, n ) ( dague_dtd_tile_of( DAGUE_dtd_handle, (desc)->schedopt, m, n ) )
 
+#define RUNTIME_ACCESS_R(A, Am, An)
+
+#define RUNTIME_ACCESS_W(A, Am, An)
+
+#define RUNTIME_ACCESS_RW(A, Am, An)
+
 #endif /* _MORSE_PARSEC_H_ */

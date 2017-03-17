@@ -47,4 +47,10 @@ typedef struct quark_option_s {
  */
 #define RTBLKADDR( desc, type, m, n ) ( (type*)RUNTIME_desc_getaddr( desc, m, n ) )
 
+#define RUNTIME_ACCESS_R(A, Am, An)
+
+#define RUNTIME_ACCESS_W(A, Am, An)
+
+#define RUNTIME_ACCESS_RW(A, Am, An)
+
 #endif /* _MORSE_QUARK_H_ */
