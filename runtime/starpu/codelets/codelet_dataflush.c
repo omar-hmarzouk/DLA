@@ -40,6 +40,18 @@ static void data_release(void *handle)
 }
 #endif
 
+#ifdef CHAMELEON_USE_MPI
+#ifdef HAVE_STARPU_MPI_CACHED_RECEIVE
+int RUNTIME_desc_iscached(const MORSE_desc_t *A, int Am, int An)
+{
+    starpu_data_handle_t *ptrtile = (starpu_data_handle_t*)(A->schedopt);
+    ptrtile += ((int64_t)(A->lmt) * (int64_t)An + (int64_t)Am);
+
+    return starpu_mpi_cached_receive(*ptrtile);
+}
+#endif
+#endif
+
 void MORSE_TASK_dataflush(const MORSE_option_t *options,
                           const MORSE_desc_t *A, int Am, int An)
 {
