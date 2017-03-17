@@ -77,24 +77,25 @@ void MORSE_TASK_zlaset(const MORSE_option_t *options,
     struct starpu_codelet *codelet = &cl_zlaset;
     void (*callback)(void*) = options->profiling ? cl_zlaset_callback : NULL;
 
-    if ( morse_desc_islocal( A, Am, An ) )
-    {
-        starpu_insert_task(
-            starpu_mpi_codelet(codelet),
-            STARPU_VALUE,  &uplo,                sizeof(MORSE_enum),
-            STARPU_VALUE,     &M,                        sizeof(int),
-            STARPU_VALUE,     &N,                        sizeof(int),
-            STARPU_VALUE, &alpha,         sizeof(MORSE_Complex64_t),
-            STARPU_VALUE,  &beta,         sizeof(MORSE_Complex64_t),
-            STARPU_W,      RTBLKADDR(A, MORSE_Complex64_t, Am, An),
-            STARPU_VALUE,   &LDA,                        sizeof(int),
-            STARPU_PRIORITY,    options->priority,
-            STARPU_CALLBACK,    callback,
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_W(A, Am, An);
+    MORSE_END_ACCESS_DECLARATION;
+
+    starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_VALUE,  &uplo,                sizeof(MORSE_enum),
+        STARPU_VALUE,     &M,                        sizeof(int),
+        STARPU_VALUE,     &N,                        sizeof(int),
+        STARPU_VALUE, &alpha,         sizeof(MORSE_Complex64_t),
+        STARPU_VALUE,  &beta,         sizeof(MORSE_Complex64_t),
+        STARPU_W,      RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+        STARPU_VALUE,   &LDA,                        sizeof(int),
+        STARPU_PRIORITY,    options->priority,
+        STARPU_CALLBACK,    callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-            STARPU_NAME, "zlaset",
+        STARPU_NAME, "zlaset",
 #endif
-            0);
-    }
+        0);
 }
 
 

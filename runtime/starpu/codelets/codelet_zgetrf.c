@@ -40,24 +40,25 @@ void MORSE_TASK_zgetrf(const MORSE_option_t *options,
     struct starpu_codelet *codelet = &cl_zgetrf;
     void (*callback)(void*) = options->profiling ? cl_zgetrf_callback : NULL;
 
-    if ( morse_desc_islocal( A, Am, An ) )
-    {
-        starpu_insert_task(
-            starpu_mpi_codelet(codelet),
-            STARPU_VALUE,             &m,                        sizeof(int),
-            STARPU_VALUE,             &n,                        sizeof(int),
-            STARPU_RW,                     RTBLKADDR(A, MORSE_Complex64_t, Am, An),
-            STARPU_VALUE,           &lda,                        sizeof(int),
-            STARPU_VALUE,                  &IPIV,                      sizeof(int*),
-            STARPU_VALUE,    &check_info,                sizeof(MORSE_bool),
-            STARPU_VALUE,         &iinfo,                        sizeof(int),
-            STARPU_PRIORITY,    options->priority,
-            STARPU_CALLBACK,    callback,
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_RW(A, Am, An);
+    MORSE_END_ACCESS_DECLARATION;
+
+    starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_VALUE,             &m,                        sizeof(int),
+        STARPU_VALUE,             &n,                        sizeof(int),
+        STARPU_RW,                     RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+        STARPU_VALUE,           &lda,                        sizeof(int),
+        STARPU_VALUE,                  &IPIV,                      sizeof(int*),
+        STARPU_VALUE,    &check_info,                sizeof(MORSE_bool),
+        STARPU_VALUE,         &iinfo,                        sizeof(int),
+        STARPU_PRIORITY,    options->priority,
+        STARPU_CALLBACK,    callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-            STARPU_NAME, "zgetrf",
+        STARPU_NAME, "zgetrf",
 #endif
-            0);
-    }
+        0);
 }
 
 

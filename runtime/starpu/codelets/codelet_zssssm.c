@@ -115,35 +115,36 @@ void MORSE_TASK_zssssm(const MORSE_option_t *options,
     struct starpu_codelet *codelet = &cl_zssssm;
     void (*callback)(void*) = options->profiling ? cl_zssssm_callback : NULL;
 
-    if ( morse_desc_islocal( A1, A1m, A1n ) ||
-         morse_desc_islocal( A2, A2m, A2n ) ||
-         morse_desc_islocal( L1, L1m, L1n ) ||
-         morse_desc_islocal( L2, L2m, L2n ) )
-    {
-        starpu_insert_task(
-            starpu_mpi_codelet(codelet),
-            STARPU_VALUE,    &m1,                        sizeof(int),
-            STARPU_VALUE,    &n1,                        sizeof(int),
-            STARPU_VALUE,    &m2,                        sizeof(int),
-            STARPU_VALUE,    &n2,                        sizeof(int),
-            STARPU_VALUE,     &k,                        sizeof(int),
-            STARPU_VALUE,    &ib,                        sizeof(int),
-            STARPU_RW,            RTBLKADDR(A1, MORSE_Complex64_t, A1m, A1n),
-            STARPU_VALUE,  &lda1,                        sizeof(int),
-            STARPU_RW,            RTBLKADDR(A2, MORSE_Complex64_t, A2m, A2n),
-            STARPU_VALUE,  &lda2,                        sizeof(int),
-            STARPU_R,             RTBLKADDR(L1, MORSE_Complex64_t, L1m, L1n),
-            STARPU_VALUE,  &ldl1,                        sizeof(int),
-            STARPU_R,             RTBLKADDR(L2, MORSE_Complex64_t, L2m, L2n),
-            STARPU_VALUE,  &ldl2,                        sizeof(int),
-            STARPU_VALUE,          &IPIV,                      sizeof(int*),
-            STARPU_PRIORITY,    options->priority,
-            STARPU_CALLBACK,    callback,
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_RW(A1, A1m, A1n);
+    MORSE_ACCESS_RW(A2, A2m, A2n);
+    MORSE_ACCESS_R(L1, L1m, L1n);
+    MORSE_ACCESS_R(L2, L2m, L2n);
+    MORSE_END_ACCESS_DECLARATION;
+
+    starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_VALUE,    &m1,                        sizeof(int),
+        STARPU_VALUE,    &n1,                        sizeof(int),
+        STARPU_VALUE,    &m2,                        sizeof(int),
+        STARPU_VALUE,    &n2,                        sizeof(int),
+        STARPU_VALUE,     &k,                        sizeof(int),
+        STARPU_VALUE,    &ib,                        sizeof(int),
+        STARPU_RW,            RTBLKADDR(A1, MORSE_Complex64_t, A1m, A1n),
+        STARPU_VALUE,  &lda1,                        sizeof(int),
+        STARPU_RW,            RTBLKADDR(A2, MORSE_Complex64_t, A2m, A2n),
+        STARPU_VALUE,  &lda2,                        sizeof(int),
+        STARPU_R,             RTBLKADDR(L1, MORSE_Complex64_t, L1m, L1n),
+        STARPU_VALUE,  &ldl1,                        sizeof(int),
+        STARPU_R,             RTBLKADDR(L2, MORSE_Complex64_t, L2m, L2n),
+        STARPU_VALUE,  &ldl2,                        sizeof(int),
+        STARPU_VALUE,          &IPIV,                      sizeof(int*),
+        STARPU_PRIORITY,    options->priority,
+        STARPU_CALLBACK,    callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-            STARPU_NAME, "zssssm",
+        STARPU_NAME, "zssssm",
 #endif
-            0);
-    }
+        0);
 }
 
 

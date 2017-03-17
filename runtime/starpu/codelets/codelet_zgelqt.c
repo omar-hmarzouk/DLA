@@ -104,29 +104,30 @@ void MORSE_TASK_zgelqt(const MORSE_option_t *options,
     void (*callback)(void*) = options->profiling ? cl_zgelqt_callback : NULL;
     MORSE_starpu_ws_t *h_work = (MORSE_starpu_ws_t*)(options->ws_host);
 
-    if ( morse_desc_islocal( A, Am, An ) ||
-         morse_desc_islocal( T, Tm, Tn ) )
-    {
-        starpu_insert_task(
-            starpu_mpi_codelet(codelet),
-            STARPU_VALUE,    &m,                 sizeof(int),
-            STARPU_VALUE,    &n,                 sizeof(int),
-            STARPU_VALUE,    &ib,                sizeof(int),
-            STARPU_RW,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),
-            STARPU_VALUE,    &lda,               sizeof(int),
-            STARPU_W,         RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),
-            STARPU_VALUE,    &ldt,               sizeof(int),
-            /* max( nb * (ib+1), ib * (ib+nb) ) */
-            STARPU_SCRATCH,   options->ws_worker,
-            /* /\* ib*n + 3*ib*ib + max(m,n) *\/ */
-            STARPU_VALUE,    &h_work,            sizeof(MORSE_starpu_ws_t *),
-            STARPU_PRIORITY,  options->priority,
-            STARPU_CALLBACK,  callback,
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_RW(A, Am, An);
+    MORSE_ACCESS_W(T, Tm, Tn);
+    MORSE_END_ACCESS_DECLARATION;
+
+    starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_VALUE,    &m,                 sizeof(int),
+        STARPU_VALUE,    &n,                 sizeof(int),
+        STARPU_VALUE,    &ib,                sizeof(int),
+        STARPU_RW,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+        STARPU_VALUE,    &lda,               sizeof(int),
+        STARPU_W,         RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),
+        STARPU_VALUE,    &ldt,               sizeof(int),
+        /* max( nb * (ib+1), ib * (ib+nb) ) */
+        STARPU_SCRATCH,   options->ws_worker,
+        /* /\* ib*n + 3*ib*ib + max(m,n) *\/ */
+        STARPU_VALUE,    &h_work,            sizeof(MORSE_starpu_ws_t *),
+        STARPU_PRIORITY,  options->priority,
+        STARPU_CALLBACK,  callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-            STARPU_NAME, "zgelqt",
+        STARPU_NAME, "zgelqt",
 #endif
-            0);
-    }
+        0);
 }
 
 
