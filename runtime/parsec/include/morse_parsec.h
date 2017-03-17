@@ -32,6 +32,8 @@ typedef struct morse_parsec_desc_s morse_parsec_desc_t;
 
 #define RUNTIME_ACCESS_RW(A, Am, An)
 
+#define RUNTIME_RANK_CHANGED(rank)
+
 #define RUNTIME_END_ACCESS_DECLARATION
 
 #endif /* _MORSE_PARSEC_H_ */

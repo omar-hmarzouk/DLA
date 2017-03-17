@@ -94,6 +94,8 @@ void RUNTIME_set_reduction_methods(starpu_data_handle_t handle, MORSE_enum dtyp)
 
 #define RUNTIME_ACCESS_RW(A, Am, An)
 
+#define RUNTIME_RANK_CHANGED(rank)
+
 #define RUNTIME_END_ACCESS_DECLARATION
 
 #endif /* _MORSE_STARPU_H_ */

@@ -55,6 +55,8 @@ typedef struct quark_option_s {
 
 #define RUNTIME_ACCESS_RW(A, Am, An)
 
+#define RUNTIME_RANK_CHANGED(rank)
+
 #define RUNTIME_END_ACCESS_DECLARATION
 
 #endif /* _MORSE_QUARK_H_ */
