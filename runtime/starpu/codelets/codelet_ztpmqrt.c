@@ -36,37 +36,38 @@ void MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
     struct starpu_codelet *codelet = &cl_ztpmqrt;
     void (*callback)(void*) = options->profiling ? cl_ztpmqrt_callback : NULL;
 
-    if ( morse_desc_islocal( A, Am, An ) ||
-         morse_desc_islocal( B, Bm, Bn ) ||
-         morse_desc_islocal( V, Vm, Vn ) ||
-         morse_desc_islocal( T, Tm, Tn ) )
-    {
-        starpu_insert_task(
-            starpu_mpi_codelet(codelet),
-            STARPU_VALUE, &side,  sizeof(MORSE_enum),
-            STARPU_VALUE, &trans, sizeof(MORSE_enum),
-            STARPU_VALUE, &M,     sizeof(int),
-            STARPU_VALUE, &N,     sizeof(int),
-            STARPU_VALUE, &K,     sizeof(int),
-            STARPU_VALUE, &L,     sizeof(int),
-            STARPU_VALUE, &ib,     sizeof(int),
-            STARPU_R,      RTBLKADDR(V, MORSE_Complex64_t, Vm, Vn),
-            STARPU_VALUE, &ldv,   sizeof(int),
-            STARPU_R,      RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),
-            STARPU_VALUE, &ldt,   sizeof(int),
-            STARPU_RW,     RTBLKADDR(A, MORSE_Complex64_t, Am, An),
-            STARPU_VALUE, &lda,   sizeof(int),
-            STARPU_RW,     RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),
-            STARPU_VALUE, &ldb,   sizeof(int),
-            /* Other options */
-            STARPU_SCRATCH,   options->ws_worker,
-            STARPU_PRIORITY,  options->priority,
-            STARPU_CALLBACK,  callback,
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_R(V, Vm, Vn);
+    MORSE_ACCESS_R(T, Tm, Tn);
+    MORSE_ACCESS_RW(A, Am, An);
+    MORSE_ACCESS_RW(B, Bm, Bn);
+    MORSE_END_ACCESS_DECLARATION;
+
+    starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_VALUE, &side,  sizeof(MORSE_enum),
+        STARPU_VALUE, &trans, sizeof(MORSE_enum),
+        STARPU_VALUE, &M,     sizeof(int),
+        STARPU_VALUE, &N,     sizeof(int),
+        STARPU_VALUE, &K,     sizeof(int),
+        STARPU_VALUE, &L,     sizeof(int),
+        STARPU_VALUE, &ib,     sizeof(int),
+        STARPU_R,      RTBLKADDR(V, MORSE_Complex64_t, Vm, Vn),
+        STARPU_VALUE, &ldv,   sizeof(int),
+        STARPU_R,      RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),
+        STARPU_VALUE, &ldt,   sizeof(int),
+        STARPU_RW,     RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+        STARPU_VALUE, &lda,   sizeof(int),
+        STARPU_RW,     RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),
+        STARPU_VALUE, &ldb,   sizeof(int),
+        /* Other options */
+        STARPU_SCRATCH,   options->ws_worker,
+        STARPU_PRIORITY,  options->priority,
+        STARPU_CALLBACK,  callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-            STARPU_NAME, "ztpmqrt",
+        STARPU_NAME, "ztpmqrt",
 #endif
-            0);
-    }
+        0);
 
     (void)ib; (void)nb;
 }

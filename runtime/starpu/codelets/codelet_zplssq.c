@@ -66,20 +66,21 @@ void MORSE_TASK_zplssq( const MORSE_option_t *options,
     struct starpu_codelet *codelet = &cl_zplssq;
     void (*callback)(void*) = options->profiling ? cl_zplssq_callback : NULL;
 
-    if ( morse_desc_islocal( SCALESUMSQ, SCALESUMSQm, SCALESUMSQn ) ||
-         morse_desc_islocal( SCLSSQ,     SCLSSQm,     SCLSSQn ) )
-    {
-        starpu_insert_task(
-            starpu_mpi_codelet(codelet),
-            STARPU_R,  RTBLKADDR(SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn),
-            STARPU_RW, RTBLKADDR(SCLSSQ,     double, SCLSSQm,     SCLSSQn),
-            STARPU_PRIORITY,    options->priority,
-            STARPU_CALLBACK,    callback,
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_R(SCALESUMSQ, SCALESUMSQm, SCALESUMSQn);
+    MORSE_ACCESS_RW(SCLSSQ, SCLSSQm, SCLSSQn);
+    MORSE_END_ACCESS_DECLARATION;
+
+    starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_R,  RTBLKADDR(SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn),
+        STARPU_RW, RTBLKADDR(SCLSSQ,     double, SCLSSQm,     SCLSSQn),
+        STARPU_PRIORITY,    options->priority,
+        STARPU_CALLBACK,    callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-            STARPU_NAME, "zplssq",
+        STARPU_NAME, "zplssq",
 #endif
-            0);
-    }
+        0);
 }
 
 

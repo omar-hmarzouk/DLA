@@ -100,30 +100,31 @@ void MORSE_TASK_zgetrf_incpiv(const MORSE_option_t *options,
 
     MORSE_starpu_ws_t *h_work = (MORSE_starpu_ws_t*)(options->ws_host);
 
-    if ( morse_desc_islocal( A, Am, An ) ||
-         morse_desc_islocal( L, Lm, Ln ) )
-    {
-        starpu_insert_task(
-            starpu_mpi_codelet(codelet),
-            STARPU_VALUE,    &m,                 sizeof(int),
-            STARPU_VALUE,    &n,                 sizeof(int),
-            STARPU_VALUE,    &ib,                sizeof(int),
-            STARPU_RW,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),
-            STARPU_VALUE,    &lda,               sizeof(int),
-            STARPU_W,         RTBLKADDR(L, MORSE_Complex64_t, Lm, Ln),
-            STARPU_VALUE,    &ldl,               sizeof(int),
-            STARPU_VALUE,    &IPIV,              sizeof(int*),
-            STARPU_VALUE,    &check_info,        sizeof(MORSE_bool),
-            STARPU_VALUE,    &iinfo,             sizeof(int),
-            STARPU_SCRATCH,   options->ws_worker,
-            STARPU_VALUE,    &h_work,            sizeof(MORSE_starpu_ws_t *),
-            STARPU_PRIORITY,  options->priority,
-            STARPU_CALLBACK,  callback,
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_RW(A, Am, An);
+    MORSE_ACCESS_W(L, Lm, Ln);
+    MORSE_END_ACCESS_DECLARATION;
+
+    starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_VALUE,    &m,                 sizeof(int),
+        STARPU_VALUE,    &n,                 sizeof(int),
+        STARPU_VALUE,    &ib,                sizeof(int),
+        STARPU_RW,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+        STARPU_VALUE,    &lda,               sizeof(int),
+        STARPU_W,         RTBLKADDR(L, MORSE_Complex64_t, Lm, Ln),
+        STARPU_VALUE,    &ldl,               sizeof(int),
+        STARPU_VALUE,    &IPIV,              sizeof(int*),
+        STARPU_VALUE,    &check_info,        sizeof(MORSE_bool),
+        STARPU_VALUE,    &iinfo,             sizeof(int),
+        STARPU_SCRATCH,   options->ws_worker,
+        STARPU_VALUE,    &h_work,            sizeof(MORSE_starpu_ws_t *),
+        STARPU_PRIORITY,  options->priority,
+        STARPU_CALLBACK,  callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-            STARPU_NAME, "zgetrf_incpiv",
+        STARPU_NAME, "zgetrf_incpiv",
 #endif
-            0);
-    }
+        0);
 }
 
 

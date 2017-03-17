@@ -35,23 +35,24 @@ void MORSE_TASK_zgessq( const MORSE_option_t *options,
     struct starpu_codelet *codelet = &cl_zgessq;
     void (*callback)(void*) = options->profiling ? cl_zgessq_callback : NULL;
 
-    if ( morse_desc_islocal( A, Am, An ) ||
-         morse_desc_islocal( SCALESUMSQ, SCALESUMSQm, SCALESUMSQn ) )
-    {
-        starpu_insert_task(
-            starpu_mpi_codelet(codelet),
-            STARPU_VALUE,    &m,                          sizeof(int),
-            STARPU_VALUE,    &n,                          sizeof(int),
-            STARPU_R,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),
-            STARPU_VALUE,    &lda,                        sizeof(int),
-            STARPU_RW,       RTBLKADDR(SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn),
-            STARPU_PRIORITY, options->priority,
-            STARPU_CALLBACK, callback,
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_R(A, Am, An);
+    MORSE_ACCESS_RW(SCALESUMSQ, SCALESUMSQm, SCALESUMSQn);
+    MORSE_END_ACCESS_DECLARATION;
+
+    starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_VALUE,    &m,                          sizeof(int),
+        STARPU_VALUE,    &n,                          sizeof(int),
+        STARPU_R,        RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+        STARPU_VALUE,    &lda,                        sizeof(int),
+        STARPU_RW,       RTBLKADDR(SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn),
+        STARPU_PRIORITY, options->priority,
+        STARPU_CALLBACK, callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-            STARPU_NAME, "zgessq",
+        STARPU_NAME, "zgessq",
 #endif
-            0);
-    }
+        0);
 }
 
 

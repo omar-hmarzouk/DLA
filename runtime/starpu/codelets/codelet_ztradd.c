@@ -95,28 +95,29 @@ void MORSE_TASK_ztradd(const MORSE_option_t *options,
     struct starpu_codelet *codelet = &cl_ztradd;
     void (*callback)(void*) = options->profiling ? cl_zgeadd_callback : NULL;
 
-    if ( morse_desc_islocal( A, Am, An ) ||
-	 morse_desc_islocal( B, Bm, Bn ) )
-    {
-	starpu_insert_task(
-            starpu_mpi_codelet(codelet),
-            STARPU_VALUE,    &uplo,               sizeof(MORSE_enum),
-            STARPU_VALUE,    &trans,              sizeof(MORSE_enum),
-            STARPU_VALUE,    &m,                  sizeof(int),
-            STARPU_VALUE,    &n,                  sizeof(int),
-            STARPU_VALUE,    &alpha,              sizeof(MORSE_Complex64_t),
-            STARPU_R,         RTBLKADDR(A, MORSE_Complex64_t, Am, An),
-            STARPU_VALUE,    &lda,                sizeof(int),
-            STARPU_VALUE,    &beta,               sizeof(MORSE_Complex64_t),
-            STARPU_RW,        RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),
-            STARPU_VALUE,    &ldb,                sizeof(int),
-            STARPU_PRIORITY,  options->priority,
-            STARPU_CALLBACK,  callback,
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_R(A, Am, An);
+    MORSE_ACCESS_RW(B, Bm, Bn);
+    MORSE_END_ACCESS_DECLARATION;
+
+    starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_VALUE,    &uplo,               sizeof(MORSE_enum),
+        STARPU_VALUE,    &trans,              sizeof(MORSE_enum),
+        STARPU_VALUE,    &m,                  sizeof(int),
+        STARPU_VALUE,    &n,                  sizeof(int),
+        STARPU_VALUE,    &alpha,              sizeof(MORSE_Complex64_t),
+        STARPU_R,         RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+        STARPU_VALUE,    &lda,                sizeof(int),
+        STARPU_VALUE,    &beta,               sizeof(MORSE_Complex64_t),
+        STARPU_RW,        RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),
+        STARPU_VALUE,    &ldb,                sizeof(int),
+        STARPU_PRIORITY,  options->priority,
+        STARPU_CALLBACK,  callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-            STARPU_NAME, "ztradd",
+        STARPU_NAME, "ztradd",
 #endif
-            0);
-    }
+        0);
 
     (void)nb;
 }

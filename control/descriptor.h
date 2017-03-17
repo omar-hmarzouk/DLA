@@ -196,6 +196,32 @@ inline static int morse_desc_islocal( const MORSE_desc_t *A, int m, int n )
 #endif /* defined(CHAMELEON_USE_MPI) */
 }
 
+/*******************************************************************************
+ * Declare data accesses of codelets using these macros, for instance:
+ * MORSE_BEGIN_ACCESS_DECLARATION
+ * MORSE_ACCESS_R(A, Am, An)
+ * MORSE_ACCESS_R(B, Bm, Bn)
+ * MORSE_ACCESS_RW(C, Cm, Cn)
+ * MORSE_END_ACCESS_DECLARATION
+ */
+#define MORSE_BEGIN_ACCESS_DECLARATION { \
+    unsigned __morse_need_submit = 0;
+
+#define MORSE_ACCESS_R(A, Am, An) \
+    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1;
+
+#define MORSE_ACCESS_W(A, Am, An) \
+    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1;
+
+#define MORSE_ACCESS_RW(A, Am, An) \
+    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1;
+
+#define MORSE_RANK_CHANGED __morse_need_submit = 1;
+
+#define MORSE_END_ACCESS_DECLARATION \
+    if (!__morse_need_submit) return; \
+}
+
 #ifdef __cplusplus
 }
 #endif

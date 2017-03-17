@@ -43,30 +43,30 @@ void MORSE_TASK_zbuild( const MORSE_option_t *options,
   void (*callback)(void*) = options->profiling ? cl_zbuild_callback : NULL;
   int row_min, row_max, col_min, col_max;
 
+  MORSE_BEGIN_ACCESS_DECLARATION;
+  MORSE_ACCESS_W(A, Am, An);
+  MORSE_END_ACCESS_DECLARATION;
 
-  if ( morse_desc_islocal( A, Am, An ) )
-  {
-    row_min = Am*A->mb ;
-    row_max = Am == A->mt-1 ? A->m-1 : row_min+A->mb-1 ;
-    col_min = An*A->nb ;
-    col_max = An == A->nt-1 ? A->n-1 : col_min+A->nb-1 ;
-    starpu_insert_task(
-          starpu_mpi_codelet(codelet),
-          STARPU_VALUE,    &row_min,                      sizeof(int),
-          STARPU_VALUE,    &row_max,                      sizeof(int),
-          STARPU_VALUE,    &col_min,                      sizeof(int),
-          STARPU_VALUE,    &col_max,                      sizeof(int),
-          STARPU_W,         RTBLKADDR(A, MORSE_Complex64_t, Am, An),
-          STARPU_VALUE,    &lda,                          sizeof(int),
-          STARPU_VALUE,    &user_data,                    sizeof(void*),
-          STARPU_VALUE,    &user_build_callback,          sizeof(void*),
-          STARPU_PRIORITY,  options->priority,
-          STARPU_CALLBACK,  callback,
+  row_min = Am*A->mb ;
+  row_max = Am == A->mt-1 ? A->m-1 : row_min+A->mb-1 ;
+  col_min = An*A->nb ;
+  col_max = An == A->nt-1 ? A->n-1 : col_min+A->nb-1 ;
+  starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_VALUE,    &row_min,                      sizeof(int),
+        STARPU_VALUE,    &row_max,                      sizeof(int),
+        STARPU_VALUE,    &col_min,                      sizeof(int),
+        STARPU_VALUE,    &col_max,                      sizeof(int),
+        STARPU_W,         RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+        STARPU_VALUE,    &lda,                          sizeof(int),
+        STARPU_VALUE,    &user_data,                    sizeof(void*),
+        STARPU_VALUE,    &user_build_callback,          sizeof(void*),
+        STARPU_PRIORITY,  options->priority,
+        STARPU_CALLBACK,  callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-          STARPU_NAME, "zbuild",
+        STARPU_NAME, "zbuild",
 #endif
-          0);
-  }
+        0);
 }
 
 

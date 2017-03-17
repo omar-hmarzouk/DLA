@@ -35,6 +35,12 @@ void MORSE_TASK_dzasum(const MORSE_option_t *options,
 {
     struct starpu_codelet *codelet = &cl_zasum;
     void (*callback)(void*) = options->profiling ? cl_zasum_callback : NULL;
+
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_R(A, Am, An);
+    MORSE_ACCESS_RW(B, Bm, Bn);
+    MORSE_END_ACCESS_DECLARATION;
+
     starpu_insert_task(
         starpu_mpi_codelet(codelet),
         STARPU_VALUE,    &storev,                sizeof(MORSE_enum),

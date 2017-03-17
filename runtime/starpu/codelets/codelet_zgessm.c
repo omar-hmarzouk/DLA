@@ -90,30 +90,31 @@ void MORSE_TASK_zgessm(const MORSE_option_t *options,
     struct starpu_codelet *codelet = &cl_zgessm;
     void (*callback)(void*) = options->profiling ? cl_zgessm_callback : NULL;
 
-    if ( morse_desc_islocal( L, Lm, Ln ) ||
-         morse_desc_islocal( D, Dm, Dn ) ||
-         morse_desc_islocal( A, Am, An ) )
-    {
-        starpu_insert_task(
-            starpu_mpi_codelet(codelet),
-            STARPU_VALUE,     &m,                        sizeof(int),
-            STARPU_VALUE,     &n,                        sizeof(int),
-            STARPU_VALUE,     &k,                        sizeof(int),
-            STARPU_VALUE,    &ib,                        sizeof(int),
-            STARPU_VALUE,          &IPIV,                      sizeof(int*),
-            STARPU_R,             RTBLKADDR(L, MORSE_Complex64_t, Lm, Ln),
-            STARPU_VALUE,   &ldl,                        sizeof(int),
-            STARPU_R,             RTBLKADDR(D, MORSE_Complex64_t, Dm, Dn),
-            STARPU_VALUE,   &ldd,                        sizeof(int),
-            STARPU_RW,            RTBLKADDR(A, MORSE_Complex64_t, Am, An),
-            STARPU_VALUE,   &lda,                        sizeof(int),
-            STARPU_PRIORITY,    options->priority,
-            STARPU_CALLBACK,    callback,
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_R(L, Lm, Ln);
+    MORSE_ACCESS_R(D, Dm, Dn);
+    MORSE_ACCESS_RW(A, Am, An);
+    MORSE_END_ACCESS_DECLARATION;
+
+    starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_VALUE,     &m,                        sizeof(int),
+        STARPU_VALUE,     &n,                        sizeof(int),
+        STARPU_VALUE,     &k,                        sizeof(int),
+        STARPU_VALUE,    &ib,                        sizeof(int),
+        STARPU_VALUE,          &IPIV,                      sizeof(int*),
+        STARPU_R,             RTBLKADDR(L, MORSE_Complex64_t, Lm, Ln),
+        STARPU_VALUE,   &ldl,                        sizeof(int),
+        STARPU_R,             RTBLKADDR(D, MORSE_Complex64_t, Dm, Dn),
+        STARPU_VALUE,   &ldd,                        sizeof(int),
+        STARPU_RW,            RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+        STARPU_VALUE,   &lda,                        sizeof(int),
+        STARPU_PRIORITY,    options->priority,
+        STARPU_CALLBACK,    callback,
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-            STARPU_NAME, "zgessm",
+        STARPU_NAME, "zgessm",
 #endif
-            0);
-    }
+        0);
 }
 
 
