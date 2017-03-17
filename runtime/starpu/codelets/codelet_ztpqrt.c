@@ -37,7 +37,7 @@ void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
     MORSE_BEGIN_ACCESS_DECLARATION;
     MORSE_ACCESS_RW(A, Am, An);
     MORSE_ACCESS_RW(B, Bm, Bn);
-    MORSE_ACCESS_RW(T, Tm, Tn);
+    MORSE_ACCESS_W(T, Tm, Tn);
     MORSE_END_ACCESS_DECLARATION;
 
     starpu_insert_task(
@@ -50,7 +50,7 @@ void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
         STARPU_VALUE, &lda,   sizeof(int),
         STARPU_RW,     RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),
         STARPU_VALUE, &ldb,   sizeof(int),
-        STARPU_RW,     RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),
+        STARPU_W,      RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),
         STARPU_VALUE, &ldt,   sizeof(int),
         /* Other options */
         STARPU_SCRATCH,   options->ws_worker,

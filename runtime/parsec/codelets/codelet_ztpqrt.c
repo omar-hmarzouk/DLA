@@ -78,7 +78,7 @@ void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
         sizeof(int),   &lda, VALUE,
         PASSED_BY_REF,  RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ), INOUT | REGION_FULL,
         sizeof(int),   &ldb, VALUE,
-        PASSED_BY_REF,  RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ), INOUT | REGION_FULL,
+        PASSED_BY_REF,  RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ), OUTPUT | REGION_FULL,
         sizeof(int),   &ldt, VALUE,
         sizeof(MORSE_Complex64_t)*ib*nb, NULL, SCRATCH,
         0);
