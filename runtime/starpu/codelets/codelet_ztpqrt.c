@@ -37,7 +37,7 @@ void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
     MORSE_BEGIN_ACCESS_DECLARATION;
     MORSE_ACCESS_RW(A, Am, An);
     MORSE_ACCESS_RW(B, Bm, Bn);
-    MORSE_ATTESS_RW(T, Tm, Tn);
+    MORSE_ACCESS_RW(T, Tm, Tn);
     MORSE_END_ACCESS_DECLARATION;
 
     starpu_insert_task(
