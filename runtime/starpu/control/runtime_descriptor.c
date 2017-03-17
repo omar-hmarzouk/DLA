@@ -78,7 +78,7 @@ void *RUNTIME_mat_alloc( size_t size)
 void RUNTIME_mat_free( void *mat, size_t size)
 {
 #if defined(CHAMELEON_SIMULATION) && !defined(STARPU_MALLOC_SIMULATION_FOLDED) && !defined(CHAMELEON_USE_MPI)
-    return (void*) 1;
+    return;
 #else
     starpu_free_flags(mat, size, STARPU_MALLOC_PINNED|FOLDED|STARPU_MALLOC_COUNT);
 #endif
