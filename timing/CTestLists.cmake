@@ -6,8 +6,6 @@ set(TEST_CMD_shm     --n_range=500:2000:500 --nb=320 )
 set(TEST_CMD_shmgpu  --n_range=500:2000:500 --nb=320 --gpus=1)
 set(TEST_CMD_mpi     --n_range=500:2000:500 --nb=320 --p=2)
 set(TEST_CMD_mpigpu  --n_range=500:2000:500 --nb=320 --p=2 --gpus=1)
-set(TEST_CMD_simushm --n_range=320:320:1    --nb=320 )
-set(TEST_CMD_simugpu --n_range=320:320:1    --nb=320 --gpus=1)
 
 set(MPI_CMD_shm )
 set(MPI_CMD_shmgpu )
@@ -90,12 +88,17 @@ if (NOT CHAMELEON_SIMULATION)
 
 else (NOT CHAMELEON_SIMULATION)
 
+  set(TEST_CMD_simushm --n_range=9600:9600:1    --nb=960 )
+  set(TEST_CMD_simugpu --n_range=9600:9600:1    --nb=960 --gpus=1)
   set(RP_CHAMELEON_PRECISIONS_SIMU "s;d")
   foreach(cat ${TEST_CATEGORIES})
     foreach(prec ${RP_CHAMELEON_PRECISIONS_SIMU})
       string(TOUPPER ${prec} PREC)
       if (CHAMELEON_PREC_${PREC})
         add_test(time_${cat}_${prec}potrf ${MPI_CMD_${cat}} ./time_${prec}potrf_tile ${TEST_CMD_${cat}})
+        set_tests_properties(time_${cat}_${prec}potrf PROPERTIES
+                             ENVIRONMENT "STARPU_HOME=${CMAKE_SOURCE_DIR}/simucore/perfmodels;STARPU_HOSTNAME=sirocco"
+                             )
       endif()
     endforeach()
   endforeach()
