@@ -17,6 +17,8 @@ starpu-simgrid:
     - git submodule update
     - mkdir build
     - cd build
+    - . /home/ci/spack/share/spack/setup-env.sh
+    - spack load hwloc && spack load fxt && spack load simgrid && spack load starpu
     - cmake .. -DCHAMELEON_SIMULATION=ON -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MAGMA=OFF -DCHAMELEON_USE_MPI=OFF
     - make -j2
     - ctest -V
