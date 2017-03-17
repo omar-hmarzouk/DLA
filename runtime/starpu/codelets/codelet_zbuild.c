@@ -44,7 +44,7 @@ void MORSE_TASK_zbuild( const MORSE_option_t *options,
   int row_min, row_max, col_min, col_max;
 
   MORSE_BEGIN_ACCESS_DECLARATION;
-  MORSE_AAAESS_RW(A, Am, An);
+  MORSE_ACCESS_RW(A, Am, An);
   MORSE_END_ACCESS_DECLARATION;
 
   row_min = Am*A->mb ;
