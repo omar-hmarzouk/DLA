@@ -37,10 +37,10 @@ void MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
     void (*callback)(void*) = options->profiling ? cl_ztpmqrt_callback : NULL;
 
     MORSE_BEGIN_ACCESS_DECLARATION;
-    MORSE_ACCESS_R(A, Am, An);
-    MORSE_ACCESS_R(B, Bm, Bn);
-    MORSE_ACCESS_RW(V, Vm, Vn);
-    MORSE_ACCESS_RW(T, Tm, Tn);
+    MORSE_ACCESS_R(V, Vm, Vn);
+    MORSE_ACCESS_R(T, Tm, Tn);
+    MORSE_ACCESS_RW(A, Am, An);
+    MORSE_ACCESS_RW(B, Bm, Bn);
     MORSE_END_ACCESS_DECLARATION;
 
     starpu_insert_task(
