@@ -126,6 +126,9 @@ double RUNTIME_get_time();
 void RUNTIME_start_profiling();
 void RUNTIME_stop_profiling();
 
+void RUNTIME_start_stats();
+void RUNTIME_stop_stats();
+
 #if defined(PRECISION_z)
 void RUNTIME_zdisplay_allprofile ();
 void RUNTIME_zdisplay_oneprofile (MORSE_kernel_t);

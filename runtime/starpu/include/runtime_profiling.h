@@ -26,6 +26,13 @@
 #ifndef _PROFILING_H_
 #define _PROFILING_H_
 
+#ifdef CHAMELEON_ENABLE_PRUNING_STATS
+extern unsigned long RUNTIME_total_tasks;
+extern unsigned long RUNTIME_exec_tasks;
+extern unsigned long RUNTIME_comm_tasks;
+extern unsigned long RUNTIME_changed_tasks;
+#endif
+
 typedef struct measure_s {
     double sum;
     double sum2;

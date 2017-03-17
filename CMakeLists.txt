@@ -232,6 +232,13 @@ if(CHAMELEON_SCHED_STARPU)
         message("-- ${BoldGreen}CHAMELEON_SIMULATION is set to OFF, turn it ON to use"
             " SIMULATION mode (only with StarPU compiled with SimGrid)${ColourReset}")
     endif()
+    option(CHAMELEON_ENABLE_PRUNING_STATS "Enable pruning statistics" OFF)
+    if (NOT CHAMELEON_ENABLE_PRUNING_STATS)
+        message("-- ${BoldGreen}CHAMELEON_ENABLE_PRUNING_STATS is set to OFF, turn it ON to build pruning statistics${ColourReset}")
+    endif()
+    if(CHAMELEON_ENABLE_PRUNING_STATS)
+        add_definitions(-DCHAMELEON_ENABLE_PRUNING_STATS)
+    endif(CHAMELEON_ENABLE_PRUNING_STATS)
 endif()
 
 # Initially we need to generate files for different precisions

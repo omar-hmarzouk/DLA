@@ -86,16 +86,52 @@ typedef struct starpu_conf starpu_conf_t;
 
 void RUNTIME_set_reduction_methods(starpu_data_handle_t handle, MORSE_enum dtyp);
 
-#define RUNTIME_BEGIN_ACCESS_DECLARATION
+#ifdef CHAMELEON_ENABLE_PRUNING_STATS
 
-#define RUNTIME_ACCESS_R(A, Am, An)
+#define RUNTIME_PRUNING_STATS_BEGIN_ACCESS_DECLARATION \
+    int __morse_exec = 0; \
+    int __morse_changed = 0;
 
-#define RUNTIME_ACCESS_W(A, Am, An)
+#define RUNTIME_PRUNING_STATS_ACCESS_W(A, Am, An) \
+    if (morse_desc_islocal(A, Am, An)) \
+        __morse_exec = 1;
 
-#define RUNTIME_ACCESS_RW(A, Am, An)
+#define RUNTIME_PRUNING_STATS_END_ACCESS_DECLARATION \
+    RUNTIME_total_tasks++; \
+    if (__morse_exec) \
+        RUNTIME_exec_tasks++; \
+    else if (__morse_need_submit) \
+        RUNTIME_comm_tasks++; \
+    else if (__morse_changed) \
+        RUNTIME_changed_tasks++;
 
-#define RUNTIME_RANK_CHANGED(rank)
+#define RUNTIME_PRUNING_STATS_RANK_CHANGED(rank) \
+    int __morse_myrank; \
+    RUNTIME_comm_rank(&__morse_myrank); \
+    __morse_exec = (rank) == __morse_myrank; \
+    __morse_changed = 1; \
 
-#define RUNTIME_END_ACCESS_DECLARATION
+#else
+#define RUNTIME_PRUNING_STATS_BEGIN_ACCESS_DECLARATION
+#define RUNTIME_PRUNING_STATS_ACCESS_W(A, Am, An)
+#define RUNTIME_PRUNING_STATS_END_ACCESS_DECLARATION
+#endif
+
+#define RUNTIME_BEGIN_ACCESS_DECLARATION \
+    RUNTIME_PRUNING_STATS_BEGIN_ACCESS_DECLARATION
+
+#define RUNTIME_ACCESS_R(A, Am, An) \
+
+#define RUNTIME_ACCESS_W(A, Am, An) \
+    RUNTIME_PRUNING_STATS_ACCESS_W(A, Am, An)
+
+#define RUNTIME_ACCESS_RW(A, Am, An) \
+    RUNTIME_PRUNING_STATS_ACCESS_W(A, Am, An)
+
+#define RUNTIME_RANK_CHANGED(rank) \
+    RUNTIME_PRUNING_STATS_RANK_CHANGED(rank)
+
+#define RUNTIME_END_ACCESS_DECLARATION \
+    RUNTIME_PRUNING_STATS_END_ACCESS_DECLARATION;
 
 #endif /* _MORSE_STARPU_H_ */
