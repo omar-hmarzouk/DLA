@@ -39,7 +39,7 @@ void MORSE_TASK_ztile_zero(const const MORSE_option_t *options,
     void (*callback)(void*) = options->profiling ? cl_zlacpy_callback : NULL;
 
     MORSE_BEGIN_ACCESS_DECLARATION;
-    MORSE_ACCESS_RW(A, Am, An);
+    MORSE_ACCESS_W(A, Am, An);
     MORSE_END_ACCESS_DECLARATION;
 
     starpu_insert_task(
@@ -48,7 +48,7 @@ void MORSE_TASK_ztile_zero(const const MORSE_option_t *options,
         STARPU_VALUE, &X2,  sizeof(int),
         STARPU_VALUE, &Y1,  sizeof(int),
         STARPU_VALUE, &Y2,  sizeof(int),
-        STARPU_RW,     RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+        STARPU_W,     RTBLKADDR(A, MORSE_Complex64_t, Am, An),
         STARPU_VALUE, &lda, sizeof(int),
         STARPU_PRIORITY,    options->priority,
         STARPU_CALLBACK,    callback, NULL,
