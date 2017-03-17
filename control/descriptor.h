@@ -223,7 +223,7 @@ inline static int morse_desc_islocal( const MORSE_desc_t *A, int m, int n )
 #define MORSE_RANK_CHANGED __morse_need_submit = 1;
 
 #define MORSE_END_ACCESS_DECLARATION \
-    RUNTIME_BEGIN_ACCESS_DECLARATION \
+    RUNTIME_END_ACCESS_DECLARATION \
     if (!__morse_need_submit) return; \
 }
 
