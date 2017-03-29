@@ -62,12 +62,6 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
     conf->ncuda = ncudas;
     conf->nopencl = 0;
 
-#if !defined(CHAMELEON_SIMULATION)
-    /* By default, enable calibration */
-    if (!getenv("STARPU_CALIBRATE"))
-        conf->calibrate = 1;
-#endif
-
     /* By default, use the dmdas strategy */
     if (!getenv("STARPU_SCHED")) {
         if (conf->ncuda > 0) {
