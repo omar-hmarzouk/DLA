@@ -205,20 +205,31 @@ inline static int morse_desc_islocal( const MORSE_desc_t *A, int m, int n )
  * MORSE_END_ACCESS_DECLARATION
  */
 #define MORSE_BEGIN_ACCESS_DECLARATION { \
-    unsigned __morse_need_submit = 0;
+    unsigned __morse_need_submit = 0; \
+    RUNTIME_BEGIN_ACCESS_DECLARATION
 
-#define MORSE_ACCESS_R(A, Am, An) \
-    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1;
+#define MORSE_ACCESS_R(A, Am, An) do { \
+    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1; \
+    RUNTIME_ACCESS_R(A, Am, An) \
+} while(0)
 
-#define MORSE_ACCESS_W(A, Am, An) \
-    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1;
+#define MORSE_ACCESS_W(A, Am, An) do { \
+    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1; \
+    RUNTIME_ACCESS_W(A, Am, An) \
+} while(0)
 
-#define MORSE_ACCESS_RW(A, Am, An) \
-    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1;
+#define MORSE_ACCESS_RW(A, Am, An) do { \
+    if (morse_desc_islocal(A, Am, An)) __morse_need_submit = 1; \
+    RUNTIME_ACCESS_RW(A, Am, An) \
+} while(0)
 
-#define MORSE_RANK_CHANGED __morse_need_submit = 1;
+#define MORSE_RANK_CHANGED(rank) do {\
+    __morse_need_submit = 1; \
+    RUNTIME_RANK_CHANGED(rank) \
+} while (0)
 
 #define MORSE_END_ACCESS_DECLARATION \
+    RUNTIME_END_ACCESS_DECLARATION \
     if (!__morse_need_submit) return; \
 }
 
