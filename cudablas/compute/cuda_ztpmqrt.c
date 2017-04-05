@@ -48,14 +48,14 @@ CUDA_ztpmqrt( MORSE_enum side, MORSE_enum trans,
         n1 = N;
         ldwork  = IB;
         ldworkc = M;
-        ws = K * n1;
+        ws = IB * n1;
     }
     else {
         m1 = M;
         n1 = K;
         ldwork  = m1;
         ldworkc = IB;
-        ws = m1 * K;
+        ws = IB * m1;
     }
 
     /* TS case */
@@ -67,16 +67,14 @@ CUDA_ztpmqrt( MORSE_enum side, MORSE_enum trans,
     }
     /* TT case */
     else  if( L == M ) {
-        cudablas_error(-6, "TTMQRT not available on GPU yet\n" );
-        return -6;
-        /* CUDA_zttmqr( side, trans, m1, n1, M, N, K, IB, */
-        /*              A, LDA, B, LDB, V, LDV, T, LDT, */
-        /*              WORK, ldwork ); */
+        CUDA_zttmqr( side, trans, m1, n1, M, N, K, IB,
+                     A, LDA, B, LDB, V, LDV, T, LDT,
+                     WORK, ldwork, WORK + ws, ldworkc,
+                     CUBLAS_STREAM_VALUE );
     }
     else {
-        cudablas_error(-6, "TPMQRT not available on GPU yet\n" );
+        cudablas_error(-6, "TPMQRT not available on GPU for general cases yet\n" );
         return -6;
-        //LAPACKE_ztpmqrt_work( LAPACK_COL_MAJOR, M, N, K, L, IB, V, LDV, T, LDT, A, LDA, B, LDB, WORK );
     }
 
     return MORSE_SUCCESS;
