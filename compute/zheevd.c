@@ -420,6 +420,7 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
 
 
     if (jobz == MorseNoVec){
+#if !defined(CHAMELEON_SIMULATION)
         /* Tridiagonal eigensolver */
         status = LAPACKE_zstedc( LAPACK_COL_MAJOR,
                                  morse_lapack_const(jobz),
@@ -428,6 +429,7 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
         if (status != 0) {
             morse_error("MORSE_zheevd_Tile_Async", "LAPACKE_zstedc failed");
         }
+#endif /* !defined(CHAMELEON_SIMULATION) */
         free(E);
         return MORSE_SUCCESS;
     }
@@ -441,8 +443,11 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
     /* For bug in lapacke */
     memset(V, 0, N * N * sizeof(MORSE_Complex64_t));
 
-    /* Tridiagonal eigensolver */
-    /* V contains the eigenvectors of the tridiagonal system on exit */
+    /*
+     * Tridiagonal eigensolver
+     * V contains the eigenvectors of the tridiagonal system on exit
+     */
+#if !defined(CHAMELEON_SIMULATION)
     status = LAPACKE_zstedc( LAPACK_COL_MAJOR,
                              morse_lapack_const(MorseIvec),
                              N, W, E,
@@ -450,6 +455,7 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
     if (status != 0) {
         morse_error("MORSE_zheevd_Tile_Async", "LAPACKE_zstedc failed");
     }
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
     /* Convert matrices in tile format */
     /* A/T from MORSE_zhetrd   refer  to Q1 (tile   layout) */
