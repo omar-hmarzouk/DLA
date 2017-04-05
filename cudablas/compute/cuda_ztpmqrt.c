@@ -48,14 +48,14 @@ CUDA_ztpmqrt( MORSE_enum side, MORSE_enum trans,
         n1 = N;
         ldwork  = IB;
         ldworkc = M;
-        ws = IB * n1;
+        ws = ldwork * n1;
     }
     else {
         m1 = M;
         n1 = K;
         ldwork  = m1;
         ldworkc = IB;
-        ws = IB * m1;
+        ws = ldwork * IB;
     }
 
     /* TS case */
