@@ -559,7 +559,7 @@ else (NOT CHAMELEON_SIMULATION)
         "   else set CHAMELEON_USE_CUDA=OFF. The same idea is applicable with MAGMA."
         "${ColourReset}")
     endif()
-    if(NOT CHAMELEON_USE_MAGMA)
+    if(NOT DEFINED CHAMELEON_USE_MAGMA)
         message(WARNING "${BoldBlue}"
         "In simulation mode CHAMELEON_USE_CUDA and CHAMELEON_USE_MAGMA should be set to"
         "   ensure that the user is aware of the version to be used. If Chameleon's"
@@ -1088,14 +1088,14 @@ if(_match_ifort)
 endif(_match_ifort)
 
 # Testing executables
-if(CHAMELEON_ENABLE_EXAMPLE)
+if(CHAMELEON_ENABLE_EXAMPLE AND NOT CHAMELEON_SIMULATION)
   add_subdirectory(example)
-endif(CHAMELEON_ENABLE_EXAMPLE)
+endif(CHAMELEON_ENABLE_EXAMPLE AND NOT CHAMELEON_SIMULATION)
 
 # Testing executables
-if(CHAMELEON_ENABLE_TESTING)
+if(CHAMELEON_ENABLE_TESTING AND NOT CHAMELEON_SIMULATION)
   add_subdirectory(testing)
-endif(CHAMELEON_ENABLE_TESTING)
+endif(CHAMELEON_ENABLE_TESTING AND NOT CHAMELEON_SIMULATION)
 
 # Timing executables
 if(CHAMELEON_ENABLE_TIMING)
