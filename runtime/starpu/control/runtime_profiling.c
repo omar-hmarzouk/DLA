@@ -29,6 +29,12 @@
 #include <starpu_fxt.h>
 #endif
 
+#ifdef CHAMELEON_ENABLE_PRUNING_STATS
+unsigned long RUNTIME_total_tasks;
+unsigned long RUNTIME_exec_tasks;
+unsigned long RUNTIME_comm_tasks;
+unsigned long RUNTIME_changed_tasks;
+#endif
 
 double RUNTIME_get_time(){
     return starpu_timing_now()*1e-6;
@@ -47,6 +53,21 @@ void RUNTIME_stop_profiling(){
 	starpu_fxt_stop_profiling();
 #else
     fprintf(stderr, "Profiling throught FxT has not been enabled in StarPU runtime (configure StarPU with --with-fxt)\n");
+#endif
+}
+
+void RUNTIME_start_stats(){
+#ifdef CHAMELEON_ENABLE_PRUNING_STATS
+    RUNTIME_total_tasks = 0;
+    RUNTIME_exec_tasks = 0;
+    RUNTIME_comm_tasks = 0;
+    RUNTIME_changed_tasks = 0;
+#endif
+}
+
+void RUNTIME_stop_stats(){
+#ifdef CHAMELEON_ENABLE_PRUNING_STATS
+    fprintf(stderr, "\ntasks: %u = exec: %u + comm: %u + changed: %u\n", RUNTIME_total_tasks, RUNTIME_exec_tasks, RUNTIME_comm_tasks, RUNTIME_changed_tasks);
 #endif
 }
 

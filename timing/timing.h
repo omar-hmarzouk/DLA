@@ -159,6 +159,7 @@ enum dparam_timing {
  *
  */
 #define START_TRACING()                        \
+    RUNTIME_start_stats();                     \
     if(iparam[IPARAM_TRACE] == 2) {            \
     	RUNTIME_start_profiling();             \
     }                                          \
@@ -167,6 +168,7 @@ enum dparam_timing {
     }
 
 #define STOP_TRACING()                         \
+    RUNTIME_stop_stats();                      \
     if(iparam[IPARAM_TRACE] == 2) {            \
     	RUNTIME_stop_profiling();              \
     }                                          \

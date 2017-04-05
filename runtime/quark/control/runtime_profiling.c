@@ -103,6 +103,16 @@ void RUNTIME_stop_profiling()
     morse_warning("RUNTIME_stop_profiling()", "FxT profiling is not available with Quark\n");
 }
 
+void RUNTIME_start_stats()
+{
+    morse_warning("RUNTIME_start_stats()", "pruning stats are not available with Quark\n");
+}
+
+void RUNTIME_stop_stats()
+{
+    morse_warning("RUNTIME_stop_stats()", "pruning stats are not available with Quark\n");
+}
+
 void RUNTIME_schedprofile_display(void)
 {
     morse_warning("RUNTIME_schedprofile_display(quark)", "Scheduler profiling is not available with Quark\n");
