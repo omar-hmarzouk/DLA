@@ -45,7 +45,7 @@ void morse_pztpqrt( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T,
     int ib;
 
     /* Dimension of the first column */
-    int maxm  = B->m - L;
+    int maxm  = chameleon_max( B->m - L, 1 );
     int maxmt = (maxm % B->mb == 0) ? (maxm / B->mb) : (maxm / B->mb + 1);
 
     morse = morse_context_self();

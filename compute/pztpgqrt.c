@@ -58,7 +58,7 @@ void morse_pztpgqrt( int L,
     int ib, minMT;
 
     /* Dimension of the first column */
-    int maxm  = Q2->m - L;
+    int maxm  = chameleon_max( Q2->m - L, 1 );
     int maxmt = (maxm % Q2->mb == 0) ? (maxm / Q2->mb) : (maxm / Q2->mb + 1);
     int maxmtk;
 
