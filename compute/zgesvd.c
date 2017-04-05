@@ -521,6 +521,8 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
     }
 
     morse_sequence_wait(morse, sequence);
+
+#if !defined(CHAMELEON_SIMULATION)
     info = LAPACKE_zgbbrd( LAPACK_COL_MAJOR,
                            gbbrd_vect,
                            M, N,
@@ -533,6 +535,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
     if (info != 0) {
         fprintf(stderr, "MORSE_zgesvd_Tile_Async: LAPACKE_zgbbrd = %d\n", info );
     }
+#endif /* !defined(CHAMELEON_SIMULATION) */
     morse_desc_mat_free(&descAB);
 
     /* Transform U and Vt into tile format */
@@ -594,6 +597,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
 
     /* Solve the bidiagonal SVD problem */
     /* On exit, U and VT are updated with bidiagonal matrix singular vectors */
+#if !defined(CHAMELEON_SIMULATION)
     info = LAPACKE_zbdsqr( LAPACK_COL_MAJOR, 'U',
                            MINMN, ncvt, nru, 0,
                            S, E,
@@ -601,6 +605,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
     if (info != 0) {
         fprintf(stderr, "MORSE_zgesvd_Tile_Async: LAPACKE_zbdsqr = %d\n", info );
     }
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
     if (jobu != MorseNoVec)
         morse_desc_mat_free( &descU );

@@ -408,6 +408,7 @@ int MORSE_zhetrd_Tile_Async(MORSE_enum jobz,
     morse_sequence_wait(morse, sequence);
 
     /* Reduce band matrix to tridiagonal matrix */
+#if !defined(CHAMELEON_SIMULATION)
     status = LAPACKE_zhbtrd( LAPACK_COL_MAJOR,
                              morse_lapack_const(jobz),
                              morse_lapack_const(uplo),
@@ -417,6 +418,7 @@ int MORSE_zhetrd_Tile_Async(MORSE_enum jobz,
     if (status != 0) {
         morse_error("MORSE_zhetrd_Tile_Async", "LAPACKE_zhbtrd failed");
     }
+#endif /* !defined(CHAMELEON_SIMULATION) */
 
     morse_desc_mat_free(&descAB);
     return MORSE_SUCCESS;
