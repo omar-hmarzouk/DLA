@@ -93,7 +93,7 @@ int RUNTIME_desc_iscached(const MORSE_desc_t *A, int Am, int An);
 
 #if defined(CHAMELEON_USE_MPI)
 #  if defined(HAVE_STARPU_MPI_CACHED_RECEIVE)
-#    define RUNTIME_ACCESS_WRITE_CACHED(A, Am, An) if (morse_desc_iscached(A, Am, An)) __morse_need_submit = 1
+#    define RUNTIME_ACCESS_WRITE_CACHED(A, Am, An) do { if (RUNTIME_desc_iscached(A, Am, An)) __morse_need_submit = 1; } while(0)
 #  else
 #    warning "WAR dependencies need starpu_mpi_cached_receive support from StarPU 1.2.1 or greater"
 #    define RUNTIME_ACCESS_WRITE_CACHED(A, Am, An)
