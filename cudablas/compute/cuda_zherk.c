@@ -33,10 +33,6 @@ int CUDA_zherk( MORSE_enum uplo, MORSE_enum trans,
                 cuDoubleComplex *B, int ldb,
                 CUBLAS_STREAM_PARAM)
 {
-#if !defined(CHAMELEON_USE_CUBLAS_V2)
-    cublasSetKernelStream( stream );
-#endif
-
     cublasZherk(
         morse_lapack_const(uplo), morse_lapack_const(trans),
         n, k,

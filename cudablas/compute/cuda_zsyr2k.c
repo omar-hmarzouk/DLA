@@ -35,10 +35,6 @@ int CUDA_zsyr2k(
         cuDoubleComplex *C, int ldc,
         CUBLAS_STREAM_PARAM)
 {
-#if !defined(CHAMELEON_USE_CUBLAS_V2)
-    cublasSetKernelStream( stream );
-#endif
-
     cublasZsyr2k(CUBLAS_HANDLE
                  morse_lapack_const(uplo), morse_lapack_const(trans),
                  n, k,

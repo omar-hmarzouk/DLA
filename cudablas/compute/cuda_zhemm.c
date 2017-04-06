@@ -34,10 +34,6 @@ int CUDA_zhemm(MORSE_enum side, MORSE_enum uplo,
                cuDoubleComplex *C, int ldc,
                CUBLAS_STREAM_PARAM)
 {
-#if !defined(CHAMELEON_USE_CUBLAS_V2)
-    cublasSetKernelStream( stream );
-#endif
-
     cublasZhemm(CUBLAS_HANDLE
                 morse_lapack_const(side), morse_lapack_const(uplo),
                 m, n,
@@ -46,6 +42,5 @@ int CUDA_zhemm(MORSE_enum side, MORSE_enum uplo,
                 CUBLAS_VALUE(beta),  C, ldc);
 
     assert( CUBLAS_STATUS_SUCCESS == cublasGetError() );
-
     return MORSE_SUCCESS;
 }

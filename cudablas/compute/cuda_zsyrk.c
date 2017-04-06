@@ -33,10 +33,6 @@ int CUDA_zsyrk(MORSE_enum uplo, MORSE_enum trans,
                cuDoubleComplex *C, int ldc,
                CUBLAS_STREAM_PARAM)
 {
-#if !defined(CHAMELEON_USE_CUBLAS_V2)
-    cublasSetKernelStream( stream );
-#endif
-
     cublasZsyrk(CUBLAS_HANDLE
                 morse_lapack_const(uplo), morse_lapack_const(trans),
                 n, k,

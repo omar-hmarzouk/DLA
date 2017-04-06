@@ -49,10 +49,6 @@ CUDA_zlarfb(MORSE_enum side, MORSE_enum trans,
 
     MORSE_enum transT, uplo, notransV, transV;
 
-#if !defined(CHAMELEON_USE_CUBLAS_V2)
-    cublasSetKernelStream( stream );
-#endif
-
     /* Check input arguments */
     if ((side != MorseLeft) && (side != MorseRight)) {
         return -1;
