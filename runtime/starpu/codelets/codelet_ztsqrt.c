@@ -112,6 +112,7 @@ void MORSE_TASK_ztsqrt(const MORSE_option_t *options,
     MORSE_ACCESS_RW(A1, A1m, A1n);
     MORSE_ACCESS_RW(A2, A2m, A2n);
     MORSE_ACCESS_W(T, Tm, Tn);
+    MORSE_RANK_CHANGED(A2->get_rankof(A2, A2m, A2n));
     MORSE_END_ACCESS_DECLARATION;
 
     starpu_insert_task(
