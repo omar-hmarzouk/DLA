@@ -73,6 +73,19 @@ typedef struct starpu_conf starpu_conf_t;
 #endif
 
 /*
+ * cuBlasAPI v2 - StarPU enable the support for cublas handle
+ */
+#if defined(CHAMELEON_USE_CUDA) && defined(CHAMELEON_USE_CUBLAS_V2)
+#define RUNTIME_getStream(_stream_)                             \
+    cublasHandle_t _stream_ = starpu_cublas_get_local_handle();
+#else
+#define RUNTIME_getStream(_stream_)                             \
+    cudaStream_t _stream_ = starpu_cuda_get_local_stream();     \
+    cublasSetKernelStream( stream );
+
+#endif
+
+/*
  * Enable codelets names
  */
 #if (STARPU_MAJOR_VERSION > 1) || ((STARPU_MAJOR_VERSION == 1) && (STARPU_MINOR_VERSION > 1))
