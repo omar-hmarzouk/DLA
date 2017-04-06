@@ -85,6 +85,22 @@ typedef struct starpu_conf starpu_conf_t;
 #define RTBLKADDR( desc, type, m, n ) ( (starpu_data_handle_t)RUNTIME_desc_getaddr( desc, m, n ) )
 
 void RUNTIME_set_reduction_methods(starpu_data_handle_t handle, MORSE_enum dtyp);
+#ifdef CHAMELEON_USE_MPI
+#ifdef HAVE_STARPU_MPI_CACHED_RECEIVE
+int RUNTIME_desc_iscached(const MORSE_desc_t *A, int Am, int An);
+#endif
+#endif
+
+#if defined(CHAMELEON_USE_MPI)
+#  if defined(HAVE_STARPU_MPI_CACHED_RECEIVE)
+#    define RUNTIME_ACCESS_WRITE_CACHED(A, Am, An) do { if (RUNTIME_desc_iscached(A, Am, An)) __morse_need_submit = 1; } while(0)
+#  else
+#    warning "WAR dependencies need starpu_mpi_cached_receive support from StarPU 1.2.1 or greater"
+#    define RUNTIME_ACCESS_WRITE_CACHED(A, Am, An)
+#  endif
+#else
+#define RUNTIME_ACCESS_WRITE_CACHED(A, Am, An)
+#endif
 
 #ifdef CHAMELEON_ENABLE_PRUNING_STATS
 
@@ -118,21 +134,23 @@ void RUNTIME_set_reduction_methods(starpu_data_handle_t handle, MORSE_enum dtyp)
 #define RUNTIME_PRUNING_STATS_RANK_CHANGED(rank)
 #endif
 
-#define RUNTIME_BEGIN_ACCESS_DECLARATION \
+#define RUNTIME_BEGIN_ACCESS_DECLARATION        \
     RUNTIME_PRUNING_STATS_BEGIN_ACCESS_DECLARATION
 
-#define RUNTIME_ACCESS_R(A, Am, An) \
+#define RUNTIME_ACCESS_R(A, Am, An)
 
-#define RUNTIME_ACCESS_W(A, Am, An) \
-    RUNTIME_PRUNING_STATS_ACCESS_W(A, Am, An)
+#define RUNTIME_ACCESS_W(A, Am, An)             \
+    RUNTIME_PRUNING_STATS_ACCESS_W(A, Am, An);  \
+    RUNTIME_ACCESS_WRITE_CACHED(A, Am, An)
 
-#define RUNTIME_ACCESS_RW(A, Am, An) \
-    RUNTIME_PRUNING_STATS_ACCESS_W(A, Am, An)
+#define RUNTIME_ACCESS_RW(A, Am, An)            \
+    RUNTIME_PRUNING_STATS_ACCESS_W(A, Am, An);  \
+    RUNTIME_ACCESS_WRITE_CACHED(A, Am, An)
 
-#define RUNTIME_RANK_CHANGED(rank) \
+#define RUNTIME_RANK_CHANGED(rank)              \
     RUNTIME_PRUNING_STATS_RANK_CHANGED(rank)
 
-#define RUNTIME_END_ACCESS_DECLARATION \
+#define RUNTIME_END_ACCESS_DECLARATION          \
     RUNTIME_PRUNING_STATS_END_ACCESS_DECLARATION;
 
 #endif /* _MORSE_STARPU_H_ */
