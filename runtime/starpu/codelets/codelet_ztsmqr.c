@@ -270,7 +270,6 @@ static void cl_ztsmqr_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex *W, *WC;
     int ldwork;
     int ldworkc;
-    CUstream stream;
 
     A1 = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     A2 = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
@@ -284,8 +283,7 @@ static void cl_ztsmqr_cuda_func(void *descr[], void *cl_arg)
     WC = W + ib * (side == MorseLeft ? m1 : n1);
     ldworkc = (side == MorseLeft) ? m2 : ib;
 
-    stream = starpu_cuda_get_local_stream();
-    cublasSetKernelStream( stream );
+    RUNTIME_getStream(stream);
 
     CUDA_ztsmqr(
             side, trans, m1, n1, m2, n2, k, ib,

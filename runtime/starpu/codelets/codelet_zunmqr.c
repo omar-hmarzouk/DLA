@@ -227,7 +227,6 @@ static void cl_zunmqr_cuda_func(void *descr[], void *cl_arg)
     const cuDoubleComplex *A, *T;
     cuDoubleComplex *C, *WORK;
     int lda, ldt, ldc, ldwork;
-    CUstream stream;
 
     starpu_codelet_unpack_args(cl_arg, &side, &trans, &m, &n, &k, &ib,
                                &lda, &ldt, &ldc, &ldwork);
@@ -237,8 +236,7 @@ static void cl_zunmqr_cuda_func(void *descr[], void *cl_arg)
     C    = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
     WORK = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[3]); /* ib * nb */
 
-    stream = starpu_cuda_get_local_stream();
-    cublasSetKernelStream( stream );
+    RUNTIME_getStream(stream);
 
     CUDA_zunmqrt(
             side, trans, m, n, k, ib,

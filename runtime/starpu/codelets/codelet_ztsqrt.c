@@ -176,7 +176,6 @@ static void cl_ztsqrt_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex *h_A2, *h_T, *h_D, *h_TAU, *h_W;
     cuDoubleComplex *d_A1, *d_A2, *d_T, *d_D, *d_W;
     int lda1, lda2, ldt;
-    CUstream stream;
 
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda1, &lda2, &ldt, &h_work);
 
@@ -195,7 +194,7 @@ static void cl_ztsqrt_cuda_func(void *descr[], void *cl_arg)
     h_W   = h_TAU + chameleon_max(m,n);
     h_D   = h_W   + ib*n;
 
-    stream = starpu_cuda_get_local_stream();
+    RUNTIME_getStream(stream);
     CUDA_ztsqrt(
             m, n, ib,
             d_A1, lda1, d_A2, lda2,

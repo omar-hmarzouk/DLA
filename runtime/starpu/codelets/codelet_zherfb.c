@@ -113,9 +113,8 @@ static void cl_zherfb_cuda_func(void *descr[], void *cl_arg)
     int ldc;
     cuDoubleComplex *WORK;
     int ldwork;
-    CUstream stream;
 
-    stream = starpu_cuda_get_local_stream();
+    RUNTIME_getStream(stream);
 
     A    = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     T    = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
