@@ -1003,6 +1003,12 @@ if( CHAMELEON_SCHED_QUARK )
 
 endif()
 
+# Add option to exploit cublas API v2
+# -----------------------------------
+cmake_dependent_option(CHAMELEON_USE_CUBLAS_V2
+  "Enable cublas API v2" ON
+  "CHAMELEON_USE_CUDA;CHAMELEON_SCHED_STARPU" OFF)
+
 list(REMOVE_DUPLICATES CMAKE_EXE_LINKER_FLAGS)
 string(REPLACE ";" " " CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 # Fix a problem on Mac OS X when building shared libraries
