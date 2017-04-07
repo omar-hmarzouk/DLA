@@ -34,12 +34,28 @@ int CUDA_ztrmm(
         cuDoubleComplex *B, int ldb,
         CUBLAS_STREAM_PARAM)
 {
-    cublasZtrmm(CUBLAS_HANDLE
-        morse_lapack_const(side), morse_lapack_const(uplo),
-        morse_lapack_const(transa), morse_lapack_const(diag),
+
+#if defined(CHAMELEON_USE_CUBLAS_V2)
+
+    cublasZtrmm(
+        CUBLAS_HANDLE
+        morse_cublas_const(side), morse_cublas_const(uplo),
+        morse_cublas_const(transa), morse_cublas_const(diag),
         m, n,
         CUBLAS_VALUE(alpha), A, lda,
+        B, ldb,
         B, ldb);
+
+#else
+
+    cublasZtrmm(
+        CUBLAS_HANDLE
+        morse_cublas_const(side), morse_cublas_const(uplo),
+        morse_cublas_const(transa), morse_cublas_const(diag),
+        m, n,
+        CUBLAS_VALUE(alpha), A, lda,
+                             B, ldb);
+#endif
 
     assert( CUBLAS_STATUS_SUCCESS == cublasGetError() );
 

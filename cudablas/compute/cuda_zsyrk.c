@@ -34,7 +34,7 @@ int CUDA_zsyrk(MORSE_enum uplo, MORSE_enum trans,
                CUBLAS_STREAM_PARAM)
 {
     cublasZsyrk(CUBLAS_HANDLE
-                morse_lapack_const(uplo), morse_lapack_const(trans),
+                morse_cublas_const(uplo), morse_cublas_const(trans),
                 n, k,
                 CUBLAS_VALUE(alpha), A, lda,
                 CUBLAS_VALUE(beta),  C, ldc);

@@ -65,12 +65,20 @@ if( CHAMELEON_USE_MAGMA )
     )
 endif()
 
-precisions_rules_py(CUDABLAS_SRCS_GENERATED "${ZSRC}"
-                    PRECISIONS "${CHAMELEON_PRECISION}")
+precisions_rules_py(
+  CUDABLAS_SRCS_GENERATED "${ZSRC}"
+  PRECISIONS "${CHAMELEON_PRECISION}")
 
 set(CUDABLAS_SRCS
-    ${CUDABLAS_SRCS_GENERATED}
+  ${CUDABLAS_SRCS_GENERATED}
+  )
+
+if (CHAMELEON_USE_CUBLAS_V2)
+  set(CUDABLAS_SRCS
+    ${CUDABLAS_SRCS}
+    cudaglobal.c
     )
+endif (CHAMELEON_USE_CUBLAS_V2)
 
 # Compile step
 # ------------

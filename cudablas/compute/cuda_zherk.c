@@ -33,11 +33,11 @@ int CUDA_zherk( MORSE_enum uplo, MORSE_enum trans,
                 cuDoubleComplex *B, int ldb,
                 CUBLAS_STREAM_PARAM)
 {
-    cublasZherk(
-        morse_lapack_const(uplo), morse_lapack_const(trans),
-        n, k,
-        *alpha, A, lda,
-        *beta,  B, ldb);
+    cublasZherk( CUBLAS_HANDLE
+                 morse_cublas_const(uplo), morse_cublas_const(trans),
+                 n, k,
+                 CUBLAS_VALUE(alpha), A, lda,
+                 CUBLAS_VALUE(beta),  B, ldb);
 
     assert( CUBLAS_STATUS_SUCCESS == cublasGetError() );
 

@@ -36,7 +36,7 @@ int CUDA_zsyr2k(
         CUBLAS_STREAM_PARAM)
 {
     cublasZsyr2k(CUBLAS_HANDLE
-                 morse_lapack_const(uplo), morse_lapack_const(trans),
+                 morse_cublas_const(uplo), morse_cublas_const(trans),
                  n, k,
                  CUBLAS_VALUE(alpha), A, lda,
                                       B, ldb,

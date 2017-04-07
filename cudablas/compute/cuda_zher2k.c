@@ -35,7 +35,7 @@ int CUDA_zher2k(MORSE_enum uplo, MORSE_enum trans,
                 CUBLAS_STREAM_PARAM)
 {
     cublasZher2k(CUBLAS_HANDLE
-                 morse_lapack_const(uplo), morse_lapack_const(trans),
+                 morse_cublas_const(uplo), morse_cublas_const(trans),
                  n, k,
                  CUBLAS_VALUE(alpha), A, lda,
                                       B, ldb,

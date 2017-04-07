@@ -35,7 +35,7 @@ int CUDA_zsymm(MORSE_enum side, MORSE_enum uplo,
                CUBLAS_STREAM_PARAM)
 {
     cublasZsymm(CUBLAS_HANDLE
-                morse_lapack_const(side), morse_lapack_const(uplo),
+                morse_cublas_const(side), morse_cublas_const(uplo),
                 m, n,
                 CUBLAS_VALUE(alpha), A, lda,
                                      B, ldb,

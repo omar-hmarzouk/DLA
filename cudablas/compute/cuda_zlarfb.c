@@ -103,23 +103,22 @@ CUDA_zlarfb(MORSE_enum side, MORSE_enum trans,
 
         // W = C^H V
         cublasZgemm( CUBLAS_HANDLE
-                     morse_lapack_const(MorseConjTrans), morse_lapack_const(notransV),
+                     morse_cublas_const(MorseConjTrans), morse_cublas_const(notransV),
                      N, K, M,
                      CUBLAS_SADDR(zone),  C, LDC,
                                           V, LDV,
                      CUBLAS_SADDR(zzero), WORK, LDWORK );
 
         // W = W T^H = C^H V T^H
-        cublasZtrmm( CUBLAS_HANDLE
-                     morse_lapack_const(MorseRight), morse_lapack_const(uplo),
-                     morse_lapack_const(transT), morse_lapack_const(MorseNonUnit),
-                     N, K, CUBLAS_SADDR(zone),
-                     T,    LDT,
-                     WORK, LDWORK);
+        CUDA_ztrmm( MorseRight, uplo, transT, MorseNonUnit,
+                    N, K,
+                    CUBLAS_SADDR(zone), T,    LDT,
+                                        WORK, LDWORK,
+                    CUBLAS_STREAM_VALUE );
 
         // C = C - V W^H = C - V T V^H C = (I - V T V^H) C = H C
         cublasZgemm( CUBLAS_HANDLE
-                     morse_lapack_const(notransV), morse_lapack_const(MorseConjTrans),
+                     morse_cublas_const(notransV), morse_cublas_const(MorseConjTrans),
                      M, N, K,
                      CUBLAS_SADDR(mzone), V,    LDV,
                                           WORK, LDWORK,
@@ -131,23 +130,22 @@ CUDA_zlarfb(MORSE_enum side, MORSE_enum trans,
 
         // W = C V
         cublasZgemm( CUBLAS_HANDLE
-                     morse_lapack_const(MorseNoTrans), morse_lapack_const(notransV),
+                     morse_cublas_const(MorseNoTrans), morse_cublas_const(notransV),
                      M, K, N,
                      CUBLAS_SADDR(zone),  C, LDC,
                                           V, LDV,
                      CUBLAS_SADDR(zzero), WORK, LDWORK );
 
         // W = W T = C V T
-        cublasZtrmm( CUBLAS_HANDLE
-                     morse_lapack_const(MorseRight), morse_lapack_const(uplo),
-                     morse_lapack_const(trans), morse_lapack_const(MorseNonUnit),
-                     M, K, CUBLAS_SADDR(zone),
-                     T,    LDT,
-                     WORK, LDWORK);
+        CUDA_ztrmm( MorseRight, uplo, trans, MorseNonUnit,
+                    M, K,
+                    CUBLAS_SADDR(zone), T,    LDT,
+                                        WORK, LDWORK,
+                    CUBLAS_STREAM_VALUE );
 
         // C = C - W V^H = C - C V T V^H = C (I - V T V^H) = C H
         cublasZgemm( CUBLAS_HANDLE
-                     morse_lapack_const(MorseNoTrans), morse_lapack_const(transV),
+                     morse_cublas_const(MorseNoTrans), morse_cublas_const(transV),
                      M, N, K,
                      CUBLAS_SADDR(mzone), WORK, LDWORK,
                                           V,    LDV,

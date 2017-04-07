@@ -35,7 +35,7 @@ int CUDA_zgemm(MORSE_enum transa, MORSE_enum transb,
                CUBLAS_STREAM_PARAM)
 {
     cublasZgemm(CUBLAS_HANDLE
-                morse_lapack_const(transa), morse_lapack_const(transb),
+                morse_cublas_const(transa), morse_cublas_const(transb),
                 m, n, k,
                 CUBLAS_VALUE(alpha), A, lda,
                                      B, ldb,
