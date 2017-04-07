@@ -45,6 +45,13 @@
 #if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
 #include <starpu_scheduler.h>
 #include <starpu_cuda.h>
+
+#include <cublas.h>
+#include <starpu_cublas.h>
+#if defined(CHAMELEON_USE_CUBLAS_V2)
+#include <cublas_v2.h>
+#include <starpu_cublas_v2.h>
+#endif
 #endif
 
 #include "control/common.h"
