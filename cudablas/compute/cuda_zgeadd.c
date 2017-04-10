@@ -29,21 +29,20 @@
 #error "This file requires cublas api v2 support"
 #endif
 
-int CUDA_zgeadd(MORSE_enum transa, MORSE_enum transb,
-               int m, int n, int k,
-               cuDoubleComplex *alpha,
-               const cuDoubleComplex *A, int lda,
-               const cuDoubleComplex *B, int ldb,
-               cuDoubleComplex *beta,
-               cuDoubleComplex *C, int ldc,
-               CUBLAS_STREAM_PARAM)
+int CUDA_zgeadd(MORSE_enum trans,
+                int m, int n,
+                const cuDoubleComplex *alpha,
+                const cuDoubleComplex *A, int lda,
+                const cuDoubleComplex *beta,
+                cuDoubleComplex *B, int ldb,
+                CUBLAS_STREAM_PARAM)
 {
     cublasZgeam(CUBLAS_HANDLE
-                morse_cublas_const(transa), morse_cublas_const(transb),
-                m, n, k,
+                morse_cublas_const(trans), morse_cublas_const(MorseNoTrans),
+                m, n,
                 CUBLAS_VALUE(alpha), A, lda,
-                                     B, ldb,
-                CUBLAS_VALUE(beta),  C, ldc);
+                CUBLAS_VALUE(beta),  B, ldb,
+                B, ldb);
 
     assert( CUBLAS_STATUS_SUCCESS == cublasGetError() );
 

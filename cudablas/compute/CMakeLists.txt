@@ -48,6 +48,13 @@ set(ZSRC
     cuda_zunmqrt.c
     )
 
+if( CHAMELEON_USE_CUBLAS_V2 )
+  set(ZSRC
+    ${ZSRC}
+    cuda_zgeadd.c
+    )
+endif( CHAMELEON_USE_CUBLAS_V2 )
+
 if( CHAMELEON_USE_MAGMA )
   set(ZSRC
     ${ZSRC}
