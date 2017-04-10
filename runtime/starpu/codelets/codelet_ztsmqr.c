@@ -281,8 +281,8 @@ static void cl_ztsmqr_cuda_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &side, &trans, &m1, &n1, &m2, &n2, &k, &ib,
                                &lda1, &lda2, &ldv, &ldt, &ldwork);
 
-    WC = W + ib * (side == MorseLeft ? n1 : m1);
-    ldworkc = (side == MorseLeft) ? m1 : ib;
+    WC = W + ib * (side == MorseLeft ? m1 : n1);
+    ldworkc = (side == MorseLeft) ? m2 : ib;
 
     stream = starpu_cuda_get_local_stream();
     cublasSetKernelStream( stream );
@@ -298,7 +298,6 @@ static void cl_ztsmqr_cuda_func(void *descr[], void *cl_arg)
 }
 #endif /* defined(CHAMELEON_USE_CUDA) */
 #endif /* !defined(CHAMELEON_SIMULATION) */
-
 
 /*
  * Codelet definition

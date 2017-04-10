@@ -25,6 +25,130 @@
 #include "cudablas/include/cudablas.h"
 #include "cudablas/include/cudablas_z.h"
 
+/**
+ *****************************************************************************
+ *
+ * @ingroup CUDA_MORSE_Complex64_t
+ *
+ *  CUDA_zparfb applies a complex upper triangular block reflector H
+ *  or its transpose H' to a complex rectangular matrix formed by
+ *  coupling two tiles A1 and A2. Matrix V is:
+ *
+ *          COLUMNWISE                    ROWWISE
+ *
+ *         |     K     |                 |      N2-L     |   L  |
+ *      __ _____________ __           __ _________________        __
+ *         |    |      |                 |               | \
+ *         |    |      |                 |               |   \    L
+ *    M2-L |    |      |              K  |_______________|_____\  __
+ *         |    |      | M2              |                      |
+ *      __ |____|      |                 |                      | K-L
+ *         \    |      |              __ |______________________| __
+ *       L   \  |      |
+ *      __     \|______| __              |          N2          |
+ *
+ *         | L |  K-L  |
+ *
+ *******************************************************************************
+ *
+ * @param[in] side
+ *         @arg MorseLeft  : apply Q or Q**H from the Left;
+ *         @arg MorseRight : apply Q or Q**H from the Right.
+ *
+ * @param[in] trans
+ *         @arg MorseNoTrans   : No transpose, apply Q;
+ *         @arg MorseConjTrans : ConjTranspose, apply Q**H.
+ *
+ * @param[in] direct
+ *         Indicates how H is formed from a product of elementary
+ *         reflectors
+ *         @arg MorseForward  : H = H(1) H(2) . . . H(k) (Forward)
+ *         @arg MorseBackward : H = H(k) . . . H(2) H(1) (Backward)
+ *
+ * @param[in] storev
+ *         Indicates how the vectors which define the elementary
+ *         reflectors are stored:
+ *         @arg MorseColumnwise
+ *         @arg MorseRowwise
+ *
+ * @param[in] M1
+ *         The number of columns of the tile A1. M1 >= 0.
+ *
+ * @param[in] N1
+ *         The number of rows of the tile A1. N1 >= 0.
+ *
+ * @param[in] M2
+ *         The number of columns of the tile A2. M2 >= 0.
+ *
+ * @param[in] N2
+ *         The number of rows of the tile A2. N2 >= 0.
+ *
+ * @param[in] K
+ *         The order of the matrix T (= the number of elementary
+ *         reflectors whose product defines the block reflector).
+ *
+ * @param[in] L
+ *         The size of the triangular part of V
+ *
+ * @param[in,out] A1
+ *         On entry, the M1-by-N1 tile A1.
+ *         On exit, A1 is overwritten by the application of Q.
+ *
+ * @param[in] LDA1
+ *         The leading dimension of the array A1. LDA1 >= max(1,N1).
+ *
+ * @param[in,out] A2
+ *         On entry, the M2-by-N2 tile A2.
+ *         On exit, A2 is overwritten by the application of Q.
+ *
+ * @param[in] LDA2
+ *         The leading dimension of the tile A2. LDA2 >= max(1,N2).
+ *
+ * @param[in] V
+ *         (LDV,K) if STOREV = 'C'
+ *         (LDV,M2) if STOREV = 'R' and SIDE = 'L'
+ *         (LDV,N2) if STOREV = 'R' and SIDE = 'R'
+ *         Matrix V.
+ *
+ * @param[in] LDV
+ *         The leading dimension of the array V.
+ *         If STOREV = 'C' and SIDE = 'L', LDV >= max(1,M2);
+ *         if STOREV = 'C' and SIDE = 'R', LDV >= max(1,N2);
+ *         if STOREV = 'R', LDV >= K.
+ *
+ * @param[out] T
+ *         The triangular K-by-K matrix T in the representation of the
+ *         block reflector.
+ *         T is upper triangular by block (economic storage);
+ *         The rest of the array is not referenced.
+ *
+ * @param[in] LDT
+ *         The leading dimension of the array T. LDT >= K.
+ *
+ * @param[in,out] WORK
+ *         Workspace of dimension LDWORK-by-N1 if side == MorseLeft, LDWORK-by-K
+ *         otherwise.
+ *
+ * @param[in] LDWORK
+ *         The leading dimension of the array WORK: LDWORK >= K, if side ==
+ *         MorseLeft, LDWORK >= M1 otehrwise.
+ *
+ * @param[in,out] WORKC
+ *         Optionnal additional workspace to replace the TRMM operation by a GEMM kernel.
+ *         This workspace is of dimension LDWORK-by-K if side == MorseLeft, LDWORK-by-N2
+ *         otherwise.
+ *
+ * @param[in] LDWORKC
+ *         The leading dimension of the array WORKC: LDWORKC >= M2, if side ==
+ *         MorseLeft, LDWORK >= K otehrwise.
+ *
+ *******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *          \retval <0 if -i, the i-th argument had an illegal value
+ *
+ ******************************************************************************/
 int
 CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
             MORSE_enum direct, MORSE_enum storev,
@@ -82,6 +206,10 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
     }
     if (K < 0) {
         return -9;
+    }
+    if ( ((LDWORK < K ) && (side == MorseLeft )) ||
+         ((LDWORK < M1) && (side == MorseRight)) ) {
+        return -20;
     }
 
     /* Quick return */

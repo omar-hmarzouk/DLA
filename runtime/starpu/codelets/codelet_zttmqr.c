@@ -239,9 +239,59 @@ static void cl_zttmqr_cpu_func(void *descr[], void *cl_arg)
     CORE_zttmqr(side, trans, m1, n1, m2, n2, k, ib,
                 A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
 }
+
+#if defined(CHAMELEON_USE_CUDA)
+static void cl_zttmqr_cuda_func(void *descr[], void *cl_arg)
+{
+    MORSE_enum side;
+    MORSE_enum trans;
+    int m1;
+    int n1;
+    int m2;
+    int n2;
+    int k;
+    int ib;
+    cuDoubleComplex *A1;
+    int lda1;
+    cuDoubleComplex *A2;
+    int lda2;
+    cuDoubleComplex *V;
+    int ldv;
+    cuDoubleComplex *T;
+    int ldt;
+    cuDoubleComplex *W, *WC;
+    int ldwork;
+    int ldworkc;
+    CUstream stream;
+
+    A1 = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
+    A2 = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
+    V  = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
+    T  = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[3]);
+    W  = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[4]); /* 2*ib*nb */
+
+    starpu_codelet_unpack_args(cl_arg, &side, &trans, &m1, &n1, &m2, &n2, &k, &ib,
+                               &lda1, &lda2, &ldv, &ldt, &ldwork);
+
+    WC = W + ib * (side == MorseLeft ? m1 : n1);
+    ldworkc = (side == MorseLeft) ? m2 : ib;
+
+    stream = starpu_cuda_get_local_stream();
+    cublasSetKernelStream( stream );
+
+    CUDA_zttmqr(
+            side, trans, m1, n1, m2, n2, k, ib,
+            A1, lda1, A2, lda2, V, ldv, T, ldt,
+            W, ldwork, WC, ldworkc, stream );
+
+#ifndef STARPU_CUDA_ASYNC
+    cudaStreamSynchronize( stream );
+#endif
+}
+#endif /* defined(CHAMELEON_USE_CUDA) */
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
  */
-CODELETS_CPU(zttmqr, 5, cl_zttmqr_cpu_func)
+CODELETS(zttmqr, 5, cl_zttmqr_cpu_func, cl_zttmqr_cuda_func, STARPU_CUDA_ASYNC)

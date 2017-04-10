@@ -3,9 +3,8 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                          Univ. Bordeaux. All rights reserved.
  **/
 
 /**
@@ -247,10 +246,10 @@ int CORE_zttmqr(MORSE_enum side, MORSE_enum trans,
         CORE_zparfb(
             side, trans, MorseForward, MorseColumnwise,
             mi1, ni1, mi2, ni2, kb, l,
-            &A1[LDA1*jc+ic], LDA1,
+            A1 + LDA1*jc+ic, LDA1,
             A2, LDA2,
-            &V[LDV*i], LDV,
-            &T[LDT*i], LDT,
+            V + LDV*i, LDV,
+            T + LDT*i, LDT,
             WORK, LDWORK);
     }
     return MORSE_SUCCESS;
