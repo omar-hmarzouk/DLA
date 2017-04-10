@@ -62,7 +62,7 @@ void RUNTIME_user_tag_size(int user_tag_width, int user_tag_sep) {
 }
 
 
-void *RUNTIME_mat_alloc( size_t size)
+void *RUNTIME_mat_alloc( size_t size )
 {
 #if defined(CHAMELEON_SIMULATION) && !defined(STARPU_MALLOC_SIMULATION_FOLDED) && !defined(CHAMELEON_USE_MPI)
     return (void*) 1;
@@ -75,7 +75,7 @@ void *RUNTIME_mat_alloc( size_t size)
 #endif
 }
 
-void RUNTIME_mat_free( void *mat, size_t size)
+void RUNTIME_mat_free( void *mat, size_t size )
 {
 #if defined(CHAMELEON_SIMULATION) && !defined(STARPU_MALLOC_SIMULATION_FOLDED) && !defined(CHAMELEON_USE_MPI)
     return;
