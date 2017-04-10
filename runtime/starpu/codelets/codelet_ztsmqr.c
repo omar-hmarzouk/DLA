@@ -141,6 +141,7 @@ void MORSE_TASK_ztsmqr(const MORSE_option_t *options,
                        const MORSE_desc_t *V, int Vm, int Vn, int ldv,
                        const MORSE_desc_t *T, int Tm, int Tn, int ldt)
 {
+    (void)nb;
     struct starpu_codelet *codelet = &cl_ztsmqr;
     void (*callback)(void*) = options->profiling ? cl_ztsmqr_callback : NULL;
     int ldwork = side == MorseLeft ? ib : nb;
@@ -202,11 +203,11 @@ void MORSE_TASK_ztsmqr(const MORSE_option_t *options,
         STARPU_VALUE,    &ldwork,            sizeof(int),
         STARPU_PRIORITY,  options->priority,
         STARPU_CALLBACK,  callback,
-#if defined(CHAMELEON_CODELETS_HAVE_NAME)
-        STARPU_NAME, "ztsmqr",
-#endif
 #if defined(CHAMELEON_USE_MPI)
         STARPU_EXECUTE_ON_NODE, execution_rank,
+#endif
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+        STARPU_NAME, "ztsmqr",
 #endif
         0);
 }
@@ -246,7 +247,6 @@ static void cl_ztsmqr_cpu_func(void *descr[], void *cl_arg)
     CORE_ztsmqr(side, trans, m1, n1, m2, n2, k, ib,
                 A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
 }
-
 
 #if defined(CHAMELEON_USE_CUDA)
 static void cl_ztsmqr_cuda_func(void *descr[], void *cl_arg)

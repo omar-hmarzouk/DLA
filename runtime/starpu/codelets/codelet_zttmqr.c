@@ -70,9 +70,11 @@
  *
  * @param[in] M2
  *         The number of rows of the tile A2. M2 >= 0.
+ *         M2 = M1 if side == MorseRight.
  *
  * @param[in] N2
  *         The number of columns of the tile A2. N2 >= 0.
+ *         N2 = N1 if side == MorseLeft.
  *
  * @param[in] K
  *         The number of elementary reflectors whose product defines
@@ -98,12 +100,12 @@
  * @param[in] V
  *         The i-th row must contain the vector which defines the
  *         elementary reflector H(i), for i = 1,2,...,k, as returned by
- *         CORE_ZTTQRT in the first k rows of its array argument V.
+ *         CORE_ZTTQRT in the first k columns of its array argument V.
  *
  * @param[in] LDV
  *         The leading dimension of the array V. LDV >= max(1,K).
  *
- * @param[out] T
+ * @param[in] T
  *         The IB-by-N1 triangular factor T of the block reflector.
  *         T is upper triangular by block (economic storage);
  *         The rest of the array is not referenced.
@@ -112,10 +114,14 @@
  *         The leading dimension of the array T. LDT >= IB.
  *
  * @param[out] WORK
- *         Workspace array of size LDWORK-by-N1.
+ *         Workspace array of size
+ *             LDWORK-by-N1 if side == MorseLeft
+ *             LDWORK-by-IB if side == MorseRight
  *
  * @param[in] LDWORK
- *         The dimension of the array WORK. LDWORK >= max(1,IB).
+ *         The leading dimension of the array WORK.
+ *             LDWORK >= max(1,IB) if side == MorseLeft
+ *             LDWORK >= max(1,M1) if side == MorseRight
  *
  *******************************************************************************
  *
@@ -190,7 +196,7 @@ void MORSE_TASK_zttmqr(const MORSE_option_t *options,
         STARPU_VALUE,    &ldv,               sizeof(int),
         STARPU_R,         RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),
         STARPU_VALUE,    &ldt,               sizeof(int),
-         /* nb * ib */
+        /* max( ib*nb, 2*ib*nb ) */
         STARPU_SCRATCH,   options->ws_worker,
         STARPU_VALUE,    &ldwork,            sizeof(int),
         STARPU_PRIORITY,  options->priority,
@@ -231,7 +237,7 @@ static void cl_zttmqr_cpu_func(void *descr[], void *cl_arg)
     A2   = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
     V    = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[2]);
     T    = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[3]);
-    WORK = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[4]); /* nb * ib */
+    WORK = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[4]); /* ib * nb */
 
     starpu_codelet_unpack_args(cl_arg, &side, &trans, &m1, &n1, &m2, &n2, &k, &ib,
                                &lda1, &lda2, &ldv, &ldt, &ldwork);
@@ -262,7 +268,6 @@ static void cl_zttmqr_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex *W, *WC;
     int ldwork;
     int ldworkc;
-    CUstream stream;
 
     A1 = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     A2 = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
@@ -276,8 +281,7 @@ static void cl_zttmqr_cuda_func(void *descr[], void *cl_arg)
     WC = W + ib * (side == MorseLeft ? m1 : n1);
     ldworkc = (side == MorseLeft) ? m2 : ib;
 
-    stream = starpu_cuda_get_local_stream();
-    cublasSetKernelStream( stream );
+    RUNTIME_getStream(stream);
 
     CUDA_zttmqr(
             side, trans, m1, n1, m2, n2, k, ib,
