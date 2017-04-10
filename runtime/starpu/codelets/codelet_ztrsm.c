@@ -135,13 +135,12 @@ static void cl_ztrsm_cuda_func(void *descr[], void *cl_arg)
     int lda;
     cuDoubleComplex *B;
     int ldb;
-    CUstream stream;
 
     A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     B = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
     starpu_codelet_unpack_args(cl_arg, &side, &uplo, &transA, &diag, &m, &n, &alpha, &lda, &ldb);
 
-    stream = starpu_cuda_get_local_stream();
+    RUNTIME_getStream(stream);
 
     CUDA_ztrsm(
         side, uplo, transA, diag,

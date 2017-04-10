@@ -41,7 +41,9 @@
 
 #if defined(CHAMELEON_USE_CUBLAS_V2)
 
+#include <cublas.h>
 #include <cublas_v2.h>
+
 #define CUBLAS_STREAM_PARAM cublasHandle_t handle
 #define CUBLAS_STREAM_VALUE handle
 #define CUBLAS_HANDLE handle,
@@ -95,5 +97,13 @@
  **/
 extern char *morse_lapack_constants[];
 #define morse_lapack_const(morse_const) morse_lapack_constants[morse_const][0]
+
+extern int morse_cublas_constants[];
+
+#if defined(CHAMELEON_USE_CUBLAS_V2)
+#define morse_cublas_const(morse_const) morse_cublas_constants[morse_const]
+#else
+#define morse_cublas_const(morse_const) morse_lapack_constants[morse_const][0]
+#endif
 
 #endif

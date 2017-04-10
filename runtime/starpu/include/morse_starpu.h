@@ -45,6 +45,13 @@
 #if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
 #include <starpu_scheduler.h>
 #include <starpu_cuda.h>
+
+#include <cublas.h>
+#include <starpu_cublas.h>
+#if defined(CHAMELEON_USE_CUBLAS_V2)
+#include <cublas_v2.h>
+#include <starpu_cublas_v2.h>
+#endif
 #endif
 
 #include "control/common.h"
@@ -69,6 +76,19 @@ typedef struct starpu_conf starpu_conf_t;
 #else
 
 #define starpu_mpi_codelet(_codelet_) _codelet_
+
+#endif
+
+/*
+ * cuBlasAPI v2 - StarPU enable the support for cublas handle
+ */
+#if defined(CHAMELEON_USE_CUDA) && defined(CHAMELEON_USE_CUBLAS_V2)
+#define RUNTIME_getStream(_stream_)                             \
+    cublasHandle_t _stream_ = starpu_cublas_get_local_handle();
+#else
+#define RUNTIME_getStream(_stream_)                             \
+    cudaStream_t _stream_ = starpu_cuda_get_local_stream();     \
+    cublasSetKernelStream( stream );
 
 #endif
 

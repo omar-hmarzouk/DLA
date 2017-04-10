@@ -166,7 +166,6 @@ static void cl_zgelqt_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex *h_A, *h_T, *h_D, *h_W, *h_TAU;
     cuDoubleComplex *d_A, *d_T, *d_D, *d_W;
     int lda, ldt;
-    CUstream stream;
 
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &ldt, &h_work);
 
@@ -186,15 +185,14 @@ static void cl_zgelqt_cuda_func(void *descr[], void *cl_arg)
     h_W   = h_TAU + chameleon_max(m,n);
     h_D   = h_W   + ib*ib;
 
-    stream = starpu_cuda_get_local_stream();
-    cublasSetKernelStream( stream );
+    RUNTIME_getStream(stream);
 
     CUDA_zgelqt(
             m, n, ib,
             d_A, lda, h_A, ib,
             d_T, ldt, h_T, ib,
             d_D, h_D, ib, h_TAU,
-            h_W, d_W, stream);
+            h_W, d_W, stream );
 
     cudaThreadSynchronize();
 }

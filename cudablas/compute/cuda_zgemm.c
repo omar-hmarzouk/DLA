@@ -34,18 +34,13 @@ int CUDA_zgemm(MORSE_enum transa, MORSE_enum transb,
                cuDoubleComplex *C, int ldc,
                CUBLAS_STREAM_PARAM)
 {
-
-#if !defined(CHAMELEON_USE_CUBLAS_V2)
-    cublasSetKernelStream( stream );
-#endif
     cublasZgemm(CUBLAS_HANDLE
-                morse_lapack_const(transa), morse_lapack_const(transb),
+                morse_cublas_const(transa), morse_cublas_const(transb),
                 m, n, k,
                 CUBLAS_VALUE(alpha), A, lda,
                                      B, ldb,
                 CUBLAS_VALUE(beta),  C, ldc);
 
     assert( CUBLAS_STATUS_SUCCESS == cublasGetError() );
-
     return MORSE_SUCCESS;
 }

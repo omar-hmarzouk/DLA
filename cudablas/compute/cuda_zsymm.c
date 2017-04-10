@@ -34,12 +34,8 @@ int CUDA_zsymm(MORSE_enum side, MORSE_enum uplo,
                cuDoubleComplex *C, int ldc,
                CUBLAS_STREAM_PARAM)
 {
-#if !defined(CHAMELEON_USE_CUBLAS_V2)
-    cublasSetKernelStream( stream );
-#endif
-
     cublasZsymm(CUBLAS_HANDLE
-                morse_lapack_const(side), morse_lapack_const(uplo),
+                morse_cublas_const(side), morse_cublas_const(uplo),
                 m, n,
                 CUBLAS_VALUE(alpha), A, lda,
                                      B, ldb,

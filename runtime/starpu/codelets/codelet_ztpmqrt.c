@@ -126,7 +126,6 @@ static void cl_ztpmqrt_cuda_func(void *descr[], void *cl_arg)
     cuDoubleComplex *B;
     int ldb;
     cuDoubleComplex *W;
-    CUstream stream;
 
     V = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
     T = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
@@ -137,7 +136,7 @@ static void cl_ztpmqrt_cuda_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args( cl_arg, &side, &trans, &M, &N, &K, &L, &ib,
                                 &ldv, &ldt, &lda, &ldb );
 
-    stream = starpu_cuda_get_local_stream();
+    RUNTIME_getStream(stream);
 
     CUDA_ztpmqrt(
             side, trans, M, N, K, L, ib,

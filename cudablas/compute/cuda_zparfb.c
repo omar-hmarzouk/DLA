@@ -243,7 +243,7 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
             transA2 = storev == MorseColumnwise ? MorseNoTrans : MorseConjTrans;
 
             cublasZgemm(CUBLAS_HANDLE
-                        morse_lapack_const(transW), morse_lapack_const(MorseNoTrans),
+                        morse_cublas_const(transW), morse_cublas_const(MorseNoTrans),
                         K, N1, M2,
                         CUBLAS_SADDR(zone),
                         V     /* K*M2  */, LDV,
@@ -253,14 +253,11 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
 
             if (WORKC == NULL) {
                 /* W = op(T) * W */
-                cublasZtrmm( CUBLAS_HANDLE
-                             morse_lapack_const(MorseLeft), morse_lapack_const(MorseUpper),
-                             morse_lapack_const(trans), morse_lapack_const(MorseNonUnit),
-                             K, N2,
-                             CUBLAS_SADDR(zone),
-                             T,    LDT,
-                             WORK, LDWORK);
-
+                CUDA_ztrmm( MorseLeft, MorseUpper, trans, MorseNonUnit,
+                            K, N2,
+                            CUBLAS_SADDR(zone), T,    LDT,
+                                                WORK, LDWORK,
+                            CUBLAS_STREAM_VALUE );
 
                 /* A1 = A1 - W = A1 - op(T) * W */
                 for(j = 0; j < N1; j++) {
@@ -272,7 +269,7 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
 
                 /* A2 = A2 - op(V) * W  */
                 cublasZgemm(CUBLAS_HANDLE
-                            morse_lapack_const(transA2), morse_lapack_const(MorseNoTrans),
+                            morse_cublas_const(transA2), morse_cublas_const(MorseNoTrans),
                             M2, N2, K,
                             CUBLAS_SADDR(mzone), V    /* M2*K  */, LDV,
                                                  WORK /* K*N2  */, LDWORK,
@@ -281,7 +278,7 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
             } else {
                 /* Wc = V * op(T) */
                 cublasZgemm( CUBLAS_HANDLE
-                             morse_lapack_const(transA2), morse_lapack_const(trans),
+                             morse_cublas_const(transA2), morse_cublas_const(trans),
                              M2, K, K,
                              CUBLAS_SADDR(zone),  V, LDV,
                                                   T, LDT,
@@ -289,7 +286,7 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
 
                 /* A1 = A1 - opt(T) * W */
                 cublasZgemm( CUBLAS_HANDLE
-                             morse_lapack_const(trans), morse_lapack_const(MorseNoTrans),
+                             morse_cublas_const(trans), morse_cublas_const(MorseNoTrans),
                              K, N1, K,
                              CUBLAS_SADDR(mzone), T,    LDT,
                                                   WORK, LDWORK,
@@ -297,7 +294,7 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
 
                 /* A2 = A2 - Wc * W */
                 cublasZgemm( CUBLAS_HANDLE
-                             morse_lapack_const(MorseNoTrans), morse_lapack_const(MorseNoTrans),
+                             morse_cublas_const(MorseNoTrans), morse_cublas_const(MorseNoTrans),
                              M2, N2, K,
                              CUBLAS_SADDR(mzone), WORKC, LDWORKC,
                                                   WORK,  LDWORK,
@@ -328,7 +325,7 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
             transA2 = storev == MorseColumnwise ? MorseConjTrans : MorseNoTrans;
 
             cublasZgemm(CUBLAS_HANDLE
-                        morse_lapack_const(MorseNoTrans), morse_lapack_const(transW),
+                        morse_cublas_const(MorseNoTrans), morse_cublas_const(transW),
                         M1, K, N2,
                         CUBLAS_SADDR(zone), A2   /* M1*N2 */, LDA2,
                                             V    /* N2*K  */, LDV,
@@ -336,14 +333,11 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
 
             if (WORKC == NULL) {
                 /* W = W * op(T) */
-                cublasZtrmm( CUBLAS_HANDLE
-                             morse_lapack_const(MorseRight), morse_lapack_const(MorseUpper),
-                             morse_lapack_const(trans), morse_lapack_const(MorseNonUnit),
-                             M2, K,
-                             CUBLAS_SADDR(zone),
-                             T,    LDT,
-                             WORK, LDWORK);
-
+                CUDA_ztrmm( MorseRight, MorseUpper, trans, MorseNonUnit,
+                            M2, K,
+                            CUBLAS_SADDR(zone), T,    LDT,
+                                                WORK, LDWORK,
+                            CUBLAS_STREAM_VALUE );
 
                 /* A1 = A1 - W = A1 - W * op(T) */
                 for(j = 0; j < K; j++) {
@@ -355,7 +349,7 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
 
                 /* A2 = A2 - W * op(V)  */
                 cublasZgemm(CUBLAS_HANDLE
-                            morse_lapack_const(MorseNoTrans), morse_lapack_const(transA2),
+                            morse_cublas_const(MorseNoTrans), morse_cublas_const(transA2),
                             M2, N2, K,
                             CUBLAS_SADDR(mzone), WORK /* M2*K  */, LDWORK,
                                                  V    /* K*N2  */, LDV,
@@ -364,7 +358,7 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
             } else {
                 /* A1 = A1 - W * opt(T) */
                 cublasZgemm( CUBLAS_HANDLE
-                             morse_lapack_const(MorseNoTrans), morse_lapack_const(trans),
+                             morse_cublas_const(MorseNoTrans), morse_cublas_const(trans),
                              M1, K, K,
                              CUBLAS_SADDR(mzone), WORK, LDWORK,
                                                   T,    LDT,
@@ -372,7 +366,7 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
 
                 /* Wc = op(T) * V */
                 cublasZgemm( CUBLAS_HANDLE
-                             morse_lapack_const(trans), morse_lapack_const(transA2),
+                             morse_cublas_const(trans), morse_cublas_const(transA2),
                              K, N2, K,
                              CUBLAS_SADDR(zone),  T,     LDT,
                                                   V,     LDV,
@@ -380,7 +374,7 @@ CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
 
                 /* A2 = A2 - W * Wc */
                 cublasZgemm( CUBLAS_HANDLE
-                             morse_lapack_const(MorseNoTrans), morse_lapack_const(MorseNoTrans),
+                             morse_cublas_const(MorseNoTrans), morse_cublas_const(MorseNoTrans),
                              M2, N2, K,
                              CUBLAS_SADDR(mzone), WORK,  LDWORK,
                                                   WORKC, LDWORKC,
