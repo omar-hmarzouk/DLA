@@ -38,7 +38,7 @@ int CUDA_zttmqr(
               cuDoubleComplex *WORKC, int LDWORKC,
         CUBLAS_STREAM_PARAM)
 {
-    int i, i1, i3;
+    int i, i1, i3, l;
     int NQ, NW;
     int kb;
     int ic = 0;
