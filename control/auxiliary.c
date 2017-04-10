@@ -115,11 +115,15 @@ int morse_rank(MORSE_context_t *morse)
  **/
 int morse_tune(MORSE_enum func, int M, int N, int NRHS)
 {
+    MORSE_context_t *morse;
+    morse = morse_context_self();
+    if ( morse && morse->autotuning_enabled == MORSE_TRUE ) {
+        morse_warning( "morse_tune", "Autotunning not available for now" );
+    }
     (void)func;
     (void)M;
     (void)N;
     (void)NRHS;
-    morse_warning( "morse_tune", "Autotunning not available for now" );
     return MORSE_SUCCESS;
 }
 
