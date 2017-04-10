@@ -184,6 +184,9 @@ int main (int argc, char **argv)
      MORSE_InitPar(ncores/nthreads_per_worker, ncudas, nthreads_per_worker);
      else*/
     MORSE_Init( ncores, ngpus);
+    MORSE_Disable(MORSE_AUTOTUNING);
+    MORSE_Set(MORSE_TILE_SIZE,        320 );
+    MORSE_Set(MORSE_INNER_BLOCK_SIZE,  48 );
 
     argc -= 4;
     argv += 4;
