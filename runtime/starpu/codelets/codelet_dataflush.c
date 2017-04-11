@@ -47,7 +47,7 @@ int RUNTIME_desc_iscached(const MORSE_desc_t *A, int Am, int An)
     starpu_data_handle_t *ptrtile = (starpu_data_handle_t*)(A->schedopt);
     ptrtile += ((int64_t)(A->lmt) * (int64_t)An + (int64_t)Am);
 
-    if (!*ptrtile)
+    if (!(*ptrtile))
         return 0;
 
     return starpu_mpi_cached_receive(*ptrtile);
