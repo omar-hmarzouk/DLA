@@ -15,7 +15,7 @@
  *  Univ. of California Berkeley and Univ. of Colorado Denver,
  *  and INRIA Bordeaux Sud-Ouest
  *
- * @author Florent Pruvost
+ * @author Mathieu Faverge
  * @date 2015-09-17
  * @precisions normal z -> c d s
  *
