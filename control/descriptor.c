@@ -41,7 +41,7 @@ static int nbdesc = 0;
 /**
  ******************************************************************************
  *
- * @ingroup internal_descriptor
+ * @ingroup Descriptor
  *
  * morse_desc_init_user - Internal function to create tiled matrix descriptor
  * with generic function for data distribution and storage format.
@@ -561,11 +561,13 @@ int MORSE_Desc_Create_User(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, i
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
+ *****************************************************************************
  *
  * @ingroup Descriptor
  *
- *  MORSE_Desc_Create_OOC - Create matrix descriptor for matrix which may not fit memory
+ *  MORSE_Desc_Create_OOC - Create matrix descriptor for tiled matrix which may
+ *  not fit memory.
  *
  ******************************************************************************
  *
@@ -654,7 +656,8 @@ int MORSE_Desc_Create_OOC(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int n
 #endif
 }
 
-/** ***************************************************************************
+/**
+ *****************************************************************************
  *
  * @ingroup Descriptor
  *
@@ -692,7 +695,8 @@ int MORSE_Desc_Destroy(MORSE_desc_t **desc)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
+ *****************************************************************************
  *
  * @ingroup Descriptor
  *
@@ -714,7 +718,8 @@ int MORSE_Desc_Acquire (MORSE_desc_t  *desc) {
     return RUNTIME_desc_acquire( desc );
 }
 
-/** ***************************************************************************
+/**
+ *****************************************************************************
  *
  * @ingroup Descriptor
  *
@@ -737,7 +742,8 @@ int MORSE_Desc_Release (MORSE_desc_t  *desc) {
     return RUNTIME_desc_release( desc );
 }
 
-/** ***************************************************************************
+/**
+ *****************************************************************************
  *
  * @ingroup Descriptor
  *
@@ -759,14 +765,15 @@ int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc) {
     return RUNTIME_desc_getoncpu( desc );
 }
 
-/** ***************************************************************************
+/**
+ *****************************************************************************
  *
  * @ingroup Descriptor
  *
  *  MORSE_user_tag_size - Set the sizes for the MPI tags
- *  Default value: tag_width=31, tag_sep=24, meaning that the MPI tag is stored in 31 bits,
- *  with 24 bits for the tile tag and 7 for the descriptor.
- *  This function must be called before any descriptor creation.
+ *  Default value: tag_width=31, tag_sep=24, meaning that the MPI tag is stored
+ *  in 31 bits, with 24 bits for the tile tag and 7 for the descriptor.  This
+ *  function must be called before any descriptor creation.
  *
  ******************************************************************************
  *
