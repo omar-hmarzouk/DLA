@@ -38,49 +38,89 @@
 
 static int nbdesc = 0;
 
-/*******************************************************************************
- *  Internal static descriptor initializer
- **/
-MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
-                             int lm, int ln, int i, int j,
-                             int m,  int n,  int p, int q)
-{
-  return morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
-                              morse_getaddr_ccrb, morse_getblkldd_ccrb, morse_getrankof_2d);
-}
-
-/*******************************************************************************
- *  Internal static descriptor initializer for a block diagonal matrix
- **/
-MORSE_desc_t morse_desc_init_diag(MORSE_enum dtyp, int mb, int nb, int bsiz,
-                                  int lm, int ln, int i, int j,
-                                  int m,  int n,  int p, int q)
-{
-  return morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
-                              morse_getaddr_ccrb, morse_getblkldd_ccrb, morse_getrankof_2d_diag);
-}
-
-/*******************************************************************************
- *  Static descriptor initializer for users
- **/
+/**
+ ******************************************************************************
+ *
+ * @ingroup internal_descriptor
+ *
+ * morse_desc_init_user - Internal function to create tiled matrix descriptor
+ * with generic function for data distribution and storage format.
+ *
+ ******************************************************************************
+ *
+ * @param[in] dtyp
+ *          Data type of the matrix:
+ *          @arg MorseRealFloat:     single precision real (S),
+ *          @arg MorseRealDouble:    double precision real (D),
+ *          @arg MorseComplexFloat:  single precision complex (C),
+ *          @arg MorseComplexDouble: double precision complex (Z).
+ *
+ * @param[in] mb
+ *          Number of rows in a tile.
+ *
+ * @param[in] nb
+ *          Number of columns in a tile.
+ *
+ * @param[in] bsiz
+ *          Size in bytes including padding.
+ *
+ * @param[in] lm
+ *          Number of rows of the entire matrix.
+ *
+ * @param[in] ln
+ *          Number of columns of the entire matrix.
+ *
+ * @param[in] i
+ *          Row index to the beginning of the submatrix.
+ *
+ * @param[in] j
+ *          Column indes to the beginning of the submatrix.
+ *
+ * @param[in] m
+ *          Number of rows of the submatrix.
+ *
+ * @param[in] n
+ *          Number of columns of the submatrix.
+ *
+ * @param[in] p
+ *          2D-block cyclic distribution in rows.
+ *
+ * @param[in] q
+ *          2D-block cyclic distribution in columns.
+ *
+ * @param[in] (*get_blkaddr)( const MORSE_desc_t *A, int m, int n)
+ *          A function which return the address of the data corresponding to
+ *          the tile A(m,n).
+ *
+ * @param[in] (*get_blkldd)( const MORSE_desc_t *A, int m )
+ *          A function that return the leading dimension of the tile A(m,*).
+ *
+ * @param[in] (*get_rankof)( const MORSE_desc_t *A, int m, int n)
+ *          A function that return the MPI rank of the tile A(m,n).
+ *
+ ******************************************************************************
+ *
+ * @return  The descriptor with the matrix description parameters set.
+ *
+ *****************************************************************************/
 MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
                                   int lm, int ln, int i, int j,
                                   int m,  int n,  int p, int q,
                                   void* (*get_blkaddr)( const MORSE_desc_t*, int, int ),
-                                  int (*get_blkldd)( const MORSE_desc_t*, int ),
-                                  int (*get_rankof)( const MORSE_desc_t*, int, int ))
+                                  int   (*get_blkldd) ( const MORSE_desc_t*, int      ),
+                                  int   (*get_rankof) ( const MORSE_desc_t*, int, int ))
 {
     MORSE_desc_t desc;
     // If one of the function get_* is NULL, we switch back to the default, like in morse_desc_init()
     desc.get_blkaddr = get_blkaddr ? get_blkaddr : morse_getaddr_ccrb;
-    desc.get_blkldd  = get_blkldd ? get_blkldd : morse_getblkldd_ccrb;
-    desc.get_rankof  = get_rankof ? get_rankof : morse_getrankof_2d;
+    desc.get_blkldd  = get_blkldd  ? get_blkldd  : morse_getblkldd_ccrb;
+    desc.get_rankof  = get_rankof  ? get_rankof  : morse_getrankof_2d;
     // Matrix properties
     desc.dtyp = dtyp;
-    // seems useless
+    // Should be given as parameter to follow get_blkaddr (unused)
     desc.styp = MorseCCRB;
-    desc.mb = mb;
-    desc.nb = nb;
+    desc.mb   = mb;
+    desc.nb   = nb;
     desc.bsiz = bsiz;
     // Large matrix parameters
     desc.lm = lm;
@@ -99,9 +139,10 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
 
     desc.id = nbdesc; nbdesc++;
     desc.occurences = 0;
-    desc.use_mat = 1;
-    desc.alloc_mat = 1;
+    desc.use_mat      = 1;
+    desc.alloc_mat    = 1;
     desc.register_mat = 1;
+    desc.ooc          = 0;
 
     RUNTIME_comm_rank( &(desc.myrank) );
 
@@ -130,12 +171,12 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
         desc.llm1 = (desc.llm/mb);
         desc.lln1 = (desc.lln/nb);
     } else {
-      desc.llmt = 0;
-      desc.llnt = 0;
-      desc.llm  = 0;
-      desc.lln  = 0;
-      desc.llm1 = 0;
-      desc.lln1 = 0;
+        desc.llmt = 0;
+        desc.llnt = 0;
+        desc.llm  = 0;
+        desc.lln  = 0;
+        desc.llm1 = 0;
+        desc.lln1 = 0;
     }
 
     // Matrix address
@@ -150,9 +191,31 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
 }
 
 /*******************************************************************************
+ *  Internal static descriptor initializer
+ **/
+MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
+                             int lm, int ln, int i, int j,
+                             int m,  int n,  int p, int q)
+{
+    return morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
+                                morse_getaddr_ccrb, morse_getblkldd_ccrb, morse_getrankof_2d);
+}
+
+/*******************************************************************************
+ *  Internal static descriptor initializer for a block diagonal matrix
+ **/
+MORSE_desc_t morse_desc_init_diag(MORSE_enum dtyp, int mb, int nb, int bsiz,
+                                  int lm, int ln, int i, int j,
+                                  int m,  int n,  int p, int q)
+{
+    return morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
+                                morse_getaddr_ccrb, morse_getblkldd_ccrb, morse_getrankof_2d_diag);
+}
+
+/*******************************************************************************
  *  Internal static descriptor initializer for submatrices
  **/
-MORSE_desc_t* morse_desc_submatrix(MORSE_desc_t *descA, int i, int j, int m, int n )
+MORSE_desc_t* morse_desc_submatrix(MORSE_desc_t *descA, int i, int j, int m, int n)
 {
     MORSE_desc_t *descB = malloc(sizeof(MORSE_desc_t));
     int mb, nb;
@@ -237,7 +300,7 @@ int morse_desc_mat_alloc( MORSE_desc_t *desc )
 {
 
     size_t size = (size_t)(desc->llm) * (size_t)(desc->lln)
-      * (size_t)MORSE_Element_Size(desc->dtyp);
+        * (size_t)MORSE_Element_Size(desc->dtyp);
     if ((desc->mat = RUNTIME_mat_alloc(size)) == NULL) {
         morse_error("morse_desc_mat_alloc", "malloc() failed");
         return MORSE_ERR_OUT_OF_RESOURCES;
@@ -255,12 +318,12 @@ int morse_desc_mat_alloc( MORSE_desc_t *desc )
  **/
 int morse_desc_mat_free( MORSE_desc_t *desc )
 {
-
     RUNTIME_desc_destroy( desc );
 
-    if (desc->mat != NULL  &&
-        desc->use_mat == 1 &&
-        desc->alloc_mat == 1) {
+    if ( (desc->mat       != NULL) &&
+         (desc->use_mat   == 1   ) &&
+         (desc->alloc_mat == 1   ) )
+    {
         size_t size = (size_t)(desc->llm) * (size_t)(desc->lln)
             * (size_t)MORSE_Element_Size(desc->dtyp);
 
@@ -270,11 +333,12 @@ int morse_desc_mat_free( MORSE_desc_t *desc )
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
+ *****************************************************************************
  *
  * @ingroup Descriptor
  *
- *  MORSE_Desc_Create - Create matrix descriptor.
+ *  MORSE_Desc_Create - Create tiled matrix descriptor.
  *
  ******************************************************************************
  *
@@ -331,51 +395,169 @@ int morse_desc_mat_free( MORSE_desc_t *desc )
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, int nb, int bsiz,
+int MORSE_Desc_Create(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, int mb, int nb, int bsiz,
                       int lm, int ln, int i, int j, int m, int n, int p, int q)
 {
     MORSE_context_t *morse;
+    MORSE_desc_t *desc;
     int status;
+
+    *descptr = NULL;
 
     morse = morse_context_self();
     if (morse == NULL) {
         morse_error("MORSE_Desc_Create", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
+
     /* Allocate memory and initialize the descriptor */
-    *desc = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    if (*desc == NULL) {
+    desc = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+    if (desc == NULL) {
         morse_error("MORSE_Desc_Create", "malloc() failed");
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
-    **desc = morse_desc_init(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q);
+    *desc = morse_desc_init(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q);
 
     if (mat == NULL) {
 
-        size_t size = (size_t)((*desc)->llm) * (size_t)((*desc)->lln)
-            * (size_t)MORSE_Element_Size((*desc)->dtyp);
+        size_t size = (size_t)(desc->llm) * (size_t)(desc->lln)
+            * (size_t)MORSE_Element_Size(desc->dtyp);
 
-        if (((*desc)->mat = RUNTIME_mat_alloc(size)) == NULL) {
+        if ((desc->mat = RUNTIME_mat_alloc(size)) == NULL) {
             morse_error("MORSE_Desc_Create", "malloc() failed");
             return MORSE_ERR_OUT_OF_RESOURCES;
         }
-        (*desc)->alloc_mat = 1;
+        desc->use_mat      = 1;
+        desc->alloc_mat    = 1;
+        desc->register_mat = 0;
 
     } else {
-        (*desc)->mat = mat;
-        /* memory of the matrix is handle by users */
-        (*desc)->alloc_mat = 0;
+        desc->mat = mat;
+        /* memory of the matrix is handled by users */
+        desc->alloc_mat    = 0;
+        desc->use_mat      = 1;
+        desc->register_mat = 0;
     }
 
     /* Create scheduler structure like registering data */
-    RUNTIME_desc_create( *desc );
+    RUNTIME_desc_create( desc );
 
-    status = morse_desc_check(*desc);
+    status = morse_desc_check( desc );
     if (status != MORSE_SUCCESS) {
         morse_error("MORSE_Desc_Create", "invalid descriptor");
+        MORSE_Desc_Destroy( &desc );
         return status;
     }
 
+    *descptr = desc;
+    return MORSE_SUCCESS;
+}
+
+/**
+ *****************************************************************************
+ *
+ * @ingroup Descriptor
+ *
+ *  MORSE_Desc_Create_User - Create generic tiled matrix descriptor for general
+ *  applications.
+ *
+ ******************************************************************************
+ *
+ * @param[out] desc
+ *          On exit, descriptor of the matrix.
+ *
+ * @param[in] mat
+ *          Memory location of the matrix. If mat is NULL, the space to store
+ *          the data is automatically allocated by the call to the function.
+ *
+ * @param[in] dtyp
+ *          Data type of the matrix:
+ *          @arg MorseRealFloat:     single precision real (S),
+ *          @arg MorseRealDouble:    double precision real (D),
+ *          @arg MorseComplexFloat:  single precision complex (C),
+ *          @arg MorseComplexDouble: double precision complex (Z).
+ *
+ * @param[in] nb
+ *          Number of rows and columns in a tile.
+ *
+ * @param[in] m
+ *          Number of rows of the entire matrix.
+ *
+ * @param[in] n
+ *          Number of columns of the entire matrix.
+ *
+ * @param[in] p
+ *          2d-block cyclic partitioning, number of tiles in rows.
+ *
+ * @param[in] q
+ *          2d-block cyclic partitioning, number of tiles in columns.
+ *
+ * @param[in] (*get_blkaddr)( const MORSE_desc_t *A, int m, int n)
+ *          A function which return the address of the data corresponding to
+ *          the tile A(m,n).
+ *
+ * @param[in] (*get_blkldd)( const MORSE_desc_t *A, int m)
+ *          A function that return the leading dimension of the tile A(m,*).
+ *
+ * @param[in] (*get_rankof)( const MORSE_desc_t *A, int m, int n)
+ *          A function that return the MPI rank of the tile A(m,n).
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *
+ *****************************************************************************/
+int MORSE_Desc_Create_User(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, int mb, int nb, int bsiz,
+                           int lm, int ln, int i, int j, int m, int n, int p, int q,
+                           void* (*get_blkaddr)( const MORSE_desc_t*, int, int ),
+                           int   (*get_blkldd) ( const MORSE_desc_t*, int      ),
+                           int   (*get_rankof) ( const MORSE_desc_t*, int, int ))
+{
+    MORSE_context_t *morse;
+    MORSE_desc_t *desc;
+    int status;
+
+    *descptr = NULL;
+
+    morse = morse_context_self();
+    if (morse == NULL) {
+        morse_error("MORSE_Desc_Create", "MORSE not initialized");
+        return MORSE_ERR_NOT_INITIALIZED;
+    }
+
+    /* Allocate memory and initialize the descriptor */
+    desc = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+    if (desc == NULL) {
+        morse_error("MORSE_Desc_Create", "malloc() failed");
+        return MORSE_ERR_OUT_OF_RESOURCES;
+    }
+
+    *desc = morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
+                                 get_blkaddr, get_blkldd, get_rankof);
+
+    /* if the user gives a pointer to the overall data (tiles) we can use it */
+    desc->use_mat = (mat == NULL) ? 0 : 1;
+
+    /* memory of the matrix is handled by the user */
+    desc->alloc_mat = 0;
+
+    /* users data can have multiple forms: let him register tiles */
+    desc->register_mat = 0;
+
+    desc->mat = mat;
+
+    /* Create runtime specific structure like registering data */
+    RUNTIME_desc_create( desc );
+
+    status = morse_desc_check( desc );
+    if (status != MORSE_SUCCESS) {
+        morse_error("MORSE_Desc_Create", "invalid descriptor");
+        MORSE_Desc_Destroy( &desc );
+        return status;
+    }
+
+    *descptr = desc;
     return MORSE_SUCCESS;
 }
 
@@ -421,7 +603,7 @@ int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, i
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Desc_Create_OOC(MORSE_desc_t **desc, MORSE_enum dtyp, int mb, int nb, int bsiz,
+int MORSE_Desc_Create_OOC(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int nb, int bsiz,
                           int lm, int ln, int i, int j, int m, int n, int p, int q,
                           int (*get_rankof)( const MORSE_desc_t*, int, int ))
 {
@@ -430,7 +612,10 @@ int MORSE_Desc_Create_OOC(MORSE_desc_t **desc, MORSE_enum dtyp, int mb, int nb, 
     return MORSE_ERR_NOT_INITIALIZED;
 #else
     MORSE_context_t *morse;
+    MORSE_desc_t *desc;
     int status;
+
+    *descptr = NULL;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -438,131 +623,35 @@ int MORSE_Desc_Create_OOC(MORSE_desc_t **desc, MORSE_enum dtyp, int mb, int nb, 
         return MORSE_ERR_NOT_INITIALIZED;
     }
     /* Allocate memory and initialize the descriptor */
-    *desc = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    if (*desc == NULL) {
+    desc = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+    if (desc == NULL) {
         morse_error("MORSE_Desc_Create_Tiles", "malloc() failed");
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
-    **desc = morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
-        morse_getaddr_null, NULL, get_rankof);
+    *desc = morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
+                                 morse_getaddr_null, NULL, get_rankof);
 
     /* memory of the matrix is completely handled by runtime */
-    (**desc).use_mat = 0;
-    (**desc).alloc_mat = 0;
-    (**desc).mat = NULL;
+    desc->use_mat      = 0;
+    desc->alloc_mat    = 0;
+    desc->register_mat = 0;
 
-    (**desc).ooc = 1;
+    desc->mat = NULL;
+    desc->ooc = 1;
 
     /* Create scheduler structure like registering data */
-    RUNTIME_desc_create( *desc );
+    RUNTIME_desc_create( desc );
 
-    status = morse_desc_check(*desc);
+    status = morse_desc_check( desc );
     if (status != MORSE_SUCCESS) {
         morse_error("MORSE_Desc_Create_Tiles", "invalid descriptor");
+        MORSE_Desc_Destroy( &desc );
         return status;
     }
 
+    *descptr = desc;
     return MORSE_SUCCESS;
 #endif
-}
-
-/** ***************************************************************************
- *
- * @ingroup Descriptor
- *
- *  MORSE_Desc_Create_User - Create matrix descriptor for general applications.
- *
- ******************************************************************************
- *
- * @param[out] desc
- *          On exit, descriptor of the matrix.
- *
- * @param[in] mat
- *          Memory location of the matrix. If mat is NULL, the space to store
- *          the data is automatically allocated by the call to the function.
- *
- * @param[in] dtyp
- *          Data type of the matrix:
- *          @arg MorseRealFloat:     single precision real (S),
- *          @arg MorseRealDouble:    double precision real (D),
- *          @arg MorseComplexFloat:  single precision complex (C),
- *          @arg MorseComplexDouble: double precision complex (Z).
- *
- * @param[in] nb
- *          Number of rows and columns in a tile.
- *
- * @param[in] m
- *          Number of rows of the entire matrix.
- *
- * @param[in] n
- *          Number of columns of the entire matrix.
- *
-  * @param[in] p
- *          2d-block cyclic partitioning, number of tiles in rows.
- *
- * @param[in] q
- *          2d-block cyclic partitioning, number of tiles in columns.
- *
- * @param[in] (*get_blkaddr)( const MORSE_desc_t *A, int m, int n)
- *          A function which return the address of the data corresponding to
- *          the tile A(m,n).
- *
- * @param[in] (*get_blkldd)( const MORSE_desc_t *A, int m)
- *          A function that return the leading dimension of the tile A(m,*).
- *
- * @param[in] (*get_rankof)( const MORSE_desc_t *A, int m, int n)
- *          A function that return the MPI rank of the tile A(m,n).
- *
- ******************************************************************************
- *
- * @return
- *          \retval MORSE_SUCCESS successful exit
- *
- *****************************************************************************/
-int MORSE_Desc_Create_User(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int mb, int nb, int bsiz,
-                           int lm, int ln, int i, int j, int m, int n, int p, int q,
-                           void* (*get_blkaddr)( const MORSE_desc_t*, int, int ),
-                           int (*get_blkldd)( const MORSE_desc_t*, int ),
-                           int (*get_rankof)( const MORSE_desc_t*, int, int ))
-{
-    MORSE_context_t *morse;
-    int status;
-
-    morse = morse_context_self();
-    if (morse == NULL) {
-        morse_error("MORSE_Desc_Create", "MORSE not initialized");
-        return MORSE_ERR_NOT_INITIALIZED;
-    }
-    /* Allocate memory and initialize the descriptor */
-    *desc = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    if (*desc == NULL) {
-        morse_error("MORSE_Desc_Create", "malloc() failed");
-        return MORSE_ERR_OUT_OF_RESOURCES;
-    }
-    **desc = morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
-        get_blkaddr, get_blkldd, get_rankof);
-
-    /* if the user gives a pointer to the overall data (tiles) we can use it */
-    (**desc).use_mat = (mat == NULL) ? 0 : 1;
-
-    /* memory of the matrix is handle by users */
-    (**desc).alloc_mat = 0;
-
-    /* users data can have multiple forms: let him register tiles */
-    (**desc).register_mat = 0;
-
-    (**desc).mat = mat;
-
-    /* Create scheduler structure like registering data */
-    RUNTIME_desc_create( *desc );
-
-    status = morse_desc_check(*desc);
-    if (status != MORSE_SUCCESS) {
-        morse_error("MORSE_Desc_Create", "invalid descriptor");
-        return status;
-    }
-
-    return MORSE_SUCCESS;
 }
 
 /** ***************************************************************************
@@ -622,7 +711,7 @@ int MORSE_Desc_Destroy(MORSE_desc_t **desc)
  *
  *****************************************************************************/
 int MORSE_Desc_Acquire (MORSE_desc_t  *desc) {
-  return RUNTIME_desc_acquire( desc );
+    return RUNTIME_desc_acquire( desc );
 }
 
 /** ***************************************************************************
@@ -645,7 +734,7 @@ int MORSE_Desc_Acquire (MORSE_desc_t  *desc) {
  *
  *****************************************************************************/
 int MORSE_Desc_Release (MORSE_desc_t  *desc) {
-  return RUNTIME_desc_release( desc );
+    return RUNTIME_desc_release( desc );
 }
 
 /** ***************************************************************************
@@ -667,7 +756,7 @@ int MORSE_Desc_Release (MORSE_desc_t  *desc) {
  *
  *****************************************************************************/
 int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc) {
-  return RUNTIME_desc_getoncpu( desc );
+    return RUNTIME_desc_getoncpu( desc );
 }
 
 /** ***************************************************************************
@@ -694,6 +783,6 @@ int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc) {
  *
  *****************************************************************************/
 void MORSE_user_tag_size(int user_tag_width, int user_tag_sep) {
-  RUNTIME_user_tag_size(user_tag_width, user_tag_sep);
-  return;
+    RUNTIME_user_tag_size(user_tag_width, user_tag_sep);
+    return;
 }
