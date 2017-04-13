@@ -137,9 +137,47 @@ static void cl_zgeadd_cpu_func(void *descr[], void *cl_arg)
     CORE_zgeadd(trans, M, N, alpha, A, LDA, beta, B, LDB);
     return;
 }
+
+#ifdef CHAMELEON_USE_CUBLAS_V2
+static void cl_zgeadd_cuda_func(void *descr[], void *cl_arg)
+{
+    MORSE_enum trans;
+    int M;
+    int N;
+    cuDoubleComplex alpha;
+    const cuDoubleComplex *A;
+    int lda;
+    cuDoubleComplex beta;
+    cuDoubleComplex *B;
+    int ldb;
+
+    A = (const cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
+    B = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
+    starpu_codelet_unpack_args(cl_arg, &trans, &M, &N, &alpha, &lda, &beta, &ldb);
+
+    RUNTIME_getStream( stream );
+
+    CUDA_zgeadd(
+        trans,
+        M, N,
+        &alpha, A, lda,
+        &beta,  B, ldb,
+        stream);
+
+#ifndef STARPU_CUDA_ASYNC
+    cudaStreamSynchronize( stream );
+#endif
+
+    return;
+}
+#endif /* defined(CHAMELEON_USE_CUBLAS_V2) */
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
  */
+#if defined(CHAMELEON_USE_CUBLAS_V2)
+CODELETS(zgeadd, 2, cl_zgeadd_cpu_func, cl_zgeadd_cuda_func, STARPU_CUDA_ASYNC)
+#else
 CODELETS_CPU(zgeadd, 2, cl_zgeadd_cpu_func)
+#endif
