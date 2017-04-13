@@ -243,6 +243,8 @@ int morse_desc_mat_alloc( MORSE_desc_t *desc )
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
 
+    /* The matrix has already been registered by the Runtime alloc */
+    desc->register_mat = 0;
     RUNTIME_desc_create(desc);
 
     return MORSE_SUCCESS;
@@ -452,7 +454,6 @@ int MORSE_Desc_Create_User(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp, int 
     }
     **desc = morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
         get_blkaddr, get_blkldd, get_rankof);
-
 
     /* if the user gives a pointer to the overall data (tiles) we can use it */
     (**desc).use_mat = (mat == NULL) ? 0 : 1;

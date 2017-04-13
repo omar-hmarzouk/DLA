@@ -1,13 +1,11 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2009-2014 The University of Tennessee and The University of
+ *                          Tennessee Research Foundation.  All rights reserved.
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                          Univ. Bordeaux. All rights reserved.
  *
  **/
-
 /**
  *
  * @file runtime_descriptor.c
@@ -29,17 +27,17 @@
 #if defined(CHAMELEON_USE_MPI)
 
 /* Take 24 bits for the tile id, and 7 bits for descriptor id.
-   These values can be changed through the call MORSE_user_tag_size(int tag_width, int tag_sep) */
+ These values can be changed through the call MORSE_user_tag_size(int tag_width, int tag_sep) */
 #define TAG_WIDTH_MIN 20
 static int tag_width = 31;
 static int tag_sep   = 24;
 static int _tag_mpi_initialized_ = 0;
 
 #ifndef HAVE_STARPU_MPI_DATA_REGISTER
-#define starpu_mpi_data_register( handle_, tag_, owner_ )        \
-    do {                                                         \
-     starpu_data_set_rank( (handle_), (owner_) );                \
-     starpu_data_set_tag( (handle_), (tag_) );                   \
+#define starpu_mpi_data_register( handle_, tag_, owner_ )       \
+    do {                                                        \
+        starpu_data_set_rank( (handle_), (owner_) );            \
+        starpu_data_set_tag( (handle_), (tag_) );               \
     } while(0)
 #endif
 
@@ -53,16 +51,16 @@ static int _tag_mpi_initialized_ = 0;
 
 void RUNTIME_user_tag_size(int user_tag_width, int user_tag_sep) {
 #if defined(CHAMELEON_USE_MPI)
-  if (_tag_mpi_initialized_ == 0) {
-    tag_width=user_tag_width;
-    tag_sep=user_tag_sep;
-  } else
-    morse_error("RUNTIME_user_tag_size", "must be called before creating any Morse descriptor with MORSE_Desc_create(). The tag sizes will not be modified.");
+    if (_tag_mpi_initialized_ == 0) {
+        tag_width=user_tag_width;
+        tag_sep=user_tag_sep;
+    } else
+        morse_error("RUNTIME_user_tag_size", "must be called before creating any Morse descriptor with MORSE_Desc_create(). The tag sizes will not be modified.");
 #endif
 }
 
 
-void *RUNTIME_mat_alloc( size_t size)
+void *RUNTIME_mat_alloc( size_t size )
 {
 #if defined(CHAMELEON_SIMULATION) && !defined(STARPU_MALLOC_SIMULATION_FOLDED) && !defined(CHAMELEON_USE_MPI)
     return (void*) 1;
@@ -75,7 +73,7 @@ void *RUNTIME_mat_alloc( size_t size)
 #endif
 }
 
-void RUNTIME_mat_free( void *mat, size_t size)
+void RUNTIME_mat_free( void *mat, size_t size )
 {
 #if defined(CHAMELEON_SIMULATION) && !defined(STARPU_MALLOC_SIMULATION_FOLDED) && !defined(CHAMELEON_USE_MPI)
     return;
@@ -109,11 +107,13 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
         {
             int64_t eltsze = MORSE_Element_Size(desc->dtyp);
             size_t size = (size_t)(desc->llm) * (size_t)(desc->lln) * eltsze;
+            cudaError_t rc;
 
             /* Register the matrix as pinned memory */
-            if ( cudaHostRegister( desc->mat, size, cudaHostRegisterPortable ) != cudaSuccess )
+            rc = cudaHostRegister( desc->mat, size, cudaHostRegisterPortable );
+            if ( rc != cudaSuccess )
             {
-                morse_warning("RUNTIME_desc_create(StarPU)", "cudaHostRegister failed to register the matrix as pinned memory");
+                morse_warning("RUNTIME_desc_create(StarPU): cudaHostRegister - ", cudaGetErrorString( rc ));
             }
         }
     }
@@ -209,8 +209,8 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
 
 void RUNTIME_desc_init( MORSE_desc_t *desc )
 {
-  (void)desc;
-  return;
+    (void)desc;
+    return;
 }
 
 void RUNTIME_desc_submatrix( MORSE_desc_t *desc )
