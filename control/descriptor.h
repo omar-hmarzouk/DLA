@@ -41,6 +41,7 @@ extern "C" {
 inline static void* morse_geteltaddr(const MORSE_desc_t *A, int m, int n, int eltsize);
 inline static void* morse_getaddr_cm    (const MORSE_desc_t *A, int m, int n);
 inline static void* morse_getaddr_ccrb  (const MORSE_desc_t *A, int m, int n);
+inline static void* morse_getaddr_null  (const MORSE_desc_t *A, int m, int n);
 inline static int   morse_getblkldd_cm  (const MORSE_desc_t *A, int m);
 inline static int   morse_getblkldd_ccrb(const MORSE_desc_t *A, int m);
 
@@ -118,6 +119,15 @@ inline static void *morse_getaddr_cm(const MORSE_desc_t *A, int m, int n)
 
     offset = (size_t)(A->llm * A->nb) * nn + (size_t)(A->mb) * mm;
     return (void*)((intptr_t)A->mat + (offset*eltsize) );
+}
+
+/*******************************************************************************
+ *  Internal function to return address of block (m,n) with m,n = block indices
+ *  This version lets the runtime allocate on-demand.
+ **/
+inline static void *morse_getaddr_null(const MORSE_desc_t *A, int m, int n)
+{
+    return NULL;
 }
 
 /*******************************************************************************

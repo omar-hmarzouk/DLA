@@ -260,13 +260,4 @@ print_o_direct_wont_work(void) {
                     "multiples of 4096. Tip : chose 'n' and 'nb' as both multiples of 32.\n");
 }
 
-/******************************************************************************
- *  Ffunction to return address of block (m,n) -> here NULL because memory is
- *  directly handled by StarPU
- **/
-inline static void* morse_getaddr_null(const MORSE_desc_t *A, int m, int n)
-{
-    return (void*)( NULL );
-}
-
 #endif /* OOC_H */

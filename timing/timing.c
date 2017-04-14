@@ -475,6 +475,7 @@ main(int argc, char *argv[]) {
     iparam[IPARAM_TRACE         ] = 0;
     iparam[IPARAM_DAG           ] = 0;
     iparam[IPARAM_ASYNC         ] = 1;
+    iparam[IPARAM_OOC           ] = 0;
     iparam[IPARAM_MX            ] = -1;
     iparam[IPARAM_NX            ] = -1;
     iparam[IPARAM_RHBLK         ] = 0;
@@ -549,6 +550,10 @@ main(int argc, char *argv[]) {
             iparam[IPARAM_ASYNC] = 0;
         } else if (startswith( argv[i], "--async" )) {
             iparam[IPARAM_ASYNC] = 1;
+        } else if (startswith( argv[i], "--ooc" )) {
+            iparam[IPARAM_OOC] = 1;
+        } else if (startswith( argv[i], "--noooc" )) {
+            iparam[IPARAM_OOC] = 0;
         } else if (startswith( argv[i], "--n_range=" )) {
             get_range( strchr( argv[i], '=' ) + 1, &start, &stop, &step );
         } else if (startswith( argv[i], "--m=" )) {

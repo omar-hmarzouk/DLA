@@ -36,9 +36,9 @@ extern "C" {
 /*******************************************************************************
  *  Internal routines
  **/
-void morse_warning      (const char *func_name, char* msg_text);
-void morse_error        (const char *func_name, char* msg_text);
-void morse_fatal_error  (const char *func_name, char* msg_text);
+void morse_warning      (const char *func_name, const char* msg_text);
+void morse_error        (const char *func_name, const char* msg_text);
+void morse_fatal_error  (const char *func_name, const char* msg_text);
 int  morse_rank         (MORSE_context_t *morse);
 int  morse_tune         (MORSE_enum func, int M, int N, int NRHS);
 

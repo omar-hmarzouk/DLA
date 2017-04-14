@@ -435,6 +435,9 @@ This can be achieved from different ways.
 @item Use the existing function @code{MORSE_Desc_Create}: means the
 matrix data are considered contiguous in memory as it is considered in PLASMA
 (@ref{Tile Data Layout}).
+@item Use the existing function @code{MORSE_Desc_Create_OOC}: means the
+matrix data is allocated on-demand in memory tile by tile, and possibly pushed
+to disk if that does not fit memory.
 @item Use the existing function @code{MORSE_Desc_Create_User}: it is more
 flexible than @code{Desc_Create} because you can give your own way to access to
 tile data so that your tiles can be allocated wherever you want in memory, see
