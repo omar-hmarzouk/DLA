@@ -522,14 +522,14 @@ int MORSE_Desc_Create_User(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, i
 
     morse = morse_context_self();
     if (morse == NULL) {
-        morse_error("MORSE_Desc_Create", "MORSE not initialized");
+        morse_error("MORSE_Desc_Create_User", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
 
     /* Allocate memory and initialize the descriptor */
     desc = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
     if (desc == NULL) {
-        morse_error("MORSE_Desc_Create", "malloc() failed");
+        morse_error("MORSE_Desc_Create_User", "malloc() failed");
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
 
@@ -552,7 +552,7 @@ int MORSE_Desc_Create_User(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, i
 
     status = morse_desc_check( desc );
     if (status != MORSE_SUCCESS) {
-        morse_error("MORSE_Desc_Create", "invalid descriptor");
+        morse_error("MORSE_Desc_Create_User", "invalid descriptor");
         MORSE_Desc_Destroy( &desc );
         return status;
     }
@@ -566,8 +566,8 @@ int MORSE_Desc_Create_User(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, i
  *
  * @ingroup Descriptor
  *
- *  MORSE_Desc_Create_OOC - Create matrix descriptor for tiled matrix which may
- *  not fit memory.
+ *  MORSE_Desc_Create_OOC_User - Create matrix descriptor for tiled matrix which
+ *  may not fit memory.
  *
  ******************************************************************************
  *
@@ -605,12 +605,12 @@ int MORSE_Desc_Create_User(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, i
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Desc_Create_OOC(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int nb, int bsiz,
-                          int lm, int ln, int i, int j, int m, int n, int p, int q,
-                          int (*get_rankof)( const MORSE_desc_t*, int, int ))
+int MORSE_Desc_Create_OOC_User(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int nb, int bsiz,
+                               int lm, int ln, int i, int j, int m, int n, int p, int q,
+                               int (*get_rankof)( const MORSE_desc_t*, int, int ))
 {
 #if !defined (CHAMELEON_SCHED_STARPU)
-    morse_error("MORSE_Desc_Create_Tiles", "Only StarPU supports on-demand tile allocation");
+    morse_error("MORSE_Desc_Create_OOC_User", "Only StarPU supports on-demand tile allocation");
     return MORSE_ERR_NOT_INITIALIZED;
 #else
     MORSE_context_t *morse;
@@ -621,13 +621,13 @@ int MORSE_Desc_Create_OOC(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int n
 
     morse = morse_context_self();
     if (morse == NULL) {
-        morse_error("MORSE_Desc_Create_Tiles", "MORSE not initialized");
+        morse_error("MORSE_Desc_Create_OOC_User", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
     /* Allocate memory and initialize the descriptor */
     desc = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
     if (desc == NULL) {
-        morse_error("MORSE_Desc_Create_Tiles", "malloc() failed");
+        morse_error("MORSE_Desc_Create_OOC_User", "malloc() failed");
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
     *desc = morse_desc_init_user(dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q,
@@ -646,7 +646,7 @@ int MORSE_Desc_Create_OOC(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int n
 
     status = morse_desc_check( desc );
     if (status != MORSE_SUCCESS) {
-        morse_error("MORSE_Desc_Create_Tiles", "invalid descriptor");
+        morse_error("MORSE_Desc_Create_OOC_User", "invalid descriptor");
         MORSE_Desc_Destroy( &desc );
         return status;
     }
@@ -654,6 +654,55 @@ int MORSE_Desc_Create_OOC(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int n
     *descptr = desc;
     return MORSE_SUCCESS;
 #endif
+}
+
+/**
+ *****************************************************************************
+ *
+ * @ingroup Descriptor
+ *
+ *  MORSE_Desc_Create_OOC - Create matrix descriptor for tiled matrix which may
+ *  not fit memory.
+ *
+ ******************************************************************************
+ *
+ * @param[out] desc
+ *          On exit, descriptor of the matrix.
+ *
+ * @param[in] dtyp
+ *          Data type of the matrix:
+ *          @arg MorseRealFloat:     single precision real (S),
+ *          @arg MorseRealDouble:    double precision real (D),
+ *          @arg MorseComplexFloat:  single precision complex (C),
+ *          @arg MorseComplexDouble: double precision complex (Z).
+ *
+ * @param[in] nb
+ *          Number of rows and columns in a tile.
+ *
+ * @param[in] m
+ *          Number of rows of the entire matrix.
+ *
+ * @param[in] n
+ *          Number of columns of the entire matrix.
+ *
+ * @param[in] p
+ *          2d-block cyclic partitioning, number of tiles in rows.
+ *
+ * @param[in] q
+ *          2d-block cyclic partitioning, number of tiles in columns.
+ *
+ ******************************************************************************
+ *
+ * @return
+ *          \retval MORSE_SUCCESS successful exit
+ *
+ *****************************************************************************/
+int MORSE_Desc_Create_OOC(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int nb, int bsiz,
+                          int lm, int ln, int i, int j, int m, int n, int p, int q)
+{
+    return MORSE_Desc_Create_OOC_User( descptr, dtyp, mb, nb, bsiz,
+                                       lm, ln, i, j, m, n, p, q,
+                                       morse_getrankof_2d );
 }
 
 /**

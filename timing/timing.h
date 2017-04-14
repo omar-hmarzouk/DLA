@@ -109,18 +109,18 @@ enum dparam_timing {
 /* Paste code to allocate a matrix in desc if cond_init is true */
 #define PASTE_CODE_ALLOCATE_MATRIX_TILE(_desc_, _cond_, _type_, _type2_, _lda_, _m_, _n_) \
     MORSE_desc_t *_desc_ = NULL;                                        \
-    int status ## _desc_ ; \
+    int status ## _desc_ ;                                              \
     if( _cond_ ) {                                                      \
-       if (ooc) \
-           status ## _desc_ = MORSE_Desc_Create_OOC(&(_desc_), _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
-                   P, Q, NULL);\
-       else if (!bigmat) \
-           status ## _desc_ = MORSE_Desc_Create_User(&(_desc_), NULL, _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
-                          P, Q, morse_getaddr_null, NULL, NULL);\
-       else \
-           status ## _desc_ = MORSE_Desc_Create(&(_desc_), NULL, _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
-                    P, Q);\
-        if (status ## _desc_ != MORSE_SUCCESS) return (status ## _desc_);          \
+        if (ooc)                                                        \
+            status ## _desc_ = MORSE_Desc_Create_OOC(&(_desc_), _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
+                                                     P, Q);             \
+        else if (!bigmat)                                               \
+            status ## _desc_ = MORSE_Desc_Create_User(&(_desc_), NULL, _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
+                                                      P, Q, morse_getaddr_null, NULL, NULL); \
+        else                                                            \
+            status ## _desc_ = MORSE_Desc_Create(&(_desc_), NULL, _type2_, MB, NB, MB*NB, _lda_, _n_, 0, 0, _m_, _n_, \
+                                                 P, Q);                 \
+        if (status ## _desc_ != MORSE_SUCCESS) return (status ## _desc_); \
     }
 
 #define PASTE_CODE_FREE_MATRIX(_desc_)                                  \
