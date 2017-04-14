@@ -53,7 +53,7 @@
  *          Warning message to display.
  *
  ******************************************************************************/
-void morse_warning(const char *func_name, char* msg_text)
+void morse_warning(const char *func_name, const char *msg_text)
 {
     MORSE_context_t *morse;
 
@@ -78,7 +78,7 @@ void morse_warning(const char *func_name, char* msg_text)
  *          Warning message to display.
  *
  ******************************************************************************/
-void morse_error(const char *func_name, char* msg_text)
+void morse_error(const char *func_name, const char *msg_text)
 {
     fprintf(stderr, "MORSE ERROR: %s(): %s\n", func_name, msg_text);
 }
@@ -96,7 +96,7 @@ void morse_error(const char *func_name, char* msg_text)
  *          Warning message to display.
  *
  ******************************************************************************/
-void morse_fatal_error(const char *func_name, char* msg_text)
+void morse_fatal_error(const char *func_name, const char *msg_text)
 {
     fprintf(stderr, "MORSE FATAL ERROR: %s(): %s\n", func_name, msg_text);
     exit(0);
