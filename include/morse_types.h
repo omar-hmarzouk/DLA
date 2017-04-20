@@ -54,7 +54,9 @@ typedef long MORSE_size;
 /** ****************************************************************************
  * MORSE Complex numbers
  **/
+
 #define MORSE_HAS_COMPLEX_H 1
+
 #if defined(_WIN32)
 # include <float.h>
 # if defined(__INTEL_COMPILER)
@@ -64,31 +66,52 @@ typedef long MORSE_size;
     #include <math.h>
     #undef _Complex
     #undef complex
-    typedef float  _Complex MORSE_Complex32_t;
-    typedef double _Complex MORSE_Complex64_t;
-# else /* __INTEL_COMPILER */
-    /* Use MS VC complex class                                        */
-    #include <complex>
-    typedef std::complex<float> MORSE_Complex32_t;
-    typedef std::complex<double> MORSE_Complex64_t;
-    /* For LAPACKE lapacke.h force usage of Windows C++ Complex types */
-    #define LAPACK_COMPLEX_CUSTOM
-    #define lapack_complex_float std::complex<float>
-    #define lapack_complex_double std::complex<double>
-    #undef MORSE_HAS_COMPLEX_H
+# elif defined(_MSC_VER) && !defined(__INTEL_COMPILER)
+    #undef  MORSE_COMPLEX_CPP
+    #define MORSE_COMPLEX_CPP
+# else
+    #error "Supported compilers on WIN32 are MSVC and Intel Compiler."
 # endif /* __INTEL_COMPILER */
+
 # define isnan _isnan
 # define isinf !_finite
-#else /* _WIN32 */
-    typedef float  _Complex MORSE_Complex32_t;
-    typedef double _Complex MORSE_Complex64_t;
 #endif /* _WIN32 */
-
 
 /* Sun doesn't ship the complex.h header. Sun Studio doesn't have it and older GCC compilers don't have it either. */
 #if defined(__SUNPRO_C) || defined(__SUNPRO_CC) || defined(sun) || defined(__sun)
 #undef MORSE_HAS_COMPLEX_H
 #endif /* __SUNPRO_C */
+
+#ifndef __cplusplus
+    #undef MORSE_COMPLEX_CPP
+#endif
+
+#if defined(MORSE_COMPLEX_CPP)
+    #ifndef LAPACK_COMPLEX_CPP
+    # define LAPACK_COMPLEX_CPP
+    # warning "MORSE_COMPLEX_CPP was defined, but not LAPACK_COMPLEX_CPP. Maybe you want to set both."
+    #endif
+    #include <complex> // needed for std::complex declaration
+    #define MORSE_Complex32_t std::complex<float>
+    #define MORSE_Complex64_t std::complex<double>
+#else /* MORSE_COMPLEX_CPP */
+      /* not using cplusplus complex type: */
+
+    #if defined(__STDC_NO_COMPLEX__)
+    # error "Compiler support for complex number is required."
+    #endif
+
+    #define MORSE_Complex32_t float  _Complex
+    #define MORSE_Complex64_t double _Complex
+
+    #if MORSE_HAS_COMPLEX_H
+    # include <complex.h>
+    #endif
+#endif /* MORSE_COMPLEX_CPP */
+
+/*******************************************************************************
+ *  MORSE Deprecated attribute
+ **/
 
 #if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
 #define MORSE_DEPRECATED  __attribute__((__deprecated__))
@@ -96,29 +119,6 @@ typedef long MORSE_size;
 #define MORSE_DEPRECATED
 #endif /* __GNUC__ */
 
-
-#ifdef MORSE_HAS_COMPLEX_H
-#include <complex.h>
-#else /* MORSE_HAS_COMPLEX_H*/
-
-#ifdef __cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-/* These declarations will not clash with what C++ provides because the names in C++ are name-mangled. */
-#if !defined(_WIN32)
-extern double cabs(MORSE_Complex64_t z);
-extern MORSE_Complex64_t conj(MORSE_Complex64_t z);
-#endif /* _WIN32 */
-extern float cabsf(MORSE_Complex32_t z);
-extern double cimag(MORSE_Complex64_t z);
-extern double creal(MORSE_Complex64_t z);
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
-#endif /* MORSE_HAS_COMPLEX_H*/
 
 /*******************************************************************************
  *  Global utilities
