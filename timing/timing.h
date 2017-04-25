@@ -217,21 +217,21 @@ enum dparam_timing {
  * General Macros for timing
  *
  */
-#define START_TIMING()                \
-  t = -RUNTIME_get_time();            \
-  START_DAG();                        \
-  START_TRACING();                    \
-  START_DISTRIBUTED();
+#define START_TIMING()                          \
+    START_DAG();                                \
+    START_TRACING();                            \
+    START_DISTRIBUTED();                        \
+    t = -RUNTIME_get_time();
 
-#define STOP_TIMING()                 \
-  t += RUNTIME_get_time();            \
-  if (iparam[IPARAM_PROFILE] == 2) {  \
-    RUNTIME_kernelprofile_display();  \
-    RUNTIME_schedprofile_display();   \
-  }                                   \
-  *t_ = t;                            \
-  STOP_DISTRIBUTED();                 \
-  STOP_TRACING();                     \
-  STOP_DAG();
+#define STOP_TIMING()                           \
+    STOP_DISTRIBUTED();                         \
+    t += RUNTIME_get_time();                    \
+    STOP_TRACING();                             \
+    STOP_DAG();                                 \
+    if (iparam[IPARAM_PROFILE] == 2) {          \
+        RUNTIME_kernelprofile_display();        \
+        RUNTIME_schedprofile_display();         \
+    }                                           \
+    *t_ = t;
 
 #endif /* TIMING_H */
