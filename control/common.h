@@ -31,11 +31,6 @@
 #ifndef _MORSE_COMMON_H_
 #define _MORSE_COMMON_H_
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
-#include <ctype.h>
 
 #if defined( _WIN32 ) || defined( _WIN64 )
 #include <io.h>
@@ -81,6 +76,7 @@
  *  Chameleon header files
  **/
 #include "morse.h"
+#include "morse_mangling.h"
 
 #include "coreblas/include/coreblas.h"
 #if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
@@ -97,26 +93,11 @@
 /** ****************************************************************************
  *  Determine FORTRAN names
  **/
-#if defined(ADD_)
-#define MORSE_FNAME(lcname, UCNAME)        morse_##lcname##_
-#define MORSE_TILE_FNAME(lcname, UCNAME)   morse_##lcname##_tile_
-#define MORSE_ASYNC_FNAME(lcname, UCNAME)  morse_##lcname##_tile_async_
-#define MORSE_WS_FNAME(lcname, UCNAME)     morse_alloc_workspace_##lcname##_
-#define MORSE_WST_FNAME(lcname, UCNAME)    morse_alloc_workspace_##lcname##_tile_
-#elif defined(NOCHANGE)
-#define MORSE_FNAME(lcname, UCNAME)        morse_##lcname
-#define MORSE_TILE_FNAME(lcname, UCNAME)   morse_##lcname##_tile
-#define MORSE_ASYNC_FNAME(lcname, UCNAME)  morse_##lcname##_tile_async
-#define MORSE_WS_FNAME(lcname, UCNAME)     morse_alloc_workspace_##lcname
-#define MORSE_WST_FNAME(lcname, UCNAME)    morse_alloc_workspace_##lcname##_tile
-#elif defined(UPCASE)
-#define MORSE_FNAME(lcname, UCNAME)        MORSE_##UCNAME
-#define MORSE_TILE_FNAME(lcname, UCNAME)   MORSE_##UCNAME##_TILE
-#define MORSE_ASYNC_FNAME(lcname, UCNAME)  MORSE_##UCNAME##_TILE_ASYNC
-#define MORSE_WS_FNAME(lcname, UCNAME)     MORSE_ALLOC_WORKSPACE_##UCNAME
-#define MORSE_WST_FNAME(lcname, UCNAME)    MORSE_ALLOC_WORKSPACE_##UCNAME##_TILE
-#endif
-
+#define MORSE_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname, MORSE_##UCNAME)
+#define MORSE_TILE_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname##_tile, MORSE_##UCNAME##_TILE)
+#define MORSE_ASYNC_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname##_tile_async, MORSE_##UCNAME##_TILE_ASYNC)
+#define MORSE_WS_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_alloc_workspace_##lcname, MORSE_ALLOC_WORKSPACE_##UCNAME)
+#define MORSE_WST_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_alloc_workspace_##lcname##_tile, MORSE_ALLOC_WORKSPACE_##UCNAME##_TILE)
 
 /*******************************************************************************
  *  Global shortcuts

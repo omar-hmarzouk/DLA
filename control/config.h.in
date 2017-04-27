@@ -28,9 +28,6 @@
 /* inherit from public chameleon's definitions */
 #include "include/chameleon_config.h"
 
-/* For BLAS Fortran mangling */
-#cmakedefine ADD_
-
 /* StarPU functions */
 #cmakedefine HAVE_STARPU_FXT_PROFILING
 #cmakedefine HAVE_STARPU_IDLE_PREFETCH

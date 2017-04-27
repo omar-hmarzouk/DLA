@@ -58,6 +58,7 @@ set(CHAMELEON_HDRS
     morse_struct.h
     morse_types.h
     morse.h
+    morse_mangling.h
     runtime.h
     ${CHAMELEON_HDRS_GENERATED}
     )
@@ -84,7 +85,11 @@ set(HDR_INSTALL
 foreach( hdr_file ${CHAMELEON_HDRS_GENERATED} )
     list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
 endforeach()
-list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/morse.h ${CMAKE_CURRENT_BINARY_DIR}/chameleon_config.h)
+list(APPEND
+     HDR_INSTALL
+     ${CMAKE_CURRENT_BINARY_DIR}/morse.h
+     ${CMAKE_CURRENT_BINARY_DIR}/morse_mangling.h
+     ${CMAKE_CURRENT_BINARY_DIR}/chameleon_config.h)
 
 # installation
 # ------------

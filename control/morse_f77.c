@@ -25,34 +25,7 @@
 #include <stdlib.h>
 #include "control/common.h"
 #include "morse.h"
-
-#ifdef ADD_
-    #define MORSE_INIT             morse_init_
-    #define MORSE_FINALIZE         morse_finalize_
-    #define MORSE_ENABLE           morse_enable_
-    #define MORSE_DISABLE          morse_disable_
-    #define MORSE_SET              morse_set_
-    #define MORSE_GET              morse_get_
-    #define MORSE_DEALLOC_HANDLE   morse_dealloc_handle_
-    #define MORSE_VERSION          morse_version_
-    #define MORSE_DESC_CREATE      morse_desc_create_
-    #define MORSE_DESC_DESTROY     morse_desc_destroy_
-    #define MORSE_LAPACK_TO_TILE   morse_lapack_to_tile_
-    #define MORSE_TILE_TO_LAPACK   morse_tile_to_lapack_
-#elif defined (NOCHANGE)
-    #define MORSE_INIT             morse_init
-    #define MORSE_FINALIZE         morse_finalize
-    #define MORSE_ENABLE           morse_enable
-    #define MORSE_DISABLE          morse_disable
-    #define MORSE_SET              morse_set
-    #define MORSE_GET              morse_get
-    #define MORSE_DEALLOC_HANDLE   morse_dealloc_handle
-    #define MORSE_VERSION          morse_version
-    #define MORSE_DESC_CREATE      morse_desc_create
-    #define MORSE_DESC_DESTROY     morse_desc_destroy
- #define MORSE_LAPACK_TO_TILE   morse_lapack_to_tile
- #define MORSE_TILE_TO_LAPACK   morse_tile_to_lapack
-#endif
+#include "morse_mangling.h"
 
 #ifdef __cplusplus
 extern "C" {

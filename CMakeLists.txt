@@ -59,6 +59,7 @@ else()
 endif()
 include(MorseInit)
 include(GenPkgConfig)
+include(SetFortranMangling)
 
 #############################################
 #                                           #
@@ -958,12 +959,6 @@ string(REPLACE ";" " " CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(CMAKE_SHARED_LINKER_FLAGS "-undefined dynamic_lookup")
 endif()
-
-# Add define for Fortran Mangling (should be defined somewhere else)
-# ------------------------------------------------------------------
-message("-- ${Blue}Add definition ADD_"
-        " - For Fortran mangling${ColourReset}")
-set(ADD_ 1)
 
 #------------------------------------------------------------------------------
 if(CHAMELEON_SCHED_STARPU)
