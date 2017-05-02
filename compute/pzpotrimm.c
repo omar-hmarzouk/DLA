@@ -57,17 +57,6 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
         return;
     RUNTIME_options_init(&options, morse, sequence, request);
 
-#ifdef CHAMELEON_USE_MAGMA
-    {
-#if !defined(CHAMELEON_SIMULATION)
-        int nb = magma_get_zpotrf_nb(A->nb);
-#else
-        int nb = A->nb;
-#endif
-        RUNTIME_options_ws_alloc( &options, nb*nb, 0 );
-    }
-#endif
-
     /*
      *  MorseLower
      */
@@ -489,8 +478,5 @@ void morse_pzpotrimm(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_de
         }
     }
 
-#ifdef CHAMELEON_USE_MAGMA
-    RUNTIME_options_ws_free(&options);
-#endif
     RUNTIME_options_finalize(&options, morse);
 }

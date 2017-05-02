@@ -64,13 +64,9 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
     RUNTIME_options_init(&options, morse, sequence, request);
 
     ib = MORSE_IB;
-#if defined(CHAMELEON_USE_MAGMA)
-    h_work_size  = sizeof(MORSE_Complex64_t)*( 2*ib + 2*L->nb )*2*A->mb;
-    d_work_size  = sizeof(MORSE_Complex64_t)*(   ib           )*2*A->mb;
-#else
     h_work_size  = sizeof(MORSE_Complex64_t)*( ib*L->nb );
     d_work_size  = 0;
-#endif
+
     RUNTIME_options_ws_alloc( &options, h_work_size, d_work_size );
 
     /* necessary to avoid dependencies between tasks regarding the diag tile */
