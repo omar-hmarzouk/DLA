@@ -65,10 +65,6 @@
 
 #endif /* defined(CHAMELEON_USE_CUBLAS_V2) */
 
-#if defined(CHAMELEON_USE_MAGMA)
-#include <magma.h>
-#endif
-
 /** ****************************************************************************
  * MORSE types and constants
  **/
