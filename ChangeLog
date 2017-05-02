@@ -1,6 +1,7 @@
-chameleon-???
+chameleon-1.0.0
 ------------------------------------------------------------------------
 
+- MAGMA kernels are no longer supported in Chameleon
 - Add SVD/EVD drivers based on parallel first stage, and sequential LAPACK second stage and solve
 - Add First stage algorithm fo r the SVD/EVD solvers
 - add timing drivers time_zpotrs_tile and time_zgeqrs_tile

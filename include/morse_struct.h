@@ -161,7 +161,7 @@ typedef struct morse_request_s {
  *  sharing common exception handling.
  **/
 typedef struct morse_sequence_s {
-    MORSE_bool       status;    /* MAGMA_SUCCESS or appropriate error code */
+    MORSE_bool       status;    /* MORSE_SUCCESS or appropriate error code */
     MORSE_request_t *request;   /* failed request                          */
     void            *schedopt;
 } MORSE_sequence_t;

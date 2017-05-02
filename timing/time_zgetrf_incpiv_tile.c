@@ -36,13 +36,6 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         check = 0;
     }
 
-#if defined(CHAMELEON_USE_MAGMA)
-    if ( iparam[IPARAM_NB]%iparam[IPARAM_IB] != 0 ) {
-        fprintf(stderr, "NB must be a multiple of IB for LU on GPU\n");
-        exit(-1);
-    }
-#endif
-
     /* Allocate Data */
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descA, 1, MORSE_Complex64_t, MorseComplexDouble, LDA, M, N );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descX,  check, MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );

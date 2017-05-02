@@ -181,11 +181,11 @@ task-based algorithms behave regarding different runtime systems
 implementations.
 Using CHAMELEON with @uref{http://runtime.bordeaux.inria.fr/StarPU/,
 StarPU} runtime system allows to exploit GPUs through
-kernels provided by @uref{https://developer.nvidia.com/cublas, cuBLAS} and
-@uref{http://icl.cs.utk.edu/magma/, MAGMA} and clusters of interconnected
-nodes with distributed memory (using @uref{http://www.open-mpi.org/, MPI}).
-Computation of very large systems with dense matrices on a cluster of nodes is
-still being experimented and stabilized.
+kernels provided by @uref{https://developer.nvidia.com/cublas, cuBLAS}
+and clusters of interconnected nodes with distributed memory (using
+@uref{http://www.open-mpi.org/, MPI}).  Computation of very large
+systems with dense matrices on a cluster of nodes is still being
+experimented and stabilized.
 It is not expected to get stable performances with the current version using
 MPI.
 

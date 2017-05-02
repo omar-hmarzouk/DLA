@@ -41,7 +41,6 @@
 #cmakedefine CHAMELEON_USE_CUDA
 #cmakedefine CHAMELEON_USE_CUBLAS
 #cmakedefine CHAMELEON_USE_CUBLAS_V2
-#cmakedefine CHAMELEON_USE_MAGMA
 
 /* Simulating */
 #cmakedefine CHAMELEON_SIMULATION

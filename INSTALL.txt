@@ -5,18 +5,18 @@
 This is a brief discussion about CHAMELEON usage.
 For more information, please read the document users_guide.
 
-Compilation of CHAMELEON libraries and executables are done with CMake 
+Compilation of CHAMELEON libraries and executables are done with CMake
 (http://www.cmake.org/). This version has been tested with CMake 2.8.8.
 
-Usage: three steps are required to compile and install CHAMELEON 
+Usage: three steps are required to compile and install CHAMELEON
 
-1) configure : 
-> cmake path/to/chameleon -DOPTION1= -DOPTION2= ... 
+1) configure :
+> cmake path/to/chameleon -DOPTION1= -DOPTION2= ...
 see the "Options" section to get list of options
 see the "Dependencies detection" for details about libraries detection
 
-2) build : 
-> make 
+2) build :
+> make
 do not hesitate to use -j[ncores] option to speedup the compilation
 
 3) install (optional) :
@@ -37,7 +37,7 @@ lapack  : netlib, openblas, eigen or intel mkl
 lapacke : netlib, openblas or intel mkl
 tmg     : netlib, openblas or intel mkl
 
-runtime : quark (http://icl.cs.utk.edu/quark/) or 
+runtime : quark (http://icl.cs.utk.edu/quark/) or
           starpu (http://runtime.bordeaux.inria.fr/StarPU/)
 hwloc   : (http://www.open-mpi.org/projects/hwloc/)
 
@@ -46,7 +46,6 @@ optional libraries
 
 cuda   : (https://developer.nvidia.com/cuda-downloads)
 cublas : comes with cuda (http://docs.nvidia.com/cuda/cublas/)
-magma  : (http://icl.cs.utk.edu/magma/) (version 1.6.2 recommended)
 mpi    : openmpi (http://www.open-mpi.org/)
 FxT    : linux package (libfxt) or releases here http://download.savannah.gnu.org/releases/fkt/
 
@@ -59,19 +58,19 @@ Please look at the distrib/ directory which gives some hints for the installatio
 * Dependencies detection *
 -------------------------------------------
 
-You have different choices to detect dependencies on your system, either by 
-setting some environment variables containing paths to the libs and headers or 
+You have different choices to detect dependencies on your system, either by
+setting some environment variables containing paths to the libs and headers or
 by specifying them directly at cmake configure. Different cases :
 
-1) detection of dependencies through environment variables: 
+1) detection of dependencies through environment variables:
     - LD_LIBRARY_PATH should contain the list of paths where to find the libraries:
         * export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:install/path/to/your/lib
     - INCLUDE should contain the list of paths where to find the header files of libraries
         * export INCLUDE=$INCLUDE:install/path/to/your/headers
 
 2) detection with user's given paths:
-    - you can specify the path at cmake configure by invoking 
-      cmake path/to/your/CMakeLists.txt -DLIB_DIR=path/to/your/lib 
+    - you can specify the path at cmake configure by invoking
+      cmake path/to/your/CMakeLists.txt -DLIB_DIR=path/to/your/lib
       where LIB stands for the name of the lib to look for
         * example: cmake path/to/your/CMakeLists.txt -DSTARPU_DIR=path/to/starpudir \
                                                      -DCBLAS_DIR= ...
@@ -86,16 +85,15 @@ by specifying them directly at cmake configure. Different cases :
 * Options *
 -------------------------------------------
 
-You can optionally activate some options at cmake configure (like CUDA, MPI, ...) 
+You can optionally activate some options at cmake configure (like CUDA, MPI, ...)
 invoking cmake path/to/your/CMakeLists.txt -DOPTION1= -DOPTION2= ...
 example: cmake /home/toto/chameleon/ -DCMAKE_BUILD_TYPE=Debug \
                                       -DCMAKE_INSTALL_PREFIX=/home/toto/install/ \
-                                      -DCHAMELEON_USE_CUDA=ON \ 
-                                      -DCHAMELEON_USE_MAGMA=ON \
+                                      -DCHAMELEON_USE_CUDA=ON \
                                       -DCHAMELEON_USE_MPI=ON \
-                                      -DBLA_VENDOR=Intel10_64lp \ 
+                                      -DBLA_VENDOR=Intel10_64lp \
                                       -DSTARPU_DIR=/home/toto/install/starpu-1.1/build/include/starpu/1.1/ \
-                                      -DCHAMELEON_ENABLE_TRACING=ON 
+                                      -DCHAMELEON_ENABLE_TRACING=ON
 
 You can get the full list of options with -L[A][H] options of cmake command
 example: cmake -LH /home/toto/chameleon/
@@ -109,7 +107,7 @@ Some options (non-exhaustive list) :
 Basic CMake:
 ------------
 CMAKE_BUILD_TYPE=Debug|Release
-CMAKE_INSTALL_PREFIX=path/to/your/install/dir (where headers and libraries will be copied 
+CMAKE_INSTALL_PREFIX=path/to/your/install/dir (where headers and libraries will be copied
                                                when invoking make install)
 
 Related to specific modules (find_package):
@@ -120,44 +118,43 @@ STARPU_DIR=...
 STARPU_INCDIR=...
 STARPU_LIBDIR=...
 # same idea can be used for some packages, replace STARPU by one of these:
-BLAS - CBLAS - FXT - HWLOC - LAPACK - LAPACKE - MAGMA - QUARK - TMG
+BLAS - CBLAS - FXT - HWLOC - LAPACK - LAPACKE - QUARK - TMG
 
 CHAMELEON specific:
 --------------------
 CHAMELEON_USE_MPI=ON|OFF (default OFF)
-CHAMELEON_USE_CUDA=ON|OFF (default OFF) 
-CHAMELEON_USE_MAGMA=ON|OFF (default OFF)
+CHAMELEON_USE_CUDA=ON|OFF (default OFF)
 CHAMELEON_ENABLE_TRACING=ON|OFF (default OFF)
 CHAMELEON_SCHED_STARPU=ON|OFF (default ON)
 CHAMELEON_SCHED_QUARK=ON|OFF (default OFF)
 CHAMELEON_SIMULATION=ON|OFF (default OFF)
 
 Libraries detected with an official cmake module (see module files in CMAKE_ROOT/Modules/):
-CUDA - MPI - Threads 
+CUDA - MPI - Threads
 
 Libraries detected with our cmake modules (see module files in cmake_modules/morse/find/ directory of CHAMELEON sources):
-BLAS - CBLAS - FXT - HWLOC - LAPACK - LAPACKE - MAGMA - QUARK - STARPU - TMG 
+BLAS - CBLAS - FXT - HWLOC - LAPACK - LAPACKE - QUARK - STARPU - TMG
 
 
 -------------------------------------------
 * Use FxT profiling through StarPU *
 -------------------------------------------
 
-StarPU can generate its own trace log files by compiling it with the --with-fxt 
-option at the configure step (you can have to specify the directory where you 
-installed FxT by giving --with-fxt=... instead of --with-fxt alone). 
-By doing so, traces are generated after each execution of a program which uses 
+StarPU can generate its own trace log files by compiling it with the --with-fxt
+option at the configure step (you can have to specify the directory where you
+installed FxT by giving --with-fxt=... instead of --with-fxt alone).
+By doing so, traces are generated after each execution of a program which uses
 StarPU in the directory pointed by the STARPU_FXT_PREFIX environment variable.
 example: export STARPU_FXT_PREFIX=/home/toto/fxt_files/
 
-When executing a ./timing/... CHAMELEON program, if it has been enabled 
-(StarPU compiled with FxT and -DCHAMELEON_ENABLE_TRACING=ON), you can give the option --trace 
+When executing a ./timing/... CHAMELEON program, if it has been enabled
+(StarPU compiled with FxT and -DCHAMELEON_ENABLE_TRACING=ON), you can give the option --trace
 to tell the program to generate trace log files.
 
-Finally, to generate the trace file which can be opened with Vite program 
-(http://vite.gforge.inria.fr/), you have to use the starpu_fxt_tool tool of StarPU. 
-This tool should be in $STARPU_INSTALL_REPOSITORY/bin. 
-You can use it to generate the trace file like this: 
+Finally, to generate the trace file which can be opened with Vite program
+(http://vite.gforge.inria.fr/), you have to use the starpu_fxt_tool tool of StarPU.
+This tool should be in $STARPU_INSTALL_REPOSITORY/bin.
+You can use it to generate the trace file like this:
 > path/to/your/install/starpu/bin/starpu_fxt_tool -i prof_filename
 There is one file per mpi processus (prof_filename_0, prof_filename_1 ...).
 To generate a trace of mpi programs you can call it like this:
