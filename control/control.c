@@ -111,9 +111,6 @@ int MORSE_InitPar(int ncpus, int ncudas, int nthreads_per_worker)
     }
 #  endif
 #endif
-#if defined(CHAMELEON_USE_MAGMA) && !defined(CHAMELEON_SIMULATION)
-    magma_init();
-#endif
     RUNTIME_init_scheduler( morse, ncpus, ncudas, nthreads_per_worker );
     return MORSE_SUCCESS;
 }
@@ -142,9 +139,6 @@ int MORSE_Finalize(void)
     RUNTIME_barrier(morse);
 #  endif
     RUNTIME_finalize_scheduler( morse );
-#if defined(CHAMELEON_USE_MAGMA) && !defined(CHAMELEON_SIMULATION)
-    magma_finalize();
-#endif
 
 #if defined(CHAMELEON_USE_MPI)
     if (!morse->mpi_outer_init)
