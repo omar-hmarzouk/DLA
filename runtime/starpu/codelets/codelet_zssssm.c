@@ -174,56 +174,10 @@ static void cl_zssssm_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m1, &n1, &m2, &n2, &k, &ib, &lda1, &lda2, &ldl1, &ldl2, &IPIV);
     CORE_zssssm(m1, n1, m2, n2, k, ib, A1, lda1, A2, lda2, L1, ldl1, L2, ldl2, IPIV);
 }
-
-#if defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
-static void cl_zssssm_cuda_func(void *descr[], void *cl_arg)
-{
-    int m1;
-    int n1;
-    int m2;
-    int n2;
-    int k;
-    int ib;
-    cuDoubleComplex *dA1;
-    int lda1;
-    cuDoubleComplex *dA2;
-    int lda2;
-    cuDoubleComplex *dL1;
-    int ldl1;
-    cuDoubleComplex *dL2;
-    int ldl2;
-    int *IPIV;
-    int info;
-
-    starpu_codelet_unpack_args(cl_arg, &m1, &n1, &m2, &n2, &k, &ib, &lda1, &lda2, &ldl1, &ldl2, &IPIV);
-
-    dA1  = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    dA2  = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
-    dL1  = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
-    dL2  = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[3]);
-
-    if ( ldl1 >= 2*ib ) {
-        /* dL1 stores L and invL and the kernel is just using the inverted part */
-        dL1 += ib;
-    }
-
-    CUDA_zssssm(
-        MagmaColMajor, m1, n1, m2, n2, k, ib,
-        dA1, lda1, dA2, lda2,
-        dL1, ldl1, dL2, ldl2,
-        IPIV, &info);
-
-    cudaThreadSynchronize();
-}
-#endif
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
  */
-#if (defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU))
-CODELETS(zssssm, 4, cl_zssssm_cpu_func, cl_zssssm_cuda_func, 0)
-#else
 CODELETS_CPU(zssssm, 4, cl_zssssm_cpu_func)
-#endif
 

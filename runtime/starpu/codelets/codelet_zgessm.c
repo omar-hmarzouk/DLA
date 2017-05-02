@@ -137,42 +137,9 @@ static void cl_zgessm_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &k, &ib, &IPIV, &ldl, &ldd, &lda);
     CORE_zgessm(m, n, k, ib, IPIV, D, ldd, A, lda);
 }
-
-#if defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
-static void cl_zgessm_cuda_func(void *descr[], void *cl_arg)
-{
-    int m;
-    int n;
-    int k;
-    int ib;
-    int *IPIV;
-    cuDoubleComplex *dL, *dD, *dA;
-    int lddl, lddd, ldda;
-    int info = 0;
-    /*
-     *  hwork => nb*nb
-     */
-    dL = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    dD = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
-    dA = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
-    starpu_codelet_unpack_args(cl_arg, &m, &n, &k, &ib, &IPIV, &lddl, &lddd, &ldda);
-
-    CUDA_zgessm(
-            MagmaColMajor, m, n, k, ib,
-            IPIV, dL, lddl, dD, lddd, dA, ldda, &info );
-
-    cudaThreadSynchronize();
-
-    return;
-}
-#endif /* defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU) */
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
  */
-#if (defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU))
-CODELETS(zgessm, 3, cl_zgessm_cpu_func, cl_zgessm_cuda_func, 0)
-#else
 CODELETS_CPU(zgessm, 3, cl_zgessm_cpu_func)
-#endif

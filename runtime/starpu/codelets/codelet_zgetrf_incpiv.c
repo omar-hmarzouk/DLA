@@ -147,99 +147,10 @@ static void cl_zgetrf_incpiv_cpu_func(void *descr[], void *cl_arg)
 
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &ldl, &IPIV, &check_info, &iinfo, &h_work);
     CORE_zgetrf_incpiv(m, n, ib, A, lda, IPIV, &info);
-
-#if defined(CHAMELEON_USE_MAGMA)
-    {
-        MORSE_Complex64_t *L = (MORSE_Complex64_t *)STARPU_MATRIX_GET_PTR(descr[1]);
-        /*
-         * L stores:
-         *      L1     L2    L3     ...
-         *      L1^-1  L2^-1 L3^-1  ...
-         */
-        /* Compute L-1 in lower rectangle of L */
-        if ( ldl >= 2*ib )
-        {
-            int i, sb;
-
-            L += ib;
-            for (i=0; i<n; i+=ib) {
-                sb = chameleon_min( ib, n-i );
-                CORE_zlacpy(MorseUpperLower, sb, sb, A+(i*lda+i), lda, L+(i*ldl), ldl );
-
-                CORE_ztrtri( MorseLower, MorseUnit, sb, L+(i*ldl), ldl, &info );
-                if (info != 0 ) {
-                    fprintf(stderr, "ERROR, trtri returned with info = %d\n", info);
-                }
-            }
-        }
-    }
-#endif
 }
-
-
-/*
- * Codelet GPU
- */
-#if defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU)
-static void cl_zgetrf_incpiv_cuda_func(void *descr[], void *cl_arg)
-{
-    int m;
-    int n;
-    int ib;
-    cuDoubleComplex *hA, *dA;
-    cuDoubleComplex *hL, *dL;
-    cuDoubleComplex *dwork;
-    MORSE_starpu_ws_t *h_work;
-    int lda, ldl;
-    int *IPIV;
-    MORSE_bool check_info;
-    int iinfo;
-    int info;
-
-    starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &ldl, &IPIV, &check_info, &iinfo, &h_work);
-
-    dA = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    dL = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
-    /*
-     * hwork => at least (IB+NB)*IB contains all hA and hL
-     * dwork => at least IB*NB
-     */
-    hA    = (cuDoubleComplex*)RUNTIME_starpu_ws_getlocal(h_work);
-    dwork = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
-
-    hL = hA + lda*ib;
-
-    /* Initialize L to 0 */
-    memset(hL, 0, ib*ib*sizeof(cuDoubleComplex));
-
-    if ( ldl >= 2*ib ) {
-      /* Let's compute the inverses in the bottom part of L */
-      dL += ib;
-    } else {
-      /* We prefer to stick with TRSM */
-      dL = NULL;
-      hL = NULL;
-    }
-
-    CUDA_zgetrf_incpiv(
-            MagmaColMajor, m, n, ib,
-            hA, lda, dA, lda,
-            hL, ib,  dL, ldl,
-            IPIV,
-            dwork, lda,
-            &info );
-
-    cudaThreadSynchronize();
-}
-#endif /* defined(CHAMELEON_USE_MAGMA) && defined(HAVE_MAGMA_GETRF_INCPIV_GPU) */
 #endif /* !defined(CHAMELEON_SIMULATION) */
-
 
 /*
  * Codelet definition
  */
-#if defined(HAVE_MAGMA_GETRF_INCPIV_GPU) && ( defined(CHAMELEON_USE_MAGMA) )
-CODELETS(zgetrf_incpiv, 3, cl_zgetrf_incpiv_cpu_func, cl_zgetrf_incpiv_cuda_func, 0)
-#else
 CODELETS_CPU(zgetrf_incpiv, 3, cl_zgetrf_incpiv_cpu_func)
-#endif

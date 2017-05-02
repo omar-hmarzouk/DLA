@@ -123,35 +123,9 @@ static void cl_zgetrf_nopiv_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &iinfo);
     CORE_zgetrf_nopiv(m, n, ib, A, lda, &info);
 }
-
-/*
- * Codelet GPU
- */
-#if defined(CHAMELEON_USE_MAGMA)
-static void cl_zgetrf_nopiv_cuda_func(void *descr[], void *cl_arg)
-{
-    int m;
-    int n;
-    int ib;
-    cuDoubleComplex *dA;
-    int lda;
-    int iinfo;
-
-    int info = 0;
-
-    starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda, &iinfo);
-    dA = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    CUDA_zgetrf_nopiv( m, n, dA, lda, &info );
-    cudaThreadSynchronize();
-}
-#endif
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA)
-CODELETS(zgetrf_nopiv, 1, cl_zgetrf_nopiv_cpu_func, cl_zgetrf_nopiv_cuda_func, 0)
-#else
 CODELETS_CPU(zgetrf_nopiv, 1, cl_zgetrf_nopiv_cpu_func)
-#endif
