@@ -29,7 +29,7 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-# Generate the magma headers for all possible precisions
+# Generate the quark headers for all possible precisions
 # ------------------------------------------------------
 set(RUNTIME_HDRS_GENERATED "")
 set(ZHDR
@@ -105,9 +105,9 @@ set_property(TARGET chameleon_quark PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET chameleon_quark PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 target_link_libraries(chameleon_quark coreblas ${QUARK_LIBRARIES_DEP})
-if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+if(CHAMELEON_USE_CUDA)
   target_link_libraries(chameleon_quark cudablas)
-endif(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+endif(CHAMELEON_USE_CUDA)
 
 add_dependencies(chameleon_quark
   chameleon_include

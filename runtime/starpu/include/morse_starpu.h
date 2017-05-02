@@ -23,12 +23,6 @@
  * @date 2011-06-01
  *
  **/
-
-/******************************************************************************/
-
-/*
- *  MORSE facilities of interest to both src and magmablas directories
- **/
 #ifndef _MORSE_STARPU_H_
 #define _MORSE_STARPU_H_
 
