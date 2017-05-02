@@ -250,6 +250,10 @@ endif()
 #########################
 set(CHAMELEON_DEP "")
 
+find_package(LIBHQR REQUIRED)
+list(INSERT CHAMELEON_DEP 0 ${LIBHQR_LIBRARIES})
+include_directories(${LIBHQR_INCLUDE_DIRS})
+
 # Check for Thread library
 # ------------------------
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
@@ -274,7 +278,7 @@ if(UNIX OR WIN32)
         message(FATAL_ERROR "Could NOT find libm on your system."
             " Are you sure to a have a C compiler installed?")
     endif()
-endif()
+  endif()
 
 # Try to find librt (libposix4 - POSIX.1b Realtime Extensions library)
 # on Unix systems except Apple ones because it does not exist on it
