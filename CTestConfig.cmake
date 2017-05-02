@@ -4,17 +4,18 @@
 ## # The following are required to uses Dart and the Cdash dashboard
 ##   ENABLE_TESTING()
 ##   INCLUDE(CTest)
-set(CTEST_PROJECT_NAME "Morse-Magma")
+set(CTEST_PROJECT_NAME "Chameleon")
 set(CTEST_NIGHTLY_START_TIME "00:00:00 GMT")
 
 set(CTEST_DROP_METHOD "http")
 set(CTEST_DROP_SITE "cdash.inria.fr")
+# Shouldn't we change that to Chameleon ?
 set(CTEST_DROP_LOCATION "/CDash/submit.php?project=Morse-Magma")
 set(CTEST_DROP_SITE_CDASH TRUE)
 
 #--------------------------------------------------------------------
 # BUILDNAME variable construction
-# This variable will be used to set the build name which will appear 
+# This variable will be used to set the build name which will appear
 # on the Morse-Magma dashboard http://cdash.inria.fr/CDash/
 #--------------------------------------------------------------------
 # Start with the short system name, e.g. "Linux", "FreeBSD" or "Windows"

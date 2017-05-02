@@ -190,14 +190,6 @@ if (CHAMELEON_ENABLE_CUDA AND NOT CHAMELEON_USE_CUDA)
     message("-- ${BoldGreen}CHAMELEON_USE_CUDA is set to OFF, turn it ON to use CUDA (unsupported by Quark)${ColourReset}")
 endif()
 
-# Enable MAGMA advanced kernels if CUDA is enabled
-cmake_dependent_option(CHAMELEON_USE_MAGMA
-                    "Enable MAGMA Cuda kernels" OFF
-                    "CHAMELEON_USE_CUDA" OFF)
-if (CHAMELEON_USE_CUDA AND NOT CHAMELEON_USE_MAGMA)
-    message("-- ${BoldGreen}CHAMELEON_USE_MAGMA is set to OFF, turn it ON to use MAGMA (only with StarPU)${ColourReset}")
-endif()
-
 # Enable FXT if StarPU
 option(CHAMELEON_ENABLE_TRACING "Enable tracing support" OFF)
 if (NOT CHAMELEON_ENABLE_TRACING)
@@ -469,43 +461,6 @@ if(NOT CHAMELEON_SIMULATION)
             #endif()
         endif (CUDA_FOUND)
 
-        # CHAMELEON depends on MAGMA gpu kernels
-        # call our cmake module to test (in cmake_modules)
-        # change this call position if not appropriated
-        #----------------------------------------------
-        if ( CUDA_FOUND AND CHAMELEON_USE_MAGMA )
-            set(CHAMELEON_MAGMA_VERSION "1.4" CACHE STRING "oldest MAGMA version desired")
-            find_package(MAGMA ${CHAMELEON_MAGMA_VERSION})
-            if ( MAGMA_FOUND )
-                message("-- ${Blue}Add definition CHAMELEON_USE_MAGMA"
-                " - Use GPU kernels from MAGMA${ColourReset}")
-                set(CHAMELEON_USE_MAGMA 1)
-                if(MAGMA_INCLUDE_DIRS)
-                    include_directories(${MAGMA_INCLUDE_DIRS})
-                endif()
-                if(MAGMA_LIBRARY_DIRS)
-                    # the RPATH to be used when installing
-                    list(APPEND CMAKE_INSTALL_RPATH "${MAGMA_LIBRARY_DIRS}")
-                endif()
-                if (MAGMA_LIBRARIES)
-                    list(INSERT EXTRA_LIBRARIES_CUDA 0 ${MAGMA_LIBRARIES})
-                endif()
-            else( MAGMA_FOUND )
-                if(MORSE_VERBOSE_FIND_PACKAGE)
-                    if (NOT MAGMA_magma.h_DIRS)
-                        Print_Find_Header_Status(magma magma.h)
-                    endif ()
-                    if (NOT MAGMA_magma_LIBRARY)
-                        Print_Find_Library_Status(magma libmagma)
-                    endif ()
-                else()
-                    message(WARNING "MAGMA library has not been found and MORSE_VERBOSE_FIND_PACKAGE is set to OFF."
-                    " Try to activate MORSE_VERBOSE_FIND_PACKAGE option (-DMORSE_VERBOSE_FIND_PACKAGE=ON) to get some hints for the detection")
-                endif()
-                message(FATAL_ERROR "MAGMA library is required but has not been found")
-            endif( MAGMA_FOUND )
-        endif()
-
         list(APPEND EXTRA_LIBRARIES ${EXTRA_LIBRARIES_CUDA})
 
     endif(CHAMELEON_USE_CUDA)
@@ -559,29 +514,17 @@ else (NOT CHAMELEON_SIMULATION)
     # Guard against mis-used simulation mode
     if(NOT DEFINED CHAMELEON_USE_CUDA)
         message(FATAL_ERROR "${BoldBlue}"
-        "In simulation mode CHAMELEON_USE_CUDA and CHAMELEON_USE_MAGMA should be set to"
+        "In simulation mode CHAMELEON_USE_CUDA should be set to"
         "   ensure that the user is aware of the version to be used. If Chameleon's"
         "   kernels are available for NVIDIA CUDA GPUs and if the according"
         "   perfmodels are available in STARPU_HOME then use CHAMELEON_USE_CUDA=ON"
-        "   else set CHAMELEON_USE_CUDA=OFF. The same idea is applicable with MAGMA."
+        "   else set CHAMELEON_USE_CUDA=OFF."
         "${ColourReset}")
-    endif()
-    if(NOT DEFINED CHAMELEON_USE_MAGMA)
-        message(WARNING "${BoldBlue}"
-        "In simulation mode CHAMELEON_USE_CUDA and CHAMELEON_USE_MAGMA should be set to"
-        "   ensure that the user is aware of the version to be used. If Chameleon's"
-        "   MAGMA kernels are available for NVIDIA CUDA GPUs and if the according"
-        "   perfmodels are available in STARPU_HOME then use CHAMELEON_USE_MAGMA=ON"
-        "   else set CHAMELEON_USE_MAGMA=OFF.${ColourReset}")
     endif()
 
     # Add CUDA definition if required
     if (CHAMELEON_USE_CUDA)
         set(CHAMELEON_USE_CUDA 1)
-        # Add MAGMA definition if required
-        if (CHAMELEON_USE_MAGMA)
-            set(CHAMELEON_USE_MAGMA 1)
-        endif()
     endif()
 
     if (NOT CHAMELEON_SCHED_STARPU)
@@ -1033,9 +976,6 @@ endif()
 if(NOT CHAMELEON_SIMULATION)
     if(CHAMELEON_USE_CUDA)
         link_directories(${CUDA_LIBRARY_DIRS})
-    endif()
-    if(CHAMELEON_USE_MAGMA)
-        link_directories(${MAGMA_LIBRARY_DIRS})
     endif()
 endif()
 
