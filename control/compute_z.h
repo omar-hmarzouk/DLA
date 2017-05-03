@@ -154,3 +154,8 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_d
 void morse_pzunmlq(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T, int BS, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzbuild( MORSE_enum uplo, MORSE_desc_t *A, void *user_data, void* user_build_callback, MORSE_sequence_t *sequence, MORSE_request_t *request );
+
+#if defined(CHAMELEON_USE_LIBHQR)
+void morse_pzgeqrf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT,
+                          MORSE_sequence_t *sequence, MORSE_request_t *request);
+#endif /* defined(CHAMELEON_USE_LIBHQR) */

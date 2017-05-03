@@ -273,9 +273,17 @@ int MORSE_zunmqr_Tile_Async(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, 
 //int MORSE_zgecfi_Async(int m, int n, MORSE_Complex64_t *A, MORSE_enum f_in, int imb, int inb, MORSE_enum f_out, int omb, int onb, MORSE_sequence_t *sequence, MORSE_request_t *request);
 //int MORSE_zgetmi_Async(int m, int n, MORSE_Complex64_t *A, MORSE_enum f_in, int mb,  int inb, MORSE_sequence_t *sequence, MORSE_request_t *request);
 
-/** ****************************************************************************
+/**
+ *  Declarations of libhqr dependent functions.
+ */
+#if defined(CHAMELEON_USE_LIBHQR)
+int MORSE_zgeqrf_param(const libhqr_tree_t *qrtree, int M, int N, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *descTT);
+int MORSE_zgeqrf_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT);
+int MORSE_zgeqrf_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_sequence_t *sequence, MORSE_request_t *request);
+#endif /* defined(CHAMELEON_USE_LIBHQR) */
+/**
  *  Declarations of workspace allocation functions (tile layout) - alphabetical order
- **/
+ */
 int MORSE_Alloc_Workspace_zgesv_incpiv(        int N, MORSE_desc_t **descL, int **IPIV, int p, int q);
 int MORSE_Alloc_Workspace_zgetrf_incpiv(int M, int N, MORSE_desc_t **descL, int **IPIV, int p, int q);
 

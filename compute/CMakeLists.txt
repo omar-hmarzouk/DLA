@@ -105,7 +105,7 @@ set(ZSRC
     pzgelqfrh.c
     pzgeqrf.c
     pzgeqrfrh.c
-    pzgeqrfhqr.c
+    pzgeqrf_param.c
     pzgetrf_incpiv.c
     pzgetrf_nopiv.c
     pzlacpy.c
@@ -138,6 +138,7 @@ set(ZSRC
     zgelqf.c
     zgelqs.c
     zgeqrf.c
+    zgeqrf_param.c
     zgeqrs.c
     #zgesv.c
     zgesv_incpiv.c

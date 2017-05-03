@@ -32,7 +32,6 @@
 #define MORSE_VERSION_MINOR @MORSE_VERSION_MINOR@
 #define MORSE_VERSION_MICRO @MORSE_VERSION_MICRO@
 
-
 /* ****************************************************************************
  * MORSE types and constants
  */
@@ -121,6 +120,10 @@ int MORSE_Sequence_Wait    (MORSE_sequence_t *sequence);
 #ifdef __cplusplus
 }
 #endif
+
+#if defined(CHAMELEON_USE_LIBHQR)
+#include "libhqr.h"
+#endif /* defined(CHAMELEON_USE_LIBHQR) */
 
 #include "morse_z.h"
 #include "morse_c.h"

@@ -250,6 +250,7 @@ endif()
 #########################
 set(CHAMELEON_DEP "")
 
+set(CHAMELEON_USE_LIBHQR 1)
 find_package(LIBHQR REQUIRED)
 list(INSERT CHAMELEON_DEP 0 ${LIBHQR_LIBRARIES})
 include_directories(${LIBHQR_INCLUDE_DIRS})
