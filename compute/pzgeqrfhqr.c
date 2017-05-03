@@ -31,8 +31,8 @@
 #include "libhqr.h"
 
 #define A(m,n) A,  (m),  (n)
-#define T(m,n) T,  (m),  (n)
-#define T2(m,n) T,  (m), ((n)+A->nt)
+#define TS(m,n) TS,  (m),  (n)
+#define TT(m,n) TT,  (m), (n)
 #if defined(CHAMELEON_COPY_DIAG)
 #define DIAG(m,n) DIAG, (m), (n)
 #else
@@ -42,7 +42,7 @@
 /***************************************************************************//**
                                                                               *  Parallel tile QR factorization (reduction Householder) - dynamic scheduling
                                                                               **/
-void morse_pzgeqrfhqr(MORSE_desc_t *A, MORSE_desc_t *T, const libhqr_tree_t *qrtree,
+void morse_pzgeqrfhqr( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT,
                       MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
@@ -137,9 +137,9 @@ void morse_pzgeqrfhqr(MORSE_desc_t *A, MORSE_desc_t *T, const libhqr_tree_t *qrt
 
             MORSE_TASK_zgeqrt(
                 &options,
-                tempmm, tempkn, ib, T->nb,
+                tempmm, tempkn, ib, TS->nb,
                 A(m, k), ldam,
-                T(m, k), T->mb);
+                TS(m, k), TS->mb);
             if ( k < (A->nt-1) ) {
 #if defined(CHAMELEON_COPY_DIAG)
                 MORSE_TASK_zlacpy(
@@ -161,9 +161,9 @@ void morse_pzgeqrfhqr(MORSE_desc_t *A, MORSE_desc_t *T, const libhqr_tree_t *qrt
                 MORSE_TASK_zunmqr(
                     &options,
                     MorseLeft, MorseConjTrans,
-                    tempmm, tempnn, tempkmin, ib, T->nb,
+                    tempmm, tempnn, tempkmin, ib, TS->nb,
                     DIAG(m, k), ldam,
-                    T(m, k), T->mb,
+                    TS(m, k), TS->mb,
                     A(m, n), ldam);
             }
         }
@@ -183,21 +183,21 @@ void morse_pzgeqrfhqr(MORSE_desc_t *A, MORSE_desc_t *T, const libhqr_tree_t *qrt
             if(qrtree->gettype(qrtree, k, m) == 0){
                 MORSE_TASK_ztsqrt(
                     &options,
-                    tempmm, tempkn, ib, T->nb,
+                    tempmm, tempkn, ib, TS->nb,
                     A(p, k), ldap,
                     A(m, k), ldam,
-                    T(m, k), T->mb);
+                    TS(m, k), TS->mb);
 
                 for (n = k+1; n < A->nt; n++) {
                     tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
                     MORSE_TASK_ztsmqr(
                         &options,
                         MorseLeft, MorseConjTrans,
-                        A->nb, tempnn, tempmm, tempnn, A->nb, ib, T->nb,
+                        A->nb, tempnn, tempmm, tempnn, A->nb, ib, TS->nb,
                         A(p, n), ldap,
                         A(m, n), ldam,
                         A(m, k), ldam,
-                        T(m, k), T->mb);
+                        TS(m, k), TS->mb);
                 }
             }
 
@@ -205,21 +205,21 @@ void morse_pzgeqrfhqr(MORSE_desc_t *A, MORSE_desc_t *T, const libhqr_tree_t *qrt
             else {
                 MORSE_TASK_zttqrt(
                     &options,
-                    tempmm, tempkn, ib, T->nb,
+                    tempmm, tempkn, ib, TT->nb,
                     A(p, k), ldap,
                     A(m, k), ldam,
-                    T(m, k), T->mb);
+                    TT(m, k), TT->mb);
 
                 for (n = k+1; n < A->nt; n++) {
                     tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
                     MORSE_TASK_zttmqr(
                         &options,
                         MorseLeft, MorseConjTrans,
-                        A->mb, tempnn, tempmm, tempnn, A->nb, ib, T->nb,
+                        A->mb, tempnn, tempmm, tempnn, A->nb, ib, TT->nb,
                         A(p, n), ldap,
                         A(m, n), ldam,
                         A(m, k), ldam,
-                        T(m, k), T->mb);
+                        TT(m, k), TT->mb);
                 }
             }
         }
