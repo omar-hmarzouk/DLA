@@ -12,6 +12,7 @@
 @c * Dependencies compilation::
 * Use FxT profiling through StarPU::
 * Use simulation mode with StarPU-SimGrid::
+* Use out of core support with StarPU::
 @end menu
 
 @c @code{} @option{}
