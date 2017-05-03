@@ -59,7 +59,11 @@ else()
 endif()
 include(MorseInit)
 include(GenPkgConfig)
-include(SetFortranMangling)
+include(FortranCInterface)
+## Ensure that the fortran compiler and c compiler specified are compatible
+FortranCInterface_VERIFY()
+FortranCInterface_HEADER(${CMAKE_CURRENT_BINARY_DIR}/include/morse_mangling.h
+                         MACRO_NAMESPACE "MORSE_")
 
 #############################################
 #                                           #

@@ -76,7 +76,6 @@
  *  Chameleon header files
  **/
 #include "morse.h"
-#include "morse_mangling.h"
 
 #include "coreblas/include/coreblas.h"
 #if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
@@ -89,15 +88,6 @@
 #include "control/descriptor.h"
 #include "control/tile.h"
 #include "control/async.h"
-
-/** ****************************************************************************
- *  Determine FORTRAN names
- **/
-#define MORSE_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname, MORSE_##UCNAME)
-#define MORSE_TILE_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname##_tile, MORSE_##UCNAME##_TILE)
-#define MORSE_ASYNC_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname##_tile_async, MORSE_##UCNAME##_TILE_ASYNC)
-#define MORSE_WS_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_alloc_workspace_##lcname, MORSE_ALLOC_WORKSPACE_##UCNAME)
-#define MORSE_WST_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_alloc_workspace_##lcname##_tile, MORSE_ALLOC_WORKSPACE_##UCNAME##_TILE)
 
 /*******************************************************************************
  *  Global shortcuts

@@ -3,7 +3,7 @@
 # @copyright (c) 2009-2014 The University of Tennessee and The University
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
-# @copyright (c) 2012-2014 Inria. All rights reserved.
+# @copyright (c) 2012-2017 Inria. All rights reserved.
 # @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
 #
 ###
@@ -22,6 +22,7 @@
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
+#  @author Florent Pruvost
 #  @date 13-07-2012
 #
 ###
@@ -52,6 +53,7 @@ set(CHAMELEON_HDRS
     descriptor.h
     gkkleader.h
     global.h
+    morse_f77.h
     morsewinthread.h
     tile.h
     workspace.h
