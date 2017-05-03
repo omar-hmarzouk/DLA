@@ -12,8 +12,8 @@
  *
  * @file morse_quark.h
  *
- *  MAGMA codelets kernel
- *  MAGMA is a software package provided by Univ. of Tennessee,
+ *  MORSE codelets kernel
+ *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver,
  *  and INRIA Bordeaux Sud-Ouest
  *
@@ -22,10 +22,6 @@
  * @author Cedric Castagnede
  * @date 2011-06-01
  *
- **/
-
-/*******************************************************************************
- *  MAGMA facilities of interest to both src and magmablas directories
  **/
 #ifndef _MORSE_QUARK_H_
 #define _MORSE_QUARK_H_

@@ -55,22 +55,23 @@ if( CHAMELEON_USE_CUBLAS_V2 )
     )
 endif( CHAMELEON_USE_CUBLAS_V2 )
 
-if( CHAMELEON_USE_MAGMA )
-  set(ZSRC
-    ${ZSRC}
-    cuda_zgelqt.c
-    cuda_zgeqrt.c
-    cuda_zgessm.c
-    cuda_zgetrf.c
-    cuda_zlauum.c
-    cuda_zpotrf.c
-    cuda_zssssm.c
-    cuda_ztrtri.c
-    cuda_ztslqt.c
-    cuda_ztsqrt.c
-    cuda_ztstrf.c
-    )
-endif()
+# Former MAGMA files that are no longer supported
+# if( CHAMELEON_USE_MAGMA )
+#   set(ZSRC
+#     ${ZSRC}
+#     cuda_zgelqt.c
+#     cuda_zgeqrt.c
+#     cuda_zgessm.c
+#     cuda_zgetrf.c
+#     cuda_zlauum.c
+#     cuda_zpotrf.c
+#     cuda_zssssm.c
+#     cuda_ztrtri.c
+#     cuda_ztslqt.c
+#     cuda_ztsqrt.c
+#     cuda_ztstrf.c
+#     )
+# endif()
 
 precisions_rules_py(
   CUDABLAS_SRCS_GENERATED "${ZSRC}"
@@ -94,9 +95,6 @@ add_dependencies(cudablas cudablas_include)
 set_property(TARGET cudablas PROPERTY LINKER_LANGUAGE Fortran)
 
 target_link_libraries(cudablas coreblas ${CUDA_LIBRARIES})
-if(CHAMELEON_USE_MAGMA)
-  target_link_libraries(cudablas ${MAGMA_LIBRARIES})
-endif(CHAMELEON_USE_MAGMA)
 
 # installation
 # ------------

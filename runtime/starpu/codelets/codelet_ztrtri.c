@@ -85,32 +85,9 @@ static void cl_ztrtri_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &diag, &N, &LDA, &iinfo);
     CORE_ztrtri(uplo, diag, N, A, LDA, &info);
 }
-
-#if defined(CHAMELEON_USE_MAGMA)
-static void cl_ztrtri_cuda_func(void *descr[], void *cl_arg)
-{
-    MORSE_enum uplo;
-    MORSE_enum diag;
-    int N;
-    cuDoubleComplex *A;
-    int LDA;
-    int iinfo;
-    int info = 0;
-
-    A = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    starpu_codelet_unpack_args(cl_arg, &uplo, &diag, &N, &LDA, &iinfo);
-    CUDA_ztrtri( uplo, diag, N, A, LDA, &info);
-    cudaThreadSynchronize();
-    return;
-}
-#endif
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA)
-CODELETS(ztrtri, 1, cl_ztrtri_cpu_func, cl_ztrtri_cuda_func, 0)
-#else
 CODELETS_CPU(ztrtri, 1, cl_ztrtri_cpu_func)
-#endif

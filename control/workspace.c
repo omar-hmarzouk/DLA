@@ -133,10 +133,6 @@ int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **des
     NB = MORSE_NB;
     IB = MORSE_IB;
 
-#if defined(CHAMELEON_USE_MAGMA)
-/*     IB *= 2; */
-#endif
-
     NT = (N%NB==0) ? (N/NB) : ((N/NB)+1);
     MT = (M%NB==0) ? (M/NB) : ((M/NB)+1);
 

@@ -164,7 +164,7 @@ static void read_args(int argc, char *argv[], int *iparam){
  * Print a header message to summarize main parameters
  */
 static void print_header(char *prog_name, int * iparam) {
-#if defined(MAGMAMORSE_SIMULATION)
+#if defined(CHAMELEON_SIMULATION)
     double    eps = 0.;
 #else
     double    eps = LAPACKE_dlamch_work( 'e' );
@@ -208,7 +208,7 @@ static void print_header(char *prog_name, int * iparam) {
     }
 
 /*
- * test external application link with magmamorse
+ * test external application link with chameleon
  */
 int main(int argc, char *argv[]) {
 

@@ -83,48 +83,10 @@ static void cl_zpotrf_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &n, &lda, &iinfo);
     CORE_zpotrf(uplo, n, A, lda, &info);
 }
-
-#ifdef CHAMELEON_USE_MAGMA
-static void cl_zpotrf_cuda_func(void *descr[], void *cl_arg)
-{
-    cudaStream_t stream[2], currentt_stream;
-    MORSE_enum uplo;
-    int n;
-    cuDoubleComplex *A;
-    /* cuDoubleComplex *hA; */
-    int lda;
-    int iinfo;
-    int info = 0;
-
-    A  = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    starpu_codelet_unpack_args(cl_arg, &uplo, &n, &lda, &iinfo);
-
-    /* /\* */
-    /*  *  hwork => nb*nb */
-    /*  *\/ */
-    /* hA = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]); */
-
-/*      stream[0] = starpu_cuda_get_local_stream(); */
-/*      if ( cudaStreamCreate( stream+1 ) != CUDA_SUCCESS ){ */
-/*          fprintf(stderr, "Error while creating stream in codelet_zpotrf\n"); */
-/*          exit(-1); */
-/*      } */
-
-    CUDA_zpotrf( uplo, n, A, lda, &info);
-
-    cudaThreadSynchronize();
-/*      cudaStreamDestroy( stream[1] ); */
-
-    return;
-}
-#endif
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
  */
-#if defined CHAMELEON_USE_MAGMA
-CODELETS(zpotrf, 1, cl_zpotrf_cpu_func, cl_zpotrf_cuda_func, 0)
-#else
 CODELETS_CPU(zpotrf, 1, cl_zpotrf_cpu_func)
-#endif
+

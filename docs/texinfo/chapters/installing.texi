@@ -194,7 +194,6 @@ It is a standard component of any such system.
 @menu
 * OpenMPI::
 * Nvidia CUDA Toolkit::
-* MAGMA::
 * FxT::
 @end menu
 
@@ -231,27 +230,7 @@ enabled.
 
 @strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
 CUDA releases from versions 4 to 7.5.
-Your compiler and MAGMA library must be compatible with CUDA.
-
-@node MAGMA
-@subsubsection MAGMA
-
-@uref{http://icl.cs.utk.edu/magma/, MAGMA} project aims to develop a dense
-linear algebra library similar to LAPACK but for heterogeneous/hybrid
-architectures, starting with current "Multicore+GPU" systems.
-CHAMELEON can use a set of high level MAGMA routines to accelerate
-computations on GPUs.
-To fully benefit from GPUs, the user should enable MAGMA in addition to
-CUDA/cuBLAS.
-
-@strong{Caution about the compatibility:} CHAMELEON has been mainly tested with
-MAGMA releases from versions 1.4 to 1.6.
-MAGMA library must be compatible with CUDA.
-MAGMA library should be built with sequential versions of BLAS/LAPACK.
-We should not get some MAGMA link flags embarking multithreaded
-BLAS/LAPACK because it could affect performances (take care about the
-MAGMA link flag @option{-lmkl_intel_thread} for example that we could inheritate
-from the pkg-config file @file{magma.pc}).
+Your compiler must be compatible with CUDA.
 
 @node FxT
 @subsubsection FxT

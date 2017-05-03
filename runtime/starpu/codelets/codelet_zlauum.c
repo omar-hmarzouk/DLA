@@ -77,30 +77,9 @@ static void cl_zlauum_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &uplo, &N, &LDA);
     CORE_zlauum(uplo, N, A, LDA);
 }
-
-#if defined(CHAMELEON_USE_MAGMA)
-static void cl_zlauum_cuda_func(void *descr[], void *cl_arg)
-{
-    MORSE_enum uplo;
-    int info = 0;
-    int N;
-    cuDoubleComplex *A;
-    int LDA;
-
-    A = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    starpu_codelet_unpack_args(cl_arg, &uplo, &N, &LDA);
-    CUDA_zlauum( uplo, N, A, LDA, &info);
-    cudaThreadSynchronize();
-    return;
-}
-#endif
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA)
-CODELETS(zlauum, 1, cl_zlauum_cpu_func, cl_zlauum_cuda_func, 0)
-#else
 CODELETS_CPU(zlauum, 1, cl_zlauum_cpu_func)
-#endif

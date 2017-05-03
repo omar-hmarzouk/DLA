@@ -68,15 +68,12 @@ endif()
 
 if(NOT CHAMELEON_SIMULATION)
 
-    if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+    if(CHAMELEON_USE_CUDA)
         list(APPEND libs_for_examples
         cudablas)
     endif()
     if(CHAMELEON_USE_CUDA)
         link_directories(${CUDA_LIBRARY_DIRS})
-    endif()
-    if(CHAMELEON_USE_MAGMA)
-        link_directories(${MAGMA_LIBRARY_DIRS})
     endif()
 
     list(APPEND libs_for_examples

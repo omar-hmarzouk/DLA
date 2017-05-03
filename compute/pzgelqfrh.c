@@ -87,23 +87,6 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif
 
-#if defined(CHAMELEON_USE_MAGMA)
-    /* Worker space
-     *
-     * zgeqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
-     * ztsqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
-     */
-    ws_worker = chameleon_max( ws_worker, ib * (ib + A->nb) );
-
-    /* Host space
-     *
-     * zgelqt =     ib * A->nb + 3 * ib * ib + A->nb
-     * ztslqt = 3 * ib * A->nb +     ib * ib + A->nb
-     */
-    ws_host = chameleon_max( ws_host,     ib * A->nb + 3 * ib * ib + A->nb );
-    ws_host = chameleon_max( ws_host, 3 * ib * A->nb +     ib * ib + A->nb );
-#endif
-
     ws_worker *= sizeof(MORSE_Complex64_t);
     ws_host   *= sizeof(MORSE_Complex64_t);
 

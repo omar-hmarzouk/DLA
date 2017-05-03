@@ -16,7 +16,7 @@
 #     Univ. of Tennessee,
 #     King Abdullah Univesity of Science and Technology
 #     Univ. of California Berkeley,
-#     Univ. of Colorado Denver. 
+#     Univ. of Colorado Denver.
 #
 #  @version 0.9.0
 #  @author Florent Pruvost
@@ -53,7 +53,6 @@ set(dep_message "${dep_message}"
 "       Kernels specific\n"
 "       BLAS ................: ${BLAS_VENDOR_FOUND}\n"
 "       LAPACK...............: ${LAPACK_VENDOR_FOUND}\n"
-"       MAGMA ...............: ${CHAMELEON_USE_MAGMA}\n"
 "\n"
 "       Trace ...............: ${CHAMELEON_ENABLE_TRACING}\n"
 "       Simulation mode .....: ${CHAMELEON_SIMULATION}\n"

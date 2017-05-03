@@ -57,7 +57,6 @@ Example of configuration using the command line
 cmake ~/chameleon/ -DCMAKE_BUILD_TYPE=Debug          \
                    -DCMAKE_INSTALL_PREFIX=~/install  \
                    -DCHAMELEON_USE_CUDA=ON           \
-                   -DCHAMELEON_USE_MAGMA=ON          \
                    -DCHAMELEON_USE_MPI=ON            \
                    -DBLA_VENDOR=Intel10_64lp         \
                    -DSTARPU_DIR=~/install/starpu-1.1 \
@@ -120,9 +119,6 @@ to link with QUARK library (runtime system)
 to link with CUDA runtime (implementation paradigm for accelerated codes on
 GPUs) and cuBLAS library (optimized BLAS kernels on GPUs), can only be used with
 StarPU
-@item @option{-DCHAMELEON_USE_MAGMA}=@option{trigger} (default: @code{OFF})
-to link with MAGMA library (kernels on GPUs, higher level than cuBLAS), can only
-be used with StarPU
 
 @item @option{-DCHAMELEON_USE_MPI}=@option{trigger} (default: @code{OFF})
 to link with MPI library (message passing implementation for use of multiple
@@ -200,7 +196,7 @@ directory of the LIBNAME library headers installation
 directory of the LIBNAME libraries (.so, .a, .dylib, etc) installation
 @end table
 LIBNAME can be one of the following: BLAS - CBLAS - FXT - HWLOC -
-LAPACK - LAPACKE - MAGMA - QUARK - STARPU - TMG.
+LAPACK - LAPACKE - QUARK - STARPU - TMG.
 See paragraph about @ref{Dependencies detection} for details.
 
 Libraries detected with an official CMake module (see module files in
@@ -220,7 +216,6 @@ Libraries detected with CHAMELEON cmake modules (see module files in
 @item HWLOC
 @item LAPACK
 @item LAPACKE
-@item MAGMA
 @item QUARK
 @item STARPU
 @item TMG
@@ -342,9 +337,6 @@ Note that only POTRF kernels with block sizes of 320 or 960 (simple and double
 precision) on mirage machine are available for now.
 Database of models is subject to change, it should be enrich in a near future.
 @end itemize
-
-One can additionally decide to enable the magma kernels by setting the cmake
-option @option{-DCHAMELEON_SIMULATION_MAGMA=ON} .
 
 @node Use out of core support with StarPU
 @section Use out of core support with StarPU

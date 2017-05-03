@@ -40,7 +40,7 @@
  * MORSE_Set to give some specific parameters.
  * This code allows you to expoit parallelism coming from all the cores of your
  * computer and from gpus if you have properly linked with pthread and CUDA
- * ( + CUBLAS and MAGMA optionnaly ).
+ * ( + CUBLAS optionnaly ).
  * The precision is: double
  */
 int main(int argc, char *argv[]) {

@@ -85,23 +85,6 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
     ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif
 
-#if defined(CHAMELEON_USE_MAGMA)
-    /* Worker space
-     *
-     * zgeqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
-     * ztsqrt = max( A->nb * (ib+1), ib * (ib + A->nb) )
-     */
-    ws_worker = chameleon_max( ws_worker, ib * (ib + A->nb) );
-
-    /* Host space
-     *
-     * zgeqrt = ib * (A->mb+3*ib) + A->mb )
-     * ztsqrt = 2 * ib * (A->nb+ib) + A->nb
-     */
-    ws_host = chameleon_max( ws_host, ib * (A->mb + 3 * ib) + A->mb );
-    ws_host = chameleon_max( ws_host,  2 * ib * (A->nb + ib) + A->nb );
-#endif
-
     ws_worker *= sizeof(MORSE_Complex64_t);
     ws_host   *= sizeof(MORSE_Complex64_t);
 

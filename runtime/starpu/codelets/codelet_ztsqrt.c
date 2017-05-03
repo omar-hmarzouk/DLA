@@ -165,53 +165,9 @@ static void cl_ztsqrt_cpu_func(void *descr[], void *cl_arg)
     WORK = TAU + chameleon_max( m, n );
     CORE_ztsqrt(m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK);
 }
-
-#if defined(CHAMELEON_USE_MAGMA)
-static void cl_ztsqrt_cuda_func(void *descr[], void *cl_arg)
-{
-    MORSE_starpu_ws_t *h_work;
-    int m;
-    int n;
-    int ib;
-    cuDoubleComplex *h_A2, *h_T, *h_D, *h_TAU, *h_W;
-    cuDoubleComplex *d_A1, *d_A2, *d_T, *d_D, *d_W;
-    int lda1, lda2, ldt;
-
-    starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &lda1, &lda2, &ldt, &h_work);
-
-    /* Gather pointer to data on device */
-    d_A1 = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    d_A2 = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
-    d_T  = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
-    d_W  = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[3]); /* 2*ib*n + ib*ib */
-    d_D  = d_W + 2*ib*n;
-
-    /* scratch data on host */
-    /* m*ib + ib*ib + max(m,n) + ib*n + ib*ib */
-    h_A2  = (cuDoubleComplex*)RUNTIME_starpu_ws_getlocal(h_work);
-    h_T   = h_A2  + m*ib;
-    h_TAU = h_T   + ib*ib;
-    h_W   = h_TAU + chameleon_max(m,n);
-    h_D   = h_W   + ib*n;
-
-    RUNTIME_getStream(stream);
-    CUDA_ztsqrt(
-            m, n, ib,
-            d_A1, lda1, d_A2, lda2,
-            h_A2, lda2,
-            d_T, ldt, h_T, ib,
-            d_D, h_D, ib, h_TAU,
-            h_W, d_W, stream);
-    cudaThreadSynchronize();
-}
-#endif
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
  */
-#if defined(CHAMELEON_USE_MAGMA)
-CODELETS(ztsqrt, 4, cl_ztsqrt_cpu_func, cl_ztsqrt_cuda_func, 0)
-#else
 CODELETS_CPU(ztsqrt, 4, cl_ztsqrt_cpu_func)
-#endif

@@ -29,17 +29,6 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-# check if magma_dgetrf_incpiv_gpu is accessible in libmagma and activate it in chameleon
-if ( CBLAS_FOUND AND LAPACKE_FOUND AND LAPACK_FOUND AND CUDA_FOUND AND CUDA_CUBLAS_LIBRARIES AND MAGMA_FOUND )
-    set(CMAKE_REQUIRED_LIBRARIES "${CBLAS_LIBRARIES};${LAPACKE_LIBRARIES};${LAPACK_SEQ_LIBRARIES};${CUDA_LIBRARIES};${CUDA_CUBLAS_LIBRARIES};${MAGMA_LIBRARIES};${COREBLAS_LIBRARIES}")
-    unset(MAGMA_DGETRF_INCPIV_GPU_FOUND CACHE)
-    check_function_exists(magma_dgetrf_incpiv_gpu MAGMA_DGETRF_INCPIV_GPU_FOUND)
-    if ( MAGMA_DGETRF_INCPIV_GPU_FOUND )
-        message(STATUS "Set HAVE_MAGMA_GETRF_INCPIV_GPU")
-        set(HAVE_MAGMA_GETRF_INCPIV_GPU 1)
-    endif()
-endif()
-
 # Generate headers for all possible precisions
 # --------------------------------------------
 set(RUNTIME_HDRS_GENERATED "")

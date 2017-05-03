@@ -16,7 +16,7 @@
 #     Univ. of Tennessee,
 #     King Abdullah Univesity of Science and Technology
 #     Univ. of California Berkeley,
-#     Univ. of Colorado Denver. 
+#     Univ. of Colorado Denver.
 #
 #  @version 0.9.1
 #  @author Cedric Castagnede
@@ -57,7 +57,7 @@ ENDMACRO(CONVERT_LIBSTYLE_TO_PKGCONFIG)
 ###
 #
 # CLEAN_LIB_LIST: clean libraries lists to follow the pkg-config style
-#                 used in GENERATE_PKGCONFIG_FILE 
+#                 used in GENERATE_PKGCONFIG_FILE
 #
 ###
 MACRO(CLEAN_LIB_LIST _package)
@@ -96,7 +96,7 @@ MACRO(GENERATE_PKGCONFIG_FILE)
     set(CHAMELEON_PKGCONFIG_REQUIRED "")
     set(COREBLAS_PKGCONFIG_REQUIRED  "")
     set(CUDABLAS_PKGCONFIG_REQUIRED  "")
-    
+
     # A list of private packages required by this package but not exposed to
     # applications
     set(CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE "")
@@ -127,12 +127,6 @@ MACRO(GENERATE_PKGCONFIG_FILE)
         list(APPEND CHAMELEON_PKGCONFIG_REQUIRED "coreblas")
 
         if(CHAMELEON_USE_CUDA)
-            if(CHAMELEON_USE_MAGMA)
-                list(APPEND CUDABLAS_PKGCONFIG_REQUIRED_PRIVATE  magma)
-                list(APPEND CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE magma)
-            else()
-                
-            endif()
             list(APPEND CUDABLAS_PKGCONFIG_LIBS_PRIVATE ${CUDA_LIBRARIES})
             list(APPEND CHAMELEON_PKGCONFIG_REQUIRED "cudablas")
         endif()
@@ -142,7 +136,7 @@ MACRO(GENERATE_PKGCONFIG_FILE)
         if(CHAMELEON_USE_CUDA)
             list(APPEND CHAMELEON_PKGCONFIG_LIBS -lcudablas)
         endif()
-        list(APPEND CHAMELEON_PKGCONFIG_LIBS 
+        list(APPEND CHAMELEON_PKGCONFIG_LIBS
         -lcoreblas
         ${EXTRA_LIBRARIES}
         )
@@ -158,7 +152,7 @@ MACRO(GENERATE_PKGCONFIG_FILE)
     if(CHAMELEON_USE_CUDA)
         CLEAN_LIB_LIST(CUDABLAS)
     endif()
-    
+
     # Create .pc file
     # ---------------
     SET(_output_chameleon_file "${CMAKE_BINARY_DIR}/chameleon.pc")

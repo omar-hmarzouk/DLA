@@ -69,17 +69,9 @@
 #include <mpi.h>
 #endif
 
-
 /** ****************************************************************************
- * Linear Algebra headers
- **/
-#if defined(CHAMELEON_USE_MAGMA) && !defined(CHAMELEON_SIMULATION)
-#include <magma.h>
-#endif
-
-/** ****************************************************************************
- *  Line to avoid conflict with magma, because, we don't know why
- *  but lapacke provide a wrong interface of lapack in fortran
+ *  Line to avoid conflict with other linear algebra libraries, because, we
+ *  don't know why but lapacke provide a wrong interface of lapack in fortran
  **/
 #ifndef LAPACK_NAME
 #define LAPACK_NAME(a, b) lapackef77_##a

@@ -42,7 +42,4 @@
 #cmakedefine HAVE_STARPU_MPI_COMM_RANK
 #cmakedefine HAVE_STARPU_MPI_CACHED_RECEIVE
 
-/* MAGMA functions */
-#cmakedefine HAVE_MAGMA_GETRF_INCPIV_GPU
-
 #endif  /* CONFIG_H_HAS_BEEN_INCLUDED */

@@ -176,102 +176,11 @@ static void cl_ztstrf_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &nb, &ldu, &lda, &ldl, &IPIV, &d_work, &ldwork, &check_info, &iinfo);
 
     CORE_ztstrf(m, n, ib, nb, U, ldu, A, lda, L, ldl, IPIV, WORK, ldwork, &info);
-
-#if defined(CHAMELEON_USE_MAGMA)
-    /*
-     * L stores the following if enough place:
-     *      L1     L2    L3     ...
-     *      L1^-1  L2^-1 L3^-1  ...
-     */
-    /* Compute L-1 in lower rectangle of L */
-    if ( ldl >= 2*ib )
-    {
-        int i, sb;
-        for (i=0; i<n; i+=ib) {
-            sb = chameleon_min( ib, n-i );
-            CORE_zlacpy(MorseUpperLower, sb, sb, L+(i*ldl), ldl, L+(i*ldl)+ib, ldl );
-
-            CORE_ztrtri( MorseLower, MorseUnit, sb, L+(i*ldl)+ib, ldl, &info );
-            if (info != 0 ) {
-                fprintf(stderr, "ERROR, trtri returned with info = %d\n", info);
-            }
-        }
-    }
-#endif
 }
-
-
-/*
- * Codelet GPU
- */
-/* TODO/WARNING: tstrf is not working on GPU for now */
-#if defined(CHAMELEON_USE_MAGMA) && 0
-static void cl_ztstrf_cuda_func(void *descr[], void *cl_arg)
-{
-    MORSE_starpu_ws_t *d_work;
-    int m;
-    int n;
-    int ib;
-    int nb;
-    cuDoubleComplex *hU, *dU;
-    int ldu;
-    cuDoubleComplex *hA, *dA;
-    int lda;
-    cuDoubleComplex *hL, *dL;
-    int ldl;
-    int *ipiv;
-    cuDoubleComplex *hw2, *hw, *dw;
-    int ldwork;
-    MORSE_bool check_info;
-    int iinfo;
-    int info;
-
-    starpu_codelet_unpack_args(cl_arg, &m, &n, &ib, &nb, &ldu, &lda, &ldl, &ipiv,
-			       &d_work, &ldwork, &check_info, &iinfo);
-
-    dU = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[0]);
-    dA = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[1]);
-    dL = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[2]);
-
-    /*
-     *  hwork => 2*nb*(2*ib+2nb)
-     *  dwork => 2*ib*nb
-     */
-    hw2 = (cuDoubleComplex *)STARPU_MATRIX_GET_PTR(descr[3]);
-    dw  = (cuDoubleComplex*)RUNTIME_starpu_ws_getlocal(d_work);
-
-    hU = hw2;
-    hA = hU + ldu * nb;
-    hL = hA + lda * nb;
-    hw = hL + ldl * nb;
-
-    /* Download first panel from A and U */
-    cublasGetMatrix( nb, n,  sizeof(cuDoubleComplex), dU, ldu, hU, ldu );
-    cublasGetMatrix( m,  ib, sizeof(cuDoubleComplex), dA, lda, hA, lda );
-
-    /* Initialize L to 0 */
-    memset(hL, 0, ldl*nb*sizeof(cuDoubleComplex));
-
-    CUDA_ztstrf(
-            MagmaColMajor, m, n, ib, nb,
-            hU, ldu, dU, ldu,
-            hA, lda, dA, lda,
-            hL, ldl, dL, ldl,
-            ipiv,
-            hw, ldwork, dw, lda,
-            &info );
-
-    cudaThreadSynchronize();
-}
-#endif
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
 /*
  * Codelet definition
  */
-#if (defined(CHAMELEON_USE_MAGMA) && 0)
-CODELETS(ztstrf, 4, cl_ztstrf_cpu_func, cl_ztstrf_cuda_func, 0)
-#else
 CODELETS_CPU(ztstrf, 4, cl_ztstrf_cpu_func)
-#endif
 

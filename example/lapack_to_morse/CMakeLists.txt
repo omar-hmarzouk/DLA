@@ -25,7 +25,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 # compilation for other sources step1 and >
-set(LTM_SOURCES 
+set(LTM_SOURCES
     step1.c
     step2.c
     step3.c
@@ -63,21 +63,18 @@ elseif(CHAMELEON_SCHED_QUARK)
 endif()
 
 
-# specific compilation for step0 because we potentially want to use 
+# specific compilation for step0 because we potentially want to use
 # multithreaded BLAS and LAPACK libraries for this step
 unset(libs_for_step0)
 
 if(NOT CHAMELEON_SIMULATION)
 
-    if(CHAMELEON_USE_CUDA OR CHAMELEON_USE_MAGMA)
+    if(CHAMELEON_USE_CUDA)
         list(APPEND libs_for_ltm
         cudablas)
     endif()
     if(CHAMELEON_USE_CUDA)
         link_directories(${CUDA_LIBRARY_DIRS})
-    endif()
-    if(CHAMELEON_USE_MAGMA)
-        link_directories(${MAGMA_LIBRARY_DIRS})
     endif()
 
     list(APPEND libs_for_step0 ${libs_for_ltm})
@@ -104,7 +101,7 @@ if(NOT CHAMELEON_SIMULATION)
         list(APPEND libs_for_step0
              coreblas
              ${LAPACKE_LIBRARIES}
-             ${CBLAS_LIBRARIES} 
+             ${CBLAS_LIBRARIES}
              ${LAPACK_PAR_LIBRARIES}
              ${BLAS_PAR_LIBRARIES}
              ${HWLOC_LIBRARIES}
