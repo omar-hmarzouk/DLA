@@ -342,7 +342,11 @@ Database of models is subject to change, it should be enrich in a near future.
 @section Use out of core support with StarPU
 
 If the matrix can not fit in the main memory, StarPU can automatically evict
-tiles to the disk. The following variables need to be set:
+tiles to the disk.  The descriptors for the matrices which can not fit in the
+main memory need to be created with @code{MORSE_Desc_Create_OOC}, so that MORSE
+does not force StarPU to keep it in the main memory.
+
+The following variables then need to be set:
 @itemize @bullet
 @item @env{STARPU_DISK_SWAP} environment variable to a place where to store
 evicted tiles, for example:
