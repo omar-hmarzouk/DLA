@@ -157,9 +157,9 @@ void morse_pzgeqrf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
             m = tiles[j];
             p = qrtree->currpiv(qrtree, k, m);
 
-            tempmm == A->mt-1 ? A->m-m*A->mb : A->mb;
-            ldam = BLKLDD(A, m);
+            tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
             ldap = BLKLDD(A, p);
+            ldam = BLKLDD(A, m);
 
             /* Tiles killed is a TS */
             if(qrtree->gettype(qrtree, k, m) == 0){

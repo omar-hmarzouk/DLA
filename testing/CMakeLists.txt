@@ -64,7 +64,7 @@ set(ZSRC
     # LAPACK
     ##################
     testing_zgels.c
-    testing_zgeqrf_param.c
+    testing_zgels_param.c
     #testing_zgesv.c
     testing_zgesv_incpiv.c
     #testing_zgetri.c
@@ -141,6 +141,7 @@ if(NOT CHAMELEON_SIMULATION)
     ${CBLAS_LIBRARIES}
     ${BLAS_LIBRARIES}
     ${HWLOC_LIBRARIES}
+    ${LIBHQR_LIBRARIES}
     ${EXTRA_LIBRARIES}
     )
 
