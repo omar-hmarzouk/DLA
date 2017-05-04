@@ -183,6 +183,43 @@ module morse
       end interface
 
       interface
+         function MORSE_Desc_Create_OOC_c(desc, dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q) &
+          & bind(c, name='MORSE_Desc_Create_OOC')
+            use iso_c_binding
+            integer(kind=c_int) :: MORSE_Desc_Create_OOC_c
+            type(c_ptr) :: desc
+            integer(kind=c_int), value :: dtyp
+            integer(kind=c_int), value :: mb, nb, bsiz, lm, ln, i, j, m, n,p, q
+         end function MORSE_Desc_Create_OOC_c
+      end interface
+
+      interface
+         function MORSE_Desc_Create_User_c(desc, mat, dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q, get_blkaddr, get_blkldd, get_rankof) &
+          & bind(c, name='MORSE_Desc_Create_User')
+            use iso_c_binding
+            integer(kind=c_int) :: MORSE_Desc_Create_User_c
+            type(c_ptr) :: desc
+            type(c_ptr), value :: mat
+            integer(kind=c_int), value :: dtyp
+            integer(kind=c_int), value :: mb, nb, bsiz, lm, ln, i, j, m, n, p, q
+            type(c_ptr) :: get_blkaddr
+            type(c_ptr), value :: get_blkldd, get_rankof
+         end function MORSE_Desc_Create_User_c
+      end interface
+
+      interface
+         function MORSE_Desc_Create_OOC_User_c(desc, dtyp, mb, nb, bsiz, lm, ln, i, j, m, n, p, q, get_rankof) &
+          & bind(c, name='MORSE_Desc_Create_OOC_User')
+            use iso_c_binding
+            integer(kind=c_int) :: MORSE_Desc_Create_OOC_User_c
+            type(c_ptr) :: desc
+            integer(kind=c_int), value :: dtyp
+            integer(kind=c_int), value :: mb, nb, bsiz, lm, ln, i, j, m, n, p, q
+            type(c_ptr), value :: get_rankof
+         end function MORSE_Desc_Create_OOC_User_c
+      end interface
+
+      interface
          function MORSE_Desc_Destroy_c(desc) &
           & bind(c, name='MORSE_Desc_Destroy')
             use iso_c_binding

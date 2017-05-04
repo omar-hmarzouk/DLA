@@ -59,6 +59,12 @@ else()
 endif()
 include(MorseInit)
 include(GenPkgConfig)
+include(FortranCInterface)
+# Ensure that the fortran compiler and c compiler specified are compatible
+# ------------------------------------------------------------------------
+FortranCInterface_VERIFY()
+FortranCInterface_HEADER(${CMAKE_CURRENT_BINARY_DIR}/include/morse_mangling.h
+                         MACRO_NAMESPACE "MORSE_")
 
 #############################################
 #                                           #
@@ -958,12 +964,6 @@ string(REPLACE ";" " " CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     set(CMAKE_SHARED_LINKER_FLAGS "-undefined dynamic_lookup")
 endif()
-
-# Add define for Fortran Mangling (should be defined somewhere else)
-# ------------------------------------------------------------------
-message("-- ${Blue}Add definition ADD_"
-        " - For Fortran mangling${ColourReset}")
-set(ADD_ 1)
 
 #------------------------------------------------------------------------------
 if(CHAMELEON_SCHED_STARPU)

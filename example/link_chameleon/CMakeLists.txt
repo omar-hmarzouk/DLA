@@ -17,10 +17,11 @@ elseif (MORSE_CHAMELEON_USE_STARPU)
 endif()
 
 if (MORSE_DISTRIB_DIR)
-    set( MORSE_CMAKE_MODULE_DIR "${MORSE_DISTRIB_DIR}/cmake_modules/morse" CACHE PATH
-         "Directory where to find MORSE CMake modules (cmake_modules/morse)")
+    set( MORSE_CMAKE_MODULE_DIR "${MORSE_DISTRIB_DIR}/morse_cmake/modules" CACHE PATH
+         "Directory where to find MORSE CMake modules (morse_cmake/modules)")
     list(APPEND CMAKE_MODULE_PATH "${MORSE_CMAKE_MODULE_DIR}")
     list(APPEND CMAKE_MODULE_PATH "${MORSE_CMAKE_MODULE_DIR}/find")
+    message(STATUS "MORSE_CMAKE_MODULE_DIR : ${MORSE_CMAKE_MODULE_DIR}/morse_cmake/modules")
     include(MorseInit)
 
     # Detect CHAMELEON
@@ -39,8 +40,10 @@ if (MORSE_DISTRIB_DIR)
     endif()
 
     # link_chameleon exe
-    add_executable(link_chameleon link_chameleon.c)
-    target_link_libraries(link_chameleon ${CHAMELEON_LIBRARIES_DEP})
+    add_executable(link_chameleon_c link_chameleon.c)
+    target_link_libraries(link_chameleon_c ${CHAMELEON_LIBRARIES_DEP})
+    add_executable(link_chameleon_f link_chameleon.f90)
+    target_link_libraries(link_chameleon_f ${CHAMELEON_LIBRARIES_DEP})
 else()
     message(STATUS "MORSE_DISTRIB_DIR is not set")
     message(STATUS "Please indicate where is located your MORSE distribution directory."
