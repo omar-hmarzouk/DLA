@@ -39,13 +39,16 @@
  *
  *******************************************************************************
  *
+ * @param[in] qrtree
+ *          The tree used for the factorization
+ *
  * @param[in] M
  *          The number of rows of the matrix A. M >= 0.
  *
  * @param[in] N
  *          The number of columns of the matrix A.  N >= 0.
  *
- * @param[in] A
+ * @param[in, out] A
  *          On entry, the M-by-N matrix A.
  *          On exit, the elements on and above the diagonal of the array contain the min(M,N)-by-N
  *          upper trapezoidal matrix R (R is upper triangular if M >= N); the elements below the
@@ -55,7 +58,11 @@
  * @param[in] LDA
  *          The leading dimension of the array A. LDA >= max(1,M).
  *
- * @param[in] descTS
+ * @param[out] descTS
+ *          On exit, auxiliary factorization data, required by MORSE_zgeqrs to solve the system
+ *          of equations.
+ *
+ * @param[out] descTT
  *          On exit, auxiliary factorization data, required by MORSE_zgeqrs to solve the system
  *          of equations.
  *
@@ -167,7 +174,11 @@ int MORSE_zgeqrf_param(const libhqr_tree_t *qrtree, int M, int N,
  *          diagonal represent the unitary matrix Q as a product of elementary reflectors stored
  *          by tiles.
  *
- * @param[out] T
+ * @param[out] TS
+ *          On exit, auxiliary factorization data, required by MORSE_zgeqrs to solve the system
+ *          of equations.
+ *
+ * @param[out] TT
  *          On exit, auxiliary factorization data, required by MORSE_zgeqrs to solve the system
  *          of equations.
  *

@@ -64,6 +64,7 @@ set(ZSRC
     # LAPACK
     ##################
     testing_zgels.c
+    testing_zgeqrf_param.c
     #testing_zgesv.c
     testing_zgesv_incpiv.c
     #testing_zgetri.c
@@ -90,7 +91,6 @@ set(ZSRC
     #testing_zhegv.c
     #testing_zhegvd.c
     testing_zgeqrf_qdwh.c
-    testing_zgeqrfhqr_qdwh.c
     )
 
 # Add include and link directories
