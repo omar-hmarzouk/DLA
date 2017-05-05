@@ -23,6 +23,7 @@
  * @author Mathieu Faverge
  * @author Emmanuel Agullo
  * @author Cedric Castagnede
+ * @author Raphael Boucherie
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *

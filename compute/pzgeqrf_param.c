@@ -51,7 +51,7 @@ void morse_pzgeqrf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
     size_t ws_host = 0;
     MORSE_desc_t *D = NULL;
 
-    int k, m, n, i, j, p;
+    int k, m, n, i, p;
     int K, M, RD;
     int ldap, ldam, ldaMRD;
     int tempkmin, tempkn, tempMm, tempnn, tempmm, tempMRDm;
@@ -153,8 +153,8 @@ void morse_pzgeqrf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
         /* Setting the order of the tiles */
         libhqr_treewalk(qrtree, k, tiles);
 
-        for (j = k; j < A->mt-1; j++) {
-            m = tiles[j];
+        for (i = k; i < A->mt-1; i++) {
+            m = tiles[i];
             p = qrtree->currpiv(qrtree, k, m);
 
             tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;

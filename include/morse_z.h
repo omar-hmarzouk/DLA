@@ -280,6 +280,12 @@ int MORSE_zunmqr_Tile_Async(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, 
 int MORSE_zgeqrf_param(const libhqr_tree_t *qrtree, int M, int N, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *descTT);
 int MORSE_zgeqrf_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT);
 int MORSE_zgeqrf_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_sequence_t *sequence, MORSE_request_t *request);
+int MORSE_zungqr_param(const libhqr_tree_t *qrtree, int M, int N, int K, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descT, MORSE_Complex64_t *B, int LDB);
+int MORSE_zungqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B);
+int MORSE_zungqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
+int MORSE_zunmqr_param(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans, int M, int N, int K, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descT, MORSE_Complex64_t *B, int LDB);
+int MORSE_zunmqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B);
+int MORSE_zunmqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 #endif /* defined(CHAMELEON_USE_LIBHQR) */
 /**
  *  Declarations of workspace allocation functions (tile layout) - alphabetical order
