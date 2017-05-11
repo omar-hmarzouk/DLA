@@ -40,6 +40,9 @@
  *
  *******************************************************************************
  *
+ * @param[in] qrtree
+ *          The tree used for the factorization
+ *
  * @param[in] M
  *          The number of rows of the matrix Q. M >= 0.
  *
@@ -84,7 +87,8 @@
 int MORSE_zungqr_param(const libhqr_tree_t *qrtree,
                        int M, int N, int K,
                        MORSE_Complex64_t *A, int LDA,
-                       MORSE_desc_t *descT,
+                       MORSE_desc_t *descTS,
+                       MORSE_desc_t *descTT,
                        MORSE_Complex64_t *Q, int LDQ)
 {
     int NB;
@@ -149,7 +153,7 @@ int MORSE_zungqr_param(const libhqr_tree_t *qrtree,
     /*    }*/
 
     /* Call the tile interface */
-    MORSE_zungqr_param_Tile_Async(qrtree, &descA, descT, &descQ, sequence, &request);
+    MORSE_zungqr_param_Tile_Async(qrtree, &descA, descTS, descTT, &descQ, sequence, &request);
 
     /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
     morse_zooptile2lap(descQ, Q, NB, NB, LDQ, N,  sequence, &request);
@@ -167,7 +171,8 @@ int MORSE_zungqr_param(const libhqr_tree_t *qrtree,
     return status;
 }
 
-/***************************************************************************//**
+/**
+ *******************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
@@ -201,7 +206,7 @@ int MORSE_zungqr_param(const libhqr_tree_t *qrtree,
  * @sa MORSE_zgeqrf_Tile
  *
  ******************************************************************************/
-int MORSE_zungqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q)
+int MORSE_zungqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *Q)
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -214,7 +219,7 @@ int MORSE_zungqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_
         return MORSE_ERR_NOT_INITIALIZED;
     }
     morse_sequence_create(morse, &sequence);
-    MORSE_zungqr_param_Tile_Async(qrtree, A, T, Q, sequence, &request);
+    MORSE_zungqr_param_Tile_Async(qrtree, A, TS, TT, Q, sequence, &request);
     morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu(A);
     RUNTIME_desc_getoncpu(Q);
@@ -224,7 +229,8 @@ int MORSE_zungqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_
     return status;
 }
 
-/***************************************************************************//**
+/**
+ *******************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *
@@ -251,7 +257,7 @@ int MORSE_zungqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_
  * @sa MORSE_zgeqrf_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zungqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q,
+int MORSE_zungqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *Q,
                              MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
@@ -280,12 +286,16 @@ int MORSE_zungqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
         morse_error("MORSE_zungqr_param_Tile", "invalid first descriptor");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
-    if (morse_desc_check(T) != MORSE_SUCCESS) {
+    if (morse_desc_check(TS) != MORSE_SUCCESS) {
         morse_error("MORSE_zungqr_param_Tile", "invalid second descriptor");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
-    if (morse_desc_check(Q) != MORSE_SUCCESS) {
+    if (morse_desc_check(TT) != MORSE_SUCCESS) {
         morse_error("MORSE_zungqr_param_Tile", "invalid third descriptor");
+        return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
+    }
+    if (morse_desc_check(Q) != MORSE_SUCCESS) {
+        morse_error("MORSE_zungqr_param_Tile", "invalid fourth descriptor");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Check input arguments */
@@ -299,7 +309,7 @@ int MORSE_zungqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
         return MORSE_SUCCESS;
 */
     morse_pzlaset(MorseUpperLower, 0., 1., Q, sequence, request);
-    morse_pzungqr_param(qrtree, A, Q, T, sequence, request);
+    morse_pzungqr_param(qrtree, A, Q, TS, TT, sequence, request);
 
     return MORSE_SUCCESS;
 }

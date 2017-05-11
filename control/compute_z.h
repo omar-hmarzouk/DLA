@@ -168,6 +168,6 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enu
                          MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
                          MORSE_sequence_t *sequence, MORSE_request_t *request);
-void morse_pzungqr_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T,
+void morse_pzungqr_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *TS, MORSE_desc_t *TT,
                          MORSE_sequence_t *sequence, MORSE_request_t *request);
 #endif /* defined(CHAMELEON_USE_LIBHQR) */

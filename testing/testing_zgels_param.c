@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <assert.h>
 
 #include <morse.h>
 #include <coreblas/include/cblas.h>
@@ -115,9 +116,9 @@ int testing_zgels_param(int argc, char **argv)
     matrix.p = 1;
 
     /* Initialize qrtree */
-    domino = 0; /* -1 */
-    llvl   = 0; /* -1 */
-    hlvl   = 0; /* -1 */
+    domino = -1; /* -1 */
+    llvl   = -1; /* -1 */
+    hlvl   = -1; /* -1 */
     qr_a   = TS->mt; /* -1 */
     qr_p   = 1; /* matrix.p */
     tsrr   = 0; /*  0 */
@@ -142,7 +143,7 @@ int testing_zgels_param(int argc, char **argv)
     /* MORSE ZGELS */
     if (M >= N)
         /* Building the economy-size Q */
-        MORSE_zungqr(M, N, K, A2, LDA, TS, Q, LDA);
+        MORSE_zungqr_param(&qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
     else
         /* Building the economy-size Q */
         MORSE_zunglq(M, N, K, A2, LDA, TS, Q, LDA);
@@ -197,7 +198,7 @@ int testing_zgels_param(int argc, char **argv)
 
         /* Morse routines */
         MORSE_zgeqrf_param( &qrtree, M, N, A2, LDA, TS, TT );
-        MORSE_zungqr(M, N, K, A2, LDA, TS, Q, LDA);
+        MORSE_zungqr_param( &qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
         MORSE_zgeqrs(M, N, NRHS, A2, LDA, TS, B2, LDB);
 
         /* Check the orthogonality, factorization and the solution */
@@ -276,7 +277,7 @@ int testing_zgels_param(int argc, char **argv)
         printf(" Computational tests pass if scaled residuals are less than 60.\n");
 
         MORSE_zgeqrf_param( &qrtree, M, N, A2, LDA, TS, TT );
-        MORSE_zungqr(M, N, K, A2, LDA, TS, Q, LDA);
+        MORSE_zungqr_param( &qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
         MORSE_zunmqr(MorseLeft, MorseConjTrans, M, NRHS, N, A2, LDA, TS, B2, LDB);
         MORSE_ztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, N, NRHS, 1.0, A2, LDA, B2, LDB);
     }

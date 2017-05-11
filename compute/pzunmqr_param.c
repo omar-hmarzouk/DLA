@@ -181,6 +181,10 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                 tempkmin = k == minMT-1 ? minM-k*A->nb : A->nb;
                 ldak = BLKLDD(A, k);
                 ldbk = BLKLDD(B, k);
+
+                /* Setting the order of the tiles*/
+                libhqr_treewalk(qrtree, k, tiles);
+
                 for (i = B->mt-1; i > k; i--) {
                     m = tiles[i];
                     p = qrtree->currpiv(qrtree, k, m);
@@ -242,6 +246,10 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                 tempkmin = k == minMT-1 ? minM-k*A->nb : A->nb;
                 ldak = BLKLDD(A, k);
                 ldbk = BLKLDD(B, k);
+
+                /* Setting the order of tiles */
+                libhqr_treewalk(qrtree, k, tiles);
+
                 for (n = B->nt-1; n > k; n--) {
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                     ldan = BLKLDD(A, n);
@@ -297,6 +305,7 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                 tempkn   = k == B->nt-1 ? B->n-k*B->nb : B->nb;
                 tempkmin = k == minMT-1 ? minM-k*A->nb : A->nb;
                 ldak = BLKLDD(A, k);
+
 #if defined(CHAMELEON_COPY_DIAG)
                 MORSE_TASK_zlacpy(
                     &options,
@@ -322,6 +331,10 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                         T(k, k), T->mb,
                         B(m, k), ldbm);
                 }
+
+                /* Setting the order of tiles */
+                libhqr_treewalk(qrtree, k, tiles);
+
                 for (n = k+1; n < B->nt; n++) {
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                     ldan = BLKLDD(A, n);
