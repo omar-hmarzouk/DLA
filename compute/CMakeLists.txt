@@ -102,6 +102,7 @@ set(ZSRC
     # LAPACK
     ##################
     pzgelqf.c
+    pzgelqf_param.c
     pzgelqfrh.c
     pzgeqrf.c
     pzgeqrfrh.c
