@@ -131,11 +131,13 @@ set(ZSRC
     pzunmlq.c
     pzunmlqrh.c
     pzunmqr.c
+    pzunmqr_param.c
     pzunmqrrh.c
     pztpgqrt.c
     pztpqrt.c
     ###
     zgels.c
+    zgels_param.c
     zgelqf.c
     zgelqs.c
     zgeqrf.c

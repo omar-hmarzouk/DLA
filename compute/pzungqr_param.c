@@ -54,8 +54,8 @@ void morse_pzungqr_param(const libhqr_tree_t *qrtree,
     MORSE_desc_t *D = NULL;
 
     int k, m, n, i, p;
-    int ldak, ldqk, ldam, ldqm, ldqp;
-    int tempmm, tempnn, tempkmin, tempkm, tempkn;
+    int ldam, ldqm, ldqp;
+    int tempmm, tempnn, tempkmin, tempkn;
     int ib, minMT;
     int *tiles;
 
@@ -110,9 +110,6 @@ void morse_pzungqr_param(const libhqr_tree_t *qrtree,
         RUNTIME_iteration_push(morse, k);
 
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
-        tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
-        ldak = BLKLDD(A, k);
-        ldqk = BLKLDD(Q, k);
 
         /* Setting the order of tiles */
         libhqr_treewalk(qrtree, k, tiles);

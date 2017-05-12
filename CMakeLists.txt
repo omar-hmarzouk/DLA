@@ -260,7 +260,7 @@ include_directories(${LIBHQR_INCLUDE_DIRS})
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 find_package(Threads REQUIRED)
 if( THREADS_FOUND )
-    list(APPEND EXTRA_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
+  list(APPEND EXTRA_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
 endif ()
 
 # Add math library to the list of extra
@@ -268,18 +268,18 @@ endif ()
 set(M_LIBRARIES "")
 if(UNIX OR WIN32)
     find_library(
-        M_m_LIBRARY
-        NAMES m
-        )
+      M_m_LIBRARY
+      NAMES m
+      )
     mark_as_advanced(M_m_LIBRARY)
     if (M_m_LIBRARY)
-        list(APPEND M_LIBRARIES "${M_m_LIBRARY}")
-        list(APPEND EXTRA_LIBRARIES "${M_m_LIBRARY}")
+      list(APPEND M_LIBRARIES "${M_m_LIBRARY}")
+      list(APPEND EXTRA_LIBRARIES "${M_m_LIBRARY}")
     else()
-        message(FATAL_ERROR "Could NOT find libm on your system."
-            " Are you sure to a have a C compiler installed?")
+      message(FATAL_ERROR "Could NOT find libm on your system."
+        " Are you sure to a have a C compiler installed?")
     endif()
-  endif()
+endif()
 
 # Try to find librt (libposix4 - POSIX.1b Realtime Extensions library)
 # on Unix systems except Apple ones because it does not exist on it

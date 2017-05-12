@@ -79,7 +79,6 @@ int testing_zgels_param(int argc, char **argv)
     int K = min(M, N);
     double eps;
     int info_ortho, info_solution, info_factorization;
-    int i, j;
     int LDAxN    = LDA*N;
     int LDBxNRHS = LDB*NRHS;
     int domino, tsrr, llvl, hlvl, qr_a, qr_p;
@@ -127,7 +126,7 @@ int testing_zgels_param(int argc, char **argv)
                      ( M >= N ) ? LIBHQR_QR : LIBHQR_LQ,
                      &matrix, llvl, hlvl, qr_a, qr_p, domino, tsrr );
 
-#if 0
+#if 1
     /* Initialize A1 and A2 */
     LAPACKE_zlarnv_work(IONE, ISEED, LDAxN, A1);
     LAPACKE_zlacpy_work(LAPACK_COL_MAJOR, 'A', M, N, A1, LDA, A2, LDA );
@@ -278,7 +277,7 @@ int testing_zgels_param(int argc, char **argv)
 
         MORSE_zgeqrf_param( &qrtree, M, N, A2, LDA, TS, TT );
         MORSE_zungqr_param( &qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
-        MORSE_zunmqr(MorseLeft, MorseConjTrans, M, NRHS, N, A2, LDA, TS, B2, LDB);
+        MORSE_zunmqr_param( &qrtree, MorseLeft, MorseConjTrans, M, NRHS, N, A2, LDA, TS, TT, B2, LDB);
         MORSE_ztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, N, NRHS, 1.0, A2, LDA, B2, LDB);
     }
     else {
@@ -345,7 +344,6 @@ static int check_orthogonality(int M, int N, int LDQ, MORSE_Complex64_t *Q, doub
     double alpha, beta;
     double normQ;
     int info_ortho;
-    int i;
     int minMN = min(M, N);
 
     double *work = (double *)malloc(minMN*sizeof(double));

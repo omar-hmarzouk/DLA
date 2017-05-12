@@ -52,9 +52,9 @@ void morse_pzgeqrf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
     MORSE_desc_t *D = NULL;
 
     int k, m, n, i, p;
-    int K, M, RD;
-    int ldap, ldam, ldaMRD;
-    int tempkmin, tempkn, tempMm, tempnn, tempmm, tempMRDm;
+    int K;
+    int ldap, ldam;
+    int tempkmin, tempkn, tempnn, tempmm;
     int ib;
     int *tiles;
 
