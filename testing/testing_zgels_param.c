@@ -137,7 +137,7 @@ int testing_zgels_param(int argc, char **argv)
     LAPACKE_zlacpy_work(LAPACK_COL_MAJOR, 'A', M, NRHS, B1, LDB, B2, LDB );
 
     /* MORSE ZGELS */
-    MORSE_zgels(MorseNoTrans, M, N, NRHS, A2, LDA, TS, B2, LDB);
+    MORSE_zgels_param(&qrtree, MorseNoTrans, M, N, NRHS, A2, LDA, TS, TT, B2, LDB);
 
     /* MORSE ZGELS */
     if (M >= N)
@@ -198,7 +198,7 @@ int testing_zgels_param(int argc, char **argv)
         /* Morse routines */
         MORSE_zgeqrf_param( &qrtree, M, N, A2, LDA, TS, TT );
         MORSE_zungqr_param( &qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
-        MORSE_zgeqrs(M, N, NRHS, A2, LDA, TS, B2, LDB);
+        MORSE_zgeqrs_param( &qrtree, M, N, NRHS, A2, LDA, TS,TT, B2, LDB);
 
         /* Check the orthogonality, factorization and the solution */
         info_ortho = check_orthogonality(M, N, LDA, Q, eps);

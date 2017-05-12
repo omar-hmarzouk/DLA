@@ -143,6 +143,7 @@ set(ZSRC
     zgeqrf.c
     zgeqrf_param.c
     zgeqrs.c
+    zgeqrs_param.c
     #zgesv.c
     zgesv_incpiv.c
     zgesv_nopiv.c
