@@ -140,6 +140,7 @@ set(ZSRC
     zgels.c
     zgels_param.c
     zgelqf.c
+    zgelqf_param.c
     zgelqs.c
     zgeqrf.c
     zgeqrf_param.c
