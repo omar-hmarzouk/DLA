@@ -40,7 +40,7 @@
 #endif
 
 /**
- *  Parallel tile QR factorization (reduction Householder) - dynamic scheduling
+ *  Parallel tile LQ factorization (reduction Householder) - dynamic scheduling
  */
 void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT,
                           MORSE_sequence_t *sequence, MORSE_request_t *request)
@@ -157,7 +157,7 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
             n = tiles[i];
             p = qrtree->currpiv(qrtree, k, n);
 
-            tempnn = m == A->nt-1 ? A->n-n*A->nb : A->nb;
+            tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
 
             /* Tiles killed is a TS */
             if(qrtree->gettype(qrtree, k, n) == 0){

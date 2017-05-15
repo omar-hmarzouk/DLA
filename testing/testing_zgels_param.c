@@ -227,7 +227,7 @@ int testing_zgels_param(int argc, char **argv)
         printf(" Computational tests pass if scaled residuals are less than 60.\n");
 
         /* Morse routines */
-        MORSE_zgelqf(M, N, A2, LDA, TS);
+        MORSE_zgelqf_param(&qrtree, M, N, A2, LDA, TS, TT);
         MORSE_zunglq(M, N, K, A2, LDA, TS, Q, LDA);
         MORSE_zgelqs(M, N, NRHS, A2, LDA, TS, B2, LDB);
 
@@ -290,7 +290,7 @@ int testing_zgels_param(int argc, char **argv)
         printf(" The relative machine precision (eps) is to be %e \n",eps);
         printf(" Computational tests pass if scaled residuals are less than 60.\n");
 
-        MORSE_zgelqf(M, N, A2, LDA, TS);
+        MORSE_zgelqf_param(&qrtree, M, N, A2, LDA, TS, TT);
         MORSE_ztrsm(MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, M, NRHS, 1.0, A2, LDA, B2, LDB);
         MORSE_zunglq(M, N, K, A2, LDA, TS, Q, LDA);
         MORSE_zunmlq(MorseLeft, MorseConjTrans, N, NRHS, M, A2, LDA, TS, B2, LDB);
