@@ -293,7 +293,7 @@ int testing_zgels_param(int argc, char **argv)
         MORSE_zgelqf_param(&qrtree, M, N, A2, LDA, TS, TT);
         MORSE_ztrsm(MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, M, NRHS, 1.0, A2, LDA, B2, LDB);
         MORSE_zunglq(M, N, K, A2, LDA, TS, Q, LDA);
-        MORSE_zunmlq(MorseLeft, MorseConjTrans, N, NRHS, M, A2, LDA, TS, B2, LDB);
+        MORSE_zunmlq_param(&qrtree, MorseLeft, MorseConjTrans, N, NRHS, M, A2, LDA, TS, TT, B2, LDB);
     }
 
     /* Check the orthogonality, factorization and the solution */
