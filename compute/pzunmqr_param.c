@@ -295,7 +295,7 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                                 &options,
                                 side, trans,
                                 tempmm, B->nb, tempmm, tempnn, tempkn, ib, TS->nb,
-                                B( m, p), ldbp,
+                                B( m, p), ldbm,
                                 B( m, n), ldbm,
                                 A( n, k), ldan,
                                 TS(n, k), TS->mb);
@@ -309,7 +309,7 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                                 &options,
                                 side, trans,
                                 tempmm, B->nb, tempmm, tempnn, tempkn, ib, TT->nb,
-                                B( m, p), ldbp,
+                                B( m, p), ldbm,
                                 B( m, n), ldbm,
                                 A( n, k), ldan,
                                 TT(n, k), TT->mb);
@@ -397,7 +397,7 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                 /* Setting the order of tiles */
                 libhqr_treewalk(qrtree, k, tiles);
 
-                for (i = k; i < B->nt-1; n++) {
+                for (i = k; i < B->nt-1; i++) {
                     n = tiles[i];
                     p = qrtree->currpiv(qrtree, k, n);
 
