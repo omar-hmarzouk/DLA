@@ -53,7 +53,7 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
 
     int k, m, n, i, p;
     int K;
-    int ldak, ldam;
+    int ldak, ldam, ldap;
     int tempkmin, tempkm, tempnn, tempmm;
     int ib;
     int *tiles;
@@ -87,8 +87,8 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
 
     /* Initialisation of tiles */
 
-    tiles = (int*)malloc((qrtree->mt)*sizeof(int));
-    memset( tiles, 0, (qrtree->mt)*sizeof(int) );
+    tiles = (int*)malloc((qrtree->nt)*sizeof(int));
+    memset( tiles, 0, (qrtree->nt)*sizeof(int) );
 
     ws_worker *= sizeof(MORSE_Complex64_t);
     ws_host   *= sizeof(MORSE_Complex64_t);
@@ -138,8 +138,9 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
 #endif
 #endif
             }
-            for (m = k+1; n < A->mt; m++) {
+            for (m = k+1; m < A->mt; m++) {
                 tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
+                ldam = BLKLDD(A, m);
                 MORSE_TASK_zunmlq(
                     &options,
                     MorseRight, MorseConjTrans,
@@ -158,7 +159,7 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
             p = qrtree->currpiv(qrtree, k, n);
 
             tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
-
+            ldap = BLKLDD(A, p);
             /* Tiles killed is a TS */
             if(qrtree->gettype(qrtree, k, n) == 0){
                 MORSE_TASK_ztslqt(
