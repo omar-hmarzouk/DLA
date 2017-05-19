@@ -16,17 +16,10 @@
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 2.5.0
- * @comment This file has been automatically generated
- *          from Plasma 2.5.0 for MORSE 1.0.0
- * @author Hatem Ltaief
- * @author Jakub Kurzak
- * @author Azzam Haidar
+ * @version 1.0.0
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
  * @author Raphael Boucherie
- * @date 2010-11-15
+ * @date 2017-05-17
  * @precisions normal z -> s d c
  *
  **/
@@ -57,7 +50,7 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
     MORSE_desc_t *D = NULL;
 
     int k, m, n, i, p;
-    int ldam, ldan, ldbm, ldak, ldbp;
+    int ldan, ldam, ldbm, ldbn, ldak, ldbp;
     int tempnn, tempkmin, tempmm, tempkn, tempkm;
     int ib, K;
     int *tiles;
@@ -100,7 +93,7 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
     /* necessary to avoid dependencies between tasks regarding the diag tile */
 #if defined(CHAMELEON_COPY_DIAG)
     D = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*D, A->mb, A->nb, K*A->nb, A->nb, 0, 0, K*A->nb, A->nb, A->p, A->q);
+    morse_zdesc_alloc_diag(*D, A->mb, A->nb, K*A->mb, A->nb, 0, 0, K*A->mb, A->nb, A->p, A->q);
 #endif
 
     if (side == MorseLeft ) {
@@ -114,34 +107,34 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                 tempkm   = k == A->mt-1 ? A->m-k*A->mb : A->mb;
                 ldak = BLKLDD(A, k);
                 for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
-                    m = qrtree->getm(qrtree, k, i);
+                    n = qrtree->getm(qrtree, k, i);
 
-                    tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
-                    tempkmin = chameleon_min(tempmm, tempkm);
-                    ldbm = BLKLDD(B, m);
+                    tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
+                    ldbn = BLKLDD(B, n);
+                    tempkmin = chameleon_min(tempnn, tempkm);
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
-                        MorseUpper, tempkmin, tempmm, A->nb,
-                        A(k, m), ldak,
-                        D(k, m), ldak );
+                        MorseUpper, tempkmin, tempnn, A->nb,
+                        A(k, n), ldak,
+                        D(k, n), ldak );
 #if defined(CHAMELEON_USE_CUDA)
                     MORSE_TASK_zlaset(
                         &options,
-                        MorseLower, tempmm, tempkmin,
+                        MorseLower, tempkmin, tempnn,
                         0., 1.,
-                        D(k, m), ldak );
+                        D(k, n), ldak );
 #endif
 #endif
-                    for (n = 0; n < B->nt; n++) {
-                        tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+                    for (m = 0; m < B->nt; m++) {
+                        tempmm = m == B->nt-1 ? B->n-n*B->nb : B->nb;
                         MORSE_TASK_zunmlq(
                             &options,
                             side, trans,
-                            tempmm, tempnn, tempkmin, ib, TS->nb,
-                            D( k, m), ldak,
-                            TS(k, m), TS->mb,
-                            B( m, n), ldbm);
+                            tempnn, tempmm, tempkmin, ib, TS->nb,
+                            D( k, n), ldak,
+                            TS(k, n), TS->mb,
+                            B( n, m), ldbn);
                     }
                 }
                 /* Setting the order of the tiles*/
@@ -164,7 +157,7 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                                 &options,
                                 side, trans,
                                 B->nb, tempnn, tempmm, tempnn, tempkm, ib, TS->nb,
-                                B( m, p), ldbp,
+                                B( m, p), ldbm,
                                 B( m, n), ldbm,
                                 A( k, n), ldak,
                                 TS(k, n), TS->mb);
@@ -177,11 +170,11 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                             MORSE_TASK_zttmlq(
                                 &options,
                                 side, trans,
-                                B->mb, tempnn, tempmm, tempnn, tempkn, ib, TT->mb,
+                                tempmm, B->nb, tempmm, tempnn, tempkn, ib, TT->mb,
                                 B( m, p), ldbm,
                                 B( m, n), ldbm,
-                                A( k, n), ldak,
-                                TT(k, n), TT->mb);
+                                A( k, m), ldak,
+                                TT(k, m), TT->mb);
                         }
                     }
                 }
