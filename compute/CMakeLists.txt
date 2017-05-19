@@ -125,6 +125,7 @@ set(ZSRC
     pztrtri.c
     pzpotrimm.c
     pzunglq.c
+    pzunglq_param.c
     pzunglqrh.c
     pzungqr.c
     pzungqr_param.c
@@ -143,6 +144,7 @@ set(ZSRC
     zgelqf.c
     zgelqf_param.c
     zgelqs.c
+    zgelqs_param.c
     zgeqrf.c
     zgeqrf_param.c
     zgeqrs.c
@@ -175,6 +177,7 @@ set(ZSRC
     zsytrs.c
     ztrtri.c
     zunglq.c
+    zunglq_param.c
     zungqr.c
     zungqr_param.c
     zunmlq.c

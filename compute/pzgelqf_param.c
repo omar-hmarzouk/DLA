@@ -66,12 +66,12 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
     ib = MORSE_IB;
 
     /*
-     * zgeqrt = A->nb * (ib+1)
-     * zunmqr = A->nb * ib
-     * ztsqrt = A->nb * (ib+1)
-     * zttqrt = A->nb * (ib+1)
-     * ztsmqr = A->nb * ib
-     * zttmqr = A->nb * ib
+     * zgelqt = A->nb * (ib+1)
+     * zunmlq = A->nb * ib
+     * ztslqt = A->nb * (ib+1)
+     * zttlqt = A->nb * (ib+1)
+     * ztsmlq = A->nb * ib
+     * zttmlq = A->nb * ib
      */
     ws_worker = A->nb * (ib+1);
 
@@ -79,8 +79,8 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
 #if defined(CHAMELEON_USE_CUDA)
     /* Worker space
      *
-     * zunmqr = A->nb * ib
-     * ztsmqr = 2 * A->nb * ib
+     * zunmlq = A->nb * ib
+     * ztsmlq = 2 * A->nb * ib
      */
     ws_worker = chameleon_max( ws_worker, ib * A->nb * 2 );
 #endif

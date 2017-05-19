@@ -283,12 +283,18 @@ int MORSE_zgels_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_enum trans, 
 int MORSE_zgelqf_param(const libhqr_tree_t *qrtree, int M, int N, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *descTT);
 int MORSE_zgelqf_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT);
 int MORSE_zgelqf_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_sequence_t *sequence, MORSE_request_t *request);
+int MORSE_zgelqs_param(const libhqr_tree_t *qrtree, int M, int N, int NRHS, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *descTT, MORSE_Complex64_t *B, int LDB);
+int MORSE_zgelqs_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B);
+int MORSE_zgelqs_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zgeqrf_param(const libhqr_tree_t *qrtree, int M, int N, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *descTT);
 int MORSE_zgeqrf_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT);
 int MORSE_zgeqrf_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zgeqrs_param(const libhqr_tree_t *qrtree, int M, int N, int NRHS, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *TT, MORSE_Complex64_t *B, int LDB);
 int MORSE_zgeqrs_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B);
 int MORSE_zgeqrs_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
+int MORSE_zunglq_param(const libhqr_tree_t *qrtree, int M, int N, int K, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *TT, MORSE_Complex64_t *B, int LDB);
+int MORSE_zunglq_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B);
+int MORSE_zunglq_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zungqr_param(const libhqr_tree_t *qrtree, int M, int N, int K, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *descTT, MORSE_Complex64_t *B, int LDB);
 int MORSE_zungqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B);
 int MORSE_zungqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);

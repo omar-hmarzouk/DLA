@@ -51,7 +51,7 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
 
     int k, m, n, i, p;
     int ldan, ldam, ldbm, ldbn, ldak, ldbp;
-    int tempnn, tempkmin, tempmm, tempkn, tempkm;
+    int tempnn, temppn, tempkmin, tempmm, tempkn, tempkm;
     int ib, K;
     int *tiles;
 
@@ -81,7 +81,6 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
 #endif
 
     /* Initialisation of tiles */
-
     tiles = (int*)malloc((qrtree->nt)*sizeof(int));
     memset( tiles, 0, (qrtree->nt)*sizeof(int) );
 
@@ -97,102 +96,191 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
 #endif
 
     if (side == MorseLeft ) {
-        if (trans == MorseConjTrans) {
+        if (trans == MorseNoTrans) {
             /*
-             *  MorseLeft / MorseConjTrans
+             *  MorseLeft / MorseNoTrans
              */
             for (k = 0; k < K; k++) {
                 RUNTIME_iteration_push(morse, k);
 
-                tempkm   = k == A->mt-1 ? A->m-k*A->mb : A->mb;
+                tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
                 ldak = BLKLDD(A, k);
-                for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
-                    n = qrtree->getm(qrtree, k, i);
 
-                    tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
-                    ldbn = BLKLDD(B, n);
-                    tempkmin = chameleon_min(tempnn, tempkm);
+                for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
+                    p = qrtree->getm(qrtree, k, i);
+
+                    temppn = p == A->nt-1 ? A->n-p*A->nb : A->nb;
+                    tempkmin = chameleon_min(tempkm, temppn);
+                    ldbp = BLKLDD(B, p);
+
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
-                        MorseUpper, tempkmin, tempnn, A->nb,
-                        A(k, n), ldak,
-                        D(k, n), ldak );
+                        MorseUpper, tempkmin, temppn, A->nb,
+                        A(k, p), ldak,
+                        D(k, p), ldak );
 #if defined(CHAMELEON_USE_CUDA)
                     MORSE_TASK_zlaset(
                         &options,
-                        MorseLower, tempkmin, tempnn,
+                        MorseLower, tempkmin, temppn,
                         0., 1.,
-                        D(k, n), ldak );
+                        D(k, p), ldak );
 #endif
 #endif
-                    for (m = 0; m < B->nt; m++) {
-                        tempmm = m == B->nt-1 ? B->n-n*B->nb : B->nb;
+                    for (n = 0; n < B->nt; n++) {
+                        tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                         MORSE_TASK_zunmlq(
                             &options,
                             side, trans,
-                            tempnn, tempmm, tempkmin, ib, TS->nb,
-                            D( k, n), ldak,
-                            TS(k, n), TS->mb,
-                            B( n, m), ldbn);
+                            temppn, tempnn, tempkmin, ib, TS->nb,
+                            D( k, p), ldak,
+                            TS(k, p), TS->mb,
+                            B( p, n), ldbp);
                     }
                 }
+
                 /* Setting the order of the tiles*/
                 libhqr_treewalk(qrtree, k, tiles);
 
-                for (i = k; i < B->mt-1; i++) {
-                    n = tiles[i];
-                    p = qrtree->currpiv(qrtree, k, n);
+                for (i = k; i < A->nt-1; i++) {
+                    m = tiles[i];
+                    p = qrtree->currpiv(qrtree, k, m);
 
-                    tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+                    tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                     ldbp = BLKLDD(B, p);
+                    ldbm = BLKLDD(B, m);
 
                     /* TT or TS */
+                    if(qrtree->gettype(qrtree, k, m) == 0){
+                        for (n = 0; n < B->nt; n++) {
+                            tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
 
-                    if(qrtree->gettype(qrtree, k, n) == 0){
-                        for (m = 0; m < B->mt; m++) {
-                            tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
-                            ldbm = BLKLDD(B, m);
                             MORSE_TASK_ztsmlq(
                                 &options,
                                 side, trans,
-                                B->nb, tempnn, tempmm, tempnn, tempkm, ib, TS->nb,
-                                B( m, p), ldbm,
+                                B->mb, tempnn, tempmm, tempnn, tempkm, ib, TS->nb,
+                                B( p, n), ldbp,
                                 B( m, n), ldbm,
-                                A( k, n), ldak,
-                                TS(k, n), TS->mb);
+                                A( k, m), ldak,
+                                TS(k, m), TS->mb);
                         }
                     }
                     else {
-                        for (m = 0; m < B->mt; m++) {
-                            tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
-                            ldbm = BLKLDD(B, m);
+                        for (n = 0; n < B->nt; n++) {
+                            tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+
                             MORSE_TASK_zttmlq(
                                 &options,
                                 side, trans,
-                                tempmm, B->nb, tempmm, tempnn, tempkn, ib, TT->mb,
-                                B( m, p), ldbm,
+                                B->mb, tempnn, tempmm, tempnn, tempkm, ib, TT->nb,
+                                B( p, n), ldbp,
+                                B( m, n), ldbm,
+                                A( k, m), ldak,
+                                TT(k, m), TS->mb);
+                        }
+                    }
+                }
+                RUNTIME_iteration_pop(morse);
+            }
+        } else {
+            /*
+             *  MorseLeft / MorseConjTrans
+             */
+            for (k = K-1; k >= 0; k--) {
+                RUNTIME_iteration_push(morse, k);
+
+                tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
+                ldak = BLKLDD(A, k);
+
+                /* Setting the order of the tiles*/
+                libhqr_treewalk(qrtree, k, tiles);
+
+                for (i = A->nt-2; i >= k; i--) {
+                    m = tiles[i];
+                    p = qrtree->currpiv(qrtree, k, m);
+
+                    tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
+                    ldbp = BLKLDD(B, p);
+                    ldbm = BLKLDD(B, m);
+
+                    /* TT or TS */
+                    if(qrtree->gettype(qrtree, k, m) == 0){
+                        for (n = 0; n < B->nt; n++) {
+                            tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+                            MORSE_TASK_ztsmlq(
+                                &options,
+                                side, trans,
+                                B->mb, tempnn, tempmm, tempnn, tempkm, ib, TS->nb,
+                                B( p, n), ldbp,
+                                B( m, n), ldbm,
+                                A( k, m), ldak,
+                                TS(k, m), TS->mb);
+                        }
+                    }
+                    else {
+                        for (n = 0; n < B->nt; n++) {
+                            tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+                            MORSE_TASK_zttmlq(
+                                &options,
+                                side, trans,
+                                B->mb, tempnn, tempmm, tempnn, tempkm, ib, TT->nb,
+                                B( p, n), ldbp,
                                 B( m, n), ldbm,
                                 A( k, m), ldak,
                                 TT(k, m), TT->mb);
                         }
                     }
                 }
+                for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
+                    p = qrtree->getm(qrtree, k, i);
+
+                    temppn = p == A->nt-1 ? A->n-p*A->nb : A->nb;
+                    tempkmin = chameleon_min(tempkm, temppn);
+                    ldbp = BLKLDD(B, p);
+
+#if defined(CHAMELEON_COPY_DIAG)
+                    MORSE_TASK_zlacpy(
+                        &options,
+                        MorseUpper, tempkmim, temppn, A->nb,
+                        A(k, p), ldak,
+                        D(k, p), ldak );
+#if defined(CHAMELEON_USE_CUDA)
+                    MORSE_TASK_zlaset(
+                        &options,
+                        MorseLower, tempkmin, temppn,
+                        0., 1.,
+                        D(k, p), ldak );
+#endif
+#endif
+                    for (n = 0; n < B->nt; n++) {
+                        tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+                        MORSE_TASK_zunmlq(
+                            &options,
+                            side, trans,
+                            temppn, tempnn, tempkmin, ib, TS->nb,
+                            D( k, p), ldak,
+                            TS(k, p), TS->mb,
+                            B( p, n), ldbp);
+                    }
+                }
                 RUNTIME_iteration_pop(morse);
             }
-        } else {
+        }
+    } else {
+        if (trans == MorseNoTrans) {
             /*
-             *  MorseLeft / MorseNoTrans
+             *  MorseRight / MorseNoTrans
              */
             for (k = K-1; k >= 0; k--) {
                 RUNTIME_iteration_push(morse, k);
 
                 tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
+                ldak = BLKLDD(A, k);
 
                 /* Setting the order of the tiles*/
                 libhqr_treewalk(qrtree, k, tiles);
 
-                for (i = B->mt-2; i >= k; i--) {
+                for (i = A->nt-2; i >= k; i--) {
                     n = tiles[i];
                     p = qrtree->currpiv(qrtree, k, n);
 
@@ -208,21 +296,21 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                             MORSE_TASK_ztsmlq(
                                 &options,
                                 side, trans,
-                                B->nb, tempnn, tempmm, tempnn, tempkm, ib, TS->nb,
-                                B( m, p), ldbp,
+                                tempmm, B->nb, tempmm, tempnn, tempkm, ib, TS->nb,
+                                B( m, p), ldbm,
                                 B( m, n), ldbm,
                                 A( k, n), ldak,
                                 TS(k, n), TS->mb);
                         }
                     }
                     else {
-                        for (m = k; m < B->mt; m++) {
+                        for (m = 0; m < B->mt; m++) {
                             tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                             MORSE_TASK_zttmlq(
                                 &options,
                                 side, trans,
-                                B->mb, tempnn, tempmm, tempnn, tempkm, ib, TT->nb,
-                                B( m, p), ldbp,
+                                tempmm, B->nb, tempmm, tempnn, tempkm, ib, TT->nb,
+                                B( m, p), ldbm,
                                 B( m, n), ldbm,
                                 A( k, n), ldak,
                                 TT(k, n), TT->mb);
@@ -230,180 +318,94 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                     }
                 }
                 for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
-                    m = qrtree->getm(qrtree, k, i);
+                    p = qrtree->getm(qrtree, k, i);
 
-                    tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
-                    tempkmin = chameleon_min(tempmm, tempkn);
-                    ldbm = BLKLDD(B, m);
-
-#if defined(CHAMELEON_COPY_DIAG)
-                    MORSE_TASK_zlacpy(
-                        &options,
-                        MorseUpper, tempkmim, tempmm, A->nb,
-                        A(k, m), ldak,
-                        D(k, m), ldak );
-#if defined(CHAMELEON_USE_CUDA)
-                    MORSE_TASK_zlaset(
-                        &options,
-                        MorseLower, tempkmin, tempmm,
-                        0., 1.,
-                        D(k, m), ldak );
-#endif
-#endif
-                    for (n = 0; n < B->nt; n++) {
-                        tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
-                        MORSE_TASK_zunmlq(
-                            &options,
-                            side, trans,
-                            tempmm, tempnn, tempkmin, ib, TS->nb,
-                            D( k, m), ldak,
-                            TS(k, m), TS->mb,
-                            B( m, n), ldbm);
-                    }
-                }
-                RUNTIME_iteration_pop(morse);
-            }
-        }
-    } else {
-        if (trans == MorseConjTrans) {
-            /*
-             *  MorseRight / MorseConjTrans
-             */
-            for (k = K-1; k >= 0; k--) {
-                RUNTIME_iteration_push(morse, k);
-
-                tempkm = k == A->mt-1 ? A->m - k*A->mb : A->mb;
-                ldak = BLKLDD(A, k);
-
-                /* Setting the order of tiles */
-                libhqr_treewalk(qrtree, k, tiles);
-
-                for (i = B->nt-2; i >= k; i--) {
-                    m = tiles[i];
-                    p = qrtree->currpiv(qrtree, k, m);
-
-                    tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
-                    ldbm = BLKLDD(B, m);
+                    temppn = p == A->mt-1 ? A->m-p*A->mb : A->mb;
+                    tempkmin = chameleon_min(tempkm, temppn);
                     ldbp = BLKLDD(B, p);
 
-                    /* TS or TT */
-                    if(qrtree->gettype(qrtree, k, m) == 0){
-                        for (n = 0; n < B->nt; n++) {
-                            tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
-                            MORSE_TASK_ztsmlq(
-                                &options,
-                                side, trans,
-                                tempmm, B->nb, tempmm, tempnn, tempkm, ib, TS->nb,
-                                B( p, n), ldbp,
-                                B( m, n), ldbm,
-                                A( k, n), ldak,
-                                TS(k, n), TS->mb);
-                        }
-                    }
-                    else{
-                        for (n = 0; n < B->nt; n++) {
-                            tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
-                            MORSE_TASK_zttmlq(
-                                &options,
-                                side, trans,
-                                tempmm, B->nb, tempmm, tempnn, tempkm, ib, TT->nb,
-                                B( p, n), ldbp,
-                                B( m, n), ldbm,
-                                A( k, n), ldak,
-                                TT(k, n), TT->mb);
-                        }
-                    }
-                }
-                for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
-                    m = qrtree->getm(qrtree, k, i);
-
-                    tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
-                    tempkmin = chameleon_min(tempmm, tempkm);
-                    ldbm = BLKLDD(B, m);
-
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
-                        MorseUpper, tempkmin, tempkmm, A->nb,
-                        A(k, m), ldak,
-                        D(k, m), ldak );
+                        MorseUpper, tempkmim, temppn, A->nb,
+                        A(k, p), ldak,
+                        D(k, p), ldak );
 #if defined(CHAMELEON_USE_CUDA)
                     MORSE_TASK_zlaset(
                         &options,
-                        MorseLower, tempkmin, tempkmm,
+                        MorseLower, tempkmin, temppn,
                         0., 1.,
-                        D(k, m), ldak );
+                        D(k, p), ldak );
 #endif
 #endif
-                    for (n = 0; n < B->nt; n++) {
-                        ldbm = BLKLDD(B, m);
-                        tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+                    for (m = 0; m < B->mt; m++) {
+                        tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                         MORSE_TASK_zunmlq(
                             &options,
                             side, trans,
-                            tempmm, tempnn, tempkmin, ib, TS->nb,
-                            D( k, n), ldak,
-                            TS(k, n), TS->mb,
-                            B( m, n), ldbm);
+                            tempmm, temppn, tempkmin, ib, TS->nb,
+                            D( k, p), ldak,
+                            TS(k, p), TS->mb,
+                            B( m, p), ldbm);
                     }
                 }
-
                 RUNTIME_iteration_pop(morse);
             }
         } else {
             /*
-             *  MorseRight / MorseNoTrans
+             *  MorseRight / MorseConjTrans
              */
             for (k = 0; k < K; k++) {
                 RUNTIME_iteration_push(morse, k);
 
-                tempkm = k == B->mt-1 ? B->m-k*B->mb : B->mb;
+                tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
                 ldak = BLKLDD(A, k);
                 for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
-                    m = qrtree->getm(qrtree, k, i);
+                    p = qrtree->getm(qrtree, k, i);
 
-                    tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
-                    tempkmin = chameleon_min(tempmm, tempkm);
-                    ldbm = BLKLDD(B, m);
+                    temppn = p == A->nt-1 ? A->n-p*A->nb : A->nb;
+                    tempkmin = chameleon_min(tempkm, temppn);
+                    ldbp = BLKLDD(B, p);
 
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
-                        MorseUpper, tempkmin, tempkmm, A->nb,
-                        A(k, m), ldak,
-                        D(k, m), ldak );
+                        MorseUpper, tempkmin, tempkpn, A->nb,
+                        A(k, p), ldak,
+                        D(k, p), ldak );
 #if defined(CHAMELEON_USE_CUDA)
                     MORSE_TASK_zlaset(
                         &options,
-                        MorseLower, tempkmin, tempkmm,
+                        MorseLower, tempkmin, tempkpn,
                         0., 1.,
-                        D(k, m), ldak );
+                        D(k, p), ldak );
 #endif
 #endif
-                    for (n = 0; n < B->nt; n++) {
-                        tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+                    for (m = 0; m < B->mt; m++) {
+                        ldbm = BLKLDD(B, m);
+                        tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                         MORSE_TASK_zunmlq(
                             &options,
                             side, trans,
-                            tempmm, tempnn, tempkmin, ib, TS->nb,
-                            D( k, m), ldan,
-                            TS(k, m), TS->mb,
-                            B( m, n), ldbm);
+                            tempmm, temppn, tempkmin, ib, TS->nb,
+                            D( k, p), ldak,
+                            TS(k, p), TS->mb,
+                            B( m, p), ldbm);
                     }
                 }
                 /* Setting the order of tiles */
                 libhqr_treewalk(qrtree, k, tiles);
 
-                for (i = k; i < B->mt-1; i++) {
-                    m = tiles[i];
-                    p = qrtree->currpiv(qrtree, k, m);
+                for (i = k; i < A->nt-1; i++) {
+                    n = tiles[i];
+                    p = qrtree->currpiv(qrtree, k, n);
 
-                    tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
-                    ldbm = BLKLDD(B, m);
+                    tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                     ldbp = BLKLDD(B, p);
-                    if(qrtree->gettype(qrtree, k, m) == 0){
-                        for (n = 0; n < B->nt; n++) {
-                            tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+
+                    if(qrtree->gettype(qrtree, k, n) == 0){
+                        for (m = 0; m < B->mt; m++) {
+                            tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                             MORSE_TASK_ztsmlq(
                                 &options,
                                 side, trans,
@@ -415,8 +417,8 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                         }
                     }
                     else {
-                        for (n = 0; n < B->nt; n++) {
-                            tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+                        for (m = 0; m < B->mt; m++) {
+                            tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                             MORSE_TASK_zttmlq(
                                 &options,
                                 side, trans,

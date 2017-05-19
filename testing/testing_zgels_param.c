@@ -118,7 +118,7 @@ int testing_zgels_param(int argc, char **argv)
     domino = -1; /* -1 */
     llvl   = -1; /* -1 */
     hlvl   = -1; /* -1 */
-    qr_a   = TS->mt; /* -1 */
+    qr_a = ( M >= N ) ? -1 : TS->nt; /* -1 */
     qr_p   = 1; /* matrix.p */
     tsrr   = 0; /*  0 */
 
@@ -126,7 +126,6 @@ int testing_zgels_param(int argc, char **argv)
                      ( M >= N ) ? LIBHQR_QR : LIBHQR_LQ,
                      &matrix, llvl, hlvl, qr_a, qr_p, domino, tsrr );
 
-#if 1
     /* Initialize A1 and A2 */
     LAPACKE_zlarnv_work(IONE, ISEED, LDAxN, A1);
     LAPACKE_zlacpy_work(LAPACK_COL_MAJOR, 'A', M, N, A1, LDA, A2, LDA );
@@ -145,7 +144,7 @@ int testing_zgels_param(int argc, char **argv)
         MORSE_zungqr_param(&qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
     else
         /* Building the economy-size Q */
-        MORSE_zunglq(M, N, K, A2, LDA, TS, Q, LDA);
+        MORSE_zunglq_param(&qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
 
     printf("\n");
     printf("------ TESTS FOR CHAMELEON ZGELS_PARAM ROUTINE -------  \n");
@@ -171,7 +170,6 @@ int testing_zgels_param(int argc, char **argv)
         printf(" - TESTING ZGELS_PARAM ... FAILED !\n");    hres++;
         printf("************************************************\n");
     }
-#endif
 
     /*-------------------------------------------------------------
      *  TESTING ZGEQRF + ZGEQRS or ZGELQF + ZGELQS
@@ -228,8 +226,8 @@ int testing_zgels_param(int argc, char **argv)
 
         /* Morse routines */
         MORSE_zgelqf_param(&qrtree, M, N, A2, LDA, TS, TT);
-        MORSE_zunglq(M, N, K, A2, LDA, TS, Q, LDA);
-        MORSE_zgelqs(M, N, NRHS, A2, LDA, TS, B2, LDB);
+        MORSE_zunglq_param(&qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
+        MORSE_zgelqs_param(&qrtree, M, N, NRHS, A2, LDA, TS, TT, B2, LDB);
 
         /* Check the orthogonality, factorization and the solution */
         info_ortho = check_orthogonality(M, N, LDA, Q, eps);
@@ -292,7 +290,7 @@ int testing_zgels_param(int argc, char **argv)
 
         MORSE_zgelqf_param(&qrtree, M, N, A2, LDA, TS, TT);
         MORSE_ztrsm(MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, M, NRHS, 1.0, A2, LDA, B2, LDB);
-        MORSE_zunglq(M, N, K, A2, LDA, TS, Q, LDA);
+        MORSE_zunglq_param(&qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
         MORSE_zunmlq_param(&qrtree, MorseLeft, MorseConjTrans, N, NRHS, M, A2, LDA, TS, TT, B2, LDB);
     }
 
