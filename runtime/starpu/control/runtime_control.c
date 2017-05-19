@@ -249,5 +249,5 @@ void RUNTIME_comm_size( int *size )
  **/
 int RUNTIME_get_thread_nbr()
 {
-    return starpu_worker_get_count_by_type( STARPU_CPU );
+    return starpu_worker_get_count_by_type( STARPU_CPU_WORKER );
 }
