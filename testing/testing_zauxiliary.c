@@ -185,8 +185,8 @@ int main (int argc, char **argv)
      else*/
     MORSE_Init( ncores, ngpus);
     MORSE_Disable(MORSE_AUTOTUNING);
-    MORSE_Set(MORSE_TILE_SIZE,        320 );
-    MORSE_Set(MORSE_INNER_BLOCK_SIZE,  48 );
+    MORSE_Set(MORSE_TILE_SIZE,         20 );
+    MORSE_Set(MORSE_INNER_BLOCK_SIZE,   7 );
 
     argc -= 4;
     argv += 4;
@@ -250,6 +250,12 @@ int main (int argc, char **argv)
     }
     else if ( strcmp(func, "GELS_PARAM") == 0 ) {
         info += testing_zgels_param( argc, argv );
+    }
+    else if ( strcmp(func, "GELS_HQR") == 0 ) {
+        info += testing_zgels_hqr( argc, argv );
+    }
+    else if ( strcmp(func, "GELS_SYSTOLIC") == 0 ) {
+        info += testing_zgels_systolic( argc, argv );
     }
     /* else if ( strcmp(func, "GESV") == 0 ) { */
     /*     info += testing_zgesv( argc, argv ); */
