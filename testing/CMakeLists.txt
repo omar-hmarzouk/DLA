@@ -65,6 +65,8 @@ set(ZSRC
     ##################
     testing_zgels.c
     testing_zgels_param.c
+    testing_zgels_hqr.c
+    testing_zgels_systolic.c
     #testing_zgesv.c
     testing_zgesv_incpiv.c
     #testing_zgetri.c
