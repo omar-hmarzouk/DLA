@@ -92,7 +92,6 @@ int testing_zgeadd(int argc, char **argv);
 
 int testing_zposv(int argc, char **argv);
 int testing_zgels(int argc, char **argv);
-int testing_zgels_param(int argc, char **argv);
 int testing_zgels_hqr(int argc, char **argv);
 int testing_zgels_systolic(int argc, char **argv);
 int testing_zgesv(int argc, char **argv);

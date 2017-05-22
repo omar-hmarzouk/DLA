@@ -248,9 +248,6 @@ int main (int argc, char **argv)
     else if ( strcmp(func, "GESV_INCPIV") == 0 ) {
         info += testing_zgesv_incpiv( argc, argv );
     }
-    else if ( strcmp(func, "GELS_PARAM") == 0 ) {
-        info += testing_zgels_param( argc, argv );
-    }
     else if ( strcmp(func, "GELS_HQR") == 0 ) {
         info += testing_zgels_hqr( argc, argv );
     }
