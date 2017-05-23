@@ -39,6 +39,11 @@ foreach(cat  ${TEST_CATEGORIES})
          add_test(test_${cat}_${prec}gels_lq     ./${prec}${TEST_CMD_${cat}} GELS        0 400 800 825 25 810)
          add_test(test_${cat}_${prec}gels_hlq    ./${prec}${TEST_CMD_${cat}} GELS        1 400 800 825 25 810 4)
          add_test(test_${cat}_${prec}gesv_incpiv ./${prec}${TEST_CMD_${cat}} GESV_INCPIV 800 825 25 810)
+
+         add_test(test_${cat}_${prec}gels_hqr_greedy    ./${prec}${TEST_CMD_${cat}} GELS_HQR 1000 1000 1000 10 1000 4 -1 1 -1 0)
+         add_test(test_${cat}_${prec}gels_hqr_fibonacci ./${prec}${TEST_CMD_${cat}} GELS_HQR 1000 1000 1000 10 1000 4 -1 2 -1 0)
+         add_test(test_${cat}_${prec}gels_hqr_binary    ./${prec}${TEST_CMD_${cat}} GELS_HQR 1000 1000 1000 10 1000 4 -1 3 -1 0)
+
      endif()
 
   endforeach()
