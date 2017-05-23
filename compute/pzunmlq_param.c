@@ -81,8 +81,8 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
 #endif
 
     /* Initialisation of tiles */
-    tiles = (int*)malloc((qrtree->nt)*sizeof(int));
-    memset( tiles, 0, (qrtree->nt)*sizeof(int) );
+    tiles = (int*)malloc((qrtree->mt)*sizeof(int));
+    memset( tiles, 0, (qrtree->mt)*sizeof(int) );
 
     ws_worker *= sizeof(MORSE_Complex64_t);
     ws_host   *= sizeof(MORSE_Complex64_t);

@@ -137,6 +137,7 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
             else {
                 for (m = k; m < Q->mt; m++) {
                     tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
+                    ldqm = BLKLDD(Q, m);
                     MORSE_TASK_zttmlq(
                         &options,
                         MorseRight, MorseNoTrans,
