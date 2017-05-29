@@ -306,6 +306,7 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                     else {
                         for (m = 0; m < B->mt; m++) {
                             tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
+                            ldbm = BLKLDD(B, m);
                             MORSE_TASK_zttmlq(
                                 &options,
                                 side, trans,
@@ -406,6 +407,7 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                     if(qrtree->gettype(qrtree, k, n) == 0){
                         for (m = 0; m < B->mt; m++) {
                             tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
+                            ldbm = BLKLDD(B, m);
                             MORSE_TASK_ztsmlq(
                                 &options,
                                 side, trans,
@@ -419,6 +421,7 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                     else {
                         for (m = 0; m < B->mt; m++) {
                             tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
+                            ldbm = BLKLDD(B, m);
                             MORSE_TASK_zttmlq(
                                 &options,
                                 side, trans,
