@@ -49,7 +49,7 @@ void morse_pzlapack_to_tile(MORSE_Complex64_t *Af77, int lda, MORSE_desc_t *dA,
 
     dB = morse_desc_init(
         MorseComplexDouble, dA->mb, dA->nb, dA->bsiz,
-        lda, dA->n, dA->i, dA->j, dA->m, dA->n, 1, 1);
+        lda, dA->n, 0, 0, dA->m, dA->n, 1, 1);
 
     dB.get_blkaddr = morse_getaddr_cm;
     dB.get_blkldd  = morse_getblkldd_cm;
@@ -104,7 +104,7 @@ void morse_pztile_to_lapack(MORSE_desc_t *dA, MORSE_Complex64_t *Af77, int lda,
 
     dB = morse_desc_init(
         MorseComplexDouble, dA->mb, dA->nb, dA->bsiz,
-        lda, dA->n, dA->i, dA->j, dA->m, dA->n, 1, 1);
+        lda, dA->n, 0, 0, dA->m, dA->n, 1, 1);
 
     dB.get_blkaddr = morse_getaddr_cm;
     dB.get_blkldd  = morse_getblkldd_cm;
