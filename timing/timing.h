@@ -64,9 +64,6 @@ enum iparam_timing {
     IPARAM_BOUNDDEPSPRIO,
     /* End */
     /* Added for libhqr version */
-    IPARAM_NNODES,       /* Number of nodes                             */
-    IPARAM_GP,           /* Rows in the process grid                    */
-    IPARAM_GQ,           /* Columns in the process grid                 */
     IPARAM_LOWLVL_TREE,  /* Tree used for reduction inside nodes        */
     IPARAM_HIGHLVL_TREE, /* Tree used for reduction between nodes       */
     IPARAM_QR_TS_SZE,    /* Size of TS domain                           */
