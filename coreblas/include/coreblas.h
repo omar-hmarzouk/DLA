@@ -71,6 +71,7 @@ extern "C" {
         fprintf(stderr, "%s: Parameter %d / %s\n", __func__, k, str) ;  \
         assert(0);                                                      \
     } while(0)
+
 /** ****************************************************************************
  * CBlas enum
  **/
