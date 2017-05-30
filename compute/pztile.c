@@ -38,8 +38,7 @@ void morse_pzlapack_to_tile(MORSE_Complex64_t *Af77, int lda, MORSE_desc_t *dA,
     MORSE_context_t *morse;
     MORSE_option_t options;
     MORSE_desc_t dB;
-    int X1, Y1;
-    int X2, Y2;
+    int X, Y;
     int n, m, ldt;
 
     morse = morse_context_self();
@@ -60,18 +59,15 @@ void morse_pzlapack_to_tile(MORSE_Complex64_t *Af77, int lda, MORSE_desc_t *dA,
 
     for (m = 0; m < dA->mt; m++)
     {
+        Y = m == dA->mt-1 ? dA->m-m*dA->mb : dA->mb;
         ldt = BLKLDD(dA, m);
         for (n = 0; n < dA->nt; n++)
         {
-            X1 = n == 0 ? dA->j%dA->nb : 0;
-            Y1 = m == 0 ? dA->i%dA->mb : 0;
-            X2 = n == dA->nt-1 ? (dA->j+dA->n-1)%dA->nb+1 : dA->nb;
-            Y2 = m == dA->mt-1 ? (dA->i+dA->m-1)%dA->mb+1 : dA->mb;
-
+            X = n == dA->nt-1 ? dA->n-n*dA->nb : dA->nb;
             MORSE_TASK_zlacpy(
                 &options,
                 MorseUpperLower,
-                (Y2-Y1), (X2-X1), dA->mb,
+                Y, X, dA->mb,
                 B(m, n), lda,
                 A(m, n), ldt);
         }
@@ -93,8 +89,7 @@ void morse_pztile_to_lapack(MORSE_desc_t *dA, MORSE_Complex64_t *Af77, int lda,
     MORSE_context_t *morse;
     MORSE_option_t options;
     MORSE_desc_t dB;
-    int X1, Y1;
-    int X2, Y2;
+    int X, Y;
     int n, m, ldt;
 
     morse = morse_context_self();
@@ -115,19 +110,15 @@ void morse_pztile_to_lapack(MORSE_desc_t *dA, MORSE_Complex64_t *Af77, int lda,
 
     for (m = 0; m < dA->mt; m++)
     {
-        Y1 = m == 0 ? dA->i%dA->mb : 0;
-        Y2 = m == dA->mt-1 ? (dA->i+dA->m-1)%dA->mb+1 : dA->mb;
+        Y = m == dA->mt-1 ? dA->m-m*dA->mb : dA->mb;
         ldt = BLKLDD(dA, m);
-
         for (n = 0; n < dA->nt; n++)
         {
-            X1 = n == 0 ? dA->j%dA->nb : 0;
-            X2 = n == dA->nt-1 ? (dA->j+dA->n-1)%dA->nb+1 : dA->nb;
-
+            X = n == dA->nt-1 ? dA->n-n*dA->nb : dA->nb;
             MORSE_TASK_zlacpy(
                 &options,
                 MorseUpperLower,
-                (Y2-Y1), (X2-X1), dA->mb,
+                Y, X, dA->mb,
                 A(m, n), ldt,
                 B(m, n), lda);
         }
@@ -148,8 +139,7 @@ void morse_pztile_zero(MORSE_desc_t *dA, MORSE_sequence_t *sequence, MORSE_reque
 {
     MORSE_context_t *morse;
     MORSE_option_t options;
-    int X1, Y1;
-    int X2, Y2;
+    int X, Y;
     int n, m, ldt;
 
     morse = morse_context_self();
@@ -159,17 +149,14 @@ void morse_pztile_zero(MORSE_desc_t *dA, MORSE_sequence_t *sequence, MORSE_reque
 
     for (m = 0; m < dA->mt; m++)
     {
-        Y1 = m == 0 ? dA->i%dA->mb : 0;
-        Y2 = m == dA->mt-1 ? (dA->i+dA->m-1)%dA->mb+1 : dA->mb;
+        Y = m == dA->mt-1 ? dA->m-m*dA->mb : dA->mb;
         ldt = BLKLDD(dA, m);
         for (n = 0; n < dA->nt; n++)
         {
-            X1 = n == 0 ? dA->j%dA->nb : 0;
-            X2 = n == dA->nt-1 ? (dA->j+dA->n-1)%dA->nb+1 : dA->nb;
-
+            X = n == dA->nt-1 ? dA->n-n*dA->nb : dA->nb;
             MORSE_TASK_ztile_zero(
                 &options,
-                X1, X2, Y1, Y2,
+                0, X, 0, Y,
                 A(m, n), ldt);
         }
     }
