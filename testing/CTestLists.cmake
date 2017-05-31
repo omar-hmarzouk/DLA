@@ -43,7 +43,12 @@ foreach(cat  ${TEST_CATEGORIES})
          add_test(test_${cat}_${prec}gels_hqr_greedy    ./${prec}${TEST_CMD_${cat}} GELS_HQR 1000 1000 1000 10 1000 4 -1 1 -1 0)
          add_test(test_${cat}_${prec}gels_hqr_fibonacci ./${prec}${TEST_CMD_${cat}} GELS_HQR 1000 1000 1000 10 1000 4 -1 2 -1 0)
          add_test(test_${cat}_${prec}gels_hqr_binary    ./${prec}${TEST_CMD_${cat}} GELS_HQR 1000 1000 1000 10 1000 4 -1 3 -1 0)
+         add_test(test_${cat}_${prec}gels_hlq_greedy    ./${prec}${TEST_CMD_${cat}} GELS_HQR 1000 1500 1000 10 1000 4 -1 1 -1 0)
+         add_test(test_${cat}_${prec}gels_hlq_fibonacci ./${prec}${TEST_CMD_${cat}} GELS_HQR 1000 1500 1000 10 1000 4 -1 2 -1 0)
+         add_test(test_${cat}_${prec}gels_hlq_binary    ./${prec}${TEST_CMD_${cat}} GELS_HQR 1000 1500 1000 10 1000 4 -1 3 -1 0)
 
+         add_test(test_${cat}_${prec}gels_rq_systolic      ./${prec}${TEST_CMD_${cat}} GELS_SYSTOLIC 1000 1000 1000 10 1000 3 2)
+         add_test(test_${cat}_${prec}gels_lq_systolic      ./${prec}${TEST_CMD_${cat}} GELS_SYSTOLIC 1000 1500 1000 10 1000 3 2)
      endif()
 
   endforeach()
