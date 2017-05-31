@@ -26,151 +26,135 @@
  **/
 #include "control/common.h"
 
-#define A(m, n) dA, m, n
-#define B(m, n) &dB, m, n
+#define A(m, n) A, m, n
+#define B(m, n) &B, m, n
 
 /*******************************************************************************
  *  Conversion from LAPACK F77 matrix layout to tile layout - dynamic scheduling
  **/
-void morse_pzlapack_to_tile(MORSE_Complex64_t *Af77, int lda, MORSE_desc_t *dA,
+void morse_pzlapack_to_tile(MORSE_Complex64_t *Af77, int ldaf77, MORSE_desc_t *A,
                             MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
     MORSE_option_t options;
-    MORSE_desc_t dB;
-    int X1, Y1;
-    int X2, Y2;
-    int n, m, ldt;
+    MORSE_desc_t B;
+    int m, n;
+    int ldam;
+    int tempmm, tempnn;
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
         return;
     RUNTIME_options_init(&options, morse, sequence, request);
 
-    dB = morse_desc_init(
-        MorseComplexDouble, dA->mb, dA->nb, dA->bsiz,
-        lda, dA->n, dA->i, dA->j, dA->m, dA->n, 1, 1);
+    B = morse_desc_init(
+        MorseComplexDouble, A->mb, A->nb, A->bsiz,
+        ldaf77, A->n, 0, 0, A->m, A->n, 1, 1);
 
-    dB.get_blkaddr = morse_getaddr_cm;
-    dB.get_blkldd  = morse_getblkldd_cm;
-    dB.mat = Af77;
-    dB.styp = MorseCM;
+    B.get_blkaddr = morse_getaddr_cm;
+    B.get_blkldd  = morse_getblkldd_cm;
+    B.mat = Af77;
+    B.styp = MorseCM;
 
-    RUNTIME_desc_create( &dB );
+    RUNTIME_desc_create( &B );
 
-    for (m = 0; m < dA->mt; m++)
-    {
-        ldt = BLKLDD(dA, m);
-        for (n = 0; n < dA->nt; n++)
-        {
-            X1 = n == 0 ? dA->j%dA->nb : 0;
-            Y1 = m == 0 ? dA->i%dA->mb : 0;
-            X2 = n == dA->nt-1 ? (dA->j+dA->n-1)%dA->nb+1 : dA->nb;
-            Y2 = m == dA->mt-1 ? (dA->i+dA->m-1)%dA->mb+1 : dA->mb;
-
+    for (m = 0; m < A->mt; m++) {
+        tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
+        ldam = BLKLDD(A, m);
+        for (n = 0; n < A->nt; n++) {
+            tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
             MORSE_TASK_zlacpy(
                 &options,
                 MorseUpperLower,
-                (Y2-Y1), (X2-X1), dA->mb,
-                B(m, n), lda,
-                A(m, n), ldt);
+                tempmm, tempnn, A->mb,
+                B(m, n), ldaf77,
+                A(m, n), ldam);
         }
     }
 
     RUNTIME_sequence_wait( morse, sequence );
     RUNTIME_options_finalize( &options, morse );
     MORSE_TASK_dataflush_all();
-    RUNTIME_desc_getoncpu( &dB );
-    RUNTIME_desc_destroy( &dB );
+    RUNTIME_desc_getoncpu( &B );
+    RUNTIME_desc_destroy( &B );
 }
 
 /*******************************************************************************
  *  Conversion from LAPACK F77 matrix layout to tile layout - dynamic scheduling
  **/
-void morse_pztile_to_lapack(MORSE_desc_t *dA, MORSE_Complex64_t *Af77, int lda,
+void morse_pztile_to_lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int ldaf77,
                             MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
     MORSE_option_t options;
-    MORSE_desc_t dB;
-    int X1, Y1;
-    int X2, Y2;
-    int n, m, ldt;
+    MORSE_desc_t B;
+    int m, n;
+    int ldam;
+    int tempmm, tempnn;
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
         return;
     RUNTIME_options_init(&options, morse, sequence, request);
 
-    dB = morse_desc_init(
-        MorseComplexDouble, dA->mb, dA->nb, dA->bsiz,
-        lda, dA->n, dA->i, dA->j, dA->m, dA->n, 1, 1);
+    B = morse_desc_init(
+        MorseComplexDouble, A->mb, A->nb, A->bsiz,
+        ldaf77, A->n, 0, 0, A->m, A->n, 1, 1);
 
-    dB.get_blkaddr = morse_getaddr_cm;
-    dB.get_blkldd  = morse_getblkldd_cm;
-    dB.mat  = Af77;
-    dB.styp = MorseCM;
+    B.get_blkaddr = morse_getaddr_cm;
+    B.get_blkldd  = morse_getblkldd_cm;
+    B.mat  = Af77;
+    B.styp = MorseCM;
 
-    RUNTIME_desc_create( &dB );
+    RUNTIME_desc_create( &B );
 
-    for (m = 0; m < dA->mt; m++)
-    {
-        Y1 = m == 0 ? dA->i%dA->mb : 0;
-        Y2 = m == dA->mt-1 ? (dA->i+dA->m-1)%dA->mb+1 : dA->mb;
-        ldt = BLKLDD(dA, m);
-
-        for (n = 0; n < dA->nt; n++)
-        {
-            X1 = n == 0 ? dA->j%dA->nb : 0;
-            X2 = n == dA->nt-1 ? (dA->j+dA->n-1)%dA->nb+1 : dA->nb;
-
+    for (m = 0; m < A->mt; m++) {
+        tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
+        ldam = BLKLDD(A, m);
+        for (n = 0; n < A->nt; n++) {
+            tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
             MORSE_TASK_zlacpy(
                 &options,
                 MorseUpperLower,
-                (Y2-Y1), (X2-X1), dA->mb,
-                A(m, n), ldt,
-                B(m, n), lda);
+                tempmm, tempnn, A->mb,
+                A(m, n), ldam,
+                B(m, n), ldaf77);
         }
     }
 
     RUNTIME_sequence_wait( morse, sequence );
     RUNTIME_options_finalize( &options, morse );
     MORSE_TASK_dataflush_all();
-    RUNTIME_desc_getoncpu( &dB );
-    RUNTIME_desc_destroy( &dB );
+    RUNTIME_desc_getoncpu( &B );
+    RUNTIME_desc_destroy( &B );
 }
 
 
 /*******************************************************************************
  *  Zeroes a submatrix in tile layout - dynamic scheduling
  **/
-void morse_pztile_zero(MORSE_desc_t *dA, MORSE_sequence_t *sequence, MORSE_request_t *request)
+void morse_pztile_zero(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
     MORSE_option_t options;
-    int X1, Y1;
-    int X2, Y2;
-    int n, m, ldt;
+    int m, n;
+    int ldam;
+    int tempmm, tempnn;
 
     morse = morse_context_self();
     if (sequence->status != MORSE_SUCCESS)
         return;
     RUNTIME_options_init(&options, morse, sequence, request);
 
-    for (m = 0; m < dA->mt; m++)
-    {
-        Y1 = m == 0 ? dA->i%dA->mb : 0;
-        Y2 = m == dA->mt-1 ? (dA->i+dA->m-1)%dA->mb+1 : dA->mb;
-        ldt = BLKLDD(dA, m);
-        for (n = 0; n < dA->nt; n++)
-        {
-            X1 = n == 0 ? dA->j%dA->nb : 0;
-            X2 = n == dA->nt-1 ? (dA->j+dA->n-1)%dA->nb+1 : dA->nb;
-
+    for (m = 0; m < A->mt; m++) {
+        tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
+        ldam = BLKLDD(A, m);
+        for (n = 0; n < A->nt; n++) {
+            tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
             MORSE_TASK_ztile_zero(
                 &options,
-                X1, X2, Y1, Y2,
-                A(m, n), ldt);
+                0, tempnn, 0, tempmm,
+                A(m, n), ldam);
         }
     }
 
