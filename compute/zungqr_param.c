@@ -257,11 +257,10 @@ int MORSE_zungqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_
  * @sa MORSE_zgeqrf_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zungqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *Q,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zungqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *Q, MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
-
+    MORSE_desc_t D;
     morse = morse_context_self();
     if (morse == NULL) {
         morse_fatal_error("MORSE_zungqr_param_Tile", "MORSE not initialized");
@@ -308,8 +307,14 @@ int MORSE_zungqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
     if (N <= 0)
         return MORSE_SUCCESS;
 */
+#if defined(CHAMELEON_COPY_DIAG)
+    morse_zdesc_alloc(D, A->mb, A->nb, A->m, chameleon_min(A->m, A->n), 0, 0, A->m, chameleon_min(A->m, A->n), );
     morse_pzlaset(MorseUpperLower, 0., 1., Q, sequence, request);
-    morse_pzungqr_param(qrtree, A, Q, TS, TT, sequence, request);
-
+    morse_pzungqr_param(qrtree, A, Q, TS, TT, &D, sequence, request);
+    morse_desc_mat_free(&D);
+#else
+    morse_pzlaset(MorseUpperLower, 0., 1., Q, sequence, request);
+    morse_pzungqr_param(qrtree, A, Q, TS, TT, NULL, sequence, request);
+#endif
     return MORSE_SUCCESS;
 }

@@ -30,6 +30,9 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
     MORSE_desc_t *TS;
     MORSE_desc_t *TT;
+    libhqr_tree_t qrtree;
+    libhqr_tiledesc_t matrix;
+
     PASTE_CODE_IPARAM_LOCALS( iparam );
 
     if ( M != N && check ) {
@@ -46,14 +49,25 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     /* Allocate Workspace */
     MORSE_Alloc_Workspace_zgels(M, N, &TS, P, Q);
     memset(TS->mat, 0, (TS->llm*TS->lln)*sizeof(MorseComplexDouble));
-    MORSE_Alloc_Workspace_zgels(M, N, &TT P, Q);
+    MORSE_Alloc_Workspace_zgels(M, N, &TT, P, Q);
     memset(TT->mat, 0, (TT->llm*TT->lln)*sizeof(MorseComplexDouble));
 
     /* Save AT in lapack layout for check */
     PASTE_CODE_ALLOCATE_COPY( Acpy, check, MORSE_Complex64_t, A, LDA, N );
 
+    /* Initialize matrix */
+    matrix.mt = TS->mt;
+    matrix.nt = TS->nt;
+    matrix.nodes = 1;
+    matrix.p = 1;
+
+    /* Initialize qrtree  */
+    libhqr_hqr_init( &qrtree,
+                     ( matrix.mt >= matrix.nt ) ? LIBHQR_QR : LIBHQR_LQ,
+                     &matrix, -1, -1, 1, -1, 0, 0);
+
     START_TIMING();
-    MORSE_zgeqrf( M, N, A, LDA, TS );
+    MORSE_zgeqrf_param(&qrtree, M, N, A, LDA, TS, TT );
     STOP_TIMING();
 
     /* Check the solution */
@@ -63,7 +77,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         MORSE_zplrnt( N, NRHS, X, LDB, 5673 );
         PASTE_CODE_ALLOCATE_COPY( B, 1, MORSE_Complex64_t, X, LDB, NRHS );
 
-        MORSE_zgeqrs(M, N, NRHS, A, LDA, TS, X, LDB);
+        MORSE_zgeqrs_param(&qrtree, M, N, NRHS, A, LDA, TS, TT, X, LDB);
 
         dparam[IPARAM_RES] = z_check_solution(M, N, NRHS, Acpy, LDA, B, X, LDB,
                                               &(dparam[IPARAM_ANORM]),
