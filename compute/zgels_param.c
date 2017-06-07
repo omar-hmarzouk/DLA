@@ -3,8 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -16,14 +15,10 @@
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 2.5.0
- * @comment This file has been automatically generated
- *          from Plasma 2.5.0 for MORSE 1.0.0
- * @author Jakub Kurzak
+ * @version 1.0.0
+ * @author Raphael Boucherie
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
- * @date 2010-11-15
+ * @date 2017-05-17
  * @precisions normal z -> s d c
  *
  **/
@@ -49,6 +44,9 @@
  *  solution matrix X.
  *
  *******************************************************************************
+ *
+ * @param[in] qrtree
+ *          The tree used for the factorization
  *
  * @param[in] trans
  *          Intended usage:
@@ -77,7 +75,10 @@
  * @param[in] LDA
  *          The leading dimension of the array A. LDA >= max(1,M).
  *
- * @param[out] descT
+ * @param[out] descTS
+ *          On exit, auxiliary factorization data.
+ *
+ * @param[out] descTT
  *          On exit, auxiliary factorization data.
  *
  * @param[in,out] B
@@ -245,7 +246,10 @@ int MORSE_zgels_param(const libhqr_tree_t *qrtree, MORSE_enum trans, int M, int 
  *          if M < N, A is overwritten by details of its LQ factorization as returned by
  *                      MORSE_zgelqf.
  *
- * @param[out] T
+ * @param[out] TS
+ *          On exit, auxiliary factorization data.
+ *
+ * @param[out] TT
  *          On exit, auxiliary factorization data.
  *
  * @param[in,out] B

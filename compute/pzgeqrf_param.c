@@ -15,15 +15,10 @@
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 2.5.0
- * @author Jakub Kurzak
- * @author Hatem Ltaief
- * @author Dulceneia Becker
+ * @version 1.0.0
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
  * @author Raphael Boucherie
- * @date 2010-11-15
+ * @date 2017-05-17
  * @precisions normal z -> s d c
  *
  **/
@@ -50,7 +45,7 @@ void morse_pzgeqrf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
     MORSE_option_t options;
     size_t ws_worker = 0;
     size_t ws_host = 0;
-    
+
     int k, m, n, i, p;
     int K;
     int ldap, ldam;

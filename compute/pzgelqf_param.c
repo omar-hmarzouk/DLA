@@ -15,15 +15,10 @@
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 2.5.0
- * @author Jakub Kurzak
- * @author Hatem Ltaief
- * @author Dulceneia Becker
+ * @version 0.0.0
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
  * @author Raphael Boucherie
- * @date 2010-11-15
+ * @date 2017-05-17
  * @precisions normal z -> s d c
  *
  **/
@@ -54,7 +49,7 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
     int k, m, n, i, p;
     int K;
     int ldak, ldam, ldap;
-    int tempkmin, tempkm, tempnn, tempmm;
+    int tempkmin, tempkm, tempnn, tempmm, temppn;
     int ib;
     int *tiles;
 
@@ -108,33 +103,33 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
     /* The number of the factorization */
     for (k = 0; k < K; k++) {
         RUNTIME_iteration_push(morse, k);
-        tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
 
+        tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
+        ldak = BLKLDD(A, k);
         /* The number of geqrt to apply */
         for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
-            n = qrtree->getm(qrtree, k, i);
-            tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
-            tempkmin = chameleon_min(tempnn, tempkm);
-            ldak = BLKLDD(A, k);
+            p = qrtree->getm(qrtree, k, i);
+            temppn = p == A->nt-1 ? A->n-p*A->nb : A->nb;
+            tempkmin = chameleon_min(tempkm, temppn);
 
             MORSE_TASK_zgelqt(
                 &options,
-                tempkm, tempnn, ib, TS->nb,
-                A( k, n), ldak,
-                TS(k, n), TS->mb);
-            if ( k < (A->nt-1) ) {
+                tempkm, temppn, ib, TS->nb,
+                A( k, p), ldak,
+                TS(k, p), TS->mb);
+            if ( k < (A->mt-1) ) {
 #if defined(CHAMELEON_COPY_DIAG)
                 MORSE_TASK_zlacpy(
                     &options,
-                    MorseUpper, tempkm, tempnn, A->nb,
-                    A(k, n), ldak,
-                    D(k, n), ldak );
+                    MorseUpper, tempkm, temppn, A->nb,
+                    A(k, p), ldak,
+                    D(k, p), ldak );
 #if defined(CHAMELEON_USE_CUDA)
                 MORSE_TASK_zlaset(
                     &options,
-                    MorseLower, tempkm, tempnn,
+                    MorseLower, tempkm, temppn,
                     0., 1.,
-                    D(k, n), ldak );
+                    D(k, p), ldak );
 #endif
 #endif
             }
@@ -144,10 +139,10 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
                 MORSE_TASK_zunmlq(
                     &options,
                     MorseRight, MorseConjTrans,
-                    tempmm, tempnn, tempkmin, ib, TS->nb,
-                    D( k, n), ldak,
-                    TS(k, n), TS->mb,
-                    A( m, n), ldam);
+                    tempmm, temppn, tempkmin, ib, TS->nb,
+                    D( k, p), ldak,
+                    TS(k, p), TS->mb,
+                    A( m, p), ldam);
             }
         }
 
@@ -165,7 +160,7 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
                 MORSE_TASK_ztslqt(
                     &options,
                     tempkm, tempnn, ib, TS->nb,
-                    A( k, p), ldak,
+                    A( p, n), ldap,
                     A( k, n), ldak,
                     TS(k, n), TS->mb);
 
@@ -176,7 +171,7 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_de
                         &options,
                         MorseRight, MorseConjTrans,
                         tempmm, A->nb, tempmm, tempnn, tempkm, ib, TS->nb,
-                        A( m, p), ldam,
+                        A( p, n), ldap,
                         A( m, n), ldam,
                         A( k, n), ldak,
                         TS(k, n), TS->mb);

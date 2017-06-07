@@ -3,8 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -16,20 +15,17 @@
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 2.5.0
- * @comment This file has been automatically generated
- *          from Plasma 2.5.0 for MORSE 1.0.0
- * @author Jakub Kurzak
+ * @version 1.0.0
+ * @author Raphael Boucherie
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
- * @date 2010-11-15
+ * @date 2017-05-17
  * @precisions normal z -> s d c
  *
  **/
 #include "control/common.h"
 
-/***************************************************************************//**
+/**
+ *******************************************************************************
  *
  * @ingroup MORSE_Complex64_t
  *
@@ -37,6 +33,9 @@
  *  A = L*Q computed by MORSE_zgelqf.
  *
  *******************************************************************************
+ *
+ * @param[in] qrtree
+ *          The tree used for the factorization
  *
  * @param[in] M
  *          The number of rows of the matrix A. M >= 0.
@@ -53,7 +52,10 @@
  * @param[in] LDA
  *          The leading dimension of the array A. LDA >= M.
  *
- * @param[in] descT
+ * @param[in] descTS
+ *          Auxiliary factorization data, computed by MORSE_zgelqf.
+ *
+ * @param[in] descTT
  *          Auxiliary factorization data, computed by MORSE_zgelqf.
  *
  * @param[in,out] B
@@ -184,7 +186,10 @@ int MORSE_zgelqs_param(const libhqr_tree_t *qrtree, int M, int N, int NRHS,
  * @param[in] A
  *          Details of the LQ factorization of the original matrix A as returned by MORSE_zgelqf.
  *
- * @param[in] T
+ * @param[in] TS
+ *          Auxiliary factorization data, computed by MORSE_zgelqf.
+ *
+ * @param[in] TT
  *          Auxiliary factorization data, computed by MORSE_zgelqf.
  *
  * @param[in,out] B

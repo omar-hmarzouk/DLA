@@ -3,8 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -16,16 +15,10 @@
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 2.5.0
- * @comment This file has been automatically generated
- *          from Plasma 2.5.0 for MORSE 1.0.0
- * @author Bilel Hadri
- * @author Hatem Ltaief
+ * @version 1.0.0
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
  * @author Boucherie Raphael
- * @date 2010-11-15
+ * @date 2017-05-17
  * @precisions normal z -> c d s
  *
  **/
@@ -86,7 +79,6 @@ int testing_zgels_systolic(int argc, char **argv)
     int info_ortho, info_solution, info_factorization;
     int LDAxN    = LDA*N;
     int LDBxNRHS = LDB*NRHS;
-    int domino, tsrr, llvl, hlvl, qr_a, qr_p;
 
     MORSE_Complex64_t *A1 = (MORSE_Complex64_t *)malloc(LDA*N*sizeof(MORSE_Complex64_t));
     MORSE_Complex64_t *A2 = (MORSE_Complex64_t *)malloc(LDA*N*sizeof(MORSE_Complex64_t));
@@ -134,6 +126,7 @@ int testing_zgels_systolic(int argc, char **argv)
 
     /* MORSE ZGELS */
     MORSE_zgels_param(&qrtree, MorseNoTrans, M, N, NRHS, A2, LDA, TS, TT, B2, LDB);
+    //MORSE_zgels(MorseNoTrans, M, N, NRHS, A2, LDA, TS, B2, LDB);
 
     /* MORSE ZGELS */
     if (M >= N)
@@ -142,6 +135,8 @@ int testing_zgels_systolic(int argc, char **argv)
     else
         /* Building the economy-size Q */
         MORSE_zunglq_param(&qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
+        //MORSE_zunglq(M, N, K, A2, LDA, TS, Q, LDA);
+
 
     printf("\n");
     printf("------ TESTS FOR CHAMELEON ZGELS_SYSTOLIC ROUTINE -------  \n");
@@ -223,8 +218,10 @@ int testing_zgels_systolic(int argc, char **argv)
 
         /* Morse routines */
         MORSE_zgelqf_param(&qrtree, M, N, A2, LDA, TS, TT);
-        MORSE_zunglq_param(&qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
-        MORSE_zgelqs_param(&qrtree, M, N, NRHS, A2, LDA, TS, TT, B2, LDB);
+        MORSE_zunglq(M, N, K, A2, LDA, TS, Q, LDA);
+        // MORSE_zunglq_param(&qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
+        //MORSE_zgelqs_param(&qrtree, M, N, NRHS, A2, LDA, TS, TT, B2, LDB);
+        MORSE_zgelqs(M, N, NRHS, A2, LDA, TS, B2, LDB);
 
         /* Check the orthogonality, factorization and the solution */
         info_ortho = check_orthogonality(M, N, LDA, Q, eps);
@@ -287,8 +284,10 @@ int testing_zgels_systolic(int argc, char **argv)
 
         MORSE_zgelqf_param(&qrtree, M, N, A2, LDA, TS, TT);
         MORSE_ztrsm(MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, M, NRHS, 1.0, A2, LDA, B2, LDB);
-        MORSE_zunglq_param(&qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
-        MORSE_zunmlq_param(&qrtree, MorseLeft, MorseConjTrans, N, NRHS, M, A2, LDA, TS, TT, B2, LDB);
+        //MORSE_zunglq_param(&qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
+        MORSE_zunglq(M, N, K, A2, LDA, TS, Q, LDA);
+        //MORSE_zunmlq_param(&qrtree, MorseLeft, MorseConjTrans, N, NRHS, M, A2, LDA, TS, TT, B2, LDB);
+        MORSE_zunmlq(MorseLeft, MorseConjTrans, N, NRHS, M, A2, LDA, TS, B2, LDB);
     }
 
     /* Check the orthogonality, factorization and the solution */

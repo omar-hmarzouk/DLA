@@ -3,8 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -16,16 +15,10 @@
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 2.5.0
- * @comment This file has been automatically generated
- *          from Plasma 2.5.0 for MORSE 1.0.0
- * @author Bilel Hadri
- * @author Hatem Ltaief
+ * @version 1.0.0
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
  * @author Boucherie Raphael
- * @date 2010-11-15
+ * @date 2017-05-17
  * @precisions normal z -> c d s
  *
  **/
@@ -228,8 +221,11 @@ int testing_zgels_hqr(int argc, char **argv)
 
         /* Morse routines */
         MORSE_zgelqf_param(&qrtree, M, N, A2, LDA, TS, TT);
+        //MORSE_zgelqf(M, N, A2, LDA, TS);
         MORSE_zunglq_param(&qrtree, M, N, K, A2, LDA, TS, TT, Q, LDA);
+        //MORSE_zunglq(M, N, K, A2, LDA, TS, Q, LDA);
         MORSE_zgelqs_param(&qrtree, M, N, NRHS, A2, LDA, TS, TT, B2, LDB);
+        //MORSE_zgelqs(M, N, NRHS, A2, LDA, TS, B2, LDB);
 
         /* Check the orthogonality, factorization and the solution */
         info_ortho = check_orthogonality(M, N, LDA, Q, eps);

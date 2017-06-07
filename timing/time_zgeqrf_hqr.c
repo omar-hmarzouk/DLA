@@ -3,8 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -41,10 +40,13 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     }
 
     /* Allocate Data */
-    PASTE_CODE_ALLOCATE_MATRIX( A, 1, MORSE_Complex64_t, LDA, N );
+    PASTE_CODE_ALLOCATE_MATRIX_TILE( descA, 1, MORSE_Complex64_t, LDA, M, N );
+    PASTE_CODE_ALLOCATE_MATRIX_TILE( descX,  ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
+    PASTE_CODE_ALLOCATE_MATRIX_TILE( descA0, ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDA, M, N    );
+    PASTE_CODE_ALLOCATE_MATRIX_TILE( descB,  ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
 
-    /* Initialize Data */
-    MORSE_zplrnt(M, N, A, LDA, 3456);
+    MORSE_zplrnt_Tile( descA, 5373 );
+
 
     /* Allocate Workspace */
     MORSE_Alloc_Workspace_zgels(M, N, &TS, P, Q);
@@ -52,8 +54,10 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_Alloc_Workspace_zgels(M, N, &TT, P, Q);
     memset(TT->mat, 0, (TT->llm*TT->lln)*sizeof(MorseComplexDouble));
 
-    /* Save AT in lapack layout for check */
-    PASTE_CODE_ALLOCATE_COPY( Acpy, check, MORSE_Complex64_t, A, LDA, N );
+    /* Save A for check */
+    if (check == 1 && M == N){
+        MORSE_zlacpy_Tile(MorseUpperLower, descA, descA0);
+    }
 
     /* Initialize matrix */
     matrix.mt = TS->mt;
@@ -67,7 +71,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
                      &matrix, -1, -1, 1, -1, 0, 0);
 
     START_TIMING();
-    MORSE_zgeqrf_param(&qrtree, M, N, A, LDA, TS, TT );
+    MORSE_zgeqrf_param(&qrtree, M, N, descA, LDA, TS, TT );
     STOP_TIMING();
 
     /* Check the solution */
@@ -92,7 +96,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     /* Free Workspace */
     MORSE_Dealloc_Workspace( &TS );
     MORSE_Dealloc_Workspace( &TT );
-    free( A );
+    free( descA );
 
     return 0;
 }

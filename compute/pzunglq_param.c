@@ -3,8 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -16,14 +15,10 @@
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 2.5.0
- * @comment This file has been automatically generated
- *          from Plasma 2.5.0 for MORSE 1.0.0
- * @author Dulceneia Becker
+ * @version 1.0.0
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
- * @date 2011-05-24
+ * @author Raphael Boucherie
+ * @date 2017-05-17
  * @precisions normal z -> s d c
  *
  **/
@@ -34,7 +29,7 @@
 #define TS(m,n) TS,  (m),  (n)
 #define TT(m,n) TT,  (m),  (n)
 #if defined(CHAMELEON_COPY_DIAG)
-#define D(m,n) D, ((n)/BS), 0
+#define D(m,n) D, (m), (n)
 #else
 #define D(m,n) A, (m), (n)
 #endif
@@ -54,7 +49,7 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
 
     int k, m, n, i, p;
     int K;
-    int ldak, ldqp, ldqm;
+    int ldak, ldqm;
     int tempkm, tempkmin, temppn, tempnn, tempmm;
     int ib;
     int *tiles;
@@ -92,16 +87,14 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
 
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
-#if defined(CHAMELEON_COPY_DIAG)
-    {
+    K = chameleon_min(A->mt, A->nt);
+
         /* necessary to avoid dependencies between tasks regarding the diag tile */
-        int nblk = ( A->nt + BS -1 ) / BS;
-        D = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-        morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, nblk * A->mb, A->nb, 0, 0, nblk * A->mb, A->nb, A->p, A->q);
-    }
+#if defined(CHAMELEON_COPY_DIAG)
+    D = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
+    morse_zdesc_alloc_diag(*D, A->mb, A->nb, K*A->mb, A->nb, 0, 0, K*A->mb, A->nb, A->p, A->q);
 #endif
 
-    K = chameleon_min(A->mt, A->nt);
     for (k = K-1; k >= 0; k--) {
         RUNTIME_iteration_push(morse, k);
 
@@ -116,7 +109,6 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
             p = qrtree->currpiv(qrtree, k, n);
 
             tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
-            ldqp = BLKLDD(Q, p);
 
             /* TT or TS */
 
@@ -152,14 +144,13 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
         for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
             p = qrtree->getm(qrtree, k, i);
 
-            temppn = p == A->mt-1 ? A->m-p*A->mb : A->mb;
+            temppn = p == A->nt-1 ? A->n-p*A->nb : A->nb;
             tempkmin = chameleon_min(tempkm, temppn);
-            ldqp = BLKLDD(Q, p);
 
 #if defined(CHAMELEON_COPY_DIAG)
             MORSE_TASK_zlacpy(
                 &options,
-                MorseUpper, tempkmim, temppn, A->nb,
+                MorseUpper, tempkmin, temppn, A->nb,
                 A(k, p), ldak,
                 D(k, p), ldak );
 #if defined(CHAMELEON_USE_CUDA)
@@ -172,6 +163,7 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
 #endif
             for (m = k; m < Q->mt; m++) {
                 tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
+                ldqm = BLKLDD(Q, m);
                 MORSE_TASK_zunmlq(
                     &options,
                     MorseRight, MorseNoTrans,

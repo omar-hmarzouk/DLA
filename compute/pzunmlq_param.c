@@ -3,8 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -50,8 +49,8 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
     MORSE_desc_t *D = NULL;
 
     int k, m, n, i, p;
-    int ldan, ldam, ldbm, ldbn, ldak, ldbp;
-    int tempnn, temppn, tempkmin, tempmm, tempkn, tempkm;
+    int ldbm, ldak, ldbp;
+    int tempnn, temppn, tempkmin, tempmm, tempkm;
     int ib, K;
     int *tiles;
 
@@ -241,7 +240,7 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
-                        MorseUpper, tempkmim, temppn, A->nb,
+                        MorseUpper, tempkmin, temppn, A->nb,
                         A(k, p), ldak,
                         D(k, p), ldak );
 #if defined(CHAMELEON_USE_CUDA)
@@ -321,14 +320,14 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                 for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
                     p = qrtree->getm(qrtree, k, i);
 
-                    temppn = p == A->mt-1 ? A->m-p*A->mb : A->mb;
+                    temppn = p == A->nt-1 ? A->n-p*A->nb : A->nb;
                     tempkmin = chameleon_min(tempkm, temppn);
                     ldbp = BLKLDD(B, p);
 
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
-                        MorseUpper, tempkmim, temppn, A->nb,
+                        MorseUpper, tempkmin, temppn, A->nb,
                         A(k, p), ldak,
                         D(k, p), ldak );
 #if defined(CHAMELEON_USE_CUDA)
@@ -371,13 +370,13 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
                         &options,
-                        MorseUpper, tempkmin, tempkpn, A->nb,
+                        MorseUpper, tempkmin, temppn, A->nb,
                         A(k, p), ldak,
                         D(k, p), ldak );
 #if defined(CHAMELEON_USE_CUDA)
                     MORSE_TASK_zlaset(
                         &options,
-                        MorseLower, tempkmin, tempkpn,
+                        MorseLower, tempkmin, temppn,
                         0., 1.,
                         D(k, p), ldak );
 #endif
