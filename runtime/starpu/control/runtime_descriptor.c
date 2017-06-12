@@ -333,14 +333,16 @@ void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
         int tempnn = (jn == desc->lnt-1) ? (desc->ln - jn * desc->nb) : desc->nb;
 
         if ( myrank == owner ) {
-            if ( desc->get_blkaddr(desc, m, n) == (void*)NULL ) {
+            void *ptr = (void*)(desc->get_blkaddr(desc, m, n));
+
+            if ( ptr == NULL ) {
                 starpu_matrix_data_register(ptrtile, -1,
                                             (uintptr_t) NULL,
                                             BLKLDD(desc, im), tempmm, tempnn, eltsze);
             }
             else {
                 starpu_matrix_data_register(ptrtile, STARPU_MAIN_RAM,
-                                            (uintptr_t)desc->get_blkaddr(desc, m, n),
+                                            (uintptr_t)ptr,
                                             BLKLDD(desc, im), tempmm, tempnn, eltsze);
             }
         }
