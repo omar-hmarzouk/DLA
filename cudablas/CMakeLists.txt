@@ -32,6 +32,8 @@ if (NOT CHAMELEON_SIMULATION)
     add_subdirectory(eztrace_module)
 endif()
 
+get_directory_property( CUDABLAS_DEFINITIONS_LIST DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
+
 ###
 ### END CMakeLists.txt
 ###

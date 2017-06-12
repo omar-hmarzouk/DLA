@@ -6,7 +6,7 @@ includedir=${exec_prefix}/include/chameleon/coreblas/include
 Name: coreblas
 Description: Interface to CBLAS/LAPACKE routines + some other auxiliary routines
 Version: @CHAMELEON_VERSION_MAJOR@.@CHAMELEON_VERSION_MINOR@.@CHAMELEON_VERSION_MICRO@
-Cflags: -I${includedir}
+Cflags: @COREBLAS_PKGCONFIG_DEFINITIONS@ -I${includedir}
 Libs: -L${libdir} @COREBLAS_PKGCONFIG_LIBS@
 Libs.private: @COREBLAS_PKGCONFIG_LIBS_PRIVATE@
 Requires: @COREBLAS_PKGCONFIG_REQUIRED@
