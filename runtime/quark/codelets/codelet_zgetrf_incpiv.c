@@ -107,6 +107,8 @@ void MORSE_TASK_zgetrf_incpiv(const MORSE_option_t *options,
         sizeof(MORSE_bool),                &check_info,    VALUE,
         sizeof(int),                        &iinfo,         VALUE,
         0);
+
+    (void)L; (void)Lm; (void)Ln; (void)ldl;
 }
 
 
