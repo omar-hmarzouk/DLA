@@ -127,6 +127,7 @@ inline static void *morse_getaddr_cm(const MORSE_desc_t *A, int m, int n)
  **/
 inline static void *morse_getaddr_null(const MORSE_desc_t *A, int m, int n)
 {
+    (void)A; (void)m; (void)n;
     return NULL;
 }
 
