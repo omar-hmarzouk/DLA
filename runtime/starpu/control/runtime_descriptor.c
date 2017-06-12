@@ -322,33 +322,28 @@ void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
     int64_t im = m + (desc->i / desc->mb);
     int64_t jn = n + (desc->j / desc->nb);
 
-    starpu_data_handle_t *ptrtile = (starpu_data_handle_t*)(desc->schedopt);
-    ptrtile += ((int64_t)(desc->lmt) * (int64_t)jn + (int64_t)im);
+    starpu_data_handle_t *ptrtile = desc->schedopt;
+    ptrtile += ((int64_t)desc->lmt) * jn + im;
 
     if (*ptrtile == NULL) {
-        int64_t eltsze = MORSE_Element_Size(desc->dtyp);
+        int home_node = -1;
+        void *user_ptr = NULL;
         int myrank = desc->myrank;
         int owner  = desc->get_rankof( desc, m, n );
+        int64_t eltsze = MORSE_Element_Size(desc->dtyp);
         int tempmm = (im == desc->lmt-1) ? (desc->lm - im * desc->mb) : desc->mb;
         int tempnn = (jn == desc->lnt-1) ? (desc->ln - jn * desc->nb) : desc->nb;
 
         if ( myrank == owner ) {
-            if ( desc->get_blkaddr(desc, m, n) == (void*)NULL ) {
-                starpu_matrix_data_register(ptrtile, -1,
-                                            (uintptr_t) NULL,
-                                            BLKLDD(desc, im), tempmm, tempnn, eltsze);
-            }
-            else {
-                starpu_matrix_data_register(ptrtile, STARPU_MAIN_RAM,
-                                            (uintptr_t)desc->get_blkaddr(desc, m, n),
-                                            BLKLDD(desc, im), tempmm, tempnn, eltsze);
+            user_ptr = desc->get_blkaddr(desc, m, n);
+            if ( user_ptr != NULL ) {
+                home_node = STARPU_MAIN_RAM;
             }
         }
-        else {
-            starpu_matrix_data_register(ptrtile, -1,
-                                        (uintptr_t) NULL,
-                                        BLKLDD(desc, im), tempmm, tempnn, eltsze);
-        }
+
+        starpu_matrix_data_register(ptrtile, home_node, (uintptr_t) user_ptr,
+                                    BLKLDD(desc, im),
+                                    tempmm, tempnn, eltsze);
 
 #ifdef HAVE_STARPU_DATA_SET_COORDINATES
         starpu_data_set_coordinates(*ptrtile, 2, m, n);
@@ -362,5 +357,5 @@ void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
 #endif /* defined(CHAMELEON_USE_MPI) */
     }
 
-    return (void *)(*ptrtile);
+    return *ptrtile;
 }

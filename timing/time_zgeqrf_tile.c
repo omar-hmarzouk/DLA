@@ -33,14 +33,14 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     /* Allocate Data */
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descA,  1, MORSE_Complex64_t, MorseComplexDouble, LDA, M, N );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descX,  ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
-    PASTE_CODE_ALLOCATE_MATRIX_TILE( descAC, ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDA, M, N    );
+    PASTE_CODE_ALLOCATE_MATRIX_TILE( descA0, ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDA, M, N    );
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descB,  ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
 
     MORSE_zplrnt_Tile( descA, 5373 );
 
     /* Save A for check */
     if (check == 1 && M == N){
-        MORSE_zlacpy_Tile(MorseUpperLower, descA, descAC);
+        MORSE_zlacpy_Tile(MorseUpperLower, descA, descA0);
     }
 
     /* Allocate Workspace */
@@ -63,13 +63,13 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         MORSE_zgeqrs_Tile( descA, descT, descX );
 
         /* Check solution */
-        dparam[IPARAM_ANORM] = MORSE_zlange_Tile(MorseInfNorm, descAC);
+        dparam[IPARAM_ANORM] = MORSE_zlange_Tile(MorseInfNorm, descA0);
         dparam[IPARAM_BNORM] = MORSE_zlange_Tile(MorseInfNorm, descB);
         dparam[IPARAM_XNORM] = MORSE_zlange_Tile(MorseInfNorm, descX);
-        MORSE_zgemm_Tile( MorseNoTrans, MorseNoTrans, 1.0, descAC, descX, -1.0, descB );
+        MORSE_zgemm_Tile( MorseNoTrans, MorseNoTrans, 1.0, descA0, descX, -1.0, descB );
         dparam[IPARAM_RES] = MORSE_zlange_Tile(MorseInfNorm, descB);
         PASTE_CODE_FREE_MATRIX( descX  )
-        PASTE_CODE_FREE_MATRIX( descAC )
+        PASTE_CODE_FREE_MATRIX( descA0 )
         PASTE_CODE_FREE_MATRIX( descB  )
     }
 

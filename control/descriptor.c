@@ -610,6 +610,10 @@ int MORSE_Desc_Create_OOC_User(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, 
                                int (*get_rankof)( const MORSE_desc_t*, int, int ))
 {
 #if !defined (CHAMELEON_SCHED_STARPU)
+    (void)descptr; (void)dtyp; (void)mb; (void)nb; (void)bsiz;
+    (void)lm; (void)ln; (void)i; (void)j; (void)m; (void)n; (void)p; (void)q;
+    (void)get_rankof;
+
     morse_error("MORSE_Desc_Create_OOC_User", "Only StarPU supports on-demand tile allocation");
     return MORSE_ERR_NOT_INITIALIZED;
 #else

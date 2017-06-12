@@ -123,5 +123,7 @@ void MORSE_TASK_ztradd(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*ldb*n,    RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),             INOUT,
         sizeof(int),                        &ldb,   VALUE,
         0);
+
+    (void)nb;
 }
 

@@ -29,7 +29,7 @@
 void MORSE_TASK_dataflush(const MORSE_option_t *options,
                           const MORSE_desc_t *A, int Am, int An)
 {
-    (void)options; (void)A;
+    (void)options; (void)A; (void)Am; (void)An;
 
     /*
      * This is useful for StarPU implementation, if it happens in Quark, it will
