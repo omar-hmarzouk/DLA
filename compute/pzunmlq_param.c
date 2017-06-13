@@ -322,7 +322,6 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
 
                     temppn = p == A->nt-1 ? A->n-p*A->nb : A->nb;
                     tempkmin = chameleon_min(tempkm, temppn);
-                    ldbp = BLKLDD(B, p);
 
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
@@ -339,6 +338,7 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
 #endif
 #endif
                     for (m = 0; m < B->mt; m++) {
+                        ldbm = BLKLDD(B, m);
                         tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                         MORSE_TASK_zunmlq(
                             &options,

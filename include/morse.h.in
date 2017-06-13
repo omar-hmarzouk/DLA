@@ -121,10 +121,7 @@ int MORSE_Sequence_Wait    (MORSE_sequence_t *sequence);
 }
 #endif
 
-#if defined(CHAMELEON_USE_LIBHQR)
 #include "libhqr.h"
-#endif /* defined(CHAMELEON_USE_LIBHQR) */
-
 #include "morse_z.h"
 #include "morse_c.h"
 #include "morse_d.h"

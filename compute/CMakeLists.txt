@@ -298,6 +298,7 @@ endif()
 if (NOT CHAMELEON_SIMULATION)
     target_link_libraries(chameleon coreblas)
 endif()
+target_link_libraries(chameleon hqr)
 list(INSERT CHAMELEON_DEP 0 -lchameleon)
 
 add_dependencies(chameleon

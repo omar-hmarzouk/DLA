@@ -37,9 +37,6 @@
 /* Communication engine */
 #cmakedefine CHAMELEON_USE_MPI
 
-/* Householder reduction trees for QR like operations */
-#cmakedefine CHAMELEON_USE_LIBHQR
-
 /* GPU Support */
 #cmakedefine CHAMELEON_USE_CUDA
 #cmakedefine CHAMELEON_USE_CUBLAS

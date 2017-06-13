@@ -325,6 +325,6 @@ int MORSE_zgeqrs_param_Tile_Async(const libhqr_tree_t *qrtree,
     morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
     free(subA);
     free(subB);
-
+    (void)D;
     return MORSE_SUCCESS;
 }

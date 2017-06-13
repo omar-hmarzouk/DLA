@@ -336,6 +336,7 @@ int MORSE_zgels_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_enum trans, 
     MORSE_desc_t *subB;
     MORSE_context_t *morse;
     MORSE_desc_t D;
+
     morse = morse_context_self();
     if (morse == NULL) {
         morse_fatal_error("MORSE_zgels_param_Tile", "MORSE not initialized");
@@ -423,5 +424,6 @@ int MORSE_zgels_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_enum trans, 
         //morse_pzunmlq_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, sequence, request);
         morse_pzunmlq(MorseLeft, MorseConjTrans, A, B, TS, sequence, request);
     }
+    (void)D;
     return MORSE_SUCCESS;
 }

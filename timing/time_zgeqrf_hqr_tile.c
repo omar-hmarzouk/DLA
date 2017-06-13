@@ -9,7 +9,7 @@
 
 /**
  *
- * @file time_zgeqrf_hqr.c
+ * @file time_zgeqrf_hqr_tile.c
  *
  * @version 1.0.0
  * @author Mathieu Faverge
@@ -46,11 +46,17 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     }
 
     /* Allocate Data */
-    PASTE_CODE_ALLOCATE_MATRIX( A, 1, MORSE_Complex64_t, LDA, N );
+    PASTE_CODE_ALLOCATE_MATRIX_TILE( descA, 1, MORSE_Complex64_t,  MorseComplexDouble, LDA, M, N );
+    PASTE_CODE_ALLOCATE_MATRIX_TILE( descX,  ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
+    PASTE_CODE_ALLOCATE_MATRIX_TILE( descA0, ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDA, M, N    );
+    PASTE_CODE_ALLOCATE_MATRIX_TILE( descB,  ( check && M == N ), MORSE_Complex64_t, MorseComplexDouble, LDB, M, NRHS );
 
-    /* Initialize Data */
-    MORSE_zplrnt(M, N, A, LDA, 3456);
+    MORSE_zplrnt_Tile( descA, 5373 );
 
+    /* Save A for check */
+    if (check == 1 && M == N){
+        MORSE_zlacpy_Tile(MorseUpperLower, descA, descA0);
+    }
 
     /* Allocate Workspace */
     MORSE_Alloc_Workspace_zgels(M, N, &TS, P, Q);
@@ -58,8 +64,6 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_Alloc_Workspace_zgels(M, N, &TT, P, Q);
     memset(TT->mat, 0, (TT->llm*TT->lln)*sizeof(MorseComplexDouble));
 
-    /* Save AT in lapack layout for check */
-    PASTE_CODE_ALLOCATE_COPY( Acpy, check, MORSE_Complex64_t, A, LDA, N );
 
     /* Initialize matrix */
     matrix.mt = TS->mt;
@@ -69,36 +73,38 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 
     /* Initialize qrtree  */
     libhqr_hqr_init( &qrtree,
-                     ( matrix.mt >= matrix.nt ) ? LIBHQR_QR : LIBHQR_LQ,
-                     &matrix, -1, -1, 1, -1, 0, 0);
+                     ( M >= N ) ? LIBHQR_QR : LIBHQR_LQ,
+                     &matrix, -1, -1, -1, 0, 0, 0);
 
     START_TIMING();
-    MORSE_zgeqrf_param(&qrtree, M, N, A, LDA, TS, TT );
+    MORSE_zgeqrf_param_Tile(&qrtree, descA, TS, TT );
     STOP_TIMING();
 
     /* Check the solution */
-    if ( check )
+    if ( check && M == N)
     {
-        PASTE_CODE_ALLOCATE_MATRIX( X, 1, MORSE_Complex64_t, LDB, NRHS );
-        MORSE_zplrnt( N, NRHS, X, LDB, 5673 );
-        PASTE_CODE_ALLOCATE_COPY( B, 1, MORSE_Complex64_t, X, LDB, NRHS );
+         /* Initialize and save B */
+        MORSE_zplrnt_Tile( descX, 2264 );
+        MORSE_zlacpy_Tile(MorseUpperLower, descX, descB);
 
-        MORSE_zgeqrs_param(&qrtree, M, N, NRHS, A, LDA, TS, TT, X, LDB);
+        /* Compute the solution */
+        MORSE_zgeqrs_param_Tile(&qrtree, descA, TS, TT, descX );
 
-        dparam[IPARAM_RES] = z_check_solution(M, N, NRHS, Acpy, LDA, B, X, LDB,
-                                              &(dparam[IPARAM_ANORM]),
-                                              &(dparam[IPARAM_BNORM]),
-                                              &(dparam[IPARAM_XNORM]));
-
-        free( Acpy );
-        free( B );
-        free( X );
+        /* Check solution */
+        dparam[IPARAM_ANORM] = MORSE_zlange_Tile(MorseInfNorm, descA0);
+        dparam[IPARAM_BNORM] = MORSE_zlange_Tile(MorseInfNorm, descB);
+        dparam[IPARAM_XNORM] = MORSE_zlange_Tile(MorseInfNorm, descX);
+        MORSE_zgemm_Tile( MorseNoTrans, MorseNoTrans, 1.0, descA0, descX, -1.0, descB );
+        dparam[IPARAM_RES] = MORSE_zlange_Tile(MorseInfNorm, descB);
+        PASTE_CODE_FREE_MATRIX( descX  )
+        PASTE_CODE_FREE_MATRIX( descA0 )
+        PASTE_CODE_FREE_MATRIX( descB  )
       }
 
     /* Free Workspace */
     MORSE_Dealloc_Workspace( &TS );
     MORSE_Dealloc_Workspace( &TT );
-    free( A );
+    free( descA );
 
     return 0;
 }

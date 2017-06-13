@@ -310,5 +310,6 @@ int MORSE_zungqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
     morse_pzlaset(MorseUpperLower, 0., 1., Q, sequence, request);
     morse_pzungqr_param(qrtree, A, Q, TS, TT, NULL, sequence, request);
 #endif
+    (void)D;
     return MORSE_SUCCESS;
 }
