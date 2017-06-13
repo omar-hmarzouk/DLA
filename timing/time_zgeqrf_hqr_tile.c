@@ -64,7 +64,6 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_Alloc_Workspace_zgels(M, N, &TT, P, Q);
     memset(TT->mat, 0, (TT->llm*TT->lln)*sizeof(MorseComplexDouble));
 
-
     /* Initialize matrix */
     matrix.mt = TS->mt;
     matrix.nt = TS->nt;
@@ -74,7 +73,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     /* Initialize qrtree  */
     libhqr_hqr_init( &qrtree,
                      ( M >= N ) ? LIBHQR_QR : LIBHQR_LQ,
-                     &matrix, -1, -1, -1, 0, 0, 0);
+                     &matrix, -1, -1, -1, P, 0, 0);
 
     START_TIMING();
     MORSE_zgeqrf_param_Tile(&qrtree, descA, TS, TT );
