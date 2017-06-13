@@ -6,7 +6,7 @@ includedir=${exec_prefix}/include/chameleon
 Name: chameleon
 Description: Dense Linear Algebra for Scalable Multi-core Architectures and GPGPUs
 Version: @CHAMELEON_VERSION_MAJOR@.@CHAMELEON_VERSION_MINOR@.@CHAMELEON_VERSION_MICRO@
-Cflags: -I${includedir} -I${includedir}/coreblas/include
+Cflags: @CHAMELEON_PKGCONFIG_DEFINITIONS@ -I${includedir} -I${includedir}/coreblas/include
 Libs: -L${libdir} @CHAMELEON_PKGCONFIG_LIBS@
 Libs.private: @CHAMELEON_PKGCONFIG_LIBS_PRIVATE@
 Requires: @CHAMELEON_PKGCONFIG_REQUIRED@

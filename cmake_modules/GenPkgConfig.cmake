@@ -80,6 +80,11 @@ ENDMACRO(CLEAN_LIB_LIST)
 ###
 MACRO(GENERATE_PKGCONFIG_FILE)
 
+    # The definitions that should be given to users (change the API)
+    set(CHAMELEON_PKGCONFIG_DEFINITIONS "")
+    set(COREBLAS_PKGCONFIG_DEFINITIONS "")
+    set(CUDABLAS_PKGCONFIG_DEFINITIONS "")
+
     # The link flags specific to this package and any required libraries
     # that don't support PkgConfig
     set(CHAMELEON_PKGCONFIG_LIBS "-lchameleon")

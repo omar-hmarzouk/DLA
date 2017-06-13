@@ -6,7 +6,7 @@ includedir=${exec_prefix}/include/chameleon/cudablas/include
 Name: cudablas
 Description: Interface to cuBLAS/MAGMA routines + some other auxiliary routines
 Version: @CHAMELEON_VERSION_MAJOR@.@CHAMELEON_VERSION_MINOR@.@CHAMELEON_VERSION_MICRO@
-Cflags: -I${includedir}
+Cflags: @CUDABLAS_PKGCONFIG_DEFINITIONS@ -I${includedir}
 Libs: -L${libdir} @CUDABLAS_PKGCONFIG_LIBS@
 Libs.private: @CUDABLAS_PKGCONFIG_LIBS_PRIVATE@
 Requires: @CUDABLAS_PKGCONFIG_REQUIRED@

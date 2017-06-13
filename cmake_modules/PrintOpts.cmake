@@ -68,10 +68,6 @@ foreach (_dep ${CHAMELEON_DEP})
     set(dep_message "${dep_message}"
     "                                 ${_dep}\n")
 endforeach ()
-string(REGEX REPLACE ";" " " CHAMELEON_DEFINITIONS_LIST "${CHAMELEON_DEFINITIONS_LIST}")
-set(dep_message "${dep_message}"
-"\n"
-"       Definitions: ${CHAMELEON_DEFINITIONS_LIST}\n")
 set(dep_message "${dep_message}"
 "\n"
 "       INSTALL_PREFIX ......: ${CMAKE_INSTALL_PREFIX}\n\n")

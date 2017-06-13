@@ -1074,13 +1074,12 @@ if(CHAMELEON_ENABLE_DOCS)
 endif()
 #------------------------------------------------------------------------------
 
-
 ###############################################################################
 # Config files (pkg_config) #
 #############################
 
-# Create file morse_starpu.pc
-# ---------------------------
+# Create .pc file 
+# ---------------
 generate_pkgconfig_file()
 #------------------------------------------------------------------------------
 
@@ -1106,7 +1105,6 @@ include(CPack)
 ###############################################################################
 # Print Options #
 #################
-get_directory_property( CHAMELEON_DEFINITIONS_LIST DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
 include(PrintOpts)
 
 if (CMAKE_INSTALL_PREFIX STREQUAL "/usr/local" OR CMAKE_INSTALL_PREFIX STREQUAL "C:/Program Files")
