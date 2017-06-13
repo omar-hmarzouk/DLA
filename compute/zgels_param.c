@@ -421,8 +421,8 @@ int MORSE_zgels_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_enum trans, 
         free(subA);
         free(subB);
 
-        //morse_pzunmlq_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, sequence, request);
-        morse_pzunmlq(MorseLeft, MorseConjTrans, A, B, TS, sequence, request);
+        morse_pzunmlq_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, sequence, request);
+        //morse_pzunmlq(MorseLeft, MorseConjTrans, A, B, TS, sequence, request);
     }
     (void)D;
     return MORSE_SUCCESS;
