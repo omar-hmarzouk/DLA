@@ -31,8 +31,6 @@
 #include "runtime/quark/include/quark_blas.h"
 #include "runtime/quark/include/core_blas_dag.h"
 
-#define QUARK_Insert_Task QUARK_Execute_Task
-
 #include "control/common.h"
 
 typedef struct quark_option_s {
