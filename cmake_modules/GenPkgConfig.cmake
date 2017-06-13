@@ -80,28 +80,10 @@ ENDMACRO(CLEAN_LIB_LIST)
 ###
 MACRO(GENERATE_PKGCONFIG_FILE)
 
-    # The definitions
-    
-    # DEFINITIONS_LIST contains a cmake style list, e.g.: USE_FLAG1;USE_FLAG2;USE_FLAG3
-    # transform the cmake list to get a correct definitions list for pkg-config
-    string(REGEX REPLACE ";" " -D" CHAMELEON_PKGCONFIG_DEFINITIONS "${CHAMELEON_DEFINITIONS_LIST}")
-    string(REGEX REPLACE ";" " -D" COREBLAS_PKGCONFIG_DEFINITIONS "${COREBLAS_DEFINITIONS_LIST}")
-    string(REGEX REPLACE ";" " -D" CUDABLAS_PKGCONFIG_DEFINITIONS "${CUDABLAS_DEFINITIONS_LIST}")
-    if (CHAMELEON_PKGCONFIG_DEFINITIONS)
-      set(CHAMELEON_PKGCONFIG_DEFINITIONS "-D${CHAMELEON_PKGCONFIG_DEFINITIONS}")
-    else()
-      set(CHAMELEON_PKGCONFIG_DEFINITIONS "")
-    endif()
-    if (COREBLAS_PKGCONFIG_DEFINITIONS)
-      set(COREBLAS_PKGCONFIG_DEFINITIONS  "-D${COREBLAS_PKGCONFIG_DEFINITIONS}")
-    else()
-      set(COREBLAS_PKGCONFIG_DEFINITIONS "")
-    endif()
-    if (CUDABLAS_PKGCONFIG_DEFINITIONS)
-      set(CUDABLAS_PKGCONFIG_DEFINITIONS  "-D${CUDABLAS_PKGCONFIG_DEFINITIONS}")
-    else()
-      set(CUDABLAS_PKGCONFIG_DEFINITIONS "")
-    endif()
+    # The definitions that should be given to users (change the API)
+    set(CHAMELEON_PKGCONFIG_DEFINITIONS "")
+    set(COREBLAS_PKGCONFIG_DEFINITIONS "")
+    set(CUDABLAS_PKGCONFIG_DEFINITIONS "")
 
     # The link flags specific to this package and any required libraries
     # that don't support PkgConfig

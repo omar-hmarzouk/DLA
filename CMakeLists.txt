@@ -1074,8 +1074,6 @@ if(CHAMELEON_ENABLE_DOCS)
 endif()
 #------------------------------------------------------------------------------
 
-get_directory_property( CHAMELEON_DEFINITIONS_LIST DIRECTORY ${CMAKE_SOURCE_DIR} COMPILE_DEFINITIONS )
-
 ###############################################################################
 # Config files (pkg_config) #
 #############################
