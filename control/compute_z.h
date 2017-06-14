@@ -37,14 +37,14 @@
         (m), (n), (i), (j), (m), (n), p, q);                            \
     morse_desc_mat_alloc( &(descA) );
 
-#define morse_zdesc_alloc( descA, mb, nb, lm, ln, i, j, m, n, free)   \
-    descA = morse_desc_init(                                          \
-        MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                  \
-        (m), (n), (i), (j), (m), (n), 1, 1);                          \
-    if ( morse_desc_mat_alloc( &(descA) ) ) {                         \
-        morse_error( __func__, "morse_desc_mat_alloc() failed");       \
-        {free;};                                                       \
-        return MORSE_ERR_OUT_OF_RESOURCES;                            \
+#define morse_zdesc_alloc( descA, mb, nb, lm, ln, i, j, m, n, free)     \
+    descA = morse_desc_init(                                            \
+        MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                    \
+        (m), (n), (i), (j), (m), (n), 1, 1);                            \
+    if ( morse_desc_mat_alloc( &(descA) ) ) {                           \
+        morse_error( __func__, "morse_desc_mat_alloc() failed");        \
+        {free;};                                                        \
+        return MORSE_ERR_OUT_OF_RESOURCES;                              \
     }
 
 #define morse_zooplap2tile( descA, A, mb, nb, lm, ln, i, j, m, n, seq, req, free) \
