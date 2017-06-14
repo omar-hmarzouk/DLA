@@ -155,18 +155,18 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_des
 void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T, int BS, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzbuild( MORSE_enum uplo, MORSE_desc_t *A, void *user_data, void* user_build_callback, MORSE_sequence_t *sequence, MORSE_request_t *request );
 
-void morse_pzgelqf_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT,
+void morse_pzgelqf_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
                          MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzgeqrf_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
                          MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzunmlq_param(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans,
-                         MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *TS, MORSE_desc_t *TT,
+                         MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
                          MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzunmqr_param(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans,
                          MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
                          MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *Q,
-                         MORSE_desc_t *TS, MORSE_desc_t *TT,
+                         MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
                          MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzungqr_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *Q,
                          MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
