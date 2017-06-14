@@ -1,9 +1,10 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright 2009-2014 The University of Tennessee and The University
+ *                      of Tennessee Research Foundation.
+ *                      All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -325,7 +326,7 @@ int MORSE_zgelqs_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
 
     subB = morse_desc_submatrix(B, 0, 0, A->m, B->n);
     subA = morse_desc_submatrix(A, 0, 0, A->m, A->m);
-    morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
+    morse_pztrsm(MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
     free(subA);
     free(subB);
 
