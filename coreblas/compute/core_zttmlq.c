@@ -133,7 +133,7 @@ int CORE_zttmlq(MORSE_enum side, MORSE_enum trans,
                 MORSE_Complex64_t *WORK, int LDWORK)
 {
     int i, i1, i3, l;
-    int NQ, NW;
+    int NW;
     int kb;
     int ic = 0;
     int jc = 0;
@@ -150,11 +150,9 @@ int CORE_zttmlq(MORSE_enum side, MORSE_enum trans,
 
     /* NQ is the order of Q */
     if (side == MorseLeft) {
-        NQ = N2;
         NW = IB;
     }
     else {
-        NQ = M2;
         NW = N1;
     }
 
@@ -198,7 +196,7 @@ int CORE_zttmlq(MORSE_enum side, MORSE_enum trans,
         coreblas_error(12, "Illegal value of LDA2");
         return -12;
     }
-    if (LDV < chameleon_max(1,NQ)){
+    if (LDV < chameleon_max(1,K)){
         coreblas_error(14, "Illegal value of LDV");
         return -14;
     }
