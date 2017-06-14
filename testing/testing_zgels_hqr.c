@@ -69,9 +69,9 @@ int testing_zgels_hqr(int argc, char **argv)
 
     int M      = atoi(argv[0]);
     int N      = atoi(argv[1]);
-    int LDA    = max( atoi(argv[2]), M );
+    int LDA    = chameleon_max( atoi(argv[2]), M );
     int NRHS   = atoi(argv[3]);
-    int LDB    = max( max( atoi(argv[4]), M ), N );
+    int LDB    = chameleon_max( chameleon_max( atoi(argv[4]), M ), N );
     int qr_a   = atoi(argv[5]);
     int qr_p   = atoi(argv[6]);
     int llvl   = atoi(argv[7]);
