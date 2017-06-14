@@ -1,10 +1,9 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2009-2014 The University of Tennessee and The University of
+ *                          Tennessee Research Foundation.  All rights reserved.
+ * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                          Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -29,8 +28,6 @@
  * @precisions normal z -> s d c
  *
  **/
-//ALLOC_WS :  A->nb + ib*T->nb
-//WS_ADD :  A->nb + ib*T->nb
 #include "control/common.h"
 
 #define A(m,n) A,  (m),  (n)
@@ -42,9 +39,9 @@
 #define DIAG(m,n) A,  (m),  (n)
 #endif
 
-/***************************************************************************//**
+/*
  *  Parallel tile LQ factorization (reduction Householder) - dynamic scheduling
- **/
+ */
 void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
                      MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
@@ -55,7 +52,7 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     MORSE_desc_t *DIAG = NULL;
 
     int k, m, n;
-    int N, RD;
+    int K, N, RD;
     int ldak, ldam;
     int tempkmin, tempkm, tempNn, tempnn, tempmm, tempNRDn;
     int ib;
@@ -101,7 +98,10 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
     }
 #endif
 
-    for (k = 0; k < chameleon_min(A->mt, A->nt); k++) {
+    K = chameleon_min(A->mt, A->nt);
+
+    /* The number of the factorization */
+    for (k = 0; k < K; k++) {
         RUNTIME_iteration_push(morse, k);
 
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
@@ -114,22 +114,22 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
                 tempkm, tempNn, ib, T->nb,
                 A(k, N), ldak,
                 T(k, N), T->mb);
-        if ( k < (A->mt-1) ) {
+            if ( k < (A->mt-1) ) {
 #if defined(CHAMELEON_COPY_DIAG)
-            MORSE_TASK_zlacpy(
-                &options,
-                MorseUpper, tempkm, tempNn, A->nb,
-                A(k, N), ldak,
-                DIAG(k, N), ldak );
+                MORSE_TASK_zlacpy(
+                    &options,
+                    MorseUpper, tempkm, tempNn, A->nb,
+                    A(k, N), ldak,
+                    DIAG(k, N), ldak );
 #if defined(CHAMELEON_USE_CUDA)
-            MORSE_TASK_zlaset(
-                &options,
-                MorseLower, tempkm, tempNn,
-                0., 1.,
-                DIAG(k, N), ldak );
+                MORSE_TASK_zlaset(
+                    &options,
+                    MorseLower, tempkm, tempNn,
+                    0., 1.,
+                    DIAG(k, N), ldak );
 #endif
 #endif
-        }
+            }
             for (m = k+1; m < A->mt; m++) {
                 tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
                 ldam = BLKLDD(A, m);
@@ -188,7 +188,6 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, int BS,
                 }
             }
         }
-
         RUNTIME_iteration_pop(morse);
     }
     RUNTIME_options_ws_free(&options);
