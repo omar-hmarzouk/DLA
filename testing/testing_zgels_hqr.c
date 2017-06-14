@@ -58,11 +58,11 @@ int testing_zgels_hqr(int argc, char **argv)
               "   - LDA    : leading dimension of the matrix A\n"
               "   - NRHS   : number of RHS\n"
               "   - LDB    : leading dimension of the matrix B\n"
-              "   - QR_A   : Size of TS domain "
-              "   - QR_P   : Size of high level tree for distributed mode (defaut: -1)"
-              "   - LLVL   : tree used for low level reduction insides nodes (defaut: -1)"
-              "   - HLVL   : tree used for high level reduction between nodes, only if qr_p > 1(default: -1)"
-              "   - DOMINO : Enable/Disable the domino between upper and lower trees (defaut: -1)"
+              "   - QR_A   : Size of TS domain\n"
+              "   - QR_P   : Size of high level tree for distributed mode (defaut: -1)\n"
+              "   - LLVL   : tree used for low level reduction insides nodes (defaut: -1)\n"
+              "   - HLVL   : tree used for high level reduction between nodes, only if qr_p > 1(default: -1)\n"
+              "   - DOMINO : Enable/Disable the domino between upper and lower trees (defaut: -1)\n"
               );
         return -1;
     }
