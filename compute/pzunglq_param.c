@@ -38,14 +38,13 @@
  *  Parallel construction of Q using tile V - dynamic scheduling
  */
 void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *Q,
-                        MORSE_desc_t *TS, MORSE_desc_t *TT,
-                        MORSE_sequence_t *sequence, MORSE_request_t *request)
+                         MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
+                         MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
     MORSE_option_t options;
     size_t ws_worker = 0;
     size_t ws_host = 0;
-    MORSE_desc_t *D = NULL;
 
     int k, m, n, i, p;
     int K;
@@ -88,12 +87,6 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
     K = chameleon_min(A->mt, A->nt);
-
-        /* necessary to avoid dependencies between tasks regarding the diag tile */
-#if defined(CHAMELEON_COPY_DIAG)
-    D = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*D, A->mb, A->nb, K*A->mb, A->nb, 0, 0, K*A->mb, A->nb, A->p, A->q);
-#endif
 
     for (k = K-1; k >= 0; k--) {
         RUNTIME_iteration_push(morse, k);
@@ -178,11 +171,5 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
-
-#if defined(CHAMELEON_COPY_DIAG)
-    MORSE_Sequence_Wait(sequence);
-    morse_desc_mat_free(D);
-    free(D);
-#endif
     (void)D;
 }

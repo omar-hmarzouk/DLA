@@ -393,37 +393,45 @@ int MORSE_zgels_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_enum trans, 
     if (A->m >= A->n) {
 
 #if defined(CHAMELEON_COPY_DIAG)
-    morse_zdesc_alloc(D, A->mb, A->nb, A->m, chameleon_min(A->m, A->n), 0, 0, A->m, chameleon_min(A->m, A->n), );
-    morse_pzgeqrf_param(qrtree, A, TS, TT, &D, sequence, request);
-    morse_pzunmqr_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, &D, sequence, request);
-    morse_desc_mat_free(&D);
+        morse_zdesc_alloc(D, A->mb, A->nb, A->m, chameleon_min(A->m, A->n), 0, 0, A->m, chameleon_min(A->m, A->n), );
+        morse_pzgeqrf_param(qrtree, A, TS, TT, &D, sequence, request);
+        morse_pzunmqr_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, &D, sequence, request);
+        morse_desc_mat_free(&D);
 #else
-    morse_pzgeqrf_param(qrtree, A, TS, TT, NULL, sequence, request);
-    morse_pzunmqr_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, NULL, sequence, request);
+        morse_pzgeqrf_param(qrtree, A, TS, TT, NULL, sequence, request);
+        morse_pzunmqr_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, NULL, sequence, request);
 #endif
 
-    subB = morse_desc_submatrix(B, 0, 0, A->n, B->n);
-    subA = morse_desc_submatrix(A, 0, 0, A->n, A->n);
-    morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
-    free(subA);
-    free(subB);
-    }
-    else {
-        /* subB = morse_desc_submatrix(B, A->m, 0, A->n-A->m, B->n);
-        morse_pztile_zero(subB, sequence, request);
-        free(subB); */
-
-        morse_pzgelqf_param(qrtree, A, TS, TT, sequence, request);
-
-        subB = morse_desc_submatrix(B, 0, 0, A->m, B->n);
-        subA = morse_desc_submatrix(A, 0, 0, A->m, A->m);
-        morse_pztrsm(MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
+        subB = morse_desc_submatrix(B, 0, 0, A->n, B->n);
+        subA = morse_desc_submatrix(A, 0, 0, A->n, A->n);
+        morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
         free(subA);
         free(subB);
-
-        morse_pzunmlq_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, sequence, request);
-        //morse_pzunmlq(MorseLeft, MorseConjTrans, A, B, TS, sequence, request);
     }
+    else {
+
+#if defined(CHAMELEON_COPY_DIAG)
+        morse_zdesc_alloc(D, A->mb, A->nb, A->m, chameleon_min(A->m, A->n), 0, 0, A->m, chameleon_min(A->m, A->n), );
+        morse_pzgelqf_param(qrtree, A, TS, TT, &D, sequence, request);
+        subB = morse_desc_submatrix(B, 0, 0, A->m, B->n);
+        subA = morse_desc_submatrix(A, 0, 0, A->m, A->m);
+        morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
+        free(subA);
+        free(subB);
+        morse_pzunmlq_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, &D, sequence, request);
+        morse_desc_mat_free(&D);
+#else
+        morse_pzgelqf_param(qrtree, A, TS, TT, NULL, sequence, request);
+        subB = morse_desc_submatrix(B, 0, 0, A->m, B->n);
+        subA = morse_desc_submatrix(A, 0, 0, A->m, A->m);
+        morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
+        free(subA);
+        free(subB);
+        morse_pzunmlq_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, NULL, sequence, request);
+#endif
+
+    }
+
     (void)D;
     return MORSE_SUCCESS;
 }
