@@ -263,7 +263,7 @@ int MORSE_zgeqrs_param_Tile_Async(const libhqr_tree_t *qrtree,
     MORSE_desc_t *subA;
     MORSE_desc_t *subB;
     MORSE_context_t *morse;
-    MORSE_desc_t D;
+    MORSE_desc_t D, *Dptr = NULL;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -313,18 +313,25 @@ int MORSE_zgeqrs_param_Tile_Async(const libhqr_tree_t *qrtree,
      }
      */
 #if defined(CHAMELEON_COPY_DIAG)
-    morse_zdesc_alloc(D, A->mb, A->nb, A->m, chameleon_min(A->m, A->n), 0, 0, A->m, chameleon_min(A->m, A->n), );
-    morse_pzunmqr_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, &D, sequence, request);
-    morse_desc_mat_free(&D);
-#else
-    morse_pzunmqr_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, NULL, sequence, request);
+    {
+        int n = chameleon_min(A->mt, A->nt) * A->nb;
+        morse_zdesc_alloc(D, A->mb, A->nb, A->m, n, 0, 0, A->m, n, );
+        Dptr = &D;
+    }
 #endif
 
     subB = morse_desc_submatrix(B, 0, 0, A->n, B->n);
     subA = morse_desc_submatrix(A, 0, 0, A->n, A->n);
+
+    morse_pzunmqr_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, Dptr, sequence, request);
     morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
+
     free(subA);
     free(subB);
+
+    if (Dptr != NULL) {
+        morse_desc_mat_free(Dptr);
+    }
     (void)D;
     return MORSE_SUCCESS;
 }
