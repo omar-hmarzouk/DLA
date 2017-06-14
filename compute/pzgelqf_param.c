@@ -34,7 +34,7 @@
 #define D(m,n)  A,  (m), (n)
 #endif
 
-/**
+/*
  *  Parallel tile LQ factorization (reduction Householder) - dynamic scheduling
  */
 void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
@@ -48,7 +48,7 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
 
     int k, m, n, i, p;
     int K;
-    int ldak, ldam, ldap;
+    int ldak, ldam;
     int tempkmin, tempkm, tempnn, tempmm, temppn;
     int ib;
     int *tiles;
@@ -131,7 +131,7 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
                 MORSE_TASK_zunmlq(
                     &options,
                     MorseRight, MorseConjTrans,
-                    tempmm, temppn, tempkmin, ib, TS->nb,
+                   tempmm, temppn, tempkmin, ib, TS->nb,
                     D( k, p), ldak,
                     TS(k, p), TS->mb,
                     A( m, p), ldam);
@@ -146,13 +146,13 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
             p = qrtree->currpiv(qrtree, k, n);
 
             tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
-            ldap = BLKLDD(A, p);
+
             /* Tiles killed is a TS */
             if(qrtree->gettype(qrtree, k, n) == 0){
                 MORSE_TASK_ztslqt(
                     &options,
                     tempkm, tempnn, ib, TS->nb,
-                    A( p, n), ldap,
+                    A( k, p), ldak,
                     A( k, n), ldak,
                     TS(k, n), TS->mb);
 
@@ -163,7 +163,7 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
                         &options,
                         MorseRight, MorseConjTrans,
                         tempmm, A->nb, tempmm, tempnn, tempkm, ib, TS->nb,
-                        A( p, n), ldap,
+                        A( m, p), ldam,
                         A( m, n), ldam,
                         A( k, n), ldak,
                         TS(k, n), TS->mb);
