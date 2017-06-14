@@ -1,10 +1,10 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright 2009-2014 The University of Tennessee and The University
+ *                      of Tennessee Research Foundation.
+ *                      All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -29,7 +29,8 @@
  **/
 #include "control/common.h"
 
-/***************************************************************************//**
+/**
+ *******************************************************************************
  *
  * @ingroup MORSE_Complex64_t
  *
@@ -161,13 +162,14 @@ int MORSE_zgelqs(int M, int N, int NRHS,
 /*        morse_ziptile2lap( descB, B, NB, NB, LDB, NRHS,  sequence, &request);*/
 /*        morse_sequence_wait(morse, sequence);*/
 /*    }*/
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
 }
 
-/***************************************************************************//**
+/**
+ *******************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
@@ -222,13 +224,14 @@ int MORSE_zgelqs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B)
     morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu(A);
     RUNTIME_desc_getoncpu(B);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
 }
 
-/***************************************************************************//**
+/**
+ *******************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *
