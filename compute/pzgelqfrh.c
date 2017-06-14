@@ -30,8 +30,8 @@
  **/
 #include "control/common.h"
 
-#define A(m,n) A,  (m),  (n)
-#define T(m,n) T,  (m),  (n)
+#define A(m,n)  A,  (m),  (n)
+#define T(m,n)  T,  (m),  (n)
 #define T2(m,n) T,  (m),  (n)+A->nt
 #if defined(CHAMELEON_COPY_DIAG)
 #define DIAG(m,n) DIAG, ((n)/BS), 0
