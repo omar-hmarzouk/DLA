@@ -26,8 +26,16 @@
 #include <stdlib.h>
 #include "runtime/starpu/include/morse_starpu.h"
 
-/* TODO/WARNING: Call the correct function or remove for release */
+#if (STARPU_MAJOR_VERSION > 1) || ((STARPU_MAJOR_VERSION == 1) && (STARPU_MINOR_VERSION >= 3))
+/* Defined by StarPU as external function */
+#else
+#if ((STARPU_MAJOR_VERSION == 1) && (STARPU_MINOR_VERSION >= 2))
 int _starpu_is_initialized(void);
+#define starpu_is_initialized() _starpu_is_initialized()
+#else
+#define starpu_is_initialized() 0
+#endif
+#endif
 
 /*******************************************************************************
  *  Create new context
@@ -38,7 +46,7 @@ void RUNTIME_context_create( MORSE_context_t *morse )
 
     morse->scheduler = RUNTIME_SCHED_STARPU;
 
-    if (! _starpu_is_initialized() ) {
+    if (! starpu_is_initialized() ) {
         morse->schedopt = (void*) malloc (sizeof(struct starpu_conf));
         conf = morse->schedopt;
 
