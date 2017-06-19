@@ -85,6 +85,8 @@ if (NOT CHAMELEON_SIMULATION)
         time_zgels.c
         time_zgels_tile.c
         time_zgeqrf.c
+        time_zgeqrf_hqr.c
+        time_zgeqrf_hqr_tile.c
         time_zgeqrf_tile.c
         time_zgelqf.c
         time_zgelqf_tile.c
@@ -237,6 +239,7 @@ if(NOT CHAMELEON_SIMULATION)
     ${CBLAS_LIBRARIES}
     ${LAPACK_SEQ_LIBRARIES}
     ${BLAS_SEQ_LIBRARIES}
+    ${LIBHQR_LIBRARIES}
     ${HWLOC_LIBRARIES}
     ${EXTRA_LIBRARIES}
     )
@@ -246,6 +249,7 @@ if(NOT CHAMELEON_SIMULATION)
     link_directories(${LAPACK_LIBRARY_DIRS})
     link_directories(${CBLAS_LIBRARY_DIRS})
     link_directories(${BLAS_LIBRARY_DIRS})
+    link_directories(${LIBHQR_LIBRARY_DIRS})
 
 else()
 

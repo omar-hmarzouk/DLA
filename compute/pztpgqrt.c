@@ -184,5 +184,5 @@ void morse_pztpgqrt( int L,
     morse_desc_mat_free(DIAG);
     free(DIAG);
 #endif
-    (void)DIAG;
+    (void)DIAG; (void)minMT;
 }

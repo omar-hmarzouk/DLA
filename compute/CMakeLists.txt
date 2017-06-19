@@ -102,9 +102,11 @@ set(ZSRC
     # LAPACK
     ##################
     pzgelqf.c
+    pzgelqf_param.c
     pzgelqfrh.c
     pzgeqrf.c
     pzgeqrfrh.c
+    pzgeqrf_param.c
     pzgetrf_incpiv.c
     pzgetrf_nopiv.c
     pzlacpy.c
@@ -123,21 +125,30 @@ set(ZSRC
     pztrtri.c
     pzpotrimm.c
     pzunglq.c
+    pzunglq_param.c
     pzunglqrh.c
     pzungqr.c
+    pzungqr_param.c
     pzungqrrh.c
     pzunmlq.c
+    pzunmlq_param.c
     pzunmlqrh.c
     pzunmqr.c
+    pzunmqr_param.c
     pzunmqrrh.c
     pztpgqrt.c
     pztpqrt.c
     ###
     zgels.c
+    zgels_param.c
     zgelqf.c
+    zgelqf_param.c
     zgelqs.c
+    zgelqs_param.c
     zgeqrf.c
+    zgeqrf_param.c
     zgeqrs.c
+    zgeqrs_param.c
     #zgesv.c
     zgesv_incpiv.c
     zgesv_nopiv.c
@@ -165,12 +176,16 @@ set(ZSRC
     zpotrs.c
     zsytrs.c
     ztrtri.c
-    zunglq.c
-    zungqr.c
-    zunmlq.c
-    zunmqr.c
     ztpgqrt.c
     ztpqrt.c
+    zunglq.c
+    zunglq_param.c
+    zungqr.c
+    zungqr_param.c
+    zunmlq.c
+    zunmlq_param.c
+    zunmqr.c
+    zunmqr_param.c
     ##################
     # MIXED PRECISION
     ##################
@@ -283,6 +298,7 @@ endif()
 if (NOT CHAMELEON_SIMULATION)
     target_link_libraries(chameleon coreblas)
 endif()
+target_link_libraries(chameleon hqr)
 list(INSERT CHAMELEON_DEP 0 -lchameleon)
 
 add_dependencies(chameleon

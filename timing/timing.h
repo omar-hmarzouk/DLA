@@ -63,6 +63,14 @@ enum iparam_timing {
     IPARAM_BOUNDDEPS,
     IPARAM_BOUNDDEPSPRIO,
     /* End */
+    /* Added for libhqr version */
+    IPARAM_LOWLVL_TREE,  /* Tree used for reduction inside nodes        */
+    IPARAM_HIGHLVL_TREE, /* Tree used for reduction between nodes       */
+    IPARAM_QR_TS_SZE,    /* Size of TS domain                           */
+    IPARAM_QR_HLVL_SZE,  /* Size of the high level tree                 */
+    IPARAM_QR_DOMINO,    /* Enable/disable the domino tree              */
+    IPARAM_QR_TSRR,      /* Enable/disable the round-robin on TS domain */
+    /* End */
     IPARAM_SIZEOF
 };
 

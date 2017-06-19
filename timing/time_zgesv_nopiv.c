@@ -26,19 +26,19 @@
 #include "timing_zauxiliary.h"
 
 static int
-RunTest(int *iparam, double *dparam, morse_time_t *t_) 
+RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
     PASTE_CODE_IPARAM_LOCALS( iparam );
-    
+
     if ( M != N ) {
         fprintf(stderr, "This timing works only with M == N\n");
         return -1;
     }
-    
+
     /* Allocate Data */
     PASTE_CODE_ALLOCATE_MATRIX( A, 1, MORSE_Complex64_t, LDA, N    );
     PASTE_CODE_ALLOCATE_MATRIX( X, 1, MORSE_Complex64_t, LDB, NRHS );
-    
+
     /* Initialiaze Data */
     MORSE_zplrnt( N, N,    A, LDA,   51 );
     MORSE_zplrnt( N, NRHS, X, LDB, 5673 );
@@ -50,13 +50,13 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     START_TIMING();
     MORSE_zgesv_nopiv( N, NRHS, A, N, X, LDB );
     STOP_TIMING();
-    
+
     /* Check the solution */
     if (check)
     {
         dparam[IPARAM_RES] = z_check_solution(N, N, NRHS, Acpy, LDA, B, X, LDB,
-                                              &(dparam[IPARAM_ANORM]), 
-                                              &(dparam[IPARAM_BNORM]), 
+                                              &(dparam[IPARAM_ANORM]),
+                                              &(dparam[IPARAM_BNORM]),
                                               &(dparam[IPARAM_XNORM]));
         free(Acpy); free(B);
     }

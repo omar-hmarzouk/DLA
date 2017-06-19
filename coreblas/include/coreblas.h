@@ -58,6 +58,7 @@
 #include "coreblas/include/coreblas_s.h"
 #include "coreblas/include/coreblas_zc.h"
 #include "coreblas/include/coreblas_ds.h"
+#include <assert.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,7 +67,10 @@ extern "C" {
 /** ****************************************************************************
  * Coreblas Error
  **/
-#define coreblas_error(k, str) fprintf(stderr, "%s: Parameter %d / %s\n", __func__, k, str)
+#define coreblas_error(k, str) do {                                     \
+        fprintf(stderr, "%s: Parameter %d / %s\n", __func__, k, str) ;  \
+        assert(0);                                                      \
+    } while(0)
 
 /** ****************************************************************************
  * CBlas enum

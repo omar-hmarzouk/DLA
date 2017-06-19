@@ -37,14 +37,14 @@
         (m), (n), (i), (j), (m), (n), p, q);                            \
     morse_desc_mat_alloc( &(descA) );
 
-#define morse_zdesc_alloc( descA, mb, nb, lm, ln, i, j, m, n, free)   \
-    descA = morse_desc_init(                                          \
-        MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                  \
-        (m), (n), (i), (j), (m), (n), 1, 1);                          \
-    if ( morse_desc_mat_alloc( &(descA) ) ) {                         \
-        morse_error( __func__, "morse_desc_mat_alloc() failed");       \
-        {free;};                                                       \
-        return MORSE_ERR_OUT_OF_RESOURCES;                            \
+#define morse_zdesc_alloc( descA, mb, nb, lm, ln, i, j, m, n, free)     \
+    descA = morse_desc_init(                                            \
+        MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                    \
+        (m), (n), (i), (j), (m), (n), 1, 1);                            \
+    if ( morse_desc_mat_alloc( &(descA) ) ) {                           \
+        morse_error( __func__, "morse_desc_mat_alloc() failed");        \
+        {free;};                                                        \
+        return MORSE_ERR_OUT_OF_RESOURCES;                              \
     }
 
 #define morse_zooplap2tile( descA, A, mb, nb, lm, ln, i, j, m, n, seq, req, free) \
@@ -154,3 +154,20 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_d
 void morse_pzunmlq(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T, int BS, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzbuild( MORSE_enum uplo, MORSE_desc_t *A, void *user_data, void* user_build_callback, MORSE_sequence_t *sequence, MORSE_request_t *request );
+
+void morse_pzgelqf_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
+                         MORSE_sequence_t *sequence, MORSE_request_t *request);
+void morse_pzgeqrf_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
+                         MORSE_sequence_t *sequence, MORSE_request_t *request);
+void morse_pzunmlq_param(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans,
+                         MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
+                         MORSE_sequence_t *sequence, MORSE_request_t *request);
+void morse_pzunmqr_param(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans,
+                         MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
+                         MORSE_sequence_t *sequence, MORSE_request_t *request);
+void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *Q,
+                         MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
+                         MORSE_sequence_t *sequence, MORSE_request_t *request);
+void morse_pzungqr_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *Q,
+                         MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
+                         MORSE_sequence_t *sequence, MORSE_request_t *request);

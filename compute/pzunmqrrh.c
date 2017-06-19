@@ -134,8 +134,7 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
                         MORSE_TASK_zunmqr(
                             &options,
                             side, trans,
-                            tempMm, tempnn,
-                            tempkmin, ib, T->nb,
+                            tempMm, tempnn, tempkmin, ib, T->nb,
                             DIAG(M, k), ldaM,
                             T(M, k), T->mb,
                             B(M, n), ldbM);
@@ -260,7 +259,6 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
                             B(M, n), ldbM);
                     }
                 }
-
                 RUNTIME_iteration_pop(morse);
             }
         }
@@ -337,8 +335,7 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
                         MORSE_TASK_zunmqr(
                             &options,
                             side, trans,
-                            tempmm, tempMm,
-                            tempkmin, ib, T->nb,
+                            tempmm, tempMm, tempkmin, ib, T->nb,
                             DIAG(M, k), ldaM,
                             T(M, k), T->mb,
                             B(m, M), ldbm);
@@ -379,8 +376,7 @@ void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
                         MORSE_TASK_zunmqr(
                             &options,
                             side, trans,
-                            tempmm, tempMm,
-                            tempkmin, ib, T->nb,
+                            tempmm, tempMm, tempkmin, ib, T->nb,
                             DIAG(M, k), ldaM,
                             T(M, k), T->mb,
                             B(m, M), ldbm);

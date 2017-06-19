@@ -45,5 +45,4 @@
 /* Simulating */
 #cmakedefine CHAMELEON_SIMULATION
 
-
 #endif  /* CHAMELEON_CONFIG_H_HAS_BEEN_INCLUDED */

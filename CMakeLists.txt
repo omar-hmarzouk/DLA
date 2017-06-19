@@ -255,7 +255,7 @@ set(CHAMELEON_DEP "")
 set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 find_package(Threads REQUIRED)
 if( THREADS_FOUND )
-    list(APPEND EXTRA_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
+  list(APPEND EXTRA_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
 endif ()
 
 # Add math library to the list of extra
@@ -263,16 +263,16 @@ endif ()
 set(M_LIBRARIES "")
 if(UNIX OR WIN32)
     find_library(
-        M_m_LIBRARY
-        NAMES m
-        )
+      M_m_LIBRARY
+      NAMES m
+      )
     mark_as_advanced(M_m_LIBRARY)
     if (M_m_LIBRARY)
-        list(APPEND M_LIBRARIES "${M_m_LIBRARY}")
-        list(APPEND EXTRA_LIBRARIES "${M_m_LIBRARY}")
+      list(APPEND M_LIBRARIES "${M_m_LIBRARY}")
+      list(APPEND EXTRA_LIBRARIES "${M_m_LIBRARY}")
     else()
-        message(FATAL_ERROR "Could NOT find libm on your system."
-            " Are you sure to a have a C compiler installed?")
+      message(FATAL_ERROR "Could NOT find libm on your system."
+        " Are you sure to a have a C compiler installed?")
     endif()
 endif()
 
@@ -1011,6 +1011,12 @@ if(CHAMELEON_USE_CUDA)
 endif()
 #------------------------------------------------------------------------------
 
+###############################################################################
+# Add HQR library #
+###################
+add_subdirectory(hqr)
+include_directories(hqr/include)
+#------------------------------------------------------------------------------
 
 ###############################################################################
 # Main library #

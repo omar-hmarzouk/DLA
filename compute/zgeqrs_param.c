@@ -1,29 +1,24 @@
 /**
  *
- * @copyright 2009-2014 The University of Tennessee and The University
- *                      of Tennessee Research Foundation.
- *                      All rights reserved.
- * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
- *                      Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2009-2014 The University of Tennessee and The University
+ *                          of Tennessee Research Foundation.
+ *                          All rights reserved.
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
 /**
  *
- * @file zgelqs.c
+ * @file zgeqrs_param.c
  *
  *  MORSE computational routines
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 2.5.0
- * @comment This file has been automatically generated
- *          from Plasma 2.5.0 for MORSE 1.0.0
- * @author Jakub Kurzak
+ * @version 1.0.0
  * @author Mathieu Faverge
- * @author Emmanuel Agullo
- * @author Cedric Castagnede
- * @date 2010-11-15
+ * @author Raphael Boucherie
+ * @date 2017-05-17
  * @precisions normal z -> s d c
  *
  **/
@@ -34,8 +29,8 @@
  *
  * @ingroup MORSE_Complex64_t
  *
- *  MORSE_zgelqs - Compute a minimum-norm solution min || A*X - B || using the LQ factorization
- *  A = L*Q computed by MORSE_zgelqf.
+ *  MORSE_zgeqrs_param - Compute a minimum-norm solution min || A*X - B || using the RQ factorization
+ *  A = R*Q computed by MORSE_zgeqrf.
  *
  *******************************************************************************
  *
@@ -48,21 +43,21 @@
  * @param[in] NRHS
  *          The number of columns of B. NRHS >= 0.
  *
- * @param[in] A
- *          Details of the LQ factorization of the original matrix A as returned by MORSE_zgelqf.
+ * @param[in,out] A
+ *          Details of the QR factorization of the original matrix A as returned by MORSE_zgeqrf.
  *
  * @param[in] LDA
  *          The leading dimension of the array A. LDA >= M.
  *
  * @param[in] descT
- *          Auxiliary factorization data, computed by MORSE_zgelqf.
+ *          Auxiliary factorization data, computed by MORSE_zgeqrf.
  *
  * @param[in,out] B
- *          On entry, the M-by-NRHS right hand side matrix B.
- *          On exit, the N-by-NRHS solution matrix X.
+ *          On entry, the m-by-nrhs right hand side matrix B.
+ *          On exit, the n-by-nrhs solution matrix X.
  *
  * @param[in] LDB
- *          The leading dimension of the array B. LDB >= N.
+ *          The leading dimension of the array B. LDB >= max(1,N).
  *
  *******************************************************************************
  *
@@ -72,18 +67,18 @@
  *
  *******************************************************************************
  *
- * @sa MORSE_zgelqs_Tile
- * @sa MORSE_zgelqs_Tile_Async
- * @sa MORSE_cgelqs
- * @sa MORSE_dgelqs
- * @sa MORSE_sgelqs
- * @sa MORSE_zgelqf
+ * @sa MORSE_zgeqrs_param_Tile
+ * @sa MORSE_zgeqrs_param_Tile_Async
+ * @sa MORSE_cgeqrs
+ * @sa MORSE_dgeqrs
+ * @sa MORSE_sgeqrs
+ * @sa MORSE_zgeqrf
  *
- ******************************************************************************/
-int MORSE_zgelqs(int M, int N, int NRHS,
-                  MORSE_Complex64_t *A, int LDA,
-                  MORSE_desc_t *descT,
-                  MORSE_Complex64_t *B, int LDB)
+ *******************************************************************************/
+int MORSE_zgeqrs_param(const libhqr_tree_t *qrtree, int M, int N, int NRHS,
+                       MORSE_Complex64_t *A, int LDA,
+                       MORSE_desc_t *descTS, MORSE_desc_t *descTT,
+                       MORSE_Complex64_t *B, int LDB)
 {
     int NB;
     int status;
@@ -94,29 +89,29 @@ int MORSE_zgelqs(int M, int N, int NRHS,
 
     morse = morse_context_self();
     if (morse == NULL) {
-        morse_fatal_error("MORSE_zgelqs", "MORSE not initialized");
+        morse_fatal_error("MORSE_zgeqrs_param", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
 
     /* Check input arguments */
     if (M < 0) {
-        morse_error("MORSE_zgelqs", "illegal value of M");
+        morse_error("MORSE_zgeqrs_param", "illegal value of M");
         return -1;
     }
-    if (N < 0 || M > N) {
-        morse_error("MORSE_zgelqs", "illegal value of N");
+    if (N < 0 || N > M) {
+        morse_error("MORSE_zgeqrs_param", "illegal value of N");
         return -2;
     }
     if (NRHS < 0) {
-        morse_error("MORSE_zgelqs", "illegal value of N");
+        morse_error("MORSE_zgeqrs_param", "illegal value of N");
         return -3;
     }
     if (LDA < chameleon_max(1, M)) {
-        morse_error("MORSE_zgelqs", "illegal value of LDA");
+        morse_error("MORSE_zgeqrs_param", "illegal value of LDA");
         return -5;
     }
-    if (LDB < chameleon_max(1, chameleon_max(1, N))) {
-        morse_error("MORSE_zgelqs", "illegal value of LDB");
+    if (LDB < chameleon_max(1, chameleon_max(1, M))) {
+        morse_error("MORSE_zgeqrs_param", "illegal value of LDB");
         return -8;
     }
     /* Quick return */
@@ -127,7 +122,7 @@ int MORSE_zgelqs(int M, int N, int NRHS,
     /* Tune NB & IB depending on M, N & NRHS; Set NBNBSIZE */
     status = morse_tune(MORSE_FUNC_ZGELS, M, N, NRHS);
     if (status != MORSE_SUCCESS) {
-        morse_error("MORSE_zgelqs", "morse_tune() failed");
+        morse_error("MORSE_zgeqrs_param", "morse_tune() failed");
         return status;
     }
 
@@ -139,24 +134,24 @@ int MORSE_zgelqs(int M, int N, int NRHS,
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
         morse_zooplap2tile( descA, A, NB, NB, LDA, N,    0, 0, M, N,    sequence, &request,
                              morse_desc_mat_free(&(descA)) );
-        morse_zooplap2tile( descB, B, NB, NB, LDB, NRHS, 0, 0, N, NRHS, sequence, &request,
+        morse_zooplap2tile( descB, B, NB, NB, LDB, NRHS, 0, 0, M, NRHS, sequence, &request,
                              morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descB)));
 /*    } else {*/
 /*        morse_ziplap2tile( descA, A, NB, NB, LDA, N,    0, 0, M, N,   */
 /*                            sequence, &request);*/
-/*        morse_ziplap2tile( descB, B, NB, NB, LDB, NRHS, 0, 0, N, NRHS,*/
+/*        morse_ziplap2tile( descB, B, NB, NB, LDB, NRHS, 0, 0, M, NRHS,*/
 /*                            sequence, &request);*/
 /*    }*/
 
     /* Call the tile interface */
-    MORSE_zgelqs_Tile_Async(&descA, descT, &descB, sequence, &request);
+    MORSE_zgeqrs_param_Tile_Async(qrtree, &descA, descTS, descTT, &descB, sequence, &request);
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
         morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
         morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
-    morse_sequence_wait(morse, sequence);
-    morse_desc_mat_free(&descA);
-    morse_desc_mat_free(&descB);
+        morse_sequence_wait(morse, sequence);
+        morse_desc_mat_free(&descA);
+        morse_desc_mat_free(&descB);
 /*    } else {*/
 /*        morse_ziptile2lap( descA, A, NB, NB, LDA, N,     sequence, &request);*/
 /*        morse_ziptile2lap( descB, B, NB, NB, LDB, NRHS,  sequence, &request);*/
@@ -173,24 +168,23 @@ int MORSE_zgelqs(int M, int N, int NRHS,
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
- *  MORSE_zgelqs_Tile - Computes a minimum-norm solution using previously computed
- *  LQ factorization.
- *  Tile equivalent of MORSE_zgelqs().
+ *  MORSE_zgeqrs_param_Tile - Computes a minimum-norm solution using the tile QR factorization.
+ *  Tile equivalent of MORSE_zgeqrf().
  *  Operates on matrices stored by tiles.
  *  All matrices are passed through descriptors.
  *  All dimensions are taken from the descriptors.
  *
  *******************************************************************************
  *
- * @param[in] A
- *          Details of the LQ factorization of the original matrix A as returned by MORSE_zgelqf.
+ * @param[in,out] A
+ *          Details of the QR factorization of the original matrix A as returned by MORSE_zgeqrf.
  *
  * @param[in] T
- *          Auxiliary factorization data, computed by MORSE_zgelqf.
+ *          Auxiliary factorization data, computed by MORSE_zgeqrf.
  *
  * @param[in,out] B
- *          On entry, the M-by-NRHS right hand side matrix B.
- *          On exit, the N-by-NRHS solution matrix X.
+ *          On entry, the m-by-nrhs right hand side matrix B.
+ *          On exit, the n-by-nrhs solution matrix X.
  *
  *******************************************************************************
  *
@@ -199,15 +193,15 @@ int MORSE_zgelqs(int M, int N, int NRHS,
  *
  *******************************************************************************
  *
- * @sa MORSE_zgelqs
- * @sa MORSE_zgelqs_Tile_Async
- * @sa MORSE_cgelqs_Tile
- * @sa MORSE_dgelqs_Tile
- * @sa MORSE_sgelqs_Tile
- * @sa MORSE_zgelqf_Tile
+ * @sa MORSE_zgeqrs_param
+ * @sa MORSE_zgeqrs_param_Tile_Async
+ * @sa MORSE_cgeqrs_Tile
+ * @sa MORSE_dgeqrs_Tile
+ * @sa MORSE_sgeqrs_Tile
+ * @sa MORSE_zgeqrf_Tile
  *
  ******************************************************************************/
-int MORSE_zgelqs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B)
+int MORSE_zgeqrs_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B)
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -216,13 +210,15 @@ int MORSE_zgelqs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B)
 
     morse = morse_context_self();
     if (morse == NULL) {
-        morse_fatal_error("MORSE_zgelqs_Tile", "MORSE not initialized");
+        morse_fatal_error("MORSE_zgeqrs_param_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
     morse_sequence_create(morse, &sequence);
-    MORSE_zgelqs_Tile_Async(A, T, B, sequence, &request);
+    MORSE_zgeqrs_param_Tile_Async(qrtree, A, TS, TT, B, sequence, &request);
     morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu(A);
+    RUNTIME_desc_getoncpu(TS);
+    RUNTIME_desc_getoncpu(TT);
     RUNTIME_desc_getoncpu(B);
 
     status = sequence->status;
@@ -235,9 +231,9 @@ int MORSE_zgelqs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B)
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *
- *  MORSE_zgelqs_Tile_Async - Computes a minimum-norm solution using previously
- *  computed LQ factorization.
- *  Non-blocking equivalent of MORSE_zgelqs_Tile().
+ *  MORSE_zgeqrs_param_Tile_Async - Computes a minimum-norm solution using the tile
+ *  QR factorization.
+ *  Non-blocking equivalent of MORSE_zgeqrs_param_Tile().
  *  May return before the computation is finished.
  *  Allows for pipelining of operations at runtime.
  *
@@ -252,32 +248,34 @@ int MORSE_zgelqs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B)
  *
  *******************************************************************************
  *
- * @sa MORSE_zgelqs
- * @sa MORSE_zgelqs_Tile
- * @sa MORSE_cgelqs_Tile_Async
- * @sa MORSE_dgelqs_Tile_Async
- * @sa MORSE_sgelqs_Tile_Async
- * @sa MORSE_zgelqf_Tile_Async
+ * @sa MORSE_zgeqrs_param
+ * @sa MORSE_zgeqrs_param_Tile
+ * @sa MORSE_cgeqrs_Tile_Async
+ * @sa MORSE_dgeqrs_Tile_Async
+ * @sa MORSE_sgeqrs_Tile_Async
+ * @sa MORSE_zgeqrf_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zgelqs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zgeqrs_param_Tile_Async(const libhqr_tree_t *qrtree,
+                                  MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B,
+                                  MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
-    MORSE_desc_t *subB;
     MORSE_desc_t *subA;
+    MORSE_desc_t *subB;
     MORSE_context_t *morse;
+    MORSE_desc_t D, *Dptr = NULL;
 
     morse = morse_context_self();
     if (morse == NULL) {
-        morse_fatal_error("MORSE_zgelqs_Tile", "MORSE not initialized");
+        morse_fatal_error("MORSE_zgeqrs_param_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
     if (sequence == NULL) {
-        morse_fatal_error("MORSE_zgelqs_Tile", "NULL sequence");
+        morse_fatal_error("MORSE_zgeqrs_param_Tile", "NULL sequence");
         return MORSE_ERR_UNALLOCATED;
     }
     if (request == NULL) {
-        morse_fatal_error("MORSE_zgelqs_Tile", "NULL request");
+        morse_fatal_error("MORSE_zgeqrs_param_Tile", "NULL request");
         return MORSE_ERR_UNALLOCATED;
     }
     /* Check sequence status */
@@ -288,44 +286,52 @@ int MORSE_zgelqs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
 
     /* Check descriptors for correctness */
     if (morse_desc_check(A) != MORSE_SUCCESS) {
-        morse_error("MORSE_zgelqs_Tile", "invalid first descriptor");
+        morse_error("MORSE_zgeqrs_param_Tile", "invalid first descriptor");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
-    if (morse_desc_check(T) != MORSE_SUCCESS) {
-        morse_error("MORSE_zgelqs_Tile", "invalid second descriptor");
+    if (morse_desc_check(TS) != MORSE_SUCCESS) {
+        morse_error("MORSE_zgeqrs_param_Tile", "invalid second descriptor");
+        return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
+    }
+    if (morse_desc_check(TT) != MORSE_SUCCESS) {
+        morse_error("MORSE_zgeqrs_param_Tile", "invalid third descriptor");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     if (morse_desc_check(B) != MORSE_SUCCESS) {
-        morse_error("MORSE_zgelqs_Tile", "invalid third descriptor");
+        morse_error("MORSE_zgeqrs_param_Tile", "invalid fourth descriptor");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Check input arguments */
     if (A->nb != A->mb || B->nb != B->mb) {
-        morse_error("MORSE_zgelqs_Tile", "only square tiles supported");
+        morse_error("MORSE_zgeqrs_param_Tile", "only square tiles supported");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Quick return */
-/*
-    if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
-        return MORSE_SUCCESS;
+    /*
+     if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
+     return MORSE_SUCCESS;
+     }
+     */
+#if defined(CHAMELEON_COPY_DIAG)
+    {
+        int n = chameleon_min(A->mt, A->nt) * A->nb;
+        morse_zdesc_alloc(D, A->mb, A->nb, A->m, n, 0, 0, A->m, n, );
+        Dptr = &D;
     }
-*/
-    /* subB = morse_desc_submatrix(B, A->m, 0, A->n-A->m, B->n);
-    morse_pztile_zero(subB, sequence, request);
-    free(subB); */
+#endif
 
-    subB = morse_desc_submatrix(B, 0, 0, A->m, B->n);
-    subA = morse_desc_submatrix(A, 0, 0, A->m, A->m);
-    morse_pztrsm(MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
+    subB = morse_desc_submatrix(B, 0, 0, A->n, B->n);
+    subA = morse_desc_submatrix(A, 0, 0, A->n, A->n);
+
+    morse_pzunmqr_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, Dptr, sequence, request);
+    morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
+
     free(subA);
     free(subB);
 
-    if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
-        morse_pzunmlq(MorseLeft, MorseConjTrans, A, B, T, sequence, request);
+    if (Dptr != NULL) {
+        morse_desc_mat_free(Dptr);
     }
-    else {
-        morse_pzunmlqrh(MorseLeft, MorseConjTrans, A, B, T, MORSE_RHBLK, sequence, request);
-    }
-
+    (void)D;
     return MORSE_SUCCESS;
 }
