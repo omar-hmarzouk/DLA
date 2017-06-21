@@ -375,23 +375,28 @@ show_help(char *prog_name) {
             "  -T  --trace      Enable trace generation\n"
             "  -d  --dag        Enable DAG generation\n"
             "                   Generates a dot_dag_file.dot.\n"
-            "  --profile   Print profiling informations (default: noprofile)\n"
+            "  -5 --profile   Print profiling informations (default: noprofile)\n"
             "  -C  --nocpu         All GPU kernels are exclusively executed on GPUs (default: 0)\n"
 /*             "  --inplace        Enable layout conversion inplace for lapack interface timers (default: enable)\n" */
 /*             "  --outplace       Enable layout conversion out of place for lapack interface timers (default: disable)\n" */
 /*             "  --[no]atun       Activate autotuning (default: noatun)\n" */
             "\n"
-            "  --n_range=R      Range of N values\n"
+            "  -n R\n"
+            "  --n_range R      Range of N values\n"
             "                   with R=Start:Stop:Step (default: 500:5000:500)\n"
-            "  --m=X            dimension (M) of the matrices (default: N)\n"
-            "  --k=X            dimension (K) of the matrices (default: 1)\n"
+            "  -m x\n"
+            "  --m x            dimension (M) of the matrices (default: N)\n"
+            "  -k x\n"
+            "  --k x            dimension (K) of the matrices (default: 1)\n"
             "  --nrhs=X         Number of right-hand size (default: 1)\n"
             "  --nb=N           Nb size. (default: 128)\n"
             "  --ib=N           IB size. (default: 32)\n"
             "\n"
-            "  --niter=N        Number of iterations performed for each test (default: 1)\n"
+            "  -N x\n"
+            "  --niter x        Number of iterations performed for each test (default: 1)\n"
             "\n"
-            "  --rhblk=N        If N > 0, enable Householder mode for QR and LQ factorization\n"
+            "  -r N\n"
+            "  --rhblk N        If N > 0, enable Householder mode for QR and LQ factorization\n"
             "                   N is the size of each subdomain (default: 0)\n"
 /*             "\n" */
 /*             " Options specific to the conversion format timings xgetri and xgecfi:\n" */
@@ -475,7 +480,7 @@ static struct option long_options[] =
     {"bounddepsprio", no_argument,       0,      '3'},
     {"threads",       required_argument, 0,      't'},
     {"gpus",          required_argument, 0,      'g'},
-    {"m",             required_argument, 0,      'M'},
+    {"m",             required_argument, 0,      'm'},
     {"n_range",       required_argument, 0,      'n'},
     {"k",             required_argument, 0,      'k'},
     {"ib",            required_argument, 0,      'I'},
@@ -484,7 +489,7 @@ static struct option long_options[] =
     {"nx",            required_argument, 0,      'X'},
     {"rhblk",         required_argument, 0,      'r'},
     {"p",             required_argument, 0,      'p'},
-    {"mode",          required_argument, 0,      'm'},
+    {"mode",          required_argument, 0,      'M'},
     {"nb",            required_argument, 0,      '6'},
     {0, 0, 0, 0}
 };
