@@ -42,7 +42,10 @@
 #cmakedefine CHAMELEON_USE_CUBLAS
 #cmakedefine CHAMELEON_USE_CUBLAS_V2
 
-/* Simulating */
+/* Simulation */
 #cmakedefine CHAMELEON_SIMULATION
+
+/* Tracing support */
+#cmakedefine CHAMELEON_ENABLE_TRACING
 
 #endif  /* CHAMELEON_CONFIG_H_HAS_BEEN_INCLUDED */
