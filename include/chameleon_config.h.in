@@ -48,4 +48,8 @@
 /* Tracing support */
 #cmakedefine CHAMELEON_ENABLE_TRACING
 
+/* getopt */
+#cmakedefine CHAMELEON_HAVE_GETOPT_H
+#cmakedefine CHAMELEON_HAVE_GETOPT_LONG
+
 #endif  /* CHAMELEON_CONFIG_H_HAS_BEEN_INCLUDED */

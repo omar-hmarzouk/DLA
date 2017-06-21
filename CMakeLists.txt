@@ -952,6 +952,14 @@ if( CHAMELEON_SCHED_QUARK )
 
 endif()
 
+# getopt
+unset(CMAKE_REQUIRED_FLAGS)
+unset(CMAKE_REQUIRED_DEFINITIONS)
+unset(CMAKE_REQUIRED_INCLUDES)
+unset(CMAKE_REQUIRED_LIBRARIES)
+check_include_files(getopt.h CHAMELEON_HAVE_GETOPT_H)
+check_function_exists(getopt_long CHAMELEON_HAVE_GETOPT_LONG)
+
 # Add option to exploit cublas API v2
 # -----------------------------------
 cmake_dependent_option(CHAMELEON_USE_CUBLAS_V2
@@ -1084,7 +1092,7 @@ endif()
 # Config files (pkg_config) #
 #############################
 
-# Create .pc file 
+# Create .pc file
 # ---------------
 generate_pkgconfig_file()
 #------------------------------------------------------------------------------

@@ -18,6 +18,7 @@
  *
  * @version 0.9.0
  * @author Mathieu Faverge
+ * @author Raphael Boucherie
  * @author Dulceneia Becker
  * @author Cedric Castagnede
  * @date 2010-11-15
@@ -62,9 +63,9 @@
 #endif /* defined(CHAMELEON_SCHED_STARPU) */
 
 
-#if defined(HAVE_GETOPT_H)
+#if defined(CHAMELEON_HAVE_GETOPT_H)
 #include <getopt.h>
-#endif /* defined(HAVE_GETOPT_H) */
+#endif /* defined(CHAMELEON_HAVE_GETOPT_H) */
 
 static int RunTest(int *iparam, _PREC *dparam, double *t_);
 static inline void* morse_getaddr_null(const MORSE_desc_t *A, int m, int n)
@@ -361,20 +362,21 @@ show_help(char *prog_name) {
             "\n"
             "  -t x\n"
             "  --threads x      Number of CPU workers (default: _SC_NPROCESSORS_ONLN)\n"
+            "  -g x\n"
             "  --gpus X         Number of GPU workers (default: 0)\n"
             "\n"
-            "  --sync        Enable synchronous calls in wrapper function such as POTRI\n"
-            "  --nobigmat     Allocating one big mat or plenty of small (default: bigmat)\n"
-            "  --check      Check result\n"
-            "  --progress   Display progress indicator\n"
-            "  --gemm3m     Use gemm3m complex method\n"
-            "  --inv        Check on inverse\n"
-            "  --nowarmup     Perform a warmup run to pre-load libraries (default: warmup)\n"
-            "  --trace      Enable trace generation\n"
-            "  --dag        Enable DAG generation\n"
+            "  -s  --sync        Enable synchronous calls in wrapper function such as POTRI\n"
+            "  -b  --nobigmat     Allocating one big mat or plenty of small (default: bigmat)\n"
+            "  -c  --check      Check result\n"
+            "  -P  --progress   Display progress indicator\n"
+            "  -G  --gemm3m     Use gemm3m complex method\n"
+            "  -i  --inv        Check on inverse\n"
+            "  -w  --nowarmup     Perform a warmup run to pre-load libraries (default: warmup)\n"
+            "  -T  --trace      Enable trace generation\n"
+            "  -d  --dag        Enable DAG generation\n"
             "                   Generates a dot_dag_file.dot.\n"
-             "  --profile   Print profiling informations (default: noprofile)\n"
-             "  --nocpu         All GPU kernels are exclusively executed on GPUs (default: 0)\n"
+            "  --profile   Print profiling informations (default: noprofile)\n"
+            "  -C  --nocpu         All GPU kernels are exclusively executed on GPUs (default: 0)\n"
 /*             "  --inplace        Enable layout conversion inplace for lapack interface timers (default: enable)\n" */
 /*             "  --outplace       Enable layout conversion out of place for lapack interface timers (default: disable)\n" */
 /*             "  --[no]atun       Activate autotuning (default: noatun)\n" */
@@ -451,7 +453,7 @@ print_header(char *prog_name, int * iparam) {
 }
 
 #define GETOPT_STRING "cbiwTGPds045WC123th:g:M:n:k:I:N:x:X:r:p:m:6:"
-#if defined(HAVE_GETOPT_LONG)
+#if defined(CHAMELEON_HAVE_GETOPT_LONG)
 static struct option long_options[] =
 {
     {"check",         no_argument,       0,      'c'},
@@ -486,7 +488,7 @@ static struct option long_options[] =
     {"nb",            required_argument, 0,      '6'},
     {0, 0, 0, 0}
 };
-#endif  /* defined(HAVE_GETOPT_LONG) */
+#endif  /* defined(CHAMELEON_HAVE_GETOPT_LONG) */
 
 static void
 set_iparam_default(int *iparam){
@@ -529,13 +531,13 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
     char **argv = *_argv;
 
     do {
-#if defined(HAVE_GETOPT_LONG)
+#if defined(CHAMELEON_HAVE_GETOPT_LONG)
         c = getopt_long(argc, argv, GETOPT_STRING,
                              long_options, &opt);
 #else
         c = getopt(argc, argv, GETOPT_STRING);
         (void) opt;
-#endif  /* defined(HAVE_GETOPT_LONG) */
+#endif  /* defined(CHAMELEON_HAVE_GETOPT_LONG) */
 
         switch(c)
         {
