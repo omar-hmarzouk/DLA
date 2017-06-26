@@ -38,6 +38,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #if defined( _WIN32 ) || defined( _WIN64 )
 #include <windows.h>
@@ -358,7 +359,7 @@ static void
 show_help(char *prog_name) {
     printf( "Usage:\n%s [options]\n\n", prog_name );
     printf( "Options are:\n"
-            "  -h --help           Show this help\n"
+            "  -h  --help           Show this help\n"
             "\n"
             "  -t x\n"
             "  --threads x      Number of CPU workers (default: _SC_NPROCESSORS_ONLN)\n"
@@ -375,7 +376,7 @@ show_help(char *prog_name) {
             "  -T  --trace      Enable trace generation\n"
             "  -d  --dag        Enable DAG generation\n"
             "                   Generates a dot_dag_file.dot.\n"
-            "  -5 --profile   Print profiling informations (default: noprofile)\n"
+            "  -5  --profile   Print profiling informations (default: noprofile)\n"
             "  -C  --nocpu         All GPU kernels are exclusively executed on GPUs (default: 0)\n"
 /*             "  --inplace        Enable layout conversion inplace for lapack interface timers (default: enable)\n" */
 /*             "  --outplace       Enable layout conversion out of place for lapack interface timers (default: disable)\n" */
@@ -388,9 +389,9 @@ show_help(char *prog_name) {
             "  --m x            dimension (M) of the matrices (default: N)\n"
             "  -k x\n"
             "  --k x            dimension (K) of the matrices (default: 1)\n"
-            "  --nrhs=X         Number of right-hand size (default: 1)\n"
-            "  --nb=N           Nb size. (default: 128)\n"
-            "  --ib=N           IB size. (default: 32)\n"
+            "  --nrhs X         Number of right-hand size (default: 1)\n"
+            "  --nb N           Nb size. (default: 128)\n"
+            "  --ib N           IB size. (default: 32)\n"
             "\n"
             "  -N x\n"
             "  --niter x        Number of iterations performed for each test (default: 1)\n"
@@ -457,40 +458,55 @@ print_header(char *prog_name, int * iparam) {
     return;
 }
 
-#define GETOPT_STRING "cbiwTGPds045WC123th:g:M:n:k:I:N:x:X:r:p:m:6:"
+#define GETOPT_STRING "t:g:P:8m:n:N:k:b:i:x:X:1:WwcCT2dpa:M:l:L:D3soG4567"
 #if defined(CHAMELEON_HAVE_GETOPT_LONG)
 static struct option long_options[] =
 {
-    {"check",         no_argument,       0,      'c'},
-    {"nobigmat",      no_argument,       0,      'b'},
-    {"inv",           no_argument,       0,      'i'},
-    {"nowarmup",      no_argument,       0,      'w'},
-    {"trace",         no_argument,       0,      'T'},
-    {"gemm3m",        no_argument,       0,      'G'},
-    {"progress",      no_argument,       0,      'P'},
-    {"dag",           no_argument,       0,      'd'},
-    {"sync",          no_argument,       0,      's'},
-    {"ooc",           no_argument,       0,      'o'},
-    {"peak",          no_argument,       0,      '4'},
-    {"profile",       no_argument,       0,      '5'},
-    {"nowarnings",    no_argument,       0,      'W'},
-    {"nocpu",         no_argument,       0,      'C'},
-    {"bound",         no_argument,       0,      '1'},
-    {"bounddeps",     no_argument,       0,      '2'},
-    {"bounddepsprio", no_argument,       0,      '3'},
+    // Configuration
     {"threads",       required_argument, 0,      't'},
     {"gpus",          required_argument, 0,      'g'},
+    {"P",             required_argument, 0,      'P'},
+    {"nocpu",         no_argument,       0,      '8'},
+    // Matrix parameters
+    {"M",             required_argument, 0,      'm'},
     {"m",             required_argument, 0,      'm'},
-    {"n_range",       required_argument, 0,      'n'},
+    {"N",             required_argument, 0,      'n'},
+    {"n",             required_argument, 0,      'n'},
+    {"n_range",       required_argument, 0,      'N'},
+    {"K",             required_argument, 0,      'k'},
     {"k",             required_argument, 0,      'k'},
-    {"ib",            required_argument, 0,      'I'},
-    {"niter",         required_argument, 0,      'N'},
+    {"nrhs",          required_argument, 0,      'k'},
+    {"nb",            required_argument, 0,      'b'},
+    {"ib",            required_argument, 0,      'i'},
     {"mx",            required_argument, 0,      'x'},
     {"nx",            required_argument, 0,      'X'},
-    {"rhblk",         required_argument, 0,      'r'},
-    {"p",             required_argument, 0,      'p'},
+    // Check/prints
+    {"niter",         required_argument, 0,      '1'},
+    {"nowarnings",    no_argument,       0,      'W'},
+    {"nowarmup",      no_argument,       0,      'w'},
+    {"check",         no_argument,       0,      'c'},
+    {"inv",           no_argument,       0,      'C'},
+    // Profiling
+    {"trace",         no_argument,       0,      'T'},
+    {"progress",      no_argument,       0,      '2'},
+    {"dag",           no_argument,       0,      'd'},
+    {"profile",       no_argument,       0,      'p'},
+    // HQR options
+    {"rhblk",         required_argument, 0,      'a'},
+    {"qr_a",          required_argument, 0,      'a'},
     {"mode",          required_argument, 0,      'M'},
-    {"nb",            required_argument, 0,      '6'},
+    {"llvl",          required_argument, 0,      'l'},
+    {"hlvl",          required_argument, 0,      'L'},
+    {"domino",        no_argument,       0,      'D'},
+    // Other
+    {"nobigmat",      no_argument,       0,      '3'},
+    {"sync",          no_argument,       0,      's'},
+    {"ooc",           no_argument,       0,      'o'},
+    {"gemm3m",        no_argument,       0,      'G'},
+    {"peak",          no_argument,       0,      '4'},
+    {"bound",         no_argument,       0,      '5'},
+    {"bounddeps",     no_argument,       0,      '6'},
+    {"bounddepsprio", no_argument,       0,      '7'},
     {0, 0, 0, 0}
 };
 #endif  /* defined(CHAMELEON_HAVE_GETOPT_LONG) */
@@ -524,7 +540,11 @@ set_iparam_default(int *iparam){
     iparam[IPARAM_P             ] = 1;
     iparam[IPARAM_Q             ] = 1;
     iparam[IPARAM_PRINT_WARNINGS] = 1;
-
+    iparam[IPARAM_LOWLVL_TREE   ] = -1;
+    iparam[IPARAM_HIGHLVL_TREE  ] = -1;
+    iparam[IPARAM_QR_TS_SZE     ] = -1;
+    iparam[IPARAM_QR_HLVL_SZE   ] = -1;
+    iparam[IPARAM_QR_DOMINO     ] = -1;
 }
 
 void
@@ -547,37 +567,37 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
         switch(c)
         {
         case 'c' : iparam[IPARAM_CHECK         ] = 1; break;
-        case 'b' : iparam[IPARAM_BIGMAT        ] = 0; break;
-        case 'i' : iparam[IPARAM_INVERSE       ] = 1; break;
+        case '3' : iparam[IPARAM_BIGMAT        ] = 0; break;
+        case 'C' : iparam[IPARAM_INVERSE       ] = 1; break;
         case 'w' : iparam[IPARAM_WARMUP        ] = 0; break;
         case 'T' : iparam[IPARAM_TRACE         ] = 1; break;
         case 'G' : iparam[IPARAM_GEMM3M        ] = 1; break;
-        case 'P' : iparam[IPARAM_PROGRESS      ] = 1; break;
+        case '2' : iparam[IPARAM_PROGRESS      ] = 1; break;
         case 'd' : iparam[IPARAM_DAG           ] = 1; break;
         case 's' : iparam[IPARAM_ASYNC         ] = 0; break;
         case 'o' : iparam[IPARAM_OOC           ] = 1; break;
         case '4' : iparam[IPARAM_PEAK          ] = 1; break;
-        case '5' : iparam[IPARAM_PROFILE       ] = 1; break;
+        case 'p' : iparam[IPARAM_PROFILE       ] = 1; break;
         case 'W' : iparam[IPARAM_PRINT_WARNINGS] = 0; break;
-        case 'C' : iparam[IPARAM_NO_CPU        ] = 1; break;
-        case '1' : iparam[IPARAM_BOUND         ] = 1; break;
-        case '2' : iparam[IPARAM_BOUND         ] = 1;
+        case '8' : iparam[IPARAM_NO_CPU        ] = 1; break;
+        case '5' : iparam[IPARAM_BOUND         ] = 1; break;
+        case '6' : iparam[IPARAM_BOUND         ] = 1;
                    iparam[IPARAM_BOUNDDEPS     ] = 1; break;
-        case '3' : iparam[IPARAM_BOUND         ] = 1;
+        case '7' : iparam[IPARAM_BOUND         ] = 1;
                    iparam[IPARAM_BOUNDDEPS     ] = 1;
                    iparam[IPARAM_BOUNDDEPSPRIO ] = 1; break;
         case 't' : iparam[IPARAM_THRDNBR       ] = atoi(optarg); break;
         case 'g' : iparam[IPARAM_NCUDAS        ] = atoi(optarg); break;
-        case 'M' : iparam[IPARAM_M             ] = atoi(optarg); break;
+        case 'm' : iparam[IPARAM_M             ] = atoi(optarg); break;
         case 'k' : iparam[IPARAM_K             ] = atoi(optarg); break;
-        case 'I' : iparam[IPARAM_IB            ] = atoi(optarg); break;
-        case 'N' : iparam[IPARAM_NITER         ] = atoi(optarg); break;
+        case 'i' : iparam[IPARAM_IB            ] = atoi(optarg); break;
+        case '1' : iparam[IPARAM_NITER         ] = atoi(optarg); break;
         case 'x' : iparam[IPARAM_MX            ] = atoi(optarg); break;
         case 'X' : iparam[IPARAM_NX            ] = atoi(optarg); break;
-        case 'r' : iparam[IPARAM_RHBLK         ] = atoi(optarg); break;
-        case 'p' : iparam[IPARAM_P             ] = atoi(optarg); break;
-        case 'm' : iparam[IPARAM_MODE          ] = atoi(optarg); break;
-        case '6' : iparam[IPARAM_NB            ] = atoi(optarg);
+        case 'a' : iparam[IPARAM_RHBLK         ] = atoi(optarg); break;
+        case 'P' : iparam[IPARAM_P             ] = atoi(optarg); break;
+        case 'M' : iparam[IPARAM_MODE          ] = atoi(optarg); break;
+        case 'b' : iparam[IPARAM_NB            ] = atoi(optarg);
                    iparam[IPARAM_MB            ] = atoi(optarg); break;
         case 'n' : get_range(optarg, start, stop, step); break;
         case 'h' : show_help(argv[0]); break;
@@ -691,6 +711,7 @@ main(int argc, char *argv[]) {
     }
 
     MORSE_Finalize();
+    assert(iparam[IPARAM_NB] != 0);
     return success;
 }
 
