@@ -597,8 +597,8 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
         case 'a' : iparam[IPARAM_RHBLK         ] = atoi(optarg); break;
         case 'P' : iparam[IPARAM_P             ] = atoi(optarg); break;
         case 'M' : iparam[IPARAM_MODE          ] = atoi(optarg); break;
-        case 'n' : iparam[IPARAM_NB            ] = atoi(optarg); break;
-        case 'm' : iparam[IPARAM_MB            ] = atoi(optarg); break;
+        case 'n' : iparam[IPARAM_NB            ] = atoi(optarg);
+                   iparam[IPARAM_MB            ] = atoi(optarg); break;
         case 'N' : get_range(optarg, start, stop, step); break;
         case 'h' : show_help(argv[0]); break;
         default:
