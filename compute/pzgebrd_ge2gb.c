@@ -30,6 +30,7 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T,
 {
     int k;
     int tempkm, tempkn;
+    MORSE_desc_t D;
     if (A.m >= A.n){
        for (k = 0; k < A.nt; k++) {
            tempkm = k == A.mt-1 ? A.m-k*A.mb : A.mb;
@@ -38,6 +39,7 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T,
            morse_pzgeqrf(
                morse_desc_submatrix(&A, k*A.mb, k*A.nb, A.m-k*A.mb, tempkn),
                morse_desc_submatrix(&T, k*T.mb, k*T.nb, T.m-k*T.mb, tempkn),
+               morse_desc_submatrix(&D, k*T.mb, k*T.nb, T.m-k*T.mb, tempkn),
                sequence, request);
 
            morse_pzunmqr(
@@ -46,6 +48,7 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T,
                morse_desc_submatrix(&A, k*A.mb,     k*A.nb, A.m-k*A.mb, tempkn),
                morse_desc_submatrix(&A, k*A.mb, (k+1)*A.nb, A.m-k*A.mb, A.n-(k+1)*A.nb),
                morse_desc_submatrix(&T, k*T.mb,     k*T.nb, T.m-k*T.mb, tempkn),
+               morse_desc_submatrix(&D, k*T.mb,     k*T.nb, T.m-k*T.mb, tempkn),
                sequence, request);
 
            if (k+1 < A.nt){
@@ -54,6 +57,7 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T,
               morse_pzgelqf(
                   morse_desc_submatrix(&A, k*A.mb, (k+1)*A.nb, tempkm, A.n-(k+1)*A.nb),
                   morse_desc_submatrix(&T, k*T.mb, (k+1)*T.nb, T.mb,   T.n-(k+1)*T.nb),
+                  morse_desc_submatrix(&D, k*T.mb, (k+1)*T.nb, T.mb,   T.n-(k+1)*T.nb),
                   sequence, request);
 
               morse_pzunmlq(
@@ -61,6 +65,7 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T,
                   morse_desc_submatrix(&A,     k*A.mb, (k+1)*A.nb, tempkm,         A.n-(k+1)*A.nb),
                   morse_desc_submatrix(&A, (k+1)*A.mb, (k+1)*A.nb, A.m-(k+1)*A.mb, A.n-(k+1)*A.nb),
                   morse_desc_submatrix(&T,     k*T.mb, (k+1)*T.nb, T.mb,           T.n-(k+1)*T.nb),
+                  morse_desc_submatrix(&D,     k*T.mb, (k+1)*T.nb, T.mb,           T.n-(k+1)*T.nb),
                   sequence, request);
            }
        }
@@ -73,6 +78,7 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T,
            morse_pzgelqf(
                morse_desc_submatrix(&A, k*A.mb, k*A.nb, tempkm, A.n-k*A.nb),
                morse_desc_submatrix(&T, k*T.mb, k*T.nb, T.mb,   T.n-k*T.nb),
+               morse_desc_submatrix(&D, k*T.mb, k*T.nb, T.mb,   T.n-k*T.nb),
                sequence, request);
 
            morse_pzunmlq(
@@ -80,6 +86,7 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T,
                morse_desc_submatrix(&A,     k*A.mb, k*A.nb, tempkm,         A.n-k*A.nb),
                morse_desc_submatrix(&A, (k+1)*A.mb, k*A.nb, A.m-(k+1)*A.mb, A.n-k*A.nb),
                morse_desc_submatrix(&T,     k*T.mb, k*T.nb, T.mb,           T.n-k*T.nb),
+               morse_desc_submatrix(&D,     k*T.mb, k*T.nb, T.mb,           T.n-k*T.nb),
                sequence, request);
 
            if (k+1 < A.mt){
@@ -88,6 +95,7 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T,
               morse_pzgeqrf(
                    morse_desc_submatrix(&A, (k+1)*A.mb, k*A.nb, A.m-(k+1)*A.mb, tempkn),
                    morse_desc_submatrix(&T, (k+1)*T.mb, k*T.nb, T.m-(k+1)*T.mb, tempkn),
+                   morse_desc_submatrix(&D, (k+1)*T.mb, k*T.nb, T.m-(k+1)*T.mb, tempkn),
                    sequence, request);
 
               morse_pzunmqr(
@@ -95,6 +103,7 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T,
                   morse_desc_submatrix(&A, (k+1)*A.mb,     k*A.nb, A.m-(k+1)*A.mb, tempkn),
                   morse_desc_submatrix(&A, (k+1)*A.mb, (k+1)*A.nb, A.m-(k+1)*A.mb, A.n-(k+1)*A.nb),
                   morse_desc_submatrix(&T, (k+1)*T.mb,     k*T.nb, T.m-(k+1)*T.mb, tempkn),
+                  morse_desc_submatrix(&D, (k+1)*T.mb,     k*T.nb, T.m-(k+1)*T.mb, tempkn),
                   sequence, request);
            }
        }

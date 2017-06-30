@@ -266,6 +266,7 @@ int MORSE_zgelqs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
     MORSE_desc_t *subB;
     MORSE_desc_t *subA;
     MORSE_context_t *morse;
+    MORSE_desc_t D, *Dptr = NULL;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -320,12 +321,24 @@ int MORSE_zgelqs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
     free(subA);
     free(subB);
 
+#if defined(CHAMELEON_COPY_DIAG)
+    {
+        int m = chameleon_min(A->mt, A->nt) * A->mb;
+        morse_zdesc_alloc(D, A->mb, A->nb, m, A->n, 0, 0, m, A->n, );
+        Dptr = &D;
+    }
+#endif
+
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
-        morse_pzunmlq(MorseLeft, MorseConjTrans, A, B, T, sequence, request);
+        morse_pzunmlq(MorseLeft, MorseConjTrans, A, B, T, Dptr, sequence, request);
     }
     else {
-        morse_pzunmlqrh(MorseLeft, MorseConjTrans, A, B, T, MORSE_RHBLK, sequence, request);
+        morse_pzunmlqrh(MorseLeft, MorseConjTrans, A, B, T, Dptr, MORSE_RHBLK, sequence, request);
     }
 
+    if (Dptr != NULL) {
+        morse_desc_mat_free(Dptr);
+    }
+    (void)D;
     return MORSE_SUCCESS;
 }

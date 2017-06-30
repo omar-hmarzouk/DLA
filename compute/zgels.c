@@ -29,7 +29,7 @@
  **/
 #include "control/common.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup MORSE_Complex64_t
  *
@@ -328,6 +328,7 @@ int MORSE_zgels_Tile_Async(MORSE_enum trans, MORSE_desc_t *A,
     MORSE_desc_t *subA;
     MORSE_desc_t *subB;
     MORSE_context_t *morse;
+    MORSE_desc_t D, *Dptr = NULL;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -379,45 +380,65 @@ int MORSE_zgels_Tile_Async(MORSE_enum trans, MORSE_desc_t *A,
     }
      */
     if (A->m >= A->n) {
-        if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
-            morse_pzgeqrf(A, T, sequence, request);
 
-            morse_pzunmqr(MorseLeft, MorseConjTrans, A, B, T, sequence, request);
+#if defined(CHAMELEON_COPY_DIAG)
+        {
+            int n = chameleon_min(A->mt, A->nt) * A->nb;
+            morse_zdesc_alloc(D, A->mb, A->nb, A->m, n, 0, 0, A->m, n, );
+            Dptr = &D;
+        }
+#endif
+        if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
+
+            morse_pzgeqrf(A, T, Dptr, sequence, request);
+
+            morse_pzunmqr(MorseLeft, MorseConjTrans, A, B, T, Dptr, sequence, request);
         }
         else {
-            morse_pzgeqrfrh(A, T, MORSE_RHBLK, sequence, request);
+            morse_pzgeqrfrh(A, T, Dptr, MORSE_RHBLK, sequence, request);
 
-            morse_pzunmqrrh(MorseLeft, MorseConjTrans, A, B, T, MORSE_RHBLK, sequence, request);
+            morse_pzunmqrrh(MorseLeft, MorseConjTrans, A, B, T, Dptr, MORSE_RHBLK, sequence, request);
         }
         subB = morse_desc_submatrix(B, 0, 0, A->n, B->n);
         subA = morse_desc_submatrix(A, 0, 0, A->n, A->n);
         morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
-        free(subA);
-        free(subB);
+
     }
     else {
         /* subB = morse_desc_submatrix(B, A->m, 0, A->n-A->m, B->n);
         morse_pztile_zero(subB, sequence, request);
         free(subB); */
-
+#if defined(CHAMELEON_COPY_DIAG)
+        {
+            int m = chameleon_min(A->mt, A->nt) * A->mb;
+            morse_zdesc_alloc(D, A->mb, A->nb, m, A->n, 0, 0, m, A->n, );
+            Dptr = &D;
+        }
+#endif
         if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
-            morse_pzgelqf(A, T, sequence, request);
+            morse_pzgelqf(A, T, Dptr, sequence, request);
         }
         else {
-            morse_pzgelqfrh(A, T, MORSE_RHBLK, sequence, request);
+            morse_pzgelqfrh(A, T, Dptr, MORSE_RHBLK, sequence, request);
         }
         subB = morse_desc_submatrix(B, 0, 0, A->m, B->n);
         subA = morse_desc_submatrix(A, 0, 0, A->m, A->m);
         morse_pztrsm(MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
-        free(subA);
-        free(subB);
 
         if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
-            morse_pzunmlq(MorseLeft, MorseConjTrans, A, B, T, sequence, request);
+            morse_pzunmlq(MorseLeft, MorseConjTrans, A, B, T, Dptr, sequence, request);
         }
         else {
-            morse_pzunmlqrh(MorseLeft, MorseConjTrans, A, B, T, MORSE_RHBLK, sequence, request);
+            morse_pzunmlqrh(MorseLeft, MorseConjTrans, A, B, T, Dptr, MORSE_RHBLK, sequence, request);
         }
     }
+
+    free(subA);
+    free(subB);
+
+    if (Dptr != NULL) {
+        morse_desc_mat_free(Dptr);
+    }
+    (void)D;
     return MORSE_SUCCESS;
 }

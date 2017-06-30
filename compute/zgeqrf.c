@@ -238,6 +238,7 @@ int MORSE_zgeqrf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
                              MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
+    MORSE_desc_t D, *Dptr = NULL;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -277,12 +278,23 @@ int MORSE_zgeqrf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
     if (chameleon_min(M, N) == 0)
         return MORSE_SUCCESS;
 */
+#if defined(CHAMELEON_COPY_DIAG)
+    {
+        int n = chameleon_min(A->mt, A->nt) * A->nb;
+        morse_zdesc_alloc(D, A->mb, A->nb, A->m, n, 0, 0, A->m, n, );
+        Dptr = &D;
+    }
+#endif
+
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
-        morse_pzgeqrf(A, T, sequence, request);
+        morse_pzgeqrf(A, T, Dptr, sequence, request);
     }
     else {
-        morse_pzgeqrfrh(A, T, MORSE_RHBLK, sequence, request);
+        morse_pzgeqrfrh(A, T, Dptr, MORSE_RHBLK, sequence, request);
     }
-
+    if (Dptr != NULL) {
+        morse_desc_mat_free(Dptr);
+    }
+    (void)D;
     return MORSE_SUCCESS;
 }

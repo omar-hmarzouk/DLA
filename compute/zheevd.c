@@ -335,6 +335,7 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
     MORSE_context_t *morse;
     MORSE_desc_t descA;
     MORSE_desc_t descT;
+    MORSE_desc_t D, *Dptr = NULL;
     MORSE_Complex64_t *Q2;
     int N, NB, status;
     double *E;
@@ -468,13 +469,20 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
                         morse_desc_mat_free(&(descQ2)); morse_desc_mat_free(&(descV)) );
     if (uplo == MorseLower)
     {
+#if defined(CHAMELEON_COPY_DIAG)
+    {
+        int n = chameleon_min(A->mt, A->nt) * A->nb;
+        morse_zdesc_alloc(D, A->mb, A->nb, A->m, n, 0, 0, A->m, n, );
+        Dptr = &D;
+    }
+#endif
         subA = morse_desc_submatrix(&descA,  descA.mb,  0, descA.m -descA.mb,  descA.n-descA.nb);
         subQ = morse_desc_submatrix(&descQ2, descQ2.mb, 0, descQ2.m-descQ2.mb, descQ2.n        );
         subT = morse_desc_submatrix(&descT,  descT.mb,  0, descT.m -descT.mb,  descT.n-descT.nb);
 
         /* Compute Q2 = Q1 * Q2 */
         morse_pzunmqr( MorseLeft, MorseNoTrans,
-                       subA, subQ, subT,
+                       subA, subQ, subT, Dptr,
                        sequence, request );
 
         /* Compute the final eigenvectors A = (Q1 * Q2) * V */
@@ -485,13 +493,20 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
 
     }
     else {
+#if defined(CHAMELEON_COPY_DIAG)
+    {
+        int m = chameleon_min(A->mt, A->nt) * A->mb;
+        morse_zdesc_alloc(D, A->mb, A->nb, m, A->n, 0, 0, m, A->n, );
+        Dptr = &D;
+    }
+#endif
         subA = morse_desc_submatrix(&descA,  0, descA.nb,  descA.m -descA.mb,  descA.n -descA.nb );
         subQ = morse_desc_submatrix(&descQ2, descQ2.mb, 0, descQ2.m-descQ2.mb, descQ2.n          );
         subT = morse_desc_submatrix(&descT,  0, descT.nb,  descT.m -descT.mb,  descT.n -descT.nb );
 
         /* Compute Q2 = Q1^h * Q2 */
         morse_pzunmlq( MorseLeft, MorseConjTrans,
-                       subA, subQ, subT,
+                       subA, subQ, subT, Dptr,
                        sequence, request );
 
         /* Compute the final eigenvectors A =  (Q1^h * Q2) * V */
@@ -511,5 +526,9 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
     free(V);
 
     free(E);
+    if (Dptr != NULL) {
+        morse_desc_mat_free(Dptr);
+    }
+    (void)D;
     return MORSE_SUCCESS;
 }
