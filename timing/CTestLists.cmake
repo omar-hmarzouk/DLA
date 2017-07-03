@@ -4,8 +4,8 @@
 
 set(TEST_CMD_shm     --n_range=500:2000:500 --nb=320 )
 set(TEST_CMD_shmgpu  --n_range=500:2000:500 --nb=320 --gpus=1)
-set(TEST_CMD_mpi     --n_range=500:2000:500 --nb=320 --p=2)
-set(TEST_CMD_mpigpu  --n_range=500:2000:500 --nb=320 --p=2 --gpus=1)
+set(TEST_CMD_mpi     --n_range=500:2000:500 --nb=320 --P=2)
+set(TEST_CMD_mpigpu  --n_range=500:2000:500 --nb=320 --P=2 --gpus=1)
 
 set(MPI_CMD_shm )
 set(MPI_CMD_shmgpu )
@@ -64,8 +64,8 @@ if (NOT CHAMELEON_SIMULATION)
 
   if (CHAMELEON_USE_MPI AND MPI_C_FOUND)
     set( TEST_CATEGORIES mpi )
-    set( TEST_CMD_mpi    --p=2 --n_range=2000:2000:1 --nb=32)
-    set( TEST_CMD_mpigpu --p=2 --n_range=2000:2000:1 --nb=32 --gpus=1)
+    set( TEST_CMD_mpi    --P=2 --n_range=2000:2000:1 --nb=32)
+    set( TEST_CMD_mpigpu --P=2 --n_range=2000:2000:1 --nb=32 --gpus=1)
     #set( TEST_CATEGORIES ${TEST_CATEGORIES} mpi )
     #if (CHAMELEON_USE_CUDA AND CUDA_FOUND)
     #    set( TEST_CATEGORIES ${TEST_CATEGORIES} mpigpu )
