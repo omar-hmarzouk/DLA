@@ -25,12 +25,11 @@
  **/
 #include "control/common.h"
 
-void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T,
+void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T, MORSE_desc_t D,
                          MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     int k;
     int tempkm, tempkn;
-    MORSE_desc_t D;
     if (A.m >= A.n){
        for (k = 0; k < A.nt; k++) {
            tempkm = k == A.mt-1 ? A.m-k*A.mb : A.mb;

@@ -460,9 +460,14 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
     NB    = descA.mb;
     LDAB  = NB + 1;
     uplo  = M >= N ? MorseUpper : MorseLower;
-
+#if defined(CHAMELEON_COPY_DIAG)
+    {
+        morse_zdesc_alloc(D, A->mb, A->nb, A->m, A->n, 0, 0, A->m, A->n, );
+        Dptr = &D;
+    }
+#endif
     /* Reduction to band */
-    morse_pzgebrd_ge2gb( descA, descT,
+    morse_pzgebrd_ge2gb( descA, descT, D,
                          sequence, request );
 
     /* Allocate band structure */
@@ -552,14 +557,6 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
     subT = NULL;
     subUVT = NULL;
     if ( jobu != MorseNoVec ) {
-#if defined(CHAMELEON_COPY_DIAG)
-    {
-        int n = chameleon_min(A->mt, A->nt) * A->nb;
-        morse_zdesc_alloc(D, A->mb, A->nb, A->m, n, 0, 0, A->m, n, );
-        Dptr = &D;
-    }
-#endif
-
         if ( M < N ){
             subA   = morse_desc_submatrix(&descA, descA.mb, 0, descA.m-descA.mb, descA.n-descA.nb);
             subUVT = morse_desc_submatrix(&descU, descU.mb, 0, descU.m-descU.mb, descU.n);
@@ -576,14 +573,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
     }
 
     if ( jobvt != MorseNoVec ) {
-#if defined(CHAMELEON_COPY_DIAG)
-    {
-        int m = chameleon_min(A->mt, A->nt) * A->mb;
-        morse_zdesc_alloc(D, A->mb, A->nb, m, A->n, 0, 0, m, A->n, );
-        Dptr = &D;
-    }
-#endif
-    if ( M < N ){
+        if ( M < N ){
             morse_pzunmlq( MorseRight, MorseNoTrans,
                            &descA, &descVT, &descT, Dptr,
                            sequence, request );
