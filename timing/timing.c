@@ -372,7 +372,7 @@ show_help(char *prog_name) {
             "    -n, --n, --N=x         Dimension (N) of the matrices\n"
             "    -N, --n_range=R        Range of N values\n"
             "                           with R=Start:Stop:Step (default: 500:5000:500)\n"
-            "    -k, --k, --K, --nrhs=x Dimension (K) of the matrices or number of right-hand size(default: 1)\n"
+            "    -k, --k, --K, --nrhs=x Dimension (K) of the matrices or number of right-hand size (default: 1)\n"
             "    -b, --nb=x             Nb size. (default: 320)\n"
             "    -i, --ib=x             IB size. (default: 32)\n"
             "    -x, --mx=x             ?\n" //todo
@@ -384,6 +384,8 @@ show_help(char *prog_name) {
             "    -w, --nowarmup         Cancel the warmup run to pre-load libraries\n"
             "    -c, --check            Check result\n"
             "    -C, --inv              Check on inverse\n"
+            "        --mode=x           Change xLATMS matrix mode generation for SVD/EVD (default: 4)\n"
+            "                           Must be between 0 and 20 included\n"
             "\n"
             "  Profiling:\n"
             "    -T, --trace            Enable trace generation\n"
@@ -394,17 +396,16 @@ show_help(char *prog_name) {
             "\n"
             "  HQR options:\n"
             "    -a, --qr_a, --rhblk=N  If N > 0, enable Householder mode for QR and LQ factorization\n"
-            "                           N is the size of each subdomain (default: 0)\n"
+            "                           N is the size of each subdomain (default: -1)\n"
             "    -l, --llvl=x           Tree used for low level reduction inside nodes (default: -1)\n"
             "    -L, --hlvl=x           Tree used for high level reduction between nodes, only if P > 1 (default: -1).\n"
-            "                           (0: Flat, 1: Greedy, 2: Fibonacci, 3: Binary, 4: Replicated greedy)\n"
+            "                           (-1: Automatic, 0: Flat, 1: Greedy, 2: Fibonacci, 3: Binary, 4: Replicated greedy)\n"
             "    -D, --domino           Enable the domino between upper and lower trees.\n"
             "\n"
             "  Advanced options\n"
-            "    -M, --mode=x           ?\n"//todo
-            "        --nobigmat         Allocating one big mat or plenty of small (default: bigmat)\n"
+            "        --nobigmat         Disable single large matrix allocation for multiple tiled allocations\n"
             "    -s, --sync             Enable synchronous calls in wrapper function such as POTRI\n"
-            "    -o, --ooc              \n"
+            "    -o, --ooc              Enable out-of-core (available only with StarPU)\n"
             "    -G, --gemm3m           Use gemm3m complex method\n"
             "        --peak             ?\n"//todo
             "        --bound            ?\n"//todo
@@ -457,7 +458,7 @@ print_header(char *prog_name, int * iparam) {
     return;
 }
 
-#define GETOPT_STRING "ht:g:P:8m:n:N:k:b:i:x:X:1:WwcCT2dpa:M:l:L:D3soG4567"
+#define GETOPT_STRING "ht:g:P:8M:m:N:n:K:k:b:i:x:X:1:WwcCT2dpa:l:L:D9:3soG4567"
 #if defined(CHAMELEON_HAVE_GETOPT_LONG)
 static struct option long_options[] =
 {
@@ -473,7 +474,7 @@ static struct option long_options[] =
     {"N",             required_argument, 0,      'n'},
     {"n",             required_argument, 0,      'n'},
     {"n_range",       required_argument, 0,      'N'},
-    {"K",             required_argument, 0,      'k'},
+    {"K",             required_argument, 0,      'K'},
     {"k",             required_argument, 0,      'k'},
     {"nrhs",          required_argument, 0,      'k'},
     {"nb",            required_argument, 0,      'b'},
@@ -498,7 +499,7 @@ static struct option long_options[] =
     {"hlvl",          required_argument, 0,      'L'},
     {"domino",        no_argument,       0,      'D'},
     // Other
-    {"mode",          required_argument, 0,      'M'},
+    {"mode",          required_argument, 0,      '9'},
     {"nobigmat",      no_argument,       0,      '3'},
     {"sync",          no_argument,       0,      's'},
     {"ooc",           no_argument,       0,      'o'},
@@ -572,9 +573,11 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
         case 'P' : iparam[IPARAM_P             ] = atoi(optarg); break;
         case '8' : iparam[IPARAM_NO_CPU        ] = 1; break;
         // Matrix parameters
+        case 'M' :
         case 'm' : iparam[IPARAM_M             ] = atoi(optarg); break;
         case 'n' : iparam[IPARAM_N             ] = atoi(optarg); break;
         case 'N' : get_range(optarg, start, stop, step); break;
+        case 'K' :
         case 'k' : iparam[IPARAM_K             ] = atoi(optarg); break;
         case 'b' : iparam[IPARAM_NB            ] = atoi(optarg);
                    iparam[IPARAM_MB            ] = atoi(optarg); break;
@@ -596,9 +599,9 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
         case 'a' : iparam[IPARAM_RHBLK         ] = atoi(optarg); break;
         case 'l' : iparam[IPARAM_LOWLVL_TREE   ] = atoi(optarg); break;
         case 'L' : iparam[IPARAM_HIGHLVL_TREE  ] = atoi(optarg); break;
-        case 'D' : iparam[IPARAM_QR_DOMINO        ] = 1; break;
+        case 'D' : iparam[IPARAM_QR_DOMINO     ] = 1; break;
         //Other
-        case 'M' : iparam[IPARAM_MODE          ] = atoi(optarg); break;
+        case '9' : iparam[IPARAM_MODE          ] = atoi(optarg); break;
         case '3' : iparam[IPARAM_BIGMAT        ] = 0; break;
         case 's' : iparam[IPARAM_ASYNC         ] = 0; break;
         case 'o' : iparam[IPARAM_OOC           ] = 1; break;
@@ -616,10 +619,7 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
         default:
             break;
         }
-
-    }while(-1 != c);
-    if(-'P' == iparam[IPARAM_QR_HLVL_SZE]) iparam[IPARAM_QR_HLVL_SZE] = iparam[IPARAM_P];
-    if(-'Q' == iparam[IPARAM_QR_HLVL_SZE]) iparam[IPARAM_QR_HLVL_SZE] = iparam[IPARAM_Q];
+    } while(-1 != c);
 }
 
 int
@@ -725,7 +725,6 @@ main(int argc, char *argv[]) {
     }
 
     MORSE_Finalize();
-    assert(iparam[IPARAM_NB] != 0);
     return success;
 }
 
