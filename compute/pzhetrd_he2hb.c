@@ -41,12 +41,11 @@
  *  Parallel tile BAND Tridiagonal Reduction - dynamic scheduler
  **/
 void morse_pzhetrd_he2hb(MORSE_enum uplo,
-                         MORSE_desc_t *A, MORSE_desc_t *T,
+                         MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *E,
                          MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
     MORSE_option_t options;
-    MORSE_desc_t *E  = NULL;
     MORSE_desc_t *D  = NULL;
     MORSE_desc_t *AT = NULL;
     size_t ws_worker = 0;
@@ -89,12 +88,6 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
     ws_host   *= sizeof(MORSE_Complex64_t);
 
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
-
-#if defined(CHAMELEON_COPY_DIAG)
-    /* Copy of the extra-diagonal to generate more parallelism by releasing anti-dependencies on UNMQR/TSMQR triangle conflict */
-    E = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*E, A->mb, A->nb, chameleon_min(A->m, A->n), A->nb, 0, 0, chameleon_min(A->m, A->n), A->nb, A->p, A->q);
-#endif
 
     /* Copy of the diagonal tiles to keep the general version of the tile all along the computation */
     D = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
@@ -451,10 +444,4 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
 
     morse_desc_mat_free(AT);
     free(AT);
-
-#if defined(CHAMELEON_COPY_DIAG)
-    morse_desc_mat_free(E);
-    free(E);
-#endif
-    (void)E;
 }

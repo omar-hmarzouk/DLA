@@ -341,6 +341,7 @@ int MORSE_ztpgqrt_Tile_Async( int L,
                               MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
+    MORSE_desc_t D, *Dptr = NULL;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -395,15 +396,29 @@ int MORSE_ztpgqrt_Tile_Async( int L,
         morse_error("MORSE_ztpgqrt_Tile", "Triangular part must be aligned with tiles");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
+#if defined(CHAMELEON_COPY_DIAG)
+    {
+        int minMT;
+        if (V1->m > V1->n) {
+        minMT = V1->nt;
+        } else {
+            minMT = V1->mt;
+        }
+        morse_zdesc_alloc_diag(D, V1->mb, V1->nb, minMT*V1->mb, V1->nb, 0, 0, minMT*V1->mb, V1->nb, V1->p, V1->q);
+        Dptr = &D;
+    }
+#endif
 
     /* if (morse->householder == MORSE_FLAT_HOUSEHOLDER) { */
     morse_pzlaset( MorseUpperLower, 0., 1., Q1, sequence, request );
     morse_pzlaset( MorseUpperLower, 0., 0., Q2, sequence, request );
-    morse_pztpgqrt( L, V1, T1, V2, T2, Q1, Q2, sequence, request );
+    morse_pztpgqrt( L, V1, T1, V2, T2, Q1, Q2, Dptr, sequence, request );
     /* } */
     /* else { */
     /*    morse_pztpgqrtrh(Q1, T, MORSE_RHBLK, sequence, request); */
     /* } */
-
+    if (Dptr != NULL) {
+        morse_desc_mat_free(Dptr);
+    }
     return MORSE_SUCCESS;
 }

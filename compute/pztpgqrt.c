@@ -31,9 +31,9 @@
 #define Q1(m,n) Q1,  m,  n
 #define Q2(m,n) Q2,  m,  n
 #if defined(CHAMELEON_COPY_DIAG)
-#define DIAG(k) DIAG, k, 0
+#define D(k)    D, k, 0
 #else
-#define DIAG(k) V1, k, k
+#define D(k)    V1, k, k
 #endif
 
 /***************************************************************************//**
@@ -43,19 +43,19 @@ void morse_pztpgqrt( int L,
                      MORSE_desc_t *V1, MORSE_desc_t *T1,
                      MORSE_desc_t *V2, MORSE_desc_t *T2,
                      MORSE_desc_t *Q1, MORSE_desc_t *Q2,
+                     MORSE_desc_t *D,
                      MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
     MORSE_option_t options;
     size_t ws_worker = 0;
     size_t ws_host = 0;
-    MORSE_desc_t *DIAG = NULL;
 
     int k, m, n;
     int ldvk, ldvm;
     int ldqk, ldqm;
     int tempkm, tempkn, tempkk, tempnn, tempmm, templm;
-    int ib, minMT;
+    int ib;
 
     /* Dimension of the first column */
     int maxm  = chameleon_max( Q2->m - L, 1 );
@@ -68,13 +68,6 @@ void morse_pztpgqrt( int L,
     RUNTIME_options_init(&options, morse, sequence, request);
 
     ib = MORSE_IB;
-
-    if (V1->m > V1->n) {
-        minMT = V1->nt;
-    } else {
-        minMT = V1->mt;
-    }
-
     /*
      * ztpmqrt = Q1->nb * ib
      */
@@ -93,12 +86,6 @@ void morse_pztpgqrt( int L,
     ws_host   *= sizeof(MORSE_Complex64_t);
 
     RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
-
-#if defined(CHAMELEON_COPY_DIAG)
-    /* necessary to avoid dependencies between tasks regarding the diag tile */
-    DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*DIAG, V1->mb, V1->nb, minMT*V1->mb, V1->nb, 0, 0, minMT*V1->mb, V1->nb, V1->p, V1->q);
-#endif
 
     for (k = V1->nt-1; k >= 0; k--) {
         RUNTIME_iteration_push(morse, k);
@@ -152,13 +139,13 @@ void morse_pztpgqrt( int L,
             &options,
             MorseLower, tempkm, tempkk, V1->nb,
             V1(k, k), ldvk,
-            DIAG(k), ldvk );
+            D(k), ldvk );
 #if defined(CHAMELEON_USE_CUDA)
         MORSE_TASK_zlaset(
             &options,
             MorseUpper, tempkm, tempkk,
             0., 1.,
-            DIAG(k), ldvk );
+            D(k), ldvk );
 #endif
 #endif
         for (n = k; n < Q1->nt; n++) {
@@ -167,7 +154,7 @@ void morse_pztpgqrt( int L,
                 &options,
                 MorseLeft, MorseNoTrans,
                 tempkm, tempnn, tempkk, ib, T1->nb,
-                DIAG(k), ldvk,
+                D(k), ldvk,
                 T1(k, k), T1->mb,
                 Q1(k, n), ldqk);
         }
@@ -178,11 +165,4 @@ void morse_pztpgqrt( int L,
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
-
-#if defined(CHAMELEON_COPY_DIAG)
-    MORSE_Sequence_Wait(sequence);
-    morse_desc_mat_free(DIAG);
-    free(DIAG);
-#endif
-    (void)DIAG; (void)minMT;
 }
