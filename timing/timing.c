@@ -359,58 +359,57 @@ static void
 show_help(char *prog_name) {
     printf( "Usage:\n%s [options]\n\n", prog_name );
     printf( "Options are:\n"
-            "  -h  --help           Show this help\n"
+            "  -h  --help               Show this help\n"
             "\n"
-            "  -t x\n"
-            "  --threads x      Number of CPU workers (default: _SC_NPROCESSORS_ONLN)\n"
-            "  -g x\n"
-            "  --gpus X         Number of GPU workers (default: 0)\n"
+            "  Machine parameters:\n"
+            "    -t, --threads=x        Number of CPU workers (default: automatic detection through runtime)\n"
+            "    -g, --gpus=x           Number of GPU workers (default: 0)\n"
+            "    -P, --P=x              Rows (P) in the PxQ process grid (deafult: 1)\n"
+            "        --nocpu            All GPU kernels are exclusively executed on GPUs (default: 0)\n"
             "\n"
-            "  -s  --sync        Enable synchronous calls in wrapper function such as POTRI\n"
-            "  -b  --nobigmat     Allocating one big mat or plenty of small (default: bigmat)\n"
-            "  -c  --check      Check result\n"
-            "  -P  --progress   Display progress indicator\n"
-            "  -G  --gemm3m     Use gemm3m complex method\n"
-            "  -i  --inv        Check on inverse\n"
-            "  -w  --nowarmup     Perform a warmup run to pre-load libraries (default: warmup)\n"
-            "  -T  --trace      Enable trace generation\n"
-            "  -d  --dag        Enable DAG generation\n"
-            "                   Generates a dot_dag_file.dot.\n"
-            "  -5  --profile   Print profiling informations (default: noprofile)\n"
-            "  -C  --nocpu         All GPU kernels are exclusively executed on GPUs (default: 0)\n"
-/*             "  --inplace        Enable layout conversion inplace for lapack interface timers (default: enable)\n" */
-/*             "  --outplace       Enable layout conversion out of place for lapack interface timers (default: disable)\n" */
-/*             "  --[no]atun       Activate autotuning (default: noatun)\n" */
+            "  Matrix parameters:\n"
+            "    -m, --m, --M=x         Dimension (M) of the matrices (default: N)\n"
+            "    -n, --n, --N=x         Dimension (N) of the matrices\n"
+            "    -N, --n_range=R        Range of N values\n"
+            "                           with R=Start:Stop:Step (default: 500:5000:500)\n"
+            "    -k, --k, --K, --nrhs=x Dimension (K) of the matrices or number of right-hand size(default: 1)\n"
+            "    -b, --nb=x             Nb size. (default: 320)\n"
+            "    -i, --ib=x             IB size. (default: 32)\n"
+            "    -x, --mx=x             ?\n" //todo
+            "    -X, --nx=x             ?\n" //todo
             "\n"
-            "  -n R\n"
-            "  --n_range R      Range of N values\n"
-            "                   with R=Start:Stop:Step (default: 500:5000:500)\n"
-            "  -m x\n"
-            "  --m x            dimension (M) of the matrices (default: N)\n"
-            "  -k x\n"
-            "  --k x            dimension (K) of the matrices (default: 1)\n"
-            "  --nrhs X         Number of right-hand size (default: 1)\n"
-            "  --nb N           Nb size. (default: 128)\n"
-            "  --ib N           IB size. (default: 32)\n"
+            "  Check/prints:\n"
+            "        --niter=x          Number of iterations performed for each test (default: 1)\n"
+            "    -W, --nowarnings       Do not show warnings\n"
+            "    -w, --nowarmup         Cancel the warmup run to pre-load libraries\n"
+            "    -c, --check            Check result\n"
+            "    -C, --inv              Check on inverse\n"
             "\n"
-            "  -N x\n"
-            "  --niter x        Number of iterations performed for each test (default: 1)\n"
+            "  Profiling:\n"
+            "    -T, --trace            Enable trace generation\n"
+            "        --progress         Display progress indicator\n"
+            "    -d, --dag              Enable DAG generation\n"
+            "                           Generates a dot_dag_file.dot.\n"
+            "    -p, --profile          Print profiling informations\n"
             "\n"
-            "  -r N\n"
-            "  --rhblk N        If N > 0, enable Householder mode for QR and LQ factorization\n"
-            "                   N is the size of each subdomain (default: 0)\n"
-/*             "\n" */
-/*             " Options specific to the conversion format timings xgetri and xgecfi:\n" */
-/*             "  --ifmt           Input format. (default: 0)\n" */
-/*             "  --ofmt           Output format. (default: 1)\n" */
-/*             "                   The possible values are:\n" */
-/*             "                     0 - MorseCM, Column major\n" */
-/*             "                     1 - MorseCCRB, Column-Colum rectangular block\n" */
-/*             "                     2 - MorseCRRB, Column-Row rectangular block\n" */
-/*             "                     3 - MorseRCRB, Row-Colum rectangular block\n" */
-/*             "                     4 - MorseRRRB, Row-Row rectangular block\n" */
-/*             "                     5 - MorseRM, Row Major\n" */
-/*             "  --thrdbypb       Number of threads per subproblem for inplace transformation (default: 1)\n" */
+            "  HQR options:\n"
+            "    -a, --qr_a, --rhblk=N  If N > 0, enable Householder mode for QR and LQ factorization\n"
+            "                           N is the size of each subdomain (default: 0)\n"
+            "    -l, --llvl=x           Tree used for low level reduction inside nodes (default: -1)\n"
+            "    -L, --hlvl=x           Tree used for high level reduction between nodes, only if P > 1 (default: -1).\n"
+            "                           (0: Flat, 1: Greedy, 2: Fibonacci, 3: Binary, 4: Replicated greedy)\n"
+            "    -D, --domino           Enable the domino between upper and lower trees.\n"
+            "\n"
+            "  Advanced options\n"
+            "    -M, --mode=x           ?\n"//todo
+            "        --nobigmat         Allocating one big mat or plenty of small (default: bigmat)\n"
+            "    -s, --sync             Enable synchronous calls in wrapper function such as POTRI\n"
+            "    -o, --ooc              \n"
+            "    -G, --gemm3m           Use gemm3m complex method\n"
+            "        --peak             ?\n"//todo
+            "        --bound            ?\n"//todo
+            "        --bounddeps        ?\n"//todo
+            "        --bounddepsprio    ?\n"//todo
             "\n");
 }
 
@@ -458,10 +457,11 @@ print_header(char *prog_name, int * iparam) {
     return;
 }
 
-#define GETOPT_STRING "t:g:P:8m:n:N:k:b:i:x:X:1:WwcCT2dpa:M:l:L:D3soG4567"
+#define GETOPT_STRING "ht:g:P:8m:n:N:k:b:i:x:X:1:WwcCT2dpa:M:l:L:D3soG4567"
 #if defined(CHAMELEON_HAVE_GETOPT_LONG)
 static struct option long_options[] =
 {
+    {"help",          no_argument,       0,      'h'},
     // Configuration
     {"threads",       required_argument, 0,      't'},
     {"gpus",          required_argument, 0,      'g'},
@@ -494,11 +494,11 @@ static struct option long_options[] =
     // HQR options
     {"rhblk",         required_argument, 0,      'a'},
     {"qr_a",          required_argument, 0,      'a'},
-    {"mode",          required_argument, 0,      'M'},
     {"llvl",          required_argument, 0,      'l'},
     {"hlvl",          required_argument, 0,      'L'},
     {"domino",        no_argument,       0,      'D'},
     // Other
+    {"mode",          required_argument, 0,      'M'},
     {"nobigmat",      no_argument,       0,      '3'},
     {"sync",          no_argument,       0,      's'},
     {"ooc",           no_argument,       0,      'o'},
@@ -524,8 +524,8 @@ set_iparam_default(int *iparam){
     iparam[IPARAM_LDA           ] = -1;
     iparam[IPARAM_LDB           ] = -1;
     iparam[IPARAM_LDC           ] = -1;
-    iparam[IPARAM_MB            ] = 128;
-    iparam[IPARAM_NB            ] = 128;
+    iparam[IPARAM_MB            ] = 320;
+    iparam[IPARAM_NB            ] = 320;
     iparam[IPARAM_IB            ] = 32;
     iparam[IPARAM_NITER         ] = 1;
     iparam[IPARAM_WARMUP        ] = 1;
@@ -566,47 +566,60 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
 
         switch(c)
         {
-        case 'c' : iparam[IPARAM_CHECK         ] = 1; break;
-        case '3' : iparam[IPARAM_BIGMAT        ] = 0; break;
-        case 'C' : iparam[IPARAM_INVERSE       ] = 1; break;
+        // Configuration
+        case 't' : iparam[IPARAM_THRDNBR       ] = atoi(optarg); break;
+        case 'g' : iparam[IPARAM_NCUDAS        ] = atoi(optarg); break;
+        case 'P' : iparam[IPARAM_P             ] = atoi(optarg); break;
+        case '8' : iparam[IPARAM_NO_CPU        ] = 1; break;
+        // Matrix parameters
+        case 'm' : iparam[IPARAM_M             ] = atoi(optarg); break;
+        case 'n' : iparam[IPARAM_N             ] = atoi(optarg); break;
+        case 'N' : get_range(optarg, start, stop, step); break;
+        case 'k' : iparam[IPARAM_K             ] = atoi(optarg); break;
+        case 'b' : iparam[IPARAM_NB            ] = atoi(optarg);
+                   iparam[IPARAM_MB            ] = atoi(optarg); break;
+        case 'i' : iparam[IPARAM_IB            ] = atoi(optarg); break;
+        case 'x' : iparam[IPARAM_MX            ] = atoi(optarg); break;
+        case 'X' : iparam[IPARAM_NX            ] = atoi(optarg); break;
+        // Check/prints
+        case '1' : iparam[IPARAM_NITER         ] = atoi(optarg); break;
+        case 'W' : iparam[IPARAM_PRINT_WARNINGS] = 0; break;
         case 'w' : iparam[IPARAM_WARMUP        ] = 0; break;
+        case 'c' : iparam[IPARAM_CHECK         ] = 1; break;
+        case 'C' : iparam[IPARAM_INVERSE       ] = 1; break;
+        // Profiling
         case 'T' : iparam[IPARAM_TRACE         ] = 1; break;
-        case 'G' : iparam[IPARAM_GEMM3M        ] = 1; break;
         case '2' : iparam[IPARAM_PROGRESS      ] = 1; break;
         case 'd' : iparam[IPARAM_DAG           ] = 1; break;
+        case 'p' : iparam[IPARAM_PROFILE       ] = 1; break;
+        // HQR options
+        case 'a' : iparam[IPARAM_RHBLK         ] = atoi(optarg); break;
+        case 'l' : iparam[IPARAM_LOWLVL_TREE   ] = atoi(optarg); break;
+        case 'L' : iparam[IPARAM_HIGHLVL_TREE  ] = atoi(optarg); break;
+        case 'D' : iparam[IPARAM_QR_DOMINO        ] = 1; break;
+        //Other
+        case 'M' : iparam[IPARAM_MODE          ] = atoi(optarg); break;
+        case '3' : iparam[IPARAM_BIGMAT        ] = 0; break;
         case 's' : iparam[IPARAM_ASYNC         ] = 0; break;
         case 'o' : iparam[IPARAM_OOC           ] = 1; break;
+        case 'G' : iparam[IPARAM_GEMM3M        ] = 1; break;
         case '4' : iparam[IPARAM_PEAK          ] = 1; break;
-        case 'p' : iparam[IPARAM_PROFILE       ] = 1; break;
-        case 'W' : iparam[IPARAM_PRINT_WARNINGS] = 0; break;
-        case '8' : iparam[IPARAM_NO_CPU        ] = 1; break;
         case '5' : iparam[IPARAM_BOUND         ] = 1; break;
         case '6' : iparam[IPARAM_BOUND         ] = 1;
                    iparam[IPARAM_BOUNDDEPS     ] = 1; break;
         case '7' : iparam[IPARAM_BOUND         ] = 1;
                    iparam[IPARAM_BOUNDDEPS     ] = 1;
                    iparam[IPARAM_BOUNDDEPSPRIO ] = 1; break;
-        case 't' : iparam[IPARAM_THRDNBR       ] = atoi(optarg); break;
-        case 'g' : iparam[IPARAM_NCUDAS        ] = atoi(optarg); break;
-        case 'm' : iparam[IPARAM_M             ] = atoi(optarg); break;
-        case 'n' : iparam[IPARAM_N             ] = atoi(optarg); break;
-        case 'k' : iparam[IPARAM_K             ] = atoi(optarg); break;
-        case 'i' : iparam[IPARAM_IB            ] = atoi(optarg); break;
-        case '1' : iparam[IPARAM_NITER         ] = atoi(optarg); break;
-        case 'x' : iparam[IPARAM_MX            ] = atoi(optarg); break;
-        case 'X' : iparam[IPARAM_NX            ] = atoi(optarg); break;
-        case 'a' : iparam[IPARAM_RHBLK         ] = atoi(optarg); break;
-        case 'P' : iparam[IPARAM_P             ] = atoi(optarg); break;
-        case 'M' : iparam[IPARAM_MODE          ] = atoi(optarg); break;
-        case 'b' : iparam[IPARAM_NB            ] = atoi(optarg);
-                   iparam[IPARAM_MB            ] = atoi(optarg); break;
-        case 'N' : get_range(optarg, start, stop, step); break;
-        case 'h' : show_help(argv[0]); break;
+        case 'h' :
+        case '?' :
+            show_help(argv[0]); exit(EXIT_FAILURE);
         default:
             break;
         }
 
     }while(-1 != c);
+    if(-'P' == iparam[IPARAM_QR_HLVL_SZE]) iparam[IPARAM_QR_HLVL_SZE] = iparam[IPARAM_P];
+    if(-'Q' == iparam[IPARAM_QR_HLVL_SZE]) iparam[IPARAM_QR_HLVL_SZE] = iparam[IPARAM_Q];
 }
 
 int
