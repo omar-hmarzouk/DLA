@@ -334,6 +334,7 @@ int MORSE_zhetrd_Tile_Async(MORSE_enum jobz,
     MORSE_desc_t descAB;
     int N, NB, LDAB;
     int status;
+    MORSE_desc_t D, *Dptr = NULL;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -387,9 +388,14 @@ int MORSE_zhetrd_Tile_Async(MORSE_enum jobz,
 
     N  = descA.m;
     NB = descA.mb;
-
+#if defined(CHAMELEON_COPY_DIAG)
+    {
+        morse_zdesc_alloc_diag(D, A->mb, A->nb, chameleon_min(A->m, A->n), A->nb, 0, 0, chameleon_min(A->m, A->n), A->nb, A->p, A->q);
+        Dptr = &D;
+    }
+#endif
     /* Reduction to band. On exit, T contains reflectors */
-    morse_pzhetrd_he2hb( uplo, A, T,
+    morse_pzhetrd_he2hb( uplo, A, T, Dptr,
                          sequence, request );
 
     LDAB = NB+1;
@@ -419,7 +425,9 @@ int MORSE_zhetrd_Tile_Async(MORSE_enum jobz,
         morse_error("MORSE_zhetrd_Tile_Async", "LAPACKE_zhbtrd failed");
     }
 #endif /* !defined(CHAMELEON_SIMULATION) */
-
+    if (Dptr != NULL) {
+        morse_desc_mat_free(Dptr);
+    }
     morse_desc_mat_free(&descAB);
     return MORSE_SUCCESS;
 }

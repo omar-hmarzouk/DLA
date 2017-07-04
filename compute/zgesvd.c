@@ -398,6 +398,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
     MORSE_desc_t descT;
     MORSE_desc_t descU, descVT;
     MORSE_desc_t descAB;
+    MORSE_desc_t D, *Dptr = NULL;
     MORSE_desc_t *subA, *subT, *subUVT;
     double *E;
     int M, N, MINMN, NB, LDAB;
@@ -459,9 +460,14 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
     NB    = descA.mb;
     LDAB  = NB + 1;
     uplo  = M >= N ? MorseUpper : MorseLower;
-
+#if defined(CHAMELEON_COPY_DIAG)
+    {
+        morse_zdesc_alloc(D, A->mb, A->nb, A->m, A->n, 0, 0, A->m, A->n, );
+        Dptr = &D;
+    }
+#endif
     /* Reduction to band */
-    morse_pzgebrd_ge2gb( descA, descT,
+    morse_pzgebrd_ge2gb( descA, descT, D,
                          sequence, request );
 
     /* Allocate band structure */
@@ -556,12 +562,12 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
             subUVT = morse_desc_submatrix(&descU, descU.mb, 0, descU.m-descU.mb, descU.n);
             subT   = morse_desc_submatrix(&descT, descT.mb, 0, descT.m-descT.mb, descT.n-descT.nb);
             morse_pzunmqr( MorseLeft, MorseNoTrans,
-                           subA, subUVT, subT,
+                           subA, subUVT, subT, Dptr,
                            sequence, request );
         }
         else {
             morse_pzunmqr( MorseLeft, MorseNoTrans,
-                           &descA, &descU, &descT,
+                           &descA, &descU, &descT, Dptr,
                            sequence, request );
         }
     }
@@ -569,7 +575,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
     if ( jobvt != MorseNoVec ) {
         if ( M < N ){
             morse_pzunmlq( MorseRight, MorseNoTrans,
-                           &descA, &descVT, &descT,
+                           &descA, &descVT, &descT, Dptr,
                            sequence, request );
         }
         else {
@@ -577,7 +583,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
             subUVT = morse_desc_submatrix(&descVT, 0, descVT.nb, descVT.m,         descVT.n-descVT.nb);
             subT   = morse_desc_submatrix(&descT,  0, descT.nb,  descT.m-descT.mb, descT.n -descT.nb);
             morse_pzunmlq( MorseRight, MorseNoTrans,
-                           subA, subUVT, subT,
+                           subA, subUVT, subT, Dptr,
                            sequence, request );
         }
     }
@@ -612,5 +618,9 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
     if (jobvt != MorseNoVec)
         morse_desc_mat_free( &descVT );
     free(E);
+    if (Dptr != NULL) {
+        morse_desc_mat_free(Dptr);
+    }
+    (void)D;
     return MORSE_SUCCESS;
 }
