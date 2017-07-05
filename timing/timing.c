@@ -551,13 +551,14 @@ set_iparam_default(int *iparam){
 void
 parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, int*step)
 {
-    int opt = 0;
+    int opt = -1;
     int c;
     int argc = *_argc;
     char **argv = *_argv;
 
     do {
 #if defined(CHAMELEON_HAVE_GETOPT_LONG)
+        opt = -1;
         c = getopt_long(argc, argv, GETOPT_STRING,
                              long_options, &opt);
 #else
