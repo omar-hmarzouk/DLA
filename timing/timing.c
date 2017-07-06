@@ -38,7 +38,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
+#include <limits.h>
 
 #if defined( _WIN32 ) || defined( _WIN64 )
 #include <windows.h>
@@ -549,7 +549,7 @@ set_iparam_default(int *iparam){
 }
 
 static inline int
-read_integer_from_options(int long_index)
+read_integer_from_options(int long_index, int opt_char)
 {
     char *endptr;
     long int value;
@@ -560,10 +560,10 @@ read_integer_from_options(int long_index)
 #ifdef CHAMELEON_HAVE_GETOPT_LONG
         if ( long_index < 0 ) {
 #endif
-            fprintf(stderr, "Invalid numeric value for '-%c' parameter\n", optopt);
+            fprintf(stderr, "Invalid numeric value '%s' for '-%c' parameter\n", optarg, opt_char);
 #ifdef CHAMELEON_HAVE_GETOPT_LONG
         } else {
-            fprintf(stderr, "Invalid numeric value for '--%s' parameter\n", long_options[long_index].name);
+            fprintf(stderr, "Invalid numeric value '%s' for '--%s' parameter\n", optarg, long_options[long_index].name);
         }
 #endif
         exit(EXIT_FAILURE);
@@ -596,24 +596,24 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
         switch(c)
         {
         // Configuration
-        case 't' : iparam[IPARAM_THRDNBR       ] = read_integer_from_options(atoi(optarg)); break;
-        case 'g' : iparam[IPARAM_NCUDAS        ] = read_integer_from_options(atoi(optarg)); break;
-        case 'P' : iparam[IPARAM_P             ] = read_integer_from_options(atoi(optarg)); break;
+        case 't' : iparam[IPARAM_THRDNBR       ] = read_integer_from_options(opt, c); break;
+        case 'g' : iparam[IPARAM_NCUDAS        ] = read_integer_from_options(opt, c); break;
+        case 'P' : iparam[IPARAM_P             ] = read_integer_from_options(opt, c); break;
         case '8' : iparam[IPARAM_NO_CPU        ] = 1; break;
         // Matrix parameters
         case 'M' :
-        case 'm' : iparam[IPARAM_M             ] = read_integer_from_options(atoi(optarg)); break;
-        case 'n' : iparam[IPARAM_N             ] = read_integer_from_options(atoi(optarg)); break;
+        case 'm' : iparam[IPARAM_M             ] = read_integer_from_options(opt, c); break;
+        case 'n' : iparam[IPARAM_N             ] = read_integer_from_options(opt, c); break;
         case 'N' : get_range(optarg, start, stop, step); break;
         case 'K' :
-        case 'k' : iparam[IPARAM_K             ] = read_integer_from_options(atoi(optarg)); break;
-        case 'b' : iparam[IPARAM_NB            ] = read_integer_from_options(atoi(optarg));
-                   iparam[IPARAM_MB            ] = read_integer_from_options(atoi(optarg)); break;
-        case 'i' : iparam[IPARAM_IB            ] = read_integer_from_options(atoi(optarg)); break;
-        case 'x' : iparam[IPARAM_MX            ] = read_integer_from_options(atoi(optarg)); break;
-        case 'X' : iparam[IPARAM_NX            ] = read_integer_from_options(atoi(optarg)); break;
+        case 'k' : iparam[IPARAM_K             ] = read_integer_from_options(opt, c); break;
+        case 'b' : iparam[IPARAM_NB            ] = read_integer_from_options(opt, c);
+                   iparam[IPARAM_MB            ] = read_integer_from_options(opt, c); break;
+        case 'i' : iparam[IPARAM_IB            ] = read_integer_from_options(opt, c); break;
+        case 'x' : iparam[IPARAM_MX            ] = read_integer_from_options(opt, c); break;
+        case 'X' : iparam[IPARAM_NX            ] = read_integer_from_options(opt, c); break;
         // Check/prints
-        case '1' : iparam[IPARAM_NITER         ] = read_integer_from_options(atoi(optarg)); break;
+        case '1' : iparam[IPARAM_NITER         ] = read_integer_from_options(opt, c); break;
         case 'W' : iparam[IPARAM_PRINT_WARNINGS] = 0; break;
         case 'w' : iparam[IPARAM_WARMUP        ] = 0; break;
         case 'c' : iparam[IPARAM_CHECK         ] = 1; break;
@@ -624,12 +624,12 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
         case 'd' : iparam[IPARAM_DAG           ] = 1; break;
         case 'p' : iparam[IPARAM_PROFILE       ] = 1; break;
         // HQR options
-        case 'a' : iparam[IPARAM_RHBLK         ] = read_integer_from_options(atoi(optarg)); break;
-        case 'l' : iparam[IPARAM_LOWLVL_TREE   ] = read_integer_from_options(atoi(optarg)); break;
-        case 'L' : iparam[IPARAM_HIGHLVL_TREE  ] = read_integer_from_options(atoi(optarg)); break;
+        case 'a' : iparam[IPARAM_RHBLK         ] = read_integer_from_options(opt, c); break;
+        case 'l' : iparam[IPARAM_LOWLVL_TREE   ] = read_integer_from_options(opt, c); break;
+        case 'L' : iparam[IPARAM_HIGHLVL_TREE  ] = read_integer_from_options(opt, c); break;
         case 'D' : iparam[IPARAM_QR_DOMINO     ] = 1; break;
         //Other
-        case '9' : iparam[IPARAM_MODE          ] = read_integer_from_options(atoi(optarg)); break;
+        case '9' : iparam[IPARAM_MODE          ] = read_integer_from_options(opt, c); break;
         case '3' : iparam[IPARAM_BIGMAT        ] = 0; break;
         case 's' : iparam[IPARAM_ASYNC         ] = 0; break;
         case 'o' : iparam[IPARAM_OOC           ] = 1; break;
