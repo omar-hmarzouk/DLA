@@ -373,7 +373,7 @@ show_help(char *prog_name) {
             "    -N, --n_range=R        Range of N values\n"
             "                           with R=Start:Stop:Step (default: 500:5000:500)\n"
             "    -k, --k, --K, --nrhs=x Dimension (K) of the matrices or number of right-hand size (default: 1)\n"
-            "    -b, --nb=x             Nb size. (default: 320)\n"
+            "    -b, --nb=x             NB size. (default: 320)\n"
             "    -i, --ib=x             IB size. (default: 32)\n"
             //"    -x, --mx=x             ?\n" todo
             //"    -X, --nx=x             ?\n" todo
