@@ -749,6 +749,9 @@ if( CHAMELEON_SCHED_STARPU )
                 list(INSERT CHAMELEON_DEP 0 ${STARPU_LIBRARIES})
             endif()
         endif()
+        unset(CMAKE_REQUIRED_FLAGS)
+        unset(CMAKE_REQUIRED_INCLUDES)
+        unset(CMAKE_REQUIRED_LIBRARIES)
     else ( STARPU_FOUND )
         if(MORSE_VERBOSE_FIND_PACKAGE)
             if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
@@ -864,6 +867,9 @@ if( CHAMELEON_SCHED_PARSEC )
               list(INSERT CHAMELEON_DEP 0 ${PARSEC_LIBRARIES})
           endif()
       endif()
+      unset(CMAKE_REQUIRED_FLAGS)
+      unset(CMAKE_REQUIRED_INCLUDES)
+      unset(CMAKE_REQUIRED_LIBRARIES)
     else ( PARSEC_FOUND )
         if(MORSE_VERBOSE_FIND_PACKAGE)
             if(NOT HWLOC_FOUND OR NOT HWLOC_LIBRARIES)
@@ -950,6 +956,12 @@ if( CHAMELEON_SCHED_QUARK )
         message(FATAL_ERROR "QUARK library is required but has not been found")
     endif(QUARK_FOUND)
 
+endif()
+
+# getopt
+check_include_files(getopt.h CHAMELEON_HAVE_GETOPT_H)
+if (CHAMELEON_HAVE_GETOPT_H)
+  check_function_exists(getopt_long CHAMELEON_HAVE_GETOPT_LONG)
 endif()
 
 # Add option to exploit cublas API v2
@@ -1084,7 +1096,7 @@ endif()
 # Config files (pkg_config) #
 #############################
 
-# Create .pc file 
+# Create .pc file
 # ---------------
 generate_pkgconfig_file()
 #------------------------------------------------------------------------------

@@ -18,6 +18,7 @@
  *
  * @version 0.9.0
  * @author Mathieu Faverge
+ * @author Raphael Boucherie
  * @author Dulceneia Becker
  * @author Cedric Castagnede
  * @date 2010-11-15
@@ -37,6 +38,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 #if defined( _WIN32 ) || defined( _WIN64 )
 #include <windows.h>
@@ -55,15 +57,21 @@
 
 #if defined(CHAMELEON_USE_MPI)
 #include <mpi.h>
-#endif
+#endif /* defined(CHAMELEON_USE_MPI */
 
-#if defined (CHAMELEON_SCHED_STARPU)
+#if defined(CHAMELEON_SCHED_STARPU)
 #include <starpu.h>
-#endif
+#endif /* defined(CHAMELEON_SCHED_STARPU) */
+
+
+#if defined(CHAMELEON_HAVE_GETOPT_H)
+#include <getopt.h>
+#endif /* defined(CHAMELEON_HAVE_GETOPT_H) */
 
 static int RunTest(int *iparam, _PREC *dparam, double *t_);
-static void* morse_getaddr_null(const MORSE_desc_t *A, int m, int n)
+static inline void* morse_getaddr_null(const MORSE_desc_t *A, int m, int n)
 {
+    (void)A;(void)m;(void)n;
     return (void*)( NULL );
 }
 
@@ -211,12 +219,15 @@ Test(int64_t n, int *iparam) {
                 starpu_bound_print_lp(out);
                 fclose(out);
 #else
-            {
+                {
 #endif
-                starpu_bound_compute(&tmin, &integer_tmin, 0);
-                upper_gflops  = (flops / (tmin / 1000.0));
-                sumgf_upper += upper_gflops;
+                    starpu_bound_compute(&tmin, &integer_tmin, 0);
+                    upper_gflops  = (flops / (tmin / 1000.0));
+                    sumgf_upper += upper_gflops;
+                }
+#if 0
             }
+#endif
         }
 #endif
         sumt   += t[iter];
@@ -268,7 +279,7 @@ Test(int64_t n, int *iparam) {
     return hres;
 }
 
-static int
+static inline int
 startswith(const char *s, const char *prefix) {
     size_t n = strlen( prefix );
     if (strncmp( s, prefix, n ))
@@ -348,51 +359,58 @@ static void
 show_help(char *prog_name) {
     printf( "Usage:\n%s [options]\n\n", prog_name );
     printf( "Options are:\n"
-            "  --help           Show this help\n"
+            "  -h  --help               Show this help\n"
             "\n"
-            "  --threads=X      Number of CPU workers (default: _SC_NPROCESSORS_ONLN)\n"
-            "  --gpus=X         Number of GPU workers (default: 0)\n"
+            "  Machine parameters:\n"
+            "    -t, --threads=x        Number of CPU workers (default: automatic detection through runtime)\n"
+            "    -g, --gpus=x           Number of GPU workers (default: 0)\n"
+            "    -P, --P=x              Rows (P) in the PxQ process grid (deafult: 1)\n"
+            "        --nocpu            All GPU kernels are exclusively executed on GPUs (default: 0)\n"
             "\n"
-            "  --[a]sync        Enable/Disable synchronous calls in wrapper function such as POTRI. (default: async)\n"
-            "  --[no]bigmat     Allocating one big mat or plenty of small (default: bigmat)\n"
-            "  --[no]check      Check result (default: nocheck)\n"
-            "  --[no]progress   Display progress indicator (default: noprogress)\n"
-            "  --[no]gemm3m     Use gemm3m complex method (default: nogemm3m)\n"
-            "  --[no]inv        Check on inverse (default: noinv)\n"
-            "  --[no]warmup     Perform a warmup run to pre-load libraries (default: warmup)\n"
-            "  --[no]trace      Enable/Disable trace generation (default: notrace)\n"
-            "  --[no]dag        Enable/Disable DAG generation (default: nodag)\n"
-            "                   Generates a dot_dag_file.dot.\n"
-             "  --[no]profile   Print profiling informations (default: noprofile)\n"
-             "  --nocpu         All GPU kernels are exclusively executed on GPUs (default: 0)\n"
-/*             "  --inplace        Enable layout conversion inplace for lapack interface timers (default: enable)\n" */
-/*             "  --outplace       Enable layout conversion out of place for lapack interface timers (default: disable)\n" */
-/*             "  --[no]atun       Activate autotuning (default: noatun)\n" */
+            "  Matrix parameters:\n"
+            "    -m, --m, --M=x         Dimension (M) of the matrices (default: N)\n"
+            "    -n, --n, --N=x         Dimension (N) of the matrices\n"
+            "    -N, --n_range=R        Range of N values\n"
+            "                           with R=Start:Stop:Step (default: 500:5000:500)\n"
+            "    -k, --k, --K, --nrhs=x Dimension (K) of the matrices or number of right-hand size (default: 1)\n"
+            "    -b, --nb=x             NB size. (default: 320)\n"
+            "    -i, --ib=x             IB size. (default: 32)\n"
+            //"    -x, --mx=x             ?\n" todo
+            //"    -X, --nx=x             ?\n" todo
             "\n"
-            "  --n_range=R      Range of N values\n"
-            "                   with R=Start:Stop:Step (default: 500:5000:500)\n"
-            "  --m=X            dimension (M) of the matrices (default: N)\n"
-            "  --k=X            dimension (K) of the matrices (default: 1)\n"
-            "  --nrhs=X         Number of right-hand size (default: 1)\n"
-            "  --nb=N           Nb size. (default: 128)\n"
-            "  --ib=N           IB size. (default: 32)\n"
+            "  Check/prints:\n"
+            "        --niter=x          Number of iterations performed for each test (default: 1)\n"
+            "    -W, --nowarnings       Do not show warnings\n"
+            "    -w, --nowarmup         Cancel the warmup run to pre-load libraries\n"
+            "    -c, --check            Check result\n"
+            "    -C, --inv              Check on inverse\n"
+            "        --mode=x           Change xLATMS matrix mode generation for SVD/EVD (default: 4)\n"
+            "                           Must be between 0 and 20 included\n"
             "\n"
-            "  --niter=N        Number of iterations performed for each test (default: 1)\n"
+            "  Profiling:\n"
+            "    -T, --trace            Enable trace generation\n"
+            "        --progress         Display progress indicator\n"
+            "    -d, --dag              Enable DAG generation\n"
+            "                           Generates a dot_dag_file.dot.\n"
+            "    -p, --profile          Print profiling informations\n"
             "\n"
-            "  --rhblk=N        If N > 0, enable Householder mode for QR and LQ factorization\n"
-            "                   N is the size of each subdomain (default: 0)\n"
-/*             "\n" */
-/*             " Options specific to the conversion format timings xgetri and xgecfi:\n" */
-/*             "  --ifmt           Input format. (default: 0)\n" */
-/*             "  --ofmt           Output format. (default: 1)\n" */
-/*             "                   The possible values are:\n" */
-/*             "                     0 - MorseCM, Column major\n" */
-/*             "                     1 - MorseCCRB, Column-Colum rectangular block\n" */
-/*             "                     2 - MorseCRRB, Column-Row rectangular block\n" */
-/*             "                     3 - MorseRCRB, Row-Colum rectangular block\n" */
-/*             "                     4 - MorseRRRB, Row-Row rectangular block\n" */
-/*             "                     5 - MorseRM, Row Major\n" */
-/*             "  --thrdbypb       Number of threads per subproblem for inplace transformation (default: 1)\n" */
+            "  HQR options:\n"
+            "    -a, --qr_a, --rhblk=N  If N > 0, enable Householder mode for QR and LQ factorization\n"
+            "                           N is the size of each subdomain (default: -1)\n"
+            "    -l, --llvl=x           Tree used for low level reduction inside nodes (default: -1)\n"
+            "    -L, --hlvl=x           Tree used for high level reduction between nodes, only if P > 1 (default: -1).\n"
+            "                           (-1: Automatic, 0: Flat, 1: Greedy, 2: Fibonacci, 3: Binary, 4: Replicated greedy)\n"
+            "    -D, --domino           Enable the domino between upper and lower trees.\n"
+            "\n"
+            "  Advanced options\n"
+            "        --nobigmat         Disable single large matrix allocation for multiple tiled allocations\n"
+            "    -s, --sync             Enable synchronous calls in wrapper function such as POTRI\n"
+            "    -o, --ooc              Enable out-of-core (available only with StarPU)\n"
+            "    -G, --gemm3m           Use gemm3m complex method\n"
+            //"        --peak             ?\n"todo
+            //"        --bound            ?\n"todo
+            //"        --bounddeps        ?\n"todo
+            //"        --bounddepsprio    ?\n"todo
             "\n");
 }
 
@@ -440,6 +458,198 @@ print_header(char *prog_name, int * iparam) {
     return;
 }
 
+#define GETOPT_STRING "ht:g:P:8M:m:N:n:K:k:b:i:x:X:1:WwcCT2dpa:l:L:D9:3soG4567"
+#if defined(CHAMELEON_HAVE_GETOPT_LONG)
+static struct option long_options[] =
+{
+    {"help",          no_argument,       0,      'h'},
+    // Configuration
+    {"threads",       required_argument, 0,      't'},
+    {"gpus",          required_argument, 0,      'g'},
+    {"P",             required_argument, 0,      'P'},
+    {"nocpu",         no_argument,       0,      '8'},
+    // Matrix parameters
+    {"M",             required_argument, 0,      'm'},
+    {"m",             required_argument, 0,      'm'},
+    {"N",             required_argument, 0,      'n'},
+    {"n",             required_argument, 0,      'n'},
+    {"n_range",       required_argument, 0,      'N'},
+    {"K",             required_argument, 0,      'K'},
+    {"k",             required_argument, 0,      'k'},
+    {"nrhs",          required_argument, 0,      'k'},
+    {"nb",            required_argument, 0,      'b'},
+    {"ib",            required_argument, 0,      'i'},
+    {"mx",            required_argument, 0,      'x'},
+    {"nx",            required_argument, 0,      'X'},
+    // Check/prints
+    {"niter",         required_argument, 0,      '1'},
+    {"nowarnings",    no_argument,       0,      'W'},
+    {"nowarmup",      no_argument,       0,      'w'},
+    {"check",         no_argument,       0,      'c'},
+    {"inv",           no_argument,       0,      'C'},
+    // Profiling
+    {"trace",         no_argument,       0,      'T'},
+    {"progress",      no_argument,       0,      '2'},
+    {"dag",           no_argument,       0,      'd'},
+    {"profile",       no_argument,       0,      'p'},
+    // HQR options
+    {"rhblk",         required_argument, 0,      'a'},
+    {"qr_a",          required_argument, 0,      'a'},
+    {"llvl",          required_argument, 0,      'l'},
+    {"hlvl",          required_argument, 0,      'L'},
+    {"domino",        no_argument,       0,      'D'},
+    // Other
+    {"mode",          required_argument, 0,      '9'},
+    {"nobigmat",      no_argument,       0,      '3'},
+    {"sync",          no_argument,       0,      's'},
+    {"ooc",           no_argument,       0,      'o'},
+    {"gemm3m",        no_argument,       0,      'G'},
+    {"peak",          no_argument,       0,      '4'},
+    {"bound",         no_argument,       0,      '5'},
+    {"bounddeps",     no_argument,       0,      '6'},
+    {"bounddepsprio", no_argument,       0,      '7'},
+    {0, 0, 0, 0}
+};
+#endif  /* defined(CHAMELEON_HAVE_GETOPT_LONG) */
+
+static void
+set_iparam_default(int *iparam){
+
+    memset(iparam, 0, IPARAM_SIZEOF*sizeof(int));
+
+    iparam[IPARAM_THRDNBR       ] = -1;
+    iparam[IPARAM_THRDNBR_SUBGRP] = 1;
+    iparam[IPARAM_M             ] = -1;
+    iparam[IPARAM_N             ] = 500;
+    iparam[IPARAM_K             ] = 1;
+    iparam[IPARAM_LDA           ] = -1;
+    iparam[IPARAM_LDB           ] = -1;
+    iparam[IPARAM_LDC           ] = -1;
+    iparam[IPARAM_MB            ] = 320;
+    iparam[IPARAM_NB            ] = 320;
+    iparam[IPARAM_IB            ] = 32;
+    iparam[IPARAM_NITER         ] = 1;
+    iparam[IPARAM_WARMUP        ] = 1;
+    iparam[IPARAM_BIGMAT        ] = 1;
+    iparam[IPARAM_ASYNC         ] = 1;
+    iparam[IPARAM_MX            ] = -1;
+    iparam[IPARAM_NX            ] = -1;
+    iparam[IPARAM_MX            ] = -1;
+    iparam[IPARAM_NX            ] = -1;
+    iparam[IPARAM_INPLACE       ] = MORSE_OUTOFPLACE;
+    iparam[IPARAM_NMPI          ] = 1;
+    iparam[IPARAM_P             ] = 1;
+    iparam[IPARAM_Q             ] = 1;
+    iparam[IPARAM_PRINT_WARNINGS] = 1;
+    iparam[IPARAM_LOWLVL_TREE   ] = -1;
+    iparam[IPARAM_HIGHLVL_TREE  ] = -1;
+    iparam[IPARAM_QR_TS_SZE     ] = -1;
+    iparam[IPARAM_QR_HLVL_SZE   ] = -1;
+    iparam[IPARAM_QR_DOMINO     ] = -1;
+}
+
+static inline int
+read_integer_from_options(int long_index, int opt_char)
+{
+    char *endptr;
+    long int value;
+    (void) long_index;
+
+    value = strtol(optarg, &endptr, 10);
+    if ( *optarg == '\0' || *endptr != '\0' ) {
+#ifdef CHAMELEON_HAVE_GETOPT_LONG
+        if ( long_index < 0 ) {
+#endif
+            fprintf(stderr, "Invalid numeric value '%s' for '-%c' parameter\n", optarg, opt_char);
+#ifdef CHAMELEON_HAVE_GETOPT_LONG
+        } else {
+            fprintf(stderr, "Invalid numeric value '%s' for '--%s' parameter\n", optarg, long_options[long_index].name);
+        }
+#endif
+        exit(EXIT_FAILURE);
+    }
+    if ( value > INT_MAX || value < INT_MIN ) {
+        fprintf(stderr, "Out of range integer '%ld'\n", value);
+        exit(EXIT_FAILURE);
+    }
+    return (int)value;
+}
+
+void
+parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, int*step)
+{
+    int opt = -1;
+    int c;
+    int argc = *_argc;
+    char **argv = *_argv;
+
+    do {
+#if defined(CHAMELEON_HAVE_GETOPT_LONG)
+        opt = -1;
+        c = getopt_long(argc, argv, GETOPT_STRING,
+                             long_options, &opt);
+#else
+        c = getopt(argc, argv, GETOPT_STRING);
+        (void) opt;
+#endif  /* defined(CHAMELEON_HAVE_GETOPT_LONG) */
+
+        switch(c)
+        {
+        // Configuration
+        case 't' : iparam[IPARAM_THRDNBR       ] = read_integer_from_options(opt, c); break;
+        case 'g' : iparam[IPARAM_NCUDAS        ] = read_integer_from_options(opt, c); break;
+        case 'P' : iparam[IPARAM_P             ] = read_integer_from_options(opt, c); break;
+        case '8' : iparam[IPARAM_NO_CPU        ] = 1; break;
+        // Matrix parameters
+        case 'M' :
+        case 'm' : iparam[IPARAM_M             ] = read_integer_from_options(opt, c); break;
+        case 'n' : iparam[IPARAM_N             ] = read_integer_from_options(opt, c); break;
+        case 'N' : get_range(optarg, start, stop, step); break;
+        case 'K' :
+        case 'k' : iparam[IPARAM_K             ] = read_integer_from_options(opt, c); break;
+        case 'b' : iparam[IPARAM_NB            ] = read_integer_from_options(opt, c);
+                   iparam[IPARAM_MB            ] = read_integer_from_options(opt, c); break;
+        case 'i' : iparam[IPARAM_IB            ] = read_integer_from_options(opt, c); break;
+        case 'x' : iparam[IPARAM_MX            ] = read_integer_from_options(opt, c); break;
+        case 'X' : iparam[IPARAM_NX            ] = read_integer_from_options(opt, c); break;
+        // Check/prints
+        case '1' : iparam[IPARAM_NITER         ] = read_integer_from_options(opt, c); break;
+        case 'W' : iparam[IPARAM_PRINT_WARNINGS] = 0; break;
+        case 'w' : iparam[IPARAM_WARMUP        ] = 0; break;
+        case 'c' : iparam[IPARAM_CHECK         ] = 1; break;
+        case 'C' : iparam[IPARAM_INVERSE       ] = 1; break;
+        // Profiling
+        case 'T' : iparam[IPARAM_TRACE         ] = 1; break;
+        case '2' : iparam[IPARAM_PROGRESS      ] = 1; break;
+        case 'd' : iparam[IPARAM_DAG           ] = 1; break;
+        case 'p' : iparam[IPARAM_PROFILE       ] = 1; break;
+        // HQR options
+        case 'a' : iparam[IPARAM_RHBLK         ] = read_integer_from_options(opt, c); break;
+        case 'l' : iparam[IPARAM_LOWLVL_TREE   ] = read_integer_from_options(opt, c); break;
+        case 'L' : iparam[IPARAM_HIGHLVL_TREE  ] = read_integer_from_options(opt, c); break;
+        case 'D' : iparam[IPARAM_QR_DOMINO     ] = 1; break;
+        //Other
+        case '9' : iparam[IPARAM_MODE          ] = read_integer_from_options(opt, c); break;
+        case '3' : iparam[IPARAM_BIGMAT        ] = 0; break;
+        case 's' : iparam[IPARAM_ASYNC         ] = 0; break;
+        case 'o' : iparam[IPARAM_OOC           ] = 1; break;
+        case 'G' : iparam[IPARAM_GEMM3M        ] = 1; break;
+        case '4' : iparam[IPARAM_PEAK          ] = 1; break;
+        case '5' : iparam[IPARAM_BOUND         ] = 1; break;
+        case '6' : iparam[IPARAM_BOUND         ] = 1;
+                   iparam[IPARAM_BOUNDDEPS     ] = 1; break;
+        case '7' : iparam[IPARAM_BOUND         ] = 1;
+                   iparam[IPARAM_BOUNDDEPS     ] = 1;
+                   iparam[IPARAM_BOUNDDEPSPRIO ] = 1; break;
+        case 'h' :
+        case '?' :
+            show_help(argv[0]); exit(EXIT_FAILURE);
+        default:
+            break;
+        }
+    } while(-1 != c);
+}
+
 int
 main(int argc, char *argv[]) {
     int i, m, mx, nx;
@@ -450,176 +660,10 @@ main(int argc, char *argv[]) {
     int iparam[IPARAM_SIZEOF];
     int success = 0;
 
-    memset(iparam, 0, IPARAM_SIZEOF*sizeof(int));
+    set_iparam_default(iparam);
 
-    iparam[IPARAM_THRDNBR       ] = -1;
-    iparam[IPARAM_THRDNBR_SUBGRP] = 1;
-    iparam[IPARAM_SCHEDULER     ] = 0;
-    iparam[IPARAM_M             ] = -1;
-    iparam[IPARAM_N             ] = 500;
-    iparam[IPARAM_K             ] = 1;
-    iparam[IPARAM_LDA           ] = -1;
-    iparam[IPARAM_LDB           ] = -1;
-    iparam[IPARAM_LDC           ] = -1;
-    iparam[IPARAM_MB            ] = 128;
-    iparam[IPARAM_NB            ] = 128;
-    iparam[IPARAM_IB            ] = 32;
-    iparam[IPARAM_NITER         ] = 1;
-    iparam[IPARAM_WARMUP        ] = 1;
-    iparam[IPARAM_CHECK         ] = 0;
-    iparam[IPARAM_BIGMAT        ] = 1;
-    iparam[IPARAM_VERBOSE       ] = 0;
-    iparam[IPARAM_AUTOTUNING    ] = 0;
-    iparam[IPARAM_INPUTFMT      ] = 0;
-    iparam[IPARAM_OUTPUTFMT     ] = 0;
-    iparam[IPARAM_TRACE         ] = 0;
-    iparam[IPARAM_DAG           ] = 0;
-    iparam[IPARAM_ASYNC         ] = 1;
-    iparam[IPARAM_OOC           ] = 0;
-    iparam[IPARAM_MX            ] = -1;
-    iparam[IPARAM_NX            ] = -1;
-    iparam[IPARAM_RHBLK         ] = 0;
-    iparam[IPARAM_MX            ] = -1;
-    iparam[IPARAM_NX            ] = -1;
-    iparam[IPARAM_RHBLK         ] = 0;
-    iparam[IPARAM_INPLACE       ] = MORSE_OUTOFPLACE;
-    iparam[IPARAM_MODE          ] = 0;
+    parse_arguments(&argc, &argv, iparam, &start, &stop, &step);
 
-    iparam[IPARAM_INVERSE       ] = 0;
-    iparam[IPARAM_NCUDAS        ] = 0;
-    iparam[IPARAM_NMPI          ] = 1;
-    iparam[IPARAM_P             ] = 1;
-    iparam[IPARAM_Q             ] = 1;
-    iparam[IPARAM_GEMM3M        ] = 0;
-    iparam[IPARAM_PROGRESS      ] = 0;
-    iparam[IPARAM_PROFILE       ] = 0;
-    iparam[IPARAM_PRINT_WARNINGS] = 1;
-    iparam[IPARAM_PEAK          ] = 0;
-    iparam[IPARAM_PARALLEL_TASKS] = 0;
-    iparam[IPARAM_NO_CPU        ] = 0;
-    iparam[IPARAM_BOUND         ] = 0;
-    iparam[IPARAM_BOUNDDEPS     ] = 0;
-    iparam[IPARAM_BOUNDDEPSPRIO ] = 0;
-
-    for (i = 1; i < argc && argv[i]; ++i) {
-        if ( startswith( argv[i], "--help") || startswith( argv[i], "-help") ||
-             startswith( argv[i], "--h") || startswith( argv[i], "-h") ) {
-            show_help( argv[0] );
-            return EXIT_SUCCESS;
-        } else if (startswith( argv[i], "--threads=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_THRDNBR]) );
-        } else if (startswith( argv[i], "--gpus=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_NCUDAS]) );
-        } else if (startswith( argv[i], "--check" )) {
-            iparam[IPARAM_CHECK] = 1;
-        } else if (startswith( argv[i], "--nocheck" )) {
-            iparam[IPARAM_CHECK] = 0;
-        } else if (startswith( argv[i], "--bigmat" )) {
-            iparam[IPARAM_BIGMAT] = 1;
-        } else if (startswith( argv[i], "--nobigmat" )) {
-            iparam[IPARAM_BIGMAT] = 0;
-        } else if (startswith( argv[i], "--inv" )) {
-            iparam[IPARAM_INVERSE] = 1;
-        } else if (startswith( argv[i], "--noinv" )) {
-            iparam[IPARAM_INVERSE] = 0;
-        } else if (startswith( argv[i], "--warmup" )) {
-            iparam[IPARAM_WARMUP] = 1;
-        } else if (startswith( argv[i], "--nowarmup" )) {
-            iparam[IPARAM_WARMUP] = 0;
-/*         } else if (startswith( argv[i], "--atun" )) { */
-/*             iparam[IPARAM_AUTOTUNING] = 1; */
-/*         } else if (startswith( argv[i], "--noatun" )) { */
-/*             iparam[IPARAM_AUTOTUNING] = 0; */
-        } else if (startswith( argv[i], "--trace" )) {
-            iparam[IPARAM_TRACE] = 1;
-        } else if (startswith( argv[i], "--notrace" )) {
-            iparam[IPARAM_TRACE] = 0;
-        } else if (startswith( argv[i], "--gemm3m" )) {
-            iparam[IPARAM_GEMM3M] = 1;
-        } else if (startswith( argv[i], "--nogemm3m" )) {
-            iparam[IPARAM_GEMM3M] = 0;
-        } else if (startswith( argv[i], "--progress" )) {
-            iparam[IPARAM_PROGRESS] = 1;
-        } else if (startswith( argv[i], "--noprogress" )) {
-            iparam[IPARAM_PROGRESS] = 0;
-        } else if (startswith( argv[i], "--dag" )) {
-            iparam[IPARAM_DAG] = 1;
-        } else if (startswith( argv[i], "--nodag" )) {
-            iparam[IPARAM_DAG] = 0;
-        } else if (startswith( argv[i], "--sync" )) {
-            iparam[IPARAM_ASYNC] = 0;
-        } else if (startswith( argv[i], "--async" )) {
-            iparam[IPARAM_ASYNC] = 1;
-        } else if (startswith( argv[i], "--ooc" )) {
-            iparam[IPARAM_OOC] = 1;
-        } else if (startswith( argv[i], "--noooc" )) {
-            iparam[IPARAM_OOC] = 0;
-        } else if (startswith( argv[i], "--n_range=" )) {
-            get_range( strchr( argv[i], '=' ) + 1, &start, &stop, &step );
-        } else if (startswith( argv[i], "--m=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_M]) );
-        } else if (startswith( argv[i], "--nb=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_NB]) );
-            iparam[IPARAM_MB] = iparam[IPARAM_NB];
-        } else if (startswith( argv[i], "--nrhs=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_K]) );
-        } else if (startswith( argv[i], "--k=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_K]) );
-        } else if (startswith( argv[i], "--ib=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_IB]) );
-        } else if (startswith( argv[i], "--niter=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &iparam[IPARAM_NITER] );
-        } else if (startswith( argv[i], "--mx=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_MX]) );
-        } else if (startswith( argv[i], "--nx=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_NX]) );
-        } else if (startswith( argv[i], "--rhblk=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_RHBLK]) );
-/*         } else if (startswith( argv[i], "--inplace" )) { */
-/*             iparam[IPARAM_INPLACE] = MORSE_INPLACE; */
-/*         } else if (startswith( argv[i], "--outplace" )) { */
-/*             iparam[IPARAM_INPLACE] = MORSE_OUTOFPLACE; */
-/*         } else if (startswith( argv[i], "--ifmt=" )) { */
-/*             sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_INPUTFMT]) ); */
-/*         } else if (startswith( argv[i], "--ofmt=" )) { */
-/*             sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_OUTPUTFMT]) ); */
-/*         } else if (startswith( argv[i], "--thrdbypb=" )) { */
-/*             sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_THRDNBR_SUBGRP]) ); */
-        } else if (startswith( argv[i], "--profile" )) {
-            iparam[IPARAM_PROFILE] = 1;
-        } else if (startswith( argv[i], "--peak" )) {
-            iparam[IPARAM_PEAK] = 1;
-        } else if (startswith( argv[i], "--noprofile" )) {
-            iparam[IPARAM_PROFILE] = 0;
-        } else if (startswith( argv[i], "--nowarnings" )) {
-            iparam[IPARAM_PRINT_WARNINGS] = 0;
-/*         } else if (startswith( argv[i], "--parallel=" )) { */
-/*             sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_PARALLEL_TASKS]) ); */
-/*         } else if (startswith( argv[i], "--noparallel" )) { */
-/*             iparam[IPARAM_PARALLEL_TASKS] = 0; */
-        } else if (startswith( argv[i], "--nocpu" )) {
-            iparam[IPARAM_NO_CPU] = 1;
-        } else if (startswith( argv[i], "--bounddepsprio" )) {
-            iparam[IPARAM_BOUND] = 1;
-            iparam[IPARAM_BOUNDDEPS] = 1;
-            iparam[IPARAM_BOUNDDEPSPRIO] = 1;
-        } else if (startswith( argv[i], "--bounddeps" )) {
-            iparam[IPARAM_BOUND] = 1;
-            iparam[IPARAM_BOUNDDEPS] = 1;
-        } else if (startswith( argv[i], "--bound" )) {
-            iparam[IPARAM_BOUND] = 1;
-        } else if (startswith( argv[i], "--p=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_P]) );
-        } else if (startswith( argv[i], "--mode=" )) {
-            sscanf( strchr( argv[i], '=' ) + 1, "%d", &(iparam[IPARAM_MODE]) );
-            if (iparam[IPARAM_MODE] < 0 || iparam[IPARAM_MODE] > 20){
-                fprintf( stderr, "Invalid mode: %s from 0 to 20\n", argv[i] );
-                exit(0);
-            }
-        } else {
-            fprintf( stderr, "Unknown option: %s\n", argv[i] );
-        }
-    }
 #if !defined(CHAMELEON_USE_CUDA)
     if (iparam[IPARAM_NCUDAS] != 0){
     	fprintf(stderr, "ERROR: CHAMELEON_USE_CUDA is not defined. "

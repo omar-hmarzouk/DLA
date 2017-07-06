@@ -12,7 +12,6 @@
 #define TIMING_H
 
 typedef double morse_time_t;
-static void* morse_getaddr_null(const MORSE_desc_t *A, int m, int n);
 
 enum iparam_timing {
     IPARAM_THRDNBR,        /* Number of cores                            */
@@ -112,7 +111,8 @@ enum dparam_timing {
     (void)M;(void)N;(void)K;(void)NRHS;            \
     (void)LDA;(void)LDB;(void)LDC;                 \
     (void)IB;(void)MB;(void)NB;(void)P;(void)Q;    \
-    (void)MT;(void)NT;(void)check;(void)loud;(void)bigmat;
+    (void)MT;(void)NT;(void)check;                 \
+    (void)loud;(void)bigmat;(void)ooc;
 
 /* Paste code to allocate a matrix in desc if cond_init is true */
 #define PASTE_CODE_ALLOCATE_MATRIX_TILE(_desc_, _cond_, _type_, _type2_, _lda_, _m_, _n_) \
