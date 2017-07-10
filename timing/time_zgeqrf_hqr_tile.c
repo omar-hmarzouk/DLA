@@ -37,7 +37,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_desc_t *TT;
     libhqr_tree_t qrtree;
     libhqr_tiledesc_t matrix;
-
+    int hlvl, llvl, qr_a, domino;
     PASTE_CODE_IPARAM_LOCALS( iparam );
 
     if ( M != N && check ) {
@@ -71,9 +71,13 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     matrix.p = 1;
 
     /* Initialize qrtree  */
+    hlvl = iparam[IPARAM_HIGHLVL_TREE];
+    llvl = iparam[IPARAM_LOWLVL_TREE];
+    qr_a = iparam[IPARAM_RHBLK];
+    domino =  iparam[IPARAM_QR_DOMINO];
     libhqr_hqr_init( &qrtree,
                      ( M >= N ) ? LIBHQR_QR : LIBHQR_LQ,
-                     &matrix, -1, -1, -1, P, 0, 0);
+                     &matrix, llvl, hlvl, qr_a, P, domino, 0);
 
     START_TIMING();
     MORSE_zgeqrf_param_Tile(&qrtree, descA, TS, TT );
