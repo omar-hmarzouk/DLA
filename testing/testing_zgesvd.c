@@ -260,7 +260,6 @@ static int check_reduction(int M, int N, double *S, MORSE_Complex64_t *A, int LD
 {
     MORSE_Complex64_t zone  =  1.0;
     MORSE_Complex64_t mzone = -1.0;
-    MORSE_Complex64_t zzero = 0.0;
     double Anorm, Rnorm, result;
     int info_reduction;
     int i;

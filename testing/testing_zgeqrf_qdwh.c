@@ -66,8 +66,7 @@ int testing_zgeqrf_qdwh(int argc, char **argv)
     int MxM = M * M;
     int LDA = 2*M;
     double eps;
-    int info_ortho, info_solution, info_factorization;
-    int i, j;
+    int info_ortho, info_factorization;
 
     /**
      * Compute A = QR with
@@ -169,7 +168,6 @@ check_orthogonality( int M, int N,
     double alpha, beta;
     double normQ;
     int info_ortho;
-    int i;
     int minMN = min(M, N);
 
     double *work = (double *)malloc(minMN*sizeof(double));
@@ -219,13 +217,11 @@ check_factorization(int M, int N,
                     double eps )
 {
     double Anorm, Rnorm;
-    MORSE_Complex64_t alpha, beta;
+    MORSE_Complex64_t alpha;
     int info_factorization;
-    int i,j;
     double *work = (double *)malloc(max(M,N)*sizeof(double));
 
     alpha = 1.0;
-    beta  = 0.0;
 
     if (M >= N) {
         /* Perform Q = Q * R */
