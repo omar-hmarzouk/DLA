@@ -23,6 +23,7 @@
  *
  **/
 #include "control/common.h"
+#include <stdlib.h>
 #include "libhqr.h"
 
 #define A(m,n)  A,  (m), (n)

@@ -24,6 +24,7 @@
  *
  **/
 #include "control/common.h"
+#include <stdlib.h>
 
 #define A(m, n) A,  m,  n
 #define T(m, n) T,  m,  n

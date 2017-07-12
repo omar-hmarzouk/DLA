@@ -23,6 +23,7 @@
  *
  **/
 #include "control/common.h"
+#include <stdlib.h>
 
 #define A(m,n) A,  (m),  (n)
 #define Q(m,n) Q,  (m),  (n)
