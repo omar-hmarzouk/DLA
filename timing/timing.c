@@ -583,6 +583,7 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
     int argc = *_argc;
     char **argv = *_argv;
 
+    optind = 1;
     do {
 #if defined(CHAMELEON_HAVE_GETOPT_LONG)
         opt = -1;
