@@ -35,8 +35,8 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
     MORSE_desc_t *TS;
     MORSE_desc_t *TT;
-    libhqr_tree_t qrtree;
-    libhqr_tiledesc_t matrix;
+    libhqr_tree_t   qrtree;
+    libhqr_matrix_t matrix;
     int hlvl, llvl, qr_a, domino;
     PASTE_CODE_IPARAM_LOCALS( iparam );
 
@@ -75,7 +75,8 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     llvl = iparam[IPARAM_LOWLVL_TREE];
     qr_a = iparam[IPARAM_RHBLK];
     domino =  iparam[IPARAM_QR_DOMINO];
-    libhqr_hqr_init( &qrtree,
+
+    libhqr_init_hqr( &qrtree,
                      ( M >= N ) ? LIBHQR_QR : LIBHQR_LQ,
                      &matrix, llvl, hlvl, qr_a, P, domino, 0);
 
@@ -105,6 +106,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
       }
 
     /* Free Workspace */
+    libhqr_finalize( &qrtree );
     MORSE_Dealloc_Workspace( &TS );
     MORSE_Dealloc_Workspace( &TT );
     free( descA );

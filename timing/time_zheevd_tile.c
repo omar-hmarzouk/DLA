@@ -56,5 +56,6 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_Dealloc_Workspace(&descT);
 
     free( A );
+    (void)dparam;
     return 0;
 }
