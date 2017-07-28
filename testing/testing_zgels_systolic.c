@@ -71,8 +71,8 @@ int testing_zgels_systolic(int argc, char **argv)
     int LDB    = max( max( atoi(argv[4]), M ), N );
     int p      = atoi(argv[5]);
     int q      = atoi(argv[6]);
-    libhqr_tree_t     qrtree;
-    libhqr_tiledesc_t matrix;
+    libhqr_tree_t   qrtree;
+    libhqr_matrix_t matrix;
 
     int K = min(M, N);
     double eps;
@@ -111,9 +111,9 @@ int testing_zgels_systolic(int argc, char **argv)
     matrix.nodes = 1;
     matrix.p = 1;
 
-    libhqr_systolic_init( &qrtree,
-                          ( M >= N ) ? LIBHQR_QR : LIBHQR_LQ,
-                          &matrix, p, q );
+    libhqr_init_sys( &qrtree,
+                     ( M >= N ) ? LIBHQR_QR : LIBHQR_LQ,
+                     &matrix, p, q );
 
     /* Initialize A1 and A2 */
     LAPACKE_zlarnv_work(IONE, ISEED, LDAxN, A1);
@@ -320,7 +320,7 @@ int testing_zgels_systolic(int argc, char **argv)
         }
     }
 
-    libhqr_matrix_finalize( &qrtree );
+    libhqr_finalize( &qrtree );
 
     free(A1); free(A2); free(B1); free(B2); free(Q);
     MORSE_Dealloc_Workspace( &TS );

@@ -85,8 +85,7 @@ void morse_pzungqr_param(const libhqr_tree_t *qrtree,
 
     /* Initialisation of tiles */
 
-    tiles = (int*)malloc((qrtree->mt)*sizeof(int));
-    memset( tiles, 0, (qrtree->mt)*sizeof(int) );
+    tiles = (int*)calloc(qrtree->mt, sizeof(int));
 
     ws_worker *= sizeof(MORSE_Complex64_t);
     ws_host   *= sizeof(MORSE_Complex64_t);
@@ -99,9 +98,9 @@ void morse_pzungqr_param(const libhqr_tree_t *qrtree,
         tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
 
         /* Setting the order of tiles */
-        libhqr_treewalk(qrtree, k, tiles);
+        libhqr_walk_stepk(qrtree, k, tiles + (k+1));
 
-        for (i = Q->mt - 2; i >= k; i--) {
+        for (i = Q->mt-1; i > k; i--) {
             m = tiles[i];
             p = qrtree->currpiv(qrtree, k, m);
 

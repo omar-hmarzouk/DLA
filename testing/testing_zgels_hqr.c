@@ -77,8 +77,8 @@ int testing_zgels_hqr(int argc, char **argv)
     int llvl   = atoi(argv[7]);
     int hlvl   = atoi(argv[8]);
     int domino = atoi(argv[9]);
-    libhqr_tree_t     qrtree;
-    libhqr_tiledesc_t matrix;
+    libhqr_tree_t   qrtree;
+    libhqr_matrix_t matrix;
 
     int K = min(M, N);
     double eps;
@@ -117,7 +117,7 @@ int testing_zgels_hqr(int argc, char **argv)
     matrix.nodes = 1;
     matrix.p = 1;
 
-    libhqr_hqr_init( &qrtree,
+    libhqr_init_hqr( &qrtree,
                      ( M >= N ) ? LIBHQR_QR : LIBHQR_LQ,
                      &matrix, llvl, hlvl, qr_a, qr_p, domino, 0);
 
@@ -322,7 +322,7 @@ int testing_zgels_hqr(int argc, char **argv)
         }
     }
 
-    libhqr_matrix_finalize( &qrtree );
+    libhqr_finalize( &qrtree );
 
     free(A1); free(A2); free(B1); free(B2); free(Q);
     MORSE_Dealloc_Workspace( &TS );
