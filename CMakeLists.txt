@@ -57,13 +57,15 @@ else()
     "https://gitlab.inria.fr/solverstack/morse_cmake. Please set MORSE_CMAKE_DIR to this source "
     "directory.")
 endif()
+
 include(MorseInit)
 include(GenPkgConfig)
-include(FortranCInterface)
+
 # Ensure that the fortran compiler and c compiler specified are compatible
 # ------------------------------------------------------------------------
+include(FortranCInterface)
 FortranCInterface_VERIFY()
-FortranCInterface_HEADER(${CMAKE_CURRENT_BINARY_DIR}/include/morse_mangling.h
+FortranCInterface_HEADER(${CMAKE_CURRENT_BINARY_DIR}/include/chameleon/morse_mangling.h
                          MACRO_NAMESPACE "MORSE_")
 
 #############################################

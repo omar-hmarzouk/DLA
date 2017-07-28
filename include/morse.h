@@ -28,10 +28,6 @@
 #ifndef _MORSE_H_
 #define _MORSE_H_
 
-#define MORSE_VERSION_MAJOR @MORSE_VERSION_MAJOR@
-#define MORSE_VERSION_MINOR @MORSE_VERSION_MINOR@
-#define MORSE_VERSION_MICRO @MORSE_VERSION_MICRO@
-
 /* ****************************************************************************
  * MORSE types and constants
  */

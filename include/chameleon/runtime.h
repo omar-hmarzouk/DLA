@@ -114,8 +114,8 @@ void RUNTIME_slocality_onerestore (MORSE_kernel_t);
 /*******************************************************************************
  * RUNTIME Profiling
  **/
-void  RUNTIME_schedprofile_display ();
-void  RUNTIME_kernelprofile_display();
+void   RUNTIME_schedprofile_display ();
+void   RUNTIME_kernelprofile_display();
 double RUNTIME_get_time();
 
 void RUNTIME_start_profiling();
@@ -124,25 +124,14 @@ void RUNTIME_stop_profiling();
 void RUNTIME_start_stats();
 void RUNTIME_stop_stats();
 
-#if defined(PRECISION_z)
 void RUNTIME_zdisplay_allprofile ();
 void RUNTIME_zdisplay_oneprofile (MORSE_kernel_t);
-#endif
-
-#if defined(PRECISION_c)
 void RUNTIME_cdisplay_allprofile ();
 void RUNTIME_cdisplay_oneprofile (MORSE_kernel_t);
-#endif
-
-#if defined(PRECISION_d)
 void RUNTIME_ddisplay_allprofile ();
 void RUNTIME_ddisplay_oneprofile (MORSE_kernel_t);
-#endif
-
-#if defined(PRECISION_s)
 void RUNTIME_sdisplay_allprofile ();
 void RUNTIME_sdisplay_oneprofile (MORSE_kernel_t);
-#endif
 
 /*******************************************************************************
  * RUNTIME Kernels

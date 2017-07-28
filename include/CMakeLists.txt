@@ -32,66 +32,67 @@
 # ------------------------------------------------------
 set(CHAMELEON_HDRS_GENERATED "")
 set(ZHDR
-    morse_z.h
-    morse_zc.h
-    runtime_z.h
-    runtime_zc.h
+    chameleon/morse_z.h
+    chameleon/morse_zc.h
+    chameleon/runtime_z.h
+    chameleon/runtime_zc.h
 )
 
 precisions_rules_py(CHAMELEON_HDRS_GENERATED "${ZHDR}"
-                    PRECISIONS "z;c;d;s;zc;ds")
+  TARGETDIR  "chameleon"
+  PRECISIONS "z;c;d;s;zc;ds" )
 
-configure_file("chameleon_config.h.in"
-               "chameleon_config.h"
-               @ONLY)
-configure_file("morse.h.in"
-               "morse.h"
+configure_file("chameleon/chameleon_config.h.in"
+               "chameleon/chameleon_config.h"
                @ONLY)
 
 # Define the list of headers
 # --------------------------
 set(CHAMELEON_HDRS
-    chameleon_config.h
-    morse_constants.h
-    morse_kernels.h
-    morse_simulate.h
-    morse_struct.h
-    morse_types.h
-    morse.h
-    morse_mangling.h
-    runtime.h
+    chameleon/chameleon_config.h
+    chameleon/morse_constants.h
+    chameleon/morse_kernels.h
+    chameleon/morse_simulate.h
+    chameleon/morse_struct.h
+    chameleon/morse_types.h
+    chameleon/morse_mangling.h
+    chameleon/runtime.h
     ${CHAMELEON_HDRS_GENERATED}
     )
 
-set(flags_to_add "")
-foreach(_prec ${CHAMELEON_PRECISION})
-    set(flags_to_add "${flags_to_add} -DPRECISION_${_prec}")
-endforeach()
-set_source_files_properties(runtime.h PROPERTIES COMPILE_FLAGS "${flags_to_add}")
+# set(flags_to_add "")
+# foreach(_prec ${CHAMELEON_PRECISION})
+#     set(flags_to_add "${flags_to_add} -DPRECISION_${_prec}")
+# endforeach()
+# set_source_files_properties(runtime.h PROPERTIES COMPILE_FLAGS "${flags_to_add}")
 
 # Force generation of headers
 # ---------------------------
-add_custom_target(chameleon_include ALL SOURCES ${CHAMELEON_HDRS})
+add_custom_target(chameleon_include
+  ALL SOURCES morse.h ${CHAMELEON_HDRS} )
 
-set(HDR_INSTALL
-    morse_constants.h
-    morse_fortran.h
-    morse_kernels.h
-    morse_simulate.h
-    morse_struct.h
-    morse_types.h
-    runtime.h
-    ${CMAKE_CURRENT_BINARY_DIR}/morse.h
-    ${CMAKE_CURRENT_BINARY_DIR}/chameleon_config.h
-    )
-foreach( hdr_file ${CHAMELEON_HDRS_GENERATED} )
-    list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
-endforeach()
+# set(HDR_INSTALL
+#     chameleon/chameleon_config.h
+#     chameleon/morse_constants.h
+#     chameleon/morse_kernels.h
+#     chameleon/morse_simulate.h
+#     chameleon/morse_struct.h
+#     chameleon/morse_types.h
+#     chameleon/morse_mangling.h
+#     chameleon/runtime.h
+#     ${CHAMELEON_HDRS_GENERATED}
+#     )
+# foreach( hdr_file ${CHAMELEON_HDRS_GENERATED} )
+#     list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
+# endforeach()
 
 # installation
 # ------------
-install(FILES ${HDR_INSTALL}
-        DESTINATION include/chameleon)
+install( FILES morse.h
+         DESTINATION include )
+
+install( FILES ${CHAMELEON_HDRS}
+         DESTINATION include/chameleon )
 
 ###
 ### END CMakeLists.txt

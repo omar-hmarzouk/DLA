@@ -32,12 +32,10 @@
 typedef enum morse_kernel_e {
 
   MORSE_GEMM,
-#if defined(PRECISION_z) || defined(PRECISION_c)
   MORSE_HEMM,
   MORSE_HER2K,
   MORSE_HERK,
   MORSE_SYTRF_NOPIV,
-#endif
   MORSE_SYMM,
   MORSE_SYR2K,
   MORSE_SYRK,
