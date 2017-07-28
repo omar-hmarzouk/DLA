@@ -10,7 +10,7 @@
 
 /**
  *
- * @file runtime_zc.h
+ * @file morse_tasks_zc.h
  *
  *  MORSE auxiliary routines
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -28,8 +28,8 @@
  * @precisions mixed zc -> ds
  *
  **/
-#ifndef _RUNTIME_ZCBLAS_H_
-#define _RUNTIME_ZCBLAS_H_
+#ifndef _MORSE_TASKS_Z_H_
+#define _MORSE_TASKS_Z_H_
 
 #ifdef __cplusplus
 extern "C" {

@@ -56,4 +56,20 @@
 #cmakedefine CHAMELEON_HAVE_GETOPT_H
 #cmakedefine CHAMELEON_HAVE_GETOPT_LONG
 
+#ifdef BEGIN_C_DECLS
+#undef BEGIN_C_DECLS
+#endif
+
+#ifdef END_C_DECLS
+#undef END_C_DECLS
+#endif
+
+#if defined(c_plusplus) || defined(__cplusplus)
+# define BEGIN_C_DECLS extern "C" {
+# define END_C_DECLS }
+#else
+# define BEGIN_C_DECLS          /* empty */
+# define END_C_DECLS            /* empty */
+#endif
+
 #endif  /* CHAMELEON_CONFIG_H_HAS_BEEN_INCLUDED */

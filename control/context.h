@@ -27,7 +27,7 @@
 #ifndef _MORSE_CONTEXT_H_
 #define _MORSE_CONTEXT_H_
 
-#include "morse_struct.h"
+#include "chameleon/morse_struct.h"
 
 /*******************************************************************************
  *  Routines to handle threads context

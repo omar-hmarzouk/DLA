@@ -9,7 +9,7 @@
  **/
 
 /***
- * 
+ *
  *
  * @file async.h
  *
@@ -26,7 +26,7 @@
 #ifndef _MORSE_ASYNC_H_
 #define _MORSE_ASYNC_H_
 
-#include "morse_struct.h"
+#include "chameleon/morse_struct.h"
 
 #ifdef __cplusplus
 extern "C" {

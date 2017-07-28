@@ -32,7 +32,7 @@
  */
 #include <stdlib.h>
 #include "control/common.h"
-#include "runtime.h"
+#include "chameleon/morse_runtime.h"
 
 /*******************************************************************************
  *  Register an exception.

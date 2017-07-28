@@ -190,6 +190,7 @@ inline static void* user_getaddr_arrayofpointers(const MORSE_desc_t *A, int m, i
  */
 inline static int user_getblkldd_arrayofpointers(const MORSE_desc_t *A, int m)
 {
+    (void)m;
     return A->mb;
 }
 
@@ -198,6 +199,7 @@ inline static int user_getblkldd_arrayofpointers(const MORSE_desc_t *A, int m)
  */
 inline static int user_getrankof_zero(const MORSE_desc_t *A, int m, int n)
 {
+    (void)A; (void)m; (void)n;
     return 0;
 }
 

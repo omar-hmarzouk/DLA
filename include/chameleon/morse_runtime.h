@@ -24,10 +24,10 @@
  * @date 2011-06-01
  *
  **/
-#ifndef _RUNTIME_H_
-#define _RUNTIME_H_
+#ifndef _MORSE_RUNTIME_H_
+#define _MORSE_RUNTIME_H_
 
-#include "morse_struct.h"
+#include "chameleon/morse_struct.h"
 
 /*******************************************************************************
  * RUNTIME Async
@@ -133,34 +133,4 @@ void RUNTIME_ddisplay_oneprofile (MORSE_kernel_t);
 void RUNTIME_sdisplay_allprofile ();
 void RUNTIME_sdisplay_oneprofile (MORSE_kernel_t);
 
-/*******************************************************************************
- * RUNTIME Kernels
- **/
-#include "runtime_z.h"
-#include "runtime_d.h"
-#include "runtime_c.h"
-#include "runtime_s.h"
-#include "runtime_zc.h"
-#include "runtime_ds.h"
-
-void MORSE_TASK_ztile_zero(const MORSE_option_t *options,
-                           int X1, int X2, int Y1, int Y2,
-                           const MORSE_desc_t *A, int Am, int An, int lda);
-void MORSE_TASK_dtile_zero(const MORSE_option_t *options,
-                           int X1, int X2, int Y1, int Y2,
-                           const MORSE_desc_t *A, int Am, int An, int lda);
-void MORSE_TASK_ctile_zero(const MORSE_option_t *options,
-                           int X1, int X2, int Y1, int Y2,
-                           const MORSE_desc_t *A, int Am, int An, int lda);
-void MORSE_TASK_stile_zero(const MORSE_option_t *options,
-                           int X1, int X2, int Y1, int Y2,
-                           const MORSE_desc_t *A, int Am, int An, int lda);
-
-/*
- * Mark a data as unused after this call
- */
-void MORSE_TASK_dataflush(const MORSE_option_t *options,
-                          const MORSE_desc_t *A, int Am, int An);
-void MORSE_TASK_dataflush_all();
-
-#endif
+#endif /* _MORSE_RUNTIME_H_ */

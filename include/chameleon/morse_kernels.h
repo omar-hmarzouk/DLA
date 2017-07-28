@@ -85,4 +85,4 @@ typedef enum morse_kernel_e {
   MORSE_NBKERNELS
 } MORSE_kernel_t;
 
-#endif /* _MORSE_KERNELS_H_ */
+#endif

@@ -42,12 +42,9 @@
 /** ****************************************************************************
  * MORSE types and constants
  **/
-#include "morse_types.h"
-#include "morse_struct.h"
-#include "morse_constants.h"
-//#include "control/auxiliary.h"
-//#include "control/descriptor.h"
-//#include "control/tile.h"
+#include "chameleon/morse_types.h"
+#include "chameleon/morse_struct.h"
+#include "chameleon/morse_constants.h"
 
 /** ****************************************************************************
  * CORE BLAS headers

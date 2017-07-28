@@ -34,7 +34,7 @@
 #include <assert.h>
 #include "control/common.h"
 #include "control/descriptor.h"
-#include "runtime.h"
+#include "chameleon/morse_runtime.h"
 
 static int nbdesc = 0;
 

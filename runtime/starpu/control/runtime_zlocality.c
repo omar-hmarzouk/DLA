@@ -250,8 +250,23 @@ void RUNTIME_zlocality_onerestore( MORSE_kernel_t kernel )
     }
 }
 #else
-void RUNTIME_zlocality_allrestrict( uint32_t where ) {}
-void RUNTIME_zlocality_onerestrict( MORSE_kernel_t kernel, uint32_t where ) {}
+
+void RUNTIME_zlocality_allrestrict( uint32_t where )
+{
+    (void)where;
+}
+
+void RUNTIME_zlocality_onerestrict( MORSE_kernel_t kernel, uint32_t where )
+{
+    (void)kernel;
+    (void)where;
+}
+
 void RUNTIME_zlocality_allrestore( ) {}
-void RUNTIME_zlocality_onerestore( MORSE_kernel_t kernel ) {}
+
+void RUNTIME_zlocality_onerestore( MORSE_kernel_t kernel )
+{
+    (void)kernel;
+}
+
 #endif

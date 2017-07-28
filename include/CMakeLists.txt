@@ -34,8 +34,8 @@ set(CHAMELEON_HDRS_GENERATED "")
 set(ZHDR
     chameleon/morse_z.h
     chameleon/morse_zc.h
-    chameleon/runtime_z.h
-    chameleon/runtime_zc.h
+    chameleon/morse_tasks_z.h
+    chameleon/morse_tasks_zc.h
 )
 
 precisions_rules_py(CHAMELEON_HDRS_GENERATED "${ZHDR}"
@@ -52,11 +52,12 @@ set(CHAMELEON_HDRS
     chameleon/chameleon_config.h
     chameleon/morse_constants.h
     chameleon/morse_kernels.h
+    chameleon/morse_mangling.h
+    chameleon/morse_runtime.h
     chameleon/morse_simulate.h
     chameleon/morse_struct.h
+    chameleon/morse_tasks.h
     chameleon/morse_types.h
-    chameleon/morse_mangling.h
-    chameleon/runtime.h
     ${CHAMELEON_HDRS_GENERATED}
     )
 

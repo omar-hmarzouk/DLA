@@ -41,7 +41,7 @@
 #include "control/common.h"
 #include "control/auxiliary.h"
 #include "control/context.h"
-#include "runtime.h"
+#include "chameleon/morse_runtime.h"
 
 /*******************************************************************************
  *  Global data
