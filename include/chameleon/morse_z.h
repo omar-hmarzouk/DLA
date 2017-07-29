@@ -35,9 +35,7 @@
 #undef REAL
 #define COMPLEX
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+BEGIN_C_DECLS
 
 /** ****************************************************************************
  *  Declarations of math functions (LAPACK layout) - alphabetical order
@@ -361,9 +359,7 @@ int MORSE_zbuild(MORSE_enum uplo, int M, int N, MORSE_Complex64_t *A, int LDA, v
 int MORSE_zbuild_Tile(MORSE_enum uplo,  MORSE_desc_t *A, void *user_data, void* user_build_callback );
 int MORSE_zbuild_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, void *user_data, void* user_build_callback, MORSE_sequence_t *sequence, MORSE_request_t  *request);
 
-#ifdef __cplusplus
-}
-#endif
+END_C_DECLS
 
 #undef COMPLEX
 

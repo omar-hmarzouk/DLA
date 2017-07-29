@@ -28,6 +28,8 @@
 #ifndef _MORSE_TYPES_H_
 #define _MORSE_TYPES_H_
 
+#include "chameleon/chameleon_config.h"
+
 /** ****************************************************************************
  *  System requirements
  **/
@@ -119,6 +121,7 @@ typedef long MORSE_size;
 #define MORSE_DEPRECATED
 #endif /* __GNUC__ */
 
+BEGIN_C_DECLS
 
 /*******************************************************************************
  *  Global utilities
@@ -130,5 +133,7 @@ static inline int chameleon_max( int a, int b ) {
 static inline int chameleon_min( int a, int b ) {
     if ( a < b ) return a; else return b;
 }
+
+END_C_DECLS
 
 #endif /* __CHAMELEON_H__ */

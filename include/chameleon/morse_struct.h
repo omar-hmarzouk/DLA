@@ -30,6 +30,9 @@
 
 #include "chameleon/chameleon_config.h"
 #include "chameleon/morse_types.h"
+#include "chameleon/morse_kernels.h"
+
+BEGIN_C_DECLS
 
 /** ****************************************************************************
  * RUNTIME headers to include types of :
@@ -184,10 +187,6 @@ typedef struct morse_option_s {
     void             *schedopt;
 } MORSE_option_t;
 
-
-/** ****************************************************************************
- *  MORSE kernels
- **/
-#include "chameleon/morse_kernels.h"
+END_C_DECLS
 
 #endif /* __CHAMELEON_H__ */

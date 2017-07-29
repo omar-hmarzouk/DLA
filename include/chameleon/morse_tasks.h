@@ -26,6 +26,10 @@
 #ifndef _MORSE_TASKS_H_
 #define _MORSE_TASKS_H_
 
+#include "chameleon/chameleon_config.h"
+
+BEGIN_C_DECLS
+
 /*******************************************************************************
  * MORSE Task submission routines
  **/
@@ -56,5 +60,6 @@ void MORSE_TASK_dataflush_all();
 #include "chameleon/morse_tasks_zc.h"
 #include "chameleon/morse_tasks_ds.h"
 
+END_C_DECLS
 
 #endif /* _MORSE_TASKS_H_ */

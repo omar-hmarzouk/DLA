@@ -27,7 +27,10 @@
 #ifndef _MORSE_RUNTIME_H_
 #define _MORSE_RUNTIME_H_
 
+#include "chameleon/chameleon_config.h"
 #include "chameleon/morse_struct.h"
+
+BEGIN_C_DECLS
 
 /*******************************************************************************
  * RUNTIME Async
@@ -132,5 +135,7 @@ void RUNTIME_ddisplay_allprofile ();
 void RUNTIME_ddisplay_oneprofile (MORSE_kernel_t);
 void RUNTIME_sdisplay_allprofile ();
 void RUNTIME_sdisplay_oneprofile (MORSE_kernel_t);
+
+END_C_DECLS
 
 #endif /* _MORSE_RUNTIME_H_ */

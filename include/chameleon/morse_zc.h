@@ -29,9 +29,7 @@
 #ifndef _MORSE_ZC_H_
 #define _MORSE_ZC_H_
 
-#if defined(c_plusplus) || defined(__cplusplus)
-extern "C" {
-#endif
+BEGIN_C_DECLS
 
 /** ****************************************************************************
  *  Declarations of math functions (LAPACK layout) - alphabetical order
@@ -57,8 +55,6 @@ extern "C" {
 //int MORSE_zcgels_Tile_Async(MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B, MORSE_desc_t *X, int *ITER, MORSE_sequence_t *sequence, MORSE_request_t *request);
 //int MORSE_zcungesv_Tile_Async(MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B, MORSE_desc_t *X, int *ITER, MORSE_sequence_t *sequence, MORSE_request_t *request);
 
-#if defined(c_plusplus) || defined(__cplusplus)
-}
-#endif
+END_C_DECLS
 
 #endif

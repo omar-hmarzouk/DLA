@@ -31,11 +31,6 @@
 #ifndef _MORSE_TASKS_Z_H_
 #define _MORSE_TASKS_Z_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-
 /** ****************************************************************************
  *  Declarations of QUARK wrappers (called by MORSE) - alphabetical order
  **/
@@ -47,10 +42,5 @@ void MORSE_TASK_zlag2c(MORSE_option_t *options,
                        int m, int n, int nb,
                        MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_desc_t *B, int Bm, int Bn, int ldb);
-
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif
