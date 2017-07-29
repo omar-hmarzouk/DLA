@@ -30,7 +30,7 @@
  * @precisions normal z -> c
  *
  **/
-#include "coreblas/include/coreblas.h"
+#include "coreblas.h"
 
 /***************************************************************************//**
  *

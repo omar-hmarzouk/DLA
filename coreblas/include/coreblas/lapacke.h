@@ -48,7 +48,7 @@
 *  Turn on HAVE_LAPACK_CONFIG_H to redefine C-LAPACK datatypes
 */
 #ifdef HAVE_LAPACK_CONFIG_H
-#include "lapacke_config.h"
+#include "coreblas/lapacke_config.h"
 #endif
 
 #include <stdlib.h>
@@ -150,7 +150,7 @@ typedef lapack_logical (*LAPACK_Z_SELECT1) ( const lapack_complex_double* );
 typedef lapack_logical (*LAPACK_Z_SELECT2)
     ( const lapack_complex_double*, const lapack_complex_double* );
 
-#include "lapacke_mangling.h"
+#include "coreblas/lapacke_mangling.h"
 
 #define LAPACK_lsame LAPACK_GLOBAL(lsame,LSAME)
 lapack_logical LAPACK_lsame( char* ca,  char* cb,

@@ -27,9 +27,9 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "coreblas/include/cblas.h"
-#include "coreblas/include/lapacke.h"
-#include "coreblas/include/coreblas.h"
+#include "coreblas/cblas.h"
+#include "coreblas/lapacke.h"
+#include "coreblas.h"
 
 static inline int CORE_zpamm_a2(MORSE_enum side, MORSE_enum trans, MORSE_enum uplo,
                                 int M, int N, int K, int L,

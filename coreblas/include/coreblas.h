@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <assert.h>
 
 /** ****************************************************************************
  *  CBLAS requires for scalar arguments to be passed
@@ -37,11 +38,12 @@
 #ifndef CBLAS_SADDR
 #define CBLAS_SADDR( _val_ ) &(_val_)
 #endif
-#include "coreblas/include/cblas.h"
+#include "coreblas/cblas.h"
 
 /** ****************************************************************************
  * MORSE types and constants
  **/
+#include "chameleon/chameleon_config.h"
 #include "chameleon/morse_types.h"
 #include "chameleon/morse_struct.h"
 #include "chameleon/morse_constants.h"
@@ -49,17 +51,16 @@
 /** ****************************************************************************
  * CORE BLAS headers
  **/
-#include "coreblas/include/coreblas_z.h"
-#include "coreblas/include/coreblas_d.h"
-#include "coreblas/include/coreblas_c.h"
-#include "coreblas/include/coreblas_s.h"
-#include "coreblas/include/coreblas_zc.h"
-#include "coreblas/include/coreblas_ds.h"
-#include <assert.h>
+BEGIN_C_DECLS
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "coreblas/coreblas_z.h"
+#include "coreblas/coreblas_d.h"
+#include "coreblas/coreblas_c.h"
+#include "coreblas/coreblas_s.h"
+#include "coreblas/coreblas_zc.h"
+#include "coreblas/coreblas_ds.h"
+
+END_C_DECLS
 
 /** ****************************************************************************
  * Coreblas Error
@@ -80,14 +81,14 @@ extern "C" {
 /** ****************************************************************************
  *  LAPACK Constants
  **/
+BEGIN_C_DECLS
+
 extern char *morse_lapack_constants[];
 #define morse_lapack_const(morse_const) morse_lapack_constants[morse_const][0]
 
-void set_coreblas_gemm3m_enabled(int v) ;
-int get_coreblas_gemm3m_enabled(void) ;
+void set_coreblas_gemm3m_enabled( int v );
+int  get_coreblas_gemm3m_enabled( void );
 
-#ifdef __cplusplus
-}
-#endif
+END_C_DECLS
 
 #endif
