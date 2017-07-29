@@ -77,9 +77,9 @@
  **/
 #include "morse.h"
 
-#include "coreblas/include/coreblas.h"
+#include "coreblas.h"
 #if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
-#include "cudablas/include/cudablas.h"
+#include "cudablas.h"
 #endif
 
 #include "control/global.h"

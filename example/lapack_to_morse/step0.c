@@ -23,7 +23,7 @@
  **/
 
 #include "step0.h"
-#include <coreblas/include/coreblas.h>
+#include <coreblas.h>
 
 /*
  * @brief step0 is a simple Cholesky example using the C interface of

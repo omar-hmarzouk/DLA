@@ -1,7 +1,7 @@
 prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
-includedir=${exec_prefix}/include/chameleon/cudablas/include
+includedir=${exec_prefix}/include
 
 Name: cudablas
 Description: Interface to cuBLAS/MAGMA routines + some other auxiliary routines

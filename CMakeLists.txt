@@ -1012,6 +1012,8 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 # Coreblas library (kernels for CPUs) #
 #######################################
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/coreblas/include)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/coreblas/include)
 add_subdirectory(coreblas)
 #------------------------------------------------------------------------------
 
@@ -1021,6 +1023,8 @@ add_subdirectory(coreblas)
 ########################################
 
 if(CHAMELEON_USE_CUDA)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/cudablas/include)
+    include_directories(${CMAKE_CURRENT_BINARY_DIR}/cudablas/include)
     add_subdirectory(cudablas)
 endif()
 #------------------------------------------------------------------------------

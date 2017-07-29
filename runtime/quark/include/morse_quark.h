@@ -27,7 +27,7 @@
 #define _MORSE_QUARK_H_
 
 #include <quark.h>
-#include "coreblas/include/coreblas.h"
+#include "coreblas/coreblas.h"
 #include "runtime/quark/include/quark_blas.h"
 #include "runtime/quark/include/core_blas_dag.h"
 

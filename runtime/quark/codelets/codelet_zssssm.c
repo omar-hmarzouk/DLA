@@ -28,7 +28,7 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "coreblas/include/cblas.h"
+#include "coreblas/cblas.h"
 #include "runtime/quark/include/morse_quark.h"
 
 /***************************************************************************//**

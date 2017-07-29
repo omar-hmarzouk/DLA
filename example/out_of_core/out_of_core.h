@@ -48,7 +48,7 @@
 #endif
 
 #include <starpu.h>
-#include "coreblas/include/lapacke.h"
+#include "coreblas/lapacke.h"
 #include "morse.h"
 #include "control/common.h"
 

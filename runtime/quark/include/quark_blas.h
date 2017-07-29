@@ -25,7 +25,7 @@
 #ifndef _QUARK_BLAS_H_
 #define _QUARK_BLAS_H_
 
-#include "coreblas/include/cblas.h"
+#include "coreblas/cblas.h"
 
 #include "runtime/quark/include/quark_zblas.h"
 #include "runtime/quark/include/quark_dblas.h"

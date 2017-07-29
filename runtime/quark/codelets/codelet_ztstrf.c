@@ -29,7 +29,7 @@
  *
  **/
 #include "runtime/quark/include/morse_quark.h"
-#include "coreblas/include/cblas.h"
+#include "coreblas/cblas.h"
 #include <math.h>
 
 /***************************************************************************//**

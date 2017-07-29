@@ -23,7 +23,7 @@
  * @precisions normal z -> s d c
  *
  **/
-#include <coreblas/include/lapacke.h>
+#include <coreblas/lapacke.h>
 #include "control/common.h"
 
 /***************************************************************************//**

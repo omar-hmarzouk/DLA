@@ -32,8 +32,8 @@
 #ifndef CBLAS_SADDR
 #define CBLAS_SADDR( _val_ ) &(_val_)
 #endif
-#include <coreblas/include/cblas.h>
-#include <coreblas/include/lapacke.h>
+#include <coreblas/cblas.h>
+#include <coreblas/lapacke.h>
 
 /* Integer parameters for step0 */
 enum iparam_step0 {

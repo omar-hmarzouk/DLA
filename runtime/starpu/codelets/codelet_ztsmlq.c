@@ -32,6 +32,7 @@
  **/
 #include "runtime/starpu/include/morse_starpu.h"
 #include "runtime/starpu/include/runtime_codelet_z.h"
+#include "chameleon/morse_tasks_z.h"
 
 /**
  *

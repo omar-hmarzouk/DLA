@@ -28,7 +28,7 @@
 #ifndef _CODELETS_H_
 #define _CODELETS_H_
 
-#include "include/chameleon_config.h"
+#include "chameleon/chameleon_config.h"
 #include "runtime_codelet_profile.h"
 
 //#undef STARPU_CUDA_ASYNC

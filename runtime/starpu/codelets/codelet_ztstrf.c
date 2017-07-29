@@ -30,7 +30,8 @@
  **/
 #include "runtime/starpu/include/morse_starpu.h"
 #include "runtime/starpu/include/runtime_codelet_z.h"
-#include "coreblas/include/cblas.h"
+#include "coreblas/cblas.h"
+#include "chameleon/morse_tasks_z.h"
 #include <math.h>
 
 /**

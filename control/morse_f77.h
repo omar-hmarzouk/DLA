@@ -24,7 +24,7 @@
 #ifndef _MORSE_F77_H_
 #define _MORSE_F77_H_
 
-#include "include/morse_mangling.h"
+#include "chameleon/morse_mangling.h"
 
 /** ****************************************************************************
  *  Determine FORTRAN names
