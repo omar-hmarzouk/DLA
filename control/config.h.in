@@ -26,7 +26,7 @@
 #define CONFIG_H_HAS_BEEN_INCLUDED
 
 /* inherit from public chameleon's definitions */
-#include "include/chameleon_config.h"
+#include "chameleon/chameleon_config.h"
 
 /* StarPU functions */
 #cmakedefine HAVE_STARPU_FXT_PROFILING
