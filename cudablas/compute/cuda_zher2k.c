@@ -22,8 +22,8 @@
  * @precisions normal z -> c
  *
  **/
-#include "cudablas/include/cudablas.h"
-#include "cudablas/include/cudablas_z.h"
+#include "cudablas.h"
+#include "cudablas/cudablas_z.h"
 
 int CUDA_zher2k(MORSE_enum uplo, MORSE_enum trans,
                 int n, int k,

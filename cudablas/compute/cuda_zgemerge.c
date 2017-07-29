@@ -22,8 +22,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "cudablas/include/cudablas.h"
-#include "cudablas/include/cudablas_z.h"
+#include "cudablas.h"
+#include "cudablas/cudablas_z.h"
 
 int
 CUDA_zgemerge( MORSE_enum side, MORSE_enum diag,
