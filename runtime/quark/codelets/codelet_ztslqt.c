@@ -28,8 +28,26 @@
  * @precisions normal z -> c d s
  *
  **/
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
 
-#include "runtime/quark/include/morse_quark.h"
+void CORE_ztslqt_quark(Quark *quark)
+{
+    int m;
+    int n;
+    int ib;
+    MORSE_Complex64_t *A1;
+    int lda1;
+    MORSE_Complex64_t *A2;
+    int lda2;
+    MORSE_Complex64_t *T;
+    int ldt;
+    MORSE_Complex64_t *TAU;
+    MORSE_Complex64_t *WORK;
+
+    quark_unpack_args_11(quark, m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK);
+    CORE_ztslqt(m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK);
+}
 
 /**
  *
@@ -126,23 +144,4 @@ void MORSE_TASK_ztslqt(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*nb,       NULL,          SCRATCH,
         sizeof(MORSE_Complex64_t)*ib*nb,    NULL,          SCRATCH,
         0);
-}
-
-
-void CORE_ztslqt_quark(Quark *quark)
-{
-    int m;
-    int n;
-    int ib;
-    MORSE_Complex64_t *A1;
-    int lda1;
-    MORSE_Complex64_t *A2;
-    int lda2;
-    MORSE_Complex64_t *T;
-    int ldt;
-    MORSE_Complex64_t *TAU;
-    MORSE_Complex64_t *WORK;
-
-    quark_unpack_args_11(quark, m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK);
-    CORE_ztslqt(m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK);
 }

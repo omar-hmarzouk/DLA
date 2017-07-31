@@ -28,10 +28,35 @@
  *
  **/
 #include "coreblas/cblas.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
 
-#include "runtime/quark/include/morse_quark.h"
+void
+CORE_zpamm_quark(Quark *quark)
+{
+    int op;
+    MORSE_enum side;
+    int storev;
+    int M;
+    int N;
+    int K;
+    int L;
+    MORSE_Complex64_t *A1;
+    int LDA1;
+    MORSE_Complex64_t *A2;
+    int LDA2;
+    MORSE_Complex64_t *V;
+    int LDV;
+    MORSE_Complex64_t *W;
+    int LDW;
 
-/***************************************************************************//**
+    quark_unpack_args_15(quark, op, side, storev, M, N, K, L,
+            A1, LDA1, A2, LDA2, V, LDV, W, LDW);
+
+    CORE_zpamm( op, side, storev, M, N, K, L, A1, LDA1, A2, LDA2, V, LDV, W, LDW);
+}
+
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -171,11 +196,6 @@
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
  ******************************************************************************/
-
-
-/***************************************************************************/
-
-
 void
 MORSE_TASK_zpamm(const MORSE_option_t *options,
                  int op, MORSE_enum side, int storev,
@@ -203,29 +223,3 @@ MORSE_TASK_zpamm(const MORSE_option_t *options,
         sizeof(int),                        &ldw,     VALUE,
         0);
 }
-
-void
-CORE_zpamm_quark(Quark *quark)
-{
-    int op;
-    MORSE_enum side;
-    int storev;
-    int M;
-    int N;
-    int K;
-    int L;
-    MORSE_Complex64_t *A1;
-    int LDA1;
-    MORSE_Complex64_t *A2;
-    int LDA2;
-    MORSE_Complex64_t *V;
-    int LDV;
-    MORSE_Complex64_t *W;
-    int LDW;
-
-    quark_unpack_args_15(quark, op, side, storev, M, N, K, L,
-            A1, LDA1, A2, LDA2, V, LDV, W, LDW);
-
-    CORE_zpamm( op, side, storev, M, N, K, L, A1, LDA1, A2, LDA2, V, LDV, W, LDW);
-}
-

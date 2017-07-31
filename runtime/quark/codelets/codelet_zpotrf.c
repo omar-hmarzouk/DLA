@@ -28,33 +28,8 @@
  * @precisions normal z -> c d s
  *
  **/
-
-#include "runtime/quark/include/morse_quark.h"
-
-/***************************************************************************//**
- *
- * @ingroup CORE_MORSE_Complex64_t
- *
- **/
-
-void MORSE_TASK_zpotrf(const MORSE_option_t *options,
-                       MORSE_enum uplo, int n, int nb,
-                       const MORSE_desc_t *A, int Am, int An, int lda,
-                       int iinfo)
-{
-    quark_option_t *opt = (quark_option_t*)(options->schedopt);
-    DAG_CORE_POTRF;
-    QUARK_Insert_Task(opt->quark, CORE_zpotrf_quark, (Quark_Task_Flags*)opt,
-        sizeof(MORSE_enum),                &uplo,      VALUE,
-        sizeof(int),                        &n,         VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),                 INOUT,
-        sizeof(int),                        &lda,       VALUE,
-        sizeof(MORSE_sequence_t*),           &(options->sequence),  VALUE,
-        sizeof(MORSE_request_t*),            &(options->request),   VALUE,
-        sizeof(int),                        &iinfo,     VALUE,
-        0);
-}
-
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
 
 void CORE_zpotrf_quark(Quark *quark)
 {
@@ -72,4 +47,22 @@ void CORE_zpotrf_quark(Quark *quark)
     CORE_zpotrf(uplo, n, A, lda, &info);
     if (sequence->status == MORSE_SUCCESS && info != 0)
         RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
+}
+
+void MORSE_TASK_zpotrf(const MORSE_option_t *options,
+                       MORSE_enum uplo, int n, int nb,
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       int iinfo)
+{
+    quark_option_t *opt = (quark_option_t*)(options->schedopt);
+    DAG_CORE_POTRF;
+    QUARK_Insert_Task(opt->quark, CORE_zpotrf_quark, (Quark_Task_Flags*)opt,
+                      sizeof(MORSE_enum),                &uplo,      VALUE,
+                      sizeof(int),                        &n,         VALUE,
+                      sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),                 INOUT,
+                      sizeof(int),                        &lda,       VALUE,
+                      sizeof(MORSE_sequence_t*),           &(options->sequence),  VALUE,
+                      sizeof(MORSE_request_t*),            &(options->request),   VALUE,
+                      sizeof(int),                        &iinfo,     VALUE,
+                      0);
 }

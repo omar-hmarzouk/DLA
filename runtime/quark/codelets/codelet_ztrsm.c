@@ -28,13 +28,30 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
 
-/***************************************************************************//**
- *
- * @ingroup CORE_MORSE_Complex64_t
- *
- **/
+void CORE_ztrsm_quark(Quark *quark)
+{
+    MORSE_enum side;
+    MORSE_enum uplo;
+    MORSE_enum transA;
+    MORSE_enum diag;
+    int m;
+    int n;
+    MORSE_Complex64_t alpha;
+    MORSE_Complex64_t *A;
+    int lda;
+    MORSE_Complex64_t *B;
+    int ldb;
+
+    quark_unpack_args_11(quark, side, uplo, transA, diag, m, n, alpha, A, lda, B, ldb);
+    CORE_ztrsm(side, uplo,
+        transA, diag,
+        m, n,
+        alpha, A, lda,
+        B, ldb);
+}
 
 void MORSE_TASK_ztrsm(const MORSE_option_t *options,
                       MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag,
@@ -57,27 +74,4 @@ void MORSE_TASK_ztrsm(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),                 INOUT,
         sizeof(int),                        &ldb,       VALUE,
         0);
-}
-
-
-void CORE_ztrsm_quark(Quark *quark)
-{
-    MORSE_enum side;
-    MORSE_enum uplo;
-    MORSE_enum transA;
-    MORSE_enum diag;
-    int m;
-    int n;
-    MORSE_Complex64_t alpha;
-    MORSE_Complex64_t *A;
-    int lda;
-    MORSE_Complex64_t *B;
-    int ldb;
-
-    quark_unpack_args_11(quark, side, uplo, transA, diag, m, n, alpha, A, lda, B, ldb);
-    CORE_ztrsm(side, uplo,
-        transA, diag,
-        m, n,
-        alpha, A, lda,
-        B, ldb);
 }

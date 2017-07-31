@@ -24,7 +24,22 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+
+void CORE_zlantr_quark(Quark *quark)
+{
+    double *normA;
+    MORSE_enum norm, uplo, diag;
+    int M;
+    int N;
+    MORSE_Complex64_t *A;
+    int LDA;
+    double *work;
+
+    quark_unpack_args_9(quark, norm, uplo, diag, M, N, A, LDA, work, normA);
+    CORE_zlantr( norm, uplo, diag, M, N, A, LDA, work, normA);
+}
 
 void MORSE_TASK_zlantr(const MORSE_option_t *options,
                        MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
@@ -47,18 +62,4 @@ void MORSE_TASK_zlantr(const MORSE_option_t *options,
         sizeof(double)*szeW,             NULL,   SCRATCH,
         sizeof(double),                  RTBLKADDR(B, double, Bm, Bn), OUTPUT,
         0);
-}
-
-void CORE_zlantr_quark(Quark *quark)
-{
-    double *normA;
-    MORSE_enum norm, uplo, diag;
-    int M;
-    int N;
-    MORSE_Complex64_t *A;
-    int LDA;
-    double *work;
-
-    quark_unpack_args_9(quark, norm, uplo, diag, M, N, A, LDA, work, normA);
-    CORE_zlantr( norm, uplo, diag, M, N, A, LDA, work, normA);
 }

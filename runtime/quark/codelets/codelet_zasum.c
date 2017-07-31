@@ -24,7 +24,22 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+
+void CORE_dzasum_quark(Quark *quark)
+{
+    MORSE_enum storev;
+    MORSE_enum uplo;
+    int M;
+    int N;
+    MORSE_Complex64_t *A;
+    int lda;
+    double *work;
+
+    quark_unpack_args_7(quark, storev, uplo, M, N, A, lda, work);
+    CORE_dzasum(storev, uplo, M, N, A, lda, work);
+}
 
 void MORSE_TASK_dzasum(const MORSE_option_t *options,
                        MORSE_enum storev, MORSE_enum uplo, int M, int N,
@@ -42,19 +57,4 @@ void MORSE_TASK_dzasum(const MORSE_option_t *options,
         sizeof(int),                     &lda,       VALUE,
         sizeof(double),                   RTBLKADDR(B, double, Bm, Bn), INOUT,
         0);
-}
-
-
-void CORE_dzasum_quark(Quark *quark)
-{
-    MORSE_enum storev;
-    MORSE_enum uplo;
-    int M;
-    int N;
-    MORSE_Complex64_t *A;
-    int lda;
-    double *work;
-
-    quark_unpack_args_7(quark, storev, uplo, M, N, A, lda, work);
-    CORE_dzasum(storev, uplo, M, N, A, lda, work);
 }

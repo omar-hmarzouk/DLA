@@ -24,7 +24,22 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+
+void CORE_ztrssq_quark(Quark *quark)
+{
+    MORSE_enum uplo;
+    MORSE_enum diag;
+    int m;
+    int n;
+    MORSE_Complex64_t *A;
+    int lda;
+    double *SCALESUMSQ;
+
+    quark_unpack_args_7( quark, uplo, diag, m, n, A, lda, SCALESUMSQ );
+    CORE_ztrssq( uplo, diag, m, n, A, lda, &SCALESUMSQ[0], &SCALESUMSQ[1]);
+}
 
 void MORSE_TASK_ztrssq( const MORSE_option_t *options,
                         MORSE_enum uplo, MORSE_enum diag,
@@ -42,19 +57,4 @@ void MORSE_TASK_ztrssq( const MORSE_option_t *options,
         sizeof(int),                     &lda,  VALUE,
         sizeof(double)*2,                RTBLKADDR(SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn), INOUT,
         0);
-}
-
-
-void CORE_ztrssq_quark(Quark *quark)
-{
-    MORSE_enum uplo;
-    MORSE_enum diag;
-    int m;
-    int n;
-    MORSE_Complex64_t *A;
-    int lda;
-    double *SCALESUMSQ;
-
-    quark_unpack_args_7( quark, uplo, diag, m, n, A, lda, SCALESUMSQ );
-    CORE_ztrssq( uplo, diag, m, n, A, lda, &SCALESUMSQ[0], &SCALESUMSQ[1]);
 }

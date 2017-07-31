@@ -28,9 +28,38 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
 #include "coreblas/cblas.h"
 #include <math.h>
+
+void CORE_ztstrf_quark(Quark *quark)
+{
+    int m;
+    int n;
+    int ib;
+    int nb;
+    MORSE_Complex64_t *U;
+    int ldu;
+    MORSE_Complex64_t *A;
+    int lda;
+    MORSE_Complex64_t *L;
+    int ldl;
+    int *IPIV;
+    MORSE_Complex64_t *WORK;
+    int ldwork;
+    MORSE_sequence_t *sequence;
+    MORSE_request_t *request;
+    MORSE_bool check_info;
+    int iinfo;
+
+    int info;
+
+    quark_unpack_args_17(quark, m, n, ib, nb, U, ldu, A, lda, L, ldl, IPIV, WORK, ldwork, sequence, request, check_info, iinfo);
+    CORE_ztstrf(m, n, ib, nb, U, ldu, A, lda, L, ldl, IPIV, WORK, ldwork, &info);
+    if (info != MORSE_SUCCESS && check_info)
+        RUNTIME_sequence_flush(quark, sequence, request, iinfo + info);
+}
 
 /***************************************************************************//**
  *
@@ -98,7 +127,6 @@
  *              to solve a system of equations.
  *
  ******************************************************************************/
-
 void MORSE_TASK_ztstrf(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,
                        const MORSE_desc_t *U, int Um, int Un, int ldu,
@@ -128,33 +156,4 @@ void MORSE_TASK_ztstrf(const MORSE_option_t *options,
         sizeof(MORSE_bool),                &check_info,    VALUE,
         sizeof(int),                        &iinfo,         VALUE,
         0);
-}
-
-
-void CORE_ztstrf_quark(Quark *quark)
-{
-    int m;
-    int n;
-    int ib;
-    int nb;
-    MORSE_Complex64_t *U;
-    int ldu;
-    MORSE_Complex64_t *A;
-    int lda;
-    MORSE_Complex64_t *L;
-    int ldl;
-    int *IPIV;
-    MORSE_Complex64_t *WORK;
-    int ldwork;
-    MORSE_sequence_t *sequence;
-    MORSE_request_t *request;
-    MORSE_bool check_info;
-    int iinfo;
-
-    int info;
-
-    quark_unpack_args_17(quark, m, n, ib, nb, U, ldu, A, lda, L, ldl, IPIV, WORK, ldwork, sequence, request, check_info, iinfo);
-    CORE_ztstrf(m, n, ib, nb, U, ldu, A, lda, L, ldl, IPIV, WORK, ldwork, &info);
-    if (info != MORSE_SUCCESS && check_info)
-        RUNTIME_sequence_flush(quark, sequence, request, iinfo + info);
 }

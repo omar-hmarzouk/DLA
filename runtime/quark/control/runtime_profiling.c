@@ -22,7 +22,7 @@
  * @date 2011-10-29 
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
 
 #if defined( _WIN32 ) || defined( _WIN64 )
 #include <windows.h>

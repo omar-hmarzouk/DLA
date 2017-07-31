@@ -28,8 +28,24 @@
  * @precisions normal z -> c d s
  *
  **/
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
 
-#include "runtime/quark/include/morse_quark.h"
+void CORE_zgeqrt_quark(Quark *quark)
+{
+    int m;
+    int n;
+    int ib;
+    MORSE_Complex64_t *A;
+    int lda;
+    MORSE_Complex64_t *T;
+    int ldt;
+    MORSE_Complex64_t *TAU;
+    MORSE_Complex64_t *WORK;
+
+    quark_unpack_args_9(quark, m, n, ib, A, lda, T, ldt, TAU, WORK);
+    CORE_zgeqrt(m, n, ib, A, lda, T, ldt, TAU, WORK);
+}
 
 /**
  *
@@ -93,7 +109,6 @@
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
  ******************************************************************************/
-
 void MORSE_TASK_zgeqrt(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,
                        const MORSE_desc_t *A, int Am, int An, int lda,
@@ -112,21 +127,4 @@ void MORSE_TASK_zgeqrt(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*nb,       NULL,          SCRATCH,
         sizeof(MORSE_Complex64_t)*ib*nb,    NULL,          SCRATCH,
         0);
-}
-
-
-void CORE_zgeqrt_quark(Quark *quark)
-{
-    int m;
-    int n;
-    int ib;
-    MORSE_Complex64_t *A;
-    int lda;
-    MORSE_Complex64_t *T;
-    int ldt;
-    MORSE_Complex64_t *TAU;
-    MORSE_Complex64_t *WORK;
-
-    quark_unpack_args_9(quark, m, n, ib, A, lda, T, ldt, TAU, WORK);
-    CORE_zgeqrt(m, n, ib, A, lda, T, ldt, TAU, WORK);
 }

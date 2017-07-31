@@ -24,7 +24,21 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+
+void CORE_zaxpy_quark(Quark *quark)
+{
+    int M;
+    MORSE_Complex64_t alpha;
+    MORSE_Complex64_t *A;
+    int incA;
+    MORSE_Complex64_t *B;
+    int incB;
+
+    quark_unpack_args_6(quark, M, alpha, A, incA, B, incB);
+    CORE_zaxpy(M, alpha, A, incA, B, incB);
+}
 
 void MORSE_TASK_zaxpy(const MORSE_option_t *options,
                       int M, MORSE_Complex64_t *alpha,
@@ -41,18 +55,4 @@ void MORSE_TASK_zaxpy(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*M,        RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn), INOUT,
         sizeof(int),                        &incB,      VALUE,
         0);
-}
-
-
-void CORE_zaxpy_quark(Quark *quark)
-{
-    int M;
-    MORSE_Complex64_t alpha;
-    MORSE_Complex64_t *A;
-    int incA;
-    MORSE_Complex64_t *B;
-    int incB;
-
-    quark_unpack_args_6(quark, M, alpha, A, incA, B, incB);
-    CORE_zaxpy(M, alpha, A, incA, B, incB);
 }

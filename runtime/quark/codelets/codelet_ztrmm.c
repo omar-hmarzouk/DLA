@@ -28,37 +28,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
-
-/***************************************************************************//**
- *
- * @ingroup CORE_MORSE_Complex64_t
- *
- **/
-
-void MORSE_TASK_ztrmm(const MORSE_option_t *options,
-                      MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag,
-                      int m, int n, int nb,
-                      MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,
-                      const MORSE_desc_t *B, int Bm, int Bn, int ldb)
-{
-    quark_option_t *opt = (quark_option_t*)(options->schedopt);
-    DAG_CORE_TRMM;
-    QUARK_Insert_Task(opt->quark, CORE_ztrmm_quark, (Quark_Task_Flags*)opt,
-        sizeof(MORSE_enum),                &side,      VALUE,
-        sizeof(MORSE_enum),                &uplo,      VALUE,
-        sizeof(MORSE_enum),                &transA,    VALUE,
-        sizeof(MORSE_enum),                &diag,      VALUE,
-        sizeof(int),                        &m,         VALUE,
-        sizeof(int),                        &n,         VALUE,
-        sizeof(MORSE_Complex64_t),         &alpha,     VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),                 INPUT,
-        sizeof(int),                        &lda,       VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),                 INOUT,
-        sizeof(int),                        &ldb,       VALUE,
-        0);
-}
-
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
 
 void CORE_ztrmm_quark(Quark *quark)
 {
@@ -82,4 +53,25 @@ void CORE_ztrmm_quark(Quark *quark)
         B, LDB);
 }
 
-
+void MORSE_TASK_ztrmm(const MORSE_option_t *options,
+                      MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag,
+                      int m, int n, int nb,
+                      MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,
+                      const MORSE_desc_t *B, int Bm, int Bn, int ldb)
+{
+    quark_option_t *opt = (quark_option_t*)(options->schedopt);
+    DAG_CORE_TRMM;
+    QUARK_Insert_Task(opt->quark, CORE_ztrmm_quark, (Quark_Task_Flags*)opt,
+        sizeof(MORSE_enum),                &side,      VALUE,
+        sizeof(MORSE_enum),                &uplo,      VALUE,
+        sizeof(MORSE_enum),                &transA,    VALUE,
+        sizeof(MORSE_enum),                &diag,      VALUE,
+        sizeof(int),                        &m,         VALUE,
+        sizeof(int),                        &n,         VALUE,
+        sizeof(MORSE_Complex64_t),         &alpha,     VALUE,
+        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),                 INPUT,
+        sizeof(int),                        &lda,       VALUE,
+        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),                 INOUT,
+        sizeof(int),                        &ldb,       VALUE,
+        0);
+}

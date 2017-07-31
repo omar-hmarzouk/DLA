@@ -30,7 +30,31 @@
  *
  **/
 
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+
+void CORE_zunmlq_quark(Quark *quark)
+{
+    MORSE_enum side;
+    MORSE_enum trans;
+    int m;
+    int n;
+    int k;
+    int ib;
+    MORSE_Complex64_t *A;
+    int lda;
+    MORSE_Complex64_t *T;
+    int ldt;
+    MORSE_Complex64_t *C;
+    int ldc;
+    MORSE_Complex64_t *WORK;
+    int ldwork;
+
+    quark_unpack_args_14(quark, side, trans, m, n, k, ib,
+                         A, lda, T, ldt, C, ldc, WORK, ldwork);
+    CORE_zunmlq(side, trans, m, n, k, ib,
+                A, lda, T, ldt, C, ldc, WORK, ldwork);
+}
 
 /**
  *
@@ -115,7 +139,6 @@
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
  ******************************************************************************/
-
 void MORSE_TASK_zunmlq(const MORSE_option_t *options,
                        MORSE_enum side, MORSE_enum trans,
                        int m, int n, int k, int ib, int nb,
@@ -141,28 +164,4 @@ void MORSE_TASK_zunmlq(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*ib*nb,  NULL,      SCRATCH,
         sizeof(int),                     &nb,    VALUE,
         0);
-}
-
-
-void CORE_zunmlq_quark(Quark *quark)
-{
-    MORSE_enum side;
-    MORSE_enum trans;
-    int m;
-    int n;
-    int k;
-    int ib;
-    MORSE_Complex64_t *A;
-    int lda;
-    MORSE_Complex64_t *T;
-    int ldt;
-    MORSE_Complex64_t *C;
-    int ldc;
-    MORSE_Complex64_t *WORK;
-    int ldwork;
-
-    quark_unpack_args_14(quark, side, trans, m, n, k, ib,
-                         A, lda, T, ldt, C, ldc, WORK, ldwork);
-    CORE_zunmlq(side, trans, m, n, k, ib,
-                A, lda, T, ldt, C, ldc, WORK, ldwork);
 }

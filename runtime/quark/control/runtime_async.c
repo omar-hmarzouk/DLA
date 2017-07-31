@@ -24,7 +24,7 @@
  *
  **/
 #include <stdlib.h>
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
 
 /** *****************************************************************************
  *  Create a sequence

@@ -21,8 +21,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
-
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
 
 void CORE_zlatro_quark(Quark *quark)
 {
@@ -39,9 +39,6 @@ void CORE_zlatro_quark(Quark *quark)
     CORE_zlatro(uplo, trans, M, N, A, LDA, B, LDB);
 }
 
-/***************************************************************************//**
- *
- **/
 void MORSE_TASK_zlatro(const MORSE_option_t *options,
                        MORSE_enum uplo, MORSE_enum trans,
                        int m, int n, int mb,

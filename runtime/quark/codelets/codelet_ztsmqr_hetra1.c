@@ -25,7 +25,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
 
 void CORE_ztsmqr_hetra1_quark(Quark *quark)
 {

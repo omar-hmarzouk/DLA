@@ -25,7 +25,23 @@
  *
  **/
 #include <math.h>
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+
+void CORE_zplssq_quark(Quark *quark)
+{
+    double *SCALESUMSQ;
+    double *SCLSSQ;
+
+    quark_unpack_args_2( quark, SCALESUMSQ, SCLSSQ );
+
+    if( SCLSSQ[0] < SCALESUMSQ[0] ) {
+        SCLSSQ[1] = SCALESUMSQ[1] + (SCLSSQ[1]     * (( SCLSSQ[0] / SCALESUMSQ[0] ) * ( SCLSSQ[0] / SCALESUMSQ[0] )));
+        SCLSSQ[0] = SCALESUMSQ[0];
+    } else {
+        SCLSSQ[1] = SCLSSQ[1]     + (SCALESUMSQ[1] * (( SCALESUMSQ[0] / SCLSSQ[0] ) * ( SCALESUMSQ[0] / SCLSSQ[0] )));
+    }
+}
 
 /*****************************************************************************
  *
@@ -70,19 +86,12 @@ void MORSE_TASK_zplssq( const MORSE_option_t *options,
 }
 
 
-void CORE_zplssq_quark(Quark *quark)
+void CORE_zplssq2_quark(Quark *quark)
 {
-    double *SCALESUMSQ;
-    double *SCLSSQ;
+    double *RESULT;
 
-    quark_unpack_args_2( quark, SCALESUMSQ, SCLSSQ );
-
-    if( SCLSSQ[0] < SCALESUMSQ[0] ) {
-        SCLSSQ[1] = SCALESUMSQ[1] + (SCLSSQ[1]     * (( SCLSSQ[0] / SCALESUMSQ[0] ) * ( SCLSSQ[0] / SCALESUMSQ[0] )));
-        SCLSSQ[0] = SCALESUMSQ[0];
-    } else {
-        SCLSSQ[1] = SCLSSQ[1]     + (SCALESUMSQ[1] * (( SCALESUMSQ[0] / SCLSSQ[0] ) * ( SCALESUMSQ[0] / SCLSSQ[0] )));
-    }
+    quark_unpack_args_1( quark, RESULT );
+    RESULT[0] = RESULT[0] * sqrt( RESULT[1] );
 }
 
 void MORSE_TASK_zplssq2( const MORSE_option_t *options,
@@ -92,13 +101,4 @@ void MORSE_TASK_zplssq2( const MORSE_option_t *options,
     QUARK_Insert_Task(opt->quark, CORE_zplssq2_quark, (Quark_Task_Flags*)opt,
         sizeof(double)*2, RTBLKADDR(RESULT, double, RESULTm, RESULTn), INOUT,
         0);
-}
-
-
-void CORE_zplssq2_quark(Quark *quark)
-{
-    double *RESULT;
-
-    quark_unpack_args_1( quark, RESULT );
-    RESULT[0] = RESULT[0] * sqrt( RESULT[1] );
 }

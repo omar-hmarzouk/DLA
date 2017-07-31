@@ -27,7 +27,22 @@
  *
  **/
 
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+
+void CORE_zlange_quark(Quark *quark)
+{
+    double *normA;
+    MORSE_enum norm;
+    int M;
+    int N;
+    MORSE_Complex64_t *A;
+    int LDA;
+    double *work;
+
+    quark_unpack_args_7(quark, norm, M, N, A, LDA, work, normA);
+    CORE_zlange( norm, M, N, A, LDA, work, normA);
+}
 
 void MORSE_TASK_zlange(const MORSE_option_t *options,
                        MORSE_enum norm, int M, int N, int NB,
@@ -49,20 +64,15 @@ void MORSE_TASK_zlange(const MORSE_option_t *options,
         0);
 }
 
-void CORE_zlange_quark(Quark *quark)
+void CORE_zlange_max_quark(Quark *quark)
 {
+    double *A;
     double *normA;
-    MORSE_enum norm;
-    int M;
-    int N;
-    MORSE_Complex64_t *A;
-    int LDA;
-    double *work;
 
-    quark_unpack_args_7(quark, norm, M, N, A, LDA, work, normA);
-    CORE_zlange( norm, M, N, A, LDA, work, normA);
+    quark_unpack_args_2(quark, A, normA);
+    if ( A[0] > *normA )
+        *normA = A[0];
 }
-
 
 void MORSE_TASK_zlange_max(const MORSE_option_t *options,
                            const MORSE_desc_t *A, int Am, int An,
@@ -75,16 +85,5 @@ void MORSE_TASK_zlange_max(const MORSE_option_t *options,
         sizeof(double), RTBLKADDR(A, double, Am, An), INPUT,
         sizeof(double), RTBLKADDR(B, double, Bm, Bn), OUTPUT,
         0);
-}
-
-
-void CORE_zlange_max_quark(Quark *quark)
-{
-    double *A;
-    double *normA;
-
-    quark_unpack_args_2(quark, A, normA);
-    if ( A[0] > *normA )
-        *normA = A[0];
 }
 

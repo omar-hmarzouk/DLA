@@ -28,8 +28,22 @@
  *
  **/
 
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
 
+void CORE_zlaset_quark(Quark *quark)
+{
+    MORSE_enum uplo;
+    int M;
+    int N;
+    MORSE_Complex64_t alpha;
+    MORSE_Complex64_t beta;
+    MORSE_Complex64_t *A;
+    int LDA;
+
+    quark_unpack_args_7(quark, uplo, M, N, alpha, beta, A, LDA);
+    CORE_zlaset(uplo, M, N, alpha, beta, A, LDA);
+}
 
 /**
  *
@@ -66,7 +80,6 @@
  *         The leading dimension of the array A.  LDA >= max(1,M).
  *
  **/
-
 void MORSE_TASK_zlaset(const MORSE_option_t *options,
                        MORSE_enum uplo, int M, int N,
                        MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
@@ -83,19 +96,4 @@ void MORSE_TASK_zlaset(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*LDA*N,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),      OUTPUT,
         sizeof(int),                        &LDA,   VALUE,
         0);
-}
-
-
-void CORE_zlaset_quark(Quark *quark)
-{
-    MORSE_enum uplo;
-    int M;
-    int N;
-    MORSE_Complex64_t alpha;
-    MORSE_Complex64_t beta;
-    MORSE_Complex64_t *A;
-    int LDA;
-
-    quark_unpack_args_7(quark, uplo, M, N, alpha, beta, A, LDA);
-    CORE_zlaset(uplo, M, N, alpha, beta, A, LDA);
 }

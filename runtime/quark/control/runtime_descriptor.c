@@ -23,7 +23,7 @@
  *
  **/
 #include <stdlib.h>
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
 
 void RUNTIME_user_tag_size(int user_tag_width, int user_tag_sep) {
   (void)user_tag_width;
