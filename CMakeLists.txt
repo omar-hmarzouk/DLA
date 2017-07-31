@@ -614,7 +614,7 @@ endif(NOT CHAMELEON_SIMULATION)
 # -------------------------------
 if( CHAMELEON_SCHED_STARPU )
 
-  set(CHAMELEON_STARPU_VERSION "1.1" CACHE STRING "oldest STARPU version desired")
+    set(CHAMELEON_STARPU_VERSION "1.1" CACHE STRING "oldest STARPU version desired")
 
     # create list of components in order to make a single call to find_package(starpu...)
     if(NOT CHAMELEON_SIMULATION)
@@ -1006,57 +1006,46 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
+if (NOT CHAMELEON_SIMULATION)
+  ###############################################################################
+  # Coreblas library (kernels for CPUs) #
+  #######################################
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/coreblas/include)
+  include_directories(${CMAKE_CURRENT_BINARY_DIR}/coreblas/include)
+  add_subdirectory(coreblas)
 
-###############################################################################
-# Coreblas library (kernels for CPUs) #
-#######################################
-
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/coreblas/include)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/coreblas/include)
-add_subdirectory(coreblas)
-#------------------------------------------------------------------------------
-
-
-###############################################################################
-# Cudablas library (kernels for CUDAs) #
-########################################
-
-if(CHAMELEON_USE_CUDA)
+  ###############################################################################
+  # Cudablas library (kernels for CUDAs) #
+  ########################################
+  if(CHAMELEON_USE_CUDA)
     include_directories(${CMAKE_CURRENT_SOURCE_DIR}/cudablas/include)
     include_directories(${CMAKE_CURRENT_BINARY_DIR}/cudablas/include)
     add_subdirectory(cudablas)
+  endif()
+
 endif()
-#------------------------------------------------------------------------------
 
 ###############################################################################
 # Add HQR library #
 ###################
 add_subdirectory(hqr)
 include_directories(hqr/include)
-#------------------------------------------------------------------------------
 
 ###############################################################################
 # Main library #
 ################
-
 add_subdirectory(include)
 add_subdirectory(control)
 add_subdirectory(compute)
-#------------------------------------------------------------------------------
-
 
 ###############################################################################
-# Runtime library #
-###################
-
+# Runtimes libraries #
+######################
 add_subdirectory(runtime)
-#------------------------------------------------------------------------------
-
 
 ###############################################################################
 # Executables and Tests #
 #########################
-
 enable_testing()
 include(CTest)
 
