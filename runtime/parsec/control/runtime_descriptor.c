@@ -8,7 +8,7 @@
  *
  **/
 #include <stdlib.h>
-#include "runtime/parsec/include/morse_parsec.h"
+#include "chameleon_parsec.h"
 #include <dague/data.h>
 
 void RUNTIME_user_tag_size(int user_tag_width, int user_tag_sep) {

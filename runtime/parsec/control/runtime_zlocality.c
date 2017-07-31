@@ -7,7 +7,7 @@
  * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
-#include "runtime/PaRSEC/include/morse_parsec.h"
+#include "runtime/PaRSEC/include/chameleon_parsec.h"
 
 void RUNTIME_zlocality_allrestrict( uint32_t where )
 {

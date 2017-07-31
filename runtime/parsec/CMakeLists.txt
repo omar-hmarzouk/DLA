@@ -3,8 +3,8 @@
 # @copyright (c) 2009-2015 The University of Tennessee and The University
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
-# @copyright (c) 2012-2015 Inria. All rights reserved.
-# @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+# @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+#                          Univ. Bordeaux. All rights reserved.
 #
 ###
 #
@@ -26,8 +26,10 @@
 #  @date 13-07-2012
 #
 ###
-
 cmake_minimum_required(VERSION 2.8)
+
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/include )
+include_directories( ${CMAKE_CURRENT_BINARY_DIR}/include )
 
 # Generate headers for all possible precisions
 # --------------------------------------------
@@ -42,47 +44,61 @@ set(RUNTIME_HDRS_GENERATED "")
 # Define the list of headers
 # --------------------------
 set(RUNTIME_HDRS
-    include/morse_parsec.h
-    ${RUNTIME_HDRS_GENERATED}
+    include/chameleon_parsec.h
     )
+
+# Add generated headers
+# ---------------------
+foreach( hdr_file ${RUNTIME_HDRS_GENERATED} )
+  list(APPEND RUNTIME_HDRS ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
+endforeach()
 
 # Force generation of headers
 # ---------------------------
-add_custom_target(runtime_parsec_include ALL SOURCES ${RUNTIME_HDRS})
+add_custom_target(
+  runtime_parsec_include
+  ALL SOURCES ${RUNTIME_HDRS})
 
-# Generate the morse common for all possible precisions
-# -----------------------------------------------------
+# Installation
+# ------------
+install(
+  FILES ${RUNTIME_HDRS}
+  DESTINATION include/runtime/parsec )
+
+# Generate the Chameleon common for all possible precisions
+# ---------------------------------------------------------
 set(RUNTIME_COMMON_GENERATED "")
 set(ZSRC
-    control/runtime_zprofiling.c
-    control/runtime_zlocality.c
-    )
+  control/runtime_zprofiling.c
+  control/runtime_zlocality.c
+  )
 
-precisions_rules_py(RUNTIME_COMMON_GENERATED "${ZSRC}"
-                    PRECISIONS "${CHAMELEON_PRECISION}"
-                    TARGETDIR "control")
+precisions_rules_py(
+  RUNTIME_COMMON_GENERATED "${ZSRC}"
+  PRECISIONS "${CHAMELEON_PRECISION}"
+  TARGETDIR "control")
 
 set(RUNTIME_COMMON
-    control/runtime_async.c
-    control/runtime_context.c
-    control/runtime_control.c
-    control/runtime_descriptor.c
-    control/runtime_options.c
-    control/runtime_profiling.c
-    codelets/codelet_dataflush.c
-    ${RUNTIME_COMMON_GENERATED}
-    )
+  control/runtime_async.c
+  control/runtime_context.c
+  control/runtime_control.c
+  control/runtime_descriptor.c
+  control/runtime_options.c
+  control/runtime_profiling.c
+  codelets/codelet_dataflush.c
+  ${RUNTIME_COMMON_GENERATED}
+  )
 
-# Generate the morse sources for all possible precisions
-# ------------------------------------------------------
+# Generate the Chameleon sources for all possible precisions
+# ----------------------------------------------------------
 set(RUNTIME_SRCS_GENERATED "")
 set(ZSRC
-    ${CODELETS_ZSRC}
-    )
+  ${CODELETS_ZSRC}
+  )
 
 precisions_rules_py(RUNTIME_SRCS_GENERATED "${ZSRC}"
-                    PRECISIONS "${CHAMELEON_PRECISION}"
-                    TARGETDIR "codelets")
+  PRECISIONS "${CHAMELEON_PRECISION}"
+  TARGETDIR "codelets")
 
 set(RUNTIME_SRCS
   ${RUNTIME_COMMON}
@@ -114,7 +130,7 @@ endif()
 # installation
 # ------------
 install(TARGETS chameleon_parsec
-        DESTINATION lib)
+  DESTINATION lib)
 
 ###
 ### END CMakeLists.txt

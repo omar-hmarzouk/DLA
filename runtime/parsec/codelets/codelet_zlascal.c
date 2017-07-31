@@ -29,7 +29,8 @@
  *
  **/
 
-#include "runtime/parsec/include/morse_parsec.h"
+#include "chameleon_parsec.h"
+#include "chameleon/morse_tasks_z.h"
 
 /***************************************************************************//**
  *

@@ -19,8 +19,8 @@
  * @precisions normal z -> c d s
  *
  **/
-
-#include "runtime/parsec/include/morse_parsec.h"
+#include "chameleon_parsec.h"
+#include "chameleon/chameleon_tasks.h"
 
 void MORSE_TASK_dataflush(const MORSE_option_t *options,
                           const MORSE_desc_t *A, int Am, int An)

@@ -9,7 +9,7 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
-#include "runtime/parsec/include/morse_parsec.h"
+#include "chameleon_parsec.h"
 
 /*******************************************************************************
  * Thread rank.

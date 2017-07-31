@@ -25,7 +25,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/parsec/include/morse_parsec.h"
+#include "chameleon_parsec.h"
+#include "chameleon/morse_tasks_z.h"
 
 static inline int
 CORE_ztsmlq_hetra1_parsec(dague_execution_unit_t    *context,
