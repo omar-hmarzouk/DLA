@@ -24,7 +24,7 @@
  *
  **/
 #include <stdlib.h>
-#include "runtime/starpu/include/morse_starpu.h"
+#include "chameleon_starpu.h"
 
 #if (STARPU_MAJOR_VERSION > 1) || ((STARPU_MAJOR_VERSION == 1) && (STARPU_MINOR_VERSION >= 3))
 /* Defined by StarPU as external function */

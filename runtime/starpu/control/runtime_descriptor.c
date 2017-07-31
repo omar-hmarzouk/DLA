@@ -23,7 +23,7 @@
  **/
 #include <stdlib.h>
 #include <unistd.h>
-#include "runtime/starpu/include/morse_starpu.h"
+#include "chameleon_starpu.h"
 
 #if defined(CHAMELEON_USE_MPI)
 

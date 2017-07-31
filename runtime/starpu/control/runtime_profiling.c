@@ -24,7 +24,7 @@
  *
  **/
 #include <math.h>
-#include "runtime/starpu/include/morse_starpu.h"
+#include "chameleon_starpu.h"
 #if defined(HAVE_STARPU_FXT_PROFILING)
 #include <starpu_fxt.h>
 #endif

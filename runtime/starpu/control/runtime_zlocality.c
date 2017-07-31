@@ -25,8 +25,8 @@
  * @precisions normal z -> s d c
  *
  **/
-#include "runtime/starpu/include/morse_starpu.h"
-#include "runtime/starpu/include/runtime_codelet_z.h"
+#include "chameleon_starpu.h"
+#include "runtime_codelet_z.h"
 
 #ifdef CHAMELEON_USE_CUDA
 /* Only codelets with multiple choices are present here */

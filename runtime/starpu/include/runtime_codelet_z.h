@@ -30,7 +30,7 @@
 #define _CODELETS_Z_H_
 
 #include <stdio.h>
-#include "runtime/starpu/include/runtime_codelets.h"
+#include "runtime_codelets.h"
 
 /*
  * Management functions

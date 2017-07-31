@@ -25,7 +25,7 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
-#include "runtime/starpu/include/morse_starpu.h"
+#include "chameleon_starpu.h"
 
 void RUNTIME_options_init( MORSE_option_t *option, MORSE_context_t *morse,
                            MORSE_sequence_t *sequence, MORSE_request_t *request )
