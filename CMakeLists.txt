@@ -3,8 +3,8 @@
 # @copyright (c) 2009-2014 The University of Tennessee and The University
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
-# @copyright (c) 2012-2016 Inria. All rights reserved.
-# @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+# @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+#                          Univ. Bordeaux. All rights reserved.
 #
 ###
 #
@@ -612,7 +612,6 @@ endif(NOT CHAMELEON_SIMULATION)
 
 # CHAMELEON depends on a runtime
 # -------------------------------
-
 if( CHAMELEON_SCHED_STARPU )
 
   set(CHAMELEON_STARPU_VERSION "1.1" CACHE STRING "oldest STARPU version desired")

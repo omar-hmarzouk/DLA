@@ -31,6 +31,10 @@ cmake_minimum_required(VERSION 2.8)
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/include )
 include_directories( ${CMAKE_CURRENT_BINARY_DIR}/include )
 
+configure_file("include/chameleon_starpu.h.in"
+               "include/chameleon_starpu.h"
+               @ONLY)
+
 # Generate headers for all possible precisions
 # --------------------------------------------
 set(RUNTIME_HDRS_GENERATED "")
@@ -45,7 +49,7 @@ precisions_rules_py(RUNTIME_HDRS_GENERATED "${ZHDR}"
 # Define the list of headers
 # --------------------------
 set(RUNTIME_HDRS
-  include/chameleon_starpu.h
+  ${CMAKE_CURRENT_BINARY_DIR}/include/chameleon_starpu.h
   include/runtime_codelet_profile.h
   include/runtime_codelets.h
   include/runtime_profiling.h

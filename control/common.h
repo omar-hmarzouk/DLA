@@ -38,9 +38,6 @@
 #include <unistd.h>
 #endif
 
-/* need the config to get definitions */
-#include "control/config.h"
-
 /** ****************************************************************************
  * Implementation headers
  **/
