@@ -445,4 +445,6 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
 
     morse_desc_mat_free(AT);
     free(AT);
+
+    (void)E;
 }

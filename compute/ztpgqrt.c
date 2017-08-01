@@ -420,5 +420,6 @@ int MORSE_ztpgqrt_Tile_Async( int L,
     if (Dptr != NULL) {
         morse_desc_mat_free(Dptr);
     }
+    (void)D;
     return MORSE_SUCCESS;
 }

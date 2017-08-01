@@ -155,4 +155,5 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
+    (void)D;
 }

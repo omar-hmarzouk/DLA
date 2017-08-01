@@ -410,4 +410,5 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
+    (void)D;
 }

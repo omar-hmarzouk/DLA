@@ -144,4 +144,5 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
     MORSE_TASK_dataflush_all();
+    (void)D;
 }
