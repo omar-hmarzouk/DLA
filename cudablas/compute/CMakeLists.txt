@@ -94,12 +94,15 @@ add_library(cudablas ${CUDABLAS_SRCS})
 add_dependencies(cudablas cudablas_include)
 set_property(TARGET cudablas PROPERTY LINKER_LANGUAGE Fortran)
 
-target_link_libraries(cudablas coreblas ${CUDA_LIBRARIES})
+target_link_libraries(cudablas
+  coreblas
+  ${CUDA_LIBRARIES})
 
 # installation
 # ------------
 install(TARGETS cudablas
-        DESTINATION lib)
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib)
 
 ###
 ### END CMakeLists.txt
