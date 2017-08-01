@@ -125,16 +125,19 @@ set(RUNTIME_SRCS
 # Add library
 # -----------
 add_library(chameleon_starpu ${RUNTIME_SRCS})
-set_property(TARGET chameleon_starpu PROPERTY LINKER_LANGUAGE Fortran)
-set_property(TARGET chameleon_starpu PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+#set_property(TARGET chameleon_starpu PROPERTY LINKER_LANGUAGE Fortran)
+#set_property(TARGET chameleon_starpu PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
-target_link_libraries(chameleon_starpu ${STARPU_LIBRARIES_DEP})
+target_link_libraries(chameleon_starpu
+  ${STARPU_LIBRARIES_DEP})
 if (NOT CHAMELEON_SIMULATION)
-  target_link_libraries(chameleon_starpu coreblas)
-endif()
-if(CHAMELEON_USE_CUDA AND NOT CHAMELEON_SIMULATION)
-  target_link_libraries(chameleon_starpu cudablas)
-endif(CHAMELEON_USE_CUDA AND NOT CHAMELEON_SIMULATION)
+  target_link_libraries(chameleon_starpu
+    coreblas)
+  if(CHAMELEON_USE_CUDA)
+    target_link_libraries(chameleon_starpu
+      cudablas)
+  endif(CHAMELEON_USE_CUDA)
+endif(NOT CHAMELEON_SIMULATION)
 
 add_dependencies(chameleon_starpu
   chameleon_include
@@ -144,16 +147,16 @@ add_dependencies(chameleon_starpu
   )
 if (NOT CHAMELEON_SIMULATION)
   add_dependencies(chameleon_starpu coreblas_include)
-endif()
-
-if (CHAMELEON_USE_CUDA AND NOT CHAMELEON_SIMULATION)
-  add_dependencies(chameleon_starpu cudablas_include)
+  if (CHAMELEON_USE_CUDA)
+    add_dependencies(chameleon_starpu cudablas_include)
+  endif()
 endif()
 
 # installation
 # ------------
 install(TARGETS chameleon_starpu
-  DESTINATION lib)
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib)
 
 ###
 ### END CMakeLists.txt
