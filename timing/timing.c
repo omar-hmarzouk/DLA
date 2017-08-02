@@ -201,33 +201,15 @@ Test(int64_t n, int *iparam) {
         gflops = flops / t[iter];
 
 #if defined (CHAMELEON_SCHED_STARPU)
+        /* TODO: create chameleon interface encapsulating this instead */
         if (iparam[IPARAM_BOUND])
         {
             double upper_gflops = 0.0;
             double tmin = 0.0;
             double integer_tmin = 0.0;
-#if 0
-            if (iparam[IPARAM_BOUNDDEPS]) {
-                FILE *out = fopen("bounddeps.pl", "w");
-                starpu_bound_print_lp(out);
-                fclose(out);
-                out = fopen("bound.dot", "w");
-                starpu_bound_print_dot(out);
-                fclose(out);
-            } else {
-                FILE *out = fopen("bound.pl", "w");
-                starpu_bound_print_lp(out);
-                fclose(out);
-#else
-                {
-#endif
-                    starpu_bound_compute(&tmin, &integer_tmin, 0);
-                    upper_gflops  = (flops / (tmin / 1000.0));
-                    sumgf_upper += upper_gflops;
-                }
-#if 0
-            }
-#endif
+            starpu_bound_compute(&tmin, &integer_tmin, 0);
+            upper_gflops  = (flops / (tmin / 1000.0));
+            sumgf_upper += upper_gflops;
         }
 #endif
         sumt   += t[iter];
@@ -241,7 +223,7 @@ Test(int64_t n, int *iparam) {
     if ( MORSE_My_Mpi_Rank() == 0) {
         printf( "%9.3f %9.2f +-%7.2f  ", sumt/niter, gflops, sd);
 
-        if (iparam[IPARAM_BOUND] && !iparam[IPARAM_BOUNDDEPS])
+        if (iparam[IPARAM_BOUND])
             printf(" %9.2f",  sumgf_upper/niter);
 
         if ( iparam[IPARAM_PEAK] )
@@ -408,9 +390,7 @@ show_help(char *prog_name) {
             "    -o, --ooc              Enable out-of-core (available only with StarPU)\n"
             "    -G, --gemm3m           Use gemm3m complex method\n"
             //"        --peak             ?\n"todo
-            //"        --bound            ?\n"todo
-            //"        --bounddeps        ?\n"todo
-            //"        --bounddepsprio    ?\n"todo
+            "        --bound            Compare result to area bound\n"
             "\n");
 }
 
@@ -458,7 +438,7 @@ print_header(char *prog_name, int * iparam) {
     return;
 }
 
-#define GETOPT_STRING "ht:g:P:8M:m:N:n:K:k:b:i:x:X:1:WwcCT2dpa:l:L:D9:3soG4567"
+#define GETOPT_STRING "ht:g:P:8M:m:N:n:K:k:b:i:x:X:1:WwcCT2dpa:l:L:D9:3soG45"
 #if defined(CHAMELEON_HAVE_GETOPT_LONG)
 static struct option long_options[] =
 {
@@ -506,8 +486,6 @@ static struct option long_options[] =
     {"gemm3m",        no_argument,       0,      'G'},
     {"peak",          no_argument,       0,      '4'},
     {"bound",         no_argument,       0,      '5'},
-    {"bounddeps",     no_argument,       0,      '6'},
-    {"bounddepsprio", no_argument,       0,      '7'},
     {0, 0, 0, 0}
 };
 #endif  /* defined(CHAMELEON_HAVE_GETOPT_LONG) */
@@ -637,11 +615,6 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
         case 'G' : iparam[IPARAM_GEMM3M        ] = 1; break;
         case '4' : iparam[IPARAM_PEAK          ] = 1; break;
         case '5' : iparam[IPARAM_BOUND         ] = 1; break;
-        case '6' : iparam[IPARAM_BOUND         ] = 1;
-                   iparam[IPARAM_BOUNDDEPS     ] = 1; break;
-        case '7' : iparam[IPARAM_BOUND         ] = 1;
-                   iparam[IPARAM_BOUNDDEPS     ] = 1;
-                   iparam[IPARAM_BOUNDDEPSPRIO ] = 1; break;
         case 'h' :
         case '?' :
             show_help(argv[0]); exit(EXIT_FAILURE);

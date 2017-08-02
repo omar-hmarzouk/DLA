@@ -127,8 +127,6 @@ enum iparam_examples {
     IPARAM_PARALLEL_TASKS,
     IPARAM_NO_CPU,
     IPARAM_BOUND,
-    IPARAM_BOUNDDEPS,
-    IPARAM_BOUNDDEPSPRIO,
     /* End */
     IPARAM_SIZEOF
 };
@@ -191,8 +189,6 @@ static void init_iparam(int iparam[IPARAM_SIZEOF]){
     iparam[IPARAM_PARALLEL_TASKS] = 0;
     iparam[IPARAM_NO_CPU        ] = 0;
     iparam[IPARAM_BOUND         ] = 0;
-    iparam[IPARAM_BOUNDDEPS     ] = 0;
-    iparam[IPARAM_BOUNDDEPSPRIO ] = 0;
 }
 
 static void read_args(int argc, char *argv[], int *iparam){
