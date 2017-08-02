@@ -229,6 +229,33 @@ endforeach()
 #-------- Tests ---------
 include(CTestLists.cmake)
 
+# Add BLAS/LAPACK timings
+set(ZSRC_LAPACKE
+  time_zgeqrf_lapacke.c
+  )
+
+precisions_rules_py(TIMINGS_LAPACKE "${ZSRC_LAPACKE}"
+  PRECISIONS "${CHAMELEON_PRECISION}")
+
+foreach(_timing ${TIMINGS_LAPACKE})
+    get_filename_component(_name_exe ${_timing} NAME_WE)
+    add_executable(${_name_exe} ${_timing})
+    add_dependencies(${_name_exe} timing_include)
+    set_property(TARGET ${_name_exe} PROPERTY LINKER_LANGUAGE Fortran)
+    target_compile_definitions(${_name_exe} PRIVATE TIMING_LAPACKE)
+    target_link_libraries(${_name_exe}
+      coreblas
+      ${LAPACKE_LIBRARIES}
+      ${TMG_LIBRARIES}
+      ${CBLAS_LIBRARIES}
+      ${LAPACK_MT_LIBRARIES}
+      ${BLAS_MT_LIBRARIES}
+      ${EXTRA_LIBRARIES}
+    )
+    install(TARGETS ${_name_exe}
+            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/timing)
+endforeach()
+
 ###
 ### END CMakeLists.txt
 ###
