@@ -109,6 +109,8 @@ factorization. X is the size of each subdomain (default: @option{0})
 @option{nodag})
     @item @option{--[no]inv}: check on inverse (default: @option{noinv})
     @item @option{--nocpu}: all GPU kernels are exclusively executed on GPUs
+    @item @option{--ooc}: Enable out-of-core (available only with StarPU)
+    @item @option{--bound}: Compare result to area bound (available only with StarPU)
 (default: @option{0})
   @end itemize
 
