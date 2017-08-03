@@ -112,7 +112,9 @@ Test(int64_t n, int *iparam) {
 
     thrdnbr = iparam[IPARAM_THRDNBR];
     niter   = iparam[IPARAM_NITER];
-
+#ifdef TIMING_LAPACKE
+    thrdnbr = 1; //otherwise the following test is negative and we can't test lapacke
+#endif /* TIMING_LAPACKE */
     M    = iparam[IPARAM_M];
     N    = iparam[IPARAM_N];
     K    = iparam[IPARAM_K];
