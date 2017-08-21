@@ -136,6 +136,9 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
                     A(m, p), ldam);
             }
         }
+        MORSE_TASK_dataflush( &options, D(k, p) );
+        MORSE_TASK_dataflush( &options, T(k, p) );
+
 
         /* Setting the order of the tiles */
         libhqr_walk_stepk( qrtree, k, tiles + (k+1) );
@@ -188,6 +191,8 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
                     A(m, p), ldam,
                     A(m, n), ldam);
             }
+            MORSE_TASK_dataflush( &options, A(k, n) );
+            MORSE_TASK_dataflush( &options, T(k, n) );
         }
 
         /* Restore the original location of the tiles */
