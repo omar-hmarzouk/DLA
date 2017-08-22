@@ -23,6 +23,7 @@
  **/
 #include "chameleon_quark.h"
 #include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
 void CORE_zlatro_quark(Quark *quark)
 {
