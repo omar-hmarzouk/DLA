@@ -22,6 +22,7 @@
  **/
 #include "chameleon_parsec.h"
 #include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
 static int
 CORE_ztrssq_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
