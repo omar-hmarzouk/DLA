@@ -119,7 +119,6 @@ endif(CHAMELEON_USE_CUDA)
 
 add_dependencies(chameleon_quark
   chameleon_include
-  coreblas_include
   control_include
   runtime_quark_include
 )

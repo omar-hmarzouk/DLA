@@ -124,7 +124,6 @@ endif(NOT CHAMELEON_SIMULATION)
 
 add_dependencies(chameleon_parsec
   chameleon_include
-  coreblas_include
   control_include
   runtime_parsec_include
 )

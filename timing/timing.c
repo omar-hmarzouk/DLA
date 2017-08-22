@@ -47,10 +47,11 @@
 #include <sys/resource.h>
 #endif
 
-#include "coreblas/cblas.h"
-#include "coreblas/lapacke.h"
 #include <morse.h>
-#include "coreblas.h"
+#if !defined(CHAMELEON_SIMULATION)
+#include <coreblas/lapacke.h>
+#include <coreblas.h>
+#endif
 #include "flops.h"
 #include "timing.h"
 #include "control/auxiliary.h"

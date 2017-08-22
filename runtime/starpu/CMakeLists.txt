@@ -141,7 +141,6 @@ endif(NOT CHAMELEON_SIMULATION)
 
 add_dependencies(chameleon_starpu
   chameleon_include
-  coreblas_include
   control_include
   runtime_starpu_include
   )
