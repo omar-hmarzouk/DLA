@@ -24,7 +24,9 @@
  *
  **/
 #include <string.h>
+#if !defined(CHAMELEON_SIMULATION)
 #include <coreblas/lapacke.h>
+#endif
 #include "control/common.h"
 
 /***************************************************************************//**
