@@ -43,6 +43,10 @@
 #include "control/context.h"
 #include "chameleon/morse_runtime.h"
 
+#if !defined(CHAMELEON_SIMULATION)
+#include "coreblas.h"
+#endif
+
 /*******************************************************************************
  *  Global data
  **/
@@ -163,7 +167,7 @@ int MORSE_Enable(MORSE_enum option)
             morse->progress_enabled = MORSE_TRUE;
             break;
         case MORSE_GEMM3M:
-#ifdef CBLAS_HAS_ZGEMM3M
+#if defined(CBLAS_HAS_ZGEMM3M) && !defined(CHAMELEON_SIMULATION)
             set_coreblas_gemm3m_enabled(1);
 #else
             morse_error("MORSE_Enable", "cannot enable GEMM3M (not available in cblas)");
@@ -231,7 +235,7 @@ int MORSE_Disable(MORSE_enum option)
             morse->progress_enabled = MORSE_FALSE;
             break;
         case MORSE_GEMM3M:
-#if !defined(CHAMELEON_SIMULATION)
+#if defined(CBLAS_HAS_ZGEMM3M) && !defined(CHAMELEON_SIMULATION)
             set_coreblas_gemm3m_enabled(0);
 #endif
             break;
