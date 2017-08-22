@@ -71,117 +71,80 @@ endif()
 # Generate the morse testing sources for all possible precisions
 # --------------------------------------------------------------
 set(TIMINGS "")
+set(ZSRC_LAP_INT
+  # BLAS 3
+  time_zgemm.c
+  time_ztrsm.c
+  # LAPACK
+  time_zgels.c
+  time_zgeqrf.c
+  time_zgeqrf_hqr.c
+  time_zgelqf.c
+  time_zgetrf_incpiv.c
+  time_zgetrf_nopiv.c
+  #time_zgetrf.c
+  time_zposv.c
+  time_zpotrf.c
+  # MIXED PRECISION
+  #time_zcgesv.c
+  #time_zcposv.c
+  # OTHERS
+  time_zlange.c
+  #time_zgecfi.c
+  #time_zgetrf_reclap.c
+  #time_zgetrf_rectil.c
+  #time_zgesv.c
+  time_zgesv_incpiv.c
+  time_zgesv_nopiv.c
+  )
+
+set(ZSRC_TIL_INT
+  # BLAS 3
+  time_zgemm_tile.c
+  # LAPACK
+  time_zgels_tile.c
+  time_zgeqrf_hqr_tile.c
+  time_zgeqrf_tile.c
+  time_zgelqf_tile.c
+  time_zgeqrs_tile.c
+  time_zgetrf_incpiv_tile.c
+  time_zgetrf_nopiv_tile.c
+  time_zgetrs_incpiv_tile.c
+  time_zgetrs_nopiv_tile.c
+  #time_zgetrf_tile.c
+  time_zposv_tile.c
+  time_zpotrf_tile.c
+  time_zpotrs_tile.c
+  time_zsytrf_tile.c
+  time_zpotri_tile.c
+  # MIXED PRECISION
+  #time_zcgesv_tile.c
+  #time_zcposv_tile.c
+  # OTHERS
+  time_zlange_tile.c
+  #time_zgebrd_tile.c
+  #time_zgesvd_tile.c
+  #time_zheevd_tile.c
+  #time_zheev_tile.c
+  #time_zhegv_tile.c
+  #time_zlapack2tile.c
+  #time_zgetri_tile.c
+  #time_zgesv_tile.c
+  time_zgesv_incpiv_tile.c
+  time_zgesv_nopiv_tile.c
+  )
+
 if (NOT CHAMELEON_SIMULATION)
-    set(ZSRC
-        ##################
-        # BLAS 3
-        ##################
-        time_zgemm.c
-        time_zgemm_tile.c
-        time_ztrsm.c
-        ##################
-        # LAPACK
-        ##################
-        time_zgels.c
-        time_zgels_tile.c
-        time_zgeqrf.c
-        time_zgeqrf_hqr.c
-        time_zgeqrf_hqr_tile.c
-        time_zgeqrf_tile.c
-        time_zgelqf.c
-        time_zgelqf_tile.c
-        time_zgeqrs_tile.c
-        time_zgetrf_incpiv.c
-        time_zgetrf_incpiv_tile.c
-        time_zgetrf_nopiv.c
-        time_zgetrf_nopiv_tile.c
-        time_zgetrs_incpiv_tile.c
-        time_zgetrs_nopiv_tile.c
-        #time_zgetrf.c
-        #time_zgetrf_tile.c
-        time_zposv.c
-        time_zposv_tile.c
-        time_zpotrf.c
-        time_zpotrf_tile.c
-        time_zpotrs_tile.c
-        time_zsytrf_tile.c
-        time_zpotri_tile.c
-        ##################
-        # MIXED PRECISION
-        ##################
-        #time_zcgesv.c
-        #time_zcgesv_tile.c
-        #time_zcposv.c
-        #time_zcposv_tile.c
-        ##################
-        # OTHERS
-        ##################
-        time_zlange.c
-        time_zlange_tile.c
-        #time_zgebrd_tile.c
-        #time_zgecfi.c
-        time_zgesvd_tile.c
-        #time_zgetrf_reclap.c
-        #time_zgetrf_rectil.c
-        time_zheevd_tile.c
-        #time_zheev_tile.c
-        #time_zhegv_tile.c
-        #time_zlapack2tile.c
-        #time_zgetri_tile.c
-        #time_zgesv.c
-        #time_zgesv_tile.c
-        time_zgesv_incpiv.c
-        time_zgesv_incpiv_tile.c
-        time_zgesv_nopiv.c
-        time_zgesv_nopiv_tile.c
-       )
+  set(ZSRC
+    ${ZSRC_LAP_INT}
+    ${ZSRC_TIL_INT}
+    time_zgesvd_tile.c
+    time_zheevd_tile.c
+    )
 else(NOT CHAMELEON_SIMULATION)
-    set(ZSRC
-        ##################
-        # BLAS 3
-        ##################
-        time_zgemm_tile.c
-        ##################
-        # LAPACK
-        ##################
-        time_zgels_tile.c
-        time_zgeqrf_tile.c
-        time_zgelqf_tile.c
-        time_zgeqrs_tile.c
-        time_zgetrf_incpiv_tile.c
-        time_zgetrf_nopiv_tile.c
-        time_zgetrs_incpiv_tile.c
-        time_zgetrs_nopiv_tile.c
-        #time_zgetrf_tile.c
-        time_zposv_tile.c
-        time_zpotrf_tile.c
-        time_zpotrs_tile.c
-        time_zsytrf_tile.c
-        time_zpotri_tile.c
-        ##################
-        # MIXED PRECISION
-        ##################
-        #time_zcgesv_tile.c
-        #time_zcposv_tile.c
-        ##################
-        # OTHERS
-        ##################
-        time_zlange_tile.c
-        #time_zgebrd_tile.c
-        #time_zgecfi.c
-        #time_zgesvd_tile.c
-        #time_zgetrf_reclap.c
-        #time_zgetrf_rectil.c
-        #time_zheevd_tile.c
-        #time_zheev_tile.c
-        #time_zhegv_tile.c
-        #time_zlapack2tile.c
-        #time_zgetri_tile.c
-        #time_zgesv.c
-        #time_zgesv_tile.c
-        time_zgesv_incpiv_tile.c
-        time_zgesv_nopiv_tile.c
-       )
+  set(ZSRC
+    ${ZSRC_TIL_INT}
+    )
 endif(NOT CHAMELEON_SIMULATION)
 
 precisions_rules_py(TIMINGS "${ZSRC}"
