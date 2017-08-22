@@ -32,6 +32,14 @@
 #include <stdio.h>
 #include "runtime_codelets.h"
 
+#include "chameleon/morse_tasks_z.h"
+#if !defined(CHAMELEON_SIMULATION)
+#include "coreblas/coreblas_z.h"
+#if defined(CHAMELEON_USE_CUDA)
+#include "cudablas/cudablas_z.h"
+#endif
+#endif
+
 /*
  * Management functions
  */

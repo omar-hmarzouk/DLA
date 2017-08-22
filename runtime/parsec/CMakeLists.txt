@@ -44,8 +44,8 @@ set(RUNTIME_HDRS_GENERATED "")
 # Define the list of headers
 # --------------------------
 set(RUNTIME_HDRS
-    include/chameleon_parsec.h
-    )
+  include/chameleon_parsec.h
+  )
 
 # Add generated headers
 # ---------------------
@@ -111,10 +111,16 @@ add_library(chameleon_parsec ${RUNTIME_SRCS})
 set_property(TARGET chameleon_parsec PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET chameleon_parsec PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
-target_link_libraries(chameleon_parsec coreblas ${PARSEC_LIBRARIES_DEP})
-if(CHAMELEON_USE_CUDA)
-  target_link_libraries(chameleon_parsec cudablas)
-endif(CHAMELEON_USE_CUDA)
+target_link_libraries(chameleon_parsec
+  ${PARSEC_LIBRARIES_DEP})
+if (NOT CHAMELEON_SIMULATION)
+  target_link_libraries(chameleon_parsec
+    coreblas)
+  if(CHAMELEON_USE_CUDA)
+    target_link_libraries(chameleon_parsec
+      cudablas)
+  endif(CHAMELEON_USE_CUDA)
+endif(NOT CHAMELEON_SIMULATION)
 
 add_dependencies(chameleon_parsec
   chameleon_include
@@ -123,14 +129,18 @@ add_dependencies(chameleon_parsec
   runtime_parsec_include
 )
 
-if (CHAMELEON_USE_CUDA AND NOT CHAMELEON_SIMULATION)
+if (NOT CHAMELEON_SIMULATION)
+  add_dependencies(chameleon_parsec coreblas_include)
+  if (CHAMELEON_USE_CUDA)
     add_dependencies(chameleon_parsec cudablas_include)
+  endif()
 endif()
 
 # installation
 # ------------
 install(TARGETS chameleon_parsec
-  DESTINATION lib)
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib)
 
 ###
 ### END CMakeLists.txt

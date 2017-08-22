@@ -30,7 +30,6 @@
  **/
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
-#include "chameleon/morse_tasks_z.h"
 
 /*   MORSE_TASK_zplghe - Generate a tile for random hermitian (positive definite if bump is large enough) matrix. */
 

@@ -26,7 +26,6 @@
  **/
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
-#include "chameleon/morse_tasks_z.h"
 
 /**
  ******************************************************************************

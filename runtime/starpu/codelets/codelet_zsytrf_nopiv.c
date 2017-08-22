@@ -30,7 +30,6 @@
  **/
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
-#include "chameleon/morse_tasks_z.h"
 
 void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
                              MORSE_enum uplo, int n, int nb,

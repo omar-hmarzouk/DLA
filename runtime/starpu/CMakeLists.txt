@@ -75,7 +75,7 @@ install(
   DESTINATION include/runtime/starpu )
 
 # Generate the Chameleon common for all possible precisions
-# -----------------------------------------------------
+# ---------------------------------------------------------
 set(RUNTIME_COMMON_GENERATED "")
 set(ZSRC
   control/runtime_zprofiling.c
@@ -106,7 +106,7 @@ endforeach()
 set_source_files_properties(control/runtime_profiling.c PROPERTIES COMPILE_FLAGS "${flags_to_add}")
 
 # Generate the Chameleon sources for all possible precisions
-# ------------------------------------------------------
+# ----------------------------------------------------------
 set(RUNTIME_SRCS_GENERATED "")
 set(ZSRC
   codelets/codelet_zcallback.c

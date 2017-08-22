@@ -28,7 +28,6 @@
  **/
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
-#include "chameleon/morse_tasks_z.h"
 
 void MORSE_TASK_zgetrf(const MORSE_option_t *options,
                        int m, int n, int nb,

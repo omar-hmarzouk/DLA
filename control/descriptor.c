@@ -29,9 +29,9 @@
  * @brief Group descriptor routines exposed to users
  *
  */
-
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 #include "control/common.h"
 #include "control/descriptor.h"
 #include "chameleon/morse_runtime.h"

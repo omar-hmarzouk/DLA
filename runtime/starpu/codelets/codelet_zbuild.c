@@ -31,7 +31,6 @@
  **/
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
-#include "chameleon/morse_tasks_z.h"
 
 void MORSE_TASK_zbuild( const MORSE_option_t *options,
                         const MORSE_desc_t *A, int Am, int An, int lda,
