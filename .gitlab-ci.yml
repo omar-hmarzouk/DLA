@@ -1,8 +1,8 @@
 starpu:
   script:
-    - git submodule init
-    - git submodule update
-    - mkdir build
+    - source .gitlab-ci-env.sh
+    - git submodule update --init --recursive
+    - mkdir -p build
     - cd build
     - cmake ..
     - make -j2
@@ -13,21 +13,19 @@ starpu:
 
 starpu-simgrid:
   script:
-    - git submodule init
-    - git submodule update
-    - mkdir build
+    - source .gitlab-ci-env.sh simu
+    - git submodule update --init --recursive
+    - mkdir -p build
     - cd build
-    - . $HOME/spack/share/spack/setup-env.sh
-    - spack load hwloc && spack load fxt && spack load simgrid && spack load starpu
     - cmake .. -DCHAMELEON_SIMULATION=ON -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF
     - make -j2
     - ctest -V
 
 quark:
   script:
-    - git submodule init
-    - git submodule update
-    - mkdir build
+    - source .gitlab-ci-env.sh
+    - git submodule update --init --recursive
+    - mkdir -p build
     - cd build
     - cmake .. -DCHAMELEON_SCHED_QUARK=ON
     - make -j2
