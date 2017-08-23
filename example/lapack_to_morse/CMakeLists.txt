@@ -85,7 +85,6 @@ if(NOT CHAMELEON_SIMULATION)
          ${CBLAS_LIBRARIES}
          ${LAPACK_SEQ_LIBRARIES}
          ${BLAS_SEQ_LIBRARIES}
-         ${HWLOC_LIBRARIES}
          ${EXTRA_LIBRARIES}
     )
 
@@ -104,7 +103,6 @@ if(NOT CHAMELEON_SIMULATION)
              ${CBLAS_LIBRARIES}
              ${LAPACK_PAR_LIBRARIES}
              ${BLAS_PAR_LIBRARIES}
-             ${HWLOC_LIBRARIES}
              ${EXTRA_LIBRARIES}
         )
 
@@ -115,7 +113,6 @@ if(NOT CHAMELEON_SIMULATION)
              ${CBLAS_LIBRARIES}
              ${LAPACK_SEQ_LIBRARIES}
              ${BLAS_SEQ_LIBRARIES}
-             ${HWLOC_LIBRARIES}
              ${EXTRA_LIBRARIES}
         )
     endif ()

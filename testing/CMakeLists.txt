@@ -141,7 +141,6 @@ if(NOT CHAMELEON_SIMULATION)
     ${LAPACK_LIBRARIES}
     ${CBLAS_LIBRARIES}
     ${BLAS_LIBRARIES}
-    ${HWLOC_LIBRARIES}
     ${EXTRA_LIBRARIES}
     )
 
@@ -161,7 +160,6 @@ endif()
 # message("LAPACK_LIBRARY_DIRS: ${LAPACK_LIBRARY_DIRS}")
 # message("CBLAS_LIBRARY_DIRS: ${CBLAS_LIBRARY_DIRS}")
 # message("BLAS_LIBRARY_DIRS: ${BLAS_LIBRARY_DIRS}")
-# message("HWLOC_LIBRARY_DIRS: ${HWLOC_LIBRARY_DIRS}")
 
 # list(APPEND libs_for_tests ${CMAKE_Fortran_FLAGS}  )
 # list(APPEND libs_for_tests ${CMAKE_Fortran_LDFLAGS})

@@ -148,8 +148,6 @@ MACRO(GENERATE_PKGCONFIG_FILE)
 
     endif(NOT CHAMELEON_SIMULATION)
 
-    list(APPEND CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE hwloc)
-
     # Define required package
     # -----------------------
     CLEAN_LIB_LIST(CHAMELEON)

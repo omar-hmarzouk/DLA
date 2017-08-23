@@ -82,7 +82,6 @@ if(NOT CHAMELEON_SIMULATION)
          ${CBLAS_LIBRARIES}
          ${LAPACK_SEQ_LIBRARIES}
          ${BLAS_SEQ_LIBRARIES}
-         ${HWLOC_LIBRARIES}
          ${EXTRA_LIBRARIES}
     )
 
@@ -94,13 +93,10 @@ if(NOT CHAMELEON_SIMULATION)
 else()
 
     list(APPEND libs_for_examples
-         ${HWLOC_LIBRARIES}
          ${EXTRA_LIBRARIES}
     )
 
 endif()
-
-link_directories(${HWLOC_LIBRARY_DIRS})
 
 # message(STATUS "libs timings: ${libs_for_examples}")
 foreach(_example ${EXAMPLES})

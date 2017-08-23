@@ -153,7 +153,7 @@ elseif(MORSE_SCHED_QUARK)
     list(APPEND libs_for_tests coreblas)
 endif()
 
-foreach(_dep LAPACKE LAPACK CBLAS BLAS CUDA HWLOC MPI DL)
+foreach(_dep LAPACKE LAPACK CBLAS BLAS CUDA MPI DL)
     if(HAVE_${_dep})
         list(APPEND libs_for_tests ${${_dep}_LIBRARY})
     endif()

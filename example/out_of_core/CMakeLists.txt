@@ -56,7 +56,6 @@ if(NOT CHAMELEON_SIMULATION)
          ${CBLAS_LIBRARIES}
          ${LAPACK_SEQ_LIBRARIES}
          ${BLAS_SEQ_LIBRARIES}
-         ${HWLOC_LIBRARIES}
          ${EXTRA_LIBRARIES}
     )
 
