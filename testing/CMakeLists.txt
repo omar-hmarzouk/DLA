@@ -102,27 +102,9 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 # Define what libraries we have to link with
 # ------------------------------------------
 unset(libs_for_tests)
-list(APPEND libs_for_tests chameleon)
-
-if(CHAMELEON_SCHED_STARPU)
-    list(APPEND libs_for_tests
-      chameleon_starpu
-      ${STARPU_LIBRARIES_DEP}
-    )
-    link_directories(${STARPU_LIBRARY_DIRS})
-elseif(CHAMELEON_SCHED_PARSEC)
-    list(APPEND libs_for_tests
-        chameleon_parsec
-        ${PARSEC_LIBRARIES_DEP}
-      )
-    link_directories(${PARSEC_LIBRARY_DIRS_DEP})
-elseif(CHAMELEON_SCHED_QUARK)
-    list(APPEND libs_for_tests
-        chameleon_quark
-        ${QUARK_LIBRARIES}
-      )
-    link_directories(${QUARK_LIBRARY_DIRS})
-endif()
+list(APPEND libs_for_tests
+  chameleon
+  )
 
 if(NOT CHAMELEON_SIMULATION)
 
@@ -141,7 +123,6 @@ if(NOT CHAMELEON_SIMULATION)
     ${LAPACK_LIBRARIES}
     ${CBLAS_LIBRARIES}
     ${BLAS_LIBRARIES}
-    ${EXTRA_LIBRARIES}
     )
 
     link_directories(${LAPACKE_LIBRARY_DIRS})
@@ -150,11 +131,12 @@ if(NOT CHAMELEON_SIMULATION)
     link_directories(${CBLAS_LIBRARY_DIRS})
     link_directories(${BLAS_LIBRARY_DIRS})
 
-else()
-
-    list(APPEND libs_for_tests ${EXTRA_LIBRARIES})
-
 endif()
+
+list(APPEND libs_for_tests
+  hqr
+  ${EXTRA_LIBRARIES}
+  )
 
 # message("LAPACKE_LIBRARY_DIRS: ${LAPACKE_LIBRARY_DIRS}")
 # message("LAPACK_LIBRARY_DIRS: ${LAPACK_LIBRARY_DIRS}")

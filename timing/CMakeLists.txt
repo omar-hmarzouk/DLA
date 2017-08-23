@@ -163,47 +163,26 @@ if(NOT CHAMELEON_SIMULATION)
     list(APPEND libs_for_timings chameleon_timing)
 endif()
 
-list(APPEND libs_for_timings chameleon)
+list(APPEND libs_for_timings
+  chameleon
+  )
 
+# Add dependency toward StarPU for StarPU specific calls
 if(CHAMELEON_SCHED_STARPU)
-    list(APPEND libs_for_timings
-      chameleon_starpu
-      ${STARPU_LIBRARIES_DEP}
+  list(APPEND libs_for_timings
+    ${STARPU_LIBRARIES_DEP}
     )
-    link_directories(${STARPU_LIBRARY_DIRS})
-elseif(CHAMELEON_SCHED_PARSEC)
-    list(APPEND libs_for_timings
-      chameleon_parsec
-      ${PARSEC_LIBRARIES_DEP}
-      )
-    link_directories(${PARSEC_LIBRARY_DIRS_DEP})
-elseif(CHAMELEON_SCHED_QUARK)
-    list(APPEND libs_for_timings
-      chameleon_quark
-      ${QUARK_LIBRARIES}
-      )
-    link_directories(${QUARK_LIBRARY_DIRS})
+  link_directories(${STARPU_LIBRARY_DIRS})
 endif()
 
 if(NOT CHAMELEON_SIMULATION)
 
-    if(CHAMELEON_USE_CUDA)
-        list(APPEND libs_for_timings
-        cudablas)
-    endif()
-    if(CHAMELEON_USE_CUDA)
-        link_directories(${CUDA_LIBRARY_DIRS})
-    endif()
-
     list(APPEND libs_for_timings
-    coreblas
-    ${LAPACKE_LIBRARIES}
-    ${TMG_LIBRARIES}
-    ${CBLAS_LIBRARIES}
-    ${LAPACK_SEQ_LIBRARIES}
-    ${BLAS_SEQ_LIBRARIES}
-    ${LIBHQR_LIBRARIES}
-    ${EXTRA_LIBRARIES}
+      ${LAPACKE_LIBRARIES}
+      ${TMG_LIBRARIES}
+      ${CBLAS_LIBRARIES}
+      ${LAPACK_SEQ_LIBRARIES}
+      ${BLAS_SEQ_LIBRARIES}
     )
 
     link_directories(${LAPACKE_LIBRARY_DIRS})
@@ -211,13 +190,13 @@ if(NOT CHAMELEON_SIMULATION)
     link_directories(${LAPACK_LIBRARY_DIRS})
     link_directories(${CBLAS_LIBRARY_DIRS})
     link_directories(${BLAS_LIBRARY_DIRS})
-    link_directories(${LIBHQR_LIBRARY_DIRS})
-
-else()
-
-    list(APPEND libs_for_timings${EXTRA_LIBRARIES})
 
 endif()
+
+list(APPEND libs_for_timings
+  hqr
+  ${EXTRA_LIBRARIES}
+  )
 
 # message("BLAS_SEQ_LIBRARIES: ${BLAS_SEQ_LIBRARIES}")
 # message("CBLAS_LIBRARIES: ${CBLAS_LIBRARIES}")
