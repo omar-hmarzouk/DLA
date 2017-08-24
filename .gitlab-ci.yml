@@ -1,3 +1,5 @@
+image: hpclib/hiepacs
+
 starpu:
   script:
     - source .gitlab-ci-env.sh
