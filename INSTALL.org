@@ -86,7 +86,27 @@ installed on the system.
 
   #+end_src
 
-* Build Chameleon
+** Distribution of Chameleon using Spack
+
+  To get support to install a full distribution (Chameleon +
+  dependencies) we encourage users to use the morse branch of *Spack*.
+
+  Please read these documentations:
+
+  * [[http://morse.gforge.inria.fr/spack/spack.html][Spack Morse]]
+  * [[http://morse.gforge.inria.fr/spack/spack.html#orgd5b1afe][Section Chameleon]]
+
+*** Usage example for a simple distribution of Chameleon
+
+    #+begin_src sh
+    git clone https://github.com/solverstack/spack.git
+    . ./spack/share/spack/setup-env.sh
+    spack install -v chameleon
+    # chameleon is installed here:
+    `spack location -i chameleon`
+    #+end_src
+
+* Build and install Chameleon with CMake
   Compilation of Chameleon libraries and executables are done with
   CMake (http://www.cmake.org/). This version has been tested with
   CMake 3.5.1 but any version superior to 2.8 should be fine.
