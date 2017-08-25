@@ -127,6 +127,8 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                             T(m, k), T->mb,
                             B(m, n), ldbm);
                     }
+                    MORSE_TASK_dataflush( &options, D(m, k) );
+                    MORSE_TASK_dataflush( &options, T(m, k) );
                 }
 
                 /* Setting the order of the tiles*/
@@ -168,7 +170,9 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                             B(p, n), ldbp,
                             B(m, n), ldbm);
                     }
-                }
+                    MORSE_TASK_dataflush( &options, A(m, k) );
+                    MORSE_TASK_dataflush( &options, T(m, k) );
+               }
 
                 /* Restore the original location of the tiles */
                 for (n = 0; n < B->nt; n++) {
@@ -227,6 +231,8 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                             B(p, n), ldbp,
                             B(m, n), ldbm);
                     }
+                    MORSE_TASK_dataflush( &options, A(m, k) );
+                    MORSE_TASK_dataflush( &options, T(m, k) );
                 }
 
                 T = TS;
@@ -267,6 +273,10 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                             B(m, n), ldbm);
                     }
                 }
+
+                MORSE_TASK_dataflush( &options, D(m, k) );
+                MORSE_TASK_dataflush( &options, T(m, k) );
+
                 RUNTIME_iteration_pop(morse);
             }
         }
@@ -320,6 +330,8 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                             B(m, p), ldbm,
                             B(m, n), ldbm);
                     }
+                    MORSE_TASK_dataflush( &options, A(n, k) );
+                    MORSE_TASK_dataflush( &options, T(n, k) );
                 }
 
                 T = TS;
@@ -359,6 +371,8 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                             T(n, k), T->mb,
                             B(m, n), ldbm);
                     }
+                    MORSE_TASK_dataflush( &options, D(n, k) );
+                    MORSE_TASK_dataflush( &options, T(n, k) );
                 }
                 RUNTIME_iteration_pop(morse);
             }
@@ -405,7 +419,10 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                             T(n, k), T->mb,
                             B(m, n), ldbm);
                     }
+                    MORSE_TASK_dataflush( &options, D(n, k) );
+                    MORSE_TASK_dataflush( &options, T(n, k) );
                 }
+
                 /* Setting the order of tiles */
                 libhqr_walk_stepk(qrtree, k, tiles + (k+1));
 
@@ -446,6 +463,8 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                             B(m, p), ldbm,
                             B(m, n), ldbm);
                     }
+                    MORSE_TASK_dataflush( &options, A(n, k) );
+                    MORSE_TASK_dataflush( &options, T(n, k) );
                 }
 
                 RUNTIME_iteration_pop(morse);
