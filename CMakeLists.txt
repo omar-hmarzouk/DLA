@@ -205,9 +205,9 @@ endif()
 
 # Options to enable/disable testings and timings
 # ----------------------------------------------
-option(CHAMELEON_ENABLE_DOCS     "Enable documentation build"  OFF)
-if (CHAMELEON_ENABLE_DOCS)
-    message("-- ${BoldGreen}CHAMELEON_ENABLE_DOCS is set to ON, turn it OFF to avoid building docs${ColourReset}")
+option(CHAMELEON_ENABLE_DOC      "Enable documentation build"  OFF)
+if (CHAMELEON_ENABLE_DOC)
+    message("-- ${BoldGreen}CHAMELEON_ENABLE_DOC is set to ON, turn it OFF to avoid building docs${ColourReset}")
 endif()
 option(CHAMELEON_ENABLE_EXAMPLE  "Enable examples build"       ON)
 if (CHAMELEON_ENABLE_EXAMPLE)
@@ -1084,10 +1084,10 @@ endif(CHAMELEON_ENABLE_TIMING)
 # Documentation #
 #################
 
-if(CHAMELEON_ENABLE_DOCS)
-    add_subdirectory(docs)
+if(CHAMELEON_ENABLE_DOC)
+    add_subdirectory(doc)
     if (DOXYGEN_EXECUTABLE AND MAKEINFO_COMPILER AND TEXI2DVI_COMPILER AND TEX_COMPILER)
-        add_custom_target(docs ALL DEPENDS doxygen-out doc-info-users_guide doc-html-users_guide doc-pdf-users_guide)
+        add_custom_target(doc ALL DEPENDS doxygen-out doc-info-users_guide doc-html-users_guide doc-pdf-users_guide)
     endif()
 endif()
 #------------------------------------------------------------------------------
