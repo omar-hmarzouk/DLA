@@ -6,7 +6,7 @@
 #+INCLUDE: "./version.org"
 #+AUTHOR: version {{{VERSION}}}
 * Version
-  This manual documents the usage of CHAMELEON *version {{{VERSION}}}*.
+  This manual documents the usage of Chameleon *version {{{VERSION}}}*.
   It was last updated on {{{UPDATED}}}.
 * Authors
   * Inria,
@@ -15,11 +15,9 @@
   * King Abdullah University of Science and Technology
 * Copying
 
-  Copyright \copy 2017 Inria
-
-  Copyright \copy 2014 The University of Tennessee
-
-  Copyright \copy 2014 King Abdullah University of Science and Technology
+  * Copyright \copy 2017 Inria
+  * Copyright \copy 2014 The University of Tennessee
+  * Copyright \copy 2014 King Abdullah University of Science and Technology
 
   Redistribution and use in source and binary forms, with or without
   modification, are permitted provided that the following conditions are
@@ -46,6 +44,7 @@
   theory of liability, whether in contract, strict liability, or tort
   (including negligence or otherwise) arising in any way out of the use
   of this software, even if advised of the possibility of such damage.
+
 * Introduction to Chameleon
 #+INCLUDE: @CMAKE_CURRENT_SOURCE_DIR@/chapters/introduction.org
 * Installing Chameleon
