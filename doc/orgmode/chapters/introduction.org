@@ -111,8 +111,7 @@
      promising approach.
 
 *** Research papers
-    Research papers about MORSE can be found at
-    http://icl.cs.utk.edu/projectsdev/morse/pubs/index.html
+    Research papers about MORSE can be found [[http://icl.cs.utk.edu/projectsdev/morse/pubs/index.html][here]].
 
 ** Chameleon
 *** Chameleon software
@@ -204,6 +203,7 @@
 
 **** Tile Data Layout
      <<sec:tile>>
+
      Tile layout is based on the idea of storing the matrix by square
      tiles of relatively small size, such that each tile occupies a
      continuous memory region.  This way a tile can be loaded to the
