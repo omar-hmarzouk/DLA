@@ -6,24 +6,23 @@ Chameleon is written in C, it provides an interface to be called from
 Fortran and depends on a couple of external libraries that must be
 installed on the system.
 
-Chameleon can be built and installed by the standard means of CMake
-(@uref{http://www.cmake.org/}).  General information about CMake, as
-well as installation binaries and CMake source code are available from
-@uref{http://www.cmake.org/cmake/resources/software.html}.
+Chameleon can be built and installed by the standard means of [[http://www.cmake.org/][CMake]].
+General information about CMake, as well as installation binaries and
+CMake source code are available from [[http://www.cmake.org/cmake/resources/software.html][here]].
 
 To get support to install a full distribution Chameleon + dependencies
-we encourage users to use the morse branch of *Spack*.
+we encourage users to use the /morse/ branch of, see [[sec:spack][Spack]].
 
 
 ** Getting Chameleon
-   The latest official release tarballs of Chameleon sources are
-   available for download from
-   https://gitlab.inria.fr/solverstack/chameleon/tags.
 
-   The latest development snapshot is available on gitlab
-   https://gitlab.inria.fr/solverstack/chameleon.
+   The latest official release tarballs of Chameleon sources are
+   available for download from the [[https://gitlab.inria.fr/solverstack/chameleon/tags][gitlab tags page]].
+
+   The latest development state is available on [[https://gitlab.inria.fr/solverstack/chameleon][gitlab]].
 
 ** Chameleon prerequisites
+
    To install Chameleon's libraries, header files, and executables, one
    needs:
    - CMake (version 2.8 minimum): the build system
@@ -32,7 +31,7 @@ we encourage users to use the morse branch of *Spack*.
    - python: to generate files in the different precisions
    - external libraries: this depends on the configuration, by default
      the required libraries are
-     - StarPU: http://runtime.bordeaux.inria.fr/StarPU/
+     - [[http://runtime.bordeaux.inria.fr/StarPU/][StarPU]]
      - CBLAS, LAPACKE: these are interfaces and there exist several
        providers that can be used with Chameleon
        - Intel MKL, Netlib, OpenBlas
@@ -43,10 +42,10 @@ we encourage users to use the morse branch of *Spack*.
      - math (libm)
 
    Optional libraries:
-   - quark: http://icl.cs.utk.edu/quark/
-   - cuda: https://developer.nvidia.com/cuda-downloads
-   - cublas: comes with cuda http://docs.nvidia.com/cuda/cublas/
-   - mpi: openmpi http://www.open-mpi.org/
+   - [[http://icl.cs.utk.edu/quark/][quark]]
+   - [[https://developer.nvidia.com/cuda-downloads][cuda]]
+   - [[http://docs.nvidia.com/cuda/cublas/][cublas]]: comes with cuda
+   - mpi: [[http://www.open-mpi.org/][openmpi]]
 
    These packages must be installed on the system before trying to
    configure/build chameleon.  Please look at the distrib/ directory
@@ -60,7 +59,7 @@ we encourage users to use the morse branch of *Spack*.
    sudo apt-get update
    # Install Netlib blas, lapack, tmglib, cblas and lapacke suite
    sudo apt-get install -y liblapack-dev liblapacke-dev
-   # Alernatively to Netlib, OpenBLAS could be used (faster kernels)
+   # Alternatively to Netlib, OpenBLAS could be used (faster kernels)
    sudo apt-get install -y libopenblas-dev liblapacke-dev
    # Install OpenMPI
    sudo apt-get install -y libopenmpi-dev
@@ -175,15 +174,18 @@ we encourage users to use the morse branch of *Spack*.
 
 **** StarPU
      [[http://runtime.bordeaux.inria.fr/StarPU/][StarPU]] is a task programming library for hybrid architectures.
-     StarPU handles run-time concerns such as: @itemize @bullet @item
-     Task dependencies @item Optimized heterogeneous scheduling @item
-     Optimized data transfers and replication between main memory and
-     discrete memories @item Optimized cluster communications @end
-     itemize StarPU can be used to benefit from GPUs and
-     distributed-memory environment.  One of QUARK or StarPU runtime
-     system has to be enabled in order to schedule tasks on the
-     architecture.  If StarPU is enabled then QUARK is disabled and
-     conversely.  Note StarPU is enabled by default.
+     StarPU handles run-time concerns such as:
+     * Task dependencies
+     * Optimized heterogeneous scheduling
+     * Optimized data transfers and replication between main memory
+       and discrete memories
+     * Optimized cluster communications
+
+     StarPU can be used to benefit from GPUs and distributed-memory
+     environment.  One of QUARK or StarPU runtime system has to be
+     enabled in order to schedule tasks on the architecture.  If
+     StarPU is enabled then QUARK is disabled and conversely.  Note
+     StarPU is enabled by default.
 
      *Caution about the compatibility:* Chameleon has been mainly tested
      with StarPU-1.1 and 1.2 releases.
@@ -194,11 +196,12 @@ we encourage users to use the morse branch of *Spack*.
      traces.  Chameleon can trace kernels execution on the different
      workers and produce .paje files if FxT is enabled.  FxT can only
      be used through StarPU and StarPU must be compiled with FxT
-     enabled, see how to use this feature here @ref{Use FxT profiling
-     through StarPU}.
+     enabled, see how to use this feature here [[sec:trace][Execution trace using
+     StarPU]].
 
      *Caution about the compatibility:* FxT should be compatible with
      the version of StarPU used.
+
 **** hwloc
      [[http://www.open-mpi.org/projects/hwloc/][hwloc]] (Portable Hardware Locality) is a software package for
      accessing the topology of a multicore system including components
@@ -213,10 +216,6 @@ we encourage users to use the morse branch of *Spack*.
      POSIX threads library is required to run Chameleon on Unix-like systems.
      It is a standard component of any such system.
 
-@node Optional dependencies
-@subsection Optional dependencies
-
-@menu
 **** OpenMPI
      [[http://www.open-mpi.org/][OpenMPI]] is an open source Message Passing Interface
      implementation for execution on multiple nodes with
@@ -244,6 +243,8 @@ we encourage users to use the morse branch of *Spack*.
      compatible with CUDA.
 
 ** Distribution of Chameleon using Spack
+   <<sec:spack>>
+
    To get support to install a full distribution (Chameleon +
    dependencies) we encourage users to use the morse branch of *Spack*.
 
@@ -269,7 +270,7 @@ we encourage users to use the morse branch of *Spack*.
    1. configure :
       #+begin_src
       cmake path/to/chameleon -DOPTION1= -DOPTION2= ...
-      # see the "Options" section to get list of options
+      # see the "Configuration options" section to get list of options
       # see the "Dependencies detection" for details about libraries detection
       #+end_src
    2. build :
@@ -289,7 +290,7 @@ we encourage users to use the morse branch of *Spack*.
       make install
       #+end_src
       Do not forget to specify the install directory with
-      *-DCMAKE_INSTALL_PREFIX* at configure
+      *-DCMAKE_INSTALL_PREFIX* at configure.
       #+begin_example
       cmake /home/jdoe/chameleon -DCMAKE_INSTALL_PREFIX=/home/jdoe/install/chameleon
       #+end_example
@@ -317,11 +318,12 @@ we encourage users to use the morse branch of *Spack*.
 
 **** Native CMake options (non-exhaustive list)
      * *CMAKE_BUILD_TYPE=Debug|Release|RelWithDebInfo|MinSizeRel* :
-       level of compiler optimization, enable debug information
+       level of compiler optimization, enable/disable debug
+       information
      * *CMAKE_INSTALL_PREFIX=path/to/your/install/dir* : where headers,
        libraries, executables, etc, will be copied when invoking make
        install
-     * *BUILD_SHARED_LIBS=ON|OFF* : Indicate wether or not CMake has to
+     * *BUILD_SHARED_LIBS=ON|OFF* : indicate wether or not CMake has to
        build Chameleon static (~OFF~) or shared (~ON~) libraries.
      * *CMAKE_C_COMPILER=gcc|icc|...* : to choose the C compilers
        if several exist in the environment
@@ -341,7 +343,7 @@ we encourage users to use the morse branch of *Spack*.
      * List of packages that can searched just like STARPU (with _DIR,
        _INCDIR and _LIBDIR):
        * *BLAS*, *CBLAS*, *EZTRACE*, *FXT*, *HWLOC*, *LAPACK*, *LAPACKE*, *QUARK*,
-         *SIMGRID, *TMG*
+         *SIMGRID*, *TMG*
 
      Libraries detected with an official cmake module (see module files
      in CMAKE_ROOT/Modules/): CUDA - MPI - Threads.
@@ -391,6 +393,7 @@ we encourage users to use the morse branch of *Spack*.
 
 *** Dependencies detection
     <<sec:depdet>>
+
     You have different choices to detect dependencies on your system,
     either by setting some environment variables containing paths to
     the libs and headers or by specifying them directly at cmake
@@ -423,63 +426,11 @@ we encourage users to use the morse branch of *Spack*.
          #+end_src
        - note: BLAS and LAPACK detection can be tedious so that we
          provide a verbose mode you can set *-DBLAS_VERBOSE=ON* or
-         *-DLAPACK_VERBOSE=ON* to activate it
+         *-DLAPACK_VERBOSE=ON* to enable it
     3) detection with custom environment variables: all variables like
        _DIR, _INCDIR, _LIBDIR can be set as environment variables
        instead of CMake options, there will be read
-    4) using pkg-config for libraries that provide .pc files
+    4) using [[https://www.freedesktop.org/wiki/Software/pkg-config/][pkg-config]] for libraries that provide .pc files
        - update your *PKG_CONFIG_PATH* to the paths where to find .pc
          files of installed external libraries like hwloc, starpu, some
          blas/lapack, etc
-*** Execution tracing StarPU
-    <<sec:trace>>
-    StarPU can generate its own trace log files by compiling it with
-    the ~--with-fxt~ option at the configure step (you can have to
-    specify the directory where you installed FxT by giving
-    ~--with-fxt=...~ instead of ~--with-fxt~ alone).  By doing so, traces
-    are generated after each execution of a program which uses StarPU
-    in the directory pointed by the STARPU_FXT_PREFIX environment
-    variable.
-    #+begin_example
-    export STARPU_FXT_PREFIX=/home/jdoe/fxt_files/
-    #+end_example
-    When executing a ~./timing/...~ Chameleon program, if it has been
-    enabled (StarPU compiled with FxT and
-    *-DCHAMELEON_ENABLE_TRACING=ON*), you can give the option ~--trace~ to
-    tell the program to generate trace log files.
-
-    Finally, to generate the trace file which can be opened with Vite
-    program (http://vite.gforge.inria.fr/), you can use the
-    *starpu_fxt_tool* executable of StarPU.  This tool should be in
-    ~$STARPU_INSTALL_REPOSITORY/bin~.  You can use it to generate the
-    trace file like this:
-    #+begin_src
-    path/to/your/install/starpu/bin/starpu_fxt_tool -i prof_filename
-    #+end_src
-    There is one file per mpi processus (prof_filename_0,
-    prof_filename_1 ...).  To generate a trace of mpi programs you can
-    call it like this:
-    #+begin_src
-    path/to/your/install/starpu/bin/starpu_fxt_tool -i prof_filename*
-    #+end_src
-    The trace file will be named paje.trace (use -o option to specify
-    an output name).  Alternatively, for non mpi execution (only one
-    processus and profiling file), you can set the environment
-    variable *STARPU_GENERATE_TRACE=1* to automatically generate the
-    paje trace file.
-
-*** Use simulation mode with StarPU-SimGrid
-    <<sec:simu>>
-    Simulation mode can be activated by setting the cmake option
-    CHAMELEON_SIMULATION to ON.  This mode allows you to simulate
-    execution of algorithms with StarPU compiled with SimGrid
-    (http://simgrid.gforge.inria.fr/).  To do so, we provide some
-    perfmodels in the simucore/perfmodels/ directory of Chameleon
-    sources.  To use these perfmodels, please set your *STARPU_HOME*
-    environment variable to
-    ~path/to/your/chameleon_sources/simucore/perfmodels~.  Finally, you
-    need to set your *STARPU_HOSTNAME* environment variable to the name
-    of the machine to simulate.  For example: *STARPU_HOSTNAME=mirage*.
-    Note that only POTRF kernels with block sizes of 320 or 960
-    (simple and double precision) on mirage and sirocco machines are
-    available for now.  Database of models is subject to change.
