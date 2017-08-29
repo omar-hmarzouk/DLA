@@ -11,7 +11,7 @@ General information about CMake, as well as installation binaries and
 CMake source code are available from [[http://www.cmake.org/cmake/resources/software.html][here]].
 
 To get support to install a full distribution Chameleon + dependencies
-we encourage users to use the /morse/ branch of, see [[sec:spack][Spack]].
+we encourage users to use the /morse/ branch of [[sec:spack][Spack]].
 
 
 ** Getting Chameleon
@@ -333,7 +333,7 @@ we encourage users to use the /morse/ branch of, see [[sec:spack][Spack]].
 **** Related to specific modules (find_package) to find external libraries
      * *BLA_VENDOR=All|Eigen|Open|Generic|Intel10_64lp|Intel10_64lp_seq* :
        to use intel mkl for example, see the list of BLA_VENDOR in
-       FindBLAS.cmake in cmake_modules/morse/find
+       FindBLAS.cmake in cmake_modules/morse_cmake/modules/find
      * *STARPU_DIR=path/to/root/starpu/install*, see [[sec:depdet][Dependencies
        detection]]
      * *STARPU_INCDIR=path/to/root/starpu/install/headers*, see
