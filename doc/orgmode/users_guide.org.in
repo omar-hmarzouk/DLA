@@ -50,5 +50,5 @@
 #+INCLUDE: @CMAKE_CURRENT_SOURCE_DIR@/chapters/introduction.org
 * Installing Chameleon
 #+INCLUDE: @CMAKE_CURRENT_SOURCE_DIR@/chapters/installing.org
-# #+INCLUDE: @CMAKE_CURRENT_SOURCE_DIR@/chapters/configuration.org
-# #+INCLUDE: @CMAKE_CURRENT_SOURCE_DIR@/chapters/using.org
+* Using Chameleon
+#+INCLUDE: @CMAKE_CURRENT_SOURCE_DIR@/chapters/using.org
