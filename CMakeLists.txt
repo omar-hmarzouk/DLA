@@ -37,9 +37,9 @@ if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 endif()
 
 # set project version number
-set(CHAMELEON_VERSION_MAJOR 0)
-set(CHAMELEON_VERSION_MINOR 9)
-set(CHAMELEON_VERSION_MICRO 1)
+set(CHAMELEON_VERSION_MAJOR 1)
+set(CHAMELEON_VERSION_MINOR 0)
+set(CHAMELEON_VERSION_MICRO 0)
 
 set(MORSE_CMAKE_DIR "" CACHE PATH "Directory of MORSE CMake modules, can be external to the project")
 
