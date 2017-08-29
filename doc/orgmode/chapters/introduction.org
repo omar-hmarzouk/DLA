@@ -5,6 +5,11 @@
    #+NAME: fig:morse_header
    #+ATTR_HTML: :align center
    [[file:morse_header.png]]
+
+   Chameleon is a linear algebra software created jointly by several
+   research teams as part of the MORSE associate team : [[http://www.icl.utk.edu/][ICL]], [[https://www.inria.fr/en/][Inria]],
+   [[https://www.kaust.edu.sa/en][KAUST]], [[http://www.ucdenver.edu/pages/ucdwelcomepage.aspx][The University of Colorado Denver]].
+
 *** MORSE Objectives
     When processor clock speeds flatlined in 2004, after more than
     fifteen years of exponential increases, the era of near automatic
