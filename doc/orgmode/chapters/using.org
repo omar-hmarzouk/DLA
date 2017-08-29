@@ -713,14 +713,16 @@
      http://www.netlib.org/lapack/lug/node24.html) that can be used
      with the Chameleon library. For details about these functions
      please refer to the doxygen documentation.
-     * BLAS 3: geadd, gemm, hemm, her2k, herk, lascal, symm, syr2k,
-       syrk, trmm, trsm, trsmpl, tradd
-     * LAPACK: gelqf, gelqf_param, gelqfrh, geqrf, geqrfrh,
-       geqrf_param, getrf_incpiv, getrf_nopiv, lacpy, lange, lanhe,
-       lansy, lantr, laset2, laset, lauum, plghe, plgsy, plrnt, potrf,
-       sytrf, trtri, potrimm, unglq, unglq_param, unglqrh, ungqr,
-       ungqr_param, ungqrrh, unmlq, unmlq_param, unmlqrh, unmqr,
-       unmqr_param, unmqrrh, tpgqrt, tpqrt
+     * BLAS 3: geadd, gemm, heevd, hemm, her2k, herk, hetrd, lascal,
+       symm, syr2k, syrk, tradd, trmm, trsm, trsmpl, tradd
+     * LAPACK: gelqf, gelqfrh, gelqf_param, gelqs, gelqs_param, gels,
+       gels_param, geqrf, geqrfrh, geqrf_param, geqrs, geqrs_param,
+       gesv_incpiv, gesv_nopiv, gesvd, getrf_incpiv, getrf_nopiv,
+       getrs_incpiv, getrs_nopiv, lacpy, lange, lanhe, lansy, lantr,
+       laset2, laset, lauum, plghe, plgsy, plrnt, potrf, potri,
+       potrimm, potrs, sysv, sytrf, sytrs, tpqrt, tpgqrt, trtri,
+       unglq, unglq_param, unglqrh, ungqr, ungqr_param, ungqrrh,
+       unmlq, unmlq_param, unmlqrh, unmqr, unmqr_param, unmqrrh
 
 **** Options routines
      Enable MORSE feature.
@@ -729,9 +731,10 @@
      #+end_src
      Feature to be enabled:
      * *MORSE_WARNINGS*:   printing of warning messages,
-     * *MORSE_ERRORS*:     printing of error messages,
      * *MORSE_AUTOTUNING*: autotuning for tile size and inner block size,
-     * *MORSE_PROFILING_MODE*:  activate kernels profiling.
+     * *MORSE_PROFILING_MODE*:  activate kernels profiling,
+     * *MORSE_PROGRESS*:  to print a progress status,
+     * *MORSE_GEMM3M*: to enable the use of the /gemm3m/ blas bunction.
 
      Disable MORSE feature.
      #+begin_src
@@ -754,7 +757,9 @@
      #+begin_src
      int MORSE_Get     (MORSE_enum param, int *value);
      #+end_src
+
 **** Auxiliary routines
+
      Reports MORSE version number.
      #+begin_src
      int MORSE_Version        (int *ver_major, int *ver_minor, int *ver_micro);
@@ -770,11 +775,6 @@
      int MORSE_Finalize       (void);
      #+end_src
 
-     Return the MPI rank of the calling process.
-     #+begin_src
-     int MORSE_My_Mpi_Rank    (void);
-     #+end_src
-
      Suspend MORSE runtime to poll for new tasks, to avoid useless CPU consumption when
      no tasks have to be executed by MORSE runtime system.
      #+begin_src
@@ -784,6 +784,36 @@
      Symmetrical call to MORSE_Pause, used to resume the workers polling for new tasks.
      #+begin_src
      int MORSE_Resume         (void);
+     #+end_src
+
+     Return the MPI rank of the calling process.
+     #+begin_src
+     int MORSE_My_Mpi_Rank    (void);
+     #+end_src
+
+     Return the size of the distributed computation
+     #+begin_src
+     int MORSE_Comm_size( int *size )
+     #+end_src
+
+     Return the rank of the distributed computation
+     #+begin_src
+     int MORSE_Comm_rank( int *rank )
+     #+end_src
+
+     Prepare the distributed processes for computation
+     #+begin_src
+     int MORSE_Distributed_start(void)
+     #+end_src
+
+     Clean the distributed processes after computation
+     #+begin_src
+     int MORSE_Distributed_stop(void)
+     #+end_src
+
+     Return the number of CPU workers initialized by the runtime
+     #+begin_src
+     int MORSE_GetThreadNbr()
      #+end_src
 
      Conversion from LAPACK layout to tile layout.
@@ -841,4 +871,9 @@
      Wait for the completion of a sequence.
      #+begin_src
      int MORSE_Sequence_Wait    (MORSE_sequence_t *sequence);
+     #+end_src
+
+     Terminate a sequence.
+     #+begin_src
+     int MORSE_Sequence_Flush(MORSE_sequence_t *sequence, MORSE_request_t *request)
      #+end_src
