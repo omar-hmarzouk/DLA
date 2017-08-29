@@ -2,139 +2,23 @@
 # Copyright (C) 2017 Inria
 # See the file ../users_guide.org for copying conditions.
 
-** Using Chameleon executables
-
-   Chameleon provides several test executables that are compiled and
-   linked with Chameleon's dependencies.  Instructions about the
-   arguments to give to executables are accessible thanks to the
-   option ~-[-]help~ or ~-[-]h~.  This set of binaries are separated into
-   three categories and can be found in three different directories:
-   * example: contains examples of API usage and more specifically the
-     sub-directory ~lapack_to_morse/~ provides a tutorial that explains
-     how to use Chameleon functionalities starting from a full LAPACK
-     code, see [[sec:tuto][Tutorial LAPACK to Chameleon]]
-   * testing: contains testing drivers to check numerical correctness of
-     Chameleon linear algebra routines with a wide range of parameters
-     #+begin_src
-     ./testing/stesting 4 1 LANGE 600 100 700
-     #+end_src
-     Two first arguments are the number of cores and gpus to use.
-     The third one is the name of the algorithm to test.
-     The other arguments depend on the algorithm, here it lies for the number of
-     rows, columns and leading dimension of the problem.
-
-     Name of algorithms available for testing are:
-     * LANGE: norms of matrices Infinite, One, Max, Frobenius
-     * GEMM: general matrix-matrix multiply
-     * HEMM: hermitian matrix-matrix multiply
-     * HERK: hermitian matrix-matrix rank k update
-     * HER2K: hermitian matrix-matrix rank 2k update
-     * SYMM: symmetric matrix-matrix multiply
-     * SYRK: symmetric matrix-matrix rank k update
-     * SYR2K: symmetric matrix-matrix rank 2k update
-     * PEMV: matrix-vector multiply with pentadiagonal matrix
-     * TRMM: triangular matrix-matrix multiply
-     * TRSM: triangular solve, multiple rhs
-     * POSV: solve linear systems with symmetric positive-definite matrix
-     * GESV_INCPIV: solve linear systems with general matrix
-     * GELS: linear least squares with general matrix
-     * GELS_HQR:
-     * GELS_SYSTOLIC:
-   * timing: contains timing drivers to assess performances of
-     Chameleon routines. There are two sets of executables, those who
-     do not use the tile interface and those who do (with _tile in the
-     name of the executable). Executables without tile interface
-     allocates data following LAPACK conventions and these data can be
-     given as arguments to Chameleon routines as you would do with
-     LAPACK. Executables with tile interface generate directly the
-     data in the format Chameleon tile algorithms used to submit tasks
-     to the runtime system. Executables with tile interface should be
-     more performant because no data copy from LAPACK matrix layout to
-     tile matrix layout are necessary. Calling example:
-     #+begin_src
-     ./timing/time_dpotrf --n_range=1000:10000:1000 --nb=320
-                          --threads=9 --gpus=3
-                          --nowarmup
-     #+end_src
-     List of timing algorithms available:
-     * LANGE: norms of matrices
-     * GEMM: general matrix-matrix multiply
-     * TRSM: triangular solve
-     * POTRF: Cholesky factorization with a symmetric
-       positive-definite matrix
-     * POTRI: Cholesky inversion
-     * POSV: solve linear systems with symmetric positive-definite matrix
-     * GETRF_NOPIV: LU factorization of a general matrix using the tile LU algorithm without row pivoting
-     * GESV_NOPIV: solve linear system for a general matrix using the tile LU algorithm without row pivoting
-     * GETRF_INCPIV: LU factorization of a general matrix using the tile LU algorithm with partial tile pivoting with row interchanges
-     * GESV_INCPIV: solve linear system for a general matrix using the tile LU algorithm with partial tile pivoting with row interchanges matrix
-     * GEQRF: QR factorization of a general matrix
-     * GELQF: LQ factorization of a general matrix
-     * QEQRF_HQR
-     * QEQRS: solve linear systems using a QR factorization
-     * GELS: solves overdetermined or underdetermined linear systems involving a general matrix using the QR or the LQ factorization
-     * GESVD
-
-*** Execution trace using StarPU
-    <<sec:trace>>
-
-    StarPU can generate its own trace log files by compiling it with
-    the ~--with-fxt~ option at the configure step (you can have to
-    specify the directory where you installed FxT by giving
-    ~--with-fxt=...~ instead of ~--with-fxt~ alone).  By doing so, traces
-    are generated after each execution of a program which uses StarPU
-    in the directory pointed by the STARPU_FXT_PREFIX environment
-    variable.
-    #+begin_example
-    export STARPU_FXT_PREFIX=/home/jdoe/fxt_files/
-    #+end_example
-    When executing a ~./timing/...~ Chameleon program, if it has been
-    enabled (StarPU compiled with FxT and
-    *-DCHAMELEON_ENABLE_TRACING=ON*), you can give the option ~--trace~ to
-    tell the program to generate trace log files.
-
-    Finally, to generate the trace file which can be opened with Vite
-    program (http://vite.gforge.inria.fr/), you can use the
-    *starpu_fxt_tool* executable of StarPU.  This tool should be in
-    ~$STARPU_INSTALL_REPOSITORY/bin~.  You can use it to generate the
-    trace file like this:
-    #+begin_src
-    path/to/your/install/starpu/bin/starpu_fxt_tool -i prof_filename
-    #+end_src
-    There is one file per mpi processus (prof_filename_0,
-    prof_filename_1 ...).  To generate a trace of mpi programs you can
-    call it like this:
-    #+begin_src
-    path/to/your/install/starpu/bin/starpu_fxt_tool -i prof_filename*
-    #+end_src
-    The trace file will be named paje.trace (use -o option to specify
-    an output name).  Alternatively, for non mpi execution (only one
-    processus and profiling file), you can set the environment
-    variable *STARPU_GENERATE_TRACE=1* to automatically generate the
-    paje trace file.
-
-*** Use simulation mode with StarPU-SimGrid
-    <<sec:simu>>
-
-    Simulation mode can be activated by setting the cmake option
-    CHAMELEON_SIMULATION to ON.  This mode allows you to simulate
-    execution of algorithms with StarPU compiled with SimGrid
-    (http://simgrid.gforge.inria.fr/).  To do so, we provide some
-    perfmodels in the simucore/perfmodels/ directory of Chameleon
-    sources.  To use these perfmodels, please set your *STARPU_HOME*
-    environment variable to
-    ~path/to/your/chameleon_sources/simucore/perfmodels~.  Finally, you
-    need to set your *STARPU_HOSTNAME* environment variable to the name
-    of the machine to simulate.  For example: *STARPU_HOSTNAME=mirage*.
-    Note that only POTRF kernels with block sizes of 320 or 960
-    (simple and double precision) on mirage and sirocco machines are
-    available for now.  Database of models is subject to change.
-
 ** Linking an external application with Chameleon libraries
    Compilation and link with Chameleon libraries have been tested with
-   the GNu compiler suite ~gcc/gfortran~ and the Intel compiler suite
-   ~icc/ifort 14.0.2~.
+   the GNU compiler suite ~gcc/gfortran~ and the Intel compiler suite
+   ~icc/ifort~.
 
+*** Flags required
+    The compiler, linker flags that are necessary to build an
+    application using Chameleon are given through the [[https://www.freedesktop.org/wiki/Software/pkg-config/][pkg-config]]
+    mechanism.
+    #+begin_src
+    export PKG_CONFIG_PATH=/home/jdoe/install/chameleon/lib/pkgconfig:$PKG_CONFIG_PATH
+    pkg-config --cflags chameleon
+    pkg-config --libs chameleon
+    pkg-config --libs --static chameleon
+    #+end_src
+    The .pc files required are located in the sub-directory
+    ~lib/pkgconfig~ of your Chameleon install directory.
 *** Static linking in C
     Lets imagine you have a file ~main.c~ that you want to link with
     Chameleon static libraries.  Lets consider
@@ -225,6 +109,132 @@
     -lmkl_sequential -lmkl_core -lpthread -lm -lrt
     #+end_src
 
+** Using Chameleon executables
+
+   Chameleon provides several test executables that are compiled and
+   linked with Chameleon's dependencies.  Instructions about the
+   arguments to give to executables are accessible thanks to the
+   option ~-[-]help~ or ~-[-]h~.  This set of binaries are separated into
+   three categories and can be found in three different directories:
+   * *example*: contains examples of API usage and more specifically the
+     sub-directory ~lapack_to_morse/~ provides a tutorial that explains
+     how to use Chameleon functionalities starting from a full LAPACK
+     code, see [[sec:tuto][Tutorial LAPACK to Chameleon]]
+   * *testing*: contains testing drivers to check numerical correctness of
+     Chameleon linear algebra routines with a wide range of parameters
+     #+begin_src
+     ./testing/stesting 4 1 LANGE 600 100 700
+     #+end_src
+     Two first arguments are the number of cores and gpus to use.
+     The third one is the name of the algorithm to test.
+     The other arguments depend on the algorithm, here it lies for the number of
+     rows, columns and leading dimension of the problem.
+
+     Name of algorithms available for testing are:
+     * LANGE: norms of matrices Infinite, One, Max, Frobenius
+     * GEMM: general matrix-matrix multiply
+     * HEMM: hermitian matrix-matrix multiply
+     * HERK: hermitian matrix-matrix rank k update
+     * HER2K: hermitian matrix-matrix rank 2k update
+     * SYMM: symmetric matrix-matrix multiply
+     * SYRK: symmetric matrix-matrix rank k update
+     * SYR2K: symmetric matrix-matrix rank 2k update
+     * PEMV: matrix-vector multiply with pentadiagonal matrix
+     * TRMM: triangular matrix-matrix multiply
+     * TRSM: triangular solve, multiple rhs
+     * POSV: solve linear systems with symmetric positive-definite matrix
+     * GESV_INCPIV: solve linear systems with general matrix
+     * GELS: linear least squares with general matrix
+     * GELS_HQR:
+     * GELS_SYSTOLIC:
+   * *timing*: contains timing drivers to assess performances of
+     Chameleon routines. There are two sets of executables, those who
+     do not use the tile interface and those who do (with _tile in the
+     name of the executable). Executables without tile interface
+     allocates data following LAPACK conventions and these data can be
+     given as arguments to Chameleon routines as you would do with
+     LAPACK. Executables with tile interface generate directly the
+     data in the format Chameleon tile algorithms used to submit tasks
+     to the runtime system. Executables with tile interface should be
+     more performant because no data copy from LAPACK matrix layout to
+     tile matrix layout are necessary. Calling example:
+     #+begin_src
+     ./timing/time_dpotrf --n_range=1000:10000:1000 --nb=320
+                          --threads=9 --gpus=3
+                          --nowarmup
+     #+end_src
+     List of timing algorithms available:
+     * LANGE: norms of matrices
+     * GEMM: general matrix-matrix multiply
+     * TRSM: triangular solve
+     * POTRF: Cholesky factorization with a symmetric
+       positive-definite matrix
+     * POTRI: Cholesky inversion
+     * POSV: solve linear systems with symmetric positive-definite matrix
+     * GETRF_NOPIV: LU factorization of a general matrix using the tile LU algorithm without row pivoting
+     * GESV_NOPIV: solve linear system for a general matrix using the tile LU algorithm without row pivoting
+     * GETRF_INCPIV: LU factorization of a general matrix using the tile LU algorithm with partial tile pivoting with row interchanges
+     * GESV_INCPIV: solve linear system for a general matrix using the tile LU algorithm with partial tile pivoting with row interchanges matrix
+     * GEQRF: QR factorization of a general matrix
+     * GELQF: LQ factorization of a general matrix
+     * QEQRF_HQR
+     * QEQRS: solve linear systems using a QR factorization
+     * GELS: solves overdetermined or underdetermined linear systems involving a general matrix using the QR or the LQ factorization
+     * GESVD
+
+*** Execution trace using StarPU
+    <<sec:trace>>
+
+    StarPU can generate its own trace log files by compiling it with
+    the ~--with-fxt~ option at the configure step (you can have to
+    specify the directory where you installed FxT by giving
+    ~--with-fxt=...~ instead of ~--with-fxt~ alone).  By doing so, traces
+    are generated after each execution of a program which uses StarPU
+    in the directory pointed by the STARPU_FXT_PREFIX environment
+    variable.
+    #+begin_example
+    export STARPU_FXT_PREFIX=/home/jdoe/fxt_files/
+    #+end_example
+    When executing a ~./timing/...~ Chameleon program, if it has been
+    enabled (StarPU compiled with FxT and
+    *-DCHAMELEON_ENABLE_TRACING=ON*), you can give the option ~--trace~ to
+    tell the program to generate trace log files.
+
+    Finally, to generate the trace file which can be opened with [[http://vite.gforge.inria.fr/][Vite]]
+    program, you can use the *starpu_fxt_tool* executable of StarPU.
+    This tool should be in ~$STARPU_INSTALL_REPOSITORY/bin~.  You can
+    use it to generate the trace file like this:
+    #+begin_src
+    path/to/your/install/starpu/bin/starpu_fxt_tool -i prof_filename
+    #+end_src
+    There is one file per mpi processus (prof_filename_0,
+    prof_filename_1 ...).  To generate a trace of mpi programs you can
+    call it like this:
+    #+begin_src
+    path/to/your/install/starpu/bin/starpu_fxt_tool -i prof_filename*
+    #+end_src
+    The trace file will be named paje.trace (use -o option to specify
+    an output name).  Alternatively, for non mpi execution (only one
+    processus and profiling file), you can set the environment
+    variable *STARPU_GENERATE_TRACE=1* to automatically generate the
+    paje trace file.
+
+*** Use simulation mode with StarPU-SimGrid
+    <<sec:simu>>
+
+    Simulation mode can be activated by setting the cmake option
+    CHAMELEON_SIMULATION to ON.  This mode allows you to simulate
+    execution of algorithms with StarPU compiled with [[http://simgrid.gforge.inria.fr/][SimGrid]].  To do
+    so, we provide some perfmodels in the simucore/perfmodels/
+    directory of Chameleon sources.  To use these perfmodels, please
+    set your *STARPU_HOME* environment variable to
+    ~path/to/your/chameleon_sources/simucore/perfmodels~.  Finally, you
+    need to set your *STARPU_HOSTNAME* environment variable to the name
+    of the machine to simulate.  For example: *STARPU_HOSTNAME=mirage*.
+    Note that only POTRF kernels with block sizes of 320 or 960
+    (simple and double precision) on /mirage/ and /sirocco/ machines are
+    available for now.  Database of models is subject to change.
+
 ** Chameleon API
 
    Chameleon provides routines to solve dense general systems of
@@ -232,12 +242,12 @@
    equations and linear least squares problems, using LU, Cholesky, QR
    and LQ factorizations.  Real arithmetic and complex arithmetic are
    supported in both single precision and double precision.  Routines
-   that compute linear algebra are of the folowing form:
+   that compute linear algebra are of the following form:
    #+begin_src
    MORSE_name[_Tile[_Async]]
    #+end_src
    * all user routines are prefixed with *MORSE*
-   * in the pattern *MORSE_name[_Tile[_Async]]*, /name/ follows
+   * in the pattern *MORSE_name[_Tile[_Async]]*, /name/ follows the
      BLAS/LAPACK naming scheme for algorithms (/e.g./ sgemm for general
      matrix-matrix multiply simple precision)
    * Chameleon provides three interface levels
@@ -246,20 +256,20 @@
        (1-D array column-major).  It involves copy of data from LAPACK
        layout to tile layout and conversely (to update LAPACK data),
        see [[sec:tuto_step1][Step1]].
-   * *MORSE_name_Tile*: the tile interface avoid copies between LAPACK
-     and tile layouts. It is the standard interface of Chameleon and
-     it should achieved better performance than the previous simplest
-     interface. The data are given through a specific structure called
-     a descriptor, see [[sec:tuteo_step2][Step2]].
-   * *MORSE_name_Tile_Async*: similar to the tile interface, it avoids
-     synchonization barrier normally called between *Tile*
-     routines.  At the end of an *Async* function, completion of
-     tasks is not guarentee and data are not necessarily up-to-date.
-     To ensure that tasks have been all executed a synchronization
-     function has to be called after the sequence of *Async*
-     functions, see [[tuto_step4][Step4]].
+     * *MORSE_name_Tile*: the tile interface avoid copies between LAPACK
+       and tile layouts. It is the standard interface of Chameleon and
+       it should achieved better performance than the previous
+       simplest interface. The data are given through a specific
+       structure called a descriptor, see [[sec:tuteo_step2][Step2]].
+     * *MORSE_name_Tile_Async*: similar to the tile interface, it avoids
+       synchonization barrier normally called between *Tile* routines.
+       At the end of an *Async* function, completion of tasks is not
+       guaranteed and data are not necessarily up-to-date.  To ensure
+       that tasks have been all executed, a synchronization function
+       has to be called after the sequence of *Async* functions, see
+       [[tuto_step4][Step4]].
 
-   MORSE routine calls have to be precede from
+   MORSE routine calls have to be preceded from
    #+begin_src
    MORSE_Init( NCPU, NGPU );
    #+end_src
@@ -270,6 +280,7 @@
    to free some data and finalize the runtime and/or MPI.
 
 *** Tutorial LAPACK to Chameleon
+    <<sec:tuto>>
 
     This tutorial is dedicated to the API usage of Chameleon.  The
     idea is to start from a simple code and step by step explain how
@@ -289,15 +300,14 @@
     arithmetic precision is /double/.  To execute a step
     *X*, enter the following command:
     #+begin_src
-    ./step@samp{X}
-    --option1 --option2 ...
+    ./stepX --option1 --option2 ...
     #+end_src
     Instructions about the arguments to give to executables are
     accessible thanks to the option ~-[-]help~ or ~-[-]h~.  Note there
     exist default values for options.
 
     For all steps, the program solves a linear system $Ax=B$ The
-    matrix values are randomly generated but ensure that matrix $A$ is
+    matrix values are randomly generated but ensure that matrix \$A\$ is
     symmetric positive definite so that $A$ can be factorized in a
     $LL^T$ form using the Cholesky factorization.
 
@@ -351,6 +361,7 @@
 
 **** Step1
      <<sec:tuto_step1>>
+
      It introduces the simplest Chameleon interface which is
      equivalent to CBLAS/LAPACKE.  The code is very similar to step0
      but instead of calling CBLAS/LAPACKE functions, we call Chameleon
@@ -381,6 +392,7 @@
 
 **** Step2
      <<sec:tuto_step2>>
+
      This program is a copy of step1 but instead of using the LAPACK interface which
      reads to copy LAPACK matrices inside MORSE routines we use the tile interface.
      We will still use standard format of matrix but we will see how to give this
@@ -660,6 +672,7 @@
      another distribution.
 
 **** Step7
+
      <<sec:tuto_step7>>
 
      This program is a copy of step6 with some additional calls to
@@ -693,6 +706,54 @@
      function.
 
 *** List of available routines
+**** Linear Algebra routines
+
+     We list the linear algebra routines of the form
+     *MORSE_name[_Tile[_Async]]* (/name/ follows LAPACK naming scheme, see
+     http://www.netlib.org/lapack/lug/node24.html) that can be used
+     with the Chameleon library. For details about these functions
+     please refer to the doxygen documentation.
+     * BLAS 3: geadd, gemm, hemm, her2k, herk, lascal, symm, syr2k,
+       syrk, trmm, trsm, trsmpl, tradd
+     * LAPACK: gelqf, gelqf_param, gelqfrh, geqrf, geqrfrh,
+       geqrf_param, getrf_incpiv, getrf_nopiv, lacpy, lange, lanhe,
+       lansy, lantr, laset2, laset, lauum, plghe, plgsy, plrnt, potrf,
+       sytrf, trtri, potrimm, unglq, unglq_param, unglqrh, ungqr,
+       ungqr_param, ungqrrh, unmlq, unmlq_param, unmlqrh, unmqr,
+       unmqr_param, unmqrrh, tpgqrt, tpqrt
+
+**** Options routines
+     Enable MORSE feature.
+     #+begin_src
+     int MORSE_Enable  (MORSE_enum option);
+     #+end_src
+     Feature to be enabled:
+     * *MORSE_WARNINGS*:   printing of warning messages,
+     * *MORSE_ERRORS*:     printing of error messages,
+     * *MORSE_AUTOTUNING*: autotuning for tile size and inner block size,
+     * *MORSE_PROFILING_MODE*:  activate kernels profiling.
+
+     Disable MORSE feature.
+     #+begin_src
+     int MORSE_Disable (MORSE_enum option);
+     #+end_src
+     Symmetric to *MORSE_Enable*.
+
+     Set MORSE parameter.
+     #+begin_src
+     int MORSE_Set     (MORSE_enum param, int  value);
+     #+end_src
+     Parameters to be set:
+     * *MORSE_TILE_SIZE*:        size matrix tile,
+     * *MORSE_INNER_BLOCK_SIZE*: size of tile inner block,
+     * *MORSE_HOUSEHOLDER_MODE*: type of householder trees (FLAT or TREE),
+     * *MORSE_HOUSEHOLDER_SIZE*: size of the groups in householder trees,
+     * *MORSE_TRANSLATION_MODE*: related to the *MORSE_Lapack_to_Tile*, see ztile.c.
+
+     Get value of MORSE parameter.
+     #+begin_src
+     int MORSE_Get     (MORSE_enum param, int *value);
+     #+end_src
 **** Auxiliary routines
      Reports MORSE version number.
      #+begin_src
@@ -765,39 +826,6 @@
      int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc);
      #+end_src
 
-**** Options routines
-     Enable MORSE feature.
-     #+begin_src
-     int MORSE_Enable  (MORSE_enum option);
-     #+end_src
-     Feature to be enabled:
-     * *MORSE_WARNINGS*:   printing of warning messages,
-     * *MORSE_ERRORS*:     printing of error messages,
-     * *MORSE_AUTOTUNING*: autotuning for tile size and inner block size,
-     * *MORSE_PROFILING_MODE*:  activate kernels profiling.
-
-     Disable MORSE feature.
-     #+begin_src
-     int MORSE_Disable (MORSE_enum option);
-     #+end_src
-     Symmetric to *MORSE_Enable*.
-
-     Set MORSE parameter.
-     #+begin_src
-     int MORSE_Set     (MORSE_enum param, int  value);
-     #+end_src
-     Parameters to be set:
-     * *MORSE_TILE_SIZE*:        size matrix tile,
-     * *MORSE_INNER_BLOCK_SIZE*: size of tile inner block,
-     * *MORSE_HOUSEHOLDER_MODE*: type of householder trees (FLAT or TREE),
-     * *MORSE_HOUSEHOLDER_SIZE*: size of the groups in householder trees,
-     * *MORSE_TRANSLATION_MODE*: related to the *MORSE_Lapack_to_Tile*, see ztile.c.
-
-     Get value of MORSE parameter.
-     #+begin_src
-     int MORSE_Get     (MORSE_enum param, int *value);
-     #+end_src
-
 **** Sequences routines
 
      Create a sequence.
@@ -814,19 +842,3 @@
      #+begin_src
      int MORSE_Sequence_Wait    (MORSE_sequence_t *sequence);
      #+end_src
-
-**** Linear Algebra routines
-
-     We list the linear algebra routines of the form
-     *MORSE_name[_Tile[_Async]]* (/name/ follows LAPACK naming scheme, see
-     http://www.netlib.org/lapack/lug/node24.html) that can be used
-     with the Chameleon library. For details about these functions
-     please refer to the doxygen documentation.
-     * BLAS 3: geadd, gemm, hemm, her2k, herk, lascal, symm, syr2k,
-       syrk, trmm, trsm, trsmpl, tradd
-     * LAPACK: gelqf, gelqf_param, gelqfrh, geqrf, geqrfrh,
-       geqrf_param, getrf_incpiv, getrf_nopiv, lacpy, lange, lanhe,
-       lansy, lantr, laset2, laset, lauum, plghe, plgsy, plrnt, potrf,
-       sytrf, trtri, potrimm, unglq, unglq_param, unglqrh, ungqr,
-       ungqr_param, ungqrrh, unmlq, unmlq_param, unmlqrh, unmqr,
-       unmqr_param, unmqrrh, tpgqrt, tpqrt
