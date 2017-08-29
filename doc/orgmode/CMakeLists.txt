@@ -50,7 +50,7 @@ set(FIGURES_HTML
     )
 
 foreach(_fig ${FIGURES})
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/figures/${_fig}
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/chapters/${_fig}
                    ${CMAKE_CURRENT_BINARY_DIR}/${_fig}
                    COPYONLY)
 endforeach()
