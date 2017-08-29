@@ -1,1434 +1,832 @@
-@c -*-texinfo-*-
-
-@c This file is part of the MORSE Handbook.
-@c Copyright (C) 2014 Inria
-@c Copyright (C) 2014 The University of Tennessee
-@c Copyright (C) 2014 King Abdullah University of Science and Technology
-@c See the file ../chameleon.texi for copying conditions.
-
-@menu
-* Using CHAMELEON executables::
-* Linking an external application with CHAMELEON libraries::
-* CHAMELEON API::
-@end menu
-
-@node Using CHAMELEON executables
-@section Using CHAMELEON executables
-
-CHAMELEON provides several test executables that are compiled and link with
-CHAMELEON stack of dependencies.
-Instructions about the arguments to give to executables are accessible thanks
-to the option @option{-[-]help} or @option{-[-]h}.
-This set of binaries are separated into three categories and can be found in
-three different directories:
-
-@itemize @bullet
-
-  @item example
-
-  contains examples of API usage and more specifically the
-  sub-directory lapack_to_morse/ provides a tutorial that explain how to use
-  CHAMELEON functionalities starting from a full LAPACK code, see
-@ref{Tutorial LAPACK to CHAMELEON}
-
-  @item testing
-
-  contains testing drivers to check numerical correctness of
-  CHAMELEON linear algebra routines with a wide range of parameters
-  @example
-  ./testing/stesting 4 1 LANGE 600 100 700
-  @end example
-  Two first arguments are the number of cores and gpus to use.
-  The third one is the name of the algorithm to test.
-  The other arguments depend on the algorithm, here it lies for the number of
-  rows, columns and leading dimension of the problem.
-
-  Name of algorithms available for testing are:
-  @itemize @bullet
-    @item LANGE: norms of matrices Infinite, One, Max, Frobenius
-    @item GEMM: general matrix-matrix multiply
-    @item HEMM: hermitian matrix-matrix multiply
-    @item HERK: hermitian matrix-matrix rank k update
-    @item HER2K: hermitian matrix-matrix rank 2k update
-    @item SYMM: symmetric matrix-matrix multiply
-    @item SYRK: symmetric matrix-matrix rank k update
-    @item SYR2K: symmetric matrix-matrix rank 2k update
-    @item PEMV: matrix-vector multiply with pentadiagonal matrix
-    @item TRMM: triangular matrix-matrix multiply
-    @item TRSM: triangular solve, multiple rhs
-    @item POSV: solve linear systems with symmetric positive-definite matrix
-    @item GESV_INCPIV: solve linear systems with general matrix
-    @item GELS: linear least squares with general matrix
-  @end itemize
-
-  @item timing
-
-  contains timing drivers to assess performances of CHAMELEON routines.
-  There are two sets of executables, those who do not use the tile interface
-and those who do (with _tile in the name of the executable).
-  Executables without tile interface allocates data following LAPACK
-conventions and these data can be given as arguments to CHAMELEON routines
-as you would do with LAPACK.
-  Executables with tile interface generate directly the data in the format
-  CHAMELEON tile algorithms used to submit tasks to the runtime system.
-  Executables with tile interface should be more performant because no data
-copy from LAPACK matrix layout to tile matrix layout are necessary.
-  Calling example:
-  @example
-  ./timing/time_dpotrf --n_range=1000:10000:1000 --nb=320
-                       --threads=9 --gpus=3
-                       --nowarmup
-  @end example
-
-  List of main options that can be used in timing:
-  @itemize @bullet
-    @item @option{--help}: show usage
-    @item @option{--threads}: Number of CPU workers (default:
-@option{_SC_NPROCESSORS_ONLN})
-    @item @option{--gpus}: number of GPU workers (default: @option{0})
-    @item @option{--n_range=R}: range of N values, with
-@option{R=Start:Stop:Step}
-(default: @option{500:5000:500})
-    @item @option{--m=X}: dimension (M) of the matrices (default: @option{N})
-    @item @option{--k=X}: dimension (K) of the matrices (default: @option{1}),
-useful for GEMM algorithm (k is the shared dimension and must be defined >1 to
-consider matrices and not vectors)
-    @item @option{--nrhs=X}: number of right-hand size (default: @option{1})
-    @item @option{--nb=X}: block/tile size. (default: @option{128})
-    @item @option{--ib=X}: inner-blocking/IB size. (default: @option{32})
-    @item @option{--niter=X}: number of iterations performed for each test
-(default: @option{1})
-    @item @option{--rhblk=X}: if X > 0, enable Householder mode for QR and LQ
-factorization. X is the size of each subdomain (default: @option{0})
-    @item @option{--[no]check}: check result (default: @option{nocheck})
-    @item @option{--[no]profile}: print profiling informations (default:
-@option{noprofile})
-    @item @option{--[no]trace}: enable/disable trace generation (default:
-@option{notrace})
-    @item @option{--[no]dag}: enable/disable DAG generation (default:
-@option{nodag})
-    @item @option{--[no]inv}: check on inverse (default: @option{noinv})
-    @item @option{--nocpu}: all GPU kernels are exclusively executed on GPUs
-(default: @option{0})
-  @end itemize
-
-  List of timing algorithms available:
-  @itemize @bullet
-    @item LANGE: norms of matrices
-    @item GEMM: general matrix-matrix multiply
-    @item TRSM: triangular solve
-    @item POTRF: Cholesky factorization with a symmetric
-positive-definite matrix
-    @item POSV: solve linear systems with symmetric positive-definite matrix
-    @item GETRF_NOPIV: LU factorization of a general matrix
-using the tile LU algorithm without row pivoting
-    @item GESV_NOPIV: solve linear system for a general matrix
-using the tile LU algorithm without row pivoting
-    @item GETRF_INCPIV: LU factorization of a general matrix
-using the tile LU algorithm with partial tile pivoting with row interchanges
-    @item GESV_INCPIV: solve linear system for a general matrix
-using the tile LU algorithm with partial tile pivoting with row interchanges
-matrix
-    @item GEQRF: QR factorization of a general matrix
-    @item GELS: solves overdetermined or underdetermined linear systems
-involving a general matrix using the QR or the LQ factorization
-  @end itemize
-
-@end itemize
-
-@node Linking an external application with CHAMELEON libraries
-@section Linking an external application with CHAMELEON libraries
-
-Compilation and link with CHAMELEON libraries have been tested with
-@strong{gcc/gfortran 4.8.1} and @strong{icc/ifort 14.0.2}.
-
-@menu
-* Static linking in C::
-* Dynamic linking in C::
-* Build a Fortran program with CHAMELEON::
-@end menu
-
-@node Static linking in C
-@subsection Static linking in C
-
-Lets imagine you have a file main.c that you want to link with CHAMELEON
-static libraries.
-Lets consider @file{/home/yourname/install/chameleon} is the install directory
-of CHAMELEON containing sub-directories @file{include/} and @file{lib/}.
-Here could be your compilation command with gcc compiler:
-@example
-gcc -I/home/yourname/install/chameleon/include -o main.o -c main.c
-@end example
-
-Now if you want to link your application with CHAMELEON static libraries, you
-could do:
-@example
-gcc main.o -o main                                         \
-/home/yourname/install/chameleon/lib/libchameleon.a        \
-/home/yourname/install/chameleon/lib/libchameleon_starpu.a \
-/home/yourname/install/chameleon/lib/libcoreblas.a         \
--lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64           \
--lmkl_sequential -lmkl_core -lpthread -lm -lrt
-@end example
-As you can see in this example, we also link with some dynamic libraries
-@option{starpu-1.1}, @option{Intel MKL} libraries (for
-BLAS/LAPACK/CBLAS/LAPACKE), @option{pthread}, @option{m} (math) and
-@option{rt}.
-These libraries will depend on the configuration of your CHAMELEON build.
-You can find these dependencies in .pc files we generate during compilation and
-that are installed in the sub-directory @file{lib/pkgconfig} of your
-CHAMELEON install directory.
-Note also that you could need to specify where to find these libraries with
-@option{-L} option of your compiler/linker.
-
-Before to run your program, make sure that all shared libraries paths your
-executable depends on are known.
-Enter @code{ldd main} to check.
-If some shared libraries paths are missing append them in the
-@env{LD_LIBRARY_PATH} (for Linux systems) environment variable
-(@env{DYLD_LIBRARY_PATH} on Mac, @env{LIB} on Windows).
-
-@node Dynamic linking in C
-@subsection Dynamic linking in C
-
-For dynamic linking (need to build CHAMELEON with CMake
-option @option{BUILD_SHARED_LIBS=ON}) it is similar to static compilation/link
-but instead of specifying path to your static libraries you indicate the path
-to dynamic libraries with @option{-L} option and you give the name of libraries
-with @option{-l} option like this:
-@example
-gcc main.o -o main                               \
--L/home/yourname/install/chameleon/lib           \
--lchameleon -lchameleon_starpu -lcoreblas        \
--lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64 \
--lmkl_sequential -lmkl_core -lpthread -lm -lrt
-@end example
-
-Note that an update of your environment variable
-@env{LD_LIBRARY_PATH} (@env{DYLD_LIBRARY_PATH} on Mac, @env{LIB} on Windows)
-with the path of the libraries could be required before executing, example:
-@example
-export @env{LD_LIBRARY_PATH}=path/to/libs:path/to/chameleon/lib
-@end example
-
-@node Build a Fortran program with CHAMELEON
-@subsection Build a Fortran program with CHAMELEON
-
-CHAMELEON provides a Fortran interface to user functions. Example:
-@example
-call morse_version(major, minor, patch) !or
-call MORSE_VERSION(major, minor, patch)
-@end example
-
-Build and link are very similar to the C case.
-
-Compilation example:
-@example
-gfortran -o main.o -c main.c
-@end example
-
-Static linking example:
-@example
-gfortran main.o -o main                                    \
-/home/yourname/install/chameleon/lib/libchameleon.a        \
-/home/yourname/install/chameleon/lib/libchameleon_starpu.a \
-/home/yourname/install/chameleon/lib/libcoreblas.a         \
--lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64           \
--lmkl_sequential -lmkl_core -lpthread -lm -lrt
-@end example
-
-Dynamic linking example:
-@example
-gfortran main.o -o main                          \
--L/home/yourname/install/chameleon/lib           \
--lchameleon -lchameleon_starpu -lcoreblas        \
--lstarpu-1.1 -Wl,--no-as-needed -lmkl_intel_lp64 \
--lmkl_sequential -lmkl_core -lpthread -lm -lrt
-@end example
-
-@node CHAMELEON API
-@section CHAMELEON API
-
-CHAMELEON provides routines to solve dense general systems of linear
-equations, symmetric positive definite systems of linear equations and linear
-least squares problems, using LU, Cholesky, QR and LQ factorizations.
-Real arithmetic and complex arithmetic are supported in both single precision
-and double precision.
-Routines that compute linear algebra are of the folowing form:
-@example
-MORSE_name[_Tile[_Async]]
-@end example
-@itemize @bullet
-@item all user routines are prefixed with @code{MORSE}
-@item @code{name} follows BLAS/LAPACK naming scheme for algorithms
-(@emph{e.g.} sgemm for general matrix-matrix multiply simple precision)
-@item CHAMELEON provides three interface levels
-  @itemize @minus
-  @item @code{MORSE_name}: simplest interface, very close to CBLAS and LAPACKE,
-matrices are given following the LAPACK data layout (1-D array column-major).
-It involves copy of data from LAPACK layout to tile layout and conversely (to
-update LAPACK data), see @ref{Step1}.
-  @item @code{MORSE_name_Tile}: the tile interface avoid copies between LAPACK
-and tile layouts. It is the standard interface of CHAMELEON and it should
-achieved better performance than the previous simplest interface. The data are
-given through a specific structure called a descriptor, see @ref{Step2}.
-  @item @code{MORSE_name_Tile_Async}: similar to the tile interface, it avoids
-synchonization barrier normally called between @code{Tile} routines.
-At the end of an @code{Async} function, completion of tasks is not guarentee
-and data are not necessarily up-to-date.
-To ensure that tasks have been all executed a synchronization function has to
-be called after the sequence of @code{Async} functions, see @ref{Step4}.
-  @end itemize
-@end itemize
-
-MORSE routine calls have to be precede from
-@example
-MORSE_Init( NCPU, NGPU );
-@end example
-to initialize MORSE and the runtime system and followed by
-@example
-MORSE_Finalize();
-@end example
-to free some data and finalize the runtime and/or MPI.
-
-@menu
-* Tutorial LAPACK to CHAMELEON::
-* List of available routines::
-@end menu
-
-@node Tutorial LAPACK to CHAMELEON
-@subsection Tutorial LAPACK to CHAMELEON
-
-This tutorial is dedicated to the API usage of CHAMELEON.
-The idea is to start from a simple code and step by step explain how to
-use CHAMELEON routines.
-The first step is a full BLAS/LAPACK code without dependencies to CHAMELEON,
-a code that most users should easily understand.
-Then, the different interfaces CHAMELEON provides are exposed, from the
-simplest API (step1) to more complicated ones (until step4).
-The way some important parameters are set is discussed in step5.
-step6 is an example about distributed computation with MPI.
-Finally step7 shows how to let Chameleon initialize user's data
-(matrices/vectors) in parallel.
-
-Source files can be found in the @file{example/lapack_to_morse/}
-directory.
-If CMake option @option{CHAMELEON_ENABLE_EXAMPLE} is @option{ON} then source
-files are compiled with the project libraries.
-The arithmetic precision is @code{double}.
-To execute a step @samp{X}, enter the following command:
-@example
-./step@samp{X} --option1 --option2 ...
-@end example
-Instructions about the arguments to give to executables are accessible thanks
-to the option @option{-[-]help} or @option{-[-]h}.
-Note there exist default values for options.
-
-For all steps, the program solves a linear system @math{Ax=B}
-The matrix values are randomly generated but ensure that matrix @math{A} is
-symmetric positive definite so that @math{A} can be factorized in a @math{LL^T}
-form using the Cholesky factorization.
-
-
-Lets comment the different steps of the tutorial
-@menu
-* Step0:: a simple Cholesky example using the C interface of
-BLAS/LAPACK
-* Step1:: introduces the LAPACK equivalent interface of Chameleon
-* Step2:: introduces the tile interface
-* Step3:: indicates how to give your own tile matrix to Chameleon
-* Step4:: introduces the tile async interface
-* Step5:: shows how to set some important parameters
-* Step6:: introduces how to benefit from MPI in Chameleon
-* Step7:: introduces how to let Chameleon initialize the user's matrix data
-@end menu
-
-@node Step0
-@subsubsection Step0
-
-The C interface of BLAS and LAPACK, that is, CBLAS and
-LAPACKE, are used to solve the system. The size of the system (matrix) and the
-number of right hand-sides can be given as arguments to the executable (be
-careful not to give huge numbers if you do not have an infinite amount of RAM!).
-As for every step, the correctness of the solution is checked by calculating
-the norm @math{||Ax-B||/(||A||||x||+||B||)}.
-The time spent in factorization+solve is recorded and, because we know exactly
-the number of operations of these algorithms, we deduce the number of
-operations that have been processed per second (in GFlops/s).
-The important part of the code that solves the problem is:
-@verbatim
-/* Cholesky factorization:
- * A is replaced by its factorization L or L^T depending on uplo */
-LAPACKE_dpotrf( LAPACK_COL_MAJOR, 'U', N, A, N );
-/* Solve:
- * B is stored in X on entry, X contains the result on exit.
- * Forward ...
- */
-cblas_dtrsm(
-    CblasColMajor,
-    CblasLeft,
-    CblasUpper,
-    CblasConjTrans,
-    CblasNonUnit,
-    N, NRHS, 1.0, A, N, X, N);
-/* ... and back substitution */
-cblas_dtrsm(
-    CblasColMajor,
-    CblasLeft,
-    CblasUpper,
-    CblasNoTrans,
-    CblasNonUnit,
-    N, NRHS, 1.0, A, N, X, N);
-@end verbatim
-
-@node Step1
-@subsubsection Step1
-
-It introduces the simplest CHAMELEON interface which is equivalent to
-CBLAS/LAPACKE.
-The code is very similar to step0 but instead of calling CBLAS/LAPACKE
-functions, we call CHAMELEON equivalent functions.
-The solving code becomes:
-@verbatim
-/* Factorization: */
-MORSE_dpotrf( UPLO, N, A, N );
-/* Solve: */
-MORSE_dpotrs(UPLO, N, NRHS, A, N, X, N);
-@end verbatim
-The API is almost the same so that it is easy to use for beginners.
-It is important to keep in mind that before any call to MORSE routines,
-@code{MORSE_Init} has to be invoked to initialize MORSE and the runtime system.
-Example:
-@verbatim
-MORSE_Init( NCPU, NGPU );
-@end verbatim
-After all MORSE calls have been done, a call to @code{MORSE_Finalize} is
-required to free some data and finalize the runtime and/or MPI.
-@verbatim
-MORSE_Finalize();
-@end verbatim
-We use MORSE routines with the LAPACK interface which means the routines
-accepts the same matrix format as LAPACK (1-D array column-major).
-Note that we copy the matrix to get it in our own tile structures, see details
-about this format here @ref{Tile Data Layout}.
-This means you can get an overhead coming from copies.
-
-@node Step2
-@subsubsection Step2
-
-This program is a copy of step1 but instead of using the LAPACK interface which
-leads to copy LAPACK matrices inside MORSE routines we use the tile interface.
-We will still use standard format of matrix but we will see how to give this
-matrix to create a MORSE descriptor, a structure wrapping data on which we want
-to apply sequential task-based algorithms.
-The solving code becomes:
-@verbatim
-/* Factorization: */
-MORSE_dpotrf_Tile( UPLO, descA );
-/* Solve: */
-MORSE_dpotrs_Tile( UPLO, descA, descX );
-@end verbatim
-To use the tile interface, a specific structure @code{MORSE_desc_t} must be
-created.
-This can be achieved from different ways.
-@enumerate
-@item Use the existing function @code{MORSE_Desc_Create}: means the
-matrix data are considered contiguous in memory as it is considered in PLASMA
-(@ref{Tile Data Layout}).
-@item Use the existing function @code{MORSE_Desc_Create_OOC}: means the
-matrix data is allocated on-demand in memory tile by tile, and possibly pushed
-to disk if that does not fit memory.
-@item Use the existing function @code{MORSE_Desc_Create_User}: it is more
-flexible than @code{Desc_Create} because you can give your own way to access to
-tile data so that your tiles can be allocated wherever you want in memory, see
-next paragraph @ref{Step3}.
-@item Create you own function to fill the descriptor.
-If you understand well the meaning of each item of @code{MORSE_desc_t}, you
-should be able to fill correctly the structure (good luck).
-@end enumerate
-
-In Step2, we use the first way to create the descriptor:
-@verbatim
-MORSE_Desc_Create(&descA, NULL, MorseRealDouble,
-                  NB, NB, NB*NB, N, N,
-                  0, 0, N, N,
-                  1, 1);
-@end verbatim
-
-@itemize @bullet
-
-@item @code{descA} is the descriptor to create.
-
-@item The second argument is a pointer to existing data.
-The existing data must follow LAPACK/PLASMA matrix layout @ref{Tile Data
-Layout} (1-D array column-major) if @code{MORSE_Desc_Create} is used to create
-the descriptor.
-The @code{MORSE_Desc_Create_User} function can be used if you have data
-organized differently.
-This is discussed in the next paragraph @ref{Step3}.
-Giving a @code{NULL} pointer means you let the function allocate memory space.
-This requires to copy your data in the memory allocated by the
-@code{Desc_Create}.
-This can be done with
-@verbatim
-MORSE_Lapack_to_Tile(A, N, descA);
-@end verbatim
-
-@item Third argument of @code{Desc_Create} is the datatype (used for memory
-allocation).
-
-@item Fourth argument until sixth argument stand for respectively, the number
-of rows (@code{NB}), columns (@code{NB}) in each tile, the total number of
-values in a tile (@code{NB*NB}), the number of rows (@code{N}), colmumns
-(@code{N}) in the entire matrix.
-
-@item Seventh argument until ninth argument stand for respectively, the
-beginning row (@code{0}), column (@code{0}) indexes of the submatrix and the
-number of rows (@code{N}), columns (@code{N}) in the submatrix.
-These arguments are specific and used in precise cases.
-If you do not consider submatrices, just use @code{0, 0, NROWS, NCOLS}.
-
-@item Two last arguments are the parameter of the 2-D block-cyclic distribution
-grid, see @uref{http://www.netlib.org/scalapack/slug/node75.html, ScaLAPACK}.
-To be able to use other data distribution over the nodes,
-@code{MORSE_Desc_Create_User} function should be used.
-
-@end itemize
-
-
-@node Step3
-@subsubsection Step3
-
-This program makes use of the same interface than Step2 (tile interface) but
-does not allocate LAPACK matrices anymore so that no copy between LAPACK matrix
-layout and tile matrix layout are necessary to call MORSE routines.
-To generate random right hand-sides you can use:
-@verbatim
-/* Allocate memory and initialize descriptor B */
-MORSE_Desc_Create(&descB,  NULL, MorseRealDouble,
-                  NB, NB,  NB*NB, N, NRHS,
-                  0, 0, N, NRHS, 1, 1);
-/* generate RHS with random values */
-MORSE_dplrnt_Tile( descB, 5673 );
-@end verbatim
-
-The other important point is that is it possible to create a descriptor, the
-necessary structure to call MORSE efficiently, by giving your own pointer to
-tiles if your matrix is not organized as a 1-D array column-major.
-This can be achieved with the @code{MORSE_Desc_Create_User} routine.
-Here is an example:
-@verbatim
-MORSE_Desc_Create_User(&descA, matA, MorseRealDouble,
-                       NB, NB, NB*NB, N, N,
-                       0, 0, N, N, 1, 1,
-                       user_getaddr_arrayofpointers,
-                       user_getblkldd_arrayofpointers,
-                       user_getrankof_zero);
-@end verbatim
-Firsts arguments are the same than @code{MORSE_Desc_Create} routine.
-Following arguments allows you to give pointer to functions that manage the
-access to tiles from the structure given as second argument.
-Here for example, @code{matA} is an array containing addresses to tiles, see
-the function @code{allocate_tile_matrix} defined in @file{step3.h}.
-The three functions you have to define for @code{Desc_Create_User} are:
-@itemize @bullet
-@item a function that returns address of tile @math{A(m,n)}, m and n standing
-for the indexes of the tile in the global matrix. Lets consider a matrix
-@math{4x4} with tile size @math{2x2}, the matrix contains four tiles of
-indexes: @math{A(m=0,n=0)}, @math{A(m=0,n=1)}, @math{A(m=1,n=0)},
-@math{A(m=1,n=1)}
-@item a function that returns the leading dimension of tile @math{A(m,*)}
-@item a function that returns MPI rank of tile @math{A(m,n)}
-@end itemize
-Examples for these functions are vizible in @file{step3.h}.
-Note that the way we define these functions is related to the tile matrix
-format and to the data distribution considered.
-This example should not be used with MPI since all tiles are affected to
-processus @code{0}, which means a large amount of data will be
-potentially transfered between nodes.
-
-@node Step4
-@subsubsection Step4
-This program is a copy of step2 but instead of using the tile interface, it
-uses the tile async interface.
-The goal is to exhibit the runtime synchronization barriers.
-Keep in mind that when the tile interface is called, like
-@code{MORSE_dpotrf_Tile}, a synchronization function, waiting for the actual
-execution and termination of all tasks, is called to ensure the
-proper completion of the algorithm (i.e. data are up-to-date).
-The code shows how to exploit the async interface to pipeline subsequent
-algorithms so that less synchronisations are done.
-The code becomes:
-@verbatim
-/* Morse structure containing parameters and a structure to interact with
- * the Runtime system */
-MORSE_context_t *morse;
-/* MORSE sequence uniquely identifies a set of asynchronous function calls
- * sharing common exception handling */
-MORSE_sequence_t *sequence = NULL;
-/* MORSE request uniquely identifies each asynchronous function call */
-MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
-int status;
-
-...
-
-morse_sequence_create(morse, &sequence);
-
-/* Factorization: */
-MORSE_dpotrf_Tile_Async( UPLO, descA, sequence, &request );
-
-/* Solve: */
-MORSE_dpotrs_Tile_Async( UPLO, descA, descX, sequence, &request);
-
-/* Synchronization barrier (the runtime ensures that all submitted tasks
- * have been terminated */
-RUNTIME_barrier(morse);
-/* Ensure that all data processed on the gpus we are depending on are back
- * in main memory */
-RUNTIME_desc_getoncpu(descA);
-RUNTIME_desc_getoncpu(descX);
-
-status = sequence->status;
-
-@end verbatim
-Here the sequence of @code{dpotrf} and @code{dpotrs} algorithms is processed
-without synchronization so that some tasks of @code{dpotrf} and @code{dpotrs}
-can be concurently executed which could increase performances.
-The async interface is very similar to the tile one.
-It is only necessary to give two new objects @code{MORSE_sequence_t} and
-@code{MORSE_request_t} used to handle asynchronous function calls.
-
-@center @image{potri_async,13cm,8cm}
-POTRI (POTRF, TRTRI, LAUUM) algorithm with and without synchronization
-barriers, courtesey of the @uref{http://icl.cs.utk.edu/plasma/, PLASMA} team.
-
-@node Step5
-@subsubsection Step5
-
-Step5 shows how to set some important parameters.
-This program is a copy of Step4 but some additional parameters are given by
-the user.
-The parameters that can be set are:
-@itemize @bullet
-@item number of Threads
-@item number of GPUs
-
-The number of workers can be given as argument to the executable with
-@option{--threads=} and @option{--gpus=} options.
-It is important to notice that we assign one thread per gpu to optimize data
-transfer between main memory and devices memory.
-The number of workers of each type @code{CPU} and @code{CUDA} must be given at
-@code{MORSE_Init}.
-@verbatim
-if ( iparam[IPARAM_THRDNBR] == -1 ) {
-    get_thread_count( &(iparam[IPARAM_THRDNBR]) );
-    /* reserve one thread par cuda device to optimize memory transfers */
-    iparam[IPARAM_THRDNBR] -= iparam[IPARAM_NCUDAS];
-}
-NCPU = iparam[IPARAM_THRDNBR];
-NGPU = iparam[IPARAM_NCUDAS];
-
-/* initialize MORSE with main parameters */
-MORSE_Init( NCPU, NGPU );
-@end verbatim
-
-@item matrix size
-@item number of right-hand sides
-@item block (tile) size
-
-The problem size is given with @option{--n=} and @option{--nrhs=} options.
-The tile size is given with option @option{--nb=}.
-These parameters are required to create descriptors.
-The size tile @code{NB} is a key parameter to get performances since it
-defines the granularity of tasks.
-If @code{NB} is too large compared to @code{N}, there are few tasks to
-schedule.
-If the number of workers is large this leads to limit parallelism.
-On the contrary, if @code{NB} is too small (@emph{i.e.} many small tasks),
-workers could not be correctly fed and the runtime systems operations
-could represent a substantial overhead.
-A trade-off has to be found depending on many parameters: problem size,
-algorithm (drive data dependencies), architecture (number of workers,
-workers speed, workers uniformity, memory bus speed).
-By default it is set to 128.
-Do not hesitate to play with this parameter and compare performances on your
-machine.
-
-@item inner-blocking size
-
-The inner-blocking size is given with option @option{--ib=}.
-This parameter is used by kernels (optimized algorithms applied on tiles) to
-perform subsequent operations with data block-size that fits the cache of
-workers.
-Parameters @code{NB} and @code{IB} can be given with @code{MORSE_Set} function:
-@verbatim
-MORSE_Set(MORSE_TILE_SIZE,        iparam[IPARAM_NB] );
-MORSE_Set(MORSE_INNER_BLOCK_SIZE, iparam[IPARAM_IB] );
-@end verbatim
-@end itemize
-
-@node Step6
-@subsubsection Step6
-
-This program is a copy of Step5 with some additional parameters to be set for
-the data distribution.
-To use this program properly MORSE must use StarPU Runtime system and MPI
-option must be activated at configure.
-The data distribution used here is 2-D block-cyclic, see for example
-@uref{http://www.netlib.org/scalapack/slug/node75.html, ScaLAPACK} for
-explanation.
-The user can enter the parameters of the distribution grid at execution with
-@option{--p=} option.
-Example using OpenMPI on four nodes with one process per node:
-@example
-mpirun -np 4 ./step6 --n=10000 --nb=320 --ib=64 \
-                     --threads=8 --gpus=2 --p=2
-@end example
-
-In this program we use the tile data layout from PLASMA so that the call
-@verbatim
-MORSE_Desc_Create_User(&descA, NULL, MorseRealDouble,
+# This file is part of the Chameleon User's Guide.
+# Copyright (C) 2017 Inria
+# See the file ../users_guide.org for copying conditions.
+
+** Using Chameleon executables
+
+   Chameleon provides several test executables that are compiled and
+   linked with Chameleon's dependencies.  Instructions about the
+   arguments to give to executables are accessible thanks to the
+   option ~-[-]help~ or ~-[-]h~.  This set of binaries are separated into
+   three categories and can be found in three different directories:
+   * example: contains examples of API usage and more specifically the
+     sub-directory ~lapack_to_morse/~ provides a tutorial that explains
+     how to use Chameleon functionalities starting from a full LAPACK
+     code, see [[sec:tuto][Tutorial LAPACK to Chameleon]]
+   * testing: contains testing drivers to check numerical correctness of
+     Chameleon linear algebra routines with a wide range of parameters
+     #+begin_src
+     ./testing/stesting 4 1 LANGE 600 100 700
+     #+end_src
+     Two first arguments are the number of cores and gpus to use.
+     The third one is the name of the algorithm to test.
+     The other arguments depend on the algorithm, here it lies for the number of
+     rows, columns and leading dimension of the problem.
+
+     Name of algorithms available for testing are:
+     * LANGE: norms of matrices Infinite, One, Max, Frobenius
+     * GEMM: general matrix-matrix multiply
+     * HEMM: hermitian matrix-matrix multiply
+     * HERK: hermitian matrix-matrix rank k update
+     * HER2K: hermitian matrix-matrix rank 2k update
+     * SYMM: symmetric matrix-matrix multiply
+     * SYRK: symmetric matrix-matrix rank k update
+     * SYR2K: symmetric matrix-matrix rank 2k update
+     * PEMV: matrix-vector multiply with pentadiagonal matrix
+     * TRMM: triangular matrix-matrix multiply
+     * TRSM: triangular solve, multiple rhs
+     * POSV: solve linear systems with symmetric positive-definite matrix
+     * GESV_INCPIV: solve linear systems with general matrix
+     * GELS: linear least squares with general matrix
+     * GELS_HQR:
+     * GELS_SYSTOLIC:
+   * timing: contains timing drivers to assess performances of
+     Chameleon routines. There are two sets of executables, those who
+     do not use the tile interface and those who do (with _tile in the
+     name of the executable). Executables without tile interface
+     allocates data following LAPACK conventions and these data can be
+     given as arguments to Chameleon routines as you would do with
+     LAPACK. Executables with tile interface generate directly the
+     data in the format Chameleon tile algorithms used to submit tasks
+     to the runtime system. Executables with tile interface should be
+     more performant because no data copy from LAPACK matrix layout to
+     tile matrix layout are necessary. Calling example:
+     #+begin_src
+     ./timing/time_dpotrf --n_range=1000:10000:1000 --nb=320
+                          --threads=9 --gpus=3
+                          --nowarmup
+     #+end_src
+     List of timing algorithms available:
+     * LANGE: norms of matrices
+     * GEMM: general matrix-matrix multiply
+     * TRSM: triangular solve
+     * POTRF: Cholesky factorization with a symmetric
+       positive-definite matrix
+     * POTRI: Cholesky inversion
+     * POSV: solve linear systems with symmetric positive-definite matrix
+     * GETRF_NOPIV: LU factorization of a general matrix using the tile LU algorithm without row pivoting
+     * GESV_NOPIV: solve linear system for a general matrix using the tile LU algorithm without row pivoting
+     * GETRF_INCPIV: LU factorization of a general matrix using the tile LU algorithm with partial tile pivoting with row interchanges
+     * GESV_INCPIV: solve linear system for a general matrix using the tile LU algorithm with partial tile pivoting with row interchanges matrix
+     * GEQRF: QR factorization of a general matrix
+     * GELQF: LQ factorization of a general matrix
+     * QEQRF_HQR
+     * QEQRS: solve linear systems using a QR factorization
+     * GELS: solves overdetermined or underdetermined linear systems involving a general matrix using the QR or the LQ factorization
+     * GESVD
+
+*** Execution trace using StarPU
+    <<sec:trace>>
+
+    StarPU can generate its own trace log files by compiling it with
+    the ~--with-fxt~ option at the configure step (you can have to
+    specify the directory where you installed FxT by giving
+    ~--with-fxt=...~ instead of ~--with-fxt~ alone).  By doing so, traces
+    are generated after each execution of a program which uses StarPU
+    in the directory pointed by the STARPU_FXT_PREFIX environment
+    variable.
+    #+begin_example
+    export STARPU_FXT_PREFIX=/home/jdoe/fxt_files/
+    #+end_example
+    When executing a ~./timing/...~ Chameleon program, if it has been
+    enabled (StarPU compiled with FxT and
+    *-DCHAMELEON_ENABLE_TRACING=ON*), you can give the option ~--trace~ to
+    tell the program to generate trace log files.
+
+    Finally, to generate the trace file which can be opened with Vite
+    program (http://vite.gforge.inria.fr/), you can use the
+    *starpu_fxt_tool* executable of StarPU.  This tool should be in
+    ~$STARPU_INSTALL_REPOSITORY/bin~.  You can use it to generate the
+    trace file like this:
+    #+begin_src
+    path/to/your/install/starpu/bin/starpu_fxt_tool -i prof_filename
+    #+end_src
+    There is one file per mpi processus (prof_filename_0,
+    prof_filename_1 ...).  To generate a trace of mpi programs you can
+    call it like this:
+    #+begin_src
+    path/to/your/install/starpu/bin/starpu_fxt_tool -i prof_filename*
+    #+end_src
+    The trace file will be named paje.trace (use -o option to specify
+    an output name).  Alternatively, for non mpi execution (only one
+    processus and profiling file), you can set the environment
+    variable *STARPU_GENERATE_TRACE=1* to automatically generate the
+    paje trace file.
+
+*** Use simulation mode with StarPU-SimGrid
+    <<sec:simu>>
+
+    Simulation mode can be activated by setting the cmake option
+    CHAMELEON_SIMULATION to ON.  This mode allows you to simulate
+    execution of algorithms with StarPU compiled with SimGrid
+    (http://simgrid.gforge.inria.fr/).  To do so, we provide some
+    perfmodels in the simucore/perfmodels/ directory of Chameleon
+    sources.  To use these perfmodels, please set your *STARPU_HOME*
+    environment variable to
+    ~path/to/your/chameleon_sources/simucore/perfmodels~.  Finally, you
+    need to set your *STARPU_HOSTNAME* environment variable to the name
+    of the machine to simulate.  For example: *STARPU_HOSTNAME=mirage*.
+    Note that only POTRF kernels with block sizes of 320 or 960
+    (simple and double precision) on mirage and sirocco machines are
+    available for now.  Database of models is subject to change.
+
+** Linking an external application with Chameleon libraries
+   Compilation and link with Chameleon libraries have been tested with
+   the GNu compiler suite ~gcc/gfortran~ and the Intel compiler suite
+   ~icc/ifort 14.0.2~.
+
+*** Static linking in C
+    Lets imagine you have a file ~main.c~ that you want to link with
+    Chameleon static libraries.  Lets consider
+    ~/home/yourname/install/chameleon~ is the install directory
+    of Chameleon containing sub-directories ~include/~ and
+    ~lib/~.  Here could be your compilation command with gcc
+    compiler:
+    #+begin_src
+    gcc -I/home/yourname/install/chameleon/include -o main.o -c main.c
+    #+end_src
+    Now if you want to link your application with Chameleon static libraries, you
+    could do:
+    #+begin_src
+    gcc main.o -o main                                         \
+    /home/yourname/install/chameleon/lib/libchameleon.a        \
+    /home/yourname/install/chameleon/lib/libchameleon_starpu.a \
+    /home/yourname/install/chameleon/lib/libcoreblas.a         \
+    -lstarpu-1.2 -Wl,--no-as-needed -lmkl_intel_lp64           \
+    -lmkl_sequential -lmkl_core -lpthread -lm -lrt
+    #+end_src
+    As you can see in this example, we also link with some dynamic
+    libraries *starpu-1.2*, *Intel MKL* libraries (for
+    BLAS/LAPACK/CBLAS/LAPACKE), *pthread*, *m* (math) and *rt*. These
+    libraries will depend on the configuration of your Chameleon
+    build.  You can find these dependencies in .pc files we generate
+    during compilation and that are installed in the sub-directory
+    ~lib/pkgconfig~ of your Chameleon install directory.  Note also that
+    you could need to specify where to find these libraries with *-L*
+    option of your compiler/linker.
+
+    Before to run your program, make sure that all shared libraries
+    paths your executable depends on are known.  Enter ~ldd main~
+    to check.  If some shared libraries paths are missing append them
+    in the LD_LIBRARY_PATH (for Linux systems) environment
+    variable (DYLD_LIBRARY_PATH on Mac).
+
+*** Dynamic linking in C
+    For dynamic linking (need to build Chameleon with CMake option
+    BUILD_SHARED_LIBS=ON) it is similar to static compilation/link but
+    instead of specifying path to your static libraries you indicate
+    the path to dynamic libraries with *-L* option and you give
+    the name of libraries with *-l* option like this:
+    #+begin_src
+    gcc main.o -o main \
+    -L/home/yourname/install/chameleon/lib \
+    -lchameleon -lchameleon_starpu -lcoreblas \
+    -lstarpu-1.2 -Wl,--no-as-needed -lmkl_intel_lp64 \
+    -lmkl_sequential -lmkl_core -lpthread -lm -lrt
+    #+end_src
+    Note that an update of your environment variable LD_LIBRARY_PATH
+    (DYLD_LIBRARY_PATH on Mac) with the path of the libraries could be
+    required before executing
+    #+begin_src
+    export LD_LIBRARY_PATH=path/to/libs:path/to/chameleon/lib
+    #+end_src
+
+*** Build a Fortran program with Chameleon
+
+    Chameleon provides a Fortran interface to user functions. Example:
+    #+begin_src
+    call morse_version(major, minor, patch) !or
+    call MORSE_VERSION(major, minor, patch)
+    #+end_src
+
+    Build and link are very similar to the C case.
+
+    Compilation example:
+    #+begin_src
+    gfortran -o main.o -c main.c
+    #+end_src
+
+    Static linking example:
+    #+begin_src
+    gfortran main.o -o main                                    \
+    /home/yourname/install/chameleon/lib/libchameleon.a        \
+    /home/yourname/install/chameleon/lib/libchameleon_starpu.a \
+    /home/yourname/install/chameleon/lib/libcoreblas.a         \
+    -lstarpu-1.2 -Wl,--no-as-needed -lmkl_intel_lp64           \
+    -lmkl_sequential -lmkl_core -lpthread -lm -lrt
+    #+end_src
+
+    Dynamic linking example:
+    #+begin_src
+    gfortran main.o -o main                          \
+    -L/home/yourname/install/chameleon/lib           \
+    -lchameleon -lchameleon_starpu -lcoreblas        \
+    -lstarpu-1.2 -Wl,--no-as-needed -lmkl_intel_lp64 \
+    -lmkl_sequential -lmkl_core -lpthread -lm -lrt
+    #+end_src
+
+** Chameleon API
+
+   Chameleon provides routines to solve dense general systems of
+   linear equations, symmetric positive definite systems of linear
+   equations and linear least squares problems, using LU, Cholesky, QR
+   and LQ factorizations.  Real arithmetic and complex arithmetic are
+   supported in both single precision and double precision.  Routines
+   that compute linear algebra are of the folowing form:
+   #+begin_src
+   MORSE_name[_Tile[_Async]]
+   #+end_src
+   * all user routines are prefixed with *MORSE*
+   * in the pattern *MORSE_name[_Tile[_Async]]*, /name/ follows
+     BLAS/LAPACK naming scheme for algorithms (/e.g./ sgemm for general
+     matrix-matrix multiply simple precision)
+   * Chameleon provides three interface levels
+     * *MORSE_name*: simplest interface, very close to CBLAS and
+       LAPACKE, matrices are given following the LAPACK data layout
+       (1-D array column-major).  It involves copy of data from LAPACK
+       layout to tile layout and conversely (to update LAPACK data),
+       see [[sec:tuto_step1][Step1]].
+   * *MORSE_name_Tile*: the tile interface avoid copies between LAPACK
+     and tile layouts. It is the standard interface of Chameleon and
+     it should achieved better performance than the previous simplest
+     interface. The data are given through a specific structure called
+     a descriptor, see [[sec:tuteo_step2][Step2]].
+   * *MORSE_name_Tile_Async*: similar to the tile interface, it avoids
+     synchonization barrier normally called between *Tile*
+     routines.  At the end of an *Async* function, completion of
+     tasks is not guarentee and data are not necessarily up-to-date.
+     To ensure that tasks have been all executed a synchronization
+     function has to be called after the sequence of *Async*
+     functions, see [[tuto_step4][Step4]].
+
+   MORSE routine calls have to be precede from
+   #+begin_src
+   MORSE_Init( NCPU, NGPU );
+   #+end_src
+   to initialize MORSE and the runtime system and followed by
+   #+begin_src
+   MORSE_Finalize();
+   #+end_src
+   to free some data and finalize the runtime and/or MPI.
+
+*** Tutorial LAPACK to Chameleon
+
+    This tutorial is dedicated to the API usage of Chameleon.  The
+    idea is to start from a simple code and step by step explain how
+    to use Chameleon routines.  The first step is a full BLAS/LAPACK
+    code without dependencies to Chameleon, a code that most users
+    should easily understand.  Then, the different interfaces
+    Chameleon provides are exposed, from the simplest API (step1) to
+    more complicated ones (until step4).  The way some important
+    parameters are set is discussed in step5.  step6 is an example
+    about distributed computation with MPI.  Finally step7 shows how
+    to let Chameleon initialize user's data (matrices/vectors) in
+    parallel.
+
+    Source files can be found in the ~example/lapack_to_morse/~
+    directory.  If CMake option *CHAMELEON_ENABLE_EXAMPLE* is ON then
+    source files are compiled with the project libraries.  The
+    arithmetic precision is /double/.  To execute a step
+    *X*, enter the following command:
+    #+begin_src
+    ./step@samp{X}
+    --option1 --option2 ...
+    #+end_src
+    Instructions about the arguments to give to executables are
+    accessible thanks to the option ~-[-]help~ or ~-[-]h~.  Note there
+    exist default values for options.
+
+    For all steps, the program solves a linear system $Ax=B$ The
+    matrix values are randomly generated but ensure that matrix $A$ is
+    symmetric positive definite so that $A$ can be factorized in a
+    $LL^T$ form using the Cholesky factorization.
+
+
+    The different steps of the tutorial are:
+    * Step0: a simple Cholesky example using the C interface of BLAS/LAPACK
+    * Step1: introduces the LAPACK equivalent interface of Chameleon
+    * Step2: introduces the tile interface
+    * Step3: indicates how to give your own tile matrix to Chameleon
+    * Step4: introduces the tile async interface
+    * Step5: shows how to set some important parameters
+    * Step6: introduces how to benefit from MPI in Chameleon
+    * Step7: introduces how to let Chameleon initialize the user's matrix data
+
+**** Step0
+     The C interface of BLAS and LAPACK, that is, CBLAS and LAPACKE,
+     are used to solve the system. The size of the system (matrix) and
+     the number of right hand-sides can be given as arguments to the
+     executable (be careful not to give huge numbers if you do not
+     have an infinite amount of RAM!).  As for every step, the
+     correctness of the solution is checked by calculating the norm
+     $||Ax-B||/(||A||||x||+||B||)$.  The time spent in
+     factorization+solve is recorded and, because we know exactly the
+     number of operations of these algorithms, we deduce the number of
+     operations that have been processed per second (in GFlops/s).
+     The important part of the code that solves the problem is:
+     #+begin_example
+     /* Cholesky factorization:
+      * A is replaced by its factorization L or L^T depending on uplo */
+     LAPACKE_dpotrf( LAPACK_COL_MAJOR, 'U', N, A, N );
+     /* Solve:
+      * B is stored in X on entry, X contains the result on exit.
+      * Forward ...
+      */
+     cblas_dtrsm(
+         CblasColMajor,
+         CblasLeft,
+         CblasUpper,
+         CblasConjTrans,
+         CblasNonUnit,
+         N, NRHS, 1.0, A, N, X, N);
+     /* ... and back substitution */
+     cblas_dtrsm(
+         CblasColMajor,
+         CblasLeft,
+         CblasUpper,
+         CblasNoTrans,
+         CblasNonUnit,
+         N, NRHS, 1.0, A, N, X, N);
+     #+end_example
+
+**** Step1
+     <<sec:tuto_step1>>
+     It introduces the simplest Chameleon interface which is
+     equivalent to CBLAS/LAPACKE.  The code is very similar to step0
+     but instead of calling CBLAS/LAPACKE functions, we call Chameleon
+     equivalent functions.  The solving code becomes:
+     #+begin_example
+     /* Factorization: */
+     MORSE_dpotrf( UPLO, N, A, N );
+     /* Solve: */
+     MORSE_dpotrs(UPLO, N, NRHS, A, N, X, N);
+     #+end_example
+     The API is almost the same so that it is easy to use for beginners.
+     It is important to keep in mind that before any call to MORSE routines,
+     *MORSE_Init* has to be invoked to initialize MORSE and the runtime system.
+     Example:
+     #+begin_example
+     MORSE_Init( NCPU, NGPU );
+     #+end_example
+     After all MORSE calls have been done, a call to *MORSE_Finalize* is
+     required to free some data and finalize the runtime and/or MPI.
+     #+begin_example
+     MORSE_Finalize();
+     #+end_example
+     We use MORSE routines with the LAPACK interface which means the
+     routines accepts the same matrix format as LAPACK (1-D array
+     column-major).  Note that we copy the matrix to get it in our own
+     tile structures, see details about this format here [[sec:tile][Tile Data
+     Layout]].  This means you can get an overhead coming from copies.
+
+**** Step2
+     <<sec:tuto_step2>>
+     This program is a copy of step1 but instead of using the LAPACK interface which
+     reads to copy LAPACK matrices inside MORSE routines we use the tile interface.
+     We will still use standard format of matrix but we will see how to give this
+     matrix to create a MORSE descriptor, a structure wrapping data on which we want
+     to apply sequential task-based algorithms.
+     The solving code becomes:
+     #+begin_example
+     /* Factorization: */
+     MORSE_dpotrf_Tile( UPLO, descA );
+     /* Solve: */
+     MORSE_dpotrs_Tile( UPLO, descA, descX );
+     #+end_example
+     To use the tile interface, a specific structure *MORSE_desc_t* must be
+     created.
+     This can be achieved from different ways.
+     1. Use the existing function *MORSE_Desc_Create*: means the matrix
+        data are considered contiguous in memory as it is considered
+        in PLASMA ([[sec:tile][Tile Data Layout]]).
+     2. Use the existing function *MORSE_Desc_Create_OOC*: means the
+        matrix data is allocated on-demand in memory tile by tile, and
+        possibly pushed to disk if that does not fit memory.
+     3. Use the existing function *MORSE_Desc_Create_User*: it is more
+        flexible than *Desc_Create* because you can give your own way to
+        access to tile data so that your tiles can be allocated
+        wherever you want in memory, see next paragraph [[sec:tuto_step3][Step3]].
+     4. Create you own function to fill the descriptor.  If you
+        understand well the meaning of each item of *MORSE_desc_t*, you
+        should be able to fill correctly the structure.
+
+     In Step2, we use the first way to create the descriptor:
+     #+begin_example
+     MORSE_Desc_Create(&descA, NULL, MorseRealDouble,
                        NB, NB, NB*NB, N, N,
                        0, 0, N, N,
-                       GRID_P, GRID_Q,
-                       morse_getaddr_ccrb,
-                       morse_getblkldd_ccrb,
-                       morse_getrankof_2d);
-@end verbatim
-is equivalent to the following call
-@verbatim
-MORSE_Desc_Create(&descA, NULL, MorseRealDouble,
-                  NB, NB, NB*NB, N, N,
-                  0, 0, N, N,
-                  GRID_P, GRID_Q);
-@end verbatim
-functions @code{morse_getaddr_ccrb}, @code{morse_getblkldd_ccrb},
-@code{morse_getrankof_2d} being used in @code{Desc_Create}.
-It is interesting to notice that the code is almost the same as Step5.
-The only additional information to give is the way tiles are distributed
-through the third function given to @code{MORSE_Desc_Create_User}.
-Here, because we have made experiments only with a 2-D block-cyclic
-distribution, we have parameters P and Q in the interface of @code{Desc_Create}
-but they have sense only for 2-D block-cyclic distribution and then using
-@code{morse_getrankof_2d} function.
-Of course it could be used with other distributions, being no more the
-parameters of a 2-D block-cyclic grid but of another distribution.
-
-@node Step7
-@subsubsection Step7
-
-This program is a copy of step6 with some additional calls to
-build a matrix from within chameleon using a function provided by the user.
-This can be seen as a replacement of the function like @code{MORSE_dplgsy_Tile()} that can be used
-to fill the matrix with random data, @code{MORSE_dLapack_to_Tile()} to fill the matrix
-with data stored in a lapack-like buffer, or @code{MORSE_Desc_Create_User()} that can be used
-to describe an arbitrary tile matrix structure.
-In this example, the build callback function are just wrapper towards @code{CORE_xxx()} functions, so the output
-of the program step7 should be exactly similar to that of step6.
-The difference is that the function used to fill the tiles is provided by the user,
-and therefore this approach is much more flexible.
-
-The new function to understand is @code{MORSE_dbuild_Tile}, e.g.
-@verbatim
-struct data_pl data_A={(double)N, 51, N};
-MORSE_dbuild_Tile(MorseUpperLower, descA, (void*)&data_A, Morse_build_callback_plgsy);
-@end verbatim
-The idea here is to let Chameleon fill the matrix data in a task-based fashion
-(parallel) by using a function given by the user.
-First, the user should define if all the blocks must be entirelly filled or just
-the upper/lower part with, e.g. @code{MorseUpperLower}.
-We still relies on the same structure @code{MORSE_desc_t} which must be
-initialized with the proper parameters, by calling for example
-@code{MORSE_Desc_Create}.
-Then, an opaque pointer is used to let the user give some extra data used by
-his function.
-The last parameter is the pointer to the user's function.
-
-@node List of available routines
-@subsection List of available routines
-
-@menu
-* Auxiliary routines:: Init, Finalize, Version, etc
-* Descriptor routines:: To handle descriptors
-* Options routines:: To set options
-* Sequences routines:: To manage asynchronous function calls
-* Linear Algebra routines:: Computional routines
-@end menu
-
-@node Auxiliary routines
-@subsubsection Auxiliary routines
-
-Reports MORSE version number.
-@verbatim
-int MORSE_Version        (int *ver_major, int *ver_minor, int *ver_micro);
-@end verbatim
-
-Initialize MORSE: initialize some parameters, initialize the runtime and/or MPI.
-@verbatim
-int MORSE_Init           (int nworkers, int ncudas);
-@end verbatim
-
-Finalyze MORSE: free some data and finalize the runtime and/or MPI.
-@verbatim
-int MORSE_Finalize       (void);
-@end verbatim
-
-Return the MPI rank of the calling process.
-@verbatim
-int MORSE_My_Mpi_Rank    (void);
-@end verbatim
-
-Suspend MORSE runtime to poll for new tasks, to avoid useless CPU consumption when
-no tasks have to be executed by MORSE runtime system.
-@verbatim
-int MORSE_Pause          (void);
-@end verbatim
-
-Symmetrical call to MORSE_Pause, used to resume the workers polling for new tasks.
-@verbatim
-int MORSE_Resume         (void);
-@end verbatim
-
-Conversion from LAPACK layout to tile layout.
-@verbatim
-int MORSE_Lapack_to_Tile (void *Af77, int LDA, MORSE_desc_t *A);
-@end verbatim
-
-Conversion from tile layout to LAPACK layout.
-@verbatim
-int MORSE_Tile_to_Lapack (MORSE_desc_t *A, void *Af77, int LDA);
-@end verbatim
-
-@node Descriptor routines
-@subsubsection Descriptor routines
-
-@c /* Descriptor */
-Create matrix descriptor, internal function.
-@verbatim
-int MORSE_Desc_Create  (MORSE_desc_t **desc, void *mat, MORSE_enum dtyp,
-                        int mb, int nb, int bsiz, int lm, int ln,
-                        int i, int j, int m, int n, int p, int q);
-@end verbatim
-
-Create matrix descriptor, user function.
-@verbatim
-int MORSE_Desc_Create_User(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp,
-                           int mb, int nb, int bsiz, int lm, int ln,
-                           int i, int j, int m, int n, int p, int q,
-                           void* (*get_blkaddr)( const MORSE_desc_t*, int, int),
-                           int (*get_blkldd)( const MORSE_desc_t*, int ),
-                           int (*get_rankof)( const MORSE_desc_t*, int, int ));
-@end verbatim
-
-Destroys matrix descriptor.
-@verbatim
-int MORSE_Desc_Destroy (MORSE_desc_t **desc);
-@end verbatim
-
-Ensure that all data are up-to-date in main memory (even if some tasks have
-been processed on GPUs)
-@verbatim
-int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc);
-@end verbatim
-
-@node Options routines
-@subsubsection Options routines
-
-@c /* Options */
-Enable MORSE feature.
-@verbatim
-int MORSE_Enable  (MORSE_enum option);
-@end verbatim
-Feature to be enabled:
-@itemize @bullet
-@item @code{MORSE_WARNINGS}:   printing of warning messages,
-@item @code{MORSE_ERRORS}:     printing of error messages,
-@item @code{MORSE_AUTOTUNING}: autotuning for tile size and inner block size,
-@item @code{MORSE_PROFILING_MODE}:  activate kernels profiling.
-@end itemize
-
-Disable MORSE feature.
-@verbatim
-int MORSE_Disable (MORSE_enum option);
-@end verbatim
-Symmetric to @code{MORSE_Enable}.
-
-Set MORSE parameter.
-@verbatim
-int MORSE_Set     (MORSE_enum param, int  value);
-@end verbatim
-Parameters to be set:
-@itemize @bullet
-@item @code{MORSE_TILE_SIZE}:        size matrix tile,
-@item @code{MORSE_INNER_BLOCK_SIZE}: size of tile inner block,
-@item @code{MORSE_HOUSEHOLDER_MODE}: type of householder trees (FLAT or TREE),
-@item @code{MORSE_HOUSEHOLDER_SIZE}: size of the groups in householder trees,
-@item @code{MORSE_TRANSLATION_MODE}: related to the
-@code{MORSE_Lapack_to_Tile}, see @file{ztile.c}.
-@end itemize
-
-Get value of MORSE parameter.
-@verbatim
-int MORSE_Get     (MORSE_enum param, int *value);
-@end verbatim
-
-@node Sequences routines
-@subsubsection Sequences routines
-
-@c /* Sequences */
-Create a sequence.
-@verbatim
-int MORSE_Sequence_Create  (MORSE_sequence_t **sequence);
-@end verbatim
-
-Destroy a sequence.
-@verbatim
-int MORSE_Sequence_Destroy (MORSE_sequence_t *sequence);
-@end verbatim
-
-Wait for the completion of a sequence.
-@verbatim
-int MORSE_Sequence_Wait    (MORSE_sequence_t *sequence);
-@end verbatim
-
-@node Linear Algebra routines
-@subsubsection Linear Algebra routines
-
-Routines computing linear algebra of the form
-@code{MORSE_name[_Tile[_Async]]} (@code{name} follows LAPACK naming scheme, see
-@uref{http://www.netlib.org/lapack/lug/node24.html} availables:
-
-@verbatim
-/** ********************************************************
- *  Declarations of computational functions (LAPACK layout)
- **/
-
-int MORSE_zgelqf(int M, int N, MORSE_Complex64_t *A, int LDA,
-                 MORSE_desc_t *descT);
-
-int MORSE_zgelqs(int M, int N, int NRHS, MORSE_Complex64_t *A, int LDA,
-                 MORSE_desc_t *descT, MORSE_Complex64_t *B, int LDB);
-
-int MORSE_zgels(MORSE_enum trans, int M, int N, int NRHS,
-                MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descT,
-                MORSE_Complex64_t *B, int LDB);
-
-int MORSE_zgemm(MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
-                MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                MORSE_Complex64_t *B, int LDB, MORSE_Complex64_t beta,
-                MORSE_Complex64_t *C, int LDC);
-
-int MORSE_zgeqrf(int M, int N, MORSE_Complex64_t *A, int LDA,
-                 MORSE_desc_t *descT);
-
-int MORSE_zgeqrs(int M, int N, int NRHS, MORSE_Complex64_t *A, int LDA,
-                 MORSE_desc_t *descT, MORSE_Complex64_t *B, int LDB);
-
-int MORSE_zgesv_incpiv(int N, int NRHS, MORSE_Complex64_t *A, int LDA,
-                       MORSE_desc_t *descL, int *IPIV,
-                       MORSE_Complex64_t *B, int LDB);
-
-int MORSE_zgesv_nopiv(int N, int NRHS, MORSE_Complex64_t *A, int LDA,
-                      MORSE_Complex64_t *B, int LDB);
-
-int MORSE_zgetrf_incpiv(int M, int N, MORSE_Complex64_t *A, int LDA,
-                        MORSE_desc_t *descL, int *IPIV);
-
-int MORSE_zgetrf_nopiv(int M, int N, MORSE_Complex64_t *A, int LDA);
-
-int MORSE_zgetrs_incpiv(MORSE_enum trans, int N, int NRHS,
-                        MORSE_Complex64_t *A, int LDA,
-                        MORSE_desc_t *descL, int *IPIV,
-                        MORSE_Complex64_t *B, int LDB);
-
-int MORSE_zgetrs_nopiv(MORSE_enum trans, int N, int NRHS,
-                       MORSE_Complex64_t *A, int LDA,
-                       MORSE_Complex64_t *B, int LDB);
-
-#ifdef COMPLEX
-int MORSE_zhemm(MORSE_enum side, MORSE_enum uplo, int M, int N,
-                MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                MORSE_Complex64_t *B, int LDB, MORSE_Complex64_t beta,
-                MORSE_Complex64_t *C, int LDC);
-
-int MORSE_zherk(MORSE_enum uplo, MORSE_enum trans, int N, int K,
-                double alpha, MORSE_Complex64_t *A, int LDA,
-                double beta, MORSE_Complex64_t *C, int LDC);
-
-int MORSE_zher2k(MORSE_enum uplo, MORSE_enum trans, int N, int K,
-                 MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                 MORSE_Complex64_t *B, int LDB, double beta,
-                 MORSE_Complex64_t *C, int LDC);
-#endif
-
-int MORSE_zlacpy(MORSE_enum uplo, int M, int N,
-                 MORSE_Complex64_t *A, int LDA,
-                 MORSE_Complex64_t *B, int LDB);
-
-double MORSE_zlange(MORSE_enum norm, int M, int N,
-                    MORSE_Complex64_t *A, int LDA);
-
-#ifdef COMPLEX
-double MORSE_zlanhe(MORSE_enum norm, MORSE_enum uplo, int N,
-                    MORSE_Complex64_t *A, int LDA);
-#endif
-
-double MORSE_zlansy(MORSE_enum norm, MORSE_enum uplo, int N,
-                    MORSE_Complex64_t *A, int LDA);
-
-double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
-                    int M, int N, MORSE_Complex64_t *A, int LDA);
-
-int MORSE_zlaset(MORSE_enum uplo, int M, int N, MORSE_Complex64_t alpha,
-                 MORSE_Complex64_t beta, MORSE_Complex64_t *A, int LDA);
-
-int MORSE_zlauum(MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA);
-
-#ifdef COMPLEX
-int MORSE_zplghe( double bump, MORSE_enum uplo, int N,
-                  MORSE_Complex64_t *A, int LDA,
-                  unsigned long long int seed );
-#endif
-
-int MORSE_zplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, int N,
-                  MORSE_Complex64_t *A, int LDA,
-                  unsigned long long int seed );
-
-int MORSE_zplrnt( int M, int N, MORSE_Complex64_t *A, int LDA,
-                  unsigned long long int seed );
-
-int MORSE_zposv(MORSE_enum uplo, int N, int NRHS,
-                MORSE_Complex64_t *A, int LDA,
-                MORSE_Complex64_t *B, int LDB);
-
-int MORSE_zpotrf(MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA);
-
-int MORSE_zsytrf(MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA);
-
-int MORSE_zpotri(MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA);
-
-int MORSE_zpotrs(MORSE_enum uplo, int N, int NRHS,
-                 MORSE_Complex64_t *A, int LDA,
-                 MORSE_Complex64_t *B, int LDB);
-
-#if defined (PRECISION_c) || defined(PRECISION_z)
-int MORSE_zsytrs(MORSE_enum uplo, int N, int NRHS,
-                 MORSE_Complex64_t *A, int LDA,
-                 MORSE_Complex64_t *B, int LDB);
-#endif
-
-int MORSE_zsymm(MORSE_enum side, MORSE_enum uplo, int M, int N,
-                MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                MORSE_Complex64_t *B, int LDB, MORSE_Complex64_t beta,
-                MORSE_Complex64_t *C, int LDC);
-
-int MORSE_zsyrk(MORSE_enum uplo, MORSE_enum trans, int N, int K,
-                MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                MORSE_Complex64_t beta, MORSE_Complex64_t *C, int LDC);
-
-int MORSE_zsyr2k(MORSE_enum uplo, MORSE_enum trans, int N, int K,
-                 MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                 MORSE_Complex64_t *B, int LDB, MORSE_Complex64_t beta,
-                 MORSE_Complex64_t *C, int LDC);
-
-int MORSE_ztrmm(MORSE_enum side, MORSE_enum uplo,
-                MORSE_enum transA, MORSE_enum diag,
-                int N, int NRHS,
-                MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                MORSE_Complex64_t *B, int LDB);
-
-int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
-                MORSE_enum transA, MORSE_enum diag,
-                int N, int NRHS,
-                MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                MORSE_Complex64_t *B, int LDB);
-
-int MORSE_ztrsmpl(int N, int NRHS, MORSE_Complex64_t *A, int LDA,
-                  MORSE_desc_t *descL, int *IPIV,
-                  MORSE_Complex64_t *B, int LDB);
-
-int MORSE_ztrsmrv(MORSE_enum side, MORSE_enum uplo,
-                  MORSE_enum transA, MORSE_enum diag,
-                  int N, int NRHS,
-                  MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                  MORSE_Complex64_t *B, int LDB);
-
-int MORSE_ztrtri(MORSE_enum uplo, MORSE_enum diag, int N,
-                 MORSE_Complex64_t *A, int LDA);
-
-int MORSE_zunglq(int M, int N, int K, MORSE_Complex64_t *A, int LDA,
-                 MORSE_desc_t *descT, MORSE_Complex64_t *B, int LDB);
-
-int MORSE_zungqr(int M, int N, int K, MORSE_Complex64_t *A, int LDA,
-                 MORSE_desc_t *descT, MORSE_Complex64_t *B, int LDB);
-
-int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
-                 MORSE_Complex64_t *A, int LDA,
-                 MORSE_desc_t *descT,
-                 MORSE_Complex64_t *B, int LDB);
-
-int MORSE_zunmqr(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
-                 MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descT,
-                 MORSE_Complex64_t *B, int LDB);
-
-/** ******************************************************
- *  Declarations of computational functions (tile layout)
- **/
-
-int MORSE_zgelqf_Tile(MORSE_desc_t *A, MORSE_desc_t *T);
-
-int MORSE_zgelqs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B);
-
-int MORSE_zgels_Tile(MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *T,
-                     MORSE_desc_t *B);
-
-int MORSE_zgemm_Tile(MORSE_enum transA, MORSE_enum transB,
-                     MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                     MORSE_desc_t *B, MORSE_Complex64_t beta,
-                     MORSE_desc_t *C);
-
-int MORSE_zgeqrf_Tile(MORSE_desc_t *A, MORSE_desc_t *T);
-
-int MORSE_zgeqrs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B);
-
-int MORSE_zgesv_incpiv_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
-                            MORSE_desc_t *B);
-
-int MORSE_zgesv_nopiv_Tile(MORSE_desc_t *A, MORSE_desc_t *B);
-
-int MORSE_zgetrf_incpiv_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV);
-
-int MORSE_zgetrf_nopiv_Tile(MORSE_desc_t *A);
-
-int MORSE_zgetrs_incpiv_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
-                             MORSE_desc_t *B);
-
-int MORSE_zgetrs_nopiv_Tile(MORSE_desc_t *A, MORSE_desc_t *B);
-
-#ifdef COMPLEX
-int MORSE_zhemm_Tile(MORSE_enum side, MORSE_enum uplo,
-                     MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                     MORSE_desc_t *B, MORSE_Complex64_t beta,
-                     MORSE_desc_t *C);
-
-int MORSE_zherk_Tile(MORSE_enum uplo, MORSE_enum trans,
-                     double alpha, MORSE_desc_t *A,
-                     double beta, MORSE_desc_t *C);
-
-int MORSE_zher2k_Tile(MORSE_enum uplo, MORSE_enum trans,
-                      MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                      MORSE_desc_t *B, double beta, MORSE_desc_t *C);
-#endif
-
-int MORSE_zlacpy_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B);
-
-double MORSE_zlange_Tile(MORSE_enum norm, MORSE_desc_t *A);
-
-#ifdef COMPLEX
-double MORSE_zlanhe_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A);
-#endif
-
-double MORSE_zlansy_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A);
-
-double MORSE_zlantr_Tile(MORSE_enum norm, MORSE_enum uplo,
-                         MORSE_enum diag, MORSE_desc_t *A);
-
-int MORSE_zlaset_Tile(MORSE_enum uplo, MORSE_Complex64_t alpha,
-                      MORSE_Complex64_t beta, MORSE_desc_t *A);
-
-int MORSE_zlauum_Tile(MORSE_enum uplo, MORSE_desc_t *A);
-
-#ifdef COMPLEX
-int MORSE_zplghe_Tile(double bump, MORSE_enum uplo, MORSE_desc_t *A,
-                      unsigned long long int seed);
-#endif
-
-int MORSE_zplgsy_Tile(MORSE_Complex64_t bump, MORSE_enum uplo, MORSE_desc_t *A,
-                      unsigned long long int seed );
-
-int MORSE_zplrnt_Tile(MORSE_desc_t *A, unsigned long long int seed );
-
-int MORSE_zposv_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B);
-
-int MORSE_zpotrf_Tile(MORSE_enum uplo, MORSE_desc_t *A);
-
-int MORSE_zsytrf_Tile(MORSE_enum uplo, MORSE_desc_t *A);
-
-int MORSE_zpotri_Tile(MORSE_enum uplo, MORSE_desc_t *A);
-
-int MORSE_zpotrs_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B);
-
-#if defined (PRECISION_c) || defined(PRECISION_z)
-int MORSE_zsytrs_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B);
-#endif
-
-int MORSE_zsymm_Tile(MORSE_enum side, MORSE_enum uplo,
-                     MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                     MORSE_desc_t *B, MORSE_Complex64_t beta,
-                     MORSE_desc_t *C);
-
-int MORSE_zsyrk_Tile(MORSE_enum uplo, MORSE_enum trans,
-                     MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                     MORSE_Complex64_t beta, MORSE_desc_t *C);
-
-int MORSE_zsyr2k_Tile(MORSE_enum uplo, MORSE_enum trans,
-                      MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                      MORSE_desc_t *B, MORSE_Complex64_t beta,
-                      MORSE_desc_t *C);
-
-int MORSE_ztrmm_Tile(MORSE_enum side, MORSE_enum uplo,
-                     MORSE_enum transA, MORSE_enum diag,
-                     MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                     MORSE_desc_t *B);
-
-int MORSE_ztrsm_Tile(MORSE_enum side, MORSE_enum uplo,
-                     MORSE_enum transA, MORSE_enum diag,
-                     MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                     MORSE_desc_t *B);
-
-int MORSE_ztrsmpl_Tile(MORSE_desc_t *A, MORSE_desc_t *L,
-                       int *IPIV, MORSE_desc_t *B);
-
-int MORSE_ztrsmrv_Tile(MORSE_enum side, MORSE_enum uplo,
-                       MORSE_enum transA, MORSE_enum diag,
-                       MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                       MORSE_desc_t *B);
-
-int MORSE_ztrtri_Tile(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A);
-
-int MORSE_zunglq_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B);
-
-int MORSE_zungqr_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B);
-
-int MORSE_zunmlq_Tile(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A,
-                      MORSE_desc_t *T, MORSE_desc_t *B);
-
-int MORSE_zunmqr_Tile(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A,
-                      MORSE_desc_t *T, MORSE_desc_t *B);
-
-/** ****************************************
- *  Declarations of computational functions
- *  (tile layout, asynchronous execution)
- **/
-
-int MORSE_zgelqf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zgelqs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
-                            MORSE_desc_t *B,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zgels_Tile_Async(MORSE_enum trans, MORSE_desc_t *A,
-                           MORSE_desc_t *T, MORSE_desc_t *B,
-                           MORSE_sequence_t *sequence,
-                           MORSE_request_t *request);
-
-int MORSE_zgemm_Tile_Async(MORSE_enum transA, MORSE_enum transB,
-                           MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                           MORSE_desc_t *B, MORSE_Complex64_t beta,
-                           MORSE_desc_t *C, MORSE_sequence_t *sequence,
-                           MORSE_request_t *request);
-
-int MORSE_zgeqrf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request)
-
-int MORSE_zgeqrs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
-                            MORSE_desc_t *B,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zgesv_incpiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L,
-                                  int *IPIV, MORSE_desc_t *B,
-                                  MORSE_sequence_t *sequence,
-                                  MORSE_request_t *request);
-
-int MORSE_zgesv_nopiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *B,
-                                 MORSE_sequence_t *sequence,
-                                 MORSE_request_t *request);
-
-int MORSE_zgetrf_incpiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L,
-                                   int *IPIV, MORSE_sequence_t *sequence,
-                                   MORSE_request_t *request);
-
-int MORSE_zgetrf_nopiv_Tile_Async(MORSE_desc_t *A,
-                                  MORSE_sequence_t *sequence,
-                                  MORSE_request_t *request);
-
-int MORSE_zgetrs_incpiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L,
-                                   int *IPIV, MORSE_desc_t *B,
-                                   MORSE_sequence_t *sequence,
-                                   MORSE_request_t *request);
-
-int MORSE_zgetrs_nopiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *B,
-                                  MORSE_sequence_t *sequence,
-                                  MORSE_request_t *request);
-
-#ifdef COMPLEX
-int MORSE_zhemm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
-                           MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                           MORSE_desc_t *B, MORSE_Complex64_t beta,
-                           MORSE_desc_t *C, MORSE_sequence_t *sequence,
-                           MORSE_request_t *request);
-
-int MORSE_zherk_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
-                           double alpha, MORSE_desc_t *A,
-                           double beta, MORSE_desc_t *C,
-                           MORSE_sequence_t *sequence,
-                           MORSE_request_t *request);
-
-int MORSE_zher2k_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
-                            MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                            MORSE_desc_t *B, double beta, MORSE_desc_t *C,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-#endif
-
-int MORSE_zlacpy_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
-                            MORSE_desc_t *B, MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zlange_Tile_Async(MORSE_enum norm, MORSE_desc_t *A, double *value,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-#ifdef COMPLEX
-int MORSE_zlanhe_Tile_Async(MORSE_enum norm, MORSE_enum uplo,
-                            MORSE_desc_t *A, double *value,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-#endif
-
-int MORSE_zlansy_Tile_Async(MORSE_enum norm, MORSE_enum uplo,
-                            MORSE_desc_t *A, double *value,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zlantr_Tile_Async(MORSE_enum norm, MORSE_enum uplo,
-                            MORSE_enum diag, MORSE_desc_t *A, double *value,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zlaset_Tile_Async(MORSE_enum uplo, MORSE_Complex64_t alpha,
-                            MORSE_Complex64_t beta, MORSE_desc_t *A,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zlauum_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-#ifdef COMPLEX
-int MORSE_zplghe_Tile_Async(double bump, MORSE_enum uplo, MORSE_desc_t *A,
-                            unsigned long long int seed,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request );
-#endif
-
-int MORSE_zplgsy_Tile_Async(MORSE_Complex64_t bump, MORSE_enum uplo, MORSE_desc_t *A,
-                            unsigned long long int seed,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request );
-
-int MORSE_zplrnt_Tile_Async(MORSE_desc_t *A, unsigned long long int seed,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request );
-
-int MORSE_zposv_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
-                           MORSE_desc_t *B,
-                           MORSE_sequence_t *sequence,
-                           MORSE_request_t *request);
-
-int MORSE_zpotrf_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zsytrf_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zpotri_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zpotrs_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
-                            MORSE_desc_t *B, MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-#if defined (PRECISION_c) || defined(PRECISION_z)
-int MORSE_zsytrs_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
-                            MORSE_desc_t *B,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-#endif
-
-int MORSE_zsymm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
-                           MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                           MORSE_desc_t *B, MORSE_Complex64_t beta,
-                           MORSE_desc_t *C, MORSE_sequence_t *sequence,
-                           MORSE_request_t *request);
-
-int MORSE_zsyrk_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
-                           MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                           MORSE_Complex64_t beta, MORSE_desc_t *C,
-                           MORSE_sequence_t *sequence,
-                           MORSE_request_t *request);
-
-int MORSE_zsyr2k_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
-                            MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                            MORSE_desc_t *B, MORSE_Complex64_t beta,
-                            MORSE_desc_t *C, MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_ztrmm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
-                           MORSE_enum transA, MORSE_enum diag,
-                           MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                           MORSE_desc_t *B, MORSE_sequence_t *sequence,
-                           MORSE_request_t *request);
-
-int MORSE_ztrsm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
-                           MORSE_enum transA, MORSE_enum diag,
-                           MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                           MORSE_desc_t *B, MORSE_sequence_t *sequence,
-                           MORSE_request_t *request);
-
-int MORSE_ztrsmpl_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
-                             MORSE_desc_t *B, MORSE_sequence_t *sequence,
-                             MORSE_request_t *request);
-
-int MORSE_ztrsmrv_Tile_Async(MORSE_enum side, MORSE_enum uplo,
-                             MORSE_enum transA, MORSE_enum diag,
-                             MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                             MORSE_desc_t *B, MORSE_sequence_t *sequence,
-                             MORSE_request_t *request);
-
-int MORSE_ztrtri_Tile_Async(MORSE_enum uplo, MORSE_enum diag,
-                            MORSE_desc_t *A,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zunglq_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
-                            MORSE_desc_t *B,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zungqr_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
-                            MORSE_desc_t *B,
-                            MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zunmlq_Tile_Async(MORSE_enum side, MORSE_enum trans,
-                            MORSE_desc_t *A, MORSE_desc_t *T,
-                            MORSE_desc_t *B, MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-int MORSE_zunmqr_Tile_Async(MORSE_enum side, MORSE_enum trans,
-                            MORSE_desc_t *A, MORSE_desc_t *T,
-                            MORSE_desc_t *B, MORSE_sequence_t *sequence,
-                            MORSE_request_t *request);
-
-@end verbatim
-
-@c -nofor_main
+                       1, 1);
+     #+end_example
+     * *descA* is the descriptor to create.
+     * The second argument is a pointer to existing data. The existing
+       data must follow LAPACK/PLASMA matrix layout [[sec:tile][Tile Data Layout]]
+       (1-D array column-major) if *MORSE_Desc_Create* is used to create
+       the descriptor. The *MORSE_Desc_Create_User* function can be used
+       if you have data organized differently. This is discussed in
+       the next paragraph [[sec_tuto_step3][Step3]].  Giving a *NULL* pointer means you let
+       the function allocate memory space.  This requires to copy your
+       data in the memory allocated by the *Desc_Create.  This can be
+       done with
+       #+begin_example
+       MORSE_Lapack_to_Tile(A, N, descA);
+       #+end_example
+     * Third argument of @code{Desc_Create} is the datatype (used for
+       memory allocation).
+     * Fourth argument until sixth argument stand for respectively,
+       the number of rows (*NB*), columns (*NB*) in each tile, the total
+       number of values in a tile (*NB*NB*), the number of rows (*N*),
+       colmumns (*N*) in the entire matrix.
+     * Seventh argument until ninth argument stand for respectively,
+       the beginning row (0), column (0) indexes of the submatrix and
+       the number of rows (N), columns (N) in the submatrix.  These
+       arguments are specific and used in precise cases.  If you do
+       not consider submatrices, just use 0, 0, NROWS, NCOLS.
+     * Two last arguments are the parameter of the 2-D block-cyclic
+       distribution grid, see [[http://www.netlib.org/scalapack/slug/node75.html][ScaLAPACK]].  To be able to use other data
+       distribution over the nodes, *MORSE_Desc_Create_User* function
+       should be used.
+
+**** Step3
+     <<sec:tuto_step3>>
+
+     This program makes use of the same interface than Step2 (tile
+     interface) but does not allocate LAPACK matrices anymore so that
+     no copy between LAPACK matrix layout and tile matrix layout are
+     necessary to call MORSE routines.  To generate random right
+     hand-sides you can use:
+     #+begin_example
+     /* Allocate memory and initialize descriptor B */
+     MORSE_Desc_Create(&descB,  NULL, MorseRealDouble,
+                       NB, NB,  NB*NB, N, NRHS,
+                       0, 0, N, NRHS, 1, 1);
+     /* generate RHS with random values */
+     MORSE_dplrnt_Tile( descB, 5673 );
+     #+end_example
+     The other important point is that is it possible to create a
+     descriptor, the necessary structure to call MORSE efficiently, by
+     giving your own pointer to tiles if your matrix is not organized
+     as a 1-D array column-major.  This can be achieved with the
+     *MORSE_Desc_Create_User* routine.  Here is an example:
+     #+begin_example
+     MORSE_Desc_Create_User(&descA, matA, MorseRealDouble,
+                            NB, NB, NB*NB, N, N,
+                            0, 0, N, N, 1, 1,
+                            user_getaddr_arrayofpointers,
+                            user_getblkldd_arrayofpointers,
+                            user_getrankof_zero);
+     #+end_example
+     Firsts arguments are the same than *MORSE_Desc_Create* routine.
+     Following arguments allows you to give pointer to functions that
+     manage the access to tiles from the structure given as second
+     argument.  Here for example, *matA* is an array containing
+     addresses to tiles, see the function *allocate_tile_matrix*
+     defined in step3.h.  The three functions you have to
+     define for *Desc_Create_User* are:
+     * a function that returns address of tile $A(m,n)$, m and n
+       standing for the indexes of the tile in the global matrix. Lets
+       consider a matrix @math{4x4} with tile size 2x2, the matrix
+       contains four tiles of indexes: $A(m=0,n=0)$, $A(m=0,n=1)$,
+       $A(m=1,n=0)$, $A(m=1,n=1)$
+     * a function that returns the leading dimension of tile $A(m,*)$
+     * a function that returns MPI rank of tile $A(m,n)$
+
+     Examples for these functions are vizible in step3.h.  Note that
+     the way we define these functions is related to the tile matrix
+     format and to the data distribution considered.  This example
+     should not be used with MPI since all tiles are affected to
+     processus 0, which means a large amount of data will be
+     potentially transfered between nodes.
+
+**** Step4
+     <<sec:tuto_step4>>
+
+     This program is a copy of step2 but instead of using the tile
+     interface, it uses the tile async interface.  The goal is to
+     exhibit the runtime synchronization barriers.  Keep in mind that
+     when the tile interface is called, like *MORSE_dpotrf_Tile*,
+     a synchronization function, waiting for the actual execution and
+     termination of all tasks, is called to ensure the proper
+     completion of the algorithm (i.e. data are up-to-date).  The code
+     shows how to exploit the async interface to pipeline subsequent
+     algorithms so that less synchronisations are done.  The code
+     becomes:
+     #+begin_example
+     /* Morse structure containing parameters and a structure to interact with
+      * the Runtime system */
+     MORSE_context_t *morse;
+     /* MORSE sequence uniquely identifies a set of asynchronous function calls
+      * sharing common exception handling */
+     MORSE_sequence_t *sequence = NULL;
+     /* MORSE request uniquely identifies each asynchronous function call */
+     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
+     int status;
+
+     ...
+
+     morse_sequence_create(morse, &sequence);
+
+     /* Factorization: */
+     MORSE_dpotrf_Tile_Async( UPLO, descA, sequence, &request );
+
+     /* Solve: */
+     MORSE_dpotrs_Tile_Async( UPLO, descA, descX, sequence, &request);
+
+     /* Synchronization barrier (the runtime ensures that all submitted tasks
+      * have been terminated */
+     RUNTIME_barrier(morse);
+     /* Ensure that all data processed on the gpus we are depending on are back
+      * in main memory */
+     RUNTIME_desc_getoncpu(descA);
+     RUNTIME_desc_getoncpu(descX);
+
+     status = sequence->status;
+     #+end_example
+
+     Here the sequence of *dpotrf* and *dpotrs* algorithms is processed
+     without synchronization so that some tasks of *dpotrf* and *dpotrs*
+     can be concurently executed which could increase performances.
+     The async interface is very similar to the tile one.  It is only
+     necessary to give two new objects *MORSE_sequence_t* and
+     *MORSE_request_t* used to handle asynchronous function calls.
+
+     #+CAPTION: POTRI (POTRF, TRTRI, LAUUM) algorithm with and without synchronization barriers, courtesey of the [[http://icl.cs.utk.edu/plasma/][PLASMA]] team.
+     #+NAME: fig:potri_async
+     #+ATTR_HTML: :width 640px :align center
+     [[file:potri_async.png]]
+
+**** Step5
+     <<sec:tuto_step5>>
+
+     Step5 shows how to set some important parameters.  This program
+     is a copy of Step4 but some additional parameters are given by
+     the user.  The parameters that can be set are:
+     * number of Threads
+     * number of GPUs
+
+       The number of workers can be given as argument
+       to the executable with ~--threads=~ and ~--gpus=~ options.  It is
+       important to notice that we assign one thread per gpu to
+       optimize data transfer between main memory and devices memory.
+       The number of workers of each type CPU and CUDA
+       must be given at *MORSE_Init*.
+       #+begin_example
+       if ( iparam[IPARAM_THRDNBR] == -1 ) {
+           get_thread_count( &(iparam[IPARAM_THRDNBR]) );
+           /* reserve one thread par cuda device to optimize memory transfers */
+           iparam[IPARAM_THRDNBR] -=iparam[IPARAM_NCUDAS];
+       }
+       NCPU = iparam[IPARAM_THRDNBR];
+       NGPU = iparam[IPARAM_NCUDAS];
+       /* initialize MORSE with main parameters */
+       MORSE_Init( NCPU, NGPU );
+       #+end_example
+
+     * matrix size
+     * number of right-hand sides
+     * block (tile) size
+
+       The problem size is given with ~--n=~ and ~--nrhs=~ options.  The
+       tile size is given with option ~--nb=~.  These parameters are
+       required to create descriptors.  The size tile NB is a key
+       parameter to get performances since it defines the granularity
+       of tasks.  If NB is too large compared to N, there are few
+       tasks to schedule.  If the number of workers is large this
+       leads to limit parallelism.  On the contrary, if NB is too
+       small (/i.e./ many small tasks), workers could not be correctly
+       fed and the runtime systems operations could represent a
+       substantial overhead.  A trade-off has to be found depending on
+       many parameters: problem size, algorithm (drive data
+       dependencies), architecture (number of workers, workers speed,
+       workers uniformity, memory bus speed).  By default it is set
+       to 128.  Do not hesitate to play with this parameter and
+       compare performances on your machine.
+
+     * inner-blocking size
+
+        The inner-blocking size is given with option ~--ib=~.
+        This parameter is used by kernels (optimized algorithms applied on tiles) to
+        perform subsequent operations with data block-size that fits the cache of
+        workers.
+        Parameters NB and IB can be given with *MORSE_Set* function:
+        #+begin_example
+        MORSE_Set(MORSE_TILE_SIZE,        iparam[IPARAM_NB] );
+        MORSE_Set(MORSE_INNER_BLOCK_SIZE, iparam[IPARAM_IB] );
+        #+end_example
+
+**** Step6
+     <<sec:tuto_step6>>
+
+     This program is a copy of Step5 with some additional parameters
+     to be set for the data distribution.  To use this program
+     properly MORSE must use StarPU Runtime system and MPI option must
+     be activated at configure.  The data distribution used here is
+     2-D block-cyclic, see for example [[http://www.netlib.org/scalapack/slug/node75.html][ScaLAPACK]] for explanation.  The
+     user can enter the parameters of the distribution grid at
+     execution with ~--p=~ option.  Example using OpenMPI on four nodes
+     with one process per node:
+     #+begin_example
+     mpirun -np 4 ./step6 --n=10000 --nb=320 --ib=64 --threads=8 --gpus=2 --p=2
+     #+end_example
+
+     In this program we use the tile data layout from PLASMA so that the call
+     #+begin_example
+     MORSE_Desc_Create_User(&descA, NULL, MorseRealDouble,
+                            NB, NB, NB*NB, N, N,
+                            0, 0, N, N,
+                            GRID_P, GRID_Q,
+                            morse_getaddr_ccrb,
+                            morse_getblkldd_ccrb,
+                            morse_getrankof_2d);
+     #+end_example
+     is equivalent to the following call
+
+     #+begin_example
+     MORSE_Desc_Create(&descA, NULL, MorseRealDouble,
+                       NB, NB, NB*NB, N, N,
+                       0, 0, N, N,
+                       GRID_P, GRID_Q);
+     #+end_example
+     functions *morse_getaddr_ccrb*, *morse_getblkldd_ccrb*,
+     *morse_getrankof_2d* being used in *Desc_Create*.  It is interesting
+     to notice that the code is almost the same as Step5.  The only
+     additional information to give is the way tiles are distributed
+     through the third function given to *MORSE_Desc_Create_User*.
+     Here, because we have made experiments only with a 2-D
+     block-cyclic distribution, we have parameters P and Q in the
+     interface of *Desc_Create* but they have sense only for 2-D
+     block-cyclic distribution and then using *morse_getrankof_2d*
+     function.  Of course it could be used with other distributions,
+     being no more the parameters of a 2-D block-cyclic grid but of
+     another distribution.
+
+**** Step7
+     <<sec:tuto_step7>>
+
+     This program is a copy of step6 with some additional calls to
+     build a matrix from within chameleon using a function provided by
+     the user.  This can be seen as a replacement of the function like
+     *MORSE_dplgsy_Tile()* that can be used to fill the matrix with
+     random data, *MORSE_dLapack_to_Tile()* to fill the matrix with data
+     stored in a lapack-like buffer, or *MORSE_Desc_Create_User()* that
+     can be used to describe an arbitrary tile matrix structure.  In
+     this example, the build callback function are just wrapper
+     towards *CORE_xxx()* functions, so the output of the program step7
+     should be exactly similar to that of step6.  The difference is
+     that the function used to fill the tiles is provided by the user,
+     and therefore this approach is much more flexible.
+
+     The new function to understand is *MORSE_dbuild_Tile*, e.g.
+     #+begin_example
+     struct data_pl data_A={(double)N, 51, N};
+     MORSE_dbuild_Tile(MorseUpperLower, descA, (void*)&data_A, Morse_build_callback_plgsy);
+     #+end_example
+
+     The idea here is to let Chameleon fill the matrix data in a
+     task-based fashion (parallel) by using a function given by the
+     user.  First, the user should define if all the blocks must be
+     entirelly filled or just the upper/lower part with, /e.g./
+     MorseUpperLower.  We still relies on the same structure
+     *MORSE_desc_t* which must be initialized with the proper
+     parameters, by calling for example *MORSE_Desc_Create*.  Then, an
+     opaque pointer is used to let the user give some extra data used
+     by his function.  The last parameter is the pointer to the user's
+     function.
+
+*** List of available routines
+**** Auxiliary routines
+     Reports MORSE version number.
+     #+begin_src
+     int MORSE_Version        (int *ver_major, int *ver_minor, int *ver_micro);
+     #+end_src
+
+     Initialize MORSE: initialize some parameters, initialize the runtime and/or MPI.
+     #+begin_src
+     int MORSE_Init           (int nworkers, int ncudas);
+     #+end_src
+
+     Finalyze MORSE: free some data and finalize the runtime and/or MPI.
+     #+begin_src
+     int MORSE_Finalize       (void);
+     #+end_src
+
+     Return the MPI rank of the calling process.
+     #+begin_src
+     int MORSE_My_Mpi_Rank    (void);
+     #+end_src
+
+     Suspend MORSE runtime to poll for new tasks, to avoid useless CPU consumption when
+     no tasks have to be executed by MORSE runtime system.
+     #+begin_src
+     int MORSE_Pause          (void);
+     #+end_src
+
+     Symmetrical call to MORSE_Pause, used to resume the workers polling for new tasks.
+     #+begin_src
+     int MORSE_Resume         (void);
+     #+end_src
+
+     Conversion from LAPACK layout to tile layout.
+     #+begin_src
+     int MORSE_Lapack_to_Tile (void *Af77, int LDA, MORSE_desc_t *A);
+     #+end_src
+
+     Conversion from tile layout to LAPACK layout.
+     #+begin_src
+     int MORSE_Tile_to_Lapack (MORSE_desc_t *A, void *Af77, int LDA);
+     #+end_src
+
+**** Descriptor routines
+
+     Create matrix descriptor, internal function.
+     #+begin_src
+     int MORSE_Desc_Create  (MORSE_desc_t **desc, void *mat, MORSE_enum dtyp,
+                             int mb, int nb, int bsiz, int lm, int ln,
+                             int i, int j, int m, int n, int p, int q);
+     #+end_src
+
+     Create matrix descriptor, user function.
+     #+begin_src
+     int MORSE_Desc_Create_User(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp,
+                                int mb, int nb, int bsiz, int lm, int ln,
+                                int i, int j, int m, int n, int p, int q,
+                                void* (*get_blkaddr)( const MORSE_desc_t*, int, int),
+                                int (*get_blkldd)( const MORSE_desc_t*, int ),
+                                int (*get_rankof)( const MORSE_desc_t*, int, int ));
+     #+end_src
+
+     Destroys matrix descriptor.
+     #+begin_src
+     int MORSE_Desc_Destroy (MORSE_desc_t **desc);
+     #+end_src
+
+     Ensure that all data are up-to-date in main memory (even if some tasks have
+     been processed on GPUs)
+     #+begin_src
+     int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc);
+     #+end_src
+
+**** Options routines
+     Enable MORSE feature.
+     #+begin_src
+     int MORSE_Enable  (MORSE_enum option);
+     #+end_src
+     Feature to be enabled:
+     * *MORSE_WARNINGS*:   printing of warning messages,
+     * *MORSE_ERRORS*:     printing of error messages,
+     * *MORSE_AUTOTUNING*: autotuning for tile size and inner block size,
+     * *MORSE_PROFILING_MODE*:  activate kernels profiling.
+
+     Disable MORSE feature.
+     #+begin_src
+     int MORSE_Disable (MORSE_enum option);
+     #+end_src
+     Symmetric to *MORSE_Enable*.
+
+     Set MORSE parameter.
+     #+begin_src
+     int MORSE_Set     (MORSE_enum param, int  value);
+     #+end_src
+     Parameters to be set:
+     * *MORSE_TILE_SIZE*:        size matrix tile,
+     * *MORSE_INNER_BLOCK_SIZE*: size of tile inner block,
+     * *MORSE_HOUSEHOLDER_MODE*: type of householder trees (FLAT or TREE),
+     * *MORSE_HOUSEHOLDER_SIZE*: size of the groups in householder trees,
+     * *MORSE_TRANSLATION_MODE*: related to the *MORSE_Lapack_to_Tile*, see ztile.c.
+
+     Get value of MORSE parameter.
+     #+begin_src
+     int MORSE_Get     (MORSE_enum param, int *value);
+     #+end_src
+
+**** Sequences routines
+
+     Create a sequence.
+     #+begin_src
+     int MORSE_Sequence_Create  (MORSE_sequence_t **sequence);
+     #+end_src
+
+     Destroy a sequence.
+     #+begin_src
+     int MORSE_Sequence_Destroy (MORSE_sequence_t *sequence);
+     #+end_src
+
+     Wait for the completion of a sequence.
+     #+begin_src
+     int MORSE_Sequence_Wait    (MORSE_sequence_t *sequence);
+     #+end_src
+
+**** Linear Algebra routines
+
+     We list the linear algebra routines of the form
+     *MORSE_name[_Tile[_Async]]* (/name/ follows LAPACK naming scheme, see
+     http://www.netlib.org/lapack/lug/node24.html) that can be used
+     with the Chameleon library. For details about these functions
+     please refer to the doxygen documentation.
+     * BLAS 3: geadd, gemm, hemm, her2k, herk, lascal, symm, syr2k,
+       syrk, trmm, trsm, trsmpl, tradd
+     * LAPACK: gelqf, gelqf_param, gelqfrh, geqrf, geqrfrh,
+       geqrf_param, getrf_incpiv, getrf_nopiv, lacpy, lange, lanhe,
+       lansy, lantr, laset2, laset, lauum, plghe, plgsy, plrnt, potrf,
+       sytrf, trtri, potrimm, unglq, unglq_param, unglqrh, ungqr,
+       ungqr_param, ungqrrh, unmlq, unmlq_param, unmlqrh, unmqr,
+       unmqr_param, unmqrrh, tpgqrt, tpqrt

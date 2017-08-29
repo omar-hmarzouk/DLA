@@ -322,7 +322,7 @@ we encourage users to use the morse branch of *Spack*.
        libraries, executables, etc, will be copied when invoking make
        install
      * *BUILD_SHARED_LIBS=ON|OFF* : Indicate wether or not CMake has to
-       build CHAMELEON static (~OFF~) or shared (~ON~) libraries.
+       build Chameleon static (~OFF~) or shared (~ON~) libraries.
      * *CMAKE_C_COMPILER=gcc|icc|...* : to choose the C compilers
        if several exist in the environment
      * *CMAKE_Fortran_COMPILER=gfortran|ifort|...*: to choose the
@@ -381,7 +381,7 @@ we encourage users to use the morse branch of *Spack*.
        kernels on workers), see also [[sec:trace][Execution tracing
        with StarPU]].
      * *CHAMELEON_SIMULATION=ON|OFF* (default OFF) : to enable
-       simulation mode, means CHAMELEON will not really execute tasks,
+       simulation mode, means Chameleon will not really execute tasks,
        see details in section [[sec:simu][Use simulation mode with
        StarPU-SimGrid]]. This option must be used with StarPU compiled
        with [[http://simgrid.gforge.inria.fr/][SimGrid]] allowing to guess the execution time on any

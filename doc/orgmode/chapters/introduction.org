@@ -198,6 +198,7 @@
      [[file:tile_lu.jpg]]
 
 **** Tile Data Layout
+     <<sec:tile>>
      Tile layout is based on the idea of storing the matrix by square
      tiles of relatively small size, such that each tile occupies a
      continuous memory region.  This way a tile can be loaded to the
