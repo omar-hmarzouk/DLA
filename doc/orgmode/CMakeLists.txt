@@ -70,6 +70,7 @@ if(EMACS_COMPILER)
                                org-html-export-to-html
                                --kill
                        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/users_guide.org
+                               ${CMAKE_CURRENT_BINARY_DIR}/version.org
                       )
     add_custom_command(OUTPUT  users_guide.pdf
                        COMMAND ${EMACS_COMPILER}
@@ -79,6 +80,7 @@ if(EMACS_COMPILER)
                                org-latex-export-to-pdf
                                --kill
                        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/users_guide.org
+                               ${CMAKE_CURRENT_BINARY_DIR}/version.org
                       )
     add_custom_target(doc-html-users_guide ALL DEPENDS users_guide.html)
     add_custom_target(doc-pdf-users_guide ALL DEPENDS users_guide.pdf)
