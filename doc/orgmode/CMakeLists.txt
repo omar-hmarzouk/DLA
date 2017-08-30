@@ -58,6 +58,7 @@ endforeach()
 # Looking for emacs
 # -----------------
 FIND_PROGRAM(EMACS_COMPILER emacs)
+FIND_PROGRAM(TEX_COMPILER tex)
 
 if(EMACS_COMPILER)
     # Add target
