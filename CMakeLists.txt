@@ -1086,8 +1086,8 @@ endif(CHAMELEON_ENABLE_TIMING)
 
 if(CHAMELEON_ENABLE_DOC)
     add_subdirectory(doc)
-    if (DOXYGEN_EXECUTABLE AND MAKEINFO_COMPILER AND TEXI2DVI_COMPILER AND TEX_COMPILER)
-        add_custom_target(doc ALL DEPENDS doxygen-out doc-info-users_guide doc-html-users_guide doc-pdf-users_guide)
+    if (DOXYGEN_EXECUTABLE AND EMACS_COMPILER AND TEX_COMPILER)
+        add_custom_target(doc ALL DEPENDS doxygen-out doc-html-users_guide doc-pdf-users_guide)
     endif()
 endif()
 #------------------------------------------------------------------------------
