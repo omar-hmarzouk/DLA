@@ -712,17 +712,100 @@
      *MORSE_name[_Tile[_Async]]* (/name/ follows LAPACK naming scheme, see
      http://www.netlib.org/lapack/lug/node24.html) that can be used
      with the Chameleon library. For details about these functions
-     please refer to the doxygen documentation.
-     * BLAS 3: geadd, gemm, heevd, hemm, her2k, herk, hetrd, lascal,
-       symm, syr2k, syrk, tradd, trmm, trsm, trsmpl, tradd
-     * LAPACK: gelqf, gelqfrh, gelqf_param, gelqs, gelqs_param, gels,
-       gels_param, geqrf, geqrfrh, geqrf_param, geqrs, geqrs_param,
-       gesv_incpiv, gesv_nopiv, gesvd, getrf_incpiv, getrf_nopiv,
-       getrs_incpiv, getrs_nopiv, lacpy, lange, lanhe, lansy, lantr,
-       laset2, laset, lauum, plghe, plgsy, plrnt, potrf, potri,
-       potrimm, potrs, sysv, sytrf, sytrs, tpqrt, tpgqrt, trtri,
-       unglq, unglq_param, unglqrh, ungqr, ungqr_param, ungqrrh,
-       unmlq, unmlq_param, unmlqrh, unmqr, unmqr_param, unmqrrh
+     please refer to the doxygen documentation. /name/ can be one of the
+     following:
+     * geadd: matrix matrix addition
+     * gelqf: LQ factorization
+     * gelqf_param: gelqf with hqr
+     * gelqs: computes a minimum-norm solution min || A*X - B || using
+       the LQ factorization
+     * gelqs_param: gelqs with hqr
+     * gels: solves overdetermined or underdetermined linear systems
+       using LQ or QR
+     * gels_param: gels with hqr
+     * gemm: matrix matrix multiply and addition
+     * geqrf: QR factorization
+     * geqrf_param: geqrf with hqr
+     * geqrs: computes a minimum-norm solution min || A*X - B || using
+       the RQ factorization
+     * geqrs_param: geqrs with hqr
+     * gesv_incpiv: linear systems solving with LU factorization and
+       partial pivoting
+     * gesv_nopiv: linear systems solving with LU factorization and
+       without pivoting
+     * gesvd: singular value decomposition
+     * getrf_incpiv: LU factorization with partial pivoting
+     * getrf_nopiv: LU factorization without pivoting
+     * getrs_incpiv: linear systems solving using existing LU
+       factorization with partial pivoting
+     * getrs_nopiv: linear systems solving using existing LU
+       factorization without pivoting
+     * hemm: gemm with A Hermitian
+     * herk: rank k operations with A Hermitian
+     * her2k: rank 2k operations with A Hermitian
+     * heevd: eigenvalues/eigenvectors computation with A Hermitian
+     * hetrd: reduces a complex Hermitian matrix A to real symmetric
+       tridiagonal form S
+     * lacpy: copy matrix into another
+     * lange: computes norm of a matrix (Max, One, Inf, Frobenius)
+     * lanhe: lange with A Hermitian
+     * lansy: lange with A symmetric
+     * lantr: lange with A triangular
+     * lascal: scales a matrix
+     * laset: copy the triangular part of a matrix into another, set a
+       value for the diagonal and off-diagonal part
+     * lauum: computes the product U * U' or L' * L, where the
+       triangular factor U or L is stored in the upper or lower
+       triangular part of the array A
+     * plghe: generates a random Hermitian matrix
+     * plgsy: generates a random symmetrix matrix
+     * plrnt: generates a random matrix
+     * posv: linear systems solving using Cholesky factorization
+     * potrf: Cholesky factorization
+     * potri: computes the inverse of a complex Hermitian positive
+       definite matrix A using the Cholesky factorization A
+     * potrimm:
+     * potrs: linear systems solving using existing Cholesky
+       factorization
+     * symm: gemm with A symmetric
+     * syrk: rank k operations with A symmetric
+     * syr2k: rank 2k with A symmetric
+     * sysv: linear systems solving using Cholesky decomposition with
+       A symmetric
+     * sytrf: Cholesky decomposition with A symmetric
+     * sytrs: linear systems solving using existing Cholesky
+       decomposition with A symmetric
+     * tpgqrt: generates a partial Q matrix formed with a blocked QR
+       factorization of a "triangular-pentagonal" matrix C, which is
+       composed of a unused triangular block and a pentagonal block V,
+       using the compact representation for Q. See tpqrt to
+       generate V
+     * tpqrt: computes a blocked QR factorization of a
+       "triangular-pentagonal" matrix C, which is composed of a
+       triangular block A and a pentagonal block B, using the compact
+       representation for Q
+     * tradd: trapezoidal matrices addition
+     * trmm: gemm with A triangular
+     * trsm: computes triangular solve
+     * trsmpl: performs the forward substitution step of solving a
+       system of linear equations after the tile LU factorization of
+       the matrix
+     * trsmrv:
+     * trtri: computes the inverse of a complex upper or lower triangular matrix A
+     * unglq: generates an M-by-N matrix Q with orthonormal rows,
+       which is defined as the first M rows of a product of the
+       elementary reflectors returned by MORSE_zgelqf
+     * unglq_param: unglq with hqr
+     * ungqr: generates an M-by-N matrix Q with orthonormal columns,
+       which is defined as the first N columns of a product of the
+       elementary reflectors returned by MORSE_zgeqrf
+     * ungqr_param: ungqr with hqr
+     * unmlq: overwrites C with Q*C or C*Q or equivalent operations
+       with transposition on conjugate on C (see doxygen
+       documentation)
+     * unmlq_param: unmlq with hqr
+     * unmqr: similar to unmlq (see doxygen documentation)
+     * unmqr_param: unmqr with hqr
 
 **** Options routines
      Enable MORSE feature.
@@ -830,9 +913,9 @@
 
      Create matrix descriptor, internal function.
      #+begin_src
-     int MORSE_Desc_Create  (MORSE_desc_t **desc, void *mat, MORSE_enum dtyp,
-                             int mb, int nb, int bsiz, int lm, int ln,
-                             int i, int j, int m, int n, int p, int q);
+     int MORSE_Desc_Create(MORSE_desc_t **desc, void *mat, MORSE_enum dtyp,
+                           int mb, int nb, int bsiz, int lm, int ln,
+                           int i, int j, int m, int n, int p, int q);
      #+end_src
 
      Create matrix descriptor, user function.
@@ -845,15 +928,50 @@
                                 int (*get_rankof)( const MORSE_desc_t*, int, int ));
      #+end_src
 
+     Create matrix descriptor for tiled matrix which may not fit
+     memory.
+     #+begin_src
+     int MORSE_Desc_Create_OOC(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int nb, int bsiz,
+                               int lm, int ln, int i, int j, int m, int n, int p, int q);
+     #+end_src
+
+     User's function version of MORSE_Desc_Create_OOC.
+     #+begin_src
+     int MORSE_Desc_Create_OOC_User(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int nb, int bsiz,
+                                    int lm, int ln, int i, int j, int m, int n, int p, int q,
+                                    int (*get_rankof)( const MORSE_desc_t*, int, int ));
+     #+end_src
+
      Destroys matrix descriptor.
      #+begin_src
      int MORSE_Desc_Destroy (MORSE_desc_t **desc);
      #+end_src
 
-     Ensure that all data are up-to-date in main memory (even if some tasks have
-     been processed on GPUs)
+     Ensures that all data of the descriptor are up-to-date.
+     #+begin_src
+     int MORSE_Desc_Acquire (MORSE_desc_t  *desc);
+     #+end_src
+
+     Release the data of the descriptor acquired by the
+     application. Should be called if MORSE_Desc_Acquire has been
+     called on the descriptor and if you do not need to access to its
+     data anymore.
+     #+begin_src
+     int MORSE_Desc_Release (MORSE_desc_t  *desc);
+     #+end_src
+
+     Ensure that all data are up-to-date in main memory (even if some
+     tasks have been processed on GPUs).
      #+begin_src
      int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc);
+     #+end_src
+
+     Set the sizes for the MPI tags.  Default value: tag_width=31,
+     tag_sep=24, meaning that the MPI tag is stored in 31 bits, with
+     24 bits for the tile tag and 7 for the descriptor.  This function
+     must be called before any descriptor creation.
+     #+begin_src
+     void MORSE_user_tag_size(int user_tag_width, int user_tag_sep);
      #+end_src
 
 **** Sequences routines
