@@ -19,7 +19,11 @@ we encourage users to use the /morse/ branch of [[sec:spack][Spack]].
    The latest official release tarballs of Chameleon sources are
    available for download from the [[https://gitlab.inria.fr/solverstack/chameleon/tags][gitlab tags page]].
 
-   The latest development state is available on [[https://gitlab.inria.fr/solverstack/chameleon][gitlab]].
+   The latest development state is available on [[https://gitlab.inria.fr/solverstack/chameleon][gitlab]]. To get
+   Chamelon it from here you need [[https://git-scm.com/downloads][Git]]
+   #+begin_src
+   git clone --recursive https://gitlab.inria.fr/solverstack/chameleon.git
+   #+end_src
 
 ** Chameleon prerequisites
 
