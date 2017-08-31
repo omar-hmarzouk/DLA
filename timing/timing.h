@@ -59,8 +59,6 @@ enum iparam_timing {
     IPARAM_PARALLEL_TASKS,
     IPARAM_NO_CPU,
     IPARAM_BOUND,
-    IPARAM_BOUNDDEPS,
-    IPARAM_BOUNDDEPSPRIO,
     /* End */
     /* Added for libhqr version */
     IPARAM_LOWLVL_TREE,  /* Tree used for reduction inside nodes        */
