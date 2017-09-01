@@ -163,6 +163,36 @@
                           --threads=9 --gpus=3
                           --nowarmup
      #+end_src
+
+     List of main options that can be used in timing:
+     * ~--help~: show usage
+     * ~--threads~: Number of CPU workers (default:
+       ~_SC_NPROCESSORS_ONLN~)
+     * ~--gpus~: number of GPU workers (default: ~0~)
+     * ~--n_range=R~: range of N values, with ~R=Start:Stop:Step~
+       (default: ~500:5000:500~)
+     * ~--m=X~: dimension (M) of the matrices (default: ~N~)
+     * ~--k=X~: dimension (K) of the matrices (default: ~1~), useful for
+       GEMM algorithm (k is the shared dimension and must be defined
+       >1 to consider matrices and not vectors)
+     * ~--nrhs=X~: number of right-hand size (default: ~1~)
+     * ~--nb=X~: block/tile size. (default: ~128~)
+     * ~--ib=X~: inner-blocking/IB size. (default: ~32~)
+     * ~--niter=X~: number of iterations performed for each test
+       (default: ~1~)
+     * ~--rhblk=X~: if X > 0, enable Householder mode for QR and LQ
+       factorization. X is the size of each subdomain (default: ~0~)
+     * ~--[no]check~: check result (default: ~nocheck~)
+     * ~--[no]profile~: print profiling informations (default:
+       ~noprofile~)
+     * ~--[no]trace~: enable/disable trace generation (default: ~notrace~)
+     * ~--[no]dag~: enable/disable DAG generation (default: ~nodag~)
+     * ~--[no]inv~: check on inverse (default: ~noinv~)
+     * ~--nocpu~: all GPU kernels are exclusively executed on GPUs
+     * ~--ooc~: Enable out-of-core (available only with StarPU)
+     * ~--bound~: Compare result to area bound (available only with
+       StarPU) (default: ~0~)
+
      List of timing algorithms available:
      * LANGE: norms of matrices
      * GEMM: general matrix-matrix multiply
