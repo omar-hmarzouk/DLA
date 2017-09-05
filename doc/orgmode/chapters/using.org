@@ -87,7 +87,7 @@
 
     Compilation example:
     #+begin_src
-    gfortran -o main.o -c main.c
+    gfortran -o main.o -c main.f90
     #+end_src
 
     Static linking example:
