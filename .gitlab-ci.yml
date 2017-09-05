@@ -12,8 +12,6 @@ starpu:
     - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$PWD/install
     - make -j2
     - ctest -V -R mpi_s
-  except:
-    - users_doc
 
 starpu-simgrid:
   script:
@@ -24,8 +22,6 @@ starpu-simgrid:
     - cmake .. -DCHAMELEON_SIMULATION=ON -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF
     - make -j2
     - ctest -V
-  except:
-    - users_doc
 
 quark:
   script:
@@ -36,8 +32,6 @@ quark:
     - cmake .. -DCHAMELEON_SCHED_QUARK=ON
     - make -j2
     - ctest -V -R test_shm_s
-  except:
-    - users_doc
 
 doc:
   script:
