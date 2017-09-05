@@ -43,13 +43,19 @@ dedicated to dense linear algebra.
   now. Future releases will be available on this gitlab project.
 
 * Documentation
-
 ** User guide
    The user guide is available directly in the sources as emacs
    orgmode files, see :
    1) [[file:doc/orgmode/chapters/introduction.org][Introduction]]
    2) [[file:doc/orgmode/chapters/installing.org][Installing]]
    3) [[file:doc/orgmode/chapters/using.org][Using]]
+
+   This documentation could also be generated in html and/or pdf :
+   #+begin_src
+   # build the doc with cmake (emacs with orgmode and latex are required), e.g.
+   cmake .. -DCHAMELEON_ENABLE_DOC=ON
+   make doc
+   #+end_src
 
 ** Source code documentation (doxygen)
    There is no up-to-date documentation of Chameleon.  We would like to

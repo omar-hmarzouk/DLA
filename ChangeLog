@@ -6,6 +6,7 @@ chameleon-1.0.0
 - Add First stage algorithm fo r the SVD/EVD solvers
 - add timing drivers time_zpotrs_tile and time_zgeqrs_tile
 - deactivate warmup by default
+- add an orgmode user guide documentation, see in doc/orgmode/
 
 chameleon-0.9.1
 ------------------------------------------------------------------------
