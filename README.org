@@ -44,22 +44,26 @@ dedicated to dense linear algebra.
 
 * Documentation
 
-  There is no up-to-date documentation of Chameleon.  We would like to
-  provide a doxygen documentation hosted on [[https://about.gitlab.com/2016/04/07/gitlab-pages-setup/][gitlab]] in the
-  future. Please refer to the section 2.1 of [[file:READMEDEV.org][READMEDEV]] to get
-  information about the documentation generation.
+** User guide
+   The user guide is available directly in the sources as emacs
+   orgmode files, see :
+   1) [[file:doc/orgmode/chapters/introduction.org][Introduction]]
+   2) [[file:doc/orgmode/chapters/installing.org][Installing]]
+   3) [[file:doc/orgmode/chapters/using.org][Using]]
 
-  The documentation of Chameleon's last release is available here:
-  [[http://morse.gforge.inria.fr/chameleon/0.9.1/chameleon_users_guide-0.9.1.html][chameleon-0.9.1 documentation]].
+** Source code documentation (doxygen)
+   There is no up-to-date documentation of Chameleon.  We would like to
+   provide a doxygen documentation hosted on [[https://about.gitlab.com/2016/04/07/gitlab-pages-setup/][gitlab]] in the
+   future. Please refer to the section 2.1 of [[file:READMEDEV.org][READMEDEV]] to get
+   information about the documentation generation.
 
 ** For developers
-
-   [[file:READMEDEV.org][READMEDEV]]
+   Please refer to the [[file:READMEDEV.org][READMEDEV]] page.
 
 * Installation
-  Please refer to the [[file:INSTALL.org][quick installation guide]].
-* Get involved!
+  Please refer to the [[file:doc/orgmode/chapters/installing.org][Installing]] page.
 
+* Get involved!
 ** Mailing list
 
    To contact the developers send an email to
