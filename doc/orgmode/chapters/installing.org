@@ -70,7 +70,7 @@ we encourage users to use the /morse/ branch of [[sec:spack][Spack]].
    sudo apt-get install -y libhwloc-dev
    # install FxT, usefull to export some nice execution traces with StarPU
    sudo apt-get install -y libfxt-dev
-   # Install cuda and cuBLAS : only if you have a GPU cuda compatible
+   # Install cuda and cuBLAS: only if you have a GPU cuda compatible
    sudo apt-get install -y nvidia-cuda-toolkit nvidia-cuda-dev
 
    # Install StarPU (with MPI and FxT enabled)
@@ -85,7 +85,7 @@ we encourage users to use the /morse/ branch of [[sec:spack][Spack]].
    cd $HOME/install
    rm starpu-1.2.2/ starpu-1.2.2.tar.gz -rf
 
-   # Install QUARK : to be used in place of StarPU
+   # Install QUARK: to be used in place of StarPU
    mkdir -p $HOME/install
    cd $HOME/install
    wget http://icl.cs.utk.edu/projectsfiles/quark/pubs/quark-0.9.0.tgz
@@ -270,25 +270,25 @@ we encourage users to use the /morse/ branch of [[sec:spack][Spack]].
    CMake 3.5.1 but any version superior to 2.8 should be fine.
 
    Here the steps to configure, build, test and install
-   1. configure :
+   1. configure:
       #+begin_src
       cmake path/to/chameleon -DOPTION1= -DOPTION2= ...
       # see the "Configuration options" section to get list of options
       # see the "Dependencies detection" for details about libraries detection
       #+end_src
-   2. build :
+   2. build:
       #+begin_src
       make
       # do not hesitate to use -j[ncores] option to speedup the compilation
       #+end_src
    3. test (optional, required CHAMELEON_ENABLE_TESTING=ON and/or
-      CHAMELEON_ENABLE_TIMING=ON) :
+      CHAMELEON_ENABLE_TIMING=ON):
       #+begin_src
       make test
       # or
       ctest
       #+end_src
-   4. install (optional) :
+   4. install (optional):
       #+begin_src
       make install
       #+end_src
@@ -320,21 +320,21 @@ we encourage users to use the /morse/ branch of [[sec:spack][Spack]].
     You can also set the options thanks to the *ccmake* interface.
 
 **** Native CMake options (non-exhaustive list)
-     * *CMAKE_BUILD_TYPE=Debug|Release|RelWithDebInfo|MinSizeRel* :
+     * *CMAKE_BUILD_TYPE=Debug|Release|RelWithDebInfo|MinSizeRel*:
        level of compiler optimization, enable/disable debug
        information
-     * *CMAKE_INSTALL_PREFIX=path/to/your/install/dir* : where headers,
+     * *CMAKE_INSTALL_PREFIX=path/to/your/install/dir*: where headers,
        libraries, executables, etc, will be copied when invoking make
        install
-     * *BUILD_SHARED_LIBS=ON|OFF* : indicate wether or not CMake has to
+     * *BUILD_SHARED_LIBS=ON|OFF*: indicate wether or not CMake has to
        build Chameleon static (~OFF~) or shared (~ON~) libraries.
-     * *CMAKE_C_COMPILER=gcc|icc|...* : to choose the C compilers
+     * *CMAKE_C_COMPILER=gcc|icc|...*: to choose the C compilers
        if several exist in the environment
      * *CMAKE_Fortran_COMPILER=gfortran|ifort|...*: to choose the
        Fortran compilers if several exist in the environment
 
 **** Related to specific modules (find_package) to find external libraries
-     * *BLA_VENDOR=All|Eigen|Open|Generic|Intel10_64lp|Intel10_64lp_seq* :
+     * *BLA_VENDOR=All|Eigen|Open|Generic|Intel10_64lp|Intel10_64lp_seq*:
        to use intel mkl for example, see the list of BLA_VENDOR in
        FindBLAS.cmake in cmake_modules/morse_cmake/modules/find
      * *STARPU_DIR=path/to/root/starpu/install*, see [[sec:depdet][Dependencies
@@ -357,35 +357,35 @@ we encourage users to use the /morse/ branch of [[sec:spack][Spack]].
      LAPACKE - QUARK - SIMGRID - STARPU - TMG.
 
 **** Chameleon specific options
-     * *CHAMELEON_SCHED_STARPU=ON|OFF* (default ON) : to link with
+     * *CHAMELEON_SCHED_STARPU=ON|OFF* (default ON): to link with
        StarPU library (runtime system)
-     * *CHAMELEON_SCHED_QUARK=ON|OFF* (default OFF) : to link with QUARK
+     * *CHAMELEON_SCHED_QUARK=ON|OFF* (default OFF): to link with QUARK
        library (runtime system)
-     * *CHAMELEON_USE_MPI=ON|OFF* (default OFF) : to link with MPI
+     * *CHAMELEON_USE_MPI=ON|OFF* (default OFF): to link with MPI
        library (message passing implementation for use of multiple
        nodes with distributed memory), can only be used with StarPU
-     * *CHAMELEON_USE_CUDA=ON|OFF* (default OFF) : to link with CUDA
+     * *CHAMELEON_USE_CUDA=ON|OFF* (default OFF): to link with CUDA
        runtime (implementation paradigm for accelerated codes on GPUs)
        and cuBLAS library (optimized BLAS kernels on GPUs), can only
        be used with StarPU
-     * *CHAMELEON_ENABLE_DOC=ON|OFF* (default OFF) : to control build of
+     * *CHAMELEON_ENABLE_DOC=ON|OFF* (default OFF): to control build of
        the documentation contained in doc/ sub-directory
-     * *CHAMELEON_ENABLE_EXAMPLE=ON|OFF* (default ON) : to control build
+     * *CHAMELEON_ENABLE_EXAMPLE=ON|OFF* (default ON): to control build
        of the examples executables (API usage) contained in example/
        sub-directory
      * *CHAMELEON_ENABLE_PRUNING_STATS=ON|OFF* (default OFF)
-     * *CHAMELEON_ENABLE_TESTING=ON|OFF* (default ON) : to control build
+     * *CHAMELEON_ENABLE_TESTING=ON|OFF* (default ON): to control build
        of testing executables (numerical check) contained in testing/
        sub-directory
-     * *CHAMELEON_ENABLE_TIMING=ON|OFF* (default ON) : to control build
+     * *CHAMELEON_ENABLE_TIMING=ON|OFF* (default ON): to control build
        of timing executables (performances check) contained in timing/
        sub-directory
-     * *CHAMELEON_ENABLE_TRACING=ON|OFF* (default OFF) : to enable trace
+     * *CHAMELEON_ENABLE_TRACING=ON|OFF* (default OFF): to enable trace
        generation during execution of timing drivers. It requires
        StarPU to be linked with FxT library (trace execution of
        kernels on workers), see also [[sec:trace][Execution tracing
        with StarPU]].
-     * *CHAMELEON_SIMULATION=ON|OFF* (default OFF) : to enable
+     * *CHAMELEON_SIMULATION=ON|OFF* (default OFF): to enable
        simulation mode, means Chameleon will not really execute tasks,
        see details in section [[sec:simu][Use simulation mode with
        StarPU-SimGrid]]. This option must be used with StarPU compiled
@@ -400,7 +400,7 @@ we encourage users to use the /morse/ branch of [[sec:spack][Spack]].
     You have different choices to detect dependencies on your system,
     either by setting some environment variables containing paths to
     the libs and headers or by specifying them directly at cmake
-    configure. Different cases :
+    configure. Different cases:
 
     1) detection of dependencies through environment variables:
        - LD_LIBRARY_PATH should contain the list of paths where to find
