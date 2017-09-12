@@ -758,14 +758,14 @@
        * syrk: rank k operations with A symmetric
        * syr2k: rank 2k with A symmetric
        * trmm: gemm with A triangular
-     * *Triangular solving*
+     * *Triangular solving routines*
        * trsm: computes triangular solve
        * trsmpl: performs the forward substitution step of solving a
          system of linear equations after the tile LU factorization of
          the matrix
        * trsmrv:
        * trtri: computes the inverse of a complex upper or lower triangular matrix A
-     * *$LL^T$ (Cholesky) routines*
+     * *LL' (Cholesky) routines*
        * posv: linear systems solving using Cholesky factorization
        * potrf: Cholesky factorization
        * potri: computes the inverse of a complex Hermitian positive
@@ -778,7 +778,7 @@
        * sytrf: Cholesky decomposition with A symmetric
        * sytrs: linear systems solving using existing Cholesky
          decomposition with A symmetric
-     * *$LU$ routines*
+     * *LU routines*
        * gesv_incpiv: linear systems solving with LU factorization and
          partial pivoting
        * gesv_nopiv: linear systems solving with LU factorization and
@@ -789,7 +789,7 @@
          factorization with partial pivoting
        * getrs_nopiv: linear systems solving using existing LU
          factorization without pivoting
-     * *$QR/LQ$ routines*
+     * *QR/LQ routines*
        * gelqf: LQ factorization
        * gelqf_param: gelqf with hqr
        * gelqs: computes a minimum-norm solution min || A*X - B || using
