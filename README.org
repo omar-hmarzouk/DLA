@@ -46,9 +46,16 @@ dedicated to dense linear algebra.
 ** User guide
    The user guide is available directly in the sources as emacs
    orgmode files, see :
-   1) [[file:doc/orgmode/chapters/introduction.org][Introduction]]
-   2) [[file:doc/orgmode/chapters/installing.org][Installing]]
-   3) [[file:doc/orgmode/chapters/using.org][Using]]
+   1) [[file:doc/orgmode/chapters/introduction.org][Introduction]] : description of the scientific context
+   2) [[file:doc/orgmode/chapters/installing.org][Installing]] :
+      * Getting Chameleon
+      * Prerequisites for installing Chameleon
+      * Distribution of Chameleon using Spack
+      * Build and install Chameleon with CMake
+   3) [[file:doc/orgmode/chapters/using.org][Using]] :
+      * Linking an external application with Chameleon libraries
+      * Using Chameleon executables
+      * Chameleon API
 
    This documentation could also be generated in html and/or pdf :
    #+begin_src
@@ -65,9 +72,6 @@ dedicated to dense linear algebra.
 
 ** For developers
    Please refer to the [[file:READMEDEV.org][READMEDEV]] page.
-
-* Installation
-  Please refer to the [[file:doc/orgmode/chapters/installing.org][Installing]] page.
 
 * Get involved!
 ** Mailing list

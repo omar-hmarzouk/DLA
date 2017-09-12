@@ -24,7 +24,7 @@ we encourage users to use the /morse/ branch of [[sec:spack][Spack]].
    git clone --recursive https://gitlab.inria.fr/solverstack/chameleon.git
    #+end_src
 
-** Prerequisites to install Chameleon
+** Prerequisites for installing Chameleon
 
    To install Chameleon's libraries, header files, and executables, one
    needs:
