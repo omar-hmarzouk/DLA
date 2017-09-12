@@ -93,6 +93,7 @@ endif (CHAMELEON_USE_CUBLAS_V2)
 add_library(cudablas ${CUDABLAS_SRCS})
 add_dependencies(cudablas cudablas_include)
 set_property(TARGET cudablas PROPERTY LINKER_LANGUAGE Fortran)
+set_property(TARGET cudablas PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
 target_link_libraries(cudablas
   coreblas
