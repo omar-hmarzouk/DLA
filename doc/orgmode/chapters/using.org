@@ -75,39 +75,39 @@
     export LD_LIBRARY_PATH=path/to/libs:path/to/chameleon/lib
     #+end_src
 
-# *** Build a Fortran program with Chameleon                         :noexport:
-#
-#     Chameleon provides a Fortran interface to user functions. Example:
-#     #+begin_src
-#     call morse_version(major, minor, patch) !or
-#     call MORSE_VERSION(major, minor, patch)
-#     #+end_src
-#
-#     Build and link are very similar to the C case.
-#
-#     Compilation example:
-#     #+begin_src
-#     gfortran -o main.o -c main.f90
-#     #+end_src
-#
-#     Static linking example:
-#     #+begin_src
-#     gfortran main.o -o main                                    \
-#     /home/yourname/install/chameleon/lib/libchameleon.a        \
-#     /home/yourname/install/chameleon/lib/libchameleon_starpu.a \
-#     /home/yourname/install/chameleon/lib/libcoreblas.a         \
-#     -lstarpu-1.2 -Wl,--no-as-needed -lmkl_intel_lp64           \
-#     -lmkl_sequential -lmkl_core -lpthread -lm -lrt
-#     #+end_src
-#
-#     Dynamic linking example:
-#     #+begin_src
-#     gfortran main.o -o main                          \
-#     -L/home/yourname/install/chameleon/lib           \
-#     -lchameleon -lchameleon_starpu -lcoreblas        \
-#     -lstarpu-1.2 -Wl,--no-as-needed -lmkl_intel_lp64 \
-#     -lmkl_sequential -lmkl_core -lpthread -lm -lrt
-#     #+end_src
+# # *** Build a Fortran program with Chameleon                         :noexport:
+# #
+# #     Chameleon provides a Fortran interface to user functions. Example:
+# #     #+begin_src
+# #     call morse_version(major, minor, patch) !or
+# #     call MORSE_VERSION(major, minor, patch)
+# #     #+end_src
+# #
+# #     Build and link are very similar to the C case.
+# #
+# #     Compilation example:
+# #     #+begin_src
+# #     gfortran -o main.o -c main.f90
+# #     #+end_src
+# #
+# #     Static linking example:
+# #     #+begin_src
+# #     gfortran main.o -o main                                    \
+# #     /home/yourname/install/chameleon/lib/libchameleon.a        \
+# #     /home/yourname/install/chameleon/lib/libchameleon_starpu.a \
+# #     /home/yourname/install/chameleon/lib/libcoreblas.a         \
+# #     -lstarpu-1.2 -Wl,--no-as-needed -lmkl_intel_lp64           \
+# #     -lmkl_sequential -lmkl_core -lpthread -lm -lrt
+# #     #+end_src
+# #
+# #     Dynamic linking example:
+# #     #+begin_src
+# #     gfortran main.o -o main                          \
+# #     -L/home/yourname/install/chameleon/lib           \
+# #     -lchameleon -lchameleon_starpu -lcoreblas        \
+# #     -lstarpu-1.2 -Wl,--no-as-needed -lmkl_intel_lp64 \
+# #     -lmkl_sequential -lmkl_core -lpthread -lm -lrt
+# #     #+end_src
 
 ** Using Chameleon executables
 
