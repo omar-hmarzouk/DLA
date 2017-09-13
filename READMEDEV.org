@@ -28,7 +28,6 @@ developers must follow and that should be read by contributors.
 * Documentation
   <<sec:doc>>
 ** Generate the documentation
-
 *** Prerequisites
 
      To generate the documentation you need to have [[http://www.stack.nl/~dimitri/doxygen/][Doxygen]] and
@@ -36,25 +35,25 @@ developers must follow and that should be read by contributors.
 
      For example, on Debian systems:
      #+begin_src sh
-     sudo apt install doxygen texinfo
+     sudo apt install doxygen texinfo texlive texlive-latex-extra emacs
      #+end_src
 
 *** configure + make documentation
 
     Enter into the Chameleon's source root directory and configure
-    with *CHAMELEON_ENABLE_DOCS=ON*, then generate the documentation
-    with ~make docs~
+    with *CHAMELEON_ENABLE_DOC=ON*, then generate the documentation
+    with ~make doc~
 
     #+begin_src sh
     cd chameleon
     mkdir build && cd build
-    cmake .. -DCHAMELEON_ENABLE_DOCS=ON
-    make docs
+    cmake .. -DCHAMELEON_ENABLE_DOC=ON
+    make doc
     #+end_src
 
 ** Rules about source code documentation
 
-   Please refer to this file for the documentation guidelines [[file:docs/doxygen/README.org][README]].
+   Please refer to this file for the documentation guidelines [[file:doc/doxygen/README.org][README]].
 
 * Naming and writting conventions
 
@@ -83,8 +82,10 @@ developers must follow and that should be read by contributors.
 
    #+begin_src sh
    export CHAMELEON_ROOT=/path/to/chameleon/sources/to/be/released
-   cmake $CHAMELEON_ROOT -DCHAMELEON_ENABLE_DOCS=ON
-   make docs && cp docs/texinfo/users_guide.pdf $CHAMELEON_ROOT && make package_source
+   cmake $CHAMELEON_ROOT -DCHAMELEON_ENABLE_DOC=ON
+   make doc
+   cp doc/orgmode/users_guide.pdf $CHAMELEON_ROOT
+   make package_source
    #+end_src
 
    A tarball chameleon-major.minor.patch.tar.gz should be generated

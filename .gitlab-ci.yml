@@ -32,3 +32,12 @@ quark:
     - cmake .. -DCHAMELEON_SCHED_QUARK=ON
     - make -j2
     - ctest -V -R test_shm_s
+
+doc:
+  script:
+    - source .gitlab-ci-env.sh
+    - git submodule update --init --recursive
+    - mkdir -p build
+    - cd build
+    - cmake .. -DCHAMELEON_ENABLE_DOC=ON -DCHAMELEON_ENABLE_EXAMPLES=OFF -DCHAMELEON_ENABLE_TESTING=OFF -DCHAMELEON_ENABLE_TIMING=OFF
+    - make

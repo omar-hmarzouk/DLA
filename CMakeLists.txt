@@ -37,9 +37,9 @@ if("${PROJECT_SOURCE_DIR}" STREQUAL "${PROJECT_BINARY_DIR}")
 endif()
 
 # set project version number
-set(CHAMELEON_VERSION_MAJOR 0)
-set(CHAMELEON_VERSION_MINOR 9)
-set(CHAMELEON_VERSION_MICRO 1)
+set(CHAMELEON_VERSION_MAJOR 1)
+set(CHAMELEON_VERSION_MINOR 0)
+set(CHAMELEON_VERSION_MICRO 0)
 
 set(MORSE_CMAKE_DIR "" CACHE PATH "Directory of MORSE CMake modules, can be external to the project")
 
@@ -205,9 +205,9 @@ endif()
 
 # Options to enable/disable testings and timings
 # ----------------------------------------------
-option(CHAMELEON_ENABLE_DOCS     "Enable documentation build"  OFF)
-if (CHAMELEON_ENABLE_DOCS)
-    message("-- ${BoldGreen}CHAMELEON_ENABLE_DOCS is set to ON, turn it OFF to avoid building docs${ColourReset}")
+option(CHAMELEON_ENABLE_DOC      "Enable documentation build"  OFF)
+if (CHAMELEON_ENABLE_DOC)
+    message("-- ${BoldGreen}CHAMELEON_ENABLE_DOC is set to ON, turn it OFF to avoid building docs${ColourReset}")
 endif()
 option(CHAMELEON_ENABLE_EXAMPLE  "Enable examples build"       ON)
 if (CHAMELEON_ENABLE_EXAMPLE)
@@ -1084,10 +1084,10 @@ endif(CHAMELEON_ENABLE_TIMING)
 # Documentation #
 #################
 
-if(CHAMELEON_ENABLE_DOCS)
-    add_subdirectory(docs)
-    if (DOXYGEN_EXECUTABLE AND MAKEINFO_COMPILER AND TEXI2DVI_COMPILER AND TEX_COMPILER)
-        add_custom_target(docs ALL DEPENDS doxygen-out doc-info-users_guide doc-html-users_guide doc-pdf-users_guide)
+if(CHAMELEON_ENABLE_DOC)
+    add_subdirectory(doc)
+    if (DOXYGEN_EXECUTABLE AND EMACS_COMPILER AND TEX_COMPILER)
+        add_custom_target(doc ALL DEPENDS doxygen-out doc-html-users_guide doc-pdf-users_guide)
     endif()
 endif()
 #------------------------------------------------------------------------------
