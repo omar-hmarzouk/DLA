@@ -19,8 +19,6 @@
 #  @date 2014-10-13
 #
 ###
-
-
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -94,14 +92,14 @@ foreach(_ltm ${LTM_SOURCES})
     set_property(TARGET ${_name_exe} PROPERTY LINKER_LANGUAGE Fortran)
     target_link_libraries(${_name_exe} ${libs_for_ltm})
     install(TARGETS ${_name_exe}
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/example/lapack_to_morse)
+            DESTINATION bin/example/lapack_to_morse)
 endforeach()
 
 add_executable(step0 step0.c)
 set_property(TARGET step0 PROPERTY LINKER_LANGUAGE Fortran)
 target_link_libraries(step0 ${libs_for_step0})
 install(TARGETS step0
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/example/lapack_to_morse)
+        DESTINATION bin/example/lapack_to_morse)
 
 #-------- Tests ---------
 include(CTestLists.cmake)

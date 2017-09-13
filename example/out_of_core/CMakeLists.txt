@@ -65,7 +65,7 @@ foreach(_ooc ${OOC_SOURCES})
     endif()
     target_link_libraries(${_name_exe} ${libs_for_ooc})
     install(TARGETS ${_name_exe}
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/example/out_of_core)
+            DESTINATION bin/example/out_of_core)
 endforeach()
 
 #-------- Tests ---------

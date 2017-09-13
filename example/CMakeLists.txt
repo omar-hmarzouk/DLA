@@ -22,7 +22,9 @@
 #  @date 17-10-2014
 #
 ###
-
+if (CHAMELEON_SIMULATION)
+  message(ERROR "example directory should not be included when simulation is enabled")
+endif()
 
 add_subdirectory(basic_zposv)
 

@@ -216,7 +216,7 @@ foreach(_timing ${TIMINGS})
     set_property(TARGET ${_name_exe} PROPERTY LINKER_LANGUAGE Fortran)
     target_link_libraries(${_name_exe} ${libs_for_timings})
     install(TARGETS ${_name_exe}
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/timing)
+            DESTINATION bin/timing)
 endforeach()
 
 #-------- Tests ---------
