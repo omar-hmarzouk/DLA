@@ -1,7 +1,6 @@
 # This file is part of the Chameleon User's Guide.
 # Copyright (C) 2017 Inria
 # See the file ../users_guide.org for copying conditions.
-#+OPTIONS: tex:t
 
 ** Linking an external application with Chameleon libraries
    Compilation and link with Chameleon libraries have been tested with
@@ -76,7 +75,7 @@
     export LD_LIBRARY_PATH=path/to/libs:path/to/chameleon/lib
     #+end_src
 
-*** Build a Fortran program with Chameleon
+*** Build a Fortran program with Chameleon                         :noexport:
 
     Chameleon provides a Fortran interface to user functions. Example:
     #+begin_src

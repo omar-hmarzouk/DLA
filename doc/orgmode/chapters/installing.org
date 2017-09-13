@@ -2,9 +2,9 @@
 # Copyright (C) 2017 Inria
 # See the file ../users_guide.org for copying conditions.
 
-Chameleon is written in C, it provides an interface to be called from
-Fortran and depends on a couple of external libraries that must be
-installed on the system.
+Chameleon is written in C and depends on a couple of external
+libraries that must be installed on the system.
+# , it provides an interface to be called from Fortran
 
 Chameleon can be built and installed by the standard means of [[http://www.cmake.org/][CMake]].
 General information about CMake, as well as installation binaries and
