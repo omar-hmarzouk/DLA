@@ -62,23 +62,6 @@ analysis:
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
-    - mkdir -p build
-    - cd build
-    - export CFLAGS="-O0 -g -fPIC -fdiagnostics-show-option --coverage -fno-inline -Wall"
-    - export LDFLAGS="--coverage"
-    - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" -DCMAKE_VERBOSE_MAKEFILE=ON
-    - make -j5 | tee ../chameleon-build.log
-    - STARPU_SILENT=1 ctest --no-compress-output || /usr/bin/true
-    - lcov --directory . --capture --output-file ../chameleon.lcov
-    - cd ..
-    - genhtml -o coverage chameleon.lcov
-    - lcov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
-    - export SOURCES_TO_ANALYZE=`bash -c 'find ./build -type d -name CMakeFiles -prune -o -type d -name Testing -prune -o -type f -regex ".*\.c\|.*\.h" -print && \
-                                          find . -path ./build -prune -o -type f -regex "^[^z]*\.c" -print && \
-                                          find . -path ./build -prune -o -type f -regex "^[^z]*\.h" ! -name 'lapacke*.h' ! -name 'cblas*.h' -print | xargs'`
-    - export UNDEFINITIONS="-UCHAMELEON_USE_CUBLAS_V2 -UCHAMELEON_USE_OPENCL"
-    - cppcheck -v -f --language=c --platform=unix64 --enable=all --xml --xml-version=2 --suppress=missingIncludeSystem ${UNDEFINITIONS} ${SOURCES_TO_ANALYZE} ${SOURCES_TO_EXCLUDE} 2> chameleon-cppcheck.xml
-    - rats -w 3 --xml ${SOURCES_TO_ANALYZE} > chameleon-rats.xml
-    - sonar-scanner -X -Dsonar.login=077ef775a8b4fe9ba722497ef0511ca6dcfb3fcd > sonar.log
+    - source ./tools/analysis.sh
   only:
     - master
