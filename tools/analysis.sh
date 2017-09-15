@@ -29,7 +29,7 @@ export SOURCES_TO_ANALYZE=`bash -c 'find ./build -type d -name CMakeFiles -prune
                                     find . -path ./build -prune -o -type f -regex "^[^z]*\.c" -print && \
                                     find . -path ./build -prune -o -type f -regex "^[^z]*\.h" ! -name 'lapacke*.h' ! -name 'cblas*.h' -print | xargs'`
 # Undefine this because not relevant in our configuration
-export UNDEFINITIONS="-UCHAMELEON_USE_CUBLAS_V2 -UCHAMELEON_USE_OPENCL"
+export UNDEFINITIONS="-UCHAMELEON_USE_CUBLAS_V2 -UCHAMELEON_USE_OPENCL -UWIN32 -UWIN64 -U_MSC_EXTENSIONS -U_MSC_VER -U__SUNPRO_C -U__SUNPRO_CC -U__sun -Usun"
 # run cppcheck analysis
 cppcheck -v -f --language=c --platform=unix64 --enable=all --xml --xml-version=2 --suppress=missingIncludeSystem ${UNDEFINITIONS} ${SOURCES_TO_ANALYZE} 2> chameleon-cppcheck.xml
 # run rats analysis
