@@ -63,5 +63,5 @@ analysis:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - source ./tools/analysis.sh
-  only:
-    - master
+#  only:
+#    - master
