@@ -24,19 +24,23 @@ lcov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
 # filter sources:
 # - consider generated files in build
 # - exclude base *z* files to avoid duplication
-# - exclude cblas.h and lapacke-.h
+# - exclude cblas.h and lapacke-.h because not really part of chameleon and make cppcheck analysis too long
 export SOURCES_TO_ANALYZE=`bash -c 'find ./build -type d -name CMakeFiles -prune -o -type d -name Testing -prune -o -type f -regex ".*\.c\|.*\.h" -print && \
                                     find . -path ./build -prune -o -type f -regex "^[^z]*\.c" -print && \
                                     find . -path ./build -prune -o -type f -regex "^[^z]*\.h" ! -name 'lapacke*.h' ! -name 'cblas*.h' -print | xargs'`
-echo $SOURCES_TO_ANALYZE |grep cblas
-echo $SOURCES_TO_ANALYZE |grep lapacke
+# actually we need to remove cblas/lapacke headers (cppcheck analysis too long)
+# we will get them back after cppcheck
+rm coreblas/include/cblas.h coreblas/include/lapacke.h coreblas/include/lapacke_config.h coreblas/include/lapacke_mangling.h
 
 # Undefine this because not relevant in our configuration
-export UNDEFINITIONS="-UCHAMELEON_USE_CUBLAS_V2 -UCHAMELEON_USE_OPENCL -UWIN32 -UWIN64 -U_MSC_EXTENSIONS -U_MSC_VER -U__SUNPRO_C -U__SUNPRO_CC -U__sun -Usun __cplusplus"
+export UNDEFINITIONS="-UCHAMELEON_USE_CUBLAS_V2 -UCHAMELEON_USE_OPENCL -UWIN32 -UWIN64 -U_MSC_EXTENSIONS -U_MSC_VER -U__SUNPRO_C -U__SUNPRO_CC -U__sun -Usun -U__cplusplus"
 # run cppcheck analysis
 cppcheck -v -f --language=c --platform=unix64 --enable=all --xml --xml-version=2 --suppress=missingIncludeSystem ${UNDEFINITIONS} ${SOURCES_TO_ANALYZE} 2> chameleon-cppcheck.xml
 # run rats analysis
 rats -w 3 --xml ${SOURCES_TO_ANALYZE} > chameleon-rats.xml
+
+# get back cblas/lapacke headers after static analysis
+git checkout coreblas/include/cblas.h coreblas/include/lapacke.h coreblas/include/lapacke_config.h coreblas/include/lapacke_mangling.h
 
 # create the sonarqube config file
 cat > sonar-project.properties << EOF
