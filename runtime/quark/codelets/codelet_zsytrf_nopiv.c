@@ -28,8 +28,26 @@
  * @precisions normal z -> c
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
+void CORE_zsytrf_nopiv_quark(Quark *quark)
+{
+    MORSE_enum uplo;
+    int n;
+    MORSE_Complex64_t *A;
+    int lda;
+    MORSE_sequence_t *sequence;
+    MORSE_request_t *request;
+    int iinfo;
+    int info = 0;
+
+    quark_unpack_args_7(quark, uplo, n, A, lda, sequence, request, iinfo);
+    info = CORE_zsytf2_nopiv(uplo, n, A, lda);
+    if (sequence->status == MORSE_SUCCESS && info != 0)
+        RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
+}
 
 void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
                              MORSE_enum uplo, int n, int nb,
@@ -47,22 +65,4 @@ void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
         sizeof(MORSE_request_t*),        &(options->request),  VALUE,
         sizeof(int),                     &iinfo,               VALUE,
         0);
-}
-
-
-void CORE_zsytrf_nopiv_quark(Quark *quark)
-{
-    MORSE_enum uplo;
-    int n;
-    MORSE_Complex64_t *A;
-    int lda;
-    MORSE_sequence_t *sequence;
-    MORSE_request_t *request;
-    int iinfo;
-    int info = 0;
-
-    quark_unpack_args_7(quark, uplo, n, A, lda, sequence, request, iinfo);
-    info = CORE_zsytf2_nopiv(uplo, n, A, lda);
-    if (sequence->status == MORSE_SUCCESS && info != 0)
-        RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
 }

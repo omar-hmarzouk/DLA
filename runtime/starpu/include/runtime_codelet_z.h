@@ -30,7 +30,15 @@
 #define _CODELETS_Z_H_
 
 #include <stdio.h>
-#include "runtime/starpu/include/runtime_codelets.h"
+#include "runtime_codelets.h"
+
+#include "chameleon/morse_tasks_z.h"
+#if !defined(CHAMELEON_SIMULATION)
+#include "coreblas/coreblas_z.h"
+#if defined(CHAMELEON_USE_CUDA)
+#include "cudablas/cudablas_z.h"
+#endif
+#endif
 
 /*
  * Management functions

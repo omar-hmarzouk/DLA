@@ -24,7 +24,21 @@
  * @precisions normal z -> c
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
+
+void CORE_zhessq_quark(Quark *quark)
+{
+    MORSE_enum uplo;
+    int n;
+    MORSE_Complex64_t *A;
+    int lda;
+    double *SCALESUMSQ;
+
+    quark_unpack_args_5( quark, uplo, n, A, lda, SCALESUMSQ );
+    CORE_zhessq( uplo, n, A, lda, &SCALESUMSQ[0], &SCALESUMSQ[1]);
+}
 
 void MORSE_TASK_zhessq( const MORSE_option_t *options,
                         MORSE_enum uplo, int n,
@@ -39,17 +53,4 @@ void MORSE_TASK_zhessq( const MORSE_option_t *options,
         sizeof(int),                     &lda,  VALUE,
         sizeof(double)*2,                RTBLKADDR(SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn), INOUT,
         0);
-}
-
-
-void CORE_zhessq_quark(Quark *quark)
-{
-    MORSE_enum uplo;
-    int n;
-    MORSE_Complex64_t *A;
-    int lda;
-    double *SCALESUMSQ;
-
-    quark_unpack_args_5( quark, uplo, n, A, lda, SCALESUMSQ );
-    CORE_zhessq( uplo, n, A, lda, &SCALESUMSQ[0], &SCALESUMSQ[1]);
 }

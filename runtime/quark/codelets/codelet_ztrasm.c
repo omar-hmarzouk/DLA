@@ -24,7 +24,24 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
+
+void CORE_ztrasm_quark(Quark *quark)
+{
+    MORSE_enum storev;
+    MORSE_enum uplo;
+    MORSE_enum diag;
+    int M;
+    int N;
+    MORSE_Complex64_t *A;
+    int lda;
+    double *work;
+
+    quark_unpack_args_8(quark, storev, uplo, diag, M, N, A, lda, work);
+    CORE_ztrasm(storev, uplo, diag, M, N, A, lda, work);
+}
 
 void MORSE_TASK_ztrasm(const MORSE_option_t *options,
                        MORSE_enum storev, MORSE_enum uplo, MORSE_enum diag, int M, int N,
@@ -43,20 +60,4 @@ void MORSE_TASK_ztrasm(const MORSE_option_t *options,
         sizeof(int),                     &lda,       VALUE,
         sizeof(double)*szeW,             RTBLKADDR(B, double, Bm, Bn), INOUT,
         0);
-}
-
-
-void CORE_ztrasm_quark(Quark *quark)
-{
-    MORSE_enum storev;
-    MORSE_enum uplo;
-    MORSE_enum diag;
-    int M;
-    int N;
-    MORSE_Complex64_t *A;
-    int lda;
-    double *work;
-
-    quark_unpack_args_8(quark, storev, uplo, diag, M, N, A, lda, work);
-    CORE_ztrasm(storev, uplo, diag, M, N, A, lda, work);
 }

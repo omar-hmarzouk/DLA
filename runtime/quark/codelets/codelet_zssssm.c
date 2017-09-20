@@ -28,8 +28,32 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "coreblas/include/cblas.h"
-#include "runtime/quark/include/morse_quark.h"
+#include "coreblas/cblas.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
+
+void CORE_zssssm_quark(Quark *quark)
+{
+    int m1;
+    int n1;
+    int m2;
+    int n2;
+    int k;
+    int ib;
+    MORSE_Complex64_t *A1;
+    int lda1;
+    MORSE_Complex64_t *A2;
+    int lda2;
+    MORSE_Complex64_t *L1;
+    int ldl1;
+    MORSE_Complex64_t *L2;
+    int ldl2;
+    int *IPIV;
+
+    quark_unpack_args_15(quark, m1, n1, m2, n2, k, ib, A1, lda1, A2, lda2, L1, ldl1, L2, ldl2, IPIV);
+    CORE_zssssm(m1, n1, m2, n2, k, ib, A1, lda1, A2, lda2, L1, ldl1, L2, ldl2, IPIV);
+}
 
 /***************************************************************************//**
  *
@@ -101,7 +125,6 @@
  *         \retval <0 if INFO = -k, the k-th argument had an illegal value
  *
  ******************************************************************************/
-
 void MORSE_TASK_zssssm(const MORSE_option_t *options,
                        int m1, int n1, int m2, int n2, int k, int ib, int nb,
                        const MORSE_desc_t *A1, int A1m, int A1n, int lda1,
@@ -129,27 +152,4 @@ void MORSE_TASK_zssssm(const MORSE_option_t *options,
         sizeof(int),                        &ldl2,  VALUE,
         sizeof(int)*nb,                      IPIV,          INPUT,
         0);
-}
-
-
-void CORE_zssssm_quark(Quark *quark)
-{
-    int m1;
-    int n1;
-    int m2;
-    int n2;
-    int k;
-    int ib;
-    MORSE_Complex64_t *A1;
-    int lda1;
-    MORSE_Complex64_t *A2;
-    int lda2;
-    MORSE_Complex64_t *L1;
-    int ldl1;
-    MORSE_Complex64_t *L2;
-    int ldl2;
-    int *IPIV;
-
-    quark_unpack_args_15(quark, m1, n1, m2, n2, k, ib, A1, lda1, A2, lda2, L1, ldl1, L2, ldl2, IPIV);
-    CORE_zssssm(m1, n1, m2, n2, k, ib, A1, lda1, A2, lda2, L1, ldl1, L2, ldl2, IPIV);
 }

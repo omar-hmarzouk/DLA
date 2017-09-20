@@ -28,41 +28,9 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
-
-/***************************************************************************//**
- *
- * @ingroup CORE_MORSE_Complex64_t
- *
- **/
-
-void MORSE_TASK_zgemm(const MORSE_option_t *options,
-                      MORSE_enum transA, int transB,
-                      int m, int n, int k, int nb,
-                      MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,
-                                                const MORSE_desc_t *B, int Bm, int Bn, int ldb,
-                      MORSE_Complex64_t beta, const MORSE_desc_t *C, int Cm, int Cn, int ldc)
-{
-    quark_option_t *opt = (quark_option_t*)(options->schedopt);
-    DAG_CORE_GEMM;
-    QUARK_Insert_Task(opt->quark, CORE_zgemm_quark, (Quark_Task_Flags*)opt,
-        sizeof(MORSE_enum),                &transA,    VALUE,
-        sizeof(MORSE_enum),                &transB,    VALUE,
-        sizeof(int),                        &m,         VALUE,
-        sizeof(int),                        &n,         VALUE,
-        sizeof(int),                        &k,         VALUE,
-        sizeof(MORSE_Complex64_t),         &alpha,     VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),                 INPUT,
-        sizeof(int),                        &lda,       VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),                 INPUT,
-        sizeof(int),                        &ldb,       VALUE,
-        sizeof(MORSE_Complex64_t),         &beta,      VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(C, MORSE_Complex64_t, Cm, Cn),                 INOUT,
-        sizeof(int),                        &ldc,       VALUE,
-        0);
-}
-
-
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
 void CORE_zgemm_quark(Quark *quark)
 {
@@ -82,16 +50,34 @@ void CORE_zgemm_quark(Quark *quark)
 
     quark_unpack_args_13(quark, transA, transB, m, n, k, alpha, A, lda, B, ldb, beta, C, ldc);
     CORE_zgemm(transA, transB,
-        m, n, k,
-        alpha, A, lda,
-        B, ldb,
-        beta, C, ldc);
+               m, n, k,
+               alpha, A, lda,
+               B, ldb,
+               beta, C, ldc);
 }
 
-
-
-
-
-
-
-
+void MORSE_TASK_zgemm(const MORSE_option_t *options,
+                      MORSE_enum transA, int transB,
+                      int m, int n, int k, int nb,
+                      MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,
+                      const MORSE_desc_t *B, int Bm, int Bn, int ldb,
+                      MORSE_Complex64_t beta, const MORSE_desc_t *C, int Cm, int Cn, int ldc)
+{
+    quark_option_t *opt = (quark_option_t*)(options->schedopt);
+    DAG_CORE_GEMM;
+    QUARK_Insert_Task(opt->quark, CORE_zgemm_quark, (Quark_Task_Flags*)opt,
+                      sizeof(MORSE_enum),                &transA,    VALUE,
+                      sizeof(MORSE_enum),                &transB,    VALUE,
+                      sizeof(int),                        &m,         VALUE,
+                      sizeof(int),                        &n,         VALUE,
+                      sizeof(int),                        &k,         VALUE,
+                      sizeof(MORSE_Complex64_t),         &alpha,     VALUE,
+                      sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),                 INPUT,
+                      sizeof(int),                        &lda,       VALUE,
+                      sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),                 INPUT,
+                      sizeof(int),                        &ldb,       VALUE,
+                      sizeof(MORSE_Complex64_t),         &beta,      VALUE,
+                      sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(C, MORSE_Complex64_t, Cm, Cn),                 INOUT,
+                      sizeof(int),                        &ldc,       VALUE,
+                      0);
+}

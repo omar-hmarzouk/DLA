@@ -28,9 +28,28 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "coreblas/include/cblas.h"
+#include "coreblas/cblas.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
-#include "runtime/quark/include/morse_quark.h"
+void CORE_zgessm_quark(Quark *quark)
+{
+    int m;
+    int n;
+    int k;
+    int ib;
+    int *IPIV;
+    MORSE_Complex64_t *L;
+    int ldl;
+    MORSE_Complex64_t *D;
+    int ldd;
+    MORSE_Complex64_t *A;
+    int lda;
+
+    quark_unpack_args_11(quark, m, n, k, ib, IPIV, L, ldl, D, ldd, A, lda);
+    CORE_zgessm(m, n, k, ib, IPIV, D, ldd, A, lda);
+}
 
 /***************************************************************************//**
  *
@@ -77,7 +96,6 @@
  *         \retval <0 if INFO = -k, the k-th argument had an illegal value
  *
  ******************************************************************************/
-
 void MORSE_TASK_zgessm(const MORSE_option_t *options,
                        int m, int n, int k, int ib, int nb,
                        int *IPIV,
@@ -100,23 +118,4 @@ void MORSE_TASK_zgessm(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),             INOUT,
         sizeof(int),                        &lda,   VALUE,
         0);
-}
-
-
-void CORE_zgessm_quark(Quark *quark)
-{
-    int m;
-    int n;
-    int k;
-    int ib;
-    int *IPIV;
-    MORSE_Complex64_t *L;
-    int ldl;
-    MORSE_Complex64_t *D;
-    int ldd;
-    MORSE_Complex64_t *A;
-    int lda;
-
-    quark_unpack_args_11(quark, m, n, k, ib, IPIV, L, ldl, D, ldd, A, lda);
-    CORE_zgessm(m, n, k, ib, IPIV, D, ldd, A, lda);
 }

@@ -28,6 +28,8 @@
 #ifndef __CODELET_PROFILE_H__
 #define __CODELET_PROFILE_H__
 
+#include <math.h>
+
 #define CHAMELEON_CL_CB(name, _m, _n, _k, _nflops)			\
     static measure_t name##_perf[STARPU_NMAXWORKERS];                                          \
     void cl_##name##_callback()                                                                \

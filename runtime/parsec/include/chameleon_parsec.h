@@ -3,16 +3,16 @@
  * @copyright (c) 2009-2015 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2015 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                          Univ. Bordeaux. All rights reserved.
  *
  **/
 
 #ifndef _MORSE_PARSEC_H_
 #define _MORSE_PARSEC_H_
 
-#include <dague.h>
-#include <dague/insert_function.h>
+#include <parsec.h>
+#include <parsec/insert_function.h>
 
 #include "control/common.h"
 

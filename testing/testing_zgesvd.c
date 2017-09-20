@@ -29,9 +29,9 @@
 #include <math.h>
 
 #include <morse.h>
-#include <coreblas/include/cblas.h>
-#include <coreblas/include/lapacke.h>
-#include <coreblas/include/coreblas.h>
+#include <coreblas/cblas.h>
+#include <coreblas/lapacke.h>
+#include <coreblas.h>
 #include "testing_zauxiliary.h"
 
 static int check_orthogonality(int, int, int, MORSE_Complex64_t*, int, double);
@@ -260,7 +260,6 @@ static int check_reduction(int M, int N, double *S, MORSE_Complex64_t *A, int LD
 {
     MORSE_Complex64_t zone  =  1.0;
     MORSE_Complex64_t mzone = -1.0;
-    MORSE_Complex64_t zzero = 0.0;
     double Anorm, Rnorm, result;
     int info_reduction;
     int i;

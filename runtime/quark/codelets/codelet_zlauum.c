@@ -29,13 +29,20 @@
  *
  **/
 
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
-/***************************************************************************//**
- *
- * @ingroup CORE_MORSE_Complex64_t
- *
- **/
+void CORE_zlauum_quark(Quark *quark)
+{
+    MORSE_enum uplo;
+    int N;
+    MORSE_Complex64_t *A;
+    int LDA;
+
+    quark_unpack_args_4(quark, uplo, N, A, LDA);
+    CORE_zlauum(uplo, N, A, LDA);
+}
 
 void MORSE_TASK_zlauum(const MORSE_option_t *options,
                        MORSE_enum uplo, int n, int nb,
@@ -49,16 +56,4 @@ void MORSE_TASK_zlauum(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),             INOUT,
         sizeof(int),                        &lda,   VALUE,
         0);
-}
-
-
-void CORE_zlauum_quark(Quark *quark)
-{
-    MORSE_enum uplo;
-    int N;
-    MORSE_Complex64_t *A;
-    int LDA;
-
-    quark_unpack_args_4(quark, uplo, N, A, LDA);
-    CORE_zlauum(uplo, N, A, LDA);
 }

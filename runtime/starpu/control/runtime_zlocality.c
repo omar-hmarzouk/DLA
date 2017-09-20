@@ -25,8 +25,8 @@
  * @precisions normal z -> s d c
  *
  **/
-#include "runtime/starpu/include/morse_starpu.h"
-#include "runtime/starpu/include/runtime_codelet_z.h"
+#include "chameleon_starpu.h"
+#include "runtime_codelet_z.h"
 
 #ifdef CHAMELEON_USE_CUDA
 /* Only codelets with multiple choices are present here */
@@ -250,8 +250,23 @@ void RUNTIME_zlocality_onerestore( MORSE_kernel_t kernel )
     }
 }
 #else
-void RUNTIME_zlocality_allrestrict( uint32_t where ) {}
-void RUNTIME_zlocality_onerestrict( MORSE_kernel_t kernel, uint32_t where ) {}
+
+void RUNTIME_zlocality_allrestrict( uint32_t where )
+{
+    (void)where;
+}
+
+void RUNTIME_zlocality_onerestrict( MORSE_kernel_t kernel, uint32_t where )
+{
+    (void)kernel;
+    (void)where;
+}
+
 void RUNTIME_zlocality_allrestore( ) {}
-void RUNTIME_zlocality_onerestore( MORSE_kernel_t kernel ) {}
+
+void RUNTIME_zlocality_onerestore( MORSE_kernel_t kernel )
+{
+    (void)kernel;
+}
+
 #endif

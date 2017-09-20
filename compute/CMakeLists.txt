@@ -296,19 +296,17 @@ elseif(CHAMELEON_SCHED_QUARK)
   list(INSERT CHAMELEON_DEP 0 -lchameleon_quark)
 endif()
 if (NOT CHAMELEON_SIMULATION)
-    target_link_libraries(chameleon coreblas)
+  add_dependencies(chameleon
+    coreblas_include)
+  target_link_libraries(chameleon coreblas)
 endif()
 target_link_libraries(chameleon hqr)
 list(INSERT CHAMELEON_DEP 0 -lchameleon)
 
 add_dependencies(chameleon
   chameleon_include
-  coreblas_include
   control_include
 )
-if (NOT CHAMELEON_SIMULATION)
-    add_dependencies(chameleon coreblas_include)
-endif()
 
 set_property(TARGET chameleon PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET chameleon PROPERTY Fortran_MODULE_DIRECTORY "${CMAKE_BINARY_DIR}/include")

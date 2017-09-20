@@ -25,7 +25,9 @@
 #  @date 13-07-2012
 #
 ###
-
+if (CHAMELEON_SIMULATION)
+  message(ERROR "testing directory should not be included when simulation is enabled")
+endif()
 
 # Check for subdirectories
 # ------------------------
@@ -102,66 +104,42 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 # Define what libraries we have to link with
 # ------------------------------------------
 unset(libs_for_tests)
-list(APPEND libs_for_tests chameleon)
+list(APPEND libs_for_tests
+  chameleon
+  )
 
-if(CHAMELEON_SCHED_STARPU)
-    list(APPEND libs_for_tests
-      chameleon_starpu
-      ${STARPU_LIBRARIES_DEP}
-    )
-    link_directories(${STARPU_LIBRARY_DIRS})
-elseif(CHAMELEON_SCHED_PARSEC)
-    list(APPEND libs_for_tests
-        chameleon_parsec
-        ${PARSEC_LIBRARIES_DEP}
-      )
-    link_directories(${PARSEC_LIBRARY_DIRS_DEP})
-elseif(CHAMELEON_SCHED_QUARK)
-    list(APPEND libs_for_tests
-        chameleon_quark
-        ${QUARK_LIBRARIES}
-      )
-    link_directories(${QUARK_LIBRARY_DIRS})
+if(CHAMELEON_USE_CUDA)
+  list(APPEND libs_for_tests
+    cudablas)
+endif()
+if(CHAMELEON_USE_CUDA)
+  link_directories(${CUDA_LIBRARY_DIRS})
 endif()
 
-if(NOT CHAMELEON_SIMULATION)
+list(APPEND libs_for_tests
+  coreblas
+  ${LAPACKE_LIBRARIES}
+  ${TMG_LIBRARIES}
+  ${LAPACK_LIBRARIES}
+  ${CBLAS_LIBRARIES}
+  ${BLAS_LIBRARIES}
+  )
 
-    if(CHAMELEON_USE_CUDA)
-        list(APPEND libs_for_tests
-        cudablas)
-    endif()
-    if(CHAMELEON_USE_CUDA)
-        link_directories(${CUDA_LIBRARY_DIRS})
-    endif()
+link_directories(${LAPACKE_LIBRARY_DIRS})
+link_directories(${TMG_LIBRARY_DIRS})
+link_directories(${LAPACK_LIBRARY_DIRS})
+link_directories(${CBLAS_LIBRARY_DIRS})
+link_directories(${BLAS_LIBRARY_DIRS})
 
-    list(APPEND libs_for_tests
-    coreblas
-    ${LAPACKE_LIBRARIES}
-    ${TMG_LIBRARIES}
-    ${LAPACK_LIBRARIES}
-    ${CBLAS_LIBRARIES}
-    ${BLAS_LIBRARIES}
-    ${HWLOC_LIBRARIES}
-    ${EXTRA_LIBRARIES}
-    )
-
-    link_directories(${LAPACKE_LIBRARY_DIRS})
-    link_directories(${TMG_LIBRARY_DIRS})
-    link_directories(${LAPACK_LIBRARY_DIRS})
-    link_directories(${CBLAS_LIBRARY_DIRS})
-    link_directories(${BLAS_LIBRARY_DIRS})
-
-else()
-
-    list(APPEND libs_for_tests ${EXTRA_LIBRARIES})
-
-endif()
+list(APPEND libs_for_tests
+  hqr
+  ${EXTRA_LIBRARIES}
+  )
 
 # message("LAPACKE_LIBRARY_DIRS: ${LAPACKE_LIBRARY_DIRS}")
 # message("LAPACK_LIBRARY_DIRS: ${LAPACK_LIBRARY_DIRS}")
 # message("CBLAS_LIBRARY_DIRS: ${CBLAS_LIBRARY_DIRS}")
 # message("BLAS_LIBRARY_DIRS: ${BLAS_LIBRARY_DIRS}")
-# message("HWLOC_LIBRARY_DIRS: ${HWLOC_LIBRARY_DIRS}")
 
 # list(APPEND libs_for_tests ${CMAKE_Fortran_FLAGS}  )
 # list(APPEND libs_for_tests ${CMAKE_Fortran_LDFLAGS})
@@ -186,41 +164,20 @@ foreach(_precision ${CHAMELEON_PRECISION} )
     target_link_libraries(${_precision}testing ${libs_for_tests})
 
     install(TARGETS ${_precision}testing
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/testing)
+            DESTINATION bin/testing)
 
 endforeach()
 
 # Copy python scripts to use test drivers
 # ---------------------------------------
-if(CHAMELEON_SCHED_STARPU)
-    # Copy launcher
-    add_custom_target(testing_launcher_starpu ALL
-                     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/chameleon_testing.py
-                                                      ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py)
-    # install file
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/testing)
-endif()
+# Copy launcher
+add_custom_target(testing_launcher ALL
+  COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/chameleon_testing.py
+  ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py)
 
-if(CHAMELEON_SCHED_PARSEC)
-    # Copy launcher
-    add_custom_target(testing_launcher_parsec ALL
-                     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/chameleon_testing.py
-                                                      ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py)
-    # install file
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/testing)
-endif()
-
-if(CHAMELEON_SCHED_QUARK)
-    # Copy launcher
-    add_custom_target(testing_launcher_quark ALL
-                     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/chameleon_testing.py
-                                                      ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py)
-    # install file
-    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/testing)
-endif()
+# install file
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/chameleon_testing.py
+  DESTINATION bin/testing )
 
 #-------- Tests ---------
 include(CTestLists.cmake)

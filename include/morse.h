@@ -28,36 +28,51 @@
 #ifndef _MORSE_H_
 #define _MORSE_H_
 
-#define MORSE_VERSION_MAJOR @MORSE_VERSION_MAJOR@
-#define MORSE_VERSION_MINOR @MORSE_VERSION_MINOR@
-#define MORSE_VERSION_MICRO @MORSE_VERSION_MICRO@
-
 /* ****************************************************************************
  * MORSE types and constants
  */
-#include "chameleon_config.h"
-#include "morse_types.h"
-#include "morse_struct.h"
-#include "morse_constants.h"
+#include "chameleon/chameleon_config.h"
+#include "chameleon/morse_types.h"
+#include "chameleon/morse_struct.h"
+#include "chameleon/morse_constants.h"
+#include "chameleon/morse_kernels.h"
 
 
 /* ****************************************************************************
- * RUNTIME Functions
+ * MORSE runtime common API
  */
-#include "runtime.h"
+#include "chameleon/morse_runtime.h"
 
 
 /* ****************************************************************************
- * For Simulation mode
+ * MORSE Simulation mode
  */
-#include "morse_simulate.h"
+#include "chameleon/morse_simulate.h"
+
+/* ****************************************************************************
+ * Include LibHQR for hierarchical trees QR/LQ factorizations
+ */
+#include "libhqr.h"
+
+/* ****************************************************************************
+ * MORSE Tasks
+ */
+#include "chameleon/morse_tasks.h"
+
+/* ****************************************************************************
+ * MORSE functionnalities
+ */
+#include "chameleon/morse_z.h"
+#include "chameleon/morse_c.h"
+#include "chameleon/morse_d.h"
+#include "chameleon/morse_s.h"
+#include "chameleon/morse_zc.h"
+#include "chameleon/morse_ds.h"
 
 /* ****************************************************************************
  * MORSE Functions
  */
-#ifdef __cplusplus
-extern "C" {
-#endif
+BEGIN_C_DECLS
 
 /* Auxiliary */
 int MORSE_Version           (int *ver_major, int *ver_minor, int *ver_micro);
@@ -117,16 +132,6 @@ int MORSE_Sequence_Create  (MORSE_sequence_t **sequence);
 int MORSE_Sequence_Destroy (MORSE_sequence_t *sequence);
 int MORSE_Sequence_Wait    (MORSE_sequence_t *sequence);
 
-#ifdef __cplusplus
-}
-#endif
-
-#include "libhqr.h"
-#include "morse_z.h"
-#include "morse_c.h"
-#include "morse_d.h"
-#include "morse_s.h"
-#include "morse_zc.h"
-#include "morse_ds.h"
+END_C_DECLS
 
 #endif

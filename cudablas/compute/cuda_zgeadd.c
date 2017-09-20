@@ -20,8 +20,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "cudablas/include/cudablas.h"
-#include "cudablas/include/cudablas_z.h"
+#include "cudablas.h"
+#include "cudablas/cudablas_z.h"
 
 #if !defined(CHAMELEON_USE_CUBLAS_V2)
 #error "This file requires cublas api v2 support"

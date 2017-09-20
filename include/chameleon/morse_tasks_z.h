@@ -10,7 +10,7 @@
 
 /**
  *
- * @file runtime_z.h
+ * @file morse_tasks_z.h
  *
  *  MORSE auxiliary routines
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -29,15 +29,10 @@
  * @precisions normal z -> c d s
  *
  **/
-#ifndef _RUNTIME_ZBLAS_H_
-#define _RUNTIME_ZBLAS_H_
+#ifndef _MORSE_TASKS_Z_H_
+#define _MORSE_TASKS_Z_H_
 
 #define COMPLEX
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 
 /** ****************************************************************************
  *  Declarations of QUARK wrappers (called by MORSE) - alphabetical order
@@ -465,11 +460,6 @@ void MORSE_TASK_zunmqr(const MORSE_option_t *options,
 void MORSE_TASK_zbuild( const MORSE_option_t *options,
                         const MORSE_desc_t *A, int Am, int An, int lda,
                         void *user_data, void* user_build_callback );
-
-
-#ifdef __cplusplus
-}
-#endif
 
 #undef COMPLEX
 

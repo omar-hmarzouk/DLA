@@ -100,7 +100,7 @@ double cWtime(void)
     gettimeofday( &tp, NULL );
     return tp.tv_sec + 1e-6 * tp.tv_usec;
 }
-#include <coreblas/include/lapacke.h>
+#include <coreblas/lapacke.h>
 #include <morse.h>
 
 /* Integer parameters for step1 */

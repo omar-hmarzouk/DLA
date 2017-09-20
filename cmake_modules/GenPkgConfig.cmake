@@ -98,7 +98,7 @@ MACRO(GENERATE_PKGCONFIG_FILE)
     set(CUDABLAS_PKGCONFIG_LIBS_PRIVATE  "")
 
     # A list of packages required by this package
-    set(CHAMELEON_PKGCONFIG_REQUIRED "")
+    set(CHAMELEON_PKGCONFIG_REQUIRED "hqr")
     set(COREBLAS_PKGCONFIG_REQUIRED  "")
     set(CUDABLAS_PKGCONFIG_REQUIRED  "")
 
@@ -147,8 +147,6 @@ MACRO(GENERATE_PKGCONFIG_FILE)
         )
 
     endif(NOT CHAMELEON_SIMULATION)
-
-    list(APPEND CHAMELEON_PKGCONFIG_REQUIRED_PRIVATE hwloc)
 
     # Define required package
     # -----------------------

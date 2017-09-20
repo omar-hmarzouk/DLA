@@ -25,7 +25,7 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
-#include "runtime/starpu/include/morse_starpu.h"
+#include "chameleon_starpu.h"
 
 #if defined(CHAMELEON_SIMULATION)
 # ifndef STARPU_SIMGRID

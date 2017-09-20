@@ -7,7 +7,7 @@
  * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
-#include "runtime/parsec/include/morse_parsec.h"
+#include "chameleon_parsec.h"
 
 #if defined( _WIN32 ) || defined( _WIN64 )
 #include <windows.h>

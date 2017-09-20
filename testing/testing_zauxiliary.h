@@ -68,7 +68,7 @@ extern char *itypestr[3];
 extern char *storevstr[2];
 extern char *normstr[4];
 
-extern void *formatmap[6];
+extern int (*formatmap[6])(int, int, int, int, int, int);
 
 int map_CM  (int m, int n, int mb, int nb, int i, int j);
 int map_CCRB(int m, int n, int mb, int nb, int i, int j);

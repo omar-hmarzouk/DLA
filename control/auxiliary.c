@@ -266,7 +266,7 @@ void update_progress(int currentValue, int maximumValue) {
 void (*update_progress_callback)(int, int) = update_progress;
 
 int MORSE_Set_update_progress_callback(void (*p)(int, int)) {
-  update_progress_callback=p ;
+  update_progress_callback = p;
   return MORSE_SUCCESS;
 }
 

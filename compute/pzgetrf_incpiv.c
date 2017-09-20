@@ -31,6 +31,7 @@
 //ALLOC_WS :  ib*L->nb
 //WS_ADD :  ib*L->nb
 #include "control/common.h"
+#include <stdlib.h>
 
 #define A(_m_,_n_) A, _m_, _n_
 #if defined(CHAMELEON_COPY_DIAG)

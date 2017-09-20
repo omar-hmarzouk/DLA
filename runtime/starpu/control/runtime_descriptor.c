@@ -23,7 +23,7 @@
  **/
 #include <stdlib.h>
 #include <unistd.h>
-#include "runtime/starpu/include/morse_starpu.h"
+#include "chameleon_starpu.h"
 
 #if defined(CHAMELEON_USE_MPI)
 
@@ -50,14 +50,17 @@ static int _tag_mpi_initialized_ = 0;
 #define FOLDED 0
 #endif
 
-void RUNTIME_user_tag_size(int user_tag_width, int user_tag_sep) {
+void RUNTIME_user_tag_size( int user_tag_width, int user_tag_sep ) {
 #if defined(CHAMELEON_USE_MPI)
     if (_tag_mpi_initialized_ == 0) {
-        tag_width=user_tag_width;
-        tag_sep=user_tag_sep;
-    } else
-        morse_error("RUNTIME_user_tag_size", "must be called before creating any Morse descriptor with MORSE_Desc_create(). The tag sizes will not be modified.");
+        tag_width = user_tag_width;
+        tag_sep   = user_tag_sep;
+    } else {
+        morse_error("RUNTIME_user_tag_size",
+                    "must be called before creating any Morse descriptor with MORSE_Desc_create(). The tag sizes will not be modified.");
+    }
 #endif
+    (void)user_tag_width; (void)user_tag_sep;
 }
 
 
@@ -126,9 +129,9 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
         int pagesize = getpagesize();
 
         if ((desc->mb * desc->nb * eltsze) % pagesize != 0
-         || (lastmm   * desc->nb * eltsze) % pagesize != 0
-         || (desc->mb * lastnn   * eltsze) % pagesize != 0
-         || (lastmm   * lastnn   * eltsze) % pagesize != 0)
+            || (lastmm   * desc->nb * eltsze) % pagesize != 0
+            || (desc->mb * lastnn   * eltsze) % pagesize != 0
+            || (lastmm   * lastnn   * eltsze) % pagesize != 0)
         {
             morse_error("RUNTIME_desc_create", "Matrix and tile size not suitable for out-of-core: all tiles have to be multiples of 4096. Tip : choose 'n' and 'nb' as both multiples of 32.");
             return;

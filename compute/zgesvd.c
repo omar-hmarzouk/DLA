@@ -23,8 +23,13 @@
  * @precisions normal z -> s d c
  *
  **/
-#include <coreblas/include/lapacke.h>
 #include "control/common.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#if !defined(CHAMELEON_SIMULATION)
+#include <coreblas/lapacke.h>
+#endif
 
 /***************************************************************************//**
  *

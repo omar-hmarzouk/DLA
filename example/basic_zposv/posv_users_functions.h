@@ -53,6 +53,7 @@ inline static void* user_getaddr_arrayofpointers(const MORSE_desc_t *A, int m, i
  **/
 inline static int user_getblkldd_arrayofpointers(const MORSE_desc_t *A, int m)
 {
+    (void)m;
     return A->mb;
 }
 

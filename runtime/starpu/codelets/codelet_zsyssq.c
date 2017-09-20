@@ -24,8 +24,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/starpu/include/morse_starpu.h"
-#include "runtime/starpu/include/runtime_codelet_z.h"
+#include "chameleon_starpu.h"
+#include "runtime_codelet_z.h"
 
 void MORSE_TASK_zsyssq( const MORSE_option_t *options,
                         MORSE_enum uplo, int n,

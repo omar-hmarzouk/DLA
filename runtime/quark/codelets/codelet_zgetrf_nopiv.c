@@ -25,7 +25,27 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
+
+void CORE_zgetrf_nopiv_quark(Quark *quark)
+{
+    int m;
+    int n;
+    int ib;
+    MORSE_Complex64_t *A;
+    int lda;
+    MORSE_sequence_t *sequence;
+    MORSE_request_t *request;
+    int iinfo;
+    int info;
+
+    quark_unpack_args_8(quark, m, n, ib, A, lda, sequence, request, iinfo);
+    CORE_zgetrf_nopiv(m, n, ib, A, lda, &info);
+    if (info != MORSE_SUCCESS)
+        RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
+}
 
 /***************************************************************************//**
  *
@@ -74,7 +94,6 @@
  *              to solve a system of equations.
  *
  ******************************************************************************/
-
 void MORSE_TASK_zgetrf_nopiv(const MORSE_option_t *options,
                              int m, int n, int ib, int nb,
                              const MORSE_desc_t *A, int Am, int An, int lda,
@@ -93,23 +112,4 @@ void MORSE_TASK_zgetrf_nopiv(const MORSE_option_t *options,
         sizeof(MORSE_request_t*),            &(options->request),       VALUE,
         sizeof(int),                        &iinfo,         VALUE,
         0);
-}
-
-
-void CORE_zgetrf_nopiv_quark(Quark *quark)
-{
-    int m;
-    int n;
-    int ib;
-    MORSE_Complex64_t *A;
-    int lda;
-    MORSE_sequence_t *sequence;
-    MORSE_request_t *request;
-    int iinfo;
-    int info;
-
-    quark_unpack_args_8(quark, m, n, ib, A, lda, sequence, request, iinfo);
-    CORE_zgetrf_nopiv(m, n, ib, A, lda, &info);
-    if (info != MORSE_SUCCESS)
-        RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
 }

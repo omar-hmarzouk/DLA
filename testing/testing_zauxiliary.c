@@ -157,7 +157,7 @@ int map_RRRB(int m, int n, int mb, int nb, int i, int j) {
             return ( m*n0  + (n-n0)*m0                      + map_rm( m%mb, n%nb, i%mb, j%nb) );
 }
 
-void *formatmap[6] = {  map_CM, map_RM, map_CCRB, map_CRRB, map_RCRB, map_RRRB };
+int (*formatmap[6])(int, int, int, int, int, int) = {  map_CM, map_RM, map_CCRB, map_CRRB, map_RCRB, map_RRRB };
 
 int main (int argc, char **argv)
 {
@@ -185,8 +185,8 @@ int main (int argc, char **argv)
      else*/
     MORSE_Init( ncores, ngpus);
     MORSE_Disable(MORSE_AUTOTUNING);
-    MORSE_Set(MORSE_TILE_SIZE,         320 );
-    MORSE_Set(MORSE_INNER_BLOCK_SIZE,   48 );
+    MORSE_Set(MORSE_TILE_SIZE,         32 );
+    MORSE_Set(MORSE_INNER_BLOCK_SIZE,   5 );
 
     argc -= 4;
     argv += 4;

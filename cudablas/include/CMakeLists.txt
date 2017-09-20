@@ -27,31 +27,36 @@
 # ---------------------
 set(CUDABLAS_HDRS_GENERATED "")
 set(ZHDR
-    cudablas_z.h
+    cudablas/cudablas_z.h
 )
-precisions_rules_py(CUDABLAS_HDRS_GENERATED "${ZHDR}"
-                    PRECISIONS "s;d;c;z;zc;ds" )
+precisions_rules_py(
+  CUDABLAS_HDRS_GENERATED "${ZHDR}"
+  TARGETDIR cudablas
+  PRECISIONS "s;d;c;z;zc;ds" )
 
 # Define the list of headers
 # --------------------------
 set(CUDABLAS_HDRS
     cudablas.h
-    ${CUDABLAS_HDRS_GENERATED}
     )
+
+# Add generated headers
+# ---------------------
+foreach( hdr_file ${CUDABLAS_HDRS_GENERATED} )
+  list(APPEND CUDABLAS_HDRS ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
+endforeach()
 
 # Force generation of headers
 # ---------------------------
 add_custom_target(cudablas_include ALL SOURCES ${CUDABLAS_HDRS})
 
-set(HDR_INSTALL "cudablas.h")
-foreach( hdr_file ${CUDABLAS_HDRS_GENERATED} )
-    list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
-endforeach()
-
-# installation
+# Installation
 # ------------
-install(FILES ${HDR_INSTALL}
-        DESTINATION include/chameleon/cudablas/include)
+install( FILES cudablas.h
+         DESTINATION include )
+
+install( FILES ${CUDABLAS_HDRS}
+         DESTINATION include/cudablas )
 
 ###
 ### END CMakeLists.txt

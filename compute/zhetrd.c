@@ -25,8 +25,10 @@
  * @precisions normal z -> s d c
  *
  **/
-#include <coreblas/include/lapacke.h>
 #include "control/common.h"
+#if !defined(CHAMELEON_SIMULATION)
+#include <coreblas/lapacke.h>
+#endif
 
 /***************************************************************************//**
  *
@@ -429,5 +431,6 @@ int MORSE_zhetrd_Tile_Async(MORSE_enum jobz,
         morse_desc_mat_free(Dptr);
     }
     morse_desc_mat_free(&descAB);
+    (void)D;
     return MORSE_SUCCESS;
 }

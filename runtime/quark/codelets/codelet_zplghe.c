@@ -28,9 +28,25 @@
  * @precisions normal z -> c
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
+void CORE_zplghe_quark(Quark *quark)
+{
+    double bump;
+    int m;
+    int n;
+    MORSE_Complex64_t *A;
+    int lda;
+    int bigM;
+    int m0;
+    int n0;
+    unsigned long long int seed;
 
+    quark_unpack_args_9( quark, bump, m, n, A, lda, bigM, m0, n0, seed );
+    CORE_zplghe( bump, m, n, A, lda, bigM, m0, n0, seed );
+}
 
 void MORSE_TASK_zplghe( const MORSE_option_t *options,
                         double bump, int m, int n, const MORSE_desc_t *A, int Am, int An, int lda,
@@ -50,21 +66,3 @@ void MORSE_TASK_zplghe( const MORSE_option_t *options,
         sizeof(unsigned long long int),   &seed, VALUE,
         0);
 }
-
-
-void CORE_zplghe_quark(Quark *quark)
-{
-    double bump;
-    int m;
-    int n;
-    MORSE_Complex64_t *A;
-    int lda;
-    int bigM;
-    int m0;
-    int n0;
-    unsigned long long int seed;
-
-    quark_unpack_args_9( quark, bump, m, n, A, lda, bigM, m0, n0, seed );
-    CORE_zplghe( bump, m, n, A, lda, bigM, m0, n0, seed );
-}
-

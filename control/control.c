@@ -35,7 +35,7 @@
 #include <stdlib.h>
 #include "control/auxiliary.h"
 #include "control/common.h"
-#include "runtime.h"
+#include "chameleon/morse_runtime.h"
 
 /** ***************************************************************************
  *

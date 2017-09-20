@@ -16,7 +16,7 @@
 #     Univ. of Tennessee,
 #     King Abdullah Univesity of Science and Technology
 #     Univ. of California Berkeley,
-#     Univ. of Colorado Denver. 
+#     Univ. of Colorado Denver.
 #
 #  @version 0.9.0
 #  @author Cedric Castagnede
@@ -44,7 +44,7 @@ set(SCLNTST slaord.f)
 
 set(DZLNTST dlaord.f)
 
-set(SLINTST 
+set(SLINTST
     schkaa.f
     schkge.f serrge.f sdrvge.f
     serrvx.f
@@ -105,7 +105,7 @@ set(CLINTST
     cgeequ.f claqge.f
     cpoequ.f claqsy.f cpocon.f clacn2.f clatrs.f csrscl.f
     clascl.f claset.f clatms.f clartg.f clatm1.f clarnd.f clarot.f clanhe.f claqhe.f
-    claror.f clagsy.f clagge.f 
+    claror.f clagsy.f clagge.f
     claipd.f csbmv.f
     clauum.f ctrtri.f
     clauu2.f ctrti2.f
@@ -129,7 +129,7 @@ set(ZLINTST
     zgeequ.f zlaqge.f
     zpoequ.f zlaqsy.f zpocon.f zlacn2.f zlatrs.f zdrscl.f
     zlascl.f zlaset.f zlatms.f zlartg.f zlatm1.f zlarnd.f zlarot.f zlanhe.f zlaqhe.f
-    zlaror.f zlagsy.f zlagge.f 
+    zlaror.f zlagsy.f zlagge.f
     zlaipd.f zsbmv.f
     zlauum.f ztrtri.f
     zlauu2.f ztrti2.f
@@ -140,24 +140,22 @@ set(ZLINTST
 
 # Define what libraries we have to link with
 # ------------------------------------------
-set(libs_for_tests "chameleon")
+set(libs_for_tests chameleon)
 
-# TODO: Check for name of following libraries (it certainly changed between morse and new_chameleon)
-if(MORSE_SCHED_STARPU)
-    list(APPEND libs_for_tests chameleon_starpu)
-    list(APPEND libs_for_tests ${STARPU_LIBRARIES_DEP})
-    list(APPEND libs_for_tests coreblas)
-elseif(MORSE_SCHED_QUARK)
-    list(APPEND libs_for_tests chameleon_starpu)
-    list(APPEND libs_for_tests ${QUARK_LIBRARIES})
-    list(APPEND libs_for_tests coreblas)
-endif()
+list(APPEND libs_for_tests
+  ${LAPACKE_LIBRARIES}
+  ${TMG_LIBRARIES}
+  ${CBLAS_LIBRARIES}
+  ${LAPACK_SEQ_LIBRARIES}
+  ${BLAS_SEQ_LIBRARIES}
+  ${EXTRA_LIBRARIES}
+  )
 
-foreach(_dep LAPACKE LAPACK CBLAS BLAS CUDA HWLOC MPI DL)
-    if(HAVE_${_dep})
-        list(APPEND libs_for_tests ${${_dep}_LIBRARY})
-    endif()
-endforeach()
+link_directories(${LAPACKE_LIBRARY_DIRS})
+link_directories(${TMG_LIBRARY_DIRS})
+link_directories(${LAPACK_LIBRARY_DIRS})
+link_directories(${CBLAS_LIBRARY_DIRS})
+link_directories(${BLAS_LIBRARY_DIRS})
 
 list(APPEND libs_for_tests ${CMAKE_Fortran_FLAGS})
 list(APPEND libs_for_tests ${CMAKE_Fortran_LDFLAGS})
@@ -165,32 +163,36 @@ list(APPEND libs_for_tests ${CMAKE_Fortran_LDFLAGS})
 
 # Define precisions to compile
 # ----------------------------
-if(BUILD_SINGLE)
+if(CHAMELEON_PREC_S)
     add_executable(morse_xlintsts ${ALINTST} ${SLINTST} ${SCLNTST})
     set_property(TARGET morse_xlintsts PROPERTY LINKER_LANGUAGE Fortran)
     target_link_libraries(morse_xlintsts ${libs_for_tests})
-    install(TARGETS morse_xlintsts DESTINATION ${CMAKE_INSTALL_PREFIX}/testing/lin)
+    install(TARGETS morse_xlintsts
+      DESTINATION bin/testing/lin)
 endif()
 
-if(BUILD_DOUBLE)
+if(CHAMELEON_PREC_S)
     add_executable(morse_xlintstd ${ALINTST} ${DLINTST} ${DZLNTST})
     set_property(TARGET morse_xlintstd PROPERTY LINKER_LANGUAGE Fortran)
     target_link_libraries(morse_xlintstd ${libs_for_tests})
-    install(TARGETS morse_xlintstd DESTINATION ${CMAKE_INSTALL_PREFIX}/testing/lin)
+    install(TARGETS morse_xlintstd
+      DESTINATION bin/testing/lin)
 endif()
 
-if(BUILD_COMPLEX)
+if(CHAMELEON_PREC_C)
     add_executable(morse_xlintstc ${ALINTST} ${CLINTST} ${SCLNTST})
     set_property(TARGET morse_xlintstc PROPERTY LINKER_LANGUAGE Fortran)
     target_link_libraries(morse_xlintstc ${libs_for_tests})
-    install(TARGETS morse_xlintstc DESTINATION ${CMAKE_INSTALL_PREFIX}/testing/lin)
+    install(TARGETS morse_xlintstc
+      DESTINATION bin/testing/lin)
 endif()
 
-if(BUILD_COMPLEX16)
+if(CHAMELEON_PREC_Z)
     add_executable(morse_xlintstz ${ALINTST} ${ZLINTST} ${DZLNTST})
     set_property(TARGET morse_xlintstz PROPERTY LINKER_LANGUAGE Fortran)
     target_link_libraries(morse_xlintstz ${libs_for_tests})
-    install(TARGETS morse_xlintstz DESTINATION ${CMAKE_INSTALL_PREFIX}/testing/lin)
+    install(TARGETS morse_xlintstz
+      DESTINATION bin/testing/lin)
 endif()
 
 # Copy launcher

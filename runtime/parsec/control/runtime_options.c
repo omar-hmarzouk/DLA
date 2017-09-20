@@ -9,7 +9,7 @@
  **/
 #include <stdio.h>
 #include <stdlib.h>
-#include "runtime/parsec/include/morse_parsec.h"
+#include "chameleon_parsec.h"
 
 void RUNTIME_options_init( MORSE_option_t *options, MORSE_context_t *morse,
                            MORSE_sequence_t *sequence, MORSE_request_t *request )

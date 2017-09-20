@@ -19,7 +19,7 @@
  * @date 2017-04-06
  *
  **/
-#include "cudablas/include/cudablas.h"
+#include "cudablas.h"
 
 /*******************************************************************************
  *  LAPACK Constants

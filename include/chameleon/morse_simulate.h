@@ -25,7 +25,7 @@
 #ifndef _MORSE_SIMULATE_H_
 #define _MORSE_SIMULATE_H_
 
-#include "chameleon_config.h"
+#include "chameleon/chameleon_config.h"
 
 /* we need this when starpu is compiled with simgrid enabled */
 #if defined(CHAMELEON_SCHED_STARPU) && defined(CHAMELEON_SIMULATION)

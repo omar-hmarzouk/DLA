@@ -29,13 +29,28 @@
  *
  **/
 
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
-/***************************************************************************//**
- *
- * @ingroup CORE_MORSE_Complex64_t
- *
- **/
+void CORE_ztrtri_quark(Quark *quark)
+{
+    MORSE_enum uplo;
+    MORSE_enum diag;
+    int N;
+    MORSE_Complex64_t *A;
+    int LDA;
+    MORSE_sequence_t *sequence;
+    MORSE_request_t *request;
+    int iinfo;
+
+    int info;
+
+    quark_unpack_args_8(quark, uplo, diag, N, A, LDA, sequence, request, iinfo);
+    CORE_ztrtri(uplo, diag, N, A, LDA, &info);
+    if ((sequence->status == MORSE_SUCCESS) && (info > 0))
+        RUNTIME_sequence_flush(quark, sequence, request, iinfo + info);
+}
 
 void MORSE_TASK_ztrtri(const MORSE_option_t *options,
                        MORSE_enum uplo, MORSE_enum diag,
@@ -55,24 +70,4 @@ void MORSE_TASK_ztrtri(const MORSE_option_t *options,
         sizeof(MORSE_request_t*),            &(options->request),   VALUE,
         sizeof(int),                        &iinfo,     VALUE,
         0);
-}
-
-
-void CORE_ztrtri_quark(Quark *quark)
-{
-    MORSE_enum uplo;
-    MORSE_enum diag;
-    int N;
-    MORSE_Complex64_t *A;
-    int LDA;
-    MORSE_sequence_t *sequence;
-    MORSE_request_t *request;
-    int iinfo;
-
-    int info;
-
-    quark_unpack_args_8(quark, uplo, diag, N, A, LDA, sequence, request, iinfo);
-    CORE_ztrtri(uplo, diag, N, A, LDA, &info);
-    if ((sequence->status == MORSE_SUCCESS) && (info > 0))
-        RUNTIME_sequence_flush(quark, sequence, request, iinfo + info);
 }

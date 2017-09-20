@@ -31,9 +31,9 @@
 #include <math.h>
 
 #include <morse.h>
-#include <coreblas/include/cblas.h>
-#include <coreblas/include/lapacke.h>
-#include <coreblas/include/coreblas.h>
+#include <coreblas/cblas.h>
+#include <coreblas/lapacke.h>
+#include <coreblas.h>
 #include "testing_zauxiliary.h"
 
 #define COMPLEX
@@ -42,12 +42,12 @@
 /*--------------------------------------------------------------
  * Check the pemv
  */
-static int check_solution(MORSE_enum trans, MORSE_enum storev, 
+static int check_solution(MORSE_enum trans, MORSE_enum storev,
                           int M, int N, int L,
                           MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                                                    MORSE_Complex64_t *X, int INCX,
+                          MORSE_Complex64_t *X, int INCX,
                           MORSE_Complex64_t beta,  MORSE_Complex64_t *Y0, int INCY0,
-                                                    MORSE_Complex64_t *Y,  int INCY,
+                          MORSE_Complex64_t *Y,  int INCY,
                           MORSE_Complex64_t *W, double *Rnorm)
 {
     int k;
@@ -61,28 +61,30 @@ static int check_solution(MORSE_enum trans, MORSE_enum storev,
     } else {
         k = M;
     }
-    
+
     work = (double *)malloc(k * sizeof(double));
     cblas_zcopy(k, Y0, INCY0, W, 1);
-    
+
     /* w = a A x + b w */
-    cblas_zgemv(CblasColMajor, (CBLAS_TRANSPOSE)trans, 
+    cblas_zgemv(CblasColMajor, (CBLAS_TRANSPOSE)trans,
                 M, N,
-                CBLAS_SADDR(alpha), A,  LDA, 
-                                    X,  INCX,
+                CBLAS_SADDR(alpha), A,  LDA,
+                X,  INCX,
                 CBLAS_SADDR(beta),  W,  1);
 
     /* y - w */
     cblas_zaxpy(k, CBLAS_SADDR(mzone), Y, INCY, W, 1);
-    
+
     /* Max Norm */
     *Rnorm = LAPACKE_zlange_work(LAPACK_COL_MAJOR, 'm', 1, k, W, 1, work);
-    
+
     if ( (*Rnorm / (M*N)) > eps) {
         return 1;
     } else {
         return 0;
     }
+
+    (void)L; (void)storev;
 }
 
 /*--------------------------------------------------------------
@@ -136,8 +138,8 @@ int testing_zpemv(int argc, char **argv)
         printf("Out of Memory \n ");
         exit(0);
     }
-    
-     /* Initialize Data */
+
+    /* Initialize Data */
     MORSE_zplrnt(n, n, A,  lda, 479 );
     MORSE_zplrnt(n, n, X,  lda, 320 );
     MORSE_zplrnt(n, 1, Y0, n,   573 );
@@ -152,7 +154,7 @@ int testing_zpemv(int argc, char **argv)
 
     nfails = 0;
     for (i=0; i<6; i++) {
-        
+
         /* m and n cannot be greater than lda (arg_n) */
         switch (i) {
         case 0: l = 0;       m = arg_n;   n = m;        break;
@@ -165,17 +167,17 @@ int testing_zpemv(int argc, char **argv)
 
         /* Colwise ConjTrans & Rowwise NoTrans */
 #ifdef COMPLEX
-        for (t=0; t<3; t++) {
+        for (t=0; t<3; t++)
 #else
-        for (t=0; t<2; t++) {
+        for (t=0; t<2; t++)
 #endif
-
+        {
             /* Swap m and n for transpose cases */
             if ( t == 1 ) {
                 k = m; m = n; n = k;
             }
 
-            LAPACKE_zlacpy_work( LAPACK_COL_MAJOR, 'A', m, n, 
+            LAPACKE_zlacpy_work( LAPACK_COL_MAJOR, 'A', m, n,
                                  A, lda, A0, lda);
 
             if ( trans[t] == MorseNoTrans ) {
@@ -217,29 +219,29 @@ int testing_zpemv(int argc, char **argv)
                     case 2:  incx = lda;  incy = 1;    break;
                     case 3:  incx = lda;  incy = lda;  break;
                     }
-                    
+
                     /* initialize Y with incy */
                     cblas_zcopy(n, Y0, 1, Y, incy);
-                    
+
                     /* ZPEMV */
-                    CORE_zpemv( trans[t], storev, m, n, l, 
-                                alpha, A, lda, 
-                                       X, incx,
-                                beta,  Y, incy, 
+                    CORE_zpemv( trans[t], storev, m, n, l,
+                                alpha, A, lda,
+                                X, incx,
+                                beta,  Y, incy,
                                 work);
-                    
+
                     /* Check the solution */
-                    info_solution = check_solution(trans[t], storev, 
-                                                   m, n, l, 
+                    info_solution = check_solution(trans[t], storev,
+                                                   m, n, l,
                                                    alpha, A0,  lda,
-                                                          X,   incx, 
-                                                   beta,  Y0,  1, 
-                                                          Y,   incy, 
+                                                   X,   incx,
+                                                   beta,  Y0,  1,
+                                                   Y,   incy,
                                                    work, &rnorm);
-                    
+
                     if ( info_solution != 0 ) {
                         nfails++;
-                        printf("Failed: t=%s, s=%s, M=%3d, N=%3d, L=%3d, alpha=%e, incx=%3d, beta=%e, incy=%3d, rnorm=%e\n", 
+                        printf("Failed: t=%s, s=%s, M=%3d, N=%3d, L=%3d, alpha=%e, incx=%3d, beta=%e, incy=%3d, rnorm=%e\n",
                                transstr[t], cstorev, m, n, l, creal(alpha), incx, creal(beta), incy, rnorm );
                     }
                     nbtests++;
@@ -268,4 +270,3 @@ int testing_zpemv(int argc, char **argv)
 
     return hres;
 }
-

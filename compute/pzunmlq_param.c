@@ -23,6 +23,7 @@
  *
  **/
 #include "control/common.h"
+#include <stdlib.h>
 
 #define A(m,n) A,  m,  n
 #define B(m,n) B,  m,  n
@@ -80,8 +81,7 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
 #endif
 
     /* Initialisation of tiles */
-    tiles = (int*)malloc((qrtree->mt)*sizeof(int));
-    memset( tiles, 0, (qrtree->mt)*sizeof(int) );
+    tiles = (int*)calloc( qrtree->mt, sizeof(int) );
 
     ws_worker *= sizeof(MORSE_Complex64_t);
     ws_host   *= sizeof(MORSE_Complex64_t);
@@ -133,9 +133,9 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                 }
 
                 /* Setting the order of the tiles*/
-                libhqr_treewalk(qrtree, k, tiles);
+                libhqr_walk_stepk(qrtree, k, tiles + (k+1));
 
-                for (i = k; i < A->nt-1; i++) {
+                for (i = k+1; i < A->nt; i++) {
                     m = tiles[i];
                     p = qrtree->currpiv(qrtree, k, m);
 
@@ -186,9 +186,9 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                 ldak = BLKLDD(A, k);
 
                 /* Setting the order of the tiles*/
-                libhqr_treewalk(qrtree, k, tiles);
+                libhqr_walk_stepk(qrtree, k, tiles + (k+1));
 
-                for (i = A->nt-2; i >= k; i--) {
+                for (i = A->nt-1; i > k; i--) {
                     m = tiles[i];
                     p = qrtree->currpiv(qrtree, k, m);
 
@@ -271,9 +271,9 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                 ldak = BLKLDD(A, k);
 
                 /* Setting the order of the tiles*/
-                libhqr_treewalk(qrtree, k, tiles);
+                libhqr_walk_stepk(qrtree, k, tiles + (k+1));
 
-                for (i = A->nt-2; i >= k; i--) {
+                for (i = A->nt-1; i > k; i--) {
                     n = tiles[i];
                     p = qrtree->currpiv(qrtree, k, n);
 
@@ -388,9 +388,9 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                     }
                 }
                 /* Setting the order of tiles */
-                libhqr_treewalk(qrtree, k, tiles);
+                libhqr_walk_stepk(qrtree, k, tiles + (k+1));
 
-                for (i = k; i < A->nt-1; i++) {
+                for (i = k+1; i < A->nt; i++) {
                     n = tiles[i];
                     p = qrtree->currpiv(qrtree, k, n);
 

@@ -29,34 +29,9 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
-
-
-
-void MORSE_TASK_zbuild( const MORSE_option_t *options,
-                        const MORSE_desc_t *A, int Am, int An, int lda,
-                        void *user_data, void* user_build_callback )
-{
-    quark_option_t *opt = (quark_option_t*)(options->schedopt);
-    DAG_CORE_BUILD;
-    int row_min, row_max, col_min, col_max;
-    row_min = Am*A->mb ;
-    row_max = Am == A->mt-1 ? A->m-1 : row_min+A->mb-1 ;
-    col_min = An*A->nb ;
-    col_max = An == A->nt-1 ? A->n-1 : col_min+A->nb-1 ;
-
-    QUARK_Insert_Task(opt->quark, CORE_zbuild_quark, (Quark_Task_Flags*)opt,
-        sizeof(int),                      &row_min,    VALUE,
-        sizeof(int),                      &row_max,    VALUE,
-        sizeof(int),                      &col_min,    VALUE,
-        sizeof(int),                      &col_max,    VALUE,
-        sizeof(MORSE_Complex64_t)*lda*A->nb, RTBLKADDR(A, MORSE_Complex64_t, Am, An),         OUTPUT,
-        sizeof(int),                      &lda,  VALUE,
-        sizeof(void*),                    &user_data,  VALUE,
-        sizeof(void*),                    &user_build_callback,   VALUE,
-        0);
-}
-
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
 void CORE_zbuild_quark(Quark *quark)
 {
@@ -71,3 +46,26 @@ void CORE_zbuild_quark(Quark *quark)
     user_build_callback(row_min, row_max, col_min, col_max, A, lda, user_data);
 }
 
+void MORSE_TASK_zbuild( const MORSE_option_t *options,
+                        const MORSE_desc_t *A, int Am, int An, int lda,
+                        void *user_data, void* user_build_callback )
+{
+    quark_option_t *opt = (quark_option_t*)(options->schedopt);
+    DAG_CORE_BUILD;
+    int row_min, row_max, col_min, col_max;
+    row_min = Am*A->mb ;
+    row_max = Am == A->mt-1 ? A->m-1 : row_min+A->mb-1 ;
+    col_min = An*A->nb ;
+    col_max = An == A->nt-1 ? A->n-1 : col_min+A->nb-1 ;
+
+    QUARK_Insert_Task(opt->quark, CORE_zbuild_quark, (Quark_Task_Flags*)opt,
+                      sizeof(int),                      &row_min,    VALUE,
+                      sizeof(int),                      &row_max,    VALUE,
+                      sizeof(int),                      &col_min,    VALUE,
+                      sizeof(int),                      &col_max,    VALUE,
+                      sizeof(MORSE_Complex64_t)*lda*A->nb, RTBLKADDR(A, MORSE_Complex64_t, Am, An),         OUTPUT,
+                      sizeof(int),                      &lda,  VALUE,
+                      sizeof(void*),                    &user_data,  VALUE,
+                      sizeof(void*),                    &user_build_callback,   VALUE,
+                      0);
+}

@@ -19,8 +19,6 @@
 #  @date 2014-10-13
 #
 ###
-
-
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -39,99 +37,53 @@ set(LTM_SOURCES
 # ------------------------------------------
 unset(libs_for_ltm)
 list(APPEND libs_for_ltm
-     chameleon
+  chameleon
+  coreblas
+  ${LAPACKE_LIBRARIES}
 )
-
-if(CHAMELEON_SCHED_STARPU)
-    list(APPEND libs_for_ltm
-      chameleon_starpu
-      ${STARPU_LIBRARIES_DEP}
-    )
-    link_directories(${STARPU_LIBRARY_DIRS})
-elseif(CHAMELEON_SCHED_PARSEC)
-    list(APPEND libs_for_ltm
-         chameleon_parsec
-         ${PARSEC_LIBRARIES_DEP}
-      )
-    link_directories(${PARSEC_LIBRARY_DIRS_DEP})
-elseif(CHAMELEON_SCHED_QUARK)
-    list(APPEND libs_for_ltm
-         chameleon_quark
-         ${QUARK_LIBRARIES}
-      )
-    link_directories(${QUARK_LIBRARY_DIRS})
-endif()
-
 
 # specific compilation for step0 because we potentially want to use
 # multithreaded BLAS and LAPACK libraries for this step
 unset(libs_for_step0)
+list(APPEND libs_for_step0
+  ${libs_for_ltm}
+  ${CBLAS_LIBRARIES}
+  )
 
-if(NOT CHAMELEON_SIMULATION)
-
-    if(CHAMELEON_USE_CUDA)
-        list(APPEND libs_for_ltm
-        cudablas)
-    endif()
-    if(CHAMELEON_USE_CUDA)
-        link_directories(${CUDA_LIBRARY_DIRS})
-    endif()
-
-    list(APPEND libs_for_step0 ${libs_for_ltm})
-
-    list(APPEND libs_for_ltm
-         coreblas
-         ${LAPACKE_LIBRARIES}
-         ${CBLAS_LIBRARIES}
-         ${LAPACK_SEQ_LIBRARIES}
-         ${BLAS_SEQ_LIBRARIES}
-         ${HWLOC_LIBRARIES}
-         ${EXTRA_LIBRARIES}
+if(LAPACK_PAR_LIBRARIES)
+  list(APPEND libs_for_step0
+    ${LAPACK_PAR_LIBRARIES}
     )
-
-    if( BLA_VENDOR MATCHES "Intel10_64lp*" OR BLA_VENDOR MATCHES "ACML*")
-        if(BLAS_PAR_LIBRARIES)
-            set(CBLAS_LIBRARIES "${BLAS_PAR_LIBRARIES}")
-        endif()
-        if(LAPACK_PAR_LIBRARIES)
-            set(LAPACKE_LIBRARIES "${LAPACK_PAR_LIBRARIES}")
-        endif()
-    endif()
-    if (BLAS_PAR_LIBRARIES AND LAPACK_PAR_LIBRARIES)
-        list(APPEND libs_for_step0
-             coreblas
-             ${LAPACKE_LIBRARIES}
-             ${CBLAS_LIBRARIES}
-             ${LAPACK_PAR_LIBRARIES}
-             ${BLAS_PAR_LIBRARIES}
-             ${HWLOC_LIBRARIES}
-             ${EXTRA_LIBRARIES}
-        )
-
-    else()
-        list(APPEND libs_for_step0
-             coreblas
-             ${LAPACKE_LIBRARIES}
-             ${CBLAS_LIBRARIES}
-             ${LAPACK_SEQ_LIBRARIES}
-             ${BLAS_SEQ_LIBRARIES}
-             ${HWLOC_LIBRARIES}
-             ${EXTRA_LIBRARIES}
-        )
-    endif ()
-
-    link_directories(${LAPACKE_LIBRARY_DIRS})
-    link_directories(${LAPACK_LIBRARY_DIRS})
-    link_directories(${CBLAS_LIBRARY_DIRS})
-    link_directories(${BLAS_LIBRARY_DIRS})
-
 else()
-
-    list(APPEND libs_for_ltm ${EXTRA_LIBRARIES})
-    list(APPEND libs_for_step0 ${EXTRA_LIBRARIES})
-
+  list(APPEND libs_for_step0
+    ${LAPACK_SEQ_LIBRARIES}
+    )
 endif()
 
+if(BLAS_PAR_LIBRARIES)
+  list(APPEND libs_for_step0
+    ${BLAS_PAR_LIBRARIES}
+    )
+else()
+  list(APPEND libs_for_step0
+    ${BLAS_SEQ_LIBRARIES}
+    )
+endif()
+
+list(APPEND libs_for_step0
+  ${EXTRA_LIBRARIES}
+  )
+
+list(APPEND libs_for_ltm
+  ${LAPACK_SEQ_LIBRARIES}
+  ${BLAS_SEQ_LIBRARIES}
+  ${EXTRA_LIBRARIES}
+  )
+
+link_directories(${LAPACKE_LIBRARY_DIRS})
+link_directories(${LAPACK_LIBRARY_DIRS})
+link_directories(${CBLAS_LIBRARY_DIRS})
+link_directories(${BLAS_LIBRARY_DIRS})
 
 # message(STATUS "libs examples: ${libs_for_ltm}")
 foreach(_ltm ${LTM_SOURCES})
@@ -140,14 +92,14 @@ foreach(_ltm ${LTM_SOURCES})
     set_property(TARGET ${_name_exe} PROPERTY LINKER_LANGUAGE Fortran)
     target_link_libraries(${_name_exe} ${libs_for_ltm})
     install(TARGETS ${_name_exe}
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/example/lapack_to_morse)
+            DESTINATION bin/example/lapack_to_morse)
 endforeach()
 
 add_executable(step0 step0.c)
 set_property(TARGET step0 PROPERTY LINKER_LANGUAGE Fortran)
 target_link_libraries(step0 ${libs_for_step0})
 install(TARGETS step0
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/example/lapack_to_morse)
+        DESTINATION bin/example/lapack_to_morse)
 
 #-------- Tests ---------
 include(CTestLists.cmake)

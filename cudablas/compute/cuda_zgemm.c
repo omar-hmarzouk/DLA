@@ -22,8 +22,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "cudablas/include/cudablas.h"
-#include "cudablas/include/cudablas_z.h"
+#include "cudablas.h"
+#include "cudablas/cudablas_z.h"
 
 int CUDA_zgemm(MORSE_enum transa, MORSE_enum transb,
                int m, int n, int k,

@@ -24,7 +24,8 @@
  * @date 2014-02-05
  *
  **/
-#include "runtime/starpu/include/morse_starpu.h"
+#include "chameleon_starpu.h"
+#include "chameleon/morse_tasks.h"
 
 #ifdef HAVE_STARPU_DATA_WONT_USE
 #elif defined HAVE_STARPU_IDLE_PREFETCH

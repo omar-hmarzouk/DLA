@@ -24,6 +24,7 @@
  *
  **/
 #include "control/common.h"
+#include <stdlib.h>
 
 #define A(m, n) A,  m,  n
 #define T(m, n) T,  m,  n
@@ -444,4 +445,6 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
 
     morse_desc_mat_free(AT);
     free(AT);
+
+    (void)E;
 }

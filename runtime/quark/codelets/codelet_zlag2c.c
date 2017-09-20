@@ -27,33 +27,9 @@
  *
  **/
 
-#include "runtime/quark/include/morse_quark.h"
-
-/***************************************************************************//**
- *
- * @ingroup CORE_MORSE_Complex64_t
- *
- **/
-void MORSE_TASK_zlag2c(const MORSE_option_t *options,
-                       int m, int n, int nb,
-                       const MORSE_desc_t *A, int Am, int An, int lda,
-                       const MORSE_desc_t *B, int Bm, int Bn, int ldb)
-{
-    quark_option_t *opt = (quark_option_t*)(options->schedopt);
-    DAG_CORE_LAG2C;
-    QUARK_Insert_Task(opt->quark, CORE_zlag2c_quark, (Quark_Task_Flags*)opt,
-        sizeof(int),                        &m,         VALUE,
-        sizeof(int),                        &n,         VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),                 INPUT,
-        sizeof(int),                        &lda,       VALUE,
-        sizeof(MORSE_Complex32_t)*nb*nb,    RTBLKADDR(B, MORSE_Complex32_t, Bm, Bn),                 OUTPUT,
-        sizeof(int),                        &ldb,       VALUE,
-        sizeof(MORSE_sequence_t*),           &(options->sequence),  VALUE,
-        sizeof(MORSE_request_t*),            &(options->request),   VALUE,
-        0);
-}
-
-
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
 void CORE_zlag2c_quark(Quark *quark)
 {
@@ -73,27 +49,24 @@ void CORE_zlag2c_quark(Quark *quark)
         RUNTIME_sequence_flush(quark, sequence, request, info);
 }
 
-/***************************************************************************//**
- *
- * @ingroup CORE_MORSE_Complex64_t
- *
- **/
-
-void MORSE_TASK_clag2z(const MORSE_option_t *options,
+void MORSE_TASK_zlag2c(const MORSE_option_t *options,
                        int m, int n, int nb,
                        const MORSE_desc_t *A, int Am, int An, int lda,
                        const MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
-    QUARK_Insert_Task(opt->quark, CORE_clag2z_quark, (Quark_Task_Flags*)opt,
-        sizeof(int),                        &m,     VALUE,
-        sizeof(int),                        &n,     VALUE,
-        sizeof(MORSE_Complex32_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex32_t, Am, An),             INPUT,
-        sizeof(int),                        &lda,   VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),             INOUT,
-        sizeof(int),                        &ldb,   VALUE,
-        0);
+    quark_option_t *opt = (quark_option_t*)(options->schedopt);
+    DAG_CORE_LAG2C;
+    QUARK_Insert_Task(opt->quark, CORE_zlag2c_quark, (Quark_Task_Flags*)opt,
+                      sizeof(int),                        &m,         VALUE,
+                      sizeof(int),                        &n,         VALUE,
+                      sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex64_t, Am, An),                 INPUT,
+                      sizeof(int),                        &lda,       VALUE,
+                      sizeof(MORSE_Complex32_t)*nb*nb,    RTBLKADDR(B, MORSE_Complex32_t, Bm, Bn),                 OUTPUT,
+                      sizeof(int),                        &ldb,       VALUE,
+                      sizeof(MORSE_sequence_t*),           &(options->sequence),  VALUE,
+                      sizeof(MORSE_request_t*),            &(options->request),   VALUE,
+                      0);
 }
-
 
 void CORE_clag2z_quark(Quark *quark)
 {
@@ -108,3 +81,17 @@ void CORE_clag2z_quark(Quark *quark)
     CORE_clag2z( m, n, A, lda, B, ldb);
 }
 
+void MORSE_TASK_clag2z(const MORSE_option_t *options,
+                       int m, int n, int nb,
+                       const MORSE_desc_t *A, int Am, int An, int lda,
+                       const MORSE_desc_t *B, int Bm, int Bn, int ldb)
+{
+    QUARK_Insert_Task(opt->quark, CORE_clag2z_quark, (Quark_Task_Flags*)opt,
+                      sizeof(int),                        &m,     VALUE,
+                      sizeof(int),                        &n,     VALUE,
+                      sizeof(MORSE_Complex32_t)*nb*nb,    RTBLKADDR(A, MORSE_Complex32_t, Am, An),             INPUT,
+                      sizeof(int),                        &lda,   VALUE,
+                      sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),             INOUT,
+                      sizeof(int),                        &ldb,   VALUE,
+                      0);
+}

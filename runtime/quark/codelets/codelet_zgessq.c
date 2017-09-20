@@ -24,23 +24,9 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
-
-void MORSE_TASK_zgessq( const MORSE_option_t *options,
-                        int m, int n,
-                        const MORSE_desc_t *A, int Am, int An, int lda,
-                        const MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn )
-{
-    quark_option_t *opt = (quark_option_t*)(options->schedopt);
-    QUARK_Insert_Task(opt->quark, CORE_zgessq_quark, (Quark_Task_Flags*)opt,
-        sizeof(int),                     &m,    VALUE,
-        sizeof(int),                     &n,    VALUE,
-        sizeof(MORSE_Complex64_t)*lda*n, RTBLKADDR(A, MORSE_Complex64_t, Am, An), INPUT,
-        sizeof(int),                     &lda,  VALUE,
-        sizeof(double)*2,                RTBLKADDR(SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn), INOUT,
-        0);
-}
-
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
 void CORE_zgessq_quark(Quark *quark)
 {
@@ -52,4 +38,19 @@ void CORE_zgessq_quark(Quark *quark)
 
     quark_unpack_args_5( quark, m, n, A, lda, SCALESUMSQ );
     CORE_zgessq( m, n, A, lda, &SCALESUMSQ[0], &SCALESUMSQ[1]);
+}
+
+void MORSE_TASK_zgessq( const MORSE_option_t *options,
+                        int m, int n,
+                        const MORSE_desc_t *A, int Am, int An, int lda,
+                        const MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn )
+{
+    quark_option_t *opt = (quark_option_t*)(options->schedopt);
+    QUARK_Insert_Task(opt->quark, CORE_zgessq_quark, (Quark_Task_Flags*)opt,
+                      sizeof(int),                     &m,    VALUE,
+                      sizeof(int),                     &n,    VALUE,
+                      sizeof(MORSE_Complex64_t)*lda*n, RTBLKADDR(A, MORSE_Complex64_t, Am, An), INPUT,
+                      sizeof(int),                     &lda,  VALUE,
+                      sizeof(double)*2,                RTBLKADDR(SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn), INOUT,
+                      0);
 }

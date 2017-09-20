@@ -30,8 +30,8 @@
 #include "lapack_to_morse.h"
 
 /* Specific includes for step 7 */
-#include <coreblas/include/lapacke.h>
-#include <coreblas/include/coreblas.h>
+#include <coreblas/lapacke.h>
+#include <coreblas.h>
 #include <morse.h>
 #if defined(CHAMELEON_USE_MPI)
 #include <mpi.h>

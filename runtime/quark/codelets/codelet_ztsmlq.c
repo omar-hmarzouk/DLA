@@ -30,7 +30,36 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
+
+void CORE_ztsmlq_quark(Quark *quark)
+{
+    MORSE_enum side;
+    MORSE_enum trans;
+    int m1;
+    int n1;
+    int m2;
+    int n2;
+    int k;
+    int ib;
+    MORSE_Complex64_t *A1;
+    int lda1;
+    MORSE_Complex64_t *A2;
+    int lda2;
+    MORSE_Complex64_t *V;
+    int ldv;
+    MORSE_Complex64_t *T;
+    int ldt;
+    MORSE_Complex64_t *WORK;
+    int ldwork;
+
+    quark_unpack_args_18(quark, side, trans, m1, n1, m2, n2, k, ib,
+                         A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
+    CORE_ztsmlq(side, trans, m1, n1, m2, n2, k, ib,
+                A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
+}
 
 /**
  *
@@ -131,7 +160,6 @@
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
  ******************************************************************************/
-
 void MORSE_TASK_ztsmlq(const MORSE_option_t *options,
                        MORSE_enum side, MORSE_enum trans,
                        int m1, int n1, int m2, int n2, int k, int ib, int nb,
@@ -164,32 +192,4 @@ void MORSE_TASK_ztsmlq(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*ib*nb,    NULL,          SCRATCH,
         sizeof(int),                        &ldwork, VALUE,
         0);
-}
-
-
-void CORE_ztsmlq_quark(Quark *quark)
-{
-    MORSE_enum side;
-    MORSE_enum trans;
-    int m1;
-    int n1;
-    int m2;
-    int n2;
-    int k;
-    int ib;
-    MORSE_Complex64_t *A1;
-    int lda1;
-    MORSE_Complex64_t *A2;
-    int lda2;
-    MORSE_Complex64_t *V;
-    int ldv;
-    MORSE_Complex64_t *T;
-    int ldt;
-    MORSE_Complex64_t *WORK;
-    int ldwork;
-
-    quark_unpack_args_18(quark, side, trans, m1, n1, m2, n2, k, ib,
-                         A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
-    CORE_ztsmlq(side, trans, m1, n1, m2, n2, k, ib,
-                A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
 }

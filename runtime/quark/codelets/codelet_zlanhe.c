@@ -27,7 +27,23 @@
  *
  **/
 
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
+
+void CORE_zlanhe_quark(Quark *quark)
+{
+    double *normA;
+    MORSE_enum norm;
+    MORSE_enum uplo;
+    int N;
+    MORSE_Complex64_t *A;
+    int LDA;
+    double *work;
+
+    quark_unpack_args_7(quark, norm, uplo, N, A, LDA, work, normA);
+    CORE_zlanhe( norm, uplo, N, A, LDA, work, normA);
+}
 
 void MORSE_TASK_zlanhe(const MORSE_option_t *options,
                        MORSE_enum norm, MORSE_enum uplo, int N, int NB,
@@ -47,18 +63,4 @@ void MORSE_TASK_zlanhe(const MORSE_option_t *options,
         sizeof(double)*szeW,             NULL,   SCRATCH,
         sizeof(double),                  RTBLKADDR(B, double, Bm, Bn), OUTPUT,
         0);
-}
-
-void CORE_zlanhe_quark(Quark *quark)
-{
-    double *normA;
-    MORSE_enum norm;
-    MORSE_enum uplo;
-    int N;
-    MORSE_Complex64_t *A;
-    int LDA;
-    double *work;
-
-    quark_unpack_args_7(quark, norm, uplo, N, A, LDA, work, normA);
-    CORE_zlanhe( norm, uplo, N, A, LDA, work, normA);
 }

@@ -22,7 +22,9 @@
  * @precisions normal z -> s d c
  *
  **/
-#include "runtime/parsec/include/morse_parsec.h"
+#include "chameleon_parsec.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
 static int
 CORE_ztpmqrt_parsec(dague_execution_unit_t    *context,

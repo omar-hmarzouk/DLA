@@ -38,9 +38,6 @@
 #include <unistd.h>
 #endif
 
-/* need the config to get definitions */
-#include "control/config.h"
-
 /** ****************************************************************************
  * Implementation headers
  **/
@@ -76,11 +73,6 @@
  *  Chameleon header files
  **/
 #include "morse.h"
-
-#include "coreblas/include/coreblas.h"
-#if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
-#include "cudablas/include/cudablas.h"
-#endif
 
 #include "control/global.h"
 #include "control/auxiliary.h"

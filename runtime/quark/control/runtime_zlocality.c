@@ -23,7 +23,7 @@
  *  @precisions normal z -> s d c
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
 
 void RUNTIME_zlocality_allrestrict( uint32_t where )
 {

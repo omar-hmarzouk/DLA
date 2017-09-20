@@ -25,13 +25,6 @@
 #ifndef _MORSE_CUDA_ZBLAS_H_
 #define _MORSE_CUDA_ZBLAS_H_
 
-#include "include/chameleon_config.h"
-#include "morse_types.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /** ****************************************************************************
  *  Declarations of cuda kernels - alphabetical order
  **/
@@ -55,9 +48,5 @@ int CUDA_ztsmqr( MORSE_enum side, MORSE_enum trans, int M1, int N1, int M2, int 
 int CUDA_zttmqr( MORSE_enum side, MORSE_enum trans, int M1, int N1, int M2, int N2, int K, int IB, cuDoubleComplex *A1, int LDA1, cuDoubleComplex *A2, int LDA2, const cuDoubleComplex *V, int LDV, const cuDoubleComplex *T, int LDT, cuDoubleComplex *WORK, int LDWORK, cuDoubleComplex *WORKC, int LDWORKC, CUBLAS_STREAM_PARAM );
 int CUDA_zunmlqt(MORSE_enum side, MORSE_enum trans, int M, int N, int K, int IB, const cuDoubleComplex *A,    int LDA, const cuDoubleComplex *T,    int LDT, cuDoubleComplex *C,    int LDC, cuDoubleComplex *WORK, int LDWORK, CUBLAS_STREAM_PARAM );
 int CUDA_zunmqrt(MORSE_enum side, MORSE_enum trans, int M, int N, int K, int IB, const cuDoubleComplex *A,    int LDA, const cuDoubleComplex *T,    int LDT, cuDoubleComplex *C,    int LDC, cuDoubleComplex *WORK, int LDWORK, CUBLAS_STREAM_PARAM );
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

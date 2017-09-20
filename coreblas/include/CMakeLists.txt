@@ -30,36 +30,41 @@
 # ---------------------
 set(COREBLAS_HDRS_GENERATED "")
 set(ZHDR
-    coreblas_z.h
-    coreblas_zc.h
+  coreblas/coreblas_z.h
+  coreblas/coreblas_zc.h
 )
-precisions_rules_py(COREBLAS_HDRS_GENERATED "${ZHDR}"
-                    PRECISIONS "s;d;c;z;zc;ds" )
+precisions_rules_py(
+  COREBLAS_HDRS_GENERATED "${ZHDR}"
+  TARGETDIR  coreblas
+  PRECISIONS "s;d;c;z;zc;ds" )
 
 # Define the list of headers
 # --------------------------
 set(COREBLAS_HDRS
-    cblas.h
     coreblas.h
-    lapacke.h
-    lapacke_config.h
-    lapacke_mangling.h
-    ${COREBLAS_HDRS_GENERATED}
+    coreblas/cblas.h
+    coreblas/lapacke.h
+    coreblas/lapacke_config.h
+    coreblas/lapacke_mangling.h
     )
+
+# Add generated headers
+# ---------------------
+foreach( hdr_file ${COREBLAS_HDRS_GENERATED} )
+  list(APPEND COREBLAS_HDRS ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
+endforeach()
 
 # Force generation of headers
 # ---------------------------
 add_custom_target(coreblas_include ALL SOURCES ${COREBLAS_HDRS})
 
-set(HDR_INSTALL "cblas.h;coreblas.h;lapacke.h;lapacke_config.h;lapacke_mangling.h")
-foreach( hdr_file ${COREBLAS_HDRS_GENERATED} )
-    list(APPEND HDR_INSTALL ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
-endforeach()
-
-# installation
+# Installation
 # ------------
-install(FILES ${HDR_INSTALL}
-        DESTINATION include/chameleon/coreblas/include)
+install( FILES coreblas.h
+         DESTINATION include )
+
+install( FILES ${COREBLAS_HDRS}
+         DESTINATION include/coreblas )
 
 ###
 ### END CMakeLists.txt

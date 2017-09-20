@@ -27,8 +27,8 @@
 #define _MORSE_DESCRIPTOR_H_
 
 #include <assert.h>
-#include "include/chameleon_config.h"
-#include "morse_struct.h"
+#include "chameleon/chameleon_config.h"
+#include "chameleon/morse_struct.h"
 #include "control/auxiliary.h"
 
 #ifdef __cplusplus

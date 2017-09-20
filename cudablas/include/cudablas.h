@@ -25,7 +25,7 @@
 #ifndef _CUDA_BLAS_H_
 #define _CUDA_BLAS_H_
 
-#include "include/chameleon_config.h"
+#include "chameleon/chameleon_config.h"
 
 #if !defined(CHAMELEON_USE_CUDA)
 #error "This file should not be included"
@@ -68,20 +68,21 @@
 /** ****************************************************************************
  * MORSE types and constants
  **/
-#include "morse_types.h"
-#include "morse_struct.h"
-#include "morse_constants.h"
-//#include "control/auxiliary.h"
-//#include "control/descriptor.h"
-//#include "control/tile.h"
+#include "chameleon/morse_types.h"
+#include "chameleon/morse_struct.h"
+#include "chameleon/morse_constants.h"
 
 /** ****************************************************************************
  * CUDA BLAS headers
  **/
-#include "cudablas/include/cudablas_z.h"
-#include "cudablas/include/cudablas_d.h"
-#include "cudablas/include/cudablas_c.h"
-#include "cudablas/include/cudablas_s.h"
+BEGIN_C_DECLS
+
+#include "cudablas/cudablas_z.h"
+#include "cudablas/cudablas_d.h"
+#include "cudablas/cudablas_c.h"
+#include "cudablas/cudablas_s.h"
+
+END_C_DECLS
 
 /** ****************************************************************************
  * Coreblas Error
@@ -91,6 +92,8 @@
 /** ****************************************************************************
  *  LAPACK Constants
  **/
+BEGIN_C_DECLS
+
 extern char *morse_lapack_constants[];
 #define morse_lapack_const(morse_const) morse_lapack_constants[morse_const][0]
 
@@ -101,5 +104,7 @@ extern int morse_cublas_constants[];
 #else
 #define morse_cublas_const(morse_const) morse_lapack_constants[morse_const][0]
 #endif
+
+END_C_DECLS
 
 #endif

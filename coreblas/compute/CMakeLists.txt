@@ -112,23 +112,18 @@ add_dependencies(coreblas coreblas_include)
 set_property(TARGET coreblas PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET coreblas PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
-if(NOT CHAMELEON_SIMULATION)
-  target_link_libraries(coreblas ${LAPACKE_LIBRARIES} ${CBLAS_LIBRARIES})
-endif(NOT CHAMELEON_SIMULATION)
+target_link_libraries(coreblas
+  ${LAPACKE_LIBRARIES}
+  ${LAPACK_SEQ_LIBRARIES}
+  ${CBLAS_LIBRARIES}
+  ${BLAS_SEQ_LIBRARIES}
+  )
 
-# # Dependencies step
-# # -----------------
-# foreach(_external_package "blas" "cblas" "lapack" "lapacke")
-#     string(TOUPPER "${_external_package}" _NAMEVAR)
-#     if(${_NAMEVAR}_EP)
-#         add_dependencies(coreblas ${_external_package}_build)
-#     endif()
-# endforeach()
-
-# installation
+# Installation
 # ------------
 install(TARGETS coreblas
-        DESTINATION lib)
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib)
 
 ###
 ### END CMakeLists.txt

@@ -28,13 +28,29 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
-/***************************************************************************//**
- *
- * @ingroup CORE_MORSE_Complex64_t
- *
- **/
+void CORE_zsyr2k_quark(Quark *quark)
+{
+    MORSE_enum uplo;
+    MORSE_enum trans;
+    int n;
+    int k;
+    MORSE_Complex64_t alpha;
+    MORSE_Complex64_t *A;
+    int lda;
+    MORSE_Complex64_t *B;
+    int ldb;
+    MORSE_Complex64_t beta;
+    MORSE_Complex64_t *C;
+    int ldc;
+
+    quark_unpack_args_12(quark, uplo, trans, n, k, alpha, A, lda, B, ldb, beta, C, ldc);
+    CORE_zsyr2k(uplo, trans,
+                n, k, alpha, A, lda, B, ldb, beta, C, ldc);
+}
 
 void MORSE_TASK_zsyr2k(const MORSE_option_t *options,
                        MORSE_enum uplo, MORSE_enum trans,
@@ -59,25 +75,4 @@ void MORSE_TASK_zsyr2k(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(C, MORSE_Complex64_t, Cm, Cn),                 INOUT,
         sizeof(int),                        &ldc,       VALUE,
         0);
-}
-
-
-void CORE_zsyr2k_quark(Quark *quark)
-{
-    MORSE_enum uplo;
-    MORSE_enum trans;
-    int n;
-    int k;
-    MORSE_Complex64_t alpha;
-    MORSE_Complex64_t *A;
-    int lda;
-    MORSE_Complex64_t *B;
-    int ldb;
-    MORSE_Complex64_t beta;
-    MORSE_Complex64_t *C;
-    int ldc;
-
-    quark_unpack_args_12(quark, uplo, trans, n, k, alpha, A, lda, B, ldb, beta, C, ldc);
-    CORE_zsyr2k(uplo, trans,
-                n, k, alpha, A, lda, B, ldb, beta, C, ldc);
 }

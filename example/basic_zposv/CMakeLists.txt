@@ -66,41 +66,27 @@ elseif(CHAMELEON_SCHED_QUARK)
     link_directories(${QUARK_LIBRARY_DIRS})
 endif()
 
-if(NOT CHAMELEON_SIMULATION)
-
-    if(CHAMELEON_USE_CUDA)
-        list(APPEND libs_for_examples
-        cudablas)
-    endif()
-    if(CHAMELEON_USE_CUDA)
-        link_directories(${CUDA_LIBRARY_DIRS})
-    endif()
-
-    list(APPEND libs_for_examples
-         coreblas
-         ${LAPACKE_LIBRARIES}
-         ${CBLAS_LIBRARIES}
-         ${LAPACK_SEQ_LIBRARIES}
-         ${BLAS_SEQ_LIBRARIES}
-         ${HWLOC_LIBRARIES}
-         ${EXTRA_LIBRARIES}
-    )
-
-    link_directories(${LAPACKE_LIBRARY_DIRS})
-    link_directories(${LAPACK_LIBRARY_DIRS})
-    link_directories(${CBLAS_LIBRARY_DIRS})
-    link_directories(${BLAS_LIBRARY_DIRS})
-
-else()
-
-    list(APPEND libs_for_examples
-         ${HWLOC_LIBRARIES}
-         ${EXTRA_LIBRARIES}
-    )
-
+if(CHAMELEON_USE_CUDA)
+  list(APPEND libs_for_examples
+    cudablas)
+endif()
+if(CHAMELEON_USE_CUDA)
+  link_directories(${CUDA_LIBRARY_DIRS})
 endif()
 
-link_directories(${HWLOC_LIBRARY_DIRS})
+list(APPEND libs_for_examples
+  coreblas
+  ${LAPACKE_LIBRARIES}
+  ${CBLAS_LIBRARIES}
+  ${LAPACK_SEQ_LIBRARIES}
+  ${BLAS_SEQ_LIBRARIES}
+  ${EXTRA_LIBRARIES}
+  )
+
+link_directories(${LAPACKE_LIBRARY_DIRS})
+link_directories(${LAPACK_LIBRARY_DIRS})
+link_directories(${CBLAS_LIBRARY_DIRS})
+link_directories(${BLAS_LIBRARY_DIRS})
 
 # message(STATUS "libs timings: ${libs_for_examples}")
 foreach(_example ${EXAMPLES})
@@ -109,7 +95,7 @@ foreach(_example ${EXAMPLES})
     set_property(TARGET ${_name_exe} PROPERTY LINKER_LANGUAGE Fortran)
     target_link_libraries(${_name_exe} ${libs_for_examples})
     install(TARGETS ${_name_exe}
-            DESTINATION lib/chameleon/example/basic_zposv)
+            DESTINATION bin/example/basic_zposv )
 endforeach()
 
 #-------- Tests ---------

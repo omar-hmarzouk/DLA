@@ -26,11 +26,9 @@
 #
 ###
 
-if (NOT CHAMELEON_SIMULATION)
-    add_subdirectory(include)
-    add_subdirectory(compute)
-    add_subdirectory(eztrace_module)
-endif()
+add_subdirectory(include)
+add_subdirectory(compute)
+add_subdirectory(eztrace_module)
 
 ###
 ### END CMakeLists.txt

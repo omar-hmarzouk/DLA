@@ -19,7 +19,13 @@
 #  @date 2016-08-23
 #
 ###
+if (NOT CHAMELEON_SCHED_STARPU)
+  message(ERROR "This directory should not be included if CHAMELEON_SCHED_STARPU is not enabled")
+endif()
 
+if(CHAMELEON_SIMULATION)
+  message(ERROR "This directory should not be included if CHAMELEON_SIMULATION is enabled")
+endif()
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -34,43 +40,20 @@ set(OOC_SOURCES
 unset(libs_for_ooc)
 list(APPEND libs_for_ooc
      chameleon
-     chameleon_starpu
      ${STARPU_LIBRARIES_DEP}
 )
 link_directories(${STARPU_LIBRARY_DIRS})
 
+list(APPEND libs_for_ooc
+  ${LAPACKE_LIBRARIES}
+  ${LAPACK_SEQ_LIBRARIES}
+  ${BLAS_SEQ_LIBRARIES}
+  ${EXTRA_LIBRARIES}
+  )
 
-if(NOT CHAMELEON_SIMULATION)
-
-    if(CHAMELEON_USE_CUDA)
-        list(APPEND libs_for_ooc
-        cudablas)
-    endif()
-    if(CHAMELEON_USE_CUDA)
-        link_directories(${CUDA_LIBRARY_DIRS})
-    endif()
-
-    list(APPEND libs_for_ooc
-         coreblas
-         ${LAPACKE_LIBRARIES}
-         ${CBLAS_LIBRARIES}
-         ${LAPACK_SEQ_LIBRARIES}
-         ${BLAS_SEQ_LIBRARIES}
-         ${HWLOC_LIBRARIES}
-         ${EXTRA_LIBRARIES}
-    )
-
-    link_directories(${LAPACKE_LIBRARY_DIRS})
-    link_directories(${LAPACK_LIBRARY_DIRS})
-    link_directories(${CBLAS_LIBRARY_DIRS})
-    link_directories(${BLAS_LIBRARY_DIRS})
-
-else()
-
-    list(APPEND libs_for_ooc ${EXTRA_LIBRARIES})
-
-endif()
-
+link_directories(${LAPACKE_LIBRARY_DIRS})
+link_directories(${LAPACK_LIBRARY_DIRS})
+link_directories(${BLAS_LIBRARY_DIRS})
 
 # message(STATUS "libs examples: ${libs_for_ooc}")
 foreach(_ooc ${OOC_SOURCES})
@@ -82,7 +65,7 @@ foreach(_ooc ${OOC_SOURCES})
     endif()
     target_link_libraries(${_name_exe} ${libs_for_ooc})
     install(TARGETS ${_name_exe}
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/chameleon/example/out_of_core)
+            DESTINATION bin/example/out_of_core)
 endforeach()
 
 #-------- Tests ---------

@@ -10,10 +10,10 @@
 
 /**
  *
- * @file core_zcblas.h
+ * @file morse_tasks_zc.h
  *
- *  PLASMA auxiliary routines
- *  PLASMA is a software package provided by Univ. of Tennessee,
+ *  MORSE auxiliary routines
+ *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
  * @version 2.5.0
@@ -28,27 +28,19 @@
  * @precisions mixed zc -> ds
  *
  **/
-#ifndef _MORSE_CORE_ZCBLAS_H_
-#define _MORSE_CORE_ZCBLAS_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#ifndef _MORSE_TASKS_Z_H_
+#define _MORSE_TASKS_Z_H_
 
 /** ****************************************************************************
- *  Declarations of serial kernels - alphabetical order
+ *  Declarations of QUARK wrappers (called by MORSE) - alphabetical order
  **/
-void CORE_clag2z(int m, int n,
-                 const MORSE_Complex32_t *A, int lda,
-                 MORSE_Complex64_t *B, int ldb);
-void CORE_zlag2c(int m, int n,
-                 const MORSE_Complex64_t *A, int lda,
-                 MORSE_Complex32_t *B, int ldb, int *info);
-
-
-
-#ifdef __cplusplus
-}
-#endif
+void MORSE_TASK_clag2z(MORSE_option_t *options,
+                       int m, int n, int nb,
+                       MORSE_desc_t *A, int Am, int An, int lda,
+                       MORSE_desc_t *B, int Bm, int Bn, int ldb);
+void MORSE_TASK_zlag2c(MORSE_option_t *options,
+                       int m, int n, int nb,
+                       MORSE_desc_t *A, int Am, int An, int lda,
+                       MORSE_desc_t *B, int Bm, int Bn, int ldb);
 
 #endif

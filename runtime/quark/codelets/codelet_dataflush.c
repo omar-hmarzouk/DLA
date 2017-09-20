@@ -24,7 +24,7 @@
  * @date 2014-02-05
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
 
 void MORSE_TASK_dataflush(const MORSE_option_t *options,
                           const MORSE_desc_t *A, int Am, int An)

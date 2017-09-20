@@ -22,8 +22,8 @@
  * @precisions normal z -> c d s
  *
  **/
-#include "coreblas/include/coreblas.h"
-#include "coreblas/include/lapacke.h"
+#include "coreblas.h"
+#include "coreblas/lapacke.h"
 
 /**
  *******************************************************************************

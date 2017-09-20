@@ -22,7 +22,9 @@
  * @precisions normal z -> s d c
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
 static void
 CORE_ztpqrt_quark( Quark *quark )

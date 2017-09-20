@@ -28,16 +28,29 @@
  * @precisions normal z -> c
  *
  **/
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
 
-#undef REAL
-#define COMPLEX
-#ifdef COMPLEX
-/***************************************************************************//**
- *
- * @ingroup CORE_MORSE_Complex64_t
- *
- **/
+void CORE_zherk_quark(Quark *quark)
+{
+    MORSE_enum uplo;
+    MORSE_enum trans;
+    int n;
+    int k;
+    double alpha;
+    MORSE_Complex64_t *A;
+    int lda;
+    double beta;
+    MORSE_Complex64_t *C;
+    int ldc;
+
+    quark_unpack_args_10(quark, uplo, trans, n, k, alpha, A, lda, beta, C, ldc);
+    CORE_zherk(uplo, trans,
+        n, k,
+        alpha, A, lda,
+        beta, C, ldc);
+}
 
 void MORSE_TASK_zherk(const MORSE_option_t *options,
                       MORSE_enum uplo, MORSE_enum trans,
@@ -60,25 +73,3 @@ void MORSE_TASK_zherk(const MORSE_option_t *options,
         sizeof(int),                        &ldc,       VALUE,
         0);
 }
-
-
-void CORE_zherk_quark(Quark *quark)
-{
-    MORSE_enum uplo;
-    MORSE_enum trans;
-    int n;
-    int k;
-    double alpha;
-    MORSE_Complex64_t *A;
-    int lda;
-    double beta;
-    MORSE_Complex64_t *C;
-    int ldc;
-
-    quark_unpack_args_10(quark, uplo, trans, n, k, alpha, A, lda, beta, C, ldc);
-    CORE_zherk(uplo, trans,
-        n, k,
-        alpha, A, lda,
-        beta, C, ldc);
-}
-#endif

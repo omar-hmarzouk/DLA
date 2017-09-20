@@ -27,7 +27,28 @@
  *
  **/
 
-#include "runtime/quark/include/morse_quark.h"
+#include "chameleon_quark.h"
+#include "chameleon/morse_tasks_z.h"
+#include "coreblas/coreblas_z.h"
+
+void CORE_zgetrf_quark(Quark *quark)
+{
+    int m;
+    int n;
+    MORSE_Complex64_t *A;
+    int lda;
+    int *IPIV;
+    MORSE_sequence_t *sequence;
+    MORSE_request_t *request;
+    MORSE_bool check_info;
+    int iinfo;
+    int info;
+
+    quark_unpack_args_9(quark, m, n, A, lda, IPIV, sequence, request, check_info, iinfo);
+    CORE_zgetrf( m, n, A, lda, IPIV, &info );
+    if (info != MORSE_SUCCESS && check_info)
+        RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
+}
 
 void MORSE_TASK_zgetrf(const MORSE_option_t *options,
                        int m, int n, int nb,
@@ -48,24 +69,4 @@ void MORSE_TASK_zgetrf(const MORSE_option_t *options,
         sizeof(MORSE_bool),                &check_info,    VALUE,
         sizeof(int),                        &iinfo,         VALUE,
         0);
-}
-
-
-void CORE_zgetrf_quark(Quark *quark)
-{
-    int m;
-    int n;
-    MORSE_Complex64_t *A;
-    int lda;
-    int *IPIV;
-    MORSE_sequence_t *sequence;
-    MORSE_request_t *request;
-    MORSE_bool check_info;
-    int iinfo;
-    int info;
-
-    quark_unpack_args_9(quark, m, n, A, lda, IPIV, sequence, request, check_info, iinfo);
-    CORE_zgetrf( m, n, A, lda, IPIV, &info );
-    if (info != MORSE_SUCCESS && check_info)
-        RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
 }

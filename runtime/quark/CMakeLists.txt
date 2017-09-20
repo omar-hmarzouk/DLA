@@ -1,10 +1,10 @@
 ###
 #
-# @copyright (c) 2009-2014 The University of Tennessee and The University
+# @copyright (c) 2009-2015 The University of Tennessee and The University
 #                          of Tennessee Research Foundation.
 #                          All rights reserved.
-# @copyright (c) 2012-2016 Inria. All rights reserved.
-# @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+# @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+#                          Univ. Bordeaux. All rights reserved.
 #
 ###
 #
@@ -26,72 +26,80 @@
 #  @date 13-07-2012
 #
 ###
-
 cmake_minimum_required(VERSION 2.8)
 
-# Generate the quark headers for all possible precisions
-# ------------------------------------------------------
-set(RUNTIME_HDRS_GENERATED "")
-set(ZHDR
-  include/quark_zblas.h
-  include/quark_zcblas.h
-)
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR}/include )
+include_directories( ${CMAKE_CURRENT_BINARY_DIR}/include )
 
-precisions_rules_py(RUNTIME_HDRS_GENERATED "${ZHDR}"
-                    PRECISIONS "s;d;c;z;ds;zc"
-                    TARGETDIR  "include")
+# # Generate headers for all possible precisions
+# # --------------------------------------------
+# set(RUNTIME_HDRS_GENERATED "")
+# set(ZHDR
+# )
+#
+# precisions_rules_py(RUNTIME_HDRS_GENERATED "${ZHDR}"
+#   PRECISIONS "s;d;c;z;ds;zc"
+#   TARGETDIR  "include")
 
 # Define the list of headers
 # --------------------------
 set(RUNTIME_HDRS
-    include/morse_quark.h
-    include/quark_blas.h
-    include/core_blas_dag.h
-    ${RUNTIME_HDRS_GENERATED}
-    )
+  include/chameleon_quark.h
+  include/core_blas_dag.h
+  )
+
+# # Add generated headers
+# # ---------------------
+# foreach( hdr_file ${RUNTIME_HDRS_GENERATED} )
+#   list(APPEND RUNTIME_HDRS ${CMAKE_CURRENT_BINARY_DIR}/${hdr_file})
+# endforeach()
 
 # Force generation of headers
 # ---------------------------
-add_custom_target(runtime_quark_include ALL SOURCES ${RUNTIME_HDRS})
+add_custom_target(
+  runtime_quark_include
+  ALL SOURCES ${RUNTIME_HDRS})
 
-# installation
+# Installation
 # ------------
-#install(FILES ${RUNTIME_HDRS}
-#        DESTINATION include)
+install(
+  FILES ${RUNTIME_HDRS}
+  DESTINATION include/runtime/quark )
 
-# Generate the morse common for all possible precisions
-# -----------------------------------------------------
+# Generate the Chameleon common for all possible precisions
+# ---------------------------------------------------------
 set(RUNTIME_COMMON_GENERATED "")
 set(ZSRC
-    control/runtime_zprofiling.c
-    control/runtime_zlocality.c
-    )
+  control/runtime_zprofiling.c
+  control/runtime_zlocality.c
+  )
 
-precisions_rules_py(RUNTIME_COMMON_GENERATED "${ZSRC}"
-                    PRECISIONS "${CHAMELEON_PRECISION}"
-                    TARGETDIR "control")
+precisions_rules_py(
+  RUNTIME_COMMON_GENERATED "${ZSRC}"
+  PRECISIONS "${CHAMELEON_PRECISION}"
+  TARGETDIR "control")
 
 set(RUNTIME_COMMON
-    control/runtime_async.c
-    control/runtime_context.c
-    control/runtime_control.c
-    control/runtime_descriptor.c
-    control/runtime_options.c
-    control/runtime_profiling.c
-    codelets/codelet_dataflush.c
-    ${RUNTIME_COMMON_GENERATED}
-    )
+  control/runtime_async.c
+  control/runtime_context.c
+  control/runtime_control.c
+  control/runtime_descriptor.c
+  control/runtime_options.c
+  control/runtime_profiling.c
+  codelets/codelet_dataflush.c
+  ${RUNTIME_COMMON_GENERATED}
+  )
 
-# Generate the morse sources for all possible precisions
-# ------------------------------------------------------
+# Generate the Chameleon sources for all possible precisions
+# ----------------------------------------------------------
 set(RUNTIME_SRCS_GENERATED "")
 set(ZSRC
-    ${CODELETS_ZSRC}
-    )
+  ${CODELETS_ZSRC}
+  )
 
 precisions_rules_py(RUNTIME_SRCS_GENERATED "${ZSRC}"
-                    PRECISIONS "${CHAMELEON_PRECISION}"
-                    TARGETDIR "codelets")
+  PRECISIONS "${CHAMELEON_PRECISION}"
+  TARGETDIR "codelets")
 
 set(RUNTIME_SRCS
   ${RUNTIME_COMMON}
@@ -111,7 +119,6 @@ endif(CHAMELEON_USE_CUDA)
 
 add_dependencies(chameleon_quark
   chameleon_include
-  coreblas_include
   control_include
   runtime_quark_include
 )
@@ -122,7 +129,7 @@ endif()
 # installation
 # ------------
 install(TARGETS chameleon_quark
-        DESTINATION lib)
+  DESTINATION lib)
 
 ###
 ### END CMakeLists.txt

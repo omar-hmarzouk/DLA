@@ -28,9 +28,8 @@
  * @precisions normal z -> c
  *
  **/
-#include "runtime/starpu/include/morse_starpu.h"
-#include "runtime/starpu/include/runtime_codelet_z.h"
-
+#include "chameleon_starpu.h"
+#include "runtime_codelet_z.h"
 
 void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
                              MORSE_enum uplo, int n, int nb,

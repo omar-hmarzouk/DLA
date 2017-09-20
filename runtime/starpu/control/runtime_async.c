@@ -23,7 +23,7 @@
  *
  **/
 #include <stdlib.h>
-#include "runtime/starpu/include/morse_starpu.h"
+#include "chameleon_starpu.h"
 
 /*******************************************************************************
  *  Create a sequence
@@ -54,28 +54,33 @@ extern void (*update_progress_callback)(int, int) ;
 /*******************************************************************************
  *  Display a progress information when executing the tasks
  **/
-int RUNTIME_progress( MORSE_context_t *morse)
+int RUNTIME_progress( MORSE_context_t *morse )
 {
-#if defined(CHAMELEON_USE_MPI)
-  if (morse->my_mpi_rank!=0)
-    return MORSE_SUCCESS;
-#endif
-  int tasksLeft, current, timer=0;
-  int max = starpu_task_nsubmitted();
-  if (max==0)
-    return MORSE_SUCCESS;
-  //  update_progress_callback(0, max);
-  while ((tasksLeft = starpu_task_nsubmitted()) > 0) {
-    current = max - tasksLeft;
-    if (timer > PROGRESS_MINIMUM_DURATION)
-      update_progress_callback(current, max);
-    sleep(1);
-    timer++;
-  }
-  if (timer > PROGRESS_MINIMUM_DURATION)
-    update_progress_callback(max, max);
+    int tasksLeft, current, timer = 0;
+    int max;
 
-  return MORSE_SUCCESS;
+#if defined(CHAMELEON_USE_MPI)
+    if ( morse->my_mpi_rank != 0 )
+        return MORSE_SUCCESS;
+#endif
+
+    max = starpu_task_nsubmitted();
+    if ( max == 0 )
+        return MORSE_SUCCESS;
+
+    //  update_progress_callback(0, max);
+    while ((tasksLeft = starpu_task_nsubmitted()) > 0) {
+        current = max - tasksLeft;
+        if (timer > PROGRESS_MINIMUM_DURATION)
+            update_progress_callback(current, max);
+        sleep(1);
+        timer++;
+    }
+    if (timer > PROGRESS_MINIMUM_DURATION)
+        update_progress_callback(max, max);
+
+    (void)morse;
+    return MORSE_SUCCESS;
 }
 
 /*******************************************************************************
@@ -86,7 +91,7 @@ int RUNTIME_sequence_wait( MORSE_context_t *morse, MORSE_sequence_t *sequence )
     (void)morse;
     (void)sequence;
     if (morse->progress_enabled)
-      RUNTIME_progress(morse);
+        RUNTIME_progress(morse);
     starpu_task_wait_for_all();
 #if defined(CHAMELEON_USE_MPI)
     starpu_mpi_barrier(MPI_COMM_WORLD);

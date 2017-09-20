@@ -23,6 +23,7 @@
  *
  **/
 #include "control/common.h"
+#include <stdlib.h>
 
 #define A(m,n) A,  (m),  (n)
 #define Q(m,n) Q,  (m),  (n)
@@ -78,8 +79,7 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
 
     /* Initialisation of tiles */
 
-    tiles = (int*)malloc((qrtree->mt)*sizeof(int));
-    memset( tiles, 0, (qrtree->mt)*sizeof(int) );
+    tiles = (int*)calloc( qrtree->mt, sizeof(int));
 
     ws_worker *= sizeof(MORSE_Complex64_t);
     ws_host   *= sizeof(MORSE_Complex64_t);
@@ -95,9 +95,9 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
         ldak = BLKLDD(A, k);
 
         /* Setting the order of the tiles*/
-        libhqr_treewalk(qrtree, k, tiles);
+        libhqr_walk_stepk(qrtree, k, tiles + (k+1));
 
-        for (i = A->nt-2; i >= k; i--) {
+        for (i = A->nt-1; i > k; i--) {
             n = tiles[i];
             p = qrtree->currpiv(qrtree, k, n);
 

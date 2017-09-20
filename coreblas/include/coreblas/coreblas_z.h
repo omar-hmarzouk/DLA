@@ -34,10 +34,6 @@
 
 #define COMPLEX
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /** ****************************************************************************
  *  Declarations of serial kernels - alphabetical order
  **/
@@ -402,13 +398,6 @@ int  CORE_zunmqr(MORSE_enum side, MORSE_enum trans,
                  const MORSE_Complex64_t *T, int LDT,
                  MORSE_Complex64_t *C, int LDC,
                  MORSE_Complex64_t *WORK, int LDWORK);
-
-
-
-
-#ifdef __cplusplus
-}
-#endif
 
 #undef COMPLEX
 

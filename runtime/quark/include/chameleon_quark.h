@@ -10,7 +10,7 @@
 
 /**
  *
- * @file morse_quark.h
+ * @file chameleon_quark.h
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -27,9 +27,8 @@
 #define _MORSE_QUARK_H_
 
 #include <quark.h>
-#include "coreblas/include/coreblas.h"
-#include "runtime/quark/include/quark_blas.h"
-#include "runtime/quark/include/core_blas_dag.h"
+#include "coreblas.h"
+#include "core_blas_dag.h"
 
 #include "control/common.h"
 
