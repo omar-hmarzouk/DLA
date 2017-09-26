@@ -7,7 +7,7 @@
 mkdir -p build
 cd build
 rm * -rf
-cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
+cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
 make -j5 | tee ../chameleon-build.log
 
 # run tests
@@ -23,22 +23,14 @@ lcov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
 # - consider generated files in build
 # - exclude base *z* files to avoid duplication
 # - exclude cblas.h and lapacke-.h because not really part of chameleon and make cppcheck analysis too long
-export SOURCES_TO_ANALYZE=`bash -c 'find ./build -type d -name CMakeFiles -prune -o -type d -name Testing -prune -o -type f -regex ".*\.c\|.*\.h" -print && \
-                                    find . -path ./build -prune -o -type f -regex "^[^z]*\.c" -print && \
-                                    find . -path ./build -prune -o -type f -regex "^[^z]*\.h" ! -name 'lapacke*.h' ! -name 'cblas*.h' -print | xargs'`
-# actually we need to remove cblas/lapacke headers (cppcheck analysis too long)
-# we will get them back after cppcheck
-rm coreblas/include/cblas.h coreblas/include/lapacke.h coreblas/include/lapacke_config.h coreblas/include/lapacke_mangling.h
+./tools/find_sources.sh
 
 # Undefine this because not relevant in our configuration
-export UNDEFINITIONS="-UCHAMELEON_USE_CUBLAS_V2 -UCHAMELEON_USE_OPENCL -UWIN32 -UWIN64 -U_MSC_EXTENSIONS -U_MSC_VER -U__SUNPRO_C -U__SUNPRO_CC -U__sun -Usun -U__cplusplus"
+export UNDEFINITIONS="-UCHAMELEON_USE_OPENCL -UWIN32 -UWIN64 -U_MSC_EXTENSIONS -U_MSC_VER -U__SUNPRO_C -U__SUNPRO_CC -U__sun -Usun -U__cplusplus"
 # run cppcheck analysis
-cppcheck -v -f --language=c --platform=unix64 --enable=all --xml --xml-version=2 --suppress=missingIncludeSystem ${UNDEFINITIONS} ${SOURCES_TO_ANALYZE} 2> chameleon-cppcheck.xml
+cppcheck -v -f --language=c --platform=unix64 --enable=all --xml --xml-version=2 --suppress=missingIncludeSystem ${UNDEFINITIONS} --file-list=./filelist.txt 2> chameleon-cppcheck.xml
 # run rats analysis
-rats -w 3 --xml ${SOURCES_TO_ANALYZE} > chameleon-rats.xml
-
-# get back cblas/lapacke headers after static analysis
-git checkout coreblas/include/cblas.h coreblas/include/lapacke.h coreblas/include/lapacke_config.h coreblas/include/lapacke_mangling.h
+rats -w 3 --xml  `cat filelist.txt` > chameleon-rats.xml
 
 # create the sonarqube config file
 cat > sonar-project.properties << EOF
@@ -51,7 +43,8 @@ sonar.projectName=Chameleon
 sonar.projectDescription=Dense linear algebra subroutines for heterogeneous and distributed architectures
 sonar.projectVersion=master
 sonar.language=c++
-sonar.sources=`bash -c 'echo $SOURCES_TO_ANALYZE | sed -e "s/ /, /g"'`
+sonar.sources=build, compute, control, coreblas, example, include, runtime, testing, timing
+sonar.inclusions=`cat filelist.txt | xargs echo | sed 's/ /, /g'`
 sonar.sourceEncoding=UTF-8
 sonar.cxx.compiler.charset=UTF-8
 sonar.cxx.compiler.regex=^(.*):([0-9]+):[0-9]+: warning: (.*)\[(.*)\]$
