@@ -7,9 +7,7 @@
 mkdir -p build
 cd build
 rm * -rf
-export CFLAGS="-O0 -g -fPIC -fdiagnostics-show-option --coverage -fno-inline -Wall"
-export LDFLAGS="--coverage"
-cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" -DCMAKE_VERBOSE_MAKEFILE=ON
+cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_C_FLAGS="$CFLAGS" -DCMAKE_EXE_LINKER_FLAGS="$LDFLAGS" -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
 make -j5 | tee ../chameleon-build.log
 
 # run tests
