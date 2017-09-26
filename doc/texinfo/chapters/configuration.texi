@@ -358,6 +358,9 @@ for example:
   @example
   @env{STARPU_DISK_SWAP_BACKEND}=unistd_o_direct
   @end example
+This will create a hierarchy of directory to store one file per tile. If that
+poses problems, one can use the hdf5 I/O method which stores all tiles in a
+single file.
 @item @env{STARPU_LIMIT_CPU_MEM} environment variable to the amount of memory
 that can be used in MBytes, for example:
   @example
