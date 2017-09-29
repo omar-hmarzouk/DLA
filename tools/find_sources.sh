@@ -23,7 +23,7 @@ do
 done
 
 # Remove external header files
-for file in coreblas/include/cblas.h coreblas/include/lapacke.h coreblas/include/lapacke_config.h coreblas/include/lapacke_mangling.h
+for file in coreblas/include/coreblas/cblas.h coreblas/include/coreblas/lapacke.h coreblas/include/coreblas/lapacke_config.h coreblas/include/coreblas/lapacke_mangling.h
 do
     sed -i "\:^$file.*:d" filelist.txt
 done
