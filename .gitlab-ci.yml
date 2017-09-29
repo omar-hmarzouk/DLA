@@ -65,4 +65,3 @@ analysis:
     - ./tools/analysis.sh
   only:
     - master
-    - sonarqube
