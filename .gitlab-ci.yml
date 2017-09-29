@@ -34,10 +34,34 @@ quark:
     - ctest -V -R test_shm_s
 
 doc:
+  artifacts:
+    name: chameleon_doc
+    expire_in: 1 week
+    paths:
+      - build/doc/doxygen
+      - build/doc/orgmode
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - mkdir -p build
     - cd build
-    - cmake .. -DCHAMELEON_ENABLE_DOC=ON -DCHAMELEON_ENABLE_EXAMPLES=OFF -DCHAMELEON_ENABLE_TESTING=OFF -DCHAMELEON_ENABLE_TIMING=OFF
-    - make
+    - cmake .. -DCHAMELEON_ENABLE_DOC=ON -DCHAMELEON_ENABLE_EXAMPLE=OFF -DCHAMELEON_ENABLE_TESTING=OFF -DCHAMELEON_ENABLE_TIMING=OFF
+    - make doc
+
+analysis:
+  artifacts:
+    name: chameleon_analysis
+    expire_in: 1 week
+    paths:
+      - chameleon-build.log
+      - coverage/
+      - chameleon-coverage.xml
+      - chameleon-cppcheck.xml
+      - chameleon-rats.xml
+      - sonar.log
+  script:
+    - source .gitlab-ci-env.sh
+    - git submodule update --init --recursive
+    - ./tools/analysis.sh
+  only:
+    - master
