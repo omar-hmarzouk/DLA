@@ -24,17 +24,16 @@
    #+end_src
 
 ** Create a "Feature" branch in your fork
-   Now, you have your repository configured, and you want to create a
-   new pull request. The first step is to create a branch from the HEAD
-   of the your fork repository.
 
+   To add a new feature, fix a bug, and so on, you need to create a
+   new branch from the last state of the master branch
    #+begin_src sh
    git branch your_branch_name
    git checkout your_branch_name
    #+end_src
 
-   Apply your modifications in your branch. Then, you need to push this
-   branch on your online repository
+   Apply your modifications in that "Feature" branch. Then, you need
+   to push this branch on your online repository
    #+begin_src sh
    git push -f origin your_branch_name
    #+end_src
