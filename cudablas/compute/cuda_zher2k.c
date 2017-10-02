@@ -23,7 +23,6 @@
  *
  **/
 #include "cudablas.h"
-#include "cudablas/cudablas_z.h"
 
 int CUDA_zher2k(MORSE_enum uplo, MORSE_enum trans,
                 int n, int k,

@@ -36,7 +36,7 @@
 #if !defined(CHAMELEON_SIMULATION)
 #include "coreblas/coreblas_z.h"
 #if defined(CHAMELEON_USE_CUDA)
-#include "cudablas/cudablas_z.h"
+#include "cudablas.h"
 #endif
 #endif
 

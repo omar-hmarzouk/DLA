@@ -23,7 +23,6 @@
  *
  **/
 #include "cudablas.h"
-#include "cudablas/cudablas_z.h"
 
 int CUDA_ztrsm(MORSE_enum side, MORSE_enum uplo,
                MORSE_enum transa, MORSE_enum diag,

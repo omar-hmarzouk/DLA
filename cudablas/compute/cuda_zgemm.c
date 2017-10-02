@@ -23,7 +23,6 @@
  *
  **/
 #include "cudablas.h"
-#include "cudablas/cudablas_z.h"
 
 int CUDA_zgemm(MORSE_enum transa, MORSE_enum transb,
                int m, int n, int k,
