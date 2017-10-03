@@ -23,7 +23,6 @@
  *
  **/
 #include "cudablas.h"
-#include "cudablas/cudablas_z.h"
 
 #if defined(CHAMELEON_USE_MAGMA)
 int CUDA_zgeqrt(
