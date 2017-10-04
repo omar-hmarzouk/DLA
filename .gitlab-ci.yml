@@ -33,7 +33,6 @@ test_starpu:
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
-    STARPU_SILENT=1 ctest --no-compress-output || /usr/bin/true
     - (cd build && STARPU_SILENT=1 ctest --no-compress-output -R test_shm_s || /usr/bin/true && ctest --no-compress-output -R mpi_s || /usr/bin/true)
     - find -name "*.gcda" | xargs tar cvjf coverage.tar.bz2
 
