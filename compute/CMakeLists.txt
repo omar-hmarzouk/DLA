@@ -282,6 +282,11 @@ if(HAVE_ISO_C_BINDING)
        )
 endif(HAVE_ISO_C_BINDING)
 
+# Force generation of sources
+# ---------------------------
+add_custom_target(chameleon_sources ALL SOURCES "${CHAMELEON_SRCS};${CHAMELEON_SRCSF}")
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};chameleon_sources" CACHE INTERNAL "List of targets of sources")
+
 # Compile step
 # ------------
 add_library(chameleon ${CHAMELEON_SRCS} ${CHAMELEON_SRCSF})

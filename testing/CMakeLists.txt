@@ -44,6 +44,7 @@ precisions_rules_py(TESTING_HDRS_GENERATED "${ZHDR}"
     PRECISIONS "s;d;c;z;ds;zc" )
 
 add_custom_target(testing_include ALL SOURCES ${TESTING_HDRS_GENERATED})
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};testing_include" CACHE INTERNAL "List of targets of sources")
 
 # Generate morse testing sources for all possible precisions
 # ----------------------------------------------------------
@@ -167,6 +168,15 @@ foreach(_precision ${CHAMELEON_PRECISION} )
             DESTINATION bin/testing)
 
 endforeach()
+
+# Force generation of sources
+# ---------------------------
+set(TESTING_SRCS)
+foreach(_precision ${CHAMELEON_PRECISION})
+    list(APPEND TESTING_SRCS ${${_precision}SRC_GENERATED})
+endforeach()
+add_custom_target(testing_sources ALL SOURCES ${TESTING_SRCS})
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};testing_sources" CACHE INTERNAL "List of targets of sources")
 
 # Copy python scripts to use test drivers
 # ---------------------------------------

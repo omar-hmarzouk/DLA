@@ -69,6 +69,7 @@ endforeach()
 # ---------------------------
 add_custom_target(chameleon_include
   ALL SOURCES morse.h ${CHAMELEON_HDRS} )
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};chameleon_include" CACHE INTERNAL "List of targets of sources")
 
 # Installation
 # ------------

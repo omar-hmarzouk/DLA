@@ -49,6 +49,7 @@ endforeach()
 # Force generation of headers
 # ---------------------------
 add_custom_target(cudablas_include ALL SOURCES ${CUDABLAS_HDRS})
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};cudablas_include" CACHE INTERNAL "List of targets of sources")
 
 # Installation
 # ------------

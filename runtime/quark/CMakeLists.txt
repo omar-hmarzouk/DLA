@@ -106,6 +106,11 @@ set(RUNTIME_SRCS
   ${RUNTIME_SRCS_GENERATED}
   )
 
+# Force generation of sources
+# ---------------------------
+add_custom_target(quark_sources ALL SOURCES ${RUNTIME_SRCS})
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};runtime_quark_include;quark_sources" CACHE INTERNAL "List of targets of sources")
+
 # Add library
 # -----------
 add_library(chameleon_quark ${RUNTIME_SRCS})
