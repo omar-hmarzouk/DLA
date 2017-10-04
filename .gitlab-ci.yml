@@ -7,9 +7,11 @@ stages:
 
 build_starpu:
   stage: build
+  artifacts:
     name: starpu_build
     expire_in: 42 minutes
-    paths: build
+    paths:
+      - build
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
