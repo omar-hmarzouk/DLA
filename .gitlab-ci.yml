@@ -15,6 +15,7 @@ build_starpu:
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
+    - sed -i -e "s#except Exception(e)#except Exception as e#" cmake_modules/morse_cmake/modules/precision_generator/codegen.py
     - mkdir -p build
     - cd build
     - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
