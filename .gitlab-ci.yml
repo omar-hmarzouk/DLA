@@ -12,12 +12,30 @@ build_starpu:
     expire_in: 42 minutes
     paths:
       - build
+      - chameleon-build.log
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - mkdir -p build
     - cd build
     - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
+    - make | tee ../chameleon-build.log
+    - make install | tee -a ../chameleon-build.log
+
+build_quark:
+  stage: build
+  artifacts:
+    name: quark_build
+    expire_in: 42 minutes
+    paths:
+      - build
+      - chameleon-build.log
+  script:
+    - source .gitlab-ci-env.sh
+    - git submodule update --init --recursive
+    - mkdir -p build
+    - cd build
+    - cmake .. -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON -DCHAMELEON_SCHED_QUARK=ON
     - make | tee ../chameleon-build.log
     - make install | tee -a ../chameleon-build.log
 
@@ -29,24 +47,40 @@ test_starpu:
     name: starpu_test
     expire_in: 42 minutes
     paths:
-      - coverage.tar.bz2
+      - coverage_starpu.tar.bz2
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - (cd build && STARPU_SILENT=1 ctest --no-compress-output -R test_shm_s || /usr/bin/true && ctest --no-compress-output -R mpi_s || /usr/bin/true)
-    - find -name "*.gcda" | xargs tar cvjf coverage.tar.bz2
+    - find -name "*.gcda" | xargs tar cvjf coverage_starpu.tar.bz2
+
+test_quark:
+  stage: test
+  dependencies:
+    - build_quark
+  artifacts:
+    name: starpu_test
+    expire_in: 42 minutes
+    paths:
+      - coverage_quark.tar.bz2
+  script:
+    - source .gitlab-ci-env.sh
+    - git submodule update --init --recursive
+    - (cd build && ctest --no-compress-output -R test_shm_s)
+    - find -name "*.gcda" | xargs tar cvjf coverage_quark.tar.bz2
 
 sonar:
   stage: analysis
   dependencies:
     - build_starpu
+    - build_quark
     - test_starpu
+    - test_quark
   artifacts:
     name: chameleon_analysis
     expire_in: 1 week
     paths:
       - chameleon-build.log
-      - coverage/
       - chameleon-coverage.xml
       - chameleon-cppcheck.xml
       - chameleon-rats.xml
