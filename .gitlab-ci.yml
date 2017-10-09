@@ -19,7 +19,7 @@ build_starpu:
     - mkdir -p build
     - cd build
     - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
-    - make -j5 | tee ../chameleon-build.log
+    - make | tee ../chameleon-build.log
     - make install | tee -a ../chameleon-build.log
 
 test_starpu:
