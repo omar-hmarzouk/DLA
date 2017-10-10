@@ -4,11 +4,12 @@ stages:
   - build
   - test
   - analysis
+  - doc
 
-build_starpu:
+build_starpu_mpi:
   stage: build
   artifacts:
-    name: starpu_build
+    name: starpu_mpi_build
     expire_in: 48 hours
     paths:
       - build
@@ -21,6 +22,23 @@ build_starpu:
     - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
     - make | tee ../chameleon-build-starpu.log
     - make install | tee -a ../chameleon-build-starpu.log
+
+build_starpu_cuda:
+  stage: build
+  artifacts:
+    name: starpu_cuda_build
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon-build-starpu-cuda.log
+  script:
+    - source .gitlab-ci-env.sh
+    - git submodule update --init --recursive
+    - mkdir -p build
+    - cd build
+    - cmake .. -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
+    - make | tee ../chameleon-build-starpu-cuda.log
+    - make install | tee -a ../chameleon-build-starpu-cuda.log
 
 build_starpu_simgrid:
   stage: build
@@ -56,20 +74,20 @@ build_quark:
     - make | tee ../chameleon-build-quark.log
     - make install | tee -a ../chameleon-build-quark.log
 
-test_starpu:
+test_starpu_mpi:
   stage: test
   dependencies:
-    - build_starpu
+    - build_starpu_mpi
   artifacts:
     name: starpu_test
     expire_in: 48 hours
     paths:
-      - coverage_starpu.tar.bz2
+      - coverage_starpu_mpi.tar.bz2
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - (cd build && STARPU_SILENT=1 ctest --no-compress-output -R test_shm_s || /usr/bin/true && ctest --no-compress-output -R mpi_s || /usr/bin/true)
-    - find -name "*.gcda" | xargs tar cvjf coverage_starpu.tar.bz2
+    - find -name "*.gcda" | xargs tar cvjf coverage_starpu_mpi.tar.bz2
 
 test_starpu_simgrid:
   stage: test
@@ -104,7 +122,7 @@ test_quark:
 sonar:
   stage: analysis
   dependencies:
-    - build_starpu
+    - build_starpu_mpi
     - build_starpu_simgrid
     - build_quark
     - test_starpu
@@ -130,6 +148,7 @@ sonar:
     - issue53/fix-ci
 
 doc:
+  stage: doc
   artifacts:
     name: chameleon_doc
     expire_in: 1 week
@@ -141,5 +160,5 @@ doc:
     - git submodule update --init --recursive
     - mkdir -p build
     - cd build
-    - cmake .. -DCHAMELEON_ENABLE_DOC=ON -DCHAMELEON_ENABLE_EXAMPLE=OFF -DCHAMELEON_ENABLE_TESTING=OFF -DCHAMELEON_ENABLE_TIMING=OFF
+    - cmake .. -DCHAMELEON_ENABLE_DOC=ON
     - make doc
