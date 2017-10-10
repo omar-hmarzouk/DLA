@@ -12,15 +12,32 @@ build_starpu:
     expire_in: 48 hours
     paths:
       - build
-      - chameleon-build.log
+      - chameleon-build-starpu.log
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - mkdir -p build
     - cd build
     - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
-    - make | tee ../chameleon-build.log
-    - make install | tee -a ../chameleon-build.log
+    - make | tee ../chameleon-build-starpu.log
+    - make install | tee -a ../chameleon-build-starpu.log
+
+build_starpu_simgrid:
+  stage: build
+  artifacts:
+    name: starpu_simgrid_build
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon-build-starpu-simgrid.log
+  script:
+    - source .gitlab-ci-env.sh simu
+    - git submodule update --init --recursive
+    - mkdir -p build
+    - cd build
+    - cmake .. -DCHAMELEON_SIMULATION=ON -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
+    - make | tee ../chameleon-build-starpu-simgrid.log
+    - make install | tee -a ../chameleon-build-starpu-simgrid.log
 
 build_quark:
   stage: build
@@ -29,15 +46,15 @@ build_quark:
     expire_in: 48 hours
     paths:
       - build
-      - chameleon-build.log
+      - chameleon-build-quark.log
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - mkdir -p build
     - cd build
     - cmake .. -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON -DCHAMELEON_SCHED_QUARK=ON
-    - make | tee ../chameleon-build.log
-    - make install | tee -a ../chameleon-build.log
+    - make | tee ../chameleon-build-quark.log
+    - make install | tee -a ../chameleon-build-quark.log
 
 test_starpu:
   stage: test
@@ -54,12 +71,27 @@ test_starpu:
     - (cd build && STARPU_SILENT=1 ctest --no-compress-output -R test_shm_s || /usr/bin/true && ctest --no-compress-output -R mpi_s || /usr/bin/true)
     - find -name "*.gcda" | xargs tar cvjf coverage_starpu.tar.bz2
 
+test_starpu_simgrid:
+  stage: test
+  dependencies:
+    - build_starpu_simgrid
+  artifacts:
+    name: starpu_test
+    expire_in: 48 hours
+    paths:
+      - coverage_starpu_simgrid.tar.bz2
+  script:
+    - source .gitlab-ci-env.sh simu
+    - git submodule update --init --recursive
+    - (cd build && STARPU_SILENT=1 ctest --no-compress-output -V || /usr/bin/true)
+    - find -name "*.gcda" | xargs tar cvjf coverage_starpu_simgrid.tar.bz2
+
 test_quark:
   stage: test
   dependencies:
     - build_quark
   artifacts:
-    name: starpu_test
+    name: quark_test
     expire_in: 48 hours
     paths:
       - coverage_quark.tar.bz2
@@ -73,8 +105,10 @@ sonar:
   stage: analysis
   dependencies:
     - build_starpu
+    - build_starpu_simgrid
     - build_quark
     - test_starpu
+    - test_starpu_simgrid
     - test_quark
   artifacts:
     name: chameleon_analysis
@@ -88,45 +122,24 @@ sonar:
   script:
     - source .gitlab-ci-env.sh
     - tar xvjf coverage_starpu.tar.bz2
+    - tar xvjf coverage_starpu_simgrid.tar.bz2
     - tar xvjf coverage_quark.tar.bz2
     - ./tools/analysis.sh
   only:
     - master
     - issue53/fix-ci
 
-#starpu-simgrid:
-#  stage: buildtest
-#  script:
-#    - source .gitlab-ci-env.sh simu
-#    - git submodule update --init --recursive
-#    - mkdir -p build
-#    - cd build
-#    - cmake .. -DCHAMELEON_SIMULATION=ON -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF
-#    - make -j2
-#    - ctest -V
-#
-#quark:
-#  stage: buildtest
-#  script:
-#    - source .gitlab-ci-env.sh
-#    - git submodule update --init --recursive
-#    - mkdir -p build
-#    - cd build
-#    - cmake .. -DCHAMELEON_SCHED_QUARK=ON
-#    - make -j2
-#    - ctest -V -R test_shm_s
-
-#doc:
-#  artifacts:
-#    name: chameleon_doc
-#    expire_in: 1 week
-#    paths:
-#      - build/doc/doxygen
-#      - build/doc/orgmode
-#  script:
-#    - source .gitlab-ci-env.sh
-#    - git submodule update --init --recursive
-#    - mkdir -p build
-#    - cd build
-#    - cmake .. -DCHAMELEON_ENABLE_DOC=ON -DCHAMELEON_ENABLE_EXAMPLE=OFF -DCHAMELEON_ENABLE_TESTING=OFF -DCHAMELEON_ENABLE_TIMING=OFF
-#    - make doc
+doc:
+  artifacts:
+    name: chameleon_doc
+    expire_in: 1 week
+    paths:
+      - build/doc/doxygen
+      - build/doc/orgmode
+  script:
+    - source .gitlab-ci-env.sh
+    - git submodule update --init --recursive
+    - mkdir -p build
+    - cd build
+    - cmake .. -DCHAMELEON_ENABLE_DOC=ON -DCHAMELEON_ENABLE_EXAMPLE=OFF -DCHAMELEON_ENABLE_TESTING=OFF -DCHAMELEON_ENABLE_TIMING=OFF
+    - make doc
