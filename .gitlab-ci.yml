@@ -20,7 +20,7 @@ build_starpu_mpi:
     - mkdir -p build
     - cd build
     - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
-    - make | tee ../chameleon-build-starpu.log
+    - make -j4 | tee ../chameleon-build-starpu.log
     - make install | tee -a ../chameleon-build-starpu.log && rm install/ -r
 
 build_starpu_cuda:
@@ -37,7 +37,7 @@ build_starpu_cuda:
     - mkdir -p build
     - cd build
     - cmake .. -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
-    - make | tee ../chameleon-build-starpu-cuda.log
+    - make -j4 | tee ../chameleon-build-starpu-cuda.log
     - make install | tee -a ../chameleon-build-starpu-cuda.log && rm install/ -r
 
 build_starpu_simgrid:
@@ -54,7 +54,7 @@ build_starpu_simgrid:
     - mkdir -p build
     - cd build
     - cmake .. -DCHAMELEON_SIMULATION=ON -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
-    - make | tee ../chameleon-build-starpu-simgrid.log
+    - make -j4 | tee ../chameleon-build-starpu-simgrid.log
     - make install | tee -a ../chameleon-build-starpu-simgrid.log && rm install/ -r
 
 build_quark:
@@ -71,7 +71,7 @@ build_quark:
     - mkdir -p build
     - cd build
     - cmake .. -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON -DCHAMELEON_SCHED_QUARK=ON
-    - make | tee ../chameleon-build-quark.log
+    - make -j4 | tee ../chameleon-build-quark.log
     - make install | tee -a ../chameleon-build-quark.log && rm install/ -r
 
 test_starpu_mpi:
