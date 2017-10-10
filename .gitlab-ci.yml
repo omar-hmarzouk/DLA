@@ -139,7 +139,7 @@ sonar:
       - sonar.log
   script:
     - source .gitlab-ci-env.sh
-    - tar xvjf coverage_starpu.tar.bz2
+    - tar xvjf coverage_starpu_mpi.tar.bz2
     - tar xvjf coverage_starpu_simgrid.tar.bz2
     - tar xvjf coverage_quark.tar.bz2
     - ./tools/analysis.sh
