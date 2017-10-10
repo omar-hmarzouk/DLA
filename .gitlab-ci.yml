@@ -125,7 +125,7 @@ sonar:
     - build_starpu_mpi
     - build_starpu_simgrid
     - build_quark
-    - test_starpu
+    - test_starpu_mpi
     - test_starpu_simgrid
     - test_quark
   artifacts:
