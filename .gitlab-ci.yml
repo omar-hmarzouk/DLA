@@ -22,7 +22,6 @@ build_starpu_mpi:
     - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
     - make | tee ../chameleon-build-starpu.log
     - make install | tee -a ../chameleon-build-starpu.log && rm install/ -r
-    - rm install/ -r
 
 build_starpu_cuda:
   stage: build
