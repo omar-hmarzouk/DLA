@@ -9,7 +9,7 @@ build_starpu:
   stage: build
   artifacts:
     name: starpu_build
-    expire_in: 42 minutes
+    expire_in: 48 hours
     paths:
       - build
       - chameleon-build.log
@@ -26,7 +26,7 @@ build_quark:
   stage: build
   artifacts:
     name: quark_build
-    expire_in: 42 minutes
+    expire_in: 48 hours
     paths:
       - build
       - chameleon-build.log
@@ -45,7 +45,7 @@ test_starpu:
     - build_starpu
   artifacts:
     name: starpu_test
-    expire_in: 42 minutes
+    expire_in: 48 hours
     paths:
       - coverage_starpu.tar.bz2
   script:
@@ -60,7 +60,7 @@ test_quark:
     - build_quark
   artifacts:
     name: starpu_test
-    expire_in: 42 minutes
+    expire_in: 48 hours
     paths:
       - coverage_quark.tar.bz2
   script:
@@ -87,7 +87,8 @@ sonar:
       - sonar.log
   script:
     - source .gitlab-ci-env.sh
-    - tar xvjf coverage.tar.bz2
+    - tar xvjf coverage_starpu.tar.bz2
+    - tar xvjf coverage_quark.tar.bz2
     - ./tools/analysis.sh
   only:
     - master
