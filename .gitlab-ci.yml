@@ -82,13 +82,13 @@ test_starpu_mpi:
     name: starpu_mpi_test
     expire_in: 48 hours
     paths:
-      - coverage_starpu_mpi.tar.bz2
+      #- coverage_starpu_mpi.tar.bz2
       - chameleon_starpu_mpi.lcov
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - (cd build && STARPU_SILENT=1 ctest --no-compress-output -R test_shm_s || /usr/bin/true && ctest --no-compress-output -R mpi_s || /usr/bin/true)
-    - find -name "*.gcda" | xargs tar cvjf coverage_starpu_mpi.tar.bz2
+    #- find -name "*.gcda" | xargs tar cvjf coverage_starpu_mpi.tar.bz2
     - lcov --directory build --capture --output-file chameleon_starpu_mpi.lcov
 
 test_starpu_simgrid:
@@ -99,13 +99,13 @@ test_starpu_simgrid:
     name: starpu_simgrid_test
     expire_in: 48 hours
     paths:
-      - coverage_starpu_simgrid.tar.bz2
+      #- coverage_starpu_simgrid.tar.bz2
       - chameleon_starpu_simgrid.lcov
   script:
     - source .gitlab-ci-env.sh simu
     - git submodule update --init --recursive
     - (cd build && STARPU_SILENT=1 ctest --no-compress-output -V || /usr/bin/true)
-    - find -name "*.gcda" | xargs tar cvjf coverage_starpu_simgrid.tar.bz2
+    #- find -name "*.gcda" | xargs tar cvjf coverage_starpu_simgrid.tar.bz2
     - lcov --directory build --capture --output-file chameleon_starpu_simgrid.lcov
 
 test_quark:
@@ -116,13 +116,13 @@ test_quark:
     name: quark_test
     expire_in: 48 hours
     paths:
-      - coverage_quark.tar.bz2
+      #- coverage_quark.tar.bz2
       - chameleon_quark.lcov
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - (cd build && ctest --no-compress-output -R test_shm_s)
-    - find -name "*.gcda" | xargs tar cvjf coverage_quark.tar.bz2
+    #- find -name "*.gcda" | xargs tar cvjf coverage_quark.tar.bz2
     - lcov --directory build --capture --output-file chameleon_quark.lcov
 
 sonar:
@@ -145,11 +145,11 @@ sonar:
       - sonar.log
   script:
     - source .gitlab-ci-env.sh
-    - tar xvjf coverage_starpu_simgrid.tar.bz2
-    - tar xvjf coverage_starpu_mpi.tar.bz2
-    - tar xvjf coverage_quark.tar.bz2
-    - lcov -a chameleon_starpu_mpi.lcov -a chameleon_starpu_simgrid.lcov -a chameleon_quark.lcov -o chameleon.lcov
-    - genhtml -o coverage chameleon.lcov
+    #- tar xvjf coverage_starpu_simgrid.tar.bz2
+    #- tar xvjf coverage_starpu_mpi.tar.bz2
+    #- tar xvjf coverage_quark.tar.bz2
+    - lcov -a $PWD/chameleon_starpu_mpi.lcov -a $PWD/chameleon_starpu_simgrid.lcov -a $PWD/chameleon_quark.lcov -o $PWD/chameleon.lcov
+    #- genhtml -o coverage chameleon.lcov
     - lcov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
     - ./tools/analysis.sh
   only:
