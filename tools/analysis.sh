@@ -1,24 +1,9 @@
 #!/bin/bash
 
-# Performs an analysis of Chameleon source code
-# We consider to be in Chameleon's source code root
-
-# build with proper options
-#mkdir -p build
-#cd build
-#rm * -rf
-#cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$PWD/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
-#make -j5 | tee ../chameleon-build.log
-
-# run tests
-#STARPU_SILENT=1 ctest --no-compress-output || /usr/bin/true
-
-# capture coverage
-#lcov --directory . --capture --output-file ../chameleon.lcov
-#lcov --directory build --capture --output-file chameleon.lcov
-#cd ..
-#genhtml -o coverage chameleon.lcov
-#lcov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
+# Performs an analysis of Chameleon source code:
+# - we consider to be in Chameleon's source code root
+# - we consider having the coverage file chameleon-coverage.xml in the root directory
+# - we consider having cppcheck, rats, sonar-scanner programs available in the environment
 
 # filter sources:
 # - consider generated files in build
