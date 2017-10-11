@@ -79,34 +79,34 @@ test_starpu_mpi:
   dependencies:
     - build_starpu_mpi
   artifacts:
-    name: starpu_test
+    name: starpu_mpi_test
     expire_in: 48 hours
     paths:
-      #- coverage_starpu_mpi.tar.bz2
+      - coverage_starpu_mpi.tar.bz2
       - chameleon_starpu_mpi.lcov
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - (cd build && STARPU_SILENT=1 ctest --no-compress-output -R test_shm_s || /usr/bin/true && ctest --no-compress-output -R mpi_s || /usr/bin/true)
+    - find -name "*.gcda" | xargs tar cvjf coverage_starpu_mpi.tar.bz2
     - lcov --directory build --capture --output-file chameleon_starpu_mpi.lcov
-    #- find -name "*.gcda" | xargs tar cvjf coverage_starpu_mpi.tar.bz2
 
 test_starpu_simgrid:
   stage: test
   dependencies:
     - build_starpu_simgrid
   artifacts:
-    name: starpu_test
+    name: starpu_simgrid_test
     expire_in: 48 hours
     paths:
-      #- coverage_starpu_simgrid.tar.bz2
+      - coverage_starpu_simgrid.tar.bz2
       - chameleon_starpu_simgrid.lcov
   script:
     - source .gitlab-ci-env.sh simu
     - git submodule update --init --recursive
     - (cd build && STARPU_SILENT=1 ctest --no-compress-output -V || /usr/bin/true)
+    - find -name "*.gcda" | xargs tar cvjf coverage_starpu_simgrid.tar.bz2
     - lcov --directory build --capture --output-file chameleon_starpu_simgrid.lcov
-    #- find -name "*.gcda" | xargs tar cvjf coverage_starpu_simgrid.tar.bz2
 
 test_quark:
   stage: test
@@ -116,14 +116,14 @@ test_quark:
     name: quark_test
     expire_in: 48 hours
     paths:
-      #- coverage_quark.tar.bz2
+      - coverage_quark.tar.bz2
       - chameleon_quark.lcov
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - (cd build && ctest --no-compress-output -R test_shm_s)
+    - find -name "*.gcda" | xargs tar cvjf coverage_quark.tar.bz2
     - lcov --directory build --capture --output-file chameleon_quark.lcov
-    #- find -name "*.gcda" | xargs tar cvjf coverage_quark.tar.bz2
 
 sonar:
   stage: analysis
@@ -145,12 +145,12 @@ sonar:
       - sonar.log
   script:
     - source .gitlab-ci-env.sh
-    #- tar xvjf coverage_starpu_mpi.tar.bz2
-    #- tar xvjf coverage_starpu_simgrid.tar.bz2
-    #- tar xvjf coverage_quark.tar.bz2
+    - tar xvjf coverage_starpu_simgrid.tar.bz2
+    - tar xvjf coverage_starpu_mpi.tar.bz2
+    - tar xvjf coverage_quark.tar.bz2
     - lcov -a chameleon_starpu_mpi.lcov -a chameleon_starpu_simgrid.lcov -a chameleon_quark.lcov -o chameleon.lcov
     - genhtml -o coverage chameleon.lcov
-    - cov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
+    - lcov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
     - ./tools/analysis.sh
   only:
     - master
