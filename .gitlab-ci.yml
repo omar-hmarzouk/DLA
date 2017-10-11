@@ -143,7 +143,7 @@ sonar:
     - lcov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
     - ./tools/analysis.sh
   only:
-    - master
+    - master@solverstack/chameleon
 
 doc:
   stage: doc
