@@ -105,6 +105,11 @@ set(RUNTIME_SRCS
   ${RUNTIME_SRCS_GENERATED}
   )
 
+# Force generation of sources
+# ---------------------------
+add_custom_target(parsec_sources ALL SOURCES ${RUNTIME_SRCS})
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};runtime_parsec_include;parsec_sources" CACHE INTERNAL "List of targets of sources")
+
 # Add library
 # -----------
 add_library(chameleon_parsec ${RUNTIME_SRCS})

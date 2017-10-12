@@ -999,6 +999,8 @@ list(REMOVE_DUPLICATES CHAMELEON_DEP) # WARNING: is it safe, respect order?
 # Check for the subdirectories
 # ----------------------------
 
+set(CHAMELEON_SOURCES_TARGETS "" CACHE INTERNAL "List of targets of sources")
+
 # include headers
 # ---------------
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
@@ -1073,6 +1075,9 @@ if(CHAMELEON_ENABLE_TIMING)
 endif(CHAMELEON_ENABLE_TIMING)
 #------------------------------------------------------------------------------
 
+# Define a target which gathers all targets of sources
+# useful for generating the doc without compiling the binaries (objects, libraries)
+add_custom_target(chameleon_all_sources ALL DEPENDS ${CHAMELEON_SOURCES_TARGETS})
 
 ###############################################################################
 # Documentation #

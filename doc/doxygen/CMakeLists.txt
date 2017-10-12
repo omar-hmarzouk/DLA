@@ -77,7 +77,7 @@ if(DOXYGEN_EXECUTABLE)
     add_custom_target(doxygen-out ALL
                       DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/out-dev
                               #${CMAKE_CURRENT_BINARY_DIR}/out-usr
-                              chameleon
+                              chameleon_all_sources
                               )
 
     # Installation for html version

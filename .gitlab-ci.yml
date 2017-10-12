@@ -1,39 +1,135 @@
 image: hpclib/hiepacs
 
-starpu:
+stages:
+  - build
+  - test
+  - analysis
+  - doc
+
+build_starpu_cuda_mpi:
+  stage: build
+  artifacts:
+    name: starpu_cuda_mpi_build
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon-build-starpu.log
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - mkdir -p build
     - cd build
-    - cmake ..
-    - make -j2
-    - ctest -R test_shm_s
-    - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=$PWD/install
-    - make -j2
-    - ctest -V -R mpi_s
+    - cmake .. -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
+    - make -j2 | tee ../chameleon-build-starpu.log
+    - make install | tee -a ../chameleon-build-starpu.log && rm install/ -r
 
-starpu-simgrid:
+build_starpu_simgrid:
+  stage: build
+  artifacts:
+    name: starpu_simgrid_build
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon-build-starpu-simgrid.log
   script:
     - source .gitlab-ci-env.sh simu
     - git submodule update --init --recursive
     - mkdir -p build
     - cd build
-    - cmake .. -DCHAMELEON_SIMULATION=ON -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF
-    - make -j2
-    - ctest -V
+    - cmake .. -DCHAMELEON_SIMULATION=ON -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
+    - make -j2 | tee ../chameleon-build-starpu-simgrid.log
+    - make install | tee -a ../chameleon-build-starpu-simgrid.log && rm install/ -r
 
-quark:
+build_quark:
+  stage: build
+  artifacts:
+    name: quark_build
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon-build-quark.log
   script:
     - source .gitlab-ci-env.sh
     - git submodule update --init --recursive
     - mkdir -p build
     - cd build
-    - cmake .. -DCHAMELEON_SCHED_QUARK=ON
-    - make -j2
-    - ctest -V -R test_shm_s
+    - cmake .. -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON -DCHAMELEON_SCHED_QUARK=ON
+    - make -j2 | tee ../chameleon-build-quark.log
+    - make install | tee -a ../chameleon-build-quark.log && rm install/ -r
+
+test_starpu_mpi:
+  stage: test
+  dependencies:
+    - build_starpu_cuda_mpi
+  artifacts:
+    name: starpu_mpi_test
+    expire_in: 48 hours
+    paths:
+      - chameleon_starpu_mpi.lcov
+  script:
+    - source .gitlab-ci-env.sh
+    - git submodule update --init --recursive
+    - (cd build && STARPU_SILENT=1 ctest --no-compress-output -R test_shm_s || /usr/bin/true && ctest --no-compress-output -R mpi_s || /usr/bin/true)
+    - lcov --directory build --capture --output-file chameleon_starpu_mpi.lcov
+
+test_starpu_simgrid:
+  stage: test
+  dependencies:
+    - build_starpu_simgrid
+  artifacts:
+    name: starpu_simgrid_test
+    expire_in: 48 hours
+    paths:
+      - chameleon_starpu_simgrid.lcov
+  script:
+    - source .gitlab-ci-env.sh simu
+    - git submodule update --init --recursive
+    - (cd build && STARPU_SILENT=1 ctest --no-compress-output -V || /usr/bin/true)
+    - lcov --directory build --capture --output-file chameleon_starpu_simgrid.lcov
+
+test_quark:
+  stage: test
+  dependencies:
+    - build_quark
+  artifacts:
+    name: quark_test
+    expire_in: 48 hours
+    paths:
+      - chameleon_quark.lcov
+  script:
+    - source .gitlab-ci-env.sh
+    - git submodule update --init --recursive
+    - (cd build && ctest --no-compress-output -R test_shm_s)
+    - lcov --directory build --capture --output-file chameleon_quark.lcov
+
+sonar:
+  stage: analysis
+  dependencies:
+    - build_starpu_cuda_mpi
+    - build_starpu_simgrid
+    - build_quark
+    - test_starpu_mpi
+    - test_starpu_simgrid
+    - test_quark
+  artifacts:
+    name: chameleon_analysis
+    expire_in: 1 week
+    paths:
+      - chameleon-build.log
+      - chameleon-coverage.xml
+      - chameleon-cppcheck.xml
+      - chameleon-rats.xml
+      - sonar.log
+  script:
+    - source .gitlab-ci-env.sh
+    - lcov -a $PWD/chameleon_starpu_mpi.lcov -a $PWD/chameleon_starpu_simgrid.lcov -a $PWD/chameleon_quark.lcov -o $PWD/chameleon.lcov
+    - lcov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
+    - ./tools/analysis.sh
+  only:
+    - master@solverstack/chameleon
 
 doc:
+  stage: doc
   artifacts:
     name: chameleon_doc
     expire_in: 1 week
@@ -45,23 +141,8 @@ doc:
     - git submodule update --init --recursive
     - mkdir -p build
     - cd build
-    - cmake .. -DCHAMELEON_ENABLE_DOC=ON -DCHAMELEON_ENABLE_EXAMPLE=OFF -DCHAMELEON_ENABLE_TESTING=OFF -DCHAMELEON_ENABLE_TIMING=OFF
+    - cmake .. -DCHAMELEON_ENABLE_DOC=ON
     - make doc
-
-analysis:
-  artifacts:
-    name: chameleon_analysis
-    expire_in: 1 week
-    paths:
-      - chameleon-build.log
-      - coverage/
-      - chameleon-coverage.xml
-      - chameleon-cppcheck.xml
-      - chameleon-rats.xml
-      - sonar.log
-  script:
-    - source .gitlab-ci-env.sh
-    - git submodule update --init --recursive
-    - ./tools/analysis.sh
   only:
-    - master
+    - master@solverstack/chameleon
+

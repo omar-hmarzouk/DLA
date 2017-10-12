@@ -57,6 +57,7 @@ endforeach()
 # Force generation of headers
 # ---------------------------
 add_custom_target(coreblas_include ALL SOURCES ${COREBLAS_HDRS})
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};coreblas_include" CACHE INTERNAL "List of targets of sources")
 
 # Installation
 # ------------

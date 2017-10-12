@@ -83,8 +83,8 @@ if(EMACS_COMPILER)
                        DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/users_guide.org
                                ${CMAKE_CURRENT_BINARY_DIR}/version.org
                       )
-    add_custom_target(doc-html-users_guide ALL DEPENDS users_guide.html chameleon)
-    add_custom_target(doc-pdf-users_guide ALL DEPENDS users_guide.pdf chameleon)
+    add_custom_target(doc-html-users_guide ALL DEPENDS users_guide.html)
+    add_custom_target(doc-pdf-users_guide ALL DEPENDS users_guide.pdf)
 
     # Installation
     # ------------

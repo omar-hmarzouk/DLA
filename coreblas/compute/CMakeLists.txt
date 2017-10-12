@@ -28,6 +28,7 @@
 
 # Generate the morse sources for all possible precisions
 # ------------------------------------------------------
+
 set(COREBLAS_SRCS_GENERATED "")
 set(ZSRC
     core_dzasum.c
@@ -103,6 +104,11 @@ set(COREBLAS_SRCS
     global.c
     ${COREBLAS_SRCS_GENERATED}
     )
+
+# Force generation of sources
+# ---------------------------
+add_custom_target(coreblas_sources ALL SOURCES ${COREBLAS_SRCS})
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};coreblas_sources" CACHE INTERNAL "List of targets of sources")
 
 # Compile step
 # ------------

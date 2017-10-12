@@ -64,7 +64,7 @@ list(APPEND CHAMELEON_HDRS ${CHAMELEON_HDRS_GENERATED})
 # Force generation of headers
 # ---------------------------
 add_custom_target(control_include ALL SOURCES ${CHAMELEON_HDRS})
-
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};control_include" CACHE INTERNAL "List of targets of sources")
 
 # installation
 # ------------

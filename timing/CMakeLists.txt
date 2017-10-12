@@ -45,6 +45,7 @@ set(TIMING_AUX_HDRS
 # Force generation of headers
 # ---------------------------
 add_custom_target(timing_include ALL SOURCES ${TIMING_AUX_HDRS})
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};timing_include" CACHE INTERNAL "List of targets of sources")
 
 if (NOT CHAMELEON_SIMULATION)
     # Generate the morse auxiliary sources for all possible precisions
@@ -57,9 +58,7 @@ if (NOT CHAMELEON_SIMULATION)
     precisions_rules_py(TIMING_AUX_SRCS_GENERATED "${ZSRC}"
                         PRECISIONS "${CHAMELEON_PRECISION}")
 
-    set(TIMING_SRCS
-        ${TIMING_AUX_SRCS_GENERATED}
-       )
+    set(TIMING_SRCS ${TIMING_AUX_SRCS_GENERATED})
 
     # Create libchameleon_timing.a
     # -----------------------------
@@ -149,6 +148,11 @@ endif(NOT CHAMELEON_SIMULATION)
 
 precisions_rules_py(TIMINGS "${ZSRC}"
                     PRECISIONS "${CHAMELEON_PRECISION}")
+
+# Force generation of sources
+# ---------------------------
+add_custom_target(timing_sources ALL SOURCES ${TIMINGS})
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};timing_sources" CACHE INTERNAL "List of targets of sources")
 
 # Add include and link directories
 # --------------------------------

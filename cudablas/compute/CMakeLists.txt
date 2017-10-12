@@ -88,6 +88,11 @@ if (CHAMELEON_USE_CUBLAS_V2)
     )
 endif (CHAMELEON_USE_CUBLAS_V2)
 
+# Force generation of sources
+# ---------------------------
+add_custom_target(cudablas_sources ALL SOURCES ${CUDABLAS_SRCS})
+set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};cudablas_sources" CACHE INTERNAL "List of targets of sources")
+
 # Compile step
 # ------------
 add_library(cudablas ${CUDABLAS_SRCS})
