@@ -6,10 +6,10 @@ stages:
   - analysis
   - doc
 
-build_starpu_mpi:
+build_starpu_cuda_mpi:
   stage: build
   artifacts:
-    name: starpu_mpi_build
+    name: starpu_cuda_mpi_build
     expire_in: 48 hours
     paths:
       - build
@@ -19,26 +19,9 @@ build_starpu_mpi:
     - git submodule update --init --recursive
     - mkdir -p build
     - cd build
-    - cmake .. -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
+    - cmake .. -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=ON -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
     - make -j2 | tee ../chameleon-build-starpu.log
     - make install | tee -a ../chameleon-build-starpu.log && rm install/ -r
-
-build_starpu_cuda:
-  stage: build
-  artifacts:
-    name: starpu_cuda_build
-    expire_in: 48 hours
-    paths:
-      - build
-      - chameleon-build-starpu-cuda.log
-  script:
-    - source .gitlab-ci-env.sh
-    - git submodule update --init --recursive
-    - mkdir -p build
-    - cd build
-    - cmake .. -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF -DCMAKE_INSTALL_PREFIX=${PWD}/install -DCMAKE_VERBOSE_MAKEFILE=ON -DMORSE_ENABLE_WARNING=ON -DMORSE_ENABLE_COVERAGE=ON
-    - make -j2 | tee ../chameleon-build-starpu-cuda.log
-    - make install | tee -a ../chameleon-build-starpu-cuda.log && rm install/ -r
 
 build_starpu_simgrid:
   stage: build
@@ -77,7 +60,7 @@ build_quark:
 test_starpu_mpi:
   stage: test
   dependencies:
-    - build_starpu_mpi
+    - build_starpu_cuda_mpi
   artifacts:
     name: starpu_mpi_test
     expire_in: 48 hours
@@ -122,7 +105,7 @@ test_quark:
 sonar:
   stage: analysis
   dependencies:
-    - build_starpu_mpi
+    - build_starpu_cuda_mpi
     - build_starpu_simgrid
     - build_quark
     - test_starpu_mpi
@@ -160,3 +143,5 @@ doc:
     - cd build
     - cmake .. -DCHAMELEON_ENABLE_DOC=ON
     - make doc
+  only:
+    - master@solverstack/chameleon
