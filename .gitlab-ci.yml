@@ -145,4 +145,4 @@ doc:
     - make doc
   only:
     - master@solverstack/chameleon
-  when: manual
+
