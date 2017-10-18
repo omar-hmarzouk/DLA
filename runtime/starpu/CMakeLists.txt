@@ -148,6 +148,7 @@ add_dependencies(chameleon_starpu
   chameleon_include
   control_include
   runtime_starpu_include
+  starpu_sources
   )
 if (NOT CHAMELEON_SIMULATION)
   add_dependencies(chameleon_starpu coreblas_include)

@@ -59,12 +59,16 @@ if (NOT CHAMELEON_SIMULATION)
                         PRECISIONS "${CHAMELEON_PRECISION}")
 
     set(TIMING_SRCS ${TIMING_AUX_SRCS_GENERATED})
+    # Force generation of sources
+    # ---------------------------
+    add_custom_target(timing_aux_sources ALL SOURCES ${TIMINGS_SRCS})
+    set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};timing_aux_sources" CACHE INTERNAL "List of targets of sources")
 
     # Create libchameleon_timing.a
     # -----------------------------
     add_library(chameleon_timing STATIC ${TIMING_SRCS})
     set_property(TARGET chameleon_timing PROPERTY LINKER_LANGUAGE Fortran)
-    add_dependencies(chameleon_timing timing_include)
+    add_dependencies(chameleon_timing timing_include timing_aux_sources)
 endif()
 
 # Generate the morse testing sources for all possible precisions

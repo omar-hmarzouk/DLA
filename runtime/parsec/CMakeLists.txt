@@ -131,6 +131,7 @@ add_dependencies(chameleon_parsec
   chameleon_include
   control_include
   runtime_parsec_include
+  parsec_sources
 )
 
 if (NOT CHAMELEON_SIMULATION)

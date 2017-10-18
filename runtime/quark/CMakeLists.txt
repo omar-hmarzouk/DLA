@@ -126,6 +126,7 @@ add_dependencies(chameleon_quark
   chameleon_include
   control_include
   runtime_quark_include
+  quark_sources
 )
 if (NOT CHAMELEON_SIMULATION)
     add_dependencies(chameleon_quark coreblas_include)

@@ -311,6 +311,7 @@ list(INSERT CHAMELEON_DEP 0 -lchameleon)
 add_dependencies(chameleon
   chameleon_include
   control_include
+  chameleon_sources
 )
 
 set_property(TARGET chameleon PROPERTY LINKER_LANGUAGE Fortran)
