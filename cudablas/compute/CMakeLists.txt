@@ -96,7 +96,7 @@ set(CHAMELEON_SOURCES_TARGETS "${CHAMELEON_SOURCES_TARGETS};cudablas_sources" CA
 # Compile step
 # ------------
 add_library(cudablas ${CUDABLAS_SRCS})
-add_dependencies(cudablas cudablas_include)
+add_dependencies(cudablas cudablas_include cudablas_sources)
 set_property(TARGET cudablas PROPERTY LINKER_LANGUAGE Fortran)
 set_property(TARGET cudablas PROPERTY INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 
