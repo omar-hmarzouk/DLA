@@ -225,6 +225,10 @@ void RUNTIME_desc_create( MORSE_desc_t *mdesc )
 
     parsec_dtd_data_collection_init(data_collection);
 
+    /*dplasma_add2arena_tile( parsec_dtd_arenas[0],
+                            mdesc->mb*mdesc->nb*sizeof(MORSE_Complex64_t),
+                            PARSEC_ARENA_ALIGNMENT_SSE,
+                            parsec_datatype_double_complex_t, mdesc->mb ); */
     /* /\* Overwrite the leading dimensions to store the padding *\/ */
     /* mdesc->llm = mdesc->mb * mdesc->lmt; */
     /* mdesc->lln = mdesc->nb * mdesc->lnt; */
