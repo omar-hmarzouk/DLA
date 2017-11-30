@@ -20,6 +20,8 @@
 struct morse_parsec_desc_s;
 typedef struct morse_parsec_desc_s morse_parsec_desc_t;
 
+int morse_parsec_get_arena_index(const MORSE_desc_t *desc);
+
 /*
  * Access to block pointer and leading dimension
  */

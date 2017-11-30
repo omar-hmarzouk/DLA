@@ -11,6 +11,7 @@
 #include "chameleon_parsec.h"
 #include <parsec/data.h>
 #include <parsec/datatype.h>
+#include <parsec/data_dist/matrix/matrix.h>
 #include <parsec/arena.h>
 
 static int parsec_global_arena_index = 0;
@@ -38,6 +39,10 @@ struct morse_parsec_desc_s {
     parsec_data_t **data_map;
     int arena_index;
 };
+
+int morse_parsec_get_arena_index(const MORSE_desc_t *desc) {
+    return ((morse_parsec_desc_t *)desc->schedopt)->arena_index;
+}
 
 static void
 morse_parsec_key_to_coordinates(parsec_data_collection_t *data_collection, parsec_data_key_t key,
@@ -225,10 +230,26 @@ void RUNTIME_desc_create( MORSE_desc_t *mdesc )
 
     parsec_dtd_data_collection_init(data_collection);
 
-    /*dplasma_add2arena_tile( parsec_dtd_arenas[0],
-                            mdesc->mb*mdesc->nb*sizeof(MORSE_Complex64_t),
-                            PARSEC_ARENA_ALIGNMENT_SSE,
-                            parsec_datatype_double_complex_t, mdesc->mb ); */
+    /* arena init */
+    /* taskpool init to bypass a requirement of PaRSEC  */
+#if defined(CHAMELEON_USE_MPI)
+    parsec_dtd_taskpool_new();
+    /* Internal limitation of PaRSEC */
+    assert(parsec_global_arena_index < 16);
+    pdesc->arena_index = parsec_global_arena_index++;
+
+    parsec_datatype_t datatype;
+    switch(mdesc->dtyp) {
+        case MorseInteger:       datatype = parsec_datatype_int32_t; break;
+        case MorseRealFloat:     datatype = parsec_datatype_float_t; break;
+        case MorseRealDouble:    datatype = parsec_datatype_double_t; break;
+        case MorseComplexFloat:  datatype = parsec_datatype_complex_t; break;
+        case MorseComplexDouble: datatype = parsec_datatype_double_complex_t; break;
+        default: morse_fatal_error("MORSE_Element_Size", "undefined type"); break;
+    }
+
+    parsec_matrix_add2arena_tile( parsec_dtd_arenas[pdesc->arena_index], datatype, mdesc->mb*mdesc->nb*MORSE_Element_Size(mdesc->dtyp) );
+#endif
     /* /\* Overwrite the leading dimensions to store the padding *\/ */
     /* mdesc->llm = mdesc->mb * mdesc->lmt; */
     /* mdesc->lln = mdesc->nb * mdesc->lnt; */
