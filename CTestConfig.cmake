@@ -9,8 +9,7 @@ set(CTEST_NIGHTLY_START_TIME "00:00:00 GMT")
 
 set(CTEST_DROP_METHOD "http")
 set(CTEST_DROP_SITE "cdash.inria.fr")
-# Shouldn't we change that to Chameleon ?
-set(CTEST_DROP_LOCATION "/CDash/submit.php?project=Morse-Magma")
+set(CTEST_DROP_LOCATION "/CDash/submit.php?project=chameleon")
 set(CTEST_DROP_SITE_CDASH TRUE)
 
 #--------------------------------------------------------------------
@@ -21,40 +20,39 @@ set(CTEST_DROP_SITE_CDASH TRUE)
 # Start with the short system name, e.g. "Linux", "FreeBSD" or "Windows"
 if(NOT BUILDNAME)
 
-    set(BUILDNAME "${CMAKE_SYSTEM_NAME}")
+  set(BUILDNAME "${CMAKE_SYSTEM_NAME}")
 
-    # Add i386 or amd64
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set(BUILDNAME "${BUILDNAME}-amd64")
-    else()
-        set(BUILDNAME "${BUILDNAME}-i386")
-    endif()
+  # Add i386 or amd64
+  if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+    set(BUILDNAME "${BUILDNAME}-amd64")
+  else()
+    set(BUILDNAME "${BUILDNAME}-i386")
+  endif()
 
-    # Add compiler name
-    get_filename_component(CMAKE_C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
-    set(BUILDNAME "${BUILDNAME}-${CMAKE_C_COMPILER_NAME}")
+  # Add compiler name
+  get_filename_component(CMAKE_C_COMPILER_NAME ${CMAKE_C_COMPILER} NAME)
+  set(BUILDNAME "${BUILDNAME}-${CMAKE_C_COMPILER_NAME}")
 
-    # Add the build type, e.g. "Debug, Release..."
-    if(CMAKE_BUILD_TYPE)
-        set(BUILDNAME "${BUILDNAME}-${CMAKE_BUILD_TYPE}")
-    endif(CMAKE_BUILD_TYPE)
+  # Add the build type, e.g. "Debug, Release..."
+  if(CMAKE_BUILD_TYPE)
+    set(BUILDNAME "${BUILDNAME}-${CMAKE_BUILD_TYPE}")
+  endif(CMAKE_BUILD_TYPE)
 
-    # Specific options of Chameleon
-    if(CHAMELEON_SCHED_QUARK)
-        set(BUILDNAME "${BUILDNAME}-Quark")
-    endif(CHAMELEON_SCHED_QUARK)
+  # Specific options of Chameleon
+  if(CHAMELEON_SCHED_QUARK)
+    set(BUILDNAME "${BUILDNAME}-Quark")
+  endif(CHAMELEON_SCHED_QUARK)
 
-    if(CHAMELEON_SCHED_STARPU)
-        set(BUILDNAME "${BUILDNAME}-StarPU")
-    endif(CHAMELEON_SCHED_STARPU)
+  if(CHAMELEON_SCHED_STARPU)
+    set(BUILDNAME "${BUILDNAME}-StarPU")
+  endif(CHAMELEON_SCHED_STARPU)
 
-    if(CHAMELEON_USE_MPI)
-        set(BUILDNAME "${BUILDNAME}-mpi")
-    endif(CHAMELEON_USE_MPI)
+  if(CHAMELEON_USE_MPI)
+    set(BUILDNAME "${BUILDNAME}-mpi")
+  endif(CHAMELEON_USE_MPI)
 
-    if(CHAMELEON_USE_CUDA)
-        set(BUILDNAME "${BUILDNAME}-cuda")
-    endif(CHAMELEON_USE_CUDA)
+  if(CHAMELEON_USE_CUDA)
+    set(BUILDNAME "${BUILDNAME}-cuda")
+  endif(CHAMELEON_USE_CUDA)
 
 endif()
-
