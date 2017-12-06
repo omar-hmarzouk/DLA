@@ -31,7 +31,7 @@ starpu_cuda_mpi:
              -D ExperimentalTest
              -D ExperimentalCoverage
              -D ExperimentalSubmit
-             | tee ../chameleon-build-starpu.log)xs
+             | tee ../chameleon-build-starpu.log)
     - lcov --directory build --capture --output-file chameleon_starpu_mpi.lcov
     - (cd build &&
        make install | tee -a ../chameleon-build-starpu.log &&
