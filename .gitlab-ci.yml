@@ -25,8 +25,7 @@ starpu_cuda_mpi:
              -DCHAMELEON_USE_CUDA=ON
              -DCHAMELEON_USE_MPI=ON &&
         ctest --no-compress-output -V -j 5
-             -R test_shm_s
-             -R mpi_s
+             -R "test_shm_s|mpi_s"
              -D ExperimentalBuild
              -D ExperimentalTest
              -D ExperimentalCoverage
@@ -47,6 +46,7 @@ starpu_simgrid:
       - chameleon-build-starpu-simgrid.log
       - chameleon_starpu_simgrid.lcov
   script:
+    - source .gitlab-ci-env.sh simu
     - (cd build &&
        cmake -C ../cmake_modules/gitlab-ci-initial-cache.cmake ..
              -DCHAMELEON_SIMULATION=ON
@@ -77,7 +77,7 @@ quark:
        cmake -C ../cmake_modules/gitlab-ci-initial-cache.cmake ..
             -DCHAMELEON_SCHED_QUARK=ON &&
        ctest --no-compress-output -V -j 5
-             -R test_shm_s
+             -R "test_shm_s"
              -D ExperimentalBuild
              -D ExperimentalTest
              -D ExperimentalCoverage
