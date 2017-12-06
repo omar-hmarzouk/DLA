@@ -31,8 +31,7 @@ starpu_cuda_mpi:
              -D ExperimentalTest
              -D ExperimentalCoverage
              -D ExperimentalSubmit
-             | tee ../chameleon-build-starpu.log
-             || /usr/bin/true)
+             | tee ../chameleon-build-starpu.log)xs
     - lcov --directory build --capture --output-file chameleon_starpu_mpi.lcov
     - (cd build &&
        make install | tee -a ../chameleon-build-starpu.log &&
@@ -58,8 +57,7 @@ starpu_simgrid:
             -D ExperimentalTest
             -D ExperimentalCoverage
             -D ExperimentalSubmit
-            | tee ../chameleon-build-starpu-simgrid.log
-            || /usr/bin/true)
+            | tee ../chameleon-build-starpu-simgrid.log)
     - lcov --directory build --capture --output-file chameleon_starpu_simgrid.lcov
     - (cd build &&
        make install | tee -a ../chameleon-build-starpu-simgrid.log &&
@@ -84,8 +82,7 @@ quark:
              -D ExperimentalTest
              -D ExperimentalCoverage
              -D ExperimentalSubmit
-             | tee ../chameleon-build-quark.log
-             || /usr/bin/true)
+             | tee ../chameleon-build-quark.log)
     - lcov --directory build --capture --output-file chameleon_quark.lcov
     - (cd build &&
        make install | tee -a ../chameleon-build-quark.log &&
@@ -113,8 +110,8 @@ sonar:
            -o $PWD/chameleon.lcov
     - lcov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
     - ./tools/analysis.sh
-  only:
-    - master@solverstack/chameleon
+  #only:
+  #  - master@solverstack/chameleon
 
 doc:
   stage: doc
