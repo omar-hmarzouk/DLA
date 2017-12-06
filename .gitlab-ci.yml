@@ -104,6 +104,7 @@ sonar:
       - chameleon-rats.xml
       - sonar.log
   script:
+    - cat *.log > chameleon-build.log
     - lcov -a $PWD/chameleon_starpu_mpi.lcov
            -a $PWD/chameleon_starpu_simgrid.lcov
            -a $PWD/chameleon_quark.lcov
