@@ -64,10 +64,10 @@ void MORSE_TASK_zlange(const MORSE_option_t *options,
         sizeof(MORSE_enum),            &norm,          VALUE,
         sizeof(int),                   &M,             VALUE,
         sizeof(int),                   &N,             VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),                   &LDA,           VALUE,
         sizeof(double)*szeW,           NULL,           SCRATCH,
-        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT,
         0);
 }
 
@@ -97,8 +97,8 @@ void MORSE_TASK_zlange_max(const MORSE_option_t *options,
 
     parsec_dtd_taskpool_insert_task(
         PARSEC_dtd_taskpool, CORE_zlange_max_parsec, options->priority, "lange_max",
-        PASSED_BY_REF,         RTBLKADDR( A, double, Am, An ), INPUT | REGION_FULL,
-        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ), OUTPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A, double, Am, An ), INPUT,
+        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ), OUTPUT,
         0);
 }
 

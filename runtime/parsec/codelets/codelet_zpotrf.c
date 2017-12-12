@@ -60,7 +60,7 @@ void MORSE_TASK_zpotrf(const MORSE_option_t *options,
         PARSEC_dtd_taskpool, CORE_zpotrf_parsec, options->priority, "potrf",
         sizeof(MORSE_enum),    &uplo,                             VALUE,
         sizeof(int),           &n,                                VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | morse_parsec_get_arena_index(A) | AFFINITY,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | AFFINITY,
         sizeof(int),           &lda,                              VALUE,
         sizeof(int),           &iinfo,                            VALUE,
         0);

@@ -63,7 +63,7 @@ void MORSE_TASK_ztile_zero(const const MORSE_option_t *options,
         sizeof(int),       &X2,                       VALUE,
         sizeof(int),       &Y1,                       VALUE,
         sizeof(int),       &Y2,                       VALUE,
-        PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT | REGION_FULL,
+        PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT,
         sizeof(int),       &lda,                      VALUE,
         0);
 }

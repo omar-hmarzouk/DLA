@@ -69,9 +69,9 @@ void MORSE_TASK_zlantr(const MORSE_option_t *options,
         sizeof(MORSE_enum),            &diag,          VALUE,
         sizeof(int),                   &M,             VALUE,
         sizeof(int),                   &N,             VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),                   &LDA,           VALUE,
         sizeof(double)*szeW,           NULL,           SCRATCH,
-        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT,
         0);
 }

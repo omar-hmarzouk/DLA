@@ -66,8 +66,8 @@ void MORSE_TASK_ztrasm(const MORSE_option_t *options,
         sizeof(MORSE_enum),     &diag,                  VALUE,
         sizeof(int),            &M,                     VALUE,
         sizeof(int),            &N,                     VALUE,
-        PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),            &lda,                   VALUE,
-        PASSED_BY_REF,          RTBLKADDR( B, double, Bm, Bn ),     INOUT | REGION_FULL,
+        PASSED_BY_REF,          RTBLKADDR( B, double, Bm, Bn ),     INOUT,
         0);
 }

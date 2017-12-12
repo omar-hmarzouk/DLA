@@ -64,9 +64,9 @@ void MORSE_TASK_zlag2c(const MORSE_option_t *options,
     parsec_dtd_taskpool_insert_task(PARSEC_dtd_taskpool, CORE_zlag2c_parsec, "lag2c",
         sizeof(int),                        &m,         VALUE,
         sizeof(int),                        &n,         VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),                        &lda,       VALUE,
-        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex32_t, Bm, Bn ),     OUTPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex32_t, Bm, Bn ),     OUTPUT,
         sizeof(int),                        &ldb,       VALUE,
         0);
 }
@@ -111,9 +111,9 @@ void MORSE_TASK_clag2z(const MORSE_option_t *options,
         PARSEC_dtd_taskpool, CORE_clag2z_parsec, options->priority, "lag2z",
         sizeof(int),                        &m,         VALUE,
         sizeof(int),                        &n,         VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex32_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex32_t, Am, An ),     INPUT,
         sizeof(int),                        &lda,       VALUE,
-        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT,
         sizeof(int),                        &ldb,       VALUE,
         0);
 }

@@ -59,9 +59,9 @@ void MORSE_TASK_zaxpy(const MORSE_option_t *options,
         PARSEC_dtd_taskpool, CORE_zaxpy_parsec, options->priority,  "axpy",
         sizeof(int),               &M,     VALUE,
         sizeof(MORSE_Complex64_t), &alpha, VALUE,
-        PASSED_BY_REF,  RTBLKADDR( A, MORSE_Complex64_t, Am, An ), INPUT | REGION_FULL,
+        PASSED_BY_REF,  RTBLKADDR( A, MORSE_Complex64_t, Am, An ), INPUT,
         sizeof(int),               &incA, VALUE,
-        PASSED_BY_REF,  RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ), INOUT | REGION_FULL,
+        PASSED_BY_REF,  RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ), INOUT,
         sizeof(int),               &incB, VALUE,
         0);
 }

@@ -79,9 +79,9 @@ void MORSE_TASK_ztrmm(const MORSE_option_t *options,
         sizeof(int),            &m,                     VALUE,
         sizeof(int),            &n,                     VALUE,
         sizeof(MORSE_Complex64_t),         &alpha,      VALUE,
-        PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),            &lda,                   VALUE,
-        PASSED_BY_REF,          RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT | REGION_FULL,
+        PASSED_BY_REF,          RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT,
         sizeof(int),            &ldb,                   VALUE,
         0);
 }

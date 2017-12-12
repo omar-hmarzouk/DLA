@@ -57,8 +57,8 @@ void MORSE_TASK_zgessq( const MORSE_option_t *options,
         PARSEC_dtd_taskpool, CORE_zgessq_parsec, options->priority, "gessq",
         sizeof(int),    &m,            VALUE,
         sizeof(int),    &n,            VALUE,
-        PASSED_BY_REF,   RTBLKADDR( A, MORSE_Complex64_t, Am, An ),                            INPUT | REGION_FULL,
+        PASSED_BY_REF,   RTBLKADDR( A, MORSE_Complex64_t, Am, An ),                            INPUT,
         sizeof(int),    &lda,          VALUE,
-        PASSED_BY_REF,   RTBLKADDR( SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn ), INOUT | REGION_FULL,
+        PASSED_BY_REF,   RTBLKADDR( SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn ), INOUT,
         0);
 }

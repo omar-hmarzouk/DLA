@@ -64,9 +64,9 @@ void MORSE_TASK_zlansy(const MORSE_option_t *options,
         sizeof(MORSE_enum),            &norm,          VALUE,
         sizeof(MORSE_enum),            &uplo,          VALUE,
         sizeof(int),                   &N,             VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),                   &LDA,           VALUE,
         sizeof(double)*szeW,           NULL,           SCRATCH,
-        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT,
         0);
 }
