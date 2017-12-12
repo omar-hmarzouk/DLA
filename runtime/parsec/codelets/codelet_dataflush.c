@@ -20,7 +20,7 @@
  *
  **/
 #include "chameleon_parsec.h"
-#include "chameleon/chameleon_tasks.h"
+#include "chameleon/morse_tasks.h"
 
 void MORSE_TASK_flush_data( const MORSE_option_t *options,
                            const MORSE_desc_t *A, int Am, int An )
