@@ -40,10 +40,6 @@ struct morse_parsec_desc_s {
     int arena_index;
 };
 
-int morse_parsec_get_arena_index(const MORSE_desc_t *desc) {
-    return ((morse_parsec_desc_t *)desc->schedopt)->arena_index;
-}
-
 static void
 morse_parsec_key_to_coordinates(parsec_data_collection_t *data_collection, parsec_data_key_t key,
                                 int *m, int *n)
