@@ -49,9 +49,11 @@ void MORSE_TASK_stile_zero(const MORSE_option_t *options,
 /*
  * Mark a data as unused after this call
  */
-void MORSE_TASK_dataflush(const MORSE_option_t *options,
-                          const MORSE_desc_t *A, int Am, int An);
-void MORSE_TASK_dataflush_all();
+void MORSE_TASK_flush_data( const MORSE_option_t *options,
+                           const MORSE_desc_t *A, int Am, int An);
+void MORSE_TASK_flush_desc( const MORSE_option_t *options,
+                           MORSE_enum uplo, const MORSE_desc_t *A );
+void MORSE_TASK_flush_all();
 
 #include "chameleon/morse_tasks_z.h"
 #include "chameleon/morse_tasks_d.h"

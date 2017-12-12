@@ -134,20 +134,19 @@ void morse_pzgemm(MORSE_enum transA, MORSE_enum transB,
                     }
                 }
             }
+            MORSE_TASK_flush_data( &options, C(m, n) );
         }
         if (transA == MorseNoTrans) {
             for (k = 0; k < A->nt; k++) {
-                MORSE_TASK_dataflush( &options, A(m, k) );
+                MORSE_TASK_flush_data( &options, A(m, k) );
             }
         } else {
             for (k = 0; k < A->mt; k++) {
-                MORSE_TASK_dataflush( &options, A(k, m) );
+                MORSE_TASK_flush_data( &options, A(k, m) );
             }
         }
-        for (n = 0; n < C->nt; n++) {
-            MORSE_TASK_dataflush( &options, C(m, n) );
-        }
     }
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, B );
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_dataflush_all();
+    MORSE_TASK_flush_all();
 }

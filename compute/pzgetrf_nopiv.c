@@ -103,6 +103,8 @@ void morse_pzgetrf_nopiv(MORSE_desc_t *A,
 
         RUNTIME_iteration_pop(morse);
     }
+
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_dataflush_all();
+    MORSE_TASK_flush_all();
 }

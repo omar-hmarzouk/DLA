@@ -68,7 +68,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     } 
 	
     PASTE_CODE_FREE_MATRIX( descA );
-    MORSE_TASK_dataflush_all();
+    MORSE_TASK_flush_all();
 
     return 0;
 }

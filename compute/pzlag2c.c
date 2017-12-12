@@ -67,6 +67,7 @@ void morse_pclag2z(MORSE_desc_t *SA, MORSE_desc_t *B,
                 B(m, n), ldbm);
         }
     }
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, SA );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, B );
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_dataflush_all();
 }

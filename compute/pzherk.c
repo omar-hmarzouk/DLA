@@ -173,6 +173,7 @@ void morse_pzherk(MORSE_enum uplo, MORSE_enum trans,
             }
         }
     }
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
+    MORSE_TASK_flush_desc( &options, uplo, C );
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_dataflush_all();
 }

@@ -193,4 +193,8 @@ void morse_pztradd(MORSE_enum uplo, MORSE_enum trans,
             }
         }
     }
+
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
+    MORSE_TASK_flush_desc( &options, uplo, B );
+    RUNTIME_options_finalize(&options, morse);
 }

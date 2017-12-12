@@ -162,9 +162,14 @@ void morse_pztpgqrt( int L,
         RUNTIME_iteration_pop(morse);
     }
 
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, V1 );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, V2 );
+    MORSE_TASK_flush_desc( &options, MorseLower,      T1 );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, T2 );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, Q1 );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, Q2 );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, D  );
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_dataflush_all();
-
     (void)D;
 }

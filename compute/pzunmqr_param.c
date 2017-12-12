@@ -431,10 +431,15 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
         }
     }
 
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, A  );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, B  );
+    MORSE_TASK_flush_desc( &options, MorseLower,      TS );
+    MORSE_TASK_flush_desc( &options, MorseLower,      TT );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, D  );
     free(tiles);
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_dataflush_all();
+    MORSE_TASK_flush_all();
 
     (void)D;
 }

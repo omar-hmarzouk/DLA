@@ -26,17 +26,28 @@
  **/
 #include "chameleon_quark.h"
 
-void MORSE_TASK_dataflush(const MORSE_option_t *options,
-                          const MORSE_desc_t *A, int Am, int An)
+void MORSE_TASK_flush_data( const MORSE_option_t *options,
+                           const MORSE_desc_t *A, int Am, int An )
 {
     (void)options; (void)A; (void)Am; (void)An;
 
     /*
-     * This is useful for StarPU implementation, if it happens in Quark, it will
-     * need to be done carefuly to not break both runtimes.
+     * This is useful for StarPU and PaRSEC MPI implementation, if it happens in
+     * Quark, it will need to be done carefuly to not break other runtimes.
      */
 }
 
-void MORSE_TASK_dataflush_all()
+void MORSE_TASK_flush_desc( const MORSE_option_t *options,
+                           MORSE_enum uplo, const MORSE_desc_t *A )
+{
+    (void)options; (void)uplo; (void)A;
+
+    /*
+     * This is useful for StarPU and PaRSEC MPI implementation, if it happens in
+     * Quark, it will need to be done carefuly to not break other runtimes.
+     */
+}
+
+void MORSE_TASK_flush_all()
 {
 }

@@ -87,16 +87,16 @@ void morse_pzplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, MORSE_desc_t *A,
          * MorseUpperLower
          */
         else {
-			for (n = 0; n < A->nt; n++) {
-				tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
+            for (n = 0; n < A->nt; n++) {
+                tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
 
-				MORSE_TASK_zplgsy(
-					&options,
-					bump, tempmm, tempnn, A(m, n), ldam,
-					A->m, m*A->mb, n*A->nb, seed );
-			}
+                MORSE_TASK_zplgsy(
+                    &options,
+                    bump, tempmm, tempnn, A(m, n), ldam,
+                    A->m, m*A->mb, n*A->nb, seed );
+            }
         }
     }
+    MORSE_TASK_flush_desc( &options, uplo, A );
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_dataflush_all();
 }

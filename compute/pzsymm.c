@@ -141,16 +141,16 @@ void morse_pzsymm(MORSE_enum side, MORSE_enum uplo,
                         }
                     }
                 }
-                MORSE_TASK_dataflush( &options, B(k, n) );
+                MORSE_TASK_flush_data( &options, B(k, n) );
             }
             if (uplo == MorseLower) {
                 for (n = 0; n <= k; n++) {
-                    MORSE_TASK_dataflush( &options, A(k, n) );
+                    MORSE_TASK_flush_data( &options, A(k, n) );
                 }
             }
             else {
                 for (m = 0; m <= k; m++) {
-                    MORSE_TASK_dataflush( &options, A(m, k) );
+                    MORSE_TASK_flush_data( &options, A(m, k) );
                 }
             }
         }
@@ -242,20 +242,20 @@ void morse_pzsymm(MORSE_enum side, MORSE_enum uplo,
                         }
                     }
                 }
-                MORSE_TASK_dataflush( &options, B(m, k) );
+                MORSE_TASK_flush_data( &options, B(m, k) );
             }
             if (uplo == MorseLower) {
                 for (n = 0; n <= k; n++) {
-                    MORSE_TASK_dataflush( &options, A(k, n) );
+                    MORSE_TASK_flush_data( &options, A(k, n) );
                 }
             }
             else {
                 for (m = 0; m <= k; m++) {
-                    MORSE_TASK_dataflush( &options, A(m, k) );
+                    MORSE_TASK_flush_data( &options, A(m, k) );
                 }
             }
         }
     }
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_dataflush_all();
+    MORSE_TASK_flush_all();
 }
