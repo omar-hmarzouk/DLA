@@ -15,15 +15,14 @@
  **/
 int RUNTIME_sequence_create(MORSE_context_t *morse, MORSE_sequence_t *sequence)
 {
-    dague_context_t    *dague = (dague_context_t *)morse->schedopt;
-    dague_dtd_handle_t *dague_dtd_handle = dague_dtd_handle_new((dague_context_t *)morse->schedopt);
+    parsec_context_t  *parsec        = (parsec_context_t *)morse->schedopt;
+    parsec_taskpool_t *parsec_dtd_tp = parsec_dtd_taskpool_new();
 
-    dague_enqueue(dague, (dague_handle_t*) dague_dtd_handle);
-    sequence->schedopt = dague_dtd_handle;
+    parsec_enqueue(parsec, (parsec_taskpool_t *) parsec_dtd_tp);
+    sequence->schedopt = parsec_dtd_tp;
 
-#if defined (OVERLAP)
-    dague_context_start(dague);
-#endif
+    parsec_context_start(parsec);
+
     return MORSE_SUCCESS;
 }
 
@@ -32,14 +31,18 @@ int RUNTIME_sequence_create(MORSE_context_t *morse, MORSE_sequence_t *sequence)
  **/
 int RUNTIME_sequence_destroy(MORSE_context_t *morse, MORSE_sequence_t *sequence)
 {
-    dague_context_t    *dague = (dague_context_t *)morse->schedopt;
-    dague_dtd_handle_t *dague_dtd_handle = (dague_dtd_handle_t *) sequence->schedopt;
+    parsec_context_t  *parsec = (parsec_context_t *)morse->schedopt;
+    parsec_taskpool_t *parsec_dtd_tp = (parsec_taskpool_t *) sequence->schedopt;
     (void)morse;
 
-    assert( dague_dtd_handle );
+    assert( parsec_dtd_tp );
 
-    dague_dtd_context_wait_on_handle(dague, dague_dtd_handle);
-    dague_dtd_handle_destruct(dague_dtd_handle);
+    // TODO: switch to a patial wait
+    //parsec_dtd_taskpool_wait(parsec, parsec_dtd_tp);
+    parsec_context_wait(parsec);
+
+    parsec_taskpool_free(parsec_dtd_tp);
+
     sequence->schedopt = NULL;
     return MORSE_SUCCESS;
 }
@@ -49,12 +52,12 @@ int RUNTIME_sequence_destroy(MORSE_context_t *morse, MORSE_sequence_t *sequence)
  **/
 int RUNTIME_sequence_wait(MORSE_context_t *morse, MORSE_sequence_t *sequence )
 {
-    dague_context_t    *dague = (dague_context_t *)morse->schedopt;
-    dague_dtd_handle_t *dague_dtd_handle = (dague_dtd_handle_t *) sequence->schedopt;
+    parsec_context_t  *parsec = (parsec_context_t *)morse->schedopt;
+    parsec_taskpool_t *parsec_dtd_tp = (parsec_taskpool_t *) sequence->schedopt;
 
-    assert( dague_dtd_handle );
+    assert( parsec_dtd_tp );
 
-    dague_dtd_handle_wait(dague, dague_dtd_handle);
+    parsec_dtd_taskpool_wait(parsec, parsec_dtd_tp);
 
     return MORSE_SUCCESS;
 }
@@ -64,7 +67,7 @@ int RUNTIME_sequence_wait(MORSE_context_t *morse, MORSE_sequence_t *sequence )
  **/
 void RUNTIME_sequence_flush(void *schedopt, MORSE_sequence_t *sequence, MORSE_request_t *request, int status)
 {
-    dague_context_t *dague = (dague_context_t *)schedopt;
+    parsec_context_t *parsec = (parsec_context_t *)schedopt;
     (void)schedopt;
     sequence->request = request;
     sequence->status = status;

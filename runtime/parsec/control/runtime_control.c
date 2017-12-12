@@ -11,6 +11,10 @@
 #include <stdlib.h>
 #include "chameleon_parsec.h"
 
+#if defined(CHAMELEON_USE_MPI)
+#include <mpi.h>
+#endif
+
 /*******************************************************************************
  * Thread rank.
  **/
@@ -28,13 +32,13 @@ int RUNTIME_init_scheduler(MORSE_context_t *morse, int nworkers, int ncudas, int
     int *argc = (int *)malloc(sizeof(int));
     *argc = 0;
 
-    /* Initializing dague context */
+    /* Initializing parsec context */
     if( 0 < nworkers ) {
         default_ncores = nworkers;
     }
     morse->parallel_enabled = MORSE_TRUE;
-    morse->schedopt = (void *)dague_init(default_ncores, argc, NULL);
-    dague_dtd_init();
+    morse->schedopt = (void *)parsec_init(default_ncores, argc, NULL);
+
     if(NULL != morse->schedopt) {
         morse->nworkers = nworkers;
         morse->nthreads_per_worker = nthreads_per_worker;
@@ -50,9 +54,8 @@ int RUNTIME_init_scheduler(MORSE_context_t *morse, int nworkers, int ncudas, int
  */
 void RUNTIME_finalize_scheduler(MORSE_context_t *morse)
 {
-    dague_context_t *dague = (dague_context_t*)morse->schedopt;
-    dague_dtd_fini();
-    dague_fini(&dague);
+    parsec_context_t *parsec = (parsec_context_t*)morse->schedopt;
+    parsec_fini(&parsec);
     return;
 }
 
@@ -61,9 +64,9 @@ void RUNTIME_finalize_scheduler(MORSE_context_t *morse)
  **/
 void RUNTIME_barrier(MORSE_context_t *morse)
 {
-    dague_context_t *dague = (dague_context_t*)morse->schedopt;
+    parsec_context_t *parsec = (parsec_context_t*)morse->schedopt;
     // This will be a problem with the fake tasks inserted to detect end of DTD algorithms
-    //dague_context_wait( dague );
+    //parsec_context_wait( parsec );
     return;
 }
 
@@ -131,5 +134,7 @@ void RUNTIME_comm_size( int *size )
  **/
 int RUNTIME_get_thread_nbr()
 {
-    return vpmap_get_nb_total_threads();
+    // TODO: fixme
+    //return vpmap_get_nb_total_threads();
+    return 0;
 }
