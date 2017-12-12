@@ -111,8 +111,8 @@ sonar:
            -o $PWD/chameleon.lcov
     - lcov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
     - ./tools/analysis.sh
-  #only:
-  #  - master@solverstack/chameleon
+  only:
+    - master@solverstack/chameleon
 
 doc:
   stage: doc
