@@ -58,7 +58,7 @@
  *
  **/
 static int
-CORE_zlaset2_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zlaset2_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     MORSE_enum *uplo;
     int *M;
@@ -67,7 +67,7 @@ CORE_zlaset2_parsec(dague_execution_unit_t *context, dague_execution_context_t *
     MORSE_Complex64_t *A;
     int *LDA;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &uplo,
         UNPACK_VALUE, &M,
@@ -85,10 +85,10 @@ void MORSE_TASK_zlaset2(const MORSE_option_t *options,
                        MORSE_enum uplo, int M, int N,
                        MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int LDA)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zlaset2_parsec, "laset2",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zlaset2_parsec, options->priority, "laset2",
         sizeof(MORSE_enum),                &uplo,      VALUE,
         sizeof(int),                       &M,         VALUE,
         sizeof(int),                       &N,         VALUE,

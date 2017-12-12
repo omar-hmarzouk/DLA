@@ -27,8 +27,8 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_ztpqrt_parsec(dague_execution_unit_t    *context,
-                   dague_execution_context_t *this_task)
+CORE_ztpqrt_parsec(parsec_execution_stream_t    *context,
+                   parsec_task_t *this_task)
 {
     int *M;
     int *N;
@@ -42,7 +42,7 @@ CORE_ztpqrt_parsec(dague_execution_unit_t    *context,
     int *ldt;
     MORSE_Complex64_t *WORK;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE,   &M,
         UNPACK_VALUE,   &N,
@@ -68,15 +68,15 @@ void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
                          const MORSE_desc_t *B, int Bm, int Bn, int ldb,
                          const MORSE_desc_t *T, int Tm, int Tn, int ldt )
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_ztpqrt_parsec, "tpqrt",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_ztpqrt_parsec, options->priority, "tpqrt",
         sizeof(int),   &M,   VALUE,
         sizeof(int),   &N,   VALUE,
         sizeof(int),   &L,   VALUE,
         sizeof(int),   &ib,  VALUE,
-        PASSED_BY_REF,  RTBLKADDR( A, MORSE_Complex64_t, Am, An ), INOUT | REGION_U | REGION_D,
+        PASSED_BY_REF,  RTBLKADDR( A, MORSE_Complex64_t, Am, An ), INOUT | REGION_FULL,
         sizeof(int),   &lda, VALUE,
         PASSED_BY_REF,  RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ), INOUT | REGION_FULL,
         sizeof(int),   &ldb, VALUE,

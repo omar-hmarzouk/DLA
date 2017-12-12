@@ -57,12 +57,12 @@
  *
  */
 static int
-CORE_zplssq_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zplssq_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     double *SCALESUMSQ;
     double *SCLSSQ;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_DATA,  &SCALESUMSQ,
         UNPACK_DATA,  &SCLSSQ );
@@ -81,21 +81,21 @@ void MORSE_TASK_zplssq( const MORSE_option_t *options,
                         const MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn,
                         const MORSE_desc_t *SCLSSQ,     int SCLSSQm,     int SCLSSQn )
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zplssq_parsec, "plssq",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zplssq_parsec, options->priority, "plssq",
         PASSED_BY_REF,         RTBLKADDR( SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn ),    INPUT | REGION_FULL,
         PASSED_BY_REF,         RTBLKADDR( SCLSSQ, double, SCLSSQm, SCLSSQn ),                INOUT | REGION_FULL,
         0);
 }
 
 static int
-CORE_zplssq2_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zplssq2_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     double *RESULT;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_DATA, &RESULT );
 
@@ -107,10 +107,10 @@ CORE_zplssq2_parsec(dague_execution_unit_t *context, dague_execution_context_t *
 void MORSE_TASK_zplssq2( const MORSE_option_t *options,
                          const MORSE_desc_t *RESULT, int RESULTm, int RESULTn )
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zplssq2_parsec, "plssq2",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zplssq2_parsec, options->priority, "plssq2",
         PASSED_BY_REF,         RTBLKADDR( RESULT, double, RESULTm, RESULTn ),     INOUT | REGION_FULL,
         0);
 }

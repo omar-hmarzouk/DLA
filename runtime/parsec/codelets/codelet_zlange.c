@@ -25,7 +25,7 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_zlange_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zlange_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     MORSE_enum *norm;
     int *M;
@@ -35,7 +35,7 @@ CORE_zlange_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     double *work;
     double *normA;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE,   &norm,
         UNPACK_VALUE,   &M,
@@ -55,12 +55,12 @@ void MORSE_TASK_zlange(const MORSE_option_t *options,
                        const MORSE_desc_t *A, int Am, int An, int LDA,
                        const MORSE_desc_t *B, int Bm, int Bn)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
     int szeW = chameleon_max( M, N );
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zlange_parsec, "lange",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zlange_parsec, options->priority, "lange",
         sizeof(MORSE_enum),            &norm,          VALUE,
         sizeof(int),                   &M,             VALUE,
         sizeof(int),                   &N,             VALUE,
@@ -73,12 +73,12 @@ void MORSE_TASK_zlange(const MORSE_option_t *options,
 
 #if defined(PRECISION_d) || defined(PRECISION_s)
 static int
-CORE_zlange_max_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zlange_max_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     double *A;
     double *normA;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_DATA,  &A,
         UNPACK_DATA,  &normA );
@@ -93,10 +93,10 @@ void MORSE_TASK_zlange_max(const MORSE_option_t *options,
                            const MORSE_desc_t *A, int Am, int An,
                            const MORSE_desc_t *B, int Bm, int Bn)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zlange_max_parsec, "lange_max",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zlange_max_parsec, options->priority, "lange_max",
         PASSED_BY_REF,         RTBLKADDR( A, double, Am, An ), INPUT | REGION_FULL,
         PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ), OUTPUT | REGION_FULL,
         0);

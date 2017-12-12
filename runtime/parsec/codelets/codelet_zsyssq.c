@@ -25,7 +25,7 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_zsyssq_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zsyssq_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     MORSE_enum *uplo;
     int *n;
@@ -33,7 +33,7 @@ CORE_zsyssq_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     int *lda;
     double *SCALESUMSQ;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &uplo,
         UNPACK_VALUE, &n,
@@ -51,10 +51,10 @@ void MORSE_TASK_zsyssq( const MORSE_option_t *options,
                         const MORSE_desc_t *A, int Am, int An, int lda,
                         const MORSE_desc_t *SCALESUMSQ, int SCALESUMSQm, int SCALESUMSQn )
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zsyssq_parsec, "syssq",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zsyssq_parsec, options->priority, "syssq",
         sizeof(MORSE_enum),     &uplo,                  VALUE,
         sizeof(int),            &n,                     VALUE,
         PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),                               INPUT | REGION_FULL,

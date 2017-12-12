@@ -30,8 +30,8 @@
 #include "coreblas/coreblas_z.h"
 
 static inline int
-CORE_ztsmqr_hetra1_parsec(dague_execution_unit_t    *context,
-                          dague_execution_context_t *this_task)
+CORE_ztsmqr_hetra1_parsec(parsec_execution_stream_t    *context,
+                          parsec_task_t *this_task)
 {
     MORSE_enum *side;
     MORSE_enum *trans;
@@ -52,7 +52,7 @@ CORE_ztsmqr_hetra1_parsec(dague_execution_unit_t    *context,
     MORSE_Complex64_t *WORK;
     int *ldwork;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE,   &side,
         UNPACK_VALUE,   &trans,
@@ -87,11 +87,11 @@ void MORSE_TASK_ztsmqr_hetra1(const MORSE_option_t *options,
                               const MORSE_desc_t *V, int Vm, int Vn, int ldv,
                               const MORSE_desc_t *T, int Tm, int Tn, int ldt)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
     int ldwork = side == MorseLeft ? ib : nb;
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_ztsmqr_hetra1_parsec, "tsmqr_hetra1",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_ztsmqr_hetra1_parsec, options->priority, "tsmqr_hetra1",
         sizeof(MORSE_enum), &side,   VALUE,
         sizeof(MORSE_enum), &trans,  VALUE,
         sizeof(int),        &m1,     VALUE,
@@ -100,7 +100,7 @@ void MORSE_TASK_ztsmqr_hetra1(const MORSE_option_t *options,
         sizeof(int),        &n2,     VALUE,
         sizeof(int),        &k,      VALUE,
         sizeof(int),        &ib,     VALUE,
-        PASSED_BY_REF,       RTBLKADDR(A1, MORSE_Complex64_t, A1m, A1n), INOUT | REGION_L | REGION_D,
+        PASSED_BY_REF,       RTBLKADDR(A1, MORSE_Complex64_t, A1m, A1n), INOUT | REGION_FULL,
         sizeof(int),        &lda1,   VALUE,
         PASSED_BY_REF,       RTBLKADDR(A2, MORSE_Complex64_t, A2m, A2n), INOUT | REGION_FULL,
         sizeof(int),        &lda2,   VALUE,

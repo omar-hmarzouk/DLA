@@ -25,7 +25,7 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_zttlqt_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zttlqt_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     int *m;
     int *n;
@@ -39,7 +39,7 @@ CORE_zttlqt_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     MORSE_Complex64_t *TAU;
     MORSE_Complex64_t *WORK;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE,   &m,
         UNPACK_VALUE,   &n,
@@ -65,10 +65,10 @@ void MORSE_TASK_zttlqt(const MORSE_option_t *options,
                        const MORSE_desc_t *T, int Tm, int Tn, int ldt)
 {
 
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zttlqt_parsec, "ttlqt",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zttlqt_parsec, options->priority, "ttlqt",
         sizeof(int),            &m,                     VALUE,
         sizeof(int),            &n,                     VALUE,
         sizeof(int),            &ib,                    VALUE,

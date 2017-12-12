@@ -25,7 +25,7 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_zsyr2k_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zsyr2k_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     MORSE_enum *uplo;
     MORSE_enum *trans;
@@ -40,7 +40,7 @@ CORE_zsyr2k_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     MORSE_Complex64_t *C;
     int *ldc;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &uplo,
         UNPACK_VALUE, &trans,
@@ -70,21 +70,21 @@ void MORSE_TASK_zsyr2k(const MORSE_option_t *options,
                        const MORSE_desc_t *B, int Bm, int Bn, int ldb,
                        MORSE_Complex64_t beta, const MORSE_desc_t *C, int Cm, int Cn, int ldc)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zsyr2k_parsec, "syr2k",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zsyr2k_parsec, options->priority, "syr2k",
         sizeof(MORSE_enum),     &uplo,                  VALUE,
         sizeof(MORSE_enum),     &trans,                 VALUE,
         sizeof(int),            &n,                     VALUE,
         sizeof(int),            &k,                     VALUE,
         sizeof(MORSE_Complex64_t), &alpha,              VALUE,
-        PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | morse_parsec_get_arena_index(A),
         sizeof(int),            &lda,                   VALUE,
-        PASSED_BY_REF,          RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,          RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INPUT | morse_parsec_get_arena_index(B),
         sizeof(int),            &ldb,                   VALUE,
         sizeof(MORSE_Complex64_t), &beta,               VALUE,
-        PASSED_BY_REF,          RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | REGION_FULL,
+        PASSED_BY_REF,          RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | morse_parsec_get_arena_index(C) | AFFINITY,
         sizeof(int),            &ldc,                   VALUE,
         0);
 }

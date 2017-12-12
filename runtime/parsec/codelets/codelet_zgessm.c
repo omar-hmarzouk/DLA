@@ -70,7 +70,7 @@
  *
  ******************************************************************************/
 static int
-CORE_zgessm_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zgessm_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     int *m;
     int *n;
@@ -84,7 +84,7 @@ CORE_zgessm_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     MORSE_Complex64_t *A;
     int *lda;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &m,
         UNPACK_VALUE, &n,
@@ -110,10 +110,10 @@ void MORSE_TASK_zgessm(const MORSE_option_t *options,
                        const MORSE_desc_t *D, int Dm, int Dn, int ldd,
                        const MORSE_desc_t *A, int Am, int An, int lda)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zgessm_parsec, "gessm",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zgessm_parsec, options->priority, "gessm",
         sizeof(int),           &m,                                VALUE,
         sizeof(int),           &n,                                VALUE,
         sizeof(int),           &k,                                VALUE,

@@ -25,7 +25,7 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_zaxpy_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zaxpy_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     int *M;
     MORSE_Complex64_t *alpha;
@@ -34,7 +34,7 @@ CORE_zaxpy_parsec(dague_execution_unit_t *context, dague_execution_context_t *th
     MORSE_Complex64_t *B;
     int *incB;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &M,
         UNPACK_VALUE, &alpha,
@@ -53,10 +53,10 @@ void MORSE_TASK_zaxpy(const MORSE_option_t *options,
                       const MORSE_desc_t *A, int Am, int An, int incA,
                       const MORSE_desc_t *B, int Bm, int Bn, int incB)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zaxpy_parsec, "axpy",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zaxpy_parsec, options->priority,  "axpy",
         sizeof(int),               &M,     VALUE,
         sizeof(MORSE_Complex64_t), &alpha, VALUE,
         PASSED_BY_REF,  RTBLKADDR( A, MORSE_Complex64_t, Am, An ), INPUT | REGION_FULL,

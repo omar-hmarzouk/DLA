@@ -25,7 +25,7 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_zunmqr_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zunmqr_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     MORSE_enum *side;
     MORSE_enum *trans;
@@ -42,7 +42,7 @@ CORE_zunmqr_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     MORSE_Complex64_t *WORK;
     int *ldwork;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE,   &side,
         UNPACK_VALUE,   &trans,
@@ -72,17 +72,17 @@ void MORSE_TASK_zunmqr(const MORSE_option_t *options,
                        const MORSE_desc_t *T, int Tm, int Tn, int ldt,
                        const MORSE_desc_t *C, int Cm, int Cn, int ldc)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zunmqr_parsec, "unmqr",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zunmqr_parsec, options->priority, "unmqr",
         sizeof(MORSE_enum),    &side,                              VALUE,
         sizeof(MORSE_enum),    &trans,                             VALUE,
         sizeof(int),           &m,                                 VALUE,
         sizeof(int),           &n,                                 VALUE,
         sizeof(int),           &k,                                 VALUE,
         sizeof(int),           &ib,                                VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_L,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
         sizeof(int),           &lda,                               VALUE,
         PASSED_BY_REF,         RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ),     INPUT | REGION_FULL,
         sizeof(int),           &ldt,                               VALUE,
