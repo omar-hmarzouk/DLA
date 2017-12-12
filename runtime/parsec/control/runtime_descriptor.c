@@ -11,7 +11,6 @@
 #include "chameleon_parsec.h"
 #include <parsec/data.h>
 #include <parsec/datatype.h>
-#include <parsec/data_dist/matrix/matrix.h>
 #include <parsec/arena.h>
 
 static int parsec_global_arena_index = 0;
