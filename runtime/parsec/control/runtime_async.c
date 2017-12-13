@@ -37,7 +37,7 @@ int RUNTIME_sequence_destroy(MORSE_context_t *morse, MORSE_sequence_t *sequence)
 
     assert( parsec_dtd_tp );
 
-    // TODO: switch to a patial wait
+    // TODO: switch to a partial wait
     //parsec_dtd_taskpool_wait(parsec, parsec_dtd_tp);
     parsec_context_wait(parsec);
 
