@@ -25,7 +25,7 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_ztile_zero_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_ztile_zero_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     int *X1;
     int *X2;
@@ -35,7 +35,7 @@ CORE_ztile_zero_parsec(dague_execution_unit_t *context, dague_execution_context_
     int *lda;
     int x, y;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &X1,
         UNPACK_VALUE, &X2,
@@ -55,15 +55,15 @@ void MORSE_TASK_ztile_zero(const const MORSE_option_t *options,
                            int X1, int X2, int Y1, int Y2,
                            const MORSE_desc_t *A, int Am, int An, int lda)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_ztile_zero_parsec, "tile zero",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_ztile_zero_parsec, options->priority, "tile zero",
         sizeof(int),       &X1,                       VALUE,
         sizeof(int),       &X2,                       VALUE,
         sizeof(int),       &Y1,                       VALUE,
         sizeof(int),       &Y2,                       VALUE,
-        PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT | REGION_FULL,
+        PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT,
         sizeof(int),       &lda,                      VALUE,
         0);
 }

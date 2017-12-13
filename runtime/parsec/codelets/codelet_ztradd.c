@@ -29,7 +29,7 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_ztradd_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_ztradd_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     MORSE_enum *uplo;
     MORSE_enum *trans;
@@ -42,7 +42,7 @@ CORE_ztradd_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     MORSE_Complex64_t *B;
     int *LDB;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &uplo,
         UNPACK_VALUE, &trans,
@@ -125,19 +125,19 @@ void MORSE_TASK_ztradd(const MORSE_option_t *options,
                        MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,
                        MORSE_Complex64_t beta,  const MORSE_desc_t *B, int Bm, int Bn, int ldb)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_ztradd_parsec, "tradd",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_ztradd_parsec, options->priority, "tradd",
         sizeof(MORSE_enum),        &uplo,  VALUE,
         sizeof(MORSE_enum),        &trans, VALUE,
         sizeof(int),               &m,     VALUE,
         sizeof(int),               &n,     VALUE,
         sizeof(MORSE_Complex64_t), &alpha, VALUE,
-        PASSED_BY_REF,              RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,              RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),               &lda,   VALUE,
         sizeof(MORSE_Complex64_t), &beta,  VALUE,
-        PASSED_BY_REF,              RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT | REGION_FULL,
+        PASSED_BY_REF,              RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT,
         sizeof(int),               &ldb,   VALUE,
         0);
 }

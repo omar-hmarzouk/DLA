@@ -20,28 +20,24 @@
  *
  **/
 #include "chameleon_parsec.h"
-#include "chameleon/chameleon_tasks.h"
+#include "chameleon/morse_tasks.h"
 
 void MORSE_TASK_flush_data( const MORSE_option_t *options,
-                           const MORSE_desc_t *A, int Am, int An )
+                            const MORSE_desc_t *A, int Am, int An )
 {
-    (void)options; (void)A; (void)Am; (void)An;
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    /*
-     * This is useful for StarPU and PaRSEC MPI implementation, if it happens in
-     * Quark, it will need to be done carefuly to not break other runtimes.
-     */
+    parsec_dtd_data_flush( PARSEC_dtd_taskpool, RTBLKADDR( A, MORSE_Complex64_t, Am, An ) );
 }
 
 void MORSE_TASK_flush_desc( const MORSE_option_t *options,
-                           MORSE_enum uplo, const MORSE_desc_t *A )
+                            MORSE_enum uplo, const MORSE_desc_t *A )
 {
-    (void)options; (void)uplo; (void)A;
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    /*
-     * This is useful for StarPU and PaRSEC MPI implementation, if it happens in
-     * Quark, it will need to be done carefuly to not break other runtimes.
-     */
+    parsec_dtd_data_flush_all( PARSEC_dtd_taskpool, (parsec_data_collection_t*)(A->schedopt) );
+
+    (void)uplo;
 }
 
 void MORSE_TASK_flush_all()

@@ -25,7 +25,7 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_zttqrt_parsec(dague_execution_unit_t *context, dague_execution_context_t * this_task)
+CORE_zttqrt_parsec(parsec_execution_stream_t *context, parsec_task_t * this_task)
 {
     int *m;
     int *n;
@@ -39,7 +39,7 @@ CORE_zttqrt_parsec(dague_execution_unit_t *context, dague_execution_context_t * 
     MORSE_Complex64_t *TAU;
     MORSE_Complex64_t *WORK;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE,   &m,
         UNPACK_VALUE,   &n,
@@ -64,18 +64,18 @@ void MORSE_TASK_zttqrt(const MORSE_option_t *options,
                        const MORSE_desc_t *A2, int A2m, int A2n, int lda2,
                        const MORSE_desc_t *T, int Tm, int Tn, int ldt)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zttqrt_parsec, "ttqrt",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zttqrt_parsec, options->priority,  "ttqrt",
         sizeof(MORSE_enum),    &m,                                 VALUE,
         sizeof(int),           &n,                                 VALUE,
         sizeof(int),           &ib,                                VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A1, MORSE_Complex64_t, A1m, A1n ),     INOUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A1, MORSE_Complex64_t, A1m, A1n ),     INOUT,
         sizeof(int),           &lda1,                              VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A2, MORSE_Complex64_t, A2m, A2n ),     INOUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A2, MORSE_Complex64_t, A2m, A2n ),     INOUT,
         sizeof(int),           &lda2,                              VALUE,
-        PASSED_BY_REF,         RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ),        OUTPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ),        OUTPUT,
         sizeof(int),           &ldt,                               VALUE,
         sizeof(MORSE_Complex64_t)*nb,       NULL,                  SCRATCH,
         sizeof(MORSE_Complex64_t)*ib*nb,    NULL,                  SCRATCH,

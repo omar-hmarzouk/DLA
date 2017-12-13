@@ -39,8 +39,8 @@
  *
  **/
 static inline int
-CORE_zlascal_parsec(dague_execution_unit_t    *context,
-                    dague_execution_context_t *this_task)
+CORE_zlascal_parsec(parsec_execution_stream_t    *context,
+                    parsec_task_t *this_task)
 {
     MORSE_enum *uplo;
     int *M;
@@ -49,7 +49,7 @@ CORE_zlascal_parsec(dague_execution_unit_t    *context,
     MORSE_Complex64_t *A;
     int *LDA;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &uplo,
         UNPACK_VALUE, &M,
@@ -67,15 +67,15 @@ void MORSE_TASK_zlascal(const MORSE_option_t *options,
                         MORSE_Complex64_t alpha,
                         const MORSE_desc_t *A, int Am, int An, int lda)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zlascal_parsec, "lascal",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zlascal_parsec, options->priority, "lascal",
         sizeof(MORSE_enum),        &uplo,  VALUE,
         sizeof(int),               &m,     VALUE,
         sizeof(int),               &n,     VALUE,
         sizeof(MORSE_Complex64_t), &alpha, VALUE,
-        PASSED_BY_REF,              RTBLKADDR(A, MORSE_Complex64_t, Am, An), INOUT | REGION_FULL,
+        PASSED_BY_REF,              RTBLKADDR(A, MORSE_Complex64_t, Am, An), INOUT,
         sizeof(int),               &lda,   VALUE,
         0);
 }

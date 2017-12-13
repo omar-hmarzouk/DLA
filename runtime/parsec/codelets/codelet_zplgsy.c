@@ -25,7 +25,7 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_zplgsy_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zplgsy_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     MORSE_Complex64_t *bump;
     int *m;
@@ -37,7 +37,7 @@ CORE_zplgsy_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     int *n0;
     unsigned long long int *seed;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &bump,
         UNPACK_VALUE, &m,
@@ -58,14 +58,14 @@ void MORSE_TASK_zplgsy( const MORSE_option_t *options,
                         MORSE_Complex64_t bump, int m, int n, const MORSE_desc_t *A, int Am, int An, int lda,
                         int bigM, int m0, int n0, unsigned long long int seed )
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zplgsy_parsec, "zplgsy",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zplgsy_parsec, options->priority, "zplgsy",
         sizeof(MORSE_Complex64_t), &bump,                          VALUE,
         sizeof(int),               &m,                             VALUE,
         sizeof(int),               &n,                             VALUE,
-        PASSED_BY_REF,             RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT | REGION_FULL,
+        PASSED_BY_REF,             RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT | AFFINITY,
         sizeof(int),               &lda,                           VALUE,
         sizeof(int),               &bigM,                          VALUE,
         sizeof(int),               &m0,                            VALUE,

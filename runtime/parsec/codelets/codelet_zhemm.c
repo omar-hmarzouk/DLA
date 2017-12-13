@@ -30,7 +30,7 @@
  *
  **/
 static int
-CORE_zhemm_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zhemm_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     MORSE_enum *side;
     MORSE_enum *uplo;
@@ -45,7 +45,7 @@ CORE_zhemm_parsec(dague_execution_unit_t *context, dague_execution_context_t *th
     MORSE_Complex64_t *C;
     int *LDC;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &side,
         UNPACK_VALUE, &uplo,
@@ -75,21 +75,21 @@ void MORSE_TASK_zhemm(const MORSE_option_t *options,
                       const MORSE_desc_t *B, int Bm, int Bn, int ldb,
                       MORSE_Complex64_t beta, const MORSE_desc_t *C, int Cm, int Cn, int ldc)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zhemm_parsec, "hemm",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zhemm_parsec, options->priority, "hemm",
         sizeof(MORSE_enum),                &side,    VALUE,
         sizeof(MORSE_enum),                &uplo,    VALUE,
         sizeof(int),                       &m,       VALUE,
         sizeof(int),                       &n,       VALUE,
         sizeof(MORSE_Complex64_t),         &alpha,   VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),           &lda,                 VALUE,
-        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INPUT,
         sizeof(int),           &ldb,                 VALUE,
         sizeof(MORSE_Complex64_t),         &beta,    VALUE,
-        PASSED_BY_REF,         RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT,
         sizeof(int),           &ldc,                 VALUE,
         0);
 }

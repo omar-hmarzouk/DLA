@@ -72,7 +72,7 @@
  *
  ******************************************************************************/
 static int
-CORE_zgetrf_nopiv_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zgetrf_nopiv_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     int *m;
     int *n;
@@ -82,7 +82,7 @@ CORE_zgetrf_nopiv_parsec(dague_execution_unit_t *context, dague_execution_contex
     int *iinfo;
     int info;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &m,
         UNPACK_VALUE, &n,
@@ -101,14 +101,14 @@ void MORSE_TASK_zgetrf_nopiv(const MORSE_option_t *options,
                              const MORSE_desc_t *A, int Am, int An, int lda,
                              int iinfo)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zgetrf_nopiv_parsec, "getrf_nopiv",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zgetrf_nopiv_parsec, options->priority,  "getrf_nopiv",
         sizeof(int),           &m,                          VALUE,
         sizeof(int),           &n,                          VALUE,
         sizeof(int),           &ib,                         VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT,
         sizeof(int),           &lda,                        VALUE,
         sizeof(int),           &iinfo,                      VALUE,
         0);

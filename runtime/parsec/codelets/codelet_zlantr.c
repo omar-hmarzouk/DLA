@@ -25,7 +25,7 @@
 #include "coreblas/coreblas_z.h"
 
 static int
-CORE_zlantr_parsec(dague_execution_unit_t *context, dague_execution_context_t *this_task)
+CORE_zlantr_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     MORSE_enum *norm, *uplo, *diag;
     int *M;
@@ -35,7 +35,7 @@ CORE_zlantr_parsec(dague_execution_unit_t *context, dague_execution_context_t *t
     double *work;
     double *normA;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &norm,
         UNPACK_VALUE, &uplo,
@@ -58,20 +58,20 @@ void MORSE_TASK_zlantr(const MORSE_option_t *options,
                        const MORSE_desc_t *A, int Am, int An, int LDA,
                        const MORSE_desc_t *B, int Bm, int Bn)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
     int szeW = chameleon_max( 1, N );
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zlantr_parsec, "lantr",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zlantr_parsec, options->priority, "lantr",
         sizeof(MORSE_enum),            &norm,          VALUE,
         sizeof(MORSE_enum),            &uplo,          VALUE,
         sizeof(MORSE_enum),            &diag,          VALUE,
         sizeof(int),                   &M,             VALUE,
         sizeof(int),                   &N,             VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),                   &LDA,           VALUE,
         sizeof(double)*szeW,           NULL,           SCRATCH,
-        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT,
         0);
 }

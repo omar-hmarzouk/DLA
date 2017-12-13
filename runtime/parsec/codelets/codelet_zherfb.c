@@ -27,8 +27,8 @@
 #include "coreblas/coreblas_z.h"
 
 static inline int
-CORE_zherfb_parsec(dague_execution_unit_t    *context,
-                   dague_execution_context_t *this_task)
+CORE_zherfb_parsec(parsec_execution_stream_t    *context,
+                   parsec_task_t *this_task)
 {
     MORSE_enum *uplo;
     int *n;
@@ -44,7 +44,7 @@ CORE_zherfb_parsec(dague_execution_unit_t    *context,
     MORSE_Complex64_t *WORK;
     int *ldwork;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE,   &uplo,
         UNPACK_VALUE,   &n,
@@ -72,20 +72,20 @@ void MORSE_TASK_zherfb(const MORSE_option_t *options,
                        const MORSE_desc_t *T, int Tm, int Tn, int ldt,
                        const MORSE_desc_t *C, int Cm, int Cn, int ldc)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zherfb_parsec, "herfb",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zherfb_parsec, options->priority, "herfb",
         sizeof(MORSE_enum), &uplo, VALUE,
         sizeof(int),        &n,    VALUE,
         sizeof(int),        &k,    VALUE,
         sizeof(int),        &ib,   VALUE,
         sizeof(int),        &nb,   VALUE,
-        PASSED_BY_REF,       RTBLKADDR(A, MORSE_Complex64_t, Am, An), (uplo == MorseUpper) ? INOUT | REGION_U : INOUT | REGION_L,
+        PASSED_BY_REF,       RTBLKADDR(A, MORSE_Complex64_t, Am, An), (uplo == MorseUpper) ? INOUT : INOUT,
         sizeof(int),        &lda,  VALUE,
-        PASSED_BY_REF,       RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn), INPUT | REGION_FULL,
+        PASSED_BY_REF,       RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn), INPUT,
         sizeof(int),        &ldt,  VALUE,
-        PASSED_BY_REF,       RTBLKADDR(C, MORSE_Complex64_t, Cm, Cn), (uplo == MorseUpper) ? INOUT | REGION_D | REGION_U : INOUT | REGION_D | REGION_L,
+        PASSED_BY_REF,       RTBLKADDR(C, MORSE_Complex64_t, Cm, Cn), (uplo == MorseUpper) ? INOUT : INOUT,
         sizeof(int),        &ldc,  VALUE,
         sizeof(MORSE_Complex64_t)*2*nb*nb,  NULL, SCRATCH,
         sizeof(int),        &nb,   VALUE,

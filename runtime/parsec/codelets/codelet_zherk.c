@@ -31,7 +31,7 @@
  **/
 
 static int
-CORE_zherk_parsec(dague_execution_unit_t *context, dague_execution_context_t * this_task)
+CORE_zherk_parsec(parsec_execution_stream_t *context, parsec_task_t * this_task)
 {
     MORSE_enum *uplo;
     MORSE_enum *trans;
@@ -44,7 +44,7 @@ CORE_zherk_parsec(dague_execution_unit_t *context, dague_execution_context_t * t
     MORSE_Complex64_t *C;
     int *ldc;
 
-    dague_dtd_unpack_args(
+    parsec_dtd_unpack_args(
         this_task,
         UNPACK_VALUE, &uplo,
         UNPACK_VALUE, &trans,
@@ -70,19 +70,19 @@ void MORSE_TASK_zherk(const MORSE_option_t *options,
                       double alpha, const MORSE_desc_t *A, int Am, int An, int lda,
                       double beta, const MORSE_desc_t *C, int Cm, int Cn, int ldc)
 {
-    dague_dtd_handle_t* DAGUE_dtd_handle = (dague_dtd_handle_t *)(options->sequence->schedopt);
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
-    dague_insert_task(
-        DAGUE_dtd_handle, CORE_zherk_parsec, "herk",
+    parsec_dtd_taskpool_insert_task(
+        PARSEC_dtd_taskpool, CORE_zherk_parsec, options->priority, "herk",
         sizeof(MORSE_enum),    &uplo,                             VALUE,
         sizeof(MORSE_enum),    &trans,                            VALUE,
         sizeof(int),           &n,                                VALUE,
         sizeof(int),           &k,                                VALUE,
         sizeof(double),        &alpha,                            VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),           &lda,                              VALUE,
         sizeof(double),        &beta,                             VALUE,
-        PASSED_BY_REF,         RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | REGION_FULL,
+        PASSED_BY_REF,         RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | AFFINITY,
         sizeof(int),           &ldc,                              VALUE,
         0);
 }
