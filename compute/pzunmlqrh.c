@@ -407,8 +407,13 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
             }
         }
     }
+
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, B );
+    MORSE_TASK_flush_desc( &options, MorseUpper,      T );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, D );
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_dataflush_all();
+    MORSE_TASK_flush_all();
     (void)D;
 }

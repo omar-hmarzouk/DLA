@@ -56,16 +56,11 @@ int RUNTIME_desc_iscached(const MORSE_desc_t *A, int Am, int An)
 #endif
 #endif
 
-void MORSE_TASK_dataflush(const MORSE_option_t *options,
+void MORSE_TASK_flush_data(const MORSE_option_t *options,
                           const MORSE_desc_t *A, int Am, int An)
 {
     (void)options;
 
-    /*
-     * We can use MORSE_Complex64_t for all precisions since it is not use to
-     * compute the handle address in starpu.  We have to be careful with this if
-     * something similar happen in Quark.
-     */
     {
         starpu_data_handle_t *ptrtile = (starpu_data_handle_t*)(A->schedopt);
         ptrtile += ((int64_t)(A->lmt) * (int64_t)An + (int64_t)Am);
@@ -91,7 +86,46 @@ void MORSE_TASK_dataflush(const MORSE_option_t *options,
     }
 }
 
-void MORSE_TASK_dataflush_all()
+void MORSE_TASK_flush_desc( const MORSE_option_t *options,
+                           MORSE_enum uplo, const MORSE_desc_t *A )
+{
+    int m, n;
+
+    switch (uplo) {
+    /*
+     *  MorseUpper
+     */
+    case MorseUpper:
+        for (m = 0; m < A->mt; m++) {
+            for (n = m; n < A->nt; n++) {
+                MORSE_TASK_flush_data( options, A, m, n );
+            }
+        }
+        break;
+    /*
+     *  MorseLower
+     */
+    case MorseLower:
+        for (m = 0; m < A->mt; m++) {
+            for (n = 0; n < chameleon_min(m+1, A->nt); n++) {
+                MORSE_TASK_flush_data( options, A, m, n );
+            }
+        }
+        break;
+    /*
+     *  MorseUpperLower
+     */
+    case MorseUpperLower:
+    default:
+        for (m = 0; m < A->mt; m++) {
+            for (n = 0; n < A->nt; n++) {
+                MORSE_TASK_flush_data( options, A, m, n );
+            }
+        }
+    }
+}
+
+void MORSE_TASK_flush_all()
 {
 #if defined(CHAMELEON_USE_MPI)
     starpu_mpi_cache_flush_all_data(MPI_COMM_WORLD);

@@ -139,11 +139,14 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
                 T(k, k), T->mb,
                 Q(k, n), ldqk);
         }
-
         RUNTIME_iteration_pop(morse);
     }
+
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, Q );
+    MORSE_TASK_flush_desc( &options, MorseLower,      T );
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, D );
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_dataflush_all();
     (void)D;
 }

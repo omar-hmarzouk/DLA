@@ -60,6 +60,6 @@ void morse_pzplrnt( MORSE_desc_t *A, unsigned long long int seed,
                 A->m, m*A->mb, n*A->nb, seed );
         }
     }
+    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_dataflush_all();
 }
