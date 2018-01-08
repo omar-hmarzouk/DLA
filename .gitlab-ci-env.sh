@@ -12,6 +12,7 @@ export PATH=/builds/sonar/sonar-scanner-2.9.0.670/bin:$PATH
 export QUARK_DIR=/builds/install/quark
 export PARSEC_DIR=/builds/install/parsec
 export STARPU_DIR=/builds/install/starpu
+export STARPU_SILENT=1
 
 if [ "$1" == "simu" ]; then
   export STARPU_DIR=/builds/install/starpu-simgrid
