@@ -156,6 +156,15 @@ void
 RUNTIME_barrier( MORSE_context_t *ctxt );
 
 /**
+ * @brief Show the progress of the computations when enabled.
+ *
+ * @param[in] ctxt
+ *            The Chameleon context for which the context needs to be printed.
+ */
+void
+RUNTIME_progress( MORSE_context_t *ctxt );
+
+/**
  * @brief Get the rank of the current worker for the runtime.
  *
  * @param[in] ctxt
@@ -405,14 +414,21 @@ RUNTIME_desc_getoncpu( const MORSE_desc_t *desc );
  * This function is a asynchronous call that submit the data movement from
  * remote memory to the main memory. This call must be completed by a call to
  * RUNTIME_sequence_wait() to ensure that all data have been moved.
+ * Users should avoid to call this function as it sequentially moves back the
+ * data from outside the main memory to main memory, and should prefer
+ * RUNTIME_desc_getoncpu_async().
  *
  * @param[in] desc
  *            The descriptor to release.
  *
+ * @param[in] sequence
+ *            The sequence to which submit the data movements
+ *
  * @retval MORSE_SUCCESS on success
  */
 int
-RUNTIME_desc_getoncpu_async( const MORSE_desc_t *desc );
+RUNTIME_desc_getoncpu_async( const MORSE_desc_t *desc,
+                             MORSE_sequence_t   *sequence );
 
 /**
  * @brief Get the pointer to the data or the runtime handler associated to the

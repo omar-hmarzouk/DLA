@@ -110,7 +110,17 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
                                   int   (*get_blkldd) ( const MORSE_desc_t*, int      ),
                                   int   (*get_rankof) ( const MORSE_desc_t*, int, int ))
 {
+    MORSE_context_t *morse;
     MORSE_desc_t desc;
+
+    memset( &desc, 0, sizeof(MORSE_desc_t) );
+
+    morse = morse_context_self();
+    if (morse == NULL) {
+        morse_error("MORSE_Desc_Create", "MORSE not initialized");
+        return desc;
+    }
+
     // If one of the function get_* is NULL, we switch back to the default, like in morse_desc_init()
     desc.get_blkaddr = get_blkaddr ? get_blkaddr : morse_getaddr_ccrb;
     desc.get_blkldd  = get_blkldd  ? get_blkldd  : morse_getblkldd_ccrb;
@@ -144,7 +154,7 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.register_mat = 1;
     desc.ooc          = 0;
 
-    RUNTIME_comm_rank( &(desc.myrank) );
+    desc.myrank = RUNTIME_comm_rank( morse );
 
     // Grid size
     desc.p = p;
@@ -184,8 +194,6 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.A21 = (size_t)(desc.llm - desc.llm%mb)*(size_t)(desc.lln - desc.lln%nb);
     desc.A12 = (size_t)(           desc.llm%mb)*(size_t)(desc.lln - desc.lln%nb) + desc.A21;
     desc.A22 = (size_t)(desc.llm - desc.llm%mb)*(size_t)(           desc.lln%nb) + desc.A12;
-
-    RUNTIME_desc_init( &desc );
 
     return desc;
 }
@@ -241,7 +249,8 @@ MORSE_desc_t* morse_desc_submatrix(MORSE_desc_t *descA, int i, int j, int m, int
     descB->mt = (m == 0) ? 0 : (descB->i+m-1)/mb - descB->i/mb + 1;
     descB->nt = (n == 0) ? 0 : (descB->j+n-1)/nb - descB->j/nb + 1;
 
-    RUNTIME_desc_submatrix( descB );
+    // Increase the number of occurences to avoid multiple free of runtime specific data structures.
+    descB->occurences++;
 
     return descB;
 }
@@ -301,7 +310,7 @@ int morse_desc_mat_alloc( MORSE_desc_t *desc )
 
     size_t size = (size_t)(desc->llm) * (size_t)(desc->lln)
         * (size_t)MORSE_Element_Size(desc->dtyp);
-    if ((desc->mat = RUNTIME_mat_alloc(size)) == NULL) {
+    if ((desc->mat = RUNTIME_malloc(size)) == NULL) {
         morse_error("morse_desc_mat_alloc", "malloc() failed");
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
@@ -327,7 +336,7 @@ int morse_desc_mat_free( MORSE_desc_t *desc )
         size_t size = (size_t)(desc->llm) * (size_t)(desc->lln)
             * (size_t)MORSE_Element_Size(desc->dtyp);
 
-        RUNTIME_mat_free(desc->mat, size);
+        RUNTIME_free(desc->mat, size);
         desc->mat = NULL;
     }
     return MORSE_SUCCESS;
@@ -423,7 +432,7 @@ int MORSE_Desc_Create(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, int mb
         size_t size = (size_t)(desc->llm) * (size_t)(desc->lln)
             * (size_t)MORSE_Element_Size(desc->dtyp);
 
-        if ((desc->mat = RUNTIME_mat_alloc(size)) == NULL) {
+        if ((desc->mat = RUNTIME_malloc(size)) == NULL) {
             morse_error("MORSE_Desc_Create", "malloc() failed");
             return MORSE_ERR_OUT_OF_RESOURCES;
         }
@@ -843,6 +852,6 @@ int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc) {
  *
  *****************************************************************************/
 void MORSE_user_tag_size(int user_tag_width, int user_tag_sep) {
-    RUNTIME_user_tag_size(user_tag_width, user_tag_sep);
+    RUNTIME_comm_set_tag_sizes( user_tag_width, user_tag_sep );
     return;
 }

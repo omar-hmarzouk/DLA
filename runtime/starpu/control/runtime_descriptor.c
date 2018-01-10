@@ -25,6 +25,9 @@
 #include <unistd.h>
 #include "chameleon_starpu.h"
 
+/*******************************************************************************
+ *  Set the tag sizes
+ **/
 #if defined(CHAMELEON_USE_MPI)
 
 /* Take 24 bits for the tile id, and 7 bits for descriptor id.
@@ -44,13 +47,9 @@ static int _tag_mpi_initialized_ = 0;
 
 #endif
 
-#ifdef STARPU_MALLOC_SIMULATION_FOLDED
-#define FOLDED STARPU_MALLOC_SIMULATION_FOLDED
-#else
-#define FOLDED 0
-#endif
-
-void RUNTIME_user_tag_size( int user_tag_width, int user_tag_sep ) {
+void RUNTIME_comm_set_tag_sizes( int user_tag_width,
+                                 int user_tag_sep )
+{
 #if defined(CHAMELEON_USE_MPI)
     if (_tag_mpi_initialized_ == 0) {
         tag_width = user_tag_width;
@@ -63,29 +62,43 @@ void RUNTIME_user_tag_size( int user_tag_width, int user_tag_sep ) {
     (void)user_tag_width; (void)user_tag_sep;
 }
 
+/*******************************************************************************
+ *  Malloc/Free of the data
+ **/
+#ifdef STARPU_MALLOC_SIMULATION_FOLDED
+#define FOLDED STARPU_MALLOC_SIMULATION_FOLDED
+#else
+#define FOLDED 0
+#endif
 
-void *RUNTIME_mat_alloc( size_t size )
+void *RUNTIME_malloc( size_t size )
 {
 #if defined(CHAMELEON_SIMULATION) && !defined(STARPU_MALLOC_SIMULATION_FOLDED) && !defined(CHAMELEON_USE_MPI)
     return (void*) 1;
 #else
-    void *mat;
+    void *ptr;
 
-    if (starpu_malloc_flags(&mat, size, STARPU_MALLOC_PINNED|FOLDED|STARPU_MALLOC_COUNT) != 0)
+    if (starpu_malloc_flags(&ptr, size, STARPU_MALLOC_PINNED|FOLDED|STARPU_MALLOC_COUNT) != 0) {
         return NULL;
-    return mat;
+    }
+    return ptr;
 #endif
 }
 
-void RUNTIME_mat_free( void *mat, size_t size )
+void RUNTIME_free( void  *ptr,
+                   size_t size )
 {
 #if defined(CHAMELEON_SIMULATION) && !defined(STARPU_MALLOC_SIMULATION_FOLDED) && !defined(CHAMELEON_USE_MPI)
+    (void)ptr; (void)size;
     return;
 #else
-    starpu_free_flags(mat, size, STARPU_MALLOC_PINNED|FOLDED|STARPU_MALLOC_COUNT);
+    starpu_free_flags(ptr, size, STARPU_MALLOC_PINNED|FOLDED|STARPU_MALLOC_COUNT);
 #endif
 }
 
+/*******************************************************************************
+ *  Create data descriptor
+ **/
 void RUNTIME_desc_create( MORSE_desc_t *desc )
 {
     int64_t lmt = desc->lmt;
@@ -104,34 +117,34 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
     tiles = (starpu_data_handle_t*)(desc->schedopt);
 
 #if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
-    if (desc->use_mat == 1 && desc->register_mat == 1){
-        /*
-         * Register allocated memory as CUDA pinned memory
-         */
-        {
-            int64_t eltsze = MORSE_Element_Size(desc->dtyp);
-            size_t size = (size_t)(desc->llm) * (size_t)(desc->lln) * eltsze;
-            cudaError_t rc;
+    /*
+     * Register allocated memory as CUDA pinned memory
+     */
+    if ( (desc->use_mat == 1) && (desc->register_mat == 1) )
+    {
+        int64_t eltsze = MORSE_Element_Size(desc->dtyp);
+        size_t size = (size_t)(desc->llm) * (size_t)(desc->lln) * eltsze;
+        cudaError_t rc;
 
-            /* Register the matrix as pinned memory */
-            rc = cudaHostRegister( desc->mat, size, cudaHostRegisterPortable );
-            if ( rc != cudaSuccess )
-            {
-                morse_warning("RUNTIME_desc_create(StarPU): cudaHostRegister - ", cudaGetErrorString( rc ));
-            }
+        /* Register the matrix as pinned memory */
+        rc = cudaHostRegister( desc->mat, size, cudaHostRegisterPortable );
+        if ( rc != cudaSuccess )
+        {
+            morse_warning("RUNTIME_desc_create(StarPU): cudaHostRegister - ", cudaGetErrorString( rc ));
         }
     }
 #endif
-    if (desc->ooc) {
-        int lastmm = desc->lm - (desc->lmt-1) * desc->mb;
-        int lastnn = desc->ln - (desc->lnt-1) * desc->nb;
-        int64_t eltsze = MORSE_Element_Size(desc->dtyp);
-        int pagesize = getpagesize();
 
-        if ((desc->mb * desc->nb * eltsze) % pagesize != 0
-            || (lastmm   * desc->nb * eltsze) % pagesize != 0
-            || (desc->mb * lastnn   * eltsze) % pagesize != 0
-            || (lastmm   * lastnn   * eltsze) % pagesize != 0)
+    if (desc->ooc) {
+        int     lastmm   = desc->lm - (desc->lmt-1) * desc->mb;
+        int     lastnn   = desc->ln - (desc->lnt-1) * desc->nb;
+        int64_t eltsze   = MORSE_Element_Size(desc->dtyp);
+        int     pagesize = getpagesize();
+
+        if ( ((desc->mb * desc->nb * eltsze) % pagesize != 0) ||
+             ((lastmm   * desc->nb * eltsze) % pagesize != 0) ||
+             ((desc->mb * lastnn   * eltsze) % pagesize != 0) ||
+             ((lastmm   * lastnn   * eltsze) % pagesize != 0) )
         {
             morse_error("RUNTIME_desc_create", "Matrix and tile size not suitable for out-of-core: all tiles have to be multiples of 4096. Tip : choose 'n' and 'nb' as both multiples of 32.");
             return;
@@ -153,8 +166,9 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
                 morse_error("RUNTIME_desc_create", "MPI_TAG_UB not known by MPI");
             }
 
-            while ( ((uintptr_t)((1UL<<tag_width) - 1) > (uintptr_t)(*tag_ub) )
-                    && (tag_width >= TAG_WIDTH_MIN) ) {
+            while ( ((uintptr_t)((1UL<<tag_width) - 1) > (uintptr_t)(*tag_ub) ) &&
+                    (tag_width >= TAG_WIDTH_MIN) )
+            {
                 tag_width--;
                 tag_sep--;
             }
@@ -183,6 +197,9 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
 #endif
 }
 
+/*******************************************************************************
+ *  Destroy data descriptor
+ **/
 void RUNTIME_desc_destroy( MORSE_desc_t *desc )
 {
     desc->occurences--;
@@ -197,7 +214,7 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
         int lnt = desc->lnt;
         int m, n;
 
-        for (n = 0; n < lnt; n++)
+        for (n = 0; n < lnt; n++) {
             for (m = 0; m < lmt; m++)
             {
                 if (*handle == NULL)
@@ -205,13 +222,14 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
                     handle++;
                     continue;
                 }
-                //printf("\nUnregister %d %d %d", MORSE_My_Mpi_Rank(), m, n);
                 starpu_data_unregister(*handle);
                 handle++;
             }
+        }
 
 #if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
-        if (desc->use_mat == 1 && desc->register_mat == 1){
+        if ( (desc->use_mat == 1) && (desc->register_mat == 1) )
+        {
             /* Unmap the pinned memory associated to the matrix */
             if (cudaHostUnregister(desc->mat) != cudaSuccess)
             {
@@ -226,28 +244,17 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
     }
 }
 
-void RUNTIME_desc_init( MORSE_desc_t *desc )
-{
-    (void)desc;
-    return;
-}
-
-void RUNTIME_desc_submatrix( MORSE_desc_t *desc )
-{
-    desc->occurences++;
-    return;
-}
-
-/* TODO: Acquire/Release/GetonCPU need to be studied carefully and fixed
- * because we are not using them correctly */
-int RUNTIME_desc_acquire( MORSE_desc_t *desc )
+/*******************************************************************************
+ *  Acquire data
+ **/
+int RUNTIME_desc_acquire( const MORSE_desc_t *desc )
 {
     starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);
     int lmt = desc->lmt;
     int lnt = desc->lnt;
     int m, n;
 
-    for (n = 0; n < lnt; n++)
+    for (n = 0; n < lnt; n++) {
         for (m = 0; m < lmt; m++)
         {
             if ( (*handle == NULL) ||
@@ -259,17 +266,21 @@ int RUNTIME_desc_acquire( MORSE_desc_t *desc )
             starpu_data_acquire(*handle, STARPU_R);
             handle++;
         }
+    }
     return MORSE_SUCCESS;
 }
 
-int RUNTIME_desc_release( MORSE_desc_t *desc )
+/*******************************************************************************
+ *  Release data
+ **/
+int RUNTIME_desc_release( const MORSE_desc_t *desc )
 {
     starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);
     int lmt = desc->lmt;
     int lnt = desc->lnt;
     int m, n;
 
-    for (n = 0; n < lnt; n++)
+    for (n = 0; n < lnt; n++) {
         for (m = 0; m < lmt; m++)
         {
             if ( (*handle == NULL) ||
@@ -281,44 +292,91 @@ int RUNTIME_desc_release( MORSE_desc_t *desc )
             starpu_data_release(*handle);
             handle++;
         }
+    }
     return MORSE_SUCCESS;
 }
 
-/**
- * For older revision of StarPU, STARPU_MAIN_RAM is not defined
- */
+/*******************************************************************************
+ *  Get data on cpu - Synchronous call
+ **/
+int RUNTIME_desc_getoncpu( const MORSE_desc_t *desc )
+{
+    starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);
+    int lmt = desc->lmt;
+    int lnt = desc->lnt;
+    int m, n;
+
+    if ( desc->ooc ) {
+        /* May not even fit */
+        morse_warning( "RUNTIME_desc_getoncpu(StarPU)",
+                       "Try to get an out-of-core matrix on main memory. Cancelled as it might not fit" );
+        return MORSE_SUCCESS;
+    }
+
+    for (n = 0; n < lnt; n++) {
+        for (m = 0; m < lmt; m++)
+        {
+            if ( (*handle == NULL) ||
+                 !morse_desc_islocal( desc, m, n ) )
+            {
+                handle++;
+                continue;
+            }
+
+            starpu_data_acquire(*handle, STARPU_R);
+            starpu_data_release(*handle);
+            handle++;
+        }
+    }
+    return MORSE_SUCCESS;
+}
+
+/*******************************************************************************
+ *  Get data on cpu - Asynchronous call
+ **/
+int RUNTIME_desc_getoncpu_async( const MORSE_desc_t *desc,
+                                 MORSE_sequence_t   *sequence )
+{
+    starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);
+    int lmt = desc->lmt;
+    int lnt = desc->lnt;
+    int m, n;
+
+    if ( desc->ooc ) {
+        /* May not even fit */
+        morse_warning( "RUNTIME_desc_getoncpu_async(StarPU)",
+                       "Try to get an out-of-core matrix on main memory. Cancelled as it might not fit" );
+        return MORSE_SUCCESS;
+    }
+
+    for (n = 0; n < lnt; n++) {
+        for (m = 0; m < lmt; m++)
+        {
+            if ( (*handle == NULL) ||
+                 !morse_desc_islocal( desc, m, n ) )
+            {
+                handle++;
+                continue;
+            }
+
+            starpu_data_acquire_cb( *handle, STARPU_R,
+                                    (void (*)(void*))&starpu_data_release, *handle );
+            handle++;
+        }
+    }
+
+    (void)sequence;
+    return MORSE_SUCCESS;
+}
+
+/*******************************************************************************
+ *  Get data addr
+ **/
+
+/* For older revision of StarPU, STARPU_MAIN_RAM is not defined */
 #ifndef STARPU_MAIN_RAM
 #define STARPU_MAIN_RAM 0
 #endif
-
-int RUNTIME_desc_getoncpu( MORSE_desc_t *desc )
-{
-    starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);
-    int lmt = desc->lmt;
-    int lnt = desc->lnt;
-    int m, n;
-
-    if (desc->ooc)
-        /* May not even fit */
-        return MORSE_SUCCESS;
-
-    for (n = 0; n < lnt; n++)
-        for (m = 0; m < lmt; m++)
-        {
-            if ( (*handle == NULL) ||
-                 !morse_desc_islocal( desc, m, n ) )
-            {
-                handle++;
-                continue;
-            }
-
-            starpu_data_acquire(*handle, STARPU_R);
-            starpu_data_release(*handle);
-            handle++;
-        }
-
-    return MORSE_SUCCESS;
-}
 
 void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
 {
@@ -344,12 +402,12 @@ void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
             }
         }
 
-        starpu_matrix_data_register(ptrtile, home_node, (uintptr_t) user_ptr,
-                                    BLKLDD(desc, im),
-                                    tempmm, tempnn, eltsze);
+        starpu_matrix_data_register( ptrtile, home_node, (uintptr_t) user_ptr,
+                                     BLKLDD(desc, im),
+                                     tempmm, tempnn, eltsze );
 
 #ifdef HAVE_STARPU_DATA_SET_COORDINATES
-        starpu_data_set_coordinates(*ptrtile, 2, m, n);
+        starpu_data_set_coordinates( *ptrtile, 2, m, n );
 #endif
 
 #if defined(CHAMELEON_USE_MPI)

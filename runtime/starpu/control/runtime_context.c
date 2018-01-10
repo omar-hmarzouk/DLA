@@ -62,7 +62,6 @@ void RUNTIME_context_create( MORSE_context_t *morse )
 /*******************************************************************************
  *  Clean the context
  **/
-
 void RUNTIME_context_destroy( MORSE_context_t *morse )
 {
     /* StarPU was already initialized by an external library */

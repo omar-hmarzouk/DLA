@@ -107,7 +107,7 @@ void morse_fatal_error(const char *func_name, const char *msg_text)
  **/
 int morse_rank(MORSE_context_t *morse)
 {
-    return RUNTIME_rank( morse );
+    return RUNTIME_thread_rank( morse );
 }
 
 /*******************************************************************************
@@ -233,31 +233,36 @@ int MORSE_My_Mpi_Rank(void)
     return MORSE_SUCCESS;
 #endif
 }
+
 /*******************************************************************************
  *  Display a progress percentage in stderr
  **/
 void update_progress(int currentValue, int maximumValue) {
-  div_t res ;
-  static int progress = -1; /* varie de 0 a 100 au cours du calcul concerne */
+    div_t res ;
+    static int progress = -1; /* varie de 0 a 100 au cours du calcul concerne */
 
-  if (maximumValue==0)
-    res.quot=100 ;
-  else {
-    if (currentValue<INT_MAX/100)
-      res=div(currentValue*100, maximumValue) ;
-    /* Calcule le quotient de la division */
-    else
-      res.quot=(int)( (long long) currentValue*100/maximumValue) ;
-  }
+    if (maximumValue == 0) {
+        res.quot = 100;
+    }
+    else {
+        if (currentValue < (INT_MAX / 100) ) {
+            res = div(currentValue*100, maximumValue);
+        }
+        else {
+            /* Calcule le quotient de la division */
+            res.quot = (int)( (long long)( currentValue * 100 ) / maximumValue );
+        }
+    }
 
-  // Print the percentage
-  if (res.quot > progress)
-    fprintf(stderr, "%3d%%\b\b\b\b", res.quot) ;
-  progress=res.quot ;
+    // Print the percentage
+    if (res.quot > progress) {
+        fprintf(stderr, "%3d%%\b\b\b\b", res.quot);
+    }
+    progress = res.quot;
 
-  if (currentValue>=maximumValue) {
-    progress=-1 ;
-  }
+    if (currentValue >= maximumValue) {
+        progress = -1;
+    }
 }
 
 // A function to display the progress indicator.

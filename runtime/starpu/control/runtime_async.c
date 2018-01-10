@@ -28,7 +28,8 @@
 /*******************************************************************************
  *  Create a sequence
  **/
-int RUNTIME_sequence_create( MORSE_context_t *morse, MORSE_sequence_t *sequence )
+int RUNTIME_sequence_create( MORSE_context_t  *morse,
+                             MORSE_sequence_t *sequence )
 {
     (void)morse;
     (void)sequence;
@@ -38,60 +39,27 @@ int RUNTIME_sequence_create( MORSE_context_t *morse, MORSE_sequence_t *sequence 
 /*******************************************************************************
  *  Destroy a sequence
  **/
-int RUNTIME_sequence_destroy( MORSE_context_t *morse, MORSE_sequence_t *sequence )
+int RUNTIME_sequence_destroy( MORSE_context_t  *morse,
+                              MORSE_sequence_t *sequence )
 {
     (void)morse;
     (void)sequence;
-    return MORSE_SUCCESS;
-}
-
-// Defined in control/auxilliary.c
-extern void (*update_progress_callback)(int, int) ;
-
-// no progress indicator for algorithms faster than 'PROGRESS_MINIMUM_DURATION' seconds
-#define PROGRESS_MINIMUM_DURATION 10
-
-/*******************************************************************************
- *  Display a progress information when executing the tasks
- **/
-int RUNTIME_progress( MORSE_context_t *morse )
-{
-    int tasksLeft, current, timer = 0;
-    int max;
-
-#if defined(CHAMELEON_USE_MPI)
-    if ( morse->my_mpi_rank != 0 )
-        return MORSE_SUCCESS;
-#endif
-
-    max = starpu_task_nsubmitted();
-    if ( max == 0 )
-        return MORSE_SUCCESS;
-
-    //  update_progress_callback(0, max);
-    while ((tasksLeft = starpu_task_nsubmitted()) > 0) {
-        current = max - tasksLeft;
-        if (timer > PROGRESS_MINIMUM_DURATION)
-            update_progress_callback(current, max);
-        sleep(1);
-        timer++;
-    }
-    if (timer > PROGRESS_MINIMUM_DURATION)
-        update_progress_callback(max, max);
-
-    (void)morse;
     return MORSE_SUCCESS;
 }
 
 /*******************************************************************************
  *  Wait for the completion of a sequence
  **/
-int RUNTIME_sequence_wait( MORSE_context_t *morse, MORSE_sequence_t *sequence )
+int RUNTIME_sequence_wait( MORSE_context_t  *morse,
+                           MORSE_sequence_t *sequence )
 {
     (void)morse;
     (void)sequence;
-    if (morse->progress_enabled)
+
+    if (morse->progress_enabled) {
         RUNTIME_progress(morse);
+    }
+
     starpu_task_wait_for_all();
 #if defined(CHAMELEON_USE_MPI)
     starpu_mpi_barrier(MPI_COMM_WORLD);
@@ -102,9 +70,12 @@ int RUNTIME_sequence_wait( MORSE_context_t *morse, MORSE_sequence_t *sequence )
 /*******************************************************************************
  *  Terminate a sequence
  **/
-void RUNTIME_sequence_flush( void *schedopt, MORSE_sequence_t *sequence, MORSE_request_t *request, int status)
+void RUNTIME_sequence_flush( MORSE_context_t  *morse,
+                             MORSE_sequence_t *sequence,
+                             MORSE_request_t  *request,
+                             int status )
 {
-    (void)schedopt;
+    (void)morse;
     sequence->request = request;
     sequence->status = status;
     request->status = status;

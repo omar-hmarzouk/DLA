@@ -40,6 +40,25 @@ double RUNTIME_get_time(){
     return starpu_timing_now()*1e-6;
 }
 
+/*******************************************************************************
+ *  Set iteration numbers for traces
+ **/
+void RUNTIME_iteration_push( MORSE_context_t *morse, unsigned long iteration )
+{
+    (void)morse;
+#if defined(HAVE_STARPU_ITERATION_PUSH)
+    starpu_iteration_push(iteration);
+#endif
+}
+
+void RUNTIME_iteration_pop( MORSE_context_t *morse )
+{
+    (void)morse;
+#if defined(HAVE_STARPU_ITERATION_PUSH)
+    starpu_iteration_pop();
+#endif
+}
+
 void RUNTIME_start_profiling(){
 #if defined(HAVE_STARPU_FXT_PROFILING)
 	starpu_fxt_start_profiling();
