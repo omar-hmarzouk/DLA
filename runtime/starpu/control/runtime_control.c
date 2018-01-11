@@ -223,7 +223,7 @@ int RUNTIME_thread_rank( MORSE_context_t *morse )
 }
 
 /*******************************************************************************
- * Thread rank.
+ * Number of threads.
  **/
 int RUNTIME_thread_size( MORSE_context_t *morse )
 {
