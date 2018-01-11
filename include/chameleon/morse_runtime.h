@@ -34,7 +34,7 @@ BEGIN_C_DECLS
 /**
  * @name RUNTIME Context functions
  * @{
- *    This functions manipulate the context data structure before the runtime is
+ *    These functions manipulate the context data structure before the runtime is
  *    started and after the runtime is stopped.
  */
 
@@ -99,7 +99,7 @@ RUNTIME_disable( MORSE_enum option );
  *
  * @param[in] ncudas
  *            Defines the number of CUDA devices used by node. If the runtime
- *            use one core dedicated to each CUDA device, they will be taken
+ *            uses one core dedicated to each CUDA device, they will be taken
  *            from ncpus. If ncpus > 0, ncudas < ncpus. -1 to target all the
  *            CUDA devices available.
  *
@@ -179,7 +179,7 @@ RUNTIME_thread_rank( MORSE_context_t *ctxt );
  * @brief Get the number of CPU workers of the runtime.
  *
  * @param[in] ctxt
- *            The Chameleon context for which the number of worker is requested
+ *            The Chameleon context for which the number of workers is requested
  *
  * @retval The number of threads currently used by the runtime.
  */
@@ -192,7 +192,7 @@ RUNTIME_thread_size( MORSE_context_t *ctxt );
  * @param[in] ctxt
  *            The Chameleon context for which the rank is asked.
  *
- * @retval The rank of the process is the communicator known by the runtime.
+ * @retval The rank of the process in the communicator known by the runtime.
  */
 int
 RUNTIME_comm_rank( MORSE_context_t *ctxt );
@@ -216,7 +216,7 @@ RUNTIME_comm_size( MORSE_context_t *ctxt );
  *            Must be larger than 20.
  *
  * @param[in] user_tag_sep
- *            The number of bit dedicated to identify the pieces of data per
+ *            The number of bits dedicated to identify the pieces of data per
  *            descriptor.  (user_tag_width - user_tag_sep) defines the number of
  *            bits used to enumerate the descriptors.
  */
@@ -237,11 +237,11 @@ RUNTIME_comm_set_tag_sizes( int user_tag_width,
  * @brief Create a sequence structure associated to a given context.
  *
  * @param[in] ctxt
- *            The Chameleon context the sequence is created.
+ *            The Chameleon context in which the sequence is created.
  *
  * @param[in,out] sequence
  *            On entry the allocated Chameleon sequence structure, and on exit
- *            the scheduler specifics have been initialized.
+ *            the scheduler specifics for the sequence have been initialized.
  *
  * @retval MORSE_SUCCESS on success.
  * @retval MORSE_ERR_OUT_OF_RESOURCES, if the sequence could not be created.
@@ -258,7 +258,8 @@ RUNTIME_sequence_create( MORSE_context_t  *ctxt,
  *
  * @param[in,out] sequence
  *            On entry the sequence structure.
- *            On exit, the scheduler specifics have been destroyed.
+ *            On exit, the scheduler specifics of the sequence have been
+ *            destroyed.
  *
  * @retval MORSE_SUCCESS on success.
  */
@@ -273,7 +274,7 @@ RUNTIME_sequence_destroy( MORSE_context_t  *ctxt,
  *            The Chameleon context to which the sequence belongs.
  *
  * @param[in] sequence
- *            The sequence that gather a set of tasks to complete.
+ *            The sequence that gathers a set of tasks to complete.
  *
  * @retval MORSE_SUCCESS on success.
  * @retval The algorithm return code on failure.
@@ -289,7 +290,7 @@ RUNTIME_sequence_wait( MORSE_context_t  *ctxt,
  *            The Chameleon context to which the sequence belongs.
  *
  * @param[in,out] sequence
- *            The sequence that gather the set of tasks to cancel.
+ *            The sequence that gathers the set of tasks to cancel.
  *            On exit, the sequence holds the error code of the algorithm and
  *            the request that failed in the sequence.
  *
