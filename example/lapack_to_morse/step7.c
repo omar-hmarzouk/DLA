@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
     MORSE_Set(MORSE_INNER_BLOCK_SIZE, iparam[IPARAM_IB] );
 
 #if defined(CHAMELEON_USE_MPI)
-    MORSE_Comm_size( &NMPIPROC );
+    NMPIPROC = MORSE_Comm_size();
     /* Check P */
     if ( (iparam[IPARAM_P] > 1) &&
          (NMPIPROC % iparam[IPARAM_P] != 0) ) {

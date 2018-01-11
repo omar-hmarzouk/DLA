@@ -687,7 +687,7 @@ main(int argc, char *argv[]) {
         MORSE_Enable(MORSE_GEMM3M);
 
 #if defined(CHAMELEON_USE_MPI)
-    MORSE_Comm_size( &nbnode );
+    nbnode = MORSE_Comm_size();
     iparam[IPARAM_NMPI] = nbnode;
     /* Check P */
     if ( (iparam[IPARAM_P] > 1) &&

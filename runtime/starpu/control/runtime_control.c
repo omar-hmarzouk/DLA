@@ -107,8 +107,8 @@ int RUNTIME_init( MORSE_context_t *morse,
         MPI_Initialized( &flag );
 #endif
         starpu_mpi_init(NULL, NULL, !flag);
-        RUNTIME_comm_rank(&(morse->my_mpi_rank));
-        RUNTIME_comm_size(&(morse->mpi_comm_size));
+        morse->my_mpi_rank = RUNTIME_comm_rank( morse );
+        morse->mpi_comm_size = RUNTIME_comm_size( morse );
     }
 #endif
 
