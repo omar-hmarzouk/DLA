@@ -46,8 +46,9 @@ void CORE_zpotrf_quark(Quark *quark)
 
     quark_unpack_args_7(quark, uplo, n, A, lda, sequence, request, iinfo);
     CORE_zpotrf(uplo, n, A, lda, &info);
-    if (sequence->status == MORSE_SUCCESS && info != 0)
-        RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
+    if ( (sequence->status == MORSE_SUCCESS) && (info != 0) ) {
+        RUNTIME_sequence_flush( (MORSE_context_t*)quark, sequence, request, iinfo+info );
+    }
 }
 
 void MORSE_TASK_zpotrf(const MORSE_option_t *options,

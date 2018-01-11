@@ -1,14 +1,9 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation.  All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
  * @file runtime_control.c
  *
@@ -27,58 +22,33 @@
 #include "chameleon_quark.h"
 
 /*******************************************************************************
- * Thread rank.
+ *
  **/
-int RUNTIME_rank(MORSE_context_t *morse)
-{
-    return QUARK_Thread_Rank((Quark*)(morse->schedopt));
-}
-
-/*******************************************************************************
- * Initialize MORSE
- **/
-int RUNTIME_init_scheduler(MORSE_context_t *morse, int nworkers, int ncudas, int nthreads_per_worker)
+int RUNTIME_init( MORSE_context_t *morse,
+                  int ncpus,
+                  int ncudas,
+                  int nthreads_per_worker )
 {
     int hres = 0;
-    if ( ncudas > 0 )
+    if ( ncudas > 0 ) {
         morse_warning( "RUNTIME_init_scheduler(quark)", "GPUs are not supported for now");
+    }
 
-    if ( nthreads_per_worker > 0 )
+    if ( nthreads_per_worker > 0 ) {
         morse_warning( "RUNTIME_init_scheduler(quark)", "Multi-threaded kernels are not supported for now");
+    }
 
-    morse->schedopt = (void*)QUARK_New(nworkers);
+    morse->schedopt = (void*)QUARK_New( ncpus );
 
     return hres;
 }
 
 /*******************************************************************************
- * Barrier MORSE.
- **/
-void RUNTIME_barrier(MORSE_context_t *morse)
-{
-    QUARK_Barrier((Quark*)(morse->schedopt));
-}
-
-/*******************************************************************************
- * Finalize MORSE
+ *
  */
-void RUNTIME_finalize_scheduler(MORSE_context_t *morse)
+void RUNTIME_finalize( MORSE_context_t *morse )
 {
     QUARK_Delete((Quark*)(morse->schedopt));
-    return;
-}
-
-/*******************************************************************************
- *  Set iteration numbers for traces
- **/
-void RUNTIME_iteration_push( MORSE_context_t *morse, unsigned long iteration )
-{
-    (void)morse; (void)iteration;
-    return;
-}
-void RUNTIME_iteration_pop( MORSE_context_t *morse )
-{
-    (void)morse;
     return;
 }
 
@@ -102,31 +72,57 @@ void RUNTIME_resume( MORSE_context_t *morse )
 }
 
 /*******************************************************************************
- *  This returns the rank of this process
+ *  Busy-waiting barrier
  **/
-void RUNTIME_comm_rank( int *rank )
+void RUNTIME_barrier( MORSE_context_t *morse )
 {
-    *rank = 0;
+    QUARK_Barrier((Quark*)(morse->schedopt));
+}
+
+/*******************************************************************************
+ *  Display a progress information when executing the tasks
+ **/
+void RUNTIME_progress( MORSE_context_t *morse )
+{
+    (void)morse;
     return;
 }
 
 /*******************************************************************************
- *  This returns the size of the distributed computation
+ * Thread rank.
  **/
-void RUNTIME_comm_size( int *size )
+int RUNTIME_thread_rank( MORSE_context_t *morse )
 {
-    *size = 1;
-    return;
+    return QUARK_Thread_Rank((Quark*)(morse->schedopt));
 }
 
 /*******************************************************************************
- *  This returns the number of workers
+ * Number of threads.
  **/
-int RUNTIME_get_thread_nbr()
+int RUNTIME_thread_size( MORSE_context_t *morse )
 {
+    (void)morse;
     /*
      * TODO: should add a function to Quark to get the number of thread from the
      * data structure and not from the system function
      */
     return quark_get_numthreads();
+}
+
+/*******************************************************************************
+ *  The process rank
+ **/
+int RUNTIME_comm_rank( MORSE_context_t *morse )
+{
+    (void)morse;
+    return 0;
+}
+
+/*******************************************************************************
+ *  This returns the size of the distributed computation
+ **/
+int RUNTIME_comm_size( MORSE_context_t *morse )
+{
+    (void)morse;
+    return 1;
 }

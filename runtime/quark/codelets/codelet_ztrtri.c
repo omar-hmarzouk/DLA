@@ -48,8 +48,9 @@ void CORE_ztrtri_quark(Quark *quark)
 
     quark_unpack_args_8(quark, uplo, diag, N, A, LDA, sequence, request, iinfo);
     CORE_ztrtri(uplo, diag, N, A, LDA, &info);
-    if ((sequence->status == MORSE_SUCCESS) && (info > 0))
-        RUNTIME_sequence_flush(quark, sequence, request, iinfo + info);
+    if ( (sequence->status == MORSE_SUCCESS) && (info > 0) ) {
+        RUNTIME_sequence_flush( (MORSE_context_t*)quark, sequence, request, iinfo+info );
+    }
 }
 
 void MORSE_TASK_ztrtri(const MORSE_option_t *options,

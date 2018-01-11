@@ -1,14 +1,9 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation.  All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
  * @file runtime_profiling.c
  *
@@ -19,7 +14,7 @@
  * @version 0.9.0
  * @author Vijay Joshi
  * @author Cedric Castagnede
- * @date 2011-10-29 
+ * @date 2011-10-29
  *
  **/
 #include "chameleon_quark.h"
@@ -121,4 +116,18 @@ void RUNTIME_schedprofile_display(void)
 void RUNTIME_kernelprofile_display(void)
 {
     morse_warning("RUNTIME_kernelprofile_display(quark)", "Kernel profiling is not available with Quark\n");
+}
+
+/*******************************************************************************
+ *  Set iteration numbers for traces
+ **/
+void RUNTIME_iteration_push( MORSE_context_t *morse, unsigned long iteration )
+{
+    (void)morse; (void)iteration;
+    return;
+}
+void RUNTIME_iteration_pop( MORSE_context_t *morse )
+{
+    (void)morse;
+    return;
 }

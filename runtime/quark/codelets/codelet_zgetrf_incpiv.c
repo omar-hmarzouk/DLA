@@ -49,8 +49,9 @@ void CORE_zgetrf_incpiv_quark(Quark *quark)
 
     quark_unpack_args_10(quark, m, n, ib, A, lda, IPIV, sequence, request, check_info, iinfo);
     CORE_zgetrf_incpiv(m, n, ib, A, lda, IPIV, &info);
-    if (info != MORSE_SUCCESS && check_info)
-        RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
+    if ( (info != MORSE_SUCCESS) && check_info ) {
+        RUNTIME_sequence_flush( (MORSE_context_t*)quark, sequence, request, iinfo+info );
+    }
 }
 
 /***************************************************************************//**

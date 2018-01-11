@@ -43,8 +43,9 @@ void CORE_zgetrf_nopiv_quark(Quark *quark)
 
     quark_unpack_args_8(quark, m, n, ib, A, lda, sequence, request, iinfo);
     CORE_zgetrf_nopiv(m, n, ib, A, lda, &info);
-    if (info != MORSE_SUCCESS)
-        RUNTIME_sequence_flush(quark, sequence, request, iinfo+info);
+    if ( info != MORSE_SUCCESS ) {
+        RUNTIME_sequence_flush( (MORSE_context_t*)quark, sequence, request, iinfo+info );
+    }
 }
 
 /***************************************************************************//**
