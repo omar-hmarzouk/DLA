@@ -193,7 +193,7 @@ int MORSE_zgetrf_nopiv_Tile(MORSE_desc_t *A)
     morse_sequence_create(morse, &sequence);
     MORSE_zgetrf_nopiv_Tile_Async(A, sequence, &request);
     morse_sequence_wait(morse, sequence);
-    RUNTIME_desc_getoncpu(A);
+    RUNTIME_desc_getoncpu_async( A, sequence );
     
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

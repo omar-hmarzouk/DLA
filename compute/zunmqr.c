@@ -274,8 +274,8 @@ int MORSE_zunmqr_Tile(MORSE_enum side, MORSE_enum trans,
     morse_sequence_create(morse, &sequence);
     MORSE_zunmqr_Tile_Async(side, trans, A, T, C, sequence, &request);
     morse_sequence_wait(morse, sequence);
-    RUNTIME_desc_getoncpu(A);
-        RUNTIME_desc_getoncpu(C);
+    RUNTIME_desc_getoncpu_async( A, sequence );
+    RUNTIME_desc_getoncpu_async( C, sequence );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
