@@ -37,69 +37,6 @@ static int startswith(const char *s, const char *prefix) {
 #define FMULS_TRSM(__m, __n) (0.5 * (double)(__n) * (double)(__m) * ((double)(__m)+1.))
 #define FADDS_TRSM(__m, __n) (0.5 * (double)(__n) * (double)(__m) * ((double)(__m)-1.))
 
-/* define some tools to time the program */
-#if defined( _WIN32 ) || defined( _WIN64 )
-#include <windows.h>
-#include <time.h>
-#include <sys/timeb.h>
-#if defined(_MSC_VER) || defined(_MSC_EXTENSIONS)
-#define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
-#else
-#define DELTA_EPOCH_IN_MICROSECS  11644473600000000ULL
-#endif
-
-struct timezone
-{
-    int  tz_minuteswest; /* minutes W of Greenwich */
-    int  tz_dsttime;     /* type of dst correction */
-};
-
-int gettimeofday(struct timeval* tv, struct timezone* tz)
-{
-    FILETIME         ft;
-    unsigned __int64 tmpres = 0;
-    static int       tzflag;
-
-    if (NULL != tv)
-        {
-            GetSystemTimeAsFileTime(&ft);
-            tmpres |=  ft.dwHighDateTime;
-            tmpres <<= 32;
-            tmpres |=  ft.dwLowDateTime;
-
-            /*converting file time to unix epoch*/
-            tmpres /= 10;  /*convert into microseconds*/
-            tmpres -= DELTA_EPOCH_IN_MICROSECS;
-
-            tv->tv_sec  = (long)(tmpres / 1000000UL);
-            tv->tv_usec = (long)(tmpres % 1000000UL);
-        }
-    if (NULL != tz)
-        {
-            if (!tzflag)
-                {
-                    _tzset();
-                    tzflag++;
-                }
-            tz->tz_minuteswest = _timezone / 60;
-            tz->tz_dsttime     = _daylight;
-        }
-    return 0;
-}
-
-#else  /* Non-Windows */
-#include <sys/time.h>
-#endif
-
-/*
- * struct timeval {time_t tv_sec; suseconds_t tv_usec;};
- */
-double cWtime(void)
-{
-    struct timeval tp;
-    gettimeofday( &tp, NULL );
-    return tp.tv_sec + 1e-6 * tp.tv_usec;
-}
 #include <coreblas/lapacke.h>
 #include <morse.h>
 
@@ -288,7 +225,7 @@ int main(int argc, char *argv[]) {
     /* solve the system AX = B using the Cholesky factorization */
     /************************************************************/
 
-    cpu_time = -cWtime();
+    cpu_time = -CHAMELEON_timer();
 
     /* Cholesky facorization:
      * A is replaced by its factorization L or L^T depending on uplo */
@@ -300,7 +237,7 @@ int main(int argc, char *argv[]) {
      */
     MORSE_dpotrs(UPLO, N, NRHS, A, N, X, N);
 
-    cpu_time += cWtime();
+    cpu_time += CHAMELEON_timer();
 
     /* print informations to user */
     gflops = flops / cpu_time;

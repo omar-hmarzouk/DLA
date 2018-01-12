@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
     /* solve the system AX = B using the Cholesky factorization */
     /************************************************************/
 
-    cpu_time = -cWtime();
+    cpu_time = -CHAMELEON_timer();
 
     MORSE_Sequence_Create(&sequence);
 
@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
     }
     MORSE_Sequence_Destroy(sequence);
 
-    cpu_time += cWtime();
+    cpu_time += CHAMELEON_timer();
 
     /* print informations to user */
     gflops = flops / cpu_time;

@@ -47,9 +47,9 @@ void CORE_ztile_zero_quark(Quark *quark)
 
 }
 
-void MORSE_TASK_ztile_zero(const MORSE_option_t *options,
-                           int X1, int X2, int Y1, int Y2,
-                           const MORSE_desc_t *A, int Am, int An, int lda)
+void MORSE_TASK_ztile_zero( const MORSE_option_t *options,
+                            int X1, int X2, int Y1, int Y2,
+                            const MORSE_desc_t *A, int Am, int An, int lda )
 {
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     QUARK_Insert_Task(opt->quark, CORE_ztile_zero_quark, (Quark_Task_Flags*)opt,
