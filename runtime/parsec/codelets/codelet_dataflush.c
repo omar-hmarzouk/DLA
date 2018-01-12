@@ -33,11 +33,13 @@ void MORSE_TASK_flush_data( const MORSE_option_t *options,
 void MORSE_TASK_flush_desc( const MORSE_option_t *options,
                             MORSE_enum uplo, const MORSE_desc_t *A )
 {
-    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
+    /* parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt); */
 
-    parsec_dtd_data_flush_all( PARSEC_dtd_taskpool, (parsec_data_collection_t*)(A->schedopt) );
+    /* parsec_dtd_data_flush_all( PARSEC_dtd_taskpool, (parsec_data_collection_t*)(A->schedopt) ); */
 
+    (void)options;
     (void)uplo;
+    (void)A;
 }
 
 void MORSE_TASK_flush_all()
