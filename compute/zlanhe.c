@@ -147,8 +147,8 @@ double MORSE_zlanhe(MORSE_enum norm, MORSE_enum uplo, int N,
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
     morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
-    morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu_async( &descA, sequence );
+    morse_sequence_wait(morse, sequence);
     morse_desc_mat_free(&descA);
 /*    } else {*/
 /*        morse_ziptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);*/

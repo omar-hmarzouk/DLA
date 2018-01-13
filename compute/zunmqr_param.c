@@ -274,9 +274,9 @@ int MORSE_zunmqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zunmqr_param_Tile_Async(qrtree, side, trans, A, TS, TT, C, sequence, &request);
-    morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu_async( A, sequence );
     RUNTIME_desc_getoncpu_async( C, sequence );
+    morse_sequence_wait(morse, sequence);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

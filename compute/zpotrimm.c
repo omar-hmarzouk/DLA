@@ -219,8 +219,8 @@ int MORSE_zpotrimm_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zpotrimm_Tile_Async(uplo, A, B, C, sequence, &request);
-    morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu_async( C, sequence );
+    morse_sequence_wait(morse, sequence);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

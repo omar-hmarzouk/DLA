@@ -229,9 +229,9 @@ int MORSE_zgetrs_incpiv_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zgetrs_incpiv_Tile_Async(A, L, IPIV, B, sequence, &request);
-    morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu_async( A, sequence );
     RUNTIME_desc_getoncpu_async( B, sequence );
+    morse_sequence_wait(morse, sequence);
     
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

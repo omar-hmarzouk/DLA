@@ -287,9 +287,9 @@ int MORSE_ztrmm_Tile(MORSE_enum side, MORSE_enum uplo,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_ztrmm_Tile_Async(side, uplo, transA, diag, alpha, A, B, sequence, &request);
-    morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu_async( A, sequence );
     RUNTIME_desc_getoncpu_async( B, sequence );
+    morse_sequence_wait(morse, sequence);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

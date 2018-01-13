@@ -249,9 +249,9 @@ int MORSE_zgeadd_Tile(MORSE_enum trans,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zgeadd_Tile_Async(trans, alpha, A, beta, B, sequence, &request);
-    morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu_async( A, sequence );
     RUNTIME_desc_getoncpu_async( B, sequence );
+    morse_sequence_wait(morse, sequence);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

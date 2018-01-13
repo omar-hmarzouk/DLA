@@ -261,9 +261,9 @@ int MORSE_zherk_Tile(MORSE_enum uplo, MORSE_enum trans,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zherk_Tile_Async(uplo, trans, alpha, A, beta, C, sequence, &request);
-    morse_sequence_wait(morse, sequence);
     RUNTIME_desc_getoncpu_async( A, sequence );
     RUNTIME_desc_getoncpu_async( C, sequence );
+    morse_sequence_wait(morse, sequence);
     
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
