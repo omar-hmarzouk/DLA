@@ -151,7 +151,7 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
     desc.occurences = 0;
     desc.use_mat      = 1;
     desc.alloc_mat    = 1;
-    desc.register_mat = 1;
+    desc.register_mat = (morse->ncudas > 0) ? 1 : 0;
     desc.ooc          = 0;
 
     desc.myrank = RUNTIME_comm_rank( morse );

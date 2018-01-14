@@ -127,6 +127,8 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
         rc = cudaHostRegister( desc->mat, size, cudaHostRegisterPortable );
         if ( rc != cudaSuccess )
         {
+            /* Disable the unregister as register failed */
+            desc->register_mat = 0;
             morse_warning("RUNTIME_desc_create(StarPU): cudaHostRegister - ", cudaGetErrorString( rc ));
         }
     }
