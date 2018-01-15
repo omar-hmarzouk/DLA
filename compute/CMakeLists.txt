@@ -235,7 +235,6 @@ set(ZSRC
     ##################
     #pzshift.c
     #pzpack.c
-    pztile.c
     ztile.c
     ##################
     # BUILD

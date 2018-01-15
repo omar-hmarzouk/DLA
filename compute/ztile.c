@@ -55,7 +55,6 @@
  *
  *******************************************************************************
  *
- * @sa MORSE_zLapack_to_Tile_Async
  * @sa MORSE_zTile_to_Lapack
  * @sa MORSE_cLapack_to_Tile
  * @sa MORSE_dLapack_to_Tile
@@ -67,6 +66,7 @@ int MORSE_zLapack_to_Tile(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A)
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request;
+    MORSE_desc_t B;
     int status;
 
     morse = morse_context_self();
@@ -79,79 +79,31 @@ int MORSE_zLapack_to_Tile(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A)
         morse_error("MORSE_zLapack_to_Tile", "invalid descriptor");
         return MORSE_ERR_ILLEGAL_VALUE;
     }
+
+    /* Create the B descriptor to handle the Lapack format matrix */
+    B = morse_desc_init_user(
+        MorseComplexDouble, A->mb, A->nb, A->bsiz,
+        LDA, A->n, 0, 0, A->m, A->n, 1, 1,
+        morse_getaddr_cm, morse_getblkldd_cm, NULL );
+    B.mat  = Af77;
+    B.styp = MorseCM;
+
+    RUNTIME_desc_create( &B );
+
+    /* Start the computation */
     morse_sequence_create(morse, &sequence);
 
-    morse_pzlapack_to_tile( Af77, LDA, A, sequence, &request);
+    morse_pzlacpy( MorseUpperLower, &B, A, sequence, &request );
 
-    RUNTIME_desc_flush( A, sequence );
+    RUNTIME_desc_flush( &B, sequence );
+    RUNTIME_desc_flush(  A, sequence );
     RUNTIME_sequence_wait( morse, sequence );
+
+    RUNTIME_desc_destroy( &B );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
-}
-
-/**
- ********************************************************************************
- *
- * @ingroup MORSE_Complex64_t_Tile_Async
- *
- *  MORSE_zLapack_to_Tile_Async - Conversion from LAPACK layout to tile layout.
- *  Non-blocking equivalent of MORSE_zLapack_to_Tile().
- *  May return before the computation is finished.
- *  Allows for pipelining of operations ar runtime.
- *
- *
- *******************************************************************************
- *
- * @param[in] Af77
- *          LAPACK matrix.
- *
- * @param[in] LDA
- *          The leading dimension of the matrix Af77.
- *
- * @param[in,out] A
- *          Descriptor of the MORSE matrix in tile layout.
- *          If MORSE_TRANSLATION_MODE is set to MORSE_INPLACE,
- *          A->mat is not used and set to Af77 when returns, else if
- *          MORSE_TRANSLATION_MODE is set to MORSE_OUTOFPLACE,
- *          A->mat has to be allocated before.
- *
- * @param[in] sequence
- *          Identifies the sequence of function calls that this call belongs to
- *          (for completion checks and exception handling purposes).
- *
- * @param[out] request
- *          Identifies this function call (for exception handling purposes).
- *
- *******************************************************************************
- *
- * @sa MORSE_zTile_to_Lapack_Async
- * @sa MORSE_zLapack_to_Tile
- * @sa MORSE_cLapack_to_Tile_Async
- * @sa MORSE_dLapack_to_Tile_Async
- * @sa MORSE_sLapack_to_Tile_Async
- *
- ******************************************************************************/
-int MORSE_zLapack_to_Tile_Async(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A,
-                                  MORSE_sequence_t *sequence, MORSE_request_t *request)
-{
-    MORSE_context_t *morse;
-
-    morse = morse_context_self();
-    if (morse == NULL) {
-        morse_fatal_error("MORSE_zLapack_to_Tile", "MORSE not initialized");
-        return MORSE_ERR_NOT_INITIALIZED;
-    }
-    /* Check descriptor for correctness */
-    if (morse_desc_check( A ) != MORSE_SUCCESS) {
-        morse_error("MORSE_zLapack_to_Tile", "invalid descriptor");
-        return MORSE_ERR_ILLEGAL_VALUE;
-    }
-
-    morse_pzlapack_to_tile( Af77, LDA, A, sequence, request);
-
-    return MORSE_SUCCESS;
 }
 
 /**
@@ -183,7 +135,6 @@ int MORSE_zLapack_to_Tile_Async(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *
  *
  *******************************************************************************
  *
- * @sa MORSE_zTile_to_Lapack_Async
  * @sa MORSE_zLapack_to_Tile
  * @sa MORSE_cTile_to_Lapack
  * @sa MORSE_dTile_to_Lapack
@@ -195,6 +146,7 @@ int MORSE_zTile_to_Lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA)
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request;
+    MORSE_desc_t B;
     int status;
 
     morse = morse_context_self();
@@ -207,76 +159,29 @@ int MORSE_zTile_to_Lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA)
         morse_error("MORSE_zTile_to_Lapack", "invalid descriptor");
         return MORSE_ERR_ILLEGAL_VALUE;
     }
+
+    /* Create the B descriptor to handle the Lapack format matrix */
+    B = morse_desc_init_user(
+        MorseComplexDouble, A->mb, A->nb, A->bsiz,
+        LDA, A->n, 0, 0, A->m, A->n, 1, 1,
+        morse_getaddr_cm, morse_getblkldd_cm, NULL );
+    B.mat  = Af77;
+    B.styp = MorseCM;
+
+    RUNTIME_desc_create( &B );
+
+    /* Start the computation */
     morse_sequence_create(morse, &sequence);
 
-    morse_pztile_to_lapack( A, Af77, LDA, sequence, &request);
-    RUNTIME_desc_flush( A, sequence );
+    morse_pzlacpy( MorseUpperLower, A, &B, sequence, &request );
+
+    RUNTIME_desc_flush(  A, sequence );
+    RUNTIME_desc_flush( &B, sequence );
     RUNTIME_sequence_wait( morse, sequence );
+
+    RUNTIME_desc_destroy( &B );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
-}
-
-/**
- ********************************************************************************
- *
- * @ingroup MORSE_Complex64_t_Tile_Async
- *
- *  MORSE_zTile_to_Lapack_Async - Conversion from LAPACK layout to tile layout.
- *  Non-blocking equivalent of MORSE_zTile_to_Lapack().
- *  May return before the computation is finished.
- *  Allows for pipelining of operations ar runtime.
- *
- *
- *******************************************************************************
- *
- * @param[in] A
- *          Descriptor of the MORSE matrix in tile layout.
- *
- * @param[in,out] Af77
- *          LAPACK matrix.
- *          If MORSE_TRANSLATION_MODE is set to MORSE_INPLACE,
- *          Af77 has to be A->mat, else if
- *          MORSE_TRANSLATION_MODE is set to MORSE_OUTOFPLACE,
- *          Af77 has to be allocated before.
- *
- * @param[in] LDA
- *          The leading dimension of the matrix Af77.
- *
- * @param[in] sequence
- *          Identifies the sequence of function calls that this call belongs to
- *          (for completion checks and exception handling purposes).
- *
- * @param[out] request
- *          Identifies this function call (for exception handling purposes).
- *
- *******************************************************************************
- *
- * @sa MORSE_zLapack_to_Tile_Async
- * @sa MORSE_zTile_to_Lapack
- * @sa MORSE_cTile_to_Lapack_Async
- * @sa MORSE_dTile_to_Lapack_Async
- * @sa MORSE_sTile_to_Lapack_Async
- *
- ******************************************************************************/
-int MORSE_zTile_to_Lapack_Async(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA,
-                                MORSE_sequence_t *sequence, MORSE_request_t *request)
-{
-    MORSE_context_t *morse;
-
-    morse = morse_context_self();
-    if (morse == NULL) {
-        morse_fatal_error("MORSE_zTile_to_Lapack", "MORSE not initialized");
-        return MORSE_ERR_NOT_INITIALIZED;
-    }
-    /* Check descriptor for correctness */
-    if (morse_desc_check( A ) != MORSE_SUCCESS) {
-        morse_error("MORSE_zTile_to_Lapack", "invalid descriptor");
-        return MORSE_ERR_ILLEGAL_VALUE;
-    }
-
-    morse_pztile_to_lapack( A, Af77, LDA, sequence, request );
-
-    return MORSE_SUCCESS;
 }
