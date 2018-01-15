@@ -91,7 +91,7 @@ RUNTIME_data_flush( const MORSE_sequence_t *sequence,
     return;
 }
 
-void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
+void *RUNTIME_data_getaddr( const MORSE_desc_t *desc, int m, int n )
 {
     return desc->get_blkaddr( desc, m, n );
 }
