@@ -126,36 +126,3 @@ void morse_pztile_to_lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int ldaf77
     RUNTIME_options_finalize( &options, morse );
     RUNTIME_desc_destroy( &B );
 }
-
-
-/*******************************************************************************
- *  Zeroes a submatrix in tile layout - dynamic scheduling
- **/
-void morse_pztile_zero(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request)
-{
-    MORSE_context_t *morse;
-    MORSE_option_t options;
-    int m, n;
-    int ldam;
-    int tempmm, tempnn;
-
-    morse = morse_context_self();
-    if (sequence->status != MORSE_SUCCESS)
-        return;
-    RUNTIME_options_init(&options, morse, sequence, request);
-
-    for (m = 0; m < A->mt; m++) {
-        tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
-        ldam = BLKLDD(A, m);
-        for (n = 0; n < A->nt; n++) {
-            tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
-            MORSE_TASK_ztile_zero(
-                &options,
-                0, tempnn, 0, tempmm,
-                A(m, n), ldam);
-        }
-    }
-
-    RUNTIME_sequence_wait( morse, sequence );
-    RUNTIME_options_finalize( &options, morse );
-}

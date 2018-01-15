@@ -313,8 +313,8 @@ int MORSE_zgelqs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
     }
 */
     /* subB = morse_desc_submatrix(B, A->m, 0, A->n-A->m, B->n);
-    morse_pztile_zero(subB, sequence, request);
-    free(subB); */
+     morse_pzlaset( MorseUpperLower, 0., 0., subB, sequence, request );
+     free(subB); */
 
     subB = morse_desc_submatrix(B, 0, 0, A->m, B->n);
     subA = morse_desc_submatrix(A, 0, 0, A->m, A->m);

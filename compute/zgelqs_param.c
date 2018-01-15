@@ -322,7 +322,7 @@ int MORSE_zgelqs_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
     }
 */
     /* subB = morse_desc_submatrix(B, A->m, 0, A->n-A->m, B->n);
-    morse_pztile_zero(subB, sequence, request);
+    morse_pzlaset( MorseUpperLower, 0., 0., subB, sequence, request);
     free(subB); */
 
     subB = morse_desc_submatrix(B, 0, 0, A->m, B->n);

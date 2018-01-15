@@ -51,11 +51,6 @@ void morse_pclapack_to_tile(MORSE_Complex32_t*, int, MORSE_desc_t*, MORSE_sequen
 void morse_pdlapack_to_tile(double*, int, MORSE_desc_t*, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pslapack_to_tile(float*, int, MORSE_desc_t*, MORSE_sequence_t *sequence, MORSE_request_t *request);
 
-void morse_pztile_zero(MORSE_desc_t *dA, MORSE_sequence_t *sequence, MORSE_request_t *request);
-void morse_pctile_zero(MORSE_desc_t *dA, MORSE_sequence_t *sequence, MORSE_request_t *request);
-void morse_pdtile_zero(MORSE_desc_t *dA, MORSE_sequence_t *sequence, MORSE_request_t *request);
-void morse_pstile_zero(MORSE_desc_t *dA, MORSE_sequence_t *sequence, MORSE_request_t *request);
-
 #ifdef __cplusplus
 }
 #endif

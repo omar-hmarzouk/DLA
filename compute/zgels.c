@@ -409,7 +409,7 @@ int MORSE_zgels_Tile_Async(MORSE_enum trans, MORSE_desc_t *A,
     }
     else {
         /* subB = morse_desc_submatrix(B, A->m, 0, A->n-A->m, B->n);
-        morse_pztile_zero(subB, sequence, request);
+        morse_pzlaset( MorseUpperLower, 0., 0., subB, sequence, request);
         free(subB); */
 #if defined(CHAMELEON_COPY_DIAG)
         {
