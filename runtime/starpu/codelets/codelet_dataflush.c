@@ -56,8 +56,8 @@ int RUNTIME_desc_iscached(const MORSE_desc_t *A, int Am, int An)
 #endif
 #endif
 
-void MORSE_TASK_flush_data(const MORSE_option_t *options,
-                          const MORSE_desc_t *A, int Am, int An)
+void MORSE_TASK_flush_data( const MORSE_option_t *options,
+                            const MORSE_desc_t *A, int Am, int An )
 {
     (void)options;
 

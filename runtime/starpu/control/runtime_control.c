@@ -1,14 +1,9 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation.  All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
  * @file runtime_control.c
  *
@@ -27,28 +22,13 @@
 #include <stdlib.h>
 #include "chameleon_starpu.h"
 
-#if defined(CHAMELEON_SIMULATION)
-# ifndef STARPU_SIMGRID
-#  error "Starpu was not built with simgrid support (--enable-simgrid). Can not run Chameleon with simulation support."
-# endif
-#else
-# ifdef STARPU_SIMGRID
-#  warning "Starpu was built with simgrid support. Better build Chameleon with simulation support (-DCHAMELEON_SIMULATION=YES)."
-# endif
-#endif
-/*******************************************************************************
- * Thread rank.
- **/
-int RUNTIME_rank(MORSE_context_t *morse)
-{
-    (void)morse;
-    return starpu_worker_get_id();
-}
-
 /*******************************************************************************
  *
  **/
-int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int nthreads_per_worker)
+int RUNTIME_init( MORSE_context_t *morse,
+                  int ncpus,
+                  int ncudas,
+                  int nthreads_per_worker )
 {
     starpu_conf_t *conf = (starpu_conf_t*)(morse->schedopt);
     int hres = -1;
@@ -122,8 +102,8 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
         MPI_Initialized( &flag );
 #endif
         starpu_mpi_init(NULL, NULL, !flag);
-        RUNTIME_comm_rank(&(morse->my_mpi_rank));
-        RUNTIME_comm_size(&(morse->mpi_comm_size));
+        morse->my_mpi_rank = RUNTIME_comm_rank( morse );
+        morse->mpi_comm_size = RUNTIME_comm_size( morse );
     }
 #endif
 
@@ -137,55 +117,25 @@ int RUNTIME_init_scheduler( MORSE_context_t *morse, int ncpus, int ncudas, int n
 /*******************************************************************************
  *
  */
-void RUNTIME_finalize_scheduler( MORSE_context_t *morse )
+void RUNTIME_finalize( MORSE_context_t *morse )
 {
     (void)morse;
 
     /* StarPU was already initialized by an external library */
-    if (morse->schedopt == NULL) {
+    if ( morse->schedopt == NULL ) {
         return;
     }
 
 #if defined(CHAMELEON_USE_MPI)
     starpu_mpi_shutdown();
 #endif
+
 #if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
     starpu_cublas_shutdown();
 #endif
 
     starpu_shutdown();
     return;
-}
-
-/*******************************************************************************
- *  Busy-waiting barrier
- **/
-void RUNTIME_barrier( MORSE_context_t *morse )
-{
-    (void)morse;
-    starpu_task_wait_for_all();
-#if defined(CHAMELEON_USE_MPI)
-    starpu_mpi_barrier(MPI_COMM_WORLD);
-#endif
-}
-
-/*******************************************************************************
- *  Set iteration numbers for traces
- **/
-void RUNTIME_iteration_push( MORSE_context_t *morse, unsigned long iteration )
-{
-    (void)morse;
-#if defined(HAVE_STARPU_ITERATION_PUSH)
-    starpu_iteration_push(iteration);
-#endif
-}
-
-void RUNTIME_iteration_pop( MORSE_context_t *morse )
-{
-    (void)morse;
-#if defined(HAVE_STARPU_ITERATION_PUSH)
-    starpu_iteration_pop();
-#endif
 }
 
 /*******************************************************************************
@@ -210,43 +160,113 @@ void RUNTIME_resume( MORSE_context_t *morse )
 }
 
 /*******************************************************************************
- *  This returns the rank of this process
+ *  Busy-waiting barrier
  **/
-void RUNTIME_comm_rank( int *rank )
+void RUNTIME_barrier( MORSE_context_t *morse )
 {
+    (void)morse;
+    starpu_task_wait_for_all();
+#if defined(CHAMELEON_USE_MPI)
+    starpu_mpi_barrier(MPI_COMM_WORLD);
+#endif
+}
+
+// Defined in control/auxilliary.c
+extern void (*update_progress_callback)(int, int);
+
+// no progress indicator for algorithms faster than 'PROGRESS_MINIMUM_DURATION' seconds
+#define PROGRESS_MINIMUM_DURATION 10
+
+/*******************************************************************************
+ *  Display a progress information when executing the tasks
+ **/
+void RUNTIME_progress( MORSE_context_t *morse )
+{
+    int tasksLeft, current, timer = 0;
+    int max;
+
+#if defined(CHAMELEON_USE_MPI)
+    if ( morse->my_mpi_rank != 0 ) {
+        return;
+    }
+#endif
+
+    max = starpu_task_nsubmitted();
+    if ( max == 0 ) {
+        return;
+    }
+
+    //  update_progress_callback(0, max);
+    while ((tasksLeft = starpu_task_nsubmitted()) > 0) {
+        current = max - tasksLeft;
+        if (timer > PROGRESS_MINIMUM_DURATION) {
+            update_progress_callback(current, max);
+        }
+        sleep(1);
+        timer++;
+    }
+    if (timer > PROGRESS_MINIMUM_DURATION) {
+        update_progress_callback(max, max);
+    }
+
+    (void)morse;
+    return;
+}
+
+/*******************************************************************************
+ * Thread rank.
+ **/
+int RUNTIME_thread_rank( MORSE_context_t *morse )
+{
+    (void)morse;
+    return starpu_worker_get_id();
+}
+
+/*******************************************************************************
+ * Number of threads.
+ **/
+int RUNTIME_thread_size( MORSE_context_t *morse )
+{
+    (void)morse;
+    return starpu_worker_get_count_by_type( STARPU_CPU_WORKER );
+}
+
+/*******************************************************************************
+ *  The process rank
+ **/
+int RUNTIME_comm_rank( MORSE_context_t *morse )
+{
+    int rank;
 #if defined(CHAMELEON_USE_MPI)
 #  if defined(HAVE_STARPU_MPI_COMM_RANK)
-    starpu_mpi_comm_rank(MPI_COMM_WORLD, rank);
+    starpu_mpi_comm_rank( MPI_COMM_WORLD, &rank );
 #  else
-    MPI_Comm_rank(MPI_COMM_WORLD, rank);
+    MPI_Comm_rank( MPI_COMM_WORLD, &rank );
 #  endif
 #else
-    *rank = 0;
+    rank = 0;
 #endif
-    return;
+
+    (void)morse;
+    return rank;
 }
 
 /*******************************************************************************
  *  This returns the size of the distributed computation
  **/
-void RUNTIME_comm_size( int *size )
+int RUNTIME_comm_size( MORSE_context_t *morse )
 {
+    int size;
 #if defined(CHAMELEON_USE_MPI)
 #  if defined(HAVE_STARPU_MPI_COMM_RANK)
-    starpu_mpi_comm_size(MPI_COMM_WORLD, size);
+    starpu_mpi_comm_size( MPI_COMM_WORLD, &size );
 #  else
-    MPI_Comm_size(MPI_COMM_WORLD, size);
+    MPI_Comm_size( MPI_COMM_WORLD, &size );
 #  endif
 #else
-    *size = 1;
+    size = 1;
 #endif
-    return;
-}
 
-/*******************************************************************************
- *  This returns the number of workers
- **/
-int RUNTIME_get_thread_nbr()
-{
-    return starpu_worker_get_count_by_type( STARPU_CPU_WORKER );
+    (void)morse;
+    return size;
 }

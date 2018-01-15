@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
     /* solve the system AX = B using the Cholesky factorization */
     /************************************************************/
 
-    cpu_time = -cWtime();
+    cpu_time = -CHAMELEON_timer();
 
     /* Cholesky factorization:
      * A is replaced by its factorization L or L^T depending on uplo */
@@ -159,7 +159,7 @@ int main(int argc, char *argv[]) {
      */
     MORSE_dpotrs_Tile( UPLO, descA, descX );
 
-    cpu_time += cWtime();
+    cpu_time += CHAMELEON_timer();
 
     /* print informations to user */
     gflops = flops / cpu_time;

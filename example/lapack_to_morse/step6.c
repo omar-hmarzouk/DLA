@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     MORSE_Set(MORSE_INNER_BLOCK_SIZE, iparam[IPARAM_IB] );
 
 #if defined(CHAMELEON_USE_MPI)
-    MORSE_Comm_size( &NMPIPROC );
+    NMPIPROC = MORSE_Comm_size();
     /* Check P */
     if ( (iparam[IPARAM_P] > 1) &&
          (NMPIPROC % iparam[IPARAM_P] != 0) ) {
@@ -153,7 +153,7 @@ int main(int argc, char *argv[]) {
     /* solve the system AX = B using the Cholesky factorization */
     /************************************************************/
 
-    cpu_time = -cWtime();
+    cpu_time = -CHAMELEON_timer();
 
     MORSE_Sequence_Create(&sequence);
 
@@ -183,7 +183,7 @@ int main(int argc, char *argv[]) {
     }
     MORSE_Sequence_Destroy(sequence);
 
-    cpu_time += cWtime();
+    cpu_time += CHAMELEON_timer();
 
     /* print informations to user */
     gflops = flops / cpu_time;

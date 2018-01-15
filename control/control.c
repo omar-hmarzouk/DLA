@@ -111,7 +111,7 @@ int MORSE_InitPar(int ncpus, int ncudas, int nthreads_per_worker)
     }
 #  endif
 #endif
-    RUNTIME_init_scheduler( morse, ncpus, ncudas, nthreads_per_worker );
+    RUNTIME_init( morse, ncpus, ncudas, nthreads_per_worker );
     return MORSE_SUCCESS;
 }
 
@@ -138,7 +138,7 @@ int MORSE_Finalize(void)
 #  if !defined(CHAMELEON_SIMULATION)
     RUNTIME_barrier(morse);
 #  endif
-    RUNTIME_finalize_scheduler( morse );
+    RUNTIME_finalize( morse );
 
 #if defined(CHAMELEON_USE_MPI)
     if (!morse->mpi_outer_init)
@@ -250,14 +250,19 @@ int MORSE_Distributed_stop(void)
  *
  ******************************************************************************
  *
- * @return
- *          \retval MORSE_SUCCESS successful exit
+ * @retval The size of the distributed computation
+ * @retval -1 if context not initialized
  *
  *****************************************************************************/
-int MORSE_Comm_size( int *size )
+int MORSE_Comm_size()
 {
-    RUNTIME_comm_size (size);
-    return MORSE_SUCCESS;
+    MORSE_context_t *morse = morse_context_self();
+    if (morse == NULL) {
+        morse_error("MORSE_Comm_size()", "MORSE not initialized");
+        return -1;
+    }
+
+    return RUNTIME_comm_size( morse );
 }
 
 /** ***************************************************************************
@@ -268,14 +273,19 @@ int MORSE_Comm_size( int *size )
  *
  ******************************************************************************
  *
- * @return
- *          \retval MORSE_SUCCESS successful exit
+ * @retval The rank of the distributed computation
+ * @retval -1 if context not initialized
  *
  *****************************************************************************/
-int MORSE_Comm_rank( int *rank )
+int MORSE_Comm_rank()
 {
-    RUNTIME_comm_rank (rank);
-    return MORSE_SUCCESS;
+    MORSE_context_t *morse = morse_context_self();
+    if (morse == NULL) {
+        morse_error("MORSE_Comm_rank()", "MORSE not initialized");
+        return -1;
+    }
+
+    return RUNTIME_comm_rank( morse );
 }
 
 /** ***************************************************************************
@@ -293,5 +303,11 @@ int MORSE_Comm_rank( int *rank )
  *****************************************************************************/
 int MORSE_GetThreadNbr( )
 {
-    return RUNTIME_get_thread_nbr();
+    MORSE_context_t *morse = morse_context_self();
+    if (morse == NULL) {
+        morse_error("MORSE_GetThreadNbr()", "MORSE not initialized");
+        return -1;
+    }
+
+    return RUNTIME_thread_size( morse );
 }

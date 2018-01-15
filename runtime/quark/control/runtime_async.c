@@ -1,14 +1,9 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation.  All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
  * @file runtime_async.c
  *
@@ -26,12 +21,13 @@
 #include <stdlib.h>
 #include "chameleon_quark.h"
 
-/** *****************************************************************************
+/*******************************************************************************
  *  Create a sequence
  **/
-int RUNTIME_sequence_create(MORSE_context_t *morse, MORSE_sequence_t *sequence)
+int RUNTIME_sequence_create( MORSE_context_t  *morse,
+                             MORSE_sequence_t *sequence )
 {
-    sequence->schedopt =(void*) QUARK_Sequence_Create((Quark*)(morse->schedopt));
+    sequence->schedopt = (void*)QUARK_Sequence_Create((Quark*)(morse->schedopt));
 
     if (sequence->schedopt == NULL) {
         morse_error("MORSE_Sequence_Create", "QUARK_Sequence_Create() failed");
@@ -41,31 +37,39 @@ int RUNTIME_sequence_create(MORSE_context_t *morse, MORSE_sequence_t *sequence)
     return MORSE_SUCCESS;
 }
 
-/** *****************************************************************************
+/*******************************************************************************
  *  Destroy a sequence
  **/
-int RUNTIME_sequence_destroy(MORSE_context_t *morse, MORSE_sequence_t *sequence)
+int RUNTIME_sequence_destroy( MORSE_context_t  *morse,
+                              MORSE_sequence_t *sequence )
 {
-    QUARK_Sequence_Destroy((Quark*)(morse->schedopt), (Quark_Sequence *)(sequence->schedopt));
+    QUARK_Sequence_Destroy( (Quark*)(morse->schedopt),
+                            (Quark_Sequence *)(sequence->schedopt) );
     return MORSE_SUCCESS;
 }
 
-/** *****************************************************************************
+/*******************************************************************************
  *  Wait for the completion of a sequence
  **/
-int RUNTIME_sequence_wait(MORSE_context_t *morse, MORSE_sequence_t *sequence )
+int RUNTIME_sequence_wait( MORSE_context_t  *morse,
+                           MORSE_sequence_t *sequence )
 {
-    QUARK_Sequence_Wait( (Quark*)(morse->schedopt), (Quark_Sequence *)(sequence->schedopt));
+    QUARK_Sequence_Wait( (Quark*)(morse->schedopt),
+                         (Quark_Sequence *)(sequence->schedopt) );
     return MORSE_SUCCESS;
 }
 
-/** *****************************************************************************
+/*******************************************************************************
  *  Terminate a sequence
  **/
-void RUNTIME_sequence_flush(void *quark, MORSE_sequence_t *sequence, MORSE_request_t *request, int status)
+void RUNTIME_sequence_flush( MORSE_context_t  *morse,
+                             MORSE_sequence_t *sequence,
+                             MORSE_request_t  *request,
+                             int status )
 {
     sequence->request = request;
     sequence->status = status;
     request->status = status;
-    QUARK_Sequence_Cancel((Quark*) quark, (Quark_Sequence *)(sequence->schedopt));
+    QUARK_Sequence_Cancel( (Quark*)(morse),
+                           (Quark_Sequence *)(sequence->schedopt) );
 }
