@@ -32,7 +32,7 @@
 
 #define A(m,n) A,  m,  n
 #define B(m,n) B,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile triangular solve - dynamic scheduling
  **/
 void morse_pztrsm(MORSE_enum side, MORSE_enum uplo, MORSE_enum trans, MORSE_enum diag,

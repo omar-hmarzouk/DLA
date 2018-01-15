@@ -30,7 +30,7 @@
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel initializztion a 2-D array A to 
  *  ALPHA on the offdiagonals.
  **/

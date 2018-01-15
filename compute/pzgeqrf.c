@@ -38,7 +38,7 @@
 #define D(k)   A, k, k
 #endif
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile QR factorization - dynamic scheduling
  **/
 void morse_pzgeqrf(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,

@@ -31,7 +31,7 @@
 #define A(m, n) A,  m,  n
 #define B(m, n) B,  m,  n
 #define C(m, n) C,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile matrix-matrix multiplication - dynamic scheduling
  **/
 void morse_pzgemm(MORSE_enum transA, MORSE_enum transB,

@@ -41,13 +41,13 @@
 #define D(m,n) A, (m), (n)
 #endif
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel application of Q using tile V - QR factorization (reduction
  *  Householder) - dynamic scheduling
  **/
-void morse_pzunmqrrh(MORSE_enum side, MORSE_enum trans,
-                     MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T, MORSE_desc_t *D, int BS,
-                     MORSE_sequence_t *sequence, MORSE_request_t *request)
+void morse_pzunmqrrh( MORSE_enum side, MORSE_enum trans,
+                      MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T, MORSE_desc_t *D, int BS,
+                      MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
     MORSE_option_t options;

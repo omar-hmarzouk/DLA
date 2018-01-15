@@ -32,7 +32,7 @@
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  morse_pzplghe - Generate a random hermitian (positive definite if 'bump' is large enough) half-matrix by tiles.
  **/
 void morse_pzplghe( double bump, MORSE_enum uplo, MORSE_desc_t *A,

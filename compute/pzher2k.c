@@ -31,7 +31,7 @@
 #define A(m,n) A,  m,  n
 #define B(m,n) B,  m,  n
 #define C(m,n) C,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile Hermitian rank-k update - dynamic scheduling
  **/
 void morse_pzher2k(MORSE_enum uplo, MORSE_enum trans,

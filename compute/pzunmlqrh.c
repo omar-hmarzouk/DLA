@@ -41,7 +41,7 @@
 #define D(m,n) A, (m), (n)
 #endif
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel application of Q using tile V - LQ factorization (reduction
  *  Householder) - dynamic scheduling
  **/

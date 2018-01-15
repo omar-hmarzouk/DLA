@@ -31,7 +31,7 @@
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel UU' or L'L operation - dynamic scheduling
  **/
 void morse_pzlauum(MORSE_enum uplo, MORSE_desc_t *A,

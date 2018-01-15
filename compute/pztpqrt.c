@@ -28,7 +28,7 @@
 #define B(m,n) B,  m,  n
 #define T(m,n) T,  m,  n
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile QR factorization - dynamic scheduling
  **/
 void morse_pztpqrt( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T,

@@ -30,7 +30,7 @@
 #define A(m,n)   A,  m, n
 #define B(m, n)  B, m, n
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel copy of a band matrix from full NxN tile storage to band storage (LDABxN).
  **/
 void morse_pztile2band(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,

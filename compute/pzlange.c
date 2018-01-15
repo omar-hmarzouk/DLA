@@ -35,15 +35,12 @@
 #define VECNORMS_STEP1(m, n) VECNORMS_STEP1, m, n
 #define VECNORMS_STEP2(m, n) VECNORMS_STEP2, m, n
 #define RESULT(m, n) RESULT, m, n
-/***************************************************************************//**
-                                                                              *
-                                                                              **/
 
-/***************************************************************************//**
-                                                                              *
-                                                                              **/
-void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
-                   MORSE_sequence_t *sequence, MORSE_request_t *request)
+/*****************************************************************************
+ *
+ **/
+void morse_pzlange( MORSE_enum norm, MORSE_desc_t *A, double *result,
+                    MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_desc_t *VECNORMS_STEP1 = NULL;
     MORSE_desc_t *VECNORMS_STEP2 = NULL;

@@ -29,7 +29,7 @@
 
 #define A(m,n) A,  m,  n
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile LU factorization with no pivoting - dynamic scheduling
  **/
 void morse_pzgetrf_nopiv(MORSE_desc_t *A,

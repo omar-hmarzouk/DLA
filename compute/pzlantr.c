@@ -32,7 +32,7 @@
 #define VECNORMS_STEP1(m, n) VECNORMS_STEP1, m, n
 #define VECNORMS_STEP2(m, n) VECNORMS_STEP2, m, n
 #define RESULT(m, n) RESULT, m, n
-/***************************************************************************//**
+/*******************************************************************************
  *
  **/
 void morse_pzlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,

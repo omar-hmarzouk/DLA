@@ -38,7 +38,7 @@
 #define E(m, n) A, m, n
 #endif
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile BAND Tridiagonal Reduction - dynamic scheduler
  **/
 void morse_pzhetrd_he2hb(MORSE_enum uplo,

@@ -34,7 +34,7 @@
 #define B(m,n) B,  m,  n
 #define L(m,n) L,  m,  n
 #define IPIV(m,n) &(IPIV[(int64_t)A->nb*((int64_t)(m)+(int64_t)A->mt*(int64_t)(n))])
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel forward substitution for tile LU - dynamic scheduling
  **/
 void morse_pztrsmpl(MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *L, int *IPIV,

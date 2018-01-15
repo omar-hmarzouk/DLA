@@ -33,7 +33,7 @@
 
 
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile triangular matrix-matrix multiplication - dynamic scheduling
  **/
 void morse_pztrmm(MORSE_enum side, MORSE_enum uplo,

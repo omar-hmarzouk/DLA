@@ -42,7 +42,7 @@
 #define L(_m_,_n_) L,  _m_,  _n_
 #define IPIV(_m_,_n_) &(IPIV[(int64_t)A->mb*((int64_t)(_m_)+(int64_t)A->mt*(int64_t)(_n_))])
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile LU factorization - dynamic scheduling
  **/
 void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,

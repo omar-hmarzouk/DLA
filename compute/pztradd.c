@@ -30,7 +30,7 @@
 #define A(m, n) A,  m,  n
 #define B(m, n) B,  m,  n
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile matrix-matrix multiplication - dynamic scheduling
  **/
 void morse_pztradd(MORSE_enum uplo, MORSE_enum trans,

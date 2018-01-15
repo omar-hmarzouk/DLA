@@ -40,7 +40,7 @@
 #define D(k) A, k, k
 #endif
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel application of Q using tile V - LQ factorization - dynamic scheduling
  **/
 void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,

@@ -31,7 +31,7 @@
 
 #define A(m,n) A,  m,  n
 #define C(m,n) C,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile symmetric rank-k update - dynamic scheduling
  **/
 void morse_pzsyrk(MORSE_enum uplo, MORSE_enum trans,

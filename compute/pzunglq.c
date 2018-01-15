@@ -39,7 +39,7 @@
 #define D(k) A, k, k
 #endif
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel construction of Q using tile V (application to identity) - dynamic scheduling
  **/
 void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc_t *D,
