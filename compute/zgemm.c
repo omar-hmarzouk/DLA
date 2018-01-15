@@ -321,9 +321,9 @@ int MORSE_zgemm_Tile(MORSE_enum transA, MORSE_enum transB,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zgemm_Tile_Async(transA, transB, alpha, A, B, beta, C, sequence, &request);
-    RUNTIME_desc_getoncpu_async( A, sequence );
-    RUNTIME_desc_getoncpu_async( B, sequence );
-    RUNTIME_desc_getoncpu_async( C, sequence );
+    RUNTIME_desc_flush( A, sequence );
+    RUNTIME_desc_flush( B, sequence );
+    RUNTIME_desc_flush( C, sequence );
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

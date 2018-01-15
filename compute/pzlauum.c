@@ -76,7 +76,7 @@ void morse_pzlauum(MORSE_enum uplo, MORSE_desc_t *A,
                 }
             }
             for (n = 0; n < k; n++) {
-                MORSE_TASK_flush_data( &options, A(k, n) );
+                RUNTIME_data_flush( sequence, A(k, n) );
                 MORSE_TASK_ztrmm(
                     &options,
                     MorseLeft, uplo, MorseConjTrans, MorseNonUnit,
@@ -84,7 +84,7 @@ void morse_pzlauum(MORSE_enum uplo, MORSE_desc_t *A,
                     1.0, A(k, k), ldak,
                          A(k, n), ldak);
             }
-            MORSE_TASK_flush_data( &options, A(k, k) );
+            RUNTIME_data_flush( sequence, A(k, k) );
             MORSE_TASK_zlauum(
                 &options,
                 uplo, tempkm, A->mb,
@@ -121,7 +121,7 @@ void morse_pzlauum(MORSE_enum uplo, MORSE_desc_t *A,
             }
             for (m = 0; m < k; m++) {
                 ldam = BLKLDD(A, m);
-                MORSE_TASK_flush_data( &options, A(m, k) );
+                RUNTIME_data_flush( sequence, A(m, k) );
                 MORSE_TASK_ztrmm(
                     &options,
                     MorseRight, uplo, MorseConjTrans, MorseNonUnit,
@@ -129,13 +129,12 @@ void morse_pzlauum(MORSE_enum uplo, MORSE_desc_t *A,
                     1.0, A(k, k), ldak,
                          A(m, k), ldam);
             }
-            MORSE_TASK_flush_data( &options, A(k, k) );
+            RUNTIME_data_flush( sequence, A(k, k) );
             MORSE_TASK_zlauum(
                 &options,
                 uplo, tempkn, A->mb,
                 A(k, k), ldak);
         }
     }
-    MORSE_TASK_flush_desc( &options, uplo, A );
     RUNTIME_options_finalize(&options, morse);
 }

@@ -412,5 +412,4 @@ void morse_pzlange(MORSE_enum norm, MORSE_desc_t *A, double *result,
     MORSE_Desc_Destroy( &(RESULT) );
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_flush_all();
 }

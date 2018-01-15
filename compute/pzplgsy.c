@@ -97,6 +97,5 @@ void morse_pzplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, MORSE_desc_t *A,
             }
         }
     }
-    MORSE_TASK_flush_desc( &options, uplo, A );
     RUNTIME_options_finalize(&options, morse);
 }

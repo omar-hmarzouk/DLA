@@ -809,8 +809,7 @@ int MORSE_Desc_Release (MORSE_desc_t  *desc) {
  *
  * @ingroup Descriptor
  *
- *  MORSE_Desc_Getoncpu - Apply an acquire and a release on the data of the
- *  descriptors so that its values are up-to-date in the main memory.
+ *  MORSE_Desc_Flush - Flushes the data in the sequence when they won't be reused. This calls cleans up the distributed communication caches, and transfer the data back to the CPU.
  *
  ******************************************************************************
  *
@@ -823,8 +822,11 @@ int MORSE_Desc_Release (MORSE_desc_t  *desc) {
  *          \retval MORSE_SUCCESS successful exit
  *
  *****************************************************************************/
-int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc) {
-    return RUNTIME_desc_getoncpu( desc );
+int MORSE_Desc_Flush( MORSE_desc_t     *desc,
+                      MORSE_sequence_t *sequence )
+{
+    RUNTIME_desc_flush( desc, sequence );
+    return MORSE_SUCCESS;
 }
 
 /**

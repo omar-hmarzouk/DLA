@@ -118,7 +118,6 @@ void morse_pztile2band(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
        }
     }
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_flush_all();
 }
 #undef B
 #undef A

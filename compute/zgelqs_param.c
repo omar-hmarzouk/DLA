@@ -227,8 +227,8 @@ int MORSE_zgelqs_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zgelqs_param_Tile_Async(qrtree, A, TS, TT, B, sequence, &request);
-    RUNTIME_desc_getoncpu_async( A, sequence );
-    RUNTIME_desc_getoncpu_async( B, sequence );
+    RUNTIME_desc_flush( A, sequence );
+    RUNTIME_desc_flush( B, sequence );
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

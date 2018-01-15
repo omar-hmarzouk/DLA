@@ -87,7 +87,5 @@ void morse_pztrsmpl(MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *L, int *IPIV
             }
         }
     }
-    MORSE_TASK_flush_desc( &options, MorseLower, L );
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, B );
     RUNTIME_options_finalize(&options, morse);
 }

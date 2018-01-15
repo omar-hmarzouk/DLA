@@ -204,7 +204,7 @@ int MORSE_zgetrf_incpiv_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV)
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zgetrf_incpiv_Tile_Async(A, L, IPIV, sequence, &request);
-    RUNTIME_desc_getoncpu_async( A, sequence );
+    RUNTIME_desc_flush( A, sequence );
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

@@ -465,5 +465,4 @@ void morse_pzlansy(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A, double *re
     }
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_flush_all();
 }

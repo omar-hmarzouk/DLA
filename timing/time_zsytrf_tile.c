@@ -58,17 +58,16 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         dparam[IPARAM_ANORM] = MORSE_zlange_Tile(MorseInfNorm, descAC);
         dparam[IPARAM_BNORM] = MORSE_zlange_Tile(MorseInfNorm, descB);
         dparam[IPARAM_XNORM] = MORSE_zlange_Tile(MorseInfNorm, descX);
-		MORSE_zgemm_Tile( MorseNoTrans, MorseNoTrans, 1.0, descAC, descX, -1.0, descB );
-		dparam[IPARAM_RES] = MORSE_zlange_Tile(MorseInfNorm, descB);
+                MORSE_zgemm_Tile( MorseNoTrans, MorseNoTrans, 1.0, descAC, descX, -1.0, descB );
+                dparam[IPARAM_RES] = MORSE_zlange_Tile(MorseInfNorm, descB);
 
         PASTE_CODE_FREE_MATRIX( descB  );
         PASTE_CODE_FREE_MATRIX( descAC );
         PASTE_CODE_FREE_MATRIX( descX  );
 
-    } 
-	
+    }
+
     PASTE_CODE_FREE_MATRIX( descA );
-    MORSE_TASK_flush_all();
 
     return 0;
 }

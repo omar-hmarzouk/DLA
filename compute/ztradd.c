@@ -265,8 +265,8 @@ int MORSE_ztradd_Tile(MORSE_enum uplo, MORSE_enum trans,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_ztradd_Tile_Async(uplo, trans, alpha, A, beta, B, sequence, &request);
-    RUNTIME_desc_getoncpu_async( A, sequence );
-    RUNTIME_desc_getoncpu_async( B, sequence );
+    RUNTIME_desc_flush( A, sequence );
+    RUNTIME_desc_flush( B, sequence );
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

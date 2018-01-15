@@ -134,7 +134,7 @@ int MORSE_Finalize(void)
         morse_error("MORSE_Finalize()", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    MORSE_TASK_flush_all();
+    RUNTIME_flush();
 #  if !defined(CHAMELEON_SIMULATION)
     RUNTIME_barrier(morse);
 #  endif

@@ -117,7 +117,7 @@ typedef struct starpu_conf starpu_conf_t;
 /**
  * Access to block pointer and leading dimension
  */
-#define RTBLKADDR( desc, type, m, n ) ( (starpu_data_handle_t)RUNTIME_desc_getaddr( desc, m, n ) )
+#define RTBLKADDR( desc, type, m, n ) ( (starpu_data_handle_t)RUNTIME_data_getaddr( desc, m, n ) )
 
 void RUNTIME_set_reduction_methods(starpu_data_handle_t handle, MORSE_enum dtyp);
 

@@ -1004,7 +1004,7 @@
      Ensure that all data are up-to-date in main memory (even if some
      tasks have been processed on GPUs).
      #+begin_src
-     int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc);
+     int MORSE_Desc_Flush(MORSE_desc_t  *desc, MORSE_sequence_t *sequence);
      #+end_src
 
      Set the sizes for the MPI tags.  Default value: tag_width=31,

@@ -268,8 +268,8 @@ int MORSE_ztpqrt_Tile( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T 
     }
     morse_sequence_create(morse, &sequence);
     MORSE_ztpqrt_Tile_Async(L, A, B, T, sequence, &request);
-    RUNTIME_desc_getoncpu_async( A, sequence );
-    RUNTIME_desc_getoncpu_async( B, sequence );
+    RUNTIME_desc_flush( A, sequence );
+    RUNTIME_desc_flush( B, sequence );
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

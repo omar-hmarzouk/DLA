@@ -84,7 +84,7 @@ void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A,
                     zone, A(k, k), ldak,
                           A(m, k), ldam);
             }
-            MORSE_TASK_flush_data( &options, A(k, k) );
+            RUNTIME_data_flush( sequence, A(k, k) );
 
             for (n = k+1; n < A->nt; n++) {
                 tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
@@ -111,7 +111,7 @@ void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A,
                                A(n, k), ldan,
                         zone,  A(m, n), ldam);
                 }
-                MORSE_TASK_flush_data( &options, A(n, k) );
+                RUNTIME_data_flush( sequence, A(n, k) );
             }
             RUNTIME_iteration_pop(morse);
         }
@@ -144,7 +144,7 @@ void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A,
                     zone, A(k, k), ldak,
                           A(k, n), ldak);
             }
-            MORSE_TASK_flush_data( &options, A(k, k) );
+            RUNTIME_data_flush( sequence, A(k, k) );
 
             for (m = k+1; m < A->mt; m++) {
                 tempmm = m == A->mt-1 ? A->m - m*A->mb : A->mb;
@@ -170,7 +170,7 @@ void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A,
                                A(k, n), ldak,
                         zone,  A(m, n), ldam);
                 }
-                MORSE_TASK_flush_data( &options, A(k, m) );
+                RUNTIME_data_flush( sequence, A(k, m) );
             }
 
             RUNTIME_iteration_pop(morse);

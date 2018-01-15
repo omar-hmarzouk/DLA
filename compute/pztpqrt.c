@@ -111,9 +111,6 @@ void morse_pztpqrt( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T,
         RUNTIME_iteration_pop(morse);
     }
 
-    MORSE_TASK_flush_desc( &options, MorseLower,      T );
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, B );
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
 }

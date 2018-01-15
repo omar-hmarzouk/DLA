@@ -72,10 +72,9 @@ void morse_pzlapack_to_tile(MORSE_Complex64_t *Af77, int ldaf77, MORSE_desc_t *A
         }
     }
 
+    RUNTIME_desc_flush( &B, sequence );
     RUNTIME_sequence_wait( morse, sequence );
     RUNTIME_options_finalize( &options, morse );
-    MORSE_TASK_flush_all();
-    RUNTIME_desc_getoncpu( &B );
     RUNTIME_desc_destroy( &B );
 }
 
@@ -122,10 +121,9 @@ void morse_pztile_to_lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int ldaf77
         }
     }
 
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
+    RUNTIME_desc_flush( &B, sequence );
     RUNTIME_sequence_wait( morse, sequence );
     RUNTIME_options_finalize( &options, morse );
-    RUNTIME_desc_getoncpu( &B );
     RUNTIME_desc_destroy( &B );
 }
 

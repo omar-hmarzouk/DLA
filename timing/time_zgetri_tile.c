@@ -40,10 +40,10 @@ static int check_getri_factorization(MORSE_desc_t *descA1, MORSE_desc_t *descA2,
     MORSE_Complex64_t *b = (MORSE_Complex64_t *)malloc((descA1->m)*sizeof(MORSE_Complex64_t));
     MORSE_Complex64_t *x = (MORSE_Complex64_t *)malloc((descA1->m)*sizeof(MORSE_Complex64_t));
 
-    MORSE_Desc_Create(&descB, b, MorseComplexDouble, descA1->mb, descA1->nb, descA1->bsiz, 
-		      descA1->m, 1, 0, 0, descA1->m, 1, 1, 1);
-    MORSE_Desc_Create(&descX, x, MorseComplexDouble, descA1->mb, descA1->nb, descA1->bsiz, 
-		      descA1->m, 1, 0, 0, descA1->m, 1, 1, 1);
+    MORSE_Desc_Create(&descB, b, MorseComplexDouble, descA1->mb, descA1->nb, descA1->bsiz,
+                      descA1->m, 1, 0, 0, descA1->m, 1, 1, 1);
+    MORSE_Desc_Create(&descX, x, MorseComplexDouble, descA1->mb, descA1->nb, descA1->bsiz,
+                      descA1->m, 1, 0, 0, descA1->m, 1, 1, 1);
 
     MORSE_zplrnt_Tile( descX, 537 );
     MORSE_zlacpy_Tile( MorseUpperLower, descX, descB);
@@ -55,9 +55,9 @@ static int check_getri_factorization(MORSE_desc_t *descA1, MORSE_desc_t *descA2,
     Bnorm = MORSE_zlange_Tile(MorseInfNorm, descB,  work);
 
     MORSE_zgemm_Tile( MorseNoTrans, MorseNoTrans,
-                       (MORSE_Complex64_t)1.,  descA1, descX, 
+                       (MORSE_Complex64_t)1.,  descA1, descX,
                        (MORSE_Complex64_t)-1., descB);
-    
+
     Rnorm = MORSE_zlange_Tile(MorseInfNorm, descB, work);
 
     if (getenv("MORSE_TESTING_VERBOSE"))
@@ -96,26 +96,26 @@ static int check_getri_inverse(MORSE_desc_t *descA1, MORSE_desc_t *descA2, int *
     double eps = LAPACKE_dlamch_work('e');
     MORSE_desc_t        *descW;
 
-    MORSE_Desc_Create(&descW, work, MorseComplexDouble,  descA1->mb, descA1->nb, descA1->bsiz, 
+    MORSE_Desc_Create(&descW, work, MorseComplexDouble,  descA1->mb, descA1->nb, descA1->bsiz,
                        descA1->m, descA1->n, 0, 0, descA1->m, descA1->n);
-    
+
     MORSE_zlaset_Tile( MorseUpperLower, (MORSE_Complex64_t)0., (MORSE_Complex64_t)1., descW);
-    MORSE_zgemm_Tile( MorseNoTrans, MorseNoTrans, 
-                       (MORSE_Complex64_t)-1., descA2, descA1, 
+    MORSE_zgemm_Tile( MorseNoTrans, MorseNoTrans,
+                       (MORSE_Complex64_t)-1., descA2, descA1,
                        (MORSE_Complex64_t)1.,  descW);
 
     Anorm    = MORSE_zlange_Tile(MorseInfNorm, descA1, W);
     Ainvnorm = MORSE_zlange_Tile(MorseInfNorm, descA2, W);
     Rnorm    = MORSE_zlange_Tile(MorseInfNorm, descW,  W);
-    
-    dparam[IPARAM_ANORM] = Anorm;    
-    dparam[IPARAM_BNORM] = Ainvnorm; 
+
+    dparam[IPARAM_ANORM] = Anorm;
+    dparam[IPARAM_BNORM] = Ainvnorm;
 
     result = Rnorm / ( (Anorm*Ainvnorm)*descA1->m*eps ) ;
     dparam[IPARAM_RES] = Rnorm;
 
     if (  isnan(Ainvnorm) || isinf(Ainvnorm) || isnan(result) || isinf(result) || (result > 60.0) ) {
-        dparam[IPARAM_XNORM] = -1.;    
+        dparam[IPARAM_XNORM] = -1.;
     }
     else{
         dparam[IPARAM_XNORM] = 0.;
@@ -129,12 +129,12 @@ static int check_getri_inverse(MORSE_desc_t *descA1, MORSE_desc_t *descA2, int *
 }
 
 static int
-RunTest(int *iparam, double *dparam, morse_time_t *t_) 
+RunTest(int *iparam, double *dparam, morse_time_t *t_)
 {
     MORSE_desc_t descW;
     int ret = 0;
     PASTE_CODE_IPARAM_LOCALS( iparam );
-    
+
     if ( M != N ) {
         fprintf(stderr, "This timing works only with M == N\n");
         return -1;
@@ -155,69 +155,65 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     /* MORSE ZGETRF / ZTRTRI / ZTRSMRV  */
     {
 #if defined(TRACE_BY_SEQUENCE)
-        MORSE_sequence_t *sequence[4];
-        MORSE_request_t request[4] = { MORSE_REQUEST_INITIALIZER, 
-                                      MORSE_REQUEST_INITIALIZER, 
-                                      MORSE_REQUEST_INITIALIZER, 
-                                      MORSE_REQUEST_INITIALIZER };
-        
-        MORSE_Sequence_Create(&sequence[0]);
-        MORSE_Sequence_Create(&sequence[1]);
-        MORSE_Sequence_Create(&sequence[2]);
-        MORSE_Sequence_Create(&sequence[3]);
+        MORSE_sequence_t *sequence;
+        MORSE_request_t request[4] = { MORSE_REQUEST_INITIALIZER,
+                                       MORSE_REQUEST_INITIALIZER,
+                                       MORSE_REQUEST_INITIALIZER,
+                                       MORSE_REQUEST_INITIALIZER };
+
+        MORSE_Sequence_Create(&sequence);
 
         if ( ! iparam[IPARAM_ASYNC] ) {
-            
+
             START_TIMING();
-            MORSE_zgetrf_Tile_Async(descA, piv, sequence[0], &request[0]); 
-            MORSE_Sequence_Wait(sequence[0]);
-            
-            MORSE_ztrtri_Tile_Async(MorseUpper, MorseNonUnit, descA, sequence[1], &request[1]);
-            MORSE_Sequence_Wait(sequence[1]);
-            
-            MORSE_ztrsmrv_Tile_Async(MorseRight, MorseLower, MorseNoTrans, MorseUnit, 
-                                      (MORSE_Complex64_t) 1.0, descA, &descW, sequence[2], &request[2]);
-            MORSE_Sequence_Wait(sequence[2]);
-            
-            MORSE_zlaswpc_Tile_Async(descA, 1, descA->m, piv, -1, sequence[3], &request[3]);
-            MORSE_Sequence_Wait(sequence[3]);
-            MORSE_Desc_Getoncpu( descA );
+            MORSE_zgetrf_Tile_Async( descA, piv, sequence, &request[0] );
+            MORSE_Sequence_Wait(sequence);
+
+            MORSE_ztrtri_Tile_Async( MorseUpper, MorseNonUnit, descA, sequence, &request[1] );
+            MORSE_Sequence_Wait(sequence);
+
+            MORSE_ztrsmrv_Tile_Async( MorseRight, MorseLower, MorseNoTrans, MorseUnit,
+                                      (MORSE_Complex64_t) 1.0, descA, &descW,
+                                      sequence, &request[2] );
+            MORSE_Sequence_Wait(sequence);
+
+            MORSE_zlaswpc_Tile_Async( descA, 1, descA->m, piv, -1,
+                                      sequence, &request[3] );
+            MORSE_Sequence_Wait(sequence);
+            MORSE_Desc_Flush( descA, sequence );
             STOP_TIMING();
 
         } else {
 
             START_TIMING();
-            MORSE_zgetrf_Tile_Async( descA, piv, sequence[0], &request[0]);
-            MORSE_ztrtri_Tile_Async( MorseUpper, MorseNonUnit, 
-                                      descA, sequence[1], &request[1]);
-            MORSE_ztrsmrv_Tile_Async(MorseRight, MorseLower, MorseNoTrans, MorseUnit, 
-                                      (MORSE_Complex64_t) 1.0, 
-                                      descA, &descW, sequence[2], &request[2]);
-            MORSE_zlaswpc_Tile_Async(descA, 1, descA->m, piv, -1, 
-                                      sequence[3], &request[3]);
-            
+            MORSE_zgetrf_Tile_Async( descA, piv, sequence, &request[0]);
+            MORSE_ztrtri_Tile_Async( MorseUpper, MorseNonUnit,
+                                     descA, sequence, &request[1] );
+            MORSE_ztrsmrv_Tile_Async( MorseRight, MorseLower, MorseNoTrans, MorseUnit,
+                                      (MORSE_Complex64_t) 1.0,
+                                      descA, &descW, sequence, &request[2] );
+            MORSE_zlaswpc_Tile_Async( descA, 1, descA->m, piv, -1,
+                                      sequence, &request[3] );
+
             /* Wait for everything */
-            MORSE_Sequence_Wait(sequence[0]);
-            MORSE_Sequence_Wait(sequence[1]);
-            MORSE_Sequence_Wait(sequence[2]);
-            MORSE_Sequence_Wait(sequence[3]);
-            MORSE_Desc_Getoncpu( descA );
+            MORSE_Sequence_Wait( sequence );
+            MORSE_Desc_Flush( descA, sequence );
             STOP_TIMING();
-        
+
         }
 
         MORSE_Sequence_Destroy(sequence[0]);
         MORSE_Sequence_Destroy(sequence[1]);
         MORSE_Sequence_Destroy(sequence[2]);
         MORSE_Sequence_Destroy(sequence[3]);
-        
+
 #else
         if ( ! iparam[IPARAM_ASYNC] ) {
 
             START_TIMING();
             MORSE_zgetrf_Tile(descA, piv);
             MORSE_ztrtri_Tile(MorseUpper, MorseNonUnit, descA);
-            MORSE_ztrsmrv_Tile(MorseRight, MorseLower, MorseNoTrans, MorseUnit, 
+            MORSE_ztrsmrv_Tile(MorseRight, MorseLower, MorseNoTrans, MorseUnit,
                                 (MORSE_Complex64_t) 1.0, descA, &descW);
             MORSE_zlaswpc_Tile(descA, 1, descA->m, piv, -1);
             STOP_TIMING();
@@ -225,28 +221,28 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         } else {
 
             MORSE_sequence_t *sequence;
-            MORSE_request_t request[2] = { MORSE_REQUEST_INITIALIZER, 
+            MORSE_request_t request[2] = { MORSE_REQUEST_INITIALIZER,
                                           MORSE_REQUEST_INITIALIZER };
 
             MORSE_Sequence_Create(&sequence);
-            
+
             START_TIMING();
             MORSE_zgetrf_Tile_Async(descA, piv, sequence, &request[0]);
             MORSE_zgetri_Tile_Async(descA, piv, &descW, sequence, &request[1]);
             MORSE_Sequence_Wait(sequence);
-            MORSE_Desc_Getoncpu( descA );
+            MORSE_Desc_Flush( descA, sequence );
             STOP_TIMING();
-        
-            MORSE_Sequence_Destroy(sequence);       
+
+            MORSE_Sequence_Destroy(sequence);
         }
 #endif
     }
-    
+
     /* Check the solution */
     if ( check )
     {
         ret = check_getri_inverse(descA2, descA, piv, dparam);
-    
+
         PASTE_CODE_FREE_MATRIX( descA2 );
     }
 
@@ -256,4 +252,3 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 
     return ret;
 }
-

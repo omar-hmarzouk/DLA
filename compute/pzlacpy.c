@@ -129,7 +129,5 @@ void morse_pzlacpy(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
             }
         }
     }
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, B );
     RUNTIME_options_finalize(&options, morse);
 }

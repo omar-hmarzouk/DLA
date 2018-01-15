@@ -432,15 +432,9 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
         }
     }
 
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, A  );
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, B  );
-    MORSE_TASK_flush_desc( &options, MorseUpper,      TS );
-    MORSE_TASK_flush_desc( &options, MorseUpper,      TT );
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, D  );
     free(tiles);
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_flush_all();
 
     (void)D;
 }

@@ -108,6 +108,5 @@ void morse_pzlaset2(MORSE_enum uplo, MORSE_Complex64_t alpha,
            }
        }
     }
-    MORSE_TASK_flush_desc( &options, uplo, A );
     RUNTIME_options_finalize(&options, morse);
 }

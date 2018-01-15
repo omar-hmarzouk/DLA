@@ -436,10 +436,8 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
     }
 
 
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_flush_all();
 
     MORSE_Sequence_Wait(sequence);
     morse_desc_mat_free(D);
