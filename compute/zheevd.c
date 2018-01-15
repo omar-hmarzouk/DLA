@@ -259,10 +259,9 @@ int MORSE_zheevd_Tile(MORSE_enum jobz, MORSE_enum uplo,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zheevd_Tile_Async(jobz, uplo, A, W, T, sequence, &request);
-    morse_sequence_wait(morse, sequence);
-
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( T, sequence );
+    morse_sequence_wait(morse, sequence);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
