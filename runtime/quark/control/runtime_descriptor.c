@@ -64,18 +64,31 @@ int RUNTIME_desc_release( const MORSE_desc_t *desc )
     return MORSE_SUCCESS;
 }
 
-int RUNTIME_desc_getoncpu( const MORSE_desc_t *desc )
-{
-    (void)desc;
-    return MORSE_SUCCESS;
-}
-
-int RUNTIME_desc_getoncpu_async( const MORSE_desc_t *desc,
-                                 MORSE_sequence_t   *sequence )
+void
+RUNTIME_desc_flush( const MORSE_desc_t     *desc,
+                    const MORSE_sequence_t *sequence )
 {
     (void)desc;
     (void)sequence;
-    return MORSE_SUCCESS;
+    return;
+}
+
+
+void
+RUNTIME_flush( )
+{
+    return;
+}
+
+void
+RUNTIME_data_flush( const MORSE_sequence_t *sequence,
+                    const MORSE_desc_t *A, int Am, int An )
+{
+    (void)sequence;
+    (void)A;
+    (void)Am;
+    (void)An;
+    return;
 }
 
 void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
