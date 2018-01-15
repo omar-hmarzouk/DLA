@@ -258,7 +258,7 @@ MORSE_desc_t* morse_desc_submatrix(MORSE_desc_t *descA, int i, int j, int m, int
 /*******************************************************************************
  *  Check for descriptor correctness
  **/
-int morse_desc_check(MORSE_desc_t *desc)
+int morse_desc_check(const MORSE_desc_t *desc)
 {
     if (desc == NULL) {
         morse_error("morse_desc_check", "NULL descriptor");

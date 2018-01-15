@@ -63,7 +63,7 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
                                   int (*get_rankof)( const MORSE_desc_t*, int, int ));
 MORSE_desc_t* morse_desc_submatrix(MORSE_desc_t *descA, int i, int j, int m, int n);
 
-int morse_desc_check    (MORSE_desc_t *desc);
+int morse_desc_check    (const MORSE_desc_t *desc);
 int morse_desc_mat_alloc(MORSE_desc_t *desc);
 int morse_desc_mat_free (MORSE_desc_t *desc);
 
