@@ -22,8 +22,8 @@ typedef struct morse_parsec_desc_s morse_parsec_desc_t;
 /*
  * Access to block pointer and leading dimension
  */
-#define RTBLKADDR( desc, type, m, n ) ( parsec_dtd_tile_of( (parsec_data_collection_t *) ((desc)->schedopt),            \
-                                      ((parsec_data_collection_t *) (desc)->schedopt)->data_key((desc)->schedopt, m, n) ))
+#define RTBLKADDR( desc, type, m, n ) ( parsec_dtd_tile_of( (parsec_data_collection_t *) ((desc)->schedopt), \
+                                                            ((parsec_data_collection_t *) (desc)->schedopt)->data_key((desc)->schedopt, m, n) ))
 
 #define RUNTIME_BEGIN_ACCESS_DECLARATION
 
