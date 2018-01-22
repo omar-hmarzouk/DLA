@@ -29,10 +29,8 @@
  * @brief Group routines exposed to users for matrices conversion LAPACK-Tile
  *
  */
-
 #include "control/common.h"
 #include "control/auxiliary.h"
-#include "control/tile.h"
 
 /** ***************************************************************************
  *
@@ -62,6 +60,7 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
     MORSE_context_t  *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t   request;
+    MORSE_desc_t B;
     int status;
 
     morse = morse_context_self();
@@ -74,36 +73,27 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
         morse_error("MORSE_Lapack_to_Tile", "invalid descriptor");
         return MORSE_ERR_ILLEGAL_VALUE;
     }
+
+    /* Create the B descriptor to handle the Lapack format matrix */
+    B = morse_desc_init_user(
+        A->dtyp, A->mb, A->nb, A->bsiz,
+        LDA, A->n, 0, 0, A->m, A->n, 1, 1,
+        morse_getaddr_cm, morse_getblkldd_cm, NULL );
+    B.mat  = Af77;
+    B.styp = MorseCM;
+
+    RUNTIME_desc_create( &B );
+
     morse_sequence_create(morse, &sequence);
-    switch( A->dtyp ) {
-#if defined(PRECISION_s)
-    case MorseRealFloat:
-        morse_pslapack_to_tile(Af77, LDA, A, sequence, &request);
-        break;
-#endif
 
-#if defined(PRECISION_d)
-    case MorseRealDouble:
-        morse_pdlapack_to_tile(Af77, LDA, A, sequence, &request);
-        break;
-#endif
+    morse_pzlacpy( MorseUpperLower, &B, A, sequence, &request );
 
-#if defined(PRECISION_c)
-    case MorseComplexFloat:
-        morse_pclapack_to_tile(Af77, LDA, A, sequence, &request);
-        break;
-#endif
+    RUNTIME_desc_flush( &B, sequence );
+    RUNTIME_desc_flush(  A, sequence );
+    RUNTIME_sequence_wait( morse, sequence );
 
-#if defined(PRECISION_z)
-    case MorseComplexDouble:
-        morse_pzlapack_to_tile(Af77, LDA, A, sequence, &request);
-        break;
-#endif
+    RUNTIME_desc_destroy( &B );
 
-    default:
-        morse_error("MORSE_Lapack_to_Tile", "Type unknown");
-    }
-    RUNTIME_barrier(morse);
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -137,6 +127,7 @@ int MORSE_Tile_to_Lapack(MORSE_desc_t *A, void *Af77, int LDA)
     MORSE_context_t  *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t   request;
+    MORSE_desc_t      B;
     int status;
 
     morse = morse_context_self();
@@ -149,36 +140,26 @@ int MORSE_Tile_to_Lapack(MORSE_desc_t *A, void *Af77, int LDA)
         morse_error("MORSE_Tile_to_Lapack", "invalid descriptor");
         return MORSE_ERR_ILLEGAL_VALUE;
     }
+
+    /* Create the B descriptor to handle the Lapack format matrix */
+    B = morse_desc_init_user(
+        A->dtyp, A->mb, A->nb, A->bsiz,
+        LDA, A->n, 0, 0, A->m, A->n, 1, 1,
+        morse_getaddr_cm, morse_getblkldd_cm, NULL );
+    B.mat  = Af77;
+    B.styp = MorseCM;
+
+    RUNTIME_desc_create( &B );
+
     morse_sequence_create(morse, &sequence);
-    switch( A->dtyp ) {
-#if defined(PRECISION_s)
-    case MorseRealFloat:
-        morse_pstile_to_lapack(A, Af77, LDA, sequence, &request);
-        break;
-#endif
+    morse_pzlacpy( MorseUpperLower, A, &B, sequence, &request );
 
-#if defined(PRECISION_d)
-    case MorseRealDouble:
-        morse_pdtile_to_lapack(A, Af77, LDA, sequence, &request);
-        break;
-#endif
+    RUNTIME_desc_flush(  A, sequence );
+    RUNTIME_desc_flush( &B, sequence );
+    RUNTIME_sequence_wait( morse, sequence );
 
-#if defined(PRECISION_c)
-    case MorseComplexFloat:
-        morse_pctile_to_lapack(A, Af77, LDA, sequence, &request);
-        break;
-#endif
+    RUNTIME_desc_destroy( &B );
 
-#if defined(PRECISION_z)
-    case MorseComplexDouble:
-        morse_pztile_to_lapack(A, Af77, LDA, sequence, &request);
-        break;
-#endif
-
-    default:
-        morse_error("MORSE_Tile_to_Lapack", "Type unknown");
-    }
-    RUNTIME_barrier(morse);
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

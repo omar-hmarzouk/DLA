@@ -78,7 +78,6 @@
 #include "control/auxiliary.h"
 #include "control/context.h"
 #include "control/descriptor.h"
-#include "control/tile.h"
 #include "control/async.h"
 
 /*******************************************************************************
