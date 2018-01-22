@@ -173,7 +173,7 @@ int MORSE_zherk(MORSE_enum uplo, MORSE_enum trans, int N, int K,
     /* Call the tile interface */
     MORSE_zherk_Tile_Async(uplo, trans, alpha, &descA, beta, &descC, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descCl, &descCt,
                      MorseUpperLower, sequence, &request );
 

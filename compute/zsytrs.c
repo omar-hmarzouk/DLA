@@ -141,7 +141,7 @@ int MORSE_zsytrs(MORSE_enum uplo, int N, int NRHS,
     /* Call the tile interface */
     MORSE_zsytrs_Tile_Async(uplo, &descA, &descB, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descBl, &descBt,
                      MorseUpperLower, sequence, &request );
 

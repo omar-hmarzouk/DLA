@@ -222,7 +222,7 @@ int MORSE_zgemm(MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
     MORSE_zgemm_Tile_Async(
         transA, transB, alpha, &descA, &descB, beta, &descC, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descCl, &descCt,
                      MorseUpperLower, sequence, &request );
 

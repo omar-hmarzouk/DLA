@@ -144,7 +144,7 @@ int MORSE_zungqr(int M, int N, int K,
     /* Call the tile interface */
     MORSE_zungqr_Tile_Async(&descA, descT, &descQ, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descQl, &descQt,
                      MorseUpperLower, sequence, &request );
 

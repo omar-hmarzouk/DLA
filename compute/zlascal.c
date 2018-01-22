@@ -121,7 +121,7 @@ int MORSE_zlascal(MORSE_enum uplo, int M, int N,
     MORSE_zlascal_Tile_Async(
         uplo, alpha, &descA, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseUpperLower, sequence, &request );
     RUNTIME_sequence_wait(morse, sequence);

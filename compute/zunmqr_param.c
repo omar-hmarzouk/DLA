@@ -187,7 +187,7 @@ int MORSE_zunmqr_param(const libhqr_tree_t *qrtree,
     MORSE_zunmqr_param_Tile_Async(
         qrtree, side, trans, &descA, descTS, descTT, &descC, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descCl, &descCt,
                      MorseUpperLower, sequence, &request );
 

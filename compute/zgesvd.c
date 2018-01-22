@@ -221,7 +221,7 @@ int MORSE_zgesvd(MORSE_enum jobu, MORSE_enum jobvt,
     /* Call the tile interface */
     MORSE_zgesvd_Tile_Async(jobu, jobvt, &descA, S, descT, U, LDU, VT, LDVT, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseUpperLower, sequence, &request );
 

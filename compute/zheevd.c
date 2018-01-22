@@ -159,7 +159,7 @@ int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N,
     /* Call the tile interface */
     MORSE_zheevd_Tile_Async(jobz, uplo, &descA, W, descT, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseUpperLower, sequence, &request );
 

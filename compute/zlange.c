@@ -141,7 +141,7 @@ double MORSE_zlange(MORSE_enum norm, int M, int N,
     /* Call the tile interface */
     MORSE_zlange_Tile_Async(norm, &descA, &value, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseUpperLower, sequence, &request );
     RUNTIME_desc_flush( &descA, sequence );

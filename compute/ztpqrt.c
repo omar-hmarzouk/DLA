@@ -194,7 +194,7 @@ int MORSE_ztpqrt( int M, int N, int L,
     /* Call the tile interface */
     MORSE_ztpqrt_Tile_Async(L, &descA, &descB, descT, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseUpperLower, sequence, &request );
     morse_ztile2lap( morse, &descBl, &descBt,

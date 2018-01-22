@@ -185,7 +185,7 @@ int MORSE_zsymm(MORSE_enum side, MORSE_enum uplo, int M, int N,
     MORSE_zsymm_Tile_Async(
         side, uplo, alpha, &descA, &descB, beta, &descC, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descCl, &descCt,
                      MorseUpperLower, sequence, &request );
 

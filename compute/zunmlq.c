@@ -183,7 +183,7 @@ int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
     MORSE_zunmlq_Tile_Async(
         side, trans, &descA, descT, &descC, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descCl, &descCt,
                      MorseUpperLower, sequence, &request );
 

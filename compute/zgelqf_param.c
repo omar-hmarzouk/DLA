@@ -126,7 +126,7 @@ int MORSE_zgelqf_param(const libhqr_tree_t *qrtree, int M, int N,
     /* Call the tile interface */
     MORSE_zgelqf_param_Tile_Async(qrtree, &descA, descTS, descTT, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseUpperLower, sequence, &request );
 

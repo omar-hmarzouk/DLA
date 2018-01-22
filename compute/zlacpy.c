@@ -139,7 +139,7 @@ int MORSE_zlacpy(MORSE_enum uplo, int M, int N,
     /* Call the tile interface */
     MORSE_zlacpy_Tile_Async(uplo, &descA, &descB, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descBl, &descBt,
                      MorseUpperLower, sequence, &request );
 

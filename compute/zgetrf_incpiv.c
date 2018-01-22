@@ -130,7 +130,7 @@ int MORSE_zgetrf_incpiv(int M, int N,
     /* Call the tile interface */
     MORSE_zgetrf_incpiv_Tile_Async(&descA, descL, IPIV, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseUpperLower, sequence, &request );
 

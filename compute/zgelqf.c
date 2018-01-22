@@ -129,7 +129,7 @@ int MORSE_zgelqf(int M, int N,
     /* Call the tile interface */
     MORSE_zgelqf_Tile_Async(&descA, descT, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseUpperLower, sequence, &request );
 

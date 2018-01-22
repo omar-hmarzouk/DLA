@@ -144,7 +144,7 @@ int MORSE_zgesv_nopiv(int N, int NRHS,
     /* Call the tile interface */
     MORSE_zgesv_nopiv_Tile_Async(&descA, &descB, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseUpperLower, sequence, &request );
     morse_ztile2lap( morse, &descBl, &descBt,

@@ -142,7 +142,7 @@ int MORSE_zunglq_param(const libhqr_tree_t *qrtree, int M, int N, int K,
     /* Call the tile interface */
     MORSE_zunglq_param_Tile_Async(qrtree, &descA, descTS, descTT, &descQ, sequence, &request);
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descQl, &descQt,
                      MorseUpperLower, sequence, &request );
 

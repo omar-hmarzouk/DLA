@@ -120,6 +120,7 @@ int MORSE_zplghe( double bump, MORSE_enum uplo, int N,
     /* Call the tile interface */
     MORSE_zplghe_Tile_Async( bump, uplo, &descA, seed, sequence, &request );
 
+    /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseUpperLower, sequence, &request );
 
