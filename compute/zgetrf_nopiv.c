@@ -117,9 +117,8 @@ int MORSE_zgetrf_nopiv(int M, int N,
     morse_sequence_create(morse, &sequence);
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooplap2tile( descA, A, NB, NB, LDA, N, 0, 0, N, N,
-                             sequence, &request,
-                             morse_desc_mat_free(&(descA)) );
+    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+                     A, NB, NB, LDA, N, N, N, sequence, &request );
 /*    } else {*/
 /*        morse_ziplap2tile(  descA, A, NB, NB, LDA, N, 0, 0, N, N,*/
 /*                             sequence, &request);*/

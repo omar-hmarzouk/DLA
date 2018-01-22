@@ -178,10 +178,10 @@ int MORSE_zunmqr_param(const libhqr_tree_t *qrtree,
     morse_sequence_create(morse, &sequence);
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooplap2tile( descA, A, NB, NB, LDA, K, 0, 0, Am, K, sequence, &request,
-                             morse_desc_mat_free(&(descA)) );
-        morse_zooplap2tile( descC, C, NB, NB, LDC, N, 0, 0, M,  N, sequence, &request,
-                             morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descC)));
+    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+                     A, NB, NB, LDA, K, Am, K, sequence, &request );
+    morse_zlap2tile( morse, &descCl, &descCt, MorseUpperLower,
+                     C, NB, NB, LDC, N, M,  N, sequence, &request );
 /*    } else {*/
 /*        morse_ziplap2tile( descA, A, NB, NB, LDA, K, 0, 0, Am, K,*/
 /*                            sequence, &request);*/

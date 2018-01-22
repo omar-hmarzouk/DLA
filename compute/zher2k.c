@@ -179,12 +179,12 @@ int MORSE_zher2k(MORSE_enum uplo, MORSE_enum trans, int N, int K,
     morse_sequence_create(morse, &sequence);
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooplap2tile( descA, A, NB, NB, LDA, An, 0, 0, Am, An, sequence, &request,
-                             morse_desc_mat_free(&(descA)) );
-        morse_zooplap2tile( descB, B, NB, NB, LDB, An, 0, 0, Am, An, sequence, &request,
-                             morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descB)));
-        morse_zooplap2tile( descC, C, NB, NB, LDC, N,  0, 0, N,  N,   sequence, &request,
-                             morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descB)); morse_desc_mat_free(&(descC)));
+    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+                     A, NB, NB, LDA, An, Am, An, sequence, &request );
+    morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
+                     B, NB, NB, LDB, An, Am, An, sequence, &request );
+    morse_zlap2tile( morse, &descCl, &descCt, MorseUpperLower,
+                     C, NB, NB, LDC, N, N,  N, sequence, &request );
 /*    } else {*/
 /*        morse_ziplap2tile( descA, A, NB, NB, LDA, An, 0, 0, Am, An, */
 /*                            sequence, &request);*/

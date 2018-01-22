@@ -208,20 +208,14 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
     morse_sequence_create(morse, &sequence);
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooplap2tile( descV1, V1, NB, NB, LDV1, K, 0, 0, M, K, sequence, &request,
-                            morse_desc_mat_free(&(descV1)) );
-        morse_zooplap2tile( descV2, V2, NB, NB, LDV2, K, 0, 0, M, K, sequence, &request,
-                            (morse_desc_mat_free(&(descV1)),
-                             morse_desc_mat_free(&(descV2))) );
-        morse_zooplap2tile( descQ1, Q1, NB, NB, LDQ1, N, 0, 0, K, N, sequence, &request,
-                            (morse_desc_mat_free(&(descV1)),
-                             morse_desc_mat_free(&(descV2)),
-                             morse_desc_mat_free(&(descQ1))) );
-        morse_zooplap2tile( descQ2, Q2, NB, NB, LDQ2, N, 0, 0, M, N, sequence, &request,
-                            (morse_desc_mat_free(&(descV1)),
-                             morse_desc_mat_free(&(descV2)),
-                             morse_desc_mat_free(&(descQ1)),
-                             morse_desc_mat_free(&(descQ2))) );
+    morse_zlap2tile( morse, &descV1l, &descV1t, MorseUpperLower,
+                     V1, NB, NB, LDV1, K, M, K, sequence, &request );
+    morse_zlap2tile( morse, &descV2l, &descV2t, MorseUpperLower,
+                     V2, NB, NB, LDV2, K, M, K, sequence, &request );
+    morse_zlap2tile( morse, &descQ1l, &descQ1t, MorseUpperLower,
+                     Q1, NB, NB, LDQ1, N, K, N, sequence, &request );
+    morse_zlap2tile( morse, &descQ2l, &descQ2t, MorseUpperLower,
+                     Q2, NB, NB, LDQ2, N, M, N, sequence, &request );
 /*    } else {*/
 /*        morse_ziplap2tile( descQ1, Q1, NB, NB, LDQ1, N, 0, 0, M, N,*/
 /*                            sequence, &request);*/

@@ -174,12 +174,12 @@ int MORSE_zhemm(MORSE_enum side, MORSE_enum uplo, int M, int N,
     morse_sequence_create(morse, &sequence);
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooplap2tile( descA, A, NB, NB, LDA, Am, 0, 0, Am, Am, sequence, &request,
-                             morse_desc_mat_free(&(descA)) );
-        morse_zooplap2tile( descB, B, NB, NB, LDB, N,  0, 0, M,  N, sequence, &request,
-                             morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descB)));
-        morse_zooplap2tile( descC, C, NB, NB, LDC, N,  0, 0, M,  N, sequence, &request,
-                             morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descB)); morse_desc_mat_free(&(descC)));
+    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+                     A, NB, NB, LDA, Am, Am, Am, sequence, &request );
+    morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
+                     B, NB, NB, LDB, N, M,  N, sequence, &request );
+    morse_zlap2tile( morse, &descCl, &descCt, MorseUpperLower,
+                     C, NB, NB, LDC, N, M,  N, sequence, &request );
 /*    } else {*/
 /*        morse_ziplap2tile( descA, A, NB, NB, LDA, Am, 0, 0, Am, Am,*/
 /*                            sequence, &request);*/

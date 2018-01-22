@@ -131,10 +131,10 @@ int MORSE_ztrsmpl(int N, int NRHS,
     morse_sequence_create(morse, &sequence);
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooplap2tile( descA, A, NB, NB, LDA, N,    0, 0, N, N,    sequence, &request,
-                             morse_desc_mat_free(&(descA)) );
-        morse_zooplap2tile( descB, B, NB, NB, LDB, NRHS, 0, 0, N, NRHS, sequence, &request,
-                             morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descB)));
+    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+                     A, NB, NB, LDA, N, N, N, sequence, &request );
+    morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
+                     B, NB, NB, LDB, NRHS, N, NRHS, sequence, &request );
 /*    } else {*/
 /*        morse_ziplap2tile( descA, A, NB, NB, LDA, N,    0, 0, N, N,   */
 /*                            sequence, &request);*/
