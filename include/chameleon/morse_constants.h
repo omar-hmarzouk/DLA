@@ -109,7 +109,6 @@
 
 #define morse_const_neg(const) (((const-1)^0x01)+1)
 
-
 /** ****************************************************************************
  *  MORSE constants - boolean
  **/
@@ -118,7 +117,6 @@
 
 #define MORSE_CPU    ((1ULL)<<1)
 #define MORSE_CUDA   ((1ULL)<<3)
-
 
 /** ****************************************************************************
  *  State machine switches
@@ -149,7 +147,6 @@
 #define MORSE_INPLACE           1
 #define MORSE_OUTOFPLACE        2
 
-
 /** ****************************************************************************
  *  MORSE constants - success & error codes
  **/
@@ -166,7 +163,6 @@
 #define MORSE_ERR_UNEXPECTED       -110
 #define MORSE_ERR_SEQUENCE_FLUSHED -111
 
-
 /** ****************************************************************************
  * Kernels options
  **/
@@ -180,7 +176,6 @@
 #define PRIORITY        16
 #define CALLBACK        17
 #define REDUX           18
-
 
 /** ****************************************************************************
  *  MORSE ???

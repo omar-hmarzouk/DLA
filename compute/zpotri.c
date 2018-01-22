@@ -119,7 +119,7 @@ int MORSE_zpotri(MORSE_enum uplo, int N,
     morse_sequence_create(morse, &sequence);
 
     /* Submit the matrix conversion */
-    morse_zlap2tile( morse, &descAl, &descAt, uplo,
+    morse_zlap2tile( morse, &descAl, &descAt, MorseDescInout, uplo,
                      A, NB, NB, LDA, N, N, N, sequence, &request );
 
     /* Call the tile interface */
@@ -127,7 +127,7 @@ int MORSE_zpotri(MORSE_enum uplo, int N,
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
-                     uplo, sequence, &request );
+                     MorseDescInout, uplo, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 

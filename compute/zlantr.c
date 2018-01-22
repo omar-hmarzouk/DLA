@@ -155,13 +155,15 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
     morse_sequence_create(morse, &sequence);
 
     /* Submit the matrix conversion */
-    morse_zlap2tile( morse, &descAl, &descAt, uplo,
+    morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, uplo,
                      A, NB, NB, LDA, N, M, N, sequence, &request );
 
     /* Call the tile interface */
     MORSE_zlantr_Tile_Async( norm, uplo, diag, &descAt, &value, sequence, &request );
 
-    /* Submit the matrix conversion */
+    /* Submit the matrix conversion back */
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseDescInput, uplo, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 

@@ -114,7 +114,7 @@ int MORSE_zlascal(MORSE_enum uplo, int M, int N,
     morse_sequence_create(morse, &sequence);
 
     /* Submit the matrix conversion */
-    morse_zlap2tile( morse, &descAl, &descAt, uplo,
+    morse_zlap2tile( morse, &descAl, &descAt, MorseDescInout, uplo,
                      A, NB, NB, LDA, N, M, N, sequence, &request );
 
     /* Call the tile interface */
@@ -122,8 +122,11 @@ int MORSE_zlascal(MORSE_enum uplo, int M, int N,
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
-                     uplo, sequence, &request );
-    RUNTIME_sequence_wait(morse, sequence);
+                     MorseDescInout, uplo, sequence, &request );
+
+    morse_sequence_wait(morse, sequence);
+
+    /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     status = sequence->status;

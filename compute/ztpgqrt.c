@@ -211,23 +211,27 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
     morse_sequence_create(morse, &sequence);
 
     /* Submit the matrix conversion */
-    morse_zlap2tile( morse, &descV1l, &descV1t, MorseUpperLower,
+    morse_zlap2tile( morse, &descV1l, &descV1t, MorseDescInput, MorseUpperLower,
                      V1, NB, NB, LDV1, K, M, K, sequence, &request );
-    morse_zlap2tile( morse, &descV2l, &descV2t, MorseUpperLower,
+    morse_zlap2tile( morse, &descV2l, &descV2t, MorseDescInput, MorseUpperLower,
                      V2, NB, NB, LDV2, K, M, K, sequence, &request );
-    morse_zlap2tile( morse, &descQ1l, &descQ1t, MorseUpperLower,
+    morse_zlap2tile( morse, &descQ1l, &descQ1t, MorseDescInout, MorseUpperLower,
                      Q1, NB, NB, LDQ1, N, K, N, sequence, &request );
-    morse_zlap2tile( morse, &descQ2l, &descQ2t, MorseUpperLower,
+    morse_zlap2tile( morse, &descQ2l, &descQ2t, MorseDescInout, MorseUpperLower,
                      Q2, NB, NB, LDQ2, N, M, N, sequence, &request );
 
     /* Call the tile interface */
     MORSE_ztpgqrt_Tile_Async( L, &descV1t, descT1, &descV2t, descT2, &descQ1t, &descQ2t, sequence, &request );
 
     /* Submit the matrix conversion back */
+    morse_ztile2lap( morse, &descV1l, &descV1t,
+                     MorseDescInput, MorseUpperLower, sequence, &request );
+    morse_ztile2lap( morse, &descV2l, &descV2t,
+                     MorseDescInput, MorseUpperLower, sequence, &request );
     morse_ztile2lap( morse, &descQ1l, &descQ1t,
-                     MorseUpperLower, sequence, &request );
+                     MorseDescInout, MorseUpperLower, sequence, &request );
     morse_ztile2lap( morse, &descQ2l, &descQ2t,
-                     MorseUpperLower, sequence, &request );
+                     MorseDescInout, MorseUpperLower, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 

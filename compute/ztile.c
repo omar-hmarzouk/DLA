@@ -97,7 +97,7 @@ int MORSE_zLapack_to_Tile(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A)
 
     RUNTIME_desc_flush( &B, sequence );
     RUNTIME_desc_flush(  A, sequence );
-    RUNTIME_sequence_wait( morse, sequence );
+    morse_sequence_wait( morse, sequence );
 
     RUNTIME_desc_destroy( &B );
 
@@ -177,7 +177,7 @@ int MORSE_zTile_to_Lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA)
 
     RUNTIME_desc_flush(  A, sequence );
     RUNTIME_desc_flush( &B, sequence );
-    RUNTIME_sequence_wait( morse, sequence );
+    morse_sequence_wait( morse, sequence );
 
     RUNTIME_desc_destroy( &B );
 

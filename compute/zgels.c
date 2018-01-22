@@ -174,15 +174,15 @@ int MORSE_zgels(MORSE_enum trans, int M, int N, int NRHS,
 
     /* Submit the matrix conversion */
     if ( M >= N ) {
-        morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+        morse_zlap2tile( morse, &descAl, &descAt, MorseDescInout, MorseUpperLower,
                          A, NB, NB, LDA, N, M, N, sequence, &request );
-        morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
+        morse_zlap2tile( morse, &descBl, &descBt, MorseDescInout, MorseUpperLower,
                          B, NB, NB, LDB, NRHS, M, NRHS, sequence, &request );
     } else {
         /* Submit the matrix conversion */
-        morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+        morse_zlap2tile( morse, &descAl, &descAt, MorseDescInout, MorseUpperLower,
                          A, NB, NB, LDA, N, M, N, sequence, &request );
-        morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
+        morse_zlap2tile( morse, &descBl, &descBt, MorseDescInout, MorseUpperLower,
                          B, NB, NB, LDB, NRHS, N, NRHS, sequence, &request );
     }
 
@@ -191,9 +191,9 @@ int MORSE_zgels(MORSE_enum trans, int M, int N, int NRHS,
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
-                     MorseUpperLower, sequence, &request );
+                     MorseDescInout, MorseUpperLower, sequence, &request );
     morse_ztile2lap( morse, &descBl, &descBt,
-                     MorseUpperLower, sequence, &request );
+                     MorseDescInout, MorseUpperLower, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 

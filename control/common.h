@@ -107,7 +107,6 @@
 #define MorseIPT_Panel   1
 #define MorseIPT_All     2
 
-
 /*******************************************************************************
  *  Global array of LAPACK constants
  **/

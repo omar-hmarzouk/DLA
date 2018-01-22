@@ -179,17 +179,19 @@ int MORSE_zunmqr_param(const libhqr_tree_t *qrtree,
     morse_sequence_create(morse, &sequence);
 
     /* Submit the matrix conversion */
-    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+    morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, MorseLower,
                      A, NB, NB, LDA, K, Am, K, sequence, &request );
-    morse_zlap2tile( morse, &descCl, &descCt, MorseUpperLower,
+    morse_zlap2tile( morse, &descCl, &descCt, MorseDescInout, MorseUpperLower,
                      C, NB, NB, LDC, N, M,  N, sequence, &request );
 
     /* Call the tile interface */
     MORSE_zunmqr_param_Tile_Async( qrtree, side, trans, &descAt, descTS, descTT, &descCt, sequence, &request );
 
     /* Submit the matrix conversion back */
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseDescInput, MorseLower, sequence, &request );
     morse_ztile2lap( morse, &descCl, &descCt,
-                     MorseUpperLower, sequence, &request );
+                     MorseDescInout, MorseUpperLower, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 

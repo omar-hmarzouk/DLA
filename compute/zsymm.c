@@ -176,19 +176,23 @@ int MORSE_zsymm(MORSE_enum side, MORSE_enum uplo, int M, int N,
     morse_sequence_create(morse, &sequence);
 
     /* Submit the matrix conversion */
-    morse_zlap2tile( morse, &descAl, &descAt, uplo,
+    morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, uplo,
                      A, NB, NB, LDA, Am, Am, Am, sequence, &request );
-    morse_zlap2tile( morse, &descBl, &descBt, uplo,
+    morse_zlap2tile( morse, &descBl, &descBt, MorseDescInput, MorseUpperLower,
                      B, NB, NB, LDB, N, M,  N, sequence, &request );
-    morse_zlap2tile( morse, &descCl, &descCt, uplo,
+    morse_zlap2tile( morse, &descCl, &descCt, MorseDescInout, MorseUpperLower,
                      C, NB, NB, LDC, N, M,  N, sequence, &request );
 
     /* Call the tile interface */
     MORSE_zsymm_Tile_Async(  side, uplo, alpha, &descAt, &descBt, beta, &descCt, sequence, &request );
 
     /* Submit the matrix conversion back */
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseDescInput, uplo, sequence, &request );
+    morse_ztile2lap( morse, &descBl, &descBt,
+                     MorseDescInput, MorseUpperLower, sequence, &request );
     morse_ztile2lap( morse, &descCl, &descCt,
-                     uplo, sequence, &request );
+                     MorseDescInout, MorseUpperLower, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 
