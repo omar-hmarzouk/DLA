@@ -296,9 +296,9 @@ int MORSE_ztpgqrt_Tile( int L,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_ztpgqrt_Tile_Async(L, V1, T1, V2, T2, Q1, Q2, sequence, &request);
+    RUNTIME_desc_flush( Q1, sequence );
+    RUNTIME_desc_flush( Q2, sequence );
     morse_sequence_wait(morse, sequence);
-    RUNTIME_desc_getoncpu(Q1);
-    RUNTIME_desc_getoncpu(Q2);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

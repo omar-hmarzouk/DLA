@@ -26,7 +26,8 @@
  **/
 #include "control/common.h"
 
-/*******************************************************************************
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t
  *
@@ -82,15 +83,16 @@ int MORSE_zLapack_to_Tile(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A)
 
     morse_pzlapack_to_tile( Af77, LDA, A, sequence, &request);
 
+    RUNTIME_desc_flush( A, sequence );
     RUNTIME_sequence_wait( morse, sequence );
-    RUNTIME_desc_getoncpu( A );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
 }
 
-/*******************************************************************************
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *
@@ -152,7 +154,8 @@ int MORSE_zLapack_to_Tile_Async(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t
  *
@@ -207,14 +210,16 @@ int MORSE_zTile_to_Lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA)
     morse_sequence_create(morse, &sequence);
 
     morse_pztile_to_lapack( A, Af77, LDA, sequence, &request);
+    RUNTIME_desc_flush( A, sequence );
     RUNTIME_sequence_wait( morse, sequence );
-    RUNTIME_desc_getoncpu( A );
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
 }
 
-/*******************************************************************************
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *

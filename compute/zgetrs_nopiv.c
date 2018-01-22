@@ -30,7 +30,8 @@
  **/
 #include "control/common.h"
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t
  *
@@ -166,7 +167,8 @@ int MORSE_zgetrs_nopiv(MORSE_enum trans, int N, int NRHS,
     return status;
 }
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
@@ -215,16 +217,17 @@ int MORSE_zgetrs_nopiv_Tile(MORSE_desc_t *A, MORSE_desc_t *B)
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zgetrs_nopiv_Tile_Async(A, B, sequence, &request);
+    RUNTIME_desc_flush( A, sequence );
+    RUNTIME_desc_flush( B, sequence );
     morse_sequence_wait(morse, sequence);
-    RUNTIME_desc_getoncpu(A);
-    RUNTIME_desc_getoncpu(B);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
 }
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *

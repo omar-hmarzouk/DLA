@@ -38,7 +38,7 @@
 #define D(k)   A, k, k
 #endif
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile LQ factorization - dynamic scheduling
  **/
 void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
@@ -153,10 +153,7 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
         RUNTIME_iteration_pop(morse);
     }
 
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
-    MORSE_TASK_flush_desc( &options, MorseUpper, T );
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_flush_all();
     (void)D;
 }

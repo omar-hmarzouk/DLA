@@ -127,6 +127,8 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
         rc = cudaHostRegister( desc->mat, size, cudaHostRegisterPortable );
         if ( rc != cudaSuccess )
         {
+            /* Disable the unregister as register failed */
+            desc->register_mat = 0;
             morse_warning("RUNTIME_desc_create(StarPU): cudaHostRegister - ", cudaGetErrorString( rc ));
         }
     }
@@ -294,76 +296,96 @@ int RUNTIME_desc_release( const MORSE_desc_t *desc )
 }
 
 /*******************************************************************************
- *  Get data on cpu - Synchronous call
+ *  Flush cached data
  **/
-int RUNTIME_desc_getoncpu( const MORSE_desc_t *desc )
+void RUNTIME_flush()
 {
-    starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);
-    int lmt = desc->lmt;
-    int lnt = desc->lnt;
-    int m, n;
-
-    if ( desc->ooc ) {
-        /* May not even fit */
-        morse_warning( "RUNTIME_desc_getoncpu(StarPU)",
-                       "Try to get an out-of-core matrix on main memory. Cancelled as it might not fit" );
-        return MORSE_SUCCESS;
-    }
-
-    for (n = 0; n < lnt; n++) {
-        for (m = 0; m < lmt; m++)
-        {
-            if ( (*handle == NULL) ||
-                 !morse_desc_islocal( desc, m, n ) )
-            {
-                handle++;
-                continue;
-            }
-
-            starpu_data_acquire(*handle, STARPU_R);
-            starpu_data_release(*handle);
-            handle++;
-        }
-    }
-    return MORSE_SUCCESS;
+#if defined(CHAMELEON_USE_MPI)
+    starpu_mpi_cache_flush_all_data(MPI_COMM_WORLD);
+#endif
 }
 
-/*******************************************************************************
- *  Get data on cpu - Asynchronous call
- **/
-int RUNTIME_desc_getoncpu_async( const MORSE_desc_t *desc,
-                                 MORSE_sequence_t   *sequence )
+/*****************************************************************************
+ * Different implementations of the flush call based on StarPU version
+ */
+#ifdef HAVE_STARPU_DATA_WONT_USE
+
+static inline void
+chameleon_starpu_data_wont_use( starpu_data_handle_t handle ) {
+    starpu_data_wont_use( handle );
+}
+
+#elif defined HAVE_STARPU_IDLE_PREFETCH
+
+static inline void
+chameleon_starpu_data_flush( starpu_data_handle_t handle)
+{
+    starpu_data_idle_prefetch_on_node(handle, STARPU_MAIN_RAM, 1);
+    starpu_data_release_on_node(handle, -1);
+}
+
+static inline void
+chameleon_starpu_data_wont_use( starpu_data_handle_t handle ) {
+    starpu_data_acquire_on_node_cb( handle, -1, STARPU_R,
+                                    chameleon_starpu_data_flush, handle );
+}
+
+#else
+
+static inline void
+chameleon_starpu_data_wont_use( starpu_data_handle_t handle ) {
+    starpu_data_acquire_cb( handle, STARPU_R,
+                            (void (*)(void*))&starpu_data_release, handle );
+
+#endif
+
+void RUNTIME_desc_flush( const MORSE_desc_t     *desc,
+                         const MORSE_sequence_t *sequence )
 {
     starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);
     int lmt = desc->lmt;
     int lnt = desc->lnt;
     int m, n;
 
-    if ( desc->ooc ) {
-        /* May not even fit */
-        morse_warning( "RUNTIME_desc_getoncpu_async(StarPU)",
-                       "Try to get an out-of-core matrix on main memory. Cancelled as it might not fit" );
-        return MORSE_SUCCESS;
-    }
-
-    for (n = 0; n < lnt; n++) {
-        for (m = 0; m < lmt; m++)
+    for (n = 0; n < lnt; n++)
+    {
+        for (m = 0; m < lmt; m++, handle++)
         {
-            if ( (*handle == NULL) ||
-                 !morse_desc_islocal( desc, m, n ) )
-            {
-                handle++;
+            if ( *handle == NULL ) {
                 continue;
             }
 
-            starpu_data_acquire_cb( *handle, STARPU_R,
-                                    (void (*)(void*))&starpu_data_release, *handle );
-            handle++;
+#if defined(CHAMELEON_USE_MPI)
+            starpu_mpi_cache_flush( MPI_COMM_WORLD, *handle );
+#endif
+            if ( morse_desc_islocal( desc, m, n ) ) {
+                chameleon_starpu_data_wont_use( *handle );
+            }
         }
     }
 
     (void)sequence;
-    return MORSE_SUCCESS;
+}
+
+void RUNTIME_data_flush( const MORSE_sequence_t *sequence,
+                         const MORSE_desc_t *A, int Am, int An )
+{
+    starpu_data_handle_t *handle = (starpu_data_handle_t*)(A->schedopt);
+    handle += ((int64_t)(A->lmt) * (int64_t)An + (int64_t)Am);
+
+    if (*handle == NULL) {
+        return;
+    }
+
+#if defined(CHAMELEON_USE_MPI)
+    starpu_mpi_cache_flush( MPI_COMM_WORLD, *handle );
+#endif
+
+    if ( morse_desc_islocal( A, Am, An ) ) {
+        chameleon_starpu_data_wont_use( *handle );
+    }
+
+    (void)sequence;
 }
 
 /*******************************************************************************
@@ -375,7 +397,7 @@ int RUNTIME_desc_getoncpu_async( const MORSE_desc_t *desc,
 #define STARPU_MAIN_RAM 0
 #endif
 
-void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
+void *RUNTIME_data_getaddr( const MORSE_desc_t *desc, int m, int n )
 {
     int64_t im = m + (desc->i / desc->mb);
     int64_t jn = n + (desc->j / desc->nb);

@@ -29,7 +29,7 @@
 
 #define A(m,n) A,  m,  n
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile LU factorization with no pivoting - dynamic scheduling
  **/
 void morse_pzgetrf_nopiv(MORSE_desc_t *A,
@@ -104,7 +104,5 @@ void morse_pzgetrf_nopiv(MORSE_desc_t *A,
         RUNTIME_iteration_pop(morse);
     }
 
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_flush_all();
 }

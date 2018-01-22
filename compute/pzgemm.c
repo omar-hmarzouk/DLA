@@ -31,7 +31,7 @@
 #define A(m, n) A,  m,  n
 #define B(m, n) B,  m,  n
 #define C(m, n) C,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile matrix-matrix multiplication - dynamic scheduling
  **/
 void morse_pzgemm(MORSE_enum transA, MORSE_enum transB,
@@ -134,19 +134,17 @@ void morse_pzgemm(MORSE_enum transA, MORSE_enum transB,
                     }
                 }
             }
-            MORSE_TASK_flush_data( &options, C(m, n) );
+            RUNTIME_data_flush( sequence, C(m, n) );
         }
         if (transA == MorseNoTrans) {
             for (k = 0; k < A->nt; k++) {
-                MORSE_TASK_flush_data( &options, A(m, k) );
+                RUNTIME_data_flush( sequence, A(m, k) );
             }
         } else {
             for (k = 0; k < A->mt; k++) {
-                MORSE_TASK_flush_data( &options, A(k, m) );
+                RUNTIME_data_flush( sequence, A(k, m) );
             }
         }
     }
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, B );
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_flush_all();
 }

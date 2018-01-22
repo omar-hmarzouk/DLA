@@ -32,7 +32,7 @@
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  morse_pzplgsy - Generate a random symmetric (positive definite if 'bump' is large enough) half-matrix by tiles.
  **/
 void morse_pzplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, MORSE_desc_t *A,
@@ -97,6 +97,5 @@ void morse_pzplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, MORSE_desc_t *A,
             }
         }
     }
-    MORSE_TASK_flush_desc( &options, uplo, A );
     RUNTIME_options_finalize(&options, morse);
 }

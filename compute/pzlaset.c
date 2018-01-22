@@ -30,7 +30,7 @@
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel initialization a 2-D array A to BETA on the diagonal and
  *  ALPHA on the offdiagonals.
  **/
@@ -118,6 +118,5 @@ void morse_pzlaset(MORSE_enum uplo,
                A(j, j), ldaj);
        }
     }
-    MORSE_TASK_flush_desc( &options, uplo, A );
     RUNTIME_options_finalize(&options, morse);
 }

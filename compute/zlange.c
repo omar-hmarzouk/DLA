@@ -26,7 +26,8 @@
  **/
 #include "control/common.h"
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t
  *
@@ -146,8 +147,8 @@ double MORSE_zlange(MORSE_enum norm, int M, int N,
 
 /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
         morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    RUNTIME_desc_flush( &descA, sequence );
         morse_sequence_wait(morse, sequence);
-        RUNTIME_desc_getoncpu(&descA);
         morse_desc_mat_free(&descA);
 /*    } else {*/
 /*        morse_ziptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);*/
@@ -158,7 +159,8 @@ double MORSE_zlange(MORSE_enum norm, int M, int N,
     return value;
 }
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
@@ -215,7 +217,8 @@ double MORSE_zlange_Tile(MORSE_enum norm, MORSE_desc_t *A)
     return value;
 }
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *

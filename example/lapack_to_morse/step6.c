@@ -167,14 +167,14 @@ int main(int argc, char *argv[]) {
      */
     MORSE_dpotrs_Tile_Async( UPLO, descA, descX, sequence, &request);
 
+    /* Ensure that all data processed on the gpus we are depending on are back
+     * in main memory */
+    MORSE_Desc_Flush( descA, sequence );
+    MORSE_Desc_Flush( descX, sequence );
+
     /* Synchronization barrier (the runtime ensures that all submitted tasks
      * have been terminated */
     MORSE_Sequence_Wait(sequence);
-
-    /* Ensure that all data processed on the gpus we are depending on are back
-     * in main memory */
-    RUNTIME_desc_getoncpu(descA);
-    RUNTIME_desc_getoncpu(descX);
 
     status = sequence->status;
     if ( status != 0 ) {

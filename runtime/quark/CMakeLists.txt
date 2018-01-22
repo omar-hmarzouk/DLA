@@ -86,7 +86,6 @@ set(RUNTIME_COMMON
   control/runtime_descriptor.c
   control/runtime_options.c
   control/runtime_profiling.c
-  codelets/codelet_dataflush.c
   ${RUNTIME_COMMON_GENERATED}
   )
 

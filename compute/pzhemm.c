@@ -31,7 +31,7 @@
 #define A(m,n) A,  m,  n
 #define B(m,n) B,  m,  n
 #define C(m,n) C,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile Hermitian matrix-matrix multiplication - dynamic scheduling
  **/
 void morse_pzhemm(MORSE_enum side, MORSE_enum uplo,
@@ -226,9 +226,5 @@ void morse_pzhemm(MORSE_enum side, MORSE_enum uplo,
             }
         }
     }
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, B );
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, C );
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_flush_all();
 }

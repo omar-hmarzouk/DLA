@@ -31,7 +31,7 @@
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile triangular matrix inverse - dynamic scheduling
  **/
 void morse_pztrtri(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
@@ -82,10 +82,10 @@ void morse_pztrtri(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
                               A(k, n), ldak,
                         zone, A(m, n), ldam);
                 }
-                MORSE_TASK_flush_data( &options, A(m, k) );
+                RUNTIME_data_flush( sequence, A(m, k) );
             }
             for (n = 0; n < k; n++) {
-                MORSE_TASK_flush_data( &options, A(k, n) );
+                RUNTIME_data_flush( sequence, A(k, n) );
                 MORSE_TASK_ztrsm(
                     &options,
                     MorseLeft, uplo, MorseNoTrans, diag,
@@ -93,7 +93,7 @@ void morse_pztrtri(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
                     zone, A(k, k), ldak,
                           A(k, n), ldak);
             }
-            MORSE_TASK_flush_data( &options, A(k, k) );
+            RUNTIME_data_flush( sequence, A(k, k) );
             MORSE_TASK_ztrtri(
                 &options,
                 uplo, diag,
@@ -133,11 +133,11 @@ void morse_pztrtri(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
                               A(k, n), ldak,
                         zone, A(m, n), ldam);
                 }
-                MORSE_TASK_flush_data( &options, A(k, n) );
+                RUNTIME_data_flush( sequence, A(k, n) );
             }
             for (m = 0; m < k; m++) {
                 ldam = BLKLDD(A, m);
-                MORSE_TASK_flush_data( &options, A(m, k) );
+                RUNTIME_data_flush( sequence, A(m, k) );
                 MORSE_TASK_ztrsm(
                     &options,
                     MorseRight, uplo, MorseNoTrans, diag,
@@ -145,7 +145,7 @@ void morse_pztrtri(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
                     zone, A(k, k), ldak,
                           A(m, k), ldam);
             }
-            MORSE_TASK_flush_data( &options, A(k, k) );
+            RUNTIME_data_flush( sequence, A(k, k) );
             MORSE_TASK_ztrtri(
                 &options,
                 uplo, diag,
@@ -155,6 +155,5 @@ void morse_pztrtri(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
             RUNTIME_iteration_pop(morse);
         }
     }
-    MORSE_TASK_flush_desc( &options, uplo, A );
     RUNTIME_options_finalize(&options, morse);
 }

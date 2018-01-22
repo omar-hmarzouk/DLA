@@ -117,24 +117,31 @@ typedef struct starpu_conf starpu_conf_t;
 /**
  * Access to block pointer and leading dimension
  */
-#define RTBLKADDR( desc, type, m, n ) ( (starpu_data_handle_t)RUNTIME_desc_getaddr( desc, m, n ) )
+#define RTBLKADDR( desc, type, m, n ) ( (starpu_data_handle_t)RUNTIME_data_getaddr( desc, m, n ) )
 
 void RUNTIME_set_reduction_methods(starpu_data_handle_t handle, MORSE_enum dtyp);
-#ifdef CHAMELEON_USE_MPI
-#ifdef HAVE_STARPU_MPI_CACHED_RECEIVE
-int RUNTIME_desc_iscached(const MORSE_desc_t *A, int Am, int An);
-#endif
-#endif
 
-#if defined(CHAMELEON_USE_MPI)
-#  if defined(HAVE_STARPU_MPI_CACHED_RECEIVE)
-#    define RUNTIME_ACCESS_WRITE_CACHED(A, Am, An) do { if (RUNTIME_desc_iscached(A, Am, An)) __morse_need_submit = 1; } while(0)
-#  else
-#    warning "WAR dependencies need starpu_mpi_cached_receive support from StarPU 1.2.1 or greater"
-#    define RUNTIME_ACCESS_WRITE_CACHED(A, Am, An)
-#  endif
+#if defined(CHAMELEON_USE_MPI) && defined(HAVE_STARPU_MPI_CACHED_RECEIVE)
+static inline int
+chameleon_starpu_data_iscached(const MORSE_desc_t *A, int Am, int An)
+{
+    starpu_data_handle_t *ptrtile = (starpu_data_handle_t*)(A->schedopt);
+    ptrtile += ((int64_t)(A->lmt) * (int64_t)An + (int64_t)Am);
+
+    if (!(*ptrtile))
+        return 0;
+
+    return starpu_mpi_cached_receive(*ptrtile);
+}
+
+#define RUNTIME_ACCESS_WRITE_CACHED(A, Am, An) do {                 \
+        if (chameleon_starpu_data_iscached(A, Am, An)) __morse_need_submit = 1; } while(0)
+
 #else
-#define RUNTIME_ACCESS_WRITE_CACHED(A, Am, An)
+
+#warning "WAR dependencies need starpu_mpi_cached_receive support from StarPU 1.2.1 or greater"
+#define RUNTIME_ACCESS_WRITE_CACHED(A, Am, An) do {} while (0)
+
 #endif
 
 #ifdef CHAMELEON_ENABLE_PRUNING_STATS

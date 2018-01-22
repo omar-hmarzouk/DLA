@@ -33,7 +33,7 @@
 
 
 
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile triangular matrix-matrix multiplication - dynamic scheduling
  **/
 void morse_pztrmm(MORSE_enum side, MORSE_enum uplo,
@@ -311,7 +311,5 @@ void morse_pztrmm(MORSE_enum side, MORSE_enum uplo,
         }
     }
 
-    MORSE_TASK_flush_desc( &options, uplo, A );
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, B );
     RUNTIME_options_finalize(&options, morse);
 }

@@ -95,7 +95,6 @@ set(RUNTIME_COMMON
   control/runtime_options.c
   control/runtime_profiling.c
   control/runtime_workspace.c
-  codelets/codelet_dataflush.c
   ${RUNTIME_COMMON_GENERATED}
   )
 

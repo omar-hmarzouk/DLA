@@ -30,7 +30,8 @@
 #include <coreblas/lapacke.h>
 #endif
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t
  *
@@ -175,7 +176,8 @@ int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N,
     morse_sequence_destroy(morse, sequence);
     return status;
 }
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
@@ -257,17 +259,17 @@ int MORSE_zheevd_Tile(MORSE_enum jobz, MORSE_enum uplo,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zheevd_Tile_Async(jobz, uplo, A, W, T, sequence, &request);
+    RUNTIME_desc_flush( A, sequence );
+    RUNTIME_desc_flush( T, sequence );
     morse_sequence_wait(morse, sequence);
-
-    RUNTIME_desc_getoncpu(A);
-    RUNTIME_desc_getoncpu(T);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
 }
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *

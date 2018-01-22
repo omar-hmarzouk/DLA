@@ -30,7 +30,7 @@
 #include "control/common.h"
 
 #define A(m, n) A,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  Parallel tile matrix generation
  *
  *******************************************************************************
@@ -86,6 +86,5 @@ void morse_pzbuild( MORSE_enum uplo, MORSE_desc_t *A, void *user_data, void* use
     }
   }
 
-  MORSE_TASK_flush_desc( &options, uplo, A );
   RUNTIME_options_finalize( &options, morse);
 }

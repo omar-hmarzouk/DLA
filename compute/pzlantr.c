@@ -32,7 +32,7 @@
 #define VECNORMS_STEP1(m, n) VECNORMS_STEP1, m, n
 #define VECNORMS_STEP2(m, n) VECNORMS_STEP2, m, n
 #define RESULT(m, n) RESULT, m, n
-/***************************************************************************//**
+/*******************************************************************************
  *
  **/
 void morse_pzlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
@@ -665,5 +665,4 @@ void morse_pzlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
     }
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    MORSE_TASK_flush_all();
 }

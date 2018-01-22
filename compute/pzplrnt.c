@@ -29,7 +29,7 @@
 #include "control/common.h"
 
 #define A(m, n) A,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *  morse_pzplghe - Generate a random matrix by tiles.
  **/
 void morse_pzplrnt( MORSE_desc_t *A, unsigned long long int seed,
@@ -60,6 +60,5 @@ void morse_pzplrnt( MORSE_desc_t *A, unsigned long long int seed,
                 A->m, m*A->mb, n*A->nb, seed );
         }
     }
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, A );
     RUNTIME_options_finalize(&options, morse);
 }

@@ -28,7 +28,8 @@
  **/
 #include "control/common.h"
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t
  *
@@ -194,7 +195,8 @@ int MORSE_zsyrk(MORSE_enum uplo, MORSE_enum trans, int N, int K,
     return status;
 }
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
@@ -259,16 +261,17 @@ int MORSE_zsyrk_Tile(MORSE_enum uplo, MORSE_enum trans,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zsyrk_Tile_Async(uplo, trans, alpha, A, beta, C, sequence, &request);
+    RUNTIME_desc_flush( A, sequence );
+    RUNTIME_desc_flush( C, sequence );
     morse_sequence_wait(morse, sequence);
-    RUNTIME_desc_getoncpu(A);
-        RUNTIME_desc_getoncpu(C);
     
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
 }
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *

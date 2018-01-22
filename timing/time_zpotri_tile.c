@@ -50,40 +50,36 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
      */
 #if defined(TRACE_BY_SEQUENCE)
     {
-        MORSE_sequence_t *sequence[3];
+        MORSE_sequence_t *sequence;
         MORSE_request_t request[3] = { MORSE_REQUEST_INITIALIZER,
                                        MORSE_REQUEST_INITIALIZER,
                                        MORSE_REQUEST_INITIALIZER };
 
-        MORSE_Sequence_Create(&sequence[0]);
-        MORSE_Sequence_Create(&sequence[1]);
-        MORSE_Sequence_Create(&sequence[2]);
+        MORSE_Sequence_Create(&sequence);
 
         if ( ! iparam[IPARAM_ASYNC] ) {
             START_TIMING();
 
-            MORSE_zpotrf_Tile_Async(uplo, descA,                sequence[0], &request[0]);
-            MORSE_Sequence_Wait(sequence[0]);
+            MORSE_zpotrf_Tile_Async(uplo, descA,               sequence, &request[0]);
+            MORSE_Sequence_Wait(sequence);
 
-            MORSE_ztrtri_Tile_Async(uplo, MorseNonUnit, descA, sequence[1], &request[1]);
-            MORSE_Sequence_Wait(sequence[1]);
+            MORSE_ztrtri_Tile_Async(uplo, MorseNonUnit, descA, sequence, &request[1]);
+            MORSE_Sequence_Wait(sequence);
 
-            MORSE_zlauum_Tile_Async(uplo, descA,                sequence[2], &request[2]);
-            MORSE_Sequence_Wait(sequence[2]);
-            MORSE_Desc_Getoncpu( descA );
+            MORSE_zlauum_Tile_Async(uplo, descA,               sequence, &request[2]);
+            MORSE_Sequence_Wait(sequence);
+            MORSE_Desc_Flush( descA, sequence );
             STOP_TIMING();
 
         } else {
 
             START_TIMING();
-            MORSE_zpotrf_Tile_Async(uplo, descA,                sequence[0], &request[0]);
-            MORSE_ztrtri_Tile_Async(uplo, MorseNonUnit, descA, sequence[1], &request[1]);
-            MORSE_zlauum_Tile_Async(uplo, descA,                sequence[2], &request[2]);
+            MORSE_zpotrf_Tile_Async(uplo, descA,               sequence, &request[0]);
+            MORSE_ztrtri_Tile_Async(uplo, MorseNonUnit, descA, sequence, &request[1]);
+            MORSE_zlauum_Tile_Async(uplo, descA,               sequence, &request[2]);
 
-            MORSE_Sequence_Wait(sequence[0]);
-            MORSE_Sequence_Wait(sequence[1]);
-            MORSE_Sequence_Wait(sequence[2]);
-            MORSE_Desc_Getoncpu( descA );
+            MORSE_Sequence_Wait(sequence);
+            MORSE_Desc_Flush( descA, sequence );
             STOP_TIMING();
         }
 
@@ -113,7 +109,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
             MORSE_zpotrf_Tile_Async(uplo, descA, sequence, &request[0]);
             MORSE_zpotri_Tile_Async(uplo, descA, sequence, &request[1]);
             MORSE_Sequence_Wait(sequence);
-            MORSE_Desc_Getoncpu( descA );
+            MORSE_Desc_Flush( descA, sequence );
             STOP_TIMING();
 
             MORSE_Sequence_Destroy(sequence);

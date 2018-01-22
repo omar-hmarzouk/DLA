@@ -40,7 +40,7 @@ typedef struct quark_option_s {
 /*
  * Access to block pointer and leading dimension
  */
-#define RTBLKADDR( desc, type, m, n ) ( (type*)RUNTIME_desc_getaddr( desc, m, n ) )
+#define RTBLKADDR( desc, type, m, n ) ( (type*)RUNTIME_data_getaddr( desc, m, n ) )
 
 #define RUNTIME_BEGIN_ACCESS_DECLARATION
 

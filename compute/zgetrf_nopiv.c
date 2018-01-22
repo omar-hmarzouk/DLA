@@ -28,7 +28,8 @@
  **/
 #include "control/common.h"
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t
  *
@@ -143,7 +144,8 @@ int MORSE_zgetrf_nopiv(int M, int N,
     return status;
 }
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile
  *
@@ -190,15 +192,16 @@ int MORSE_zgetrf_nopiv_Tile(MORSE_desc_t *A)
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zgetrf_nopiv_Tile_Async(A, sequence, &request);
+    RUNTIME_desc_flush( A, sequence );
     morse_sequence_wait(morse, sequence);
-    RUNTIME_desc_getoncpu(A);
     
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
 }
 
-/***************************************************************************//**
+/**
+ ********************************************************************************
  *
  * @ingroup MORSE_Complex64_t_Tile_Async
  *

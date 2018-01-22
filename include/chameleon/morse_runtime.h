@@ -394,52 +394,73 @@ int
 RUNTIME_desc_release( const MORSE_desc_t *desc );
 
 /**
- * @brief Make sure the data is brought back to the CPU main memory at the
- * end of the algorithm.
+ * @brief Flush all pieces of data from a descriptor.
+ *
+ * This function marks all pieces of data from the descriptor as unused in the future to:
+ *   - cleanup the data from the distributed cache if present.
+ *   - mark for eviction from the GPU if space is needed
+ *   - move the data back to the main memory
  *
  * @param[in] desc
- *            The descriptor to release.
- *
- * @retval MORSE_SUCCESS on success
- */
-int
-RUNTIME_desc_getoncpu( const MORSE_desc_t *desc );
-
-/**
- * @brief Make sure the data will be brought back to the CPU main memory at the
- * end of the algorithm.
- *
- * This function is a asynchronous call that submit the data movement from
- * remote memory to the main memory. This call must be completed by a call to
- * RUNTIME_sequence_wait() to ensure that all data have been moved.
- * Users should avoid to call this function as it sequentially moves back the
- * data from outside the main memory to main memory, and should prefer
- * RUNTIME_desc_getoncpu_async().
- *
- * @param[in] desc
- *            The descriptor to release.
+ *            The descriptor to flush.
  *
  * @param[in] sequence
- *            The sequence to which submit the data movements
- *
- * @retval MORSE_SUCCESS on success
+ *            The sequence in which the data is used.
  */
-int
-RUNTIME_desc_getoncpu_async( const MORSE_desc_t *desc,
-                             MORSE_sequence_t   *sequence );
+void
+RUNTIME_desc_flush( const MORSE_desc_t     *desc,
+                    const MORSE_sequence_t *sequence );
+
+/**
+ * @brief Flush all data submitted to the runtime systems from the distributed
+ * cache, and/or mark for eviction from the GPU memory.
+ *
+ * This function flushes all data from the distributed cache of the runtime system.
+ */
+void
+RUNTIME_flush( );
+
+/**
+ * @brief Flush a single piece of data.
+ *
+ * This function marks a piece of data as unused in the future to:
+ *   - cleanup the data from the distributed cache if present.
+ *   - mark for eviction from the GPU if space is needed
+ *   - move the data back to the main memory
+ *
+ * @param[in] sequence
+ *            The sequence in which the data is used.
+ *
+ * @param[in] A
+ *            The descriptor to which the piece of data belongs.
+ *
+ * @param[in] Am
+ *            The row coordinate of the piece of data in the matrix
+ *
+ * @param[in] An
+ *            The column coordinate of the piece of data in the matrix
+ */
+void
+RUNTIME_data_flush( const MORSE_sequence_t *sequence,
+                    const MORSE_desc_t *A, int Am, int An );
 
 /**
  * @brief Get the pointer to the data or the runtime handler associated to the
  * piece of data (m, n) in desc.
  *
- * @param[in] desc
- *            The descriptor to release.
+ * @param[in] A
+ *            The descriptor to which belongs the piece of data.
  *
- * @retval MORSE_SUCCESS on success
+ * @param[in] Am
+ *            The row coordinate of the piece of data in the matrix
+ *
+ * @param[in] An
+ *            The column coordinate of the piece of data in the matrix
+ *
+ * @retval The runtime handler address of the piece of data.
  */
 void *
-RUNTIME_desc_getaddr( const MORSE_desc_t *desc,
-                      int m, int n );
+RUNTIME_data_getaddr( const MORSE_desc_t *A, int Am, int An );
 
 /**
  * @}

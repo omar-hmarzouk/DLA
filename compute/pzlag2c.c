@@ -32,11 +32,11 @@
 #define B(m,n) B,  m,  n
 #define SA(m,n) SA,  m,  n
 #define SB(m,n) SB,  m,  n
-/***************************************************************************//**
+/*******************************************************************************
  *
  **/
 
-/***************************************************************************//**
+/*******************************************************************************
  *
  **/
 void morse_pclag2z(MORSE_desc_t *SA, MORSE_desc_t *B,
@@ -67,7 +67,5 @@ void morse_pclag2z(MORSE_desc_t *SA, MORSE_desc_t *B,
                 B(m, n), ldbm);
         }
     }
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, SA );
-    MORSE_TASK_flush_desc( &options, MorseUpperLower, B );
     RUNTIME_options_finalize(&options, morse);
 }

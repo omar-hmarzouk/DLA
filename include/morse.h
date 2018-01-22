@@ -114,7 +114,7 @@ int MORSE_Desc_Create_OOC_User(MORSE_desc_t **desc, MORSE_enum dtyp,
 int MORSE_Desc_Destroy (MORSE_desc_t **desc);
 int MORSE_Desc_Acquire (MORSE_desc_t  *desc);
 int MORSE_Desc_Release (MORSE_desc_t  *desc);
-int MORSE_Desc_Getoncpu(MORSE_desc_t  *desc);
+int MORSE_Desc_Flush   (MORSE_desc_t  *desc, MORSE_sequence_t *sequence);
 void MORSE_user_tag_size(int, int) ;
 
 /* Workspaces */
