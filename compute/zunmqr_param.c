@@ -378,7 +378,7 @@ int MORSE_zunmqr_param_Tile_Async(const libhqr_tree_t *qrtree,
     morse_pzunmqr_param(qrtree, side, trans, A, C, TS, TT, Dptr, sequence, request);
 
     if (Dptr != NULL) {
-    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
+        morse_desc_mat_free( Dptr );
     }
     (void)D;
     return MORSE_SUCCESS;

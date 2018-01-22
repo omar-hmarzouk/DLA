@@ -407,7 +407,7 @@ int MORSE_ztpgqrt_Tile_Async( int L,
     /*    morse_pztpgqrtrh(Q1, T, MORSE_RHBLK, sequence, request); */
     /* } */
     if (Dptr != NULL) {
-    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
+        morse_desc_mat_free( Dptr );
     }
     (void)D;
     return MORSE_SUCCESS;

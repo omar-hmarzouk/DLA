@@ -293,7 +293,7 @@ int MORSE_zgelqf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
         morse_pzgelqfrh(A, T, Dptr, MORSE_RHBLK, sequence, request);
     }
     if (Dptr != NULL) {
-    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
+        morse_desc_mat_free( Dptr );
     }
     (void)D;
     return MORSE_SUCCESS;

@@ -329,7 +329,7 @@ int MORSE_zgeqrs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
     free(subB);
 
     if (Dptr != NULL) {
-    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
+        morse_desc_mat_free( Dptr );
     }
     (void)D;
     return MORSE_SUCCESS;

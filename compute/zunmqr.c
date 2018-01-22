@@ -383,7 +383,7 @@ int MORSE_zunmqr_Tile_Async(MORSE_enum side, MORSE_enum trans,
     }
 
     if (Dptr != NULL) {
-    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
+        morse_desc_mat_free( Dptr );
     }
     (void)D;
     return MORSE_SUCCESS;

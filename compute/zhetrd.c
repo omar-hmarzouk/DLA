@@ -430,7 +430,7 @@ int MORSE_zhetrd_Tile_Async(MORSE_enum jobz,
     }
 #endif /* !defined(CHAMELEON_SIMULATION) */
     if (Dptr != NULL) {
-    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
+        morse_desc_mat_free( Dptr );
     }
     morse_ztile2lap_cleanup( morse, &descABl, &descABt );
     (void)D;

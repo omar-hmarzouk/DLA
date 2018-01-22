@@ -429,7 +429,7 @@ int MORSE_zgels_Tile_Async(MORSE_enum trans, MORSE_desc_t *A,
     free(subB);
 
     if (Dptr != NULL) {
-    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
+        morse_desc_mat_free( Dptr );
     }
     (void)D;
     return MORSE_SUCCESS;

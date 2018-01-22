@@ -627,7 +627,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
         morse_desc_mat_free( &descVT );
     free(E);
     if (Dptr != NULL) {
-    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
+        morse_desc_mat_free( Dptr );
     }
     (void)D;
     return MORSE_SUCCESS;
