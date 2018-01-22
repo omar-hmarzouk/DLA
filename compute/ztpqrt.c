@@ -195,11 +195,11 @@ int MORSE_ztpqrt( int M, int N, int L,
     MORSE_ztpqrt_Tile_Async(L, &descA, &descB, descT, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N, sequence, &request);
-        morse_zooptile2lap(descB, B, NB, NB, LDB, N, sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N, sequence, &request);
+    morse_zooptile2lap(descB, B, NB, NB, LDB, N, sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

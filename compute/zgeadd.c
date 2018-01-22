@@ -164,10 +164,10 @@ int MORSE_zgeadd(MORSE_enum trans, int M, int N,
         trans, alpha, &descA, beta, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap( descB, B, NB, NB, LDB, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
+    morse_zooptile2lap( descB, B, NB, NB, LDB, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

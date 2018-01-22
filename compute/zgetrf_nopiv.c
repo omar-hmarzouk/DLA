@@ -124,9 +124,9 @@ int MORSE_zgetrf_nopiv(int M, int N,
     MORSE_zgetrf_nopiv_Tile_Async(&descA, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N, sequence, &request );
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N, sequence, &request );
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -184,7 +184,7 @@ int MORSE_zgetrf_nopiv_Tile(MORSE_desc_t *A)
     MORSE_zgetrf_nopiv_Tile_Async(A, sequence, &request);
     RUNTIME_desc_flush( A, sequence );
     morse_sequence_wait(morse, sequence);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

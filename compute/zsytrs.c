@@ -142,11 +142,11 @@ int MORSE_zsytrs(MORSE_enum uplo, int N, int NRHS,
     MORSE_zsytrs_Tile_Async(uplo, &descA, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
-    
+    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -283,10 +283,10 @@ int MORSE_zsytrs_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
         return morse_request_fail(sequence, request, -1);
     }
     /* Quick return */
-/*
-    if (chameleon_min(N, NRHS) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_min(N, NRHS) == 0)
+     return MORSE_SUCCESS;
+     */
     morse_pztrsm(MorseLeft, uplo, uplo == MorseUpper ? MorseTrans : MorseNoTrans, MorseNonUnit, 1.0, A, B, sequence, request);
 
     morse_pztrsm(MorseLeft, uplo, uplo == MorseUpper ? MorseNoTrans : MorseTrans, MorseNonUnit, 1.0, A, B, sequence, request);

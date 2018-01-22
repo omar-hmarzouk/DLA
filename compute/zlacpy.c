@@ -75,8 +75,8 @@
  *
  ******************************************************************************/
 int MORSE_zlacpy(MORSE_enum uplo, int M, int N,
-                  MORSE_Complex64_t *A, int LDA,
-                  MORSE_Complex64_t *B, int LDB)
+                 MORSE_Complex64_t *A, int LDA,
+                 MORSE_Complex64_t *B, int LDB)
 {
     int NB;
     int status;
@@ -116,7 +116,7 @@ int MORSE_zlacpy(MORSE_enum uplo, int M, int N,
 
     /* Quick return */
     if (chameleon_min(N, M) == 0)
-      return (double)0.0;
+        return (double)0.0;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
     status = morse_tune(MORSE_FUNC_ZGEMM, M, N, 0);
@@ -140,10 +140,10 @@ int MORSE_zlacpy(MORSE_enum uplo, int M, int N,
     MORSE_zlacpy_Tile_Async(uplo, &descA, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descB, B, NB, NB, LDB, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
+    morse_zooptile2lap(descB, B, NB, NB, LDB, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
 
     morse_sequence_destroy(morse, sequence);
     return MORSE_SUCCESS;
@@ -236,7 +236,7 @@ int MORSE_zlacpy_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B)
  *
  ******************************************************************************/
 int MORSE_zlacpy_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                            MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
 

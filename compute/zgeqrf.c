@@ -75,8 +75,8 @@
  *
  ******************************************************************************/
 int MORSE_zgeqrf(int M, int N,
-                  MORSE_Complex64_t *A, int LDA,
-                  MORSE_desc_t *descT)
+                 MORSE_Complex64_t *A, int LDA,
+                 MORSE_desc_t *descT)
 {
     int NB;
     int status;
@@ -129,9 +129,9 @@ int MORSE_zgeqrf(int M, int N,
     MORSE_zgeqrf_Tile_Async(&descA, descT, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -229,7 +229,7 @@ int MORSE_zgeqrf_Tile(MORSE_desc_t *A, MORSE_desc_t *T)
  *
  ******************************************************************************/
 int MORSE_zgeqrf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                            MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
     MORSE_desc_t D, *Dptr = NULL;
@@ -268,10 +268,10 @@ int MORSE_zgeqrf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Quick return */
-/*
-    if (chameleon_min(M, N) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_min(M, N) == 0)
+     return MORSE_SUCCESS;
+     */
 #if defined(CHAMELEON_COPY_DIAG)
     {
         int n = chameleon_min(A->mt, A->nt) * A->nb;

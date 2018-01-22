@@ -82,9 +82,9 @@
  *
  *******************************************************************************/
 int MORSE_zgeqrs(int M, int N, int NRHS,
-                  MORSE_Complex64_t *A, int LDA,
-                  MORSE_desc_t *descT,
-                  MORSE_Complex64_t *B, int LDB)
+                 MORSE_Complex64_t *A, int LDA,
+                 MORSE_desc_t *descT,
+                 MORSE_Complex64_t *B, int LDB)
 {
     int NB;
     int status;
@@ -147,12 +147,12 @@ int MORSE_zgeqrs(int M, int N, int NRHS,
     MORSE_zgeqrs_Tile_Async(&descA, descT, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
-        morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
-    
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
+    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -251,7 +251,7 @@ int MORSE_zgeqrs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B)
  *
  ******************************************************************************/
 int MORSE_zgeqrs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                            MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_desc_t *subA;
     MORSE_desc_t *subB;
@@ -296,11 +296,11 @@ int MORSE_zgeqrs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Quick return */
-/*
-    if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
-        return MORSE_SUCCESS;
-    }
-*/
+    /*
+     if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
+     return MORSE_SUCCESS;
+     }
+     */
 #if defined(CHAMELEON_COPY_DIAG)
     {
         int n = chameleon_min(A->mt, A->nt) * A->nb;

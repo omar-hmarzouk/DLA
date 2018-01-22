@@ -82,9 +82,9 @@
  *
  ******************************************************************************/
 int MORSE_zgelqs(int M, int N, int NRHS,
-                  MORSE_Complex64_t *A, int LDA,
-                  MORSE_desc_t *descT,
-                  MORSE_Complex64_t *B, int LDB)
+                 MORSE_Complex64_t *A, int LDA,
+                 MORSE_desc_t *descT,
+                 MORSE_Complex64_t *B, int LDB)
 {
     int NB;
     int status;
@@ -147,8 +147,8 @@ int MORSE_zgelqs(int M, int N, int NRHS,
     MORSE_zgelqs_Tile_Async(&descA, descT, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
-        morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
+    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
     morse_sequence_wait(morse, sequence);
     morse_desc_mat_free(&descA);
     morse_desc_mat_free(&descB);
@@ -251,7 +251,7 @@ int MORSE_zgelqs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B)
  *
  ******************************************************************************/
 int MORSE_zgelqs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                            MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_desc_t *subB;
     MORSE_desc_t *subA;
@@ -296,11 +296,11 @@ int MORSE_zgelqs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Quick return */
-/*
-    if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
-        return MORSE_SUCCESS;
-    }
-*/
+    /*
+     if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
+     return MORSE_SUCCESS;
+     }
+     */
     /* subB = morse_desc_submatrix(B, A->m, 0, A->n-A->m, B->n);
      morse_pzlaset( MorseUpperLower, 0., 0., subB, sequence, request );
      free(subB); */

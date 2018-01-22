@@ -131,9 +131,9 @@
  *
  ******************************************************************************/
 int MORSE_zgemm(MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
-                 MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                                           MORSE_Complex64_t *B, int LDB,
-                 MORSE_Complex64_t beta,  MORSE_Complex64_t *C, int LDC)
+                MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
+                MORSE_Complex64_t *B, int LDB,
+                MORSE_Complex64_t beta,  MORSE_Complex64_t *C, int LDC)
 {
     int NB;
     int Am, An, Bm, Bn;
@@ -346,9 +346,9 @@ int MORSE_zgemm_Tile(MORSE_enum transA, MORSE_enum transB,
  *
  ******************************************************************************/
 int MORSE_zgemm_Tile_Async(MORSE_enum transA, MORSE_enum transB,
-                            MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
-                            MORSE_Complex64_t beta,  MORSE_desc_t *C,
-                            MORSE_sequence_t *sequence, MORSE_request_t *request)
+                           MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
+                           MORSE_Complex64_t beta,  MORSE_desc_t *C,
+                           MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
     int M, N, K;

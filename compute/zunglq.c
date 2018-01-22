@@ -82,9 +82,9 @@
  *
  ******************************************************************************/
 int MORSE_zunglq(int M, int N, int K,
-                  MORSE_Complex64_t *A, int LDA,
-                  MORSE_desc_t *descT,
-                  MORSE_Complex64_t *Q, int LDQ)
+                 MORSE_Complex64_t *A, int LDA,
+                 MORSE_desc_t *descT,
+                 MORSE_Complex64_t *Q, int LDQ)
 {
     int NB;
     int status;
@@ -146,10 +146,10 @@ int MORSE_zunglq(int M, int N, int K,
     MORSE_zunglq_Tile_Async(&descA, descT, &descQ, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descQ, Q, NB, NB, LDQ, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descQ);
+    morse_zooptile2lap(descQ, Q, NB, NB, LDQ, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descQ);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -243,7 +243,7 @@ int MORSE_zunglq_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q)
  *
  ******************************************************************************/
 int MORSE_zunglq_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                            MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
     MORSE_desc_t D, *Dptr = NULL;
@@ -287,10 +287,10 @@ int MORSE_zunglq_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q,
     }
     /* Quick return - currently NOT equivalent to LAPACK's:
      * CALL DLASET( 'Full', MAX( M, N ), NRHS, ZERO, ZERO, Q, LDQ ) */
-/*
-    if (chameleon_min(M, N) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_min(M, N) == 0)
+     return MORSE_SUCCESS;
+     */
 
 #if defined(CHAMELEON_COPY_DIAG)
     {

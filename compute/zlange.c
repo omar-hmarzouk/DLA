@@ -101,7 +101,7 @@ double MORSE_zlange(MORSE_enum norm, int M, int N,
     }
     /* Check input arguments */
     if ( (norm != MorseMaxNorm) && (norm != MorseOneNorm)
-        && (norm != MorseInfNorm) && (norm != MorseFrobeniusNorm) ) {
+         && (norm != MorseInfNorm) && (norm != MorseFrobeniusNorm) ) {
         morse_error("MORSE_zlange", "illegal value of norm");
         return -1;
     }
@@ -120,7 +120,7 @@ double MORSE_zlange(MORSE_enum norm, int M, int N,
 
     /* Quick return */
     if (chameleon_min(N, M) == 0)
-      return (double)0.0;
+        return (double)0.0;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
     status = morse_tune(MORSE_FUNC_ZGEMM, M, N, 0);
@@ -142,10 +142,10 @@ double MORSE_zlange(MORSE_enum norm, int M, int N,
     MORSE_zlange_Tile_Async(norm, &descA, &value, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
     RUNTIME_desc_flush( &descA, sequence );
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
 
     morse_sequence_destroy(morse, sequence);
     return value;

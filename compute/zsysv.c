@@ -156,11 +156,11 @@ int MORSE_zsysv(MORSE_enum uplo, int N, int NRHS,
     MORSE_zsysv_Tile_Async(uplo, &descA, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
-        morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
+    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -210,7 +210,7 @@ int MORSE_zsysv(MORSE_enum uplo, int N, int NRHS,
  * @sa MORSE_zsysv
  * @sa MORSE_zsysv_Tile_Async
  * @sa MORSE_csysv_Tile
-*
+ *
  ******************************************************************************/
 int MORSE_zsysv_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B)
 {
@@ -306,10 +306,10 @@ int MORSE_zsysv_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
     }
     /* Quick return - currently NOT equivalent to LAPACK's
      * LAPACK does not have such check for Dsysv */
-/*
-    if (chameleon_min(N, NRHS) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_min(N, NRHS) == 0)
+     return MORSE_SUCCESS;
+     */
     morse_pzsytrf(uplo, A, sequence, request);
 
     morse_pztrsm(MorseLeft, uplo, uplo == MorseUpper ? MorseTrans : MorseNoTrans, MorseNonUnit, 1.0, A, B, sequence, request);

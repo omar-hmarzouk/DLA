@@ -108,9 +108,9 @@
  *
  ******************************************************************************/
 int MORSE_zgels(MORSE_enum trans, int M, int N, int NRHS,
-                 MORSE_Complex64_t *A, int LDA,
-                 MORSE_desc_t *descT,
-                 MORSE_Complex64_t *B, int LDB)
+                MORSE_Complex64_t *A, int LDA,
+                MORSE_desc_t *descT,
+                MORSE_Complex64_t *B, int LDB)
 {
     int i, j;
     int NB;
@@ -189,11 +189,11 @@ int MORSE_zgels(MORSE_enum trans, int M, int N, int NRHS,
     MORSE_zgels_Tile_Async(MorseNoTrans, &descA, descT, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
-        morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
+    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -255,7 +255,7 @@ int MORSE_zgels(MORSE_enum trans, int M, int N, int NRHS,
  *
  ******************************************************************************/
 int MORSE_zgels_Tile(MORSE_enum trans, MORSE_desc_t *A,
-                      MORSE_desc_t *T, MORSE_desc_t *B)
+                     MORSE_desc_t *T, MORSE_desc_t *B)
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -358,12 +358,12 @@ int MORSE_zgels_Tile_Async(MORSE_enum trans, MORSE_desc_t *A,
         return morse_request_fail(sequence, request, MORSE_ERR_NOT_SUPPORTED);
     }
     /* Quick return  - currently NOT equivalent to LAPACK's:
-    if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
-        for (i = 0; i < chameleon_max(M, N); i++)
-            for (j = 0; j < NRHS; j++)
-                B[j*LDB+i] = 0.0;
-        return MORSE_SUCCESS;
-    }
+     if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
+     for (i = 0; i < chameleon_max(M, N); i++)
+     for (j = 0; j < NRHS; j++)
+     B[j*LDB+i] = 0.0;
+     return MORSE_SUCCESS;
+     }
      */
     if (A->m >= A->n) {
 
@@ -392,8 +392,8 @@ int MORSE_zgels_Tile_Async(MORSE_enum trans, MORSE_desc_t *A,
     }
     else {
         /* subB = morse_desc_submatrix(B, A->m, 0, A->n-A->m, B->n);
-        morse_pzlaset( MorseUpperLower, 0., 0., subB, sequence, request);
-        free(subB); */
+         morse_pzlaset( MorseUpperLower, 0., 0., subB, sequence, request);
+         free(subB); */
 #if defined(CHAMELEON_COPY_DIAG)
         {
             int m = chameleon_min(A->mt, A->nt) * A->mb;

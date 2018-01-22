@@ -221,13 +221,13 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
     MORSE_ztpgqrt_Tile_Async(L, &descV1, descT1, &descV2, descT2, &descQ1, &descQ2, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descQ1, Q1, NB, NB, LDQ1, N, sequence, &request);
-        morse_zooptile2lap(descQ2, Q2, NB, NB, LDQ2, N, sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descV1);
-        morse_desc_mat_free(&descV2);
-        morse_desc_mat_free(&descQ1);
-        morse_desc_mat_free(&descQ2);
+    morse_zooptile2lap(descQ1, Q1, NB, NB, LDQ1, N, sequence, &request);
+    morse_zooptile2lap(descQ2, Q2, NB, NB, LDQ2, N, sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descV1);
+    morse_desc_mat_free(&descV2);
+    morse_desc_mat_free(&descQ1);
+    morse_desc_mat_free(&descQ2);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -383,7 +383,7 @@ int MORSE_ztpgqrt_Tile_Async( int L,
     {
         int minMT;
         if (V1->m > V1->n) {
-        minMT = V1->nt;
+            minMT = V1->nt;
         } else {
             minMT = V1->mt;
         }

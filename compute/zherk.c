@@ -99,8 +99,8 @@
  *
  ******************************************************************************/
 int MORSE_zherk(MORSE_enum uplo, MORSE_enum trans, int N, int K,
-                 double alpha, MORSE_Complex64_t *A, int LDA,
-                 double beta,  MORSE_Complex64_t *C, int LDC)
+                double alpha, MORSE_Complex64_t *A, int LDA,
+                double beta,  MORSE_Complex64_t *C, int LDC)
 {
     int NB;
     int Am, An;
@@ -125,7 +125,7 @@ int MORSE_zherk(MORSE_enum uplo, MORSE_enum trans, int N, int K,
         morse_error("MORSE_zherk", "illegal value of trans");
         return -2;
     }
-    if ( trans == MorseNoTrans ) { 
+    if ( trans == MorseNoTrans ) {
         Am = N; An = K;
     } else {
         Am = K; An = N;
@@ -174,10 +174,10 @@ int MORSE_zherk(MORSE_enum uplo, MORSE_enum trans, int N, int K,
     MORSE_zherk_Tile_Async(uplo, trans, alpha, &descA, beta, &descC, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descC);
+    morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descC);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -235,8 +235,8 @@ int MORSE_zherk(MORSE_enum uplo, MORSE_enum trans, int N, int K,
  *
  ******************************************************************************/
 int MORSE_zherk_Tile(MORSE_enum uplo, MORSE_enum trans,
-                      double alpha, MORSE_desc_t *A,
-                      double beta,  MORSE_desc_t *C)
+                     double alpha, MORSE_desc_t *A,
+                     double beta,  MORSE_desc_t *C)
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -253,7 +253,7 @@ int MORSE_zherk_Tile(MORSE_enum uplo, MORSE_enum trans,
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( C, sequence );
     morse_sequence_wait(morse, sequence);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -288,9 +288,9 @@ int MORSE_zherk_Tile(MORSE_enum uplo, MORSE_enum trans,
  *
  ******************************************************************************/
 int MORSE_zherk_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
-                            double alpha, MORSE_desc_t *A,
-                            double beta,  MORSE_desc_t *C,
-                            MORSE_sequence_t *sequence, MORSE_request_t *request)
+                           double alpha, MORSE_desc_t *A,
+                           double beta,  MORSE_desc_t *C,
+                           MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
     int N, K;
@@ -366,7 +366,7 @@ int MORSE_zherk_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
 
     /* Quick return */
     if ( N == 0 ||
-        ((alpha == (double)0.0 || K == 0) && beta == (double)1.0))
+         ((alpha == (double)0.0 || K == 0) && beta == (double)1.0))
         return MORSE_SUCCESS;
 
     morse_pzherk(uplo, trans, alpha, A, beta, C, sequence, request);

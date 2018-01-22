@@ -101,7 +101,7 @@ double MORSE_zlanhe(MORSE_enum norm, MORSE_enum uplo, int N,
     }
     /* Check input arguments */
     if ( (norm != MorseMaxNorm) && (norm != MorseOneNorm)
-        && (norm != MorseInfNorm) && (norm != MorseFrobeniusNorm) ) {
+         && (norm != MorseInfNorm) && (norm != MorseFrobeniusNorm) ) {
         morse_error("MORSE_zlanhe", "illegal value of norm");
         return -1;
     }
@@ -120,7 +120,7 @@ double MORSE_zlanhe(MORSE_enum norm, MORSE_enum uplo, int N,
 
     /* Quick return */
     if ( N == 0)
-      return (double)0.0;
+        return (double)0.0;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
     status = morse_tune(MORSE_FUNC_ZGEMM, N, N, 0);

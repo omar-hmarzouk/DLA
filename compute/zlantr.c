@@ -96,7 +96,7 @@
  *
  ******************************************************************************/
 double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
-                     int M, int N, MORSE_Complex64_t *A, int LDA)
+                    int M, int N, MORSE_Complex64_t *A, int LDA)
 {
     int NB;
     int status;
@@ -113,7 +113,7 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
     }
     /* Check input arguments */
     if ( (norm != MorseMaxNorm) && (norm != MorseOneNorm)
-        && (norm != MorseInfNorm) && (norm != MorseFrobeniusNorm) ) {
+         && (norm != MorseInfNorm) && (norm != MorseFrobeniusNorm) ) {
         morse_error("MORSE_zlantr", "illegal value of norm");
         return -1;
     }
@@ -140,7 +140,7 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
 
     /* Quick return */
     if (chameleon_min(N, M) == 0)
-      return (double)0.0;
+        return (double)0.0;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
     status = morse_tune(MORSE_FUNC_ZGEMM, M, N, 0);
@@ -162,8 +162,8 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
     MORSE_zlantr_Tile_Async(norm, uplo, diag, &descA, &value, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
 
     morse_sequence_destroy(morse, sequence);
     return value;

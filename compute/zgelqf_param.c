@@ -127,9 +127,9 @@ int MORSE_zgelqf_param(const libhqr_tree_t *qrtree, int M, int N,
     MORSE_zgelqf_param_Tile_Async(qrtree, &descA, descTS, descTT, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -270,10 +270,10 @@ int MORSE_zgelqf_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Quick return */
-/*
-    if (chameleon_min(M, N) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_min(M, N) == 0)
+     return MORSE_SUCCESS;
+     */
 #if defined(CHAMELEON_COPY_DIAG)
     {
         int m = chameleon_min(A->mt, A->nt) * A->mb;

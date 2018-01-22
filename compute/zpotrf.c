@@ -84,7 +84,7 @@
  *
  ******************************************************************************/
 int MORSE_zpotrf(MORSE_enum uplo, int N,
-                  MORSE_Complex64_t *A, int LDA)
+                 MORSE_Complex64_t *A, int LDA)
 {
     int NB;
     int status;
@@ -248,7 +248,7 @@ int MORSE_zpotrf_Tile(MORSE_enum uplo, MORSE_desc_t *A)
  *
  ******************************************************************************/
 int MORSE_zpotrf_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                            MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
 
@@ -286,10 +286,10 @@ int MORSE_zpotrf_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
         return morse_request_fail(sequence, request, -1);
     }
     /* Quick return */
-/*
-    if (chameleon_max(N, 0) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_max(N, 0) == 0)
+     return MORSE_SUCCESS;
+     */
     morse_pzpotrf(uplo, A, sequence, request);
 
     return MORSE_SUCCESS;

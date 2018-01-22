@@ -63,7 +63,7 @@
  *
  ******************************************************************************/
 int MORSE_zlascal(MORSE_enum uplo, int M, int N,
-                   MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA)
+                  MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA)
 {
     int NB;
     int status;
@@ -122,9 +122,9 @@ int MORSE_zlascal(MORSE_enum uplo, int M, int N,
         uplo, alpha, &descA, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);
-        RUNTIME_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
+    morse_zooptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);
+    RUNTIME_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -172,7 +172,7 @@ int MORSE_zlascal(MORSE_enum uplo, int M, int N,
  *
  ******************************************************************************/
 int MORSE_zlascal_Tile(MORSE_enum uplo,
-                        MORSE_Complex64_t alpha, MORSE_desc_t *A)
+                       MORSE_Complex64_t alpha, MORSE_desc_t *A)
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -222,8 +222,8 @@ int MORSE_zlascal_Tile(MORSE_enum uplo,
  *
  ******************************************************************************/
 int MORSE_zlascal_Tile_Async(MORSE_enum uplo,
-                              MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                              MORSE_sequence_t *sequence, MORSE_request_t *request)
+                             MORSE_Complex64_t alpha, MORSE_desc_t *A,
+                             MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
     MORSE_desc_t descA;

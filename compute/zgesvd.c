@@ -148,12 +148,12 @@
  *
  ******************************************************************************/
 int MORSE_zgesvd(MORSE_enum jobu, MORSE_enum jobvt,
-                  int M, int N,
-                  MORSE_Complex64_t *A, int LDA,
-                  double *S,
-                  MORSE_desc_t *descT,
-                  MORSE_Complex64_t *U, int LDU,
-                  MORSE_Complex64_t *VT, int LDVT)
+                 int M, int N,
+                 MORSE_Complex64_t *A, int LDA,
+                 double *S,
+                 MORSE_desc_t *descT,
+                 MORSE_Complex64_t *U, int LDU,
+                 MORSE_Complex64_t *VT, int LDVT)
 {
     int NB;
     int status;

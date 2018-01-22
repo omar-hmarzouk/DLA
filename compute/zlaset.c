@@ -76,8 +76,8 @@
  *
  ******************************************************************************/
 int MORSE_zlaset(MORSE_enum uplo, int M, int N,
-                  MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
-                  MORSE_Complex64_t *A, int LDA)
+                 MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
+                 MORSE_Complex64_t *A, int LDA)
 {
     int NB;
     int status;
@@ -113,7 +113,7 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N,
 
     /* Quick return */
     if (chameleon_min(N, M) == 0)
-      return (double)0.0;
+        return (double)0.0;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
     status = morse_tune(MORSE_FUNC_ZGEMM, M, N, 0);
@@ -135,8 +135,8 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N,
     MORSE_zlaset_Tile_Async(uplo, alpha, beta, &descA, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
 
     morse_sequence_destroy(morse, sequence);
     return MORSE_SUCCESS;
@@ -180,8 +180,8 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N,
  *
  ******************************************************************************/
 int MORSE_zlaset_Tile(MORSE_enum uplo,
-                       MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
-                       MORSE_desc_t *A)
+                      MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
+                      MORSE_desc_t *A)
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -227,9 +227,9 @@ int MORSE_zlaset_Tile(MORSE_enum uplo,
  *
  ******************************************************************************/
 int MORSE_zlaset_Tile_Async(MORSE_enum uplo,
-                             MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
-                             MORSE_desc_t *A,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                            MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
+                            MORSE_desc_t *A,
+                            MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
 

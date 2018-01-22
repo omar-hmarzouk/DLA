@@ -102,10 +102,10 @@
  *
  ******************************************************************************/
 int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
-                 MORSE_enum transA, MORSE_enum diag,
-                 int N, int NRHS, MORSE_Complex64_t alpha,
-                 MORSE_Complex64_t *A, int LDA,
-                 MORSE_Complex64_t *B, int LDB)
+                MORSE_enum transA, MORSE_enum diag,
+                int N, int NRHS, MORSE_Complex64_t alpha,
+                MORSE_Complex64_t *A, int LDA,
+                MORSE_Complex64_t *B, int LDB)
 {
     int NB, NA;
     int status;
@@ -121,9 +121,9 @@ int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
     }
 
     if (side == MorseLeft) {
-      NA = N;
+        NA = N;
     } else {
-      NA = NRHS;
+        NA = NRHS;
     }
 
     /* Check input arguments */
@@ -186,10 +186,10 @@ int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
         side, uplo, transA, diag, alpha, &descA, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
+    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -259,8 +259,8 @@ int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
  *
  ******************************************************************************/
 int MORSE_ztrsm_Tile(MORSE_enum side, MORSE_enum uplo,
-                      MORSE_enum transA, MORSE_enum diag,
-                      MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B)
+                     MORSE_enum transA, MORSE_enum diag,
+                     MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B)
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -277,7 +277,7 @@ int MORSE_ztrsm_Tile(MORSE_enum side, MORSE_enum uplo,
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( B, sequence );
     morse_sequence_wait(morse, sequence);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -312,9 +312,9 @@ int MORSE_ztrsm_Tile(MORSE_enum side, MORSE_enum uplo,
  *
  ******************************************************************************/
 int MORSE_ztrsm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
-                            MORSE_enum transA, MORSE_enum diag,
-                            MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
-                            MORSE_sequence_t *sequence, MORSE_request_t *request)
+                           MORSE_enum transA, MORSE_enum diag,
+                           MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
+                           MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
 

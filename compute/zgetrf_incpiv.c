@@ -79,8 +79,8 @@
  *
  ******************************************************************************/
 int MORSE_zgetrf_incpiv(int M, int N,
-                  MORSE_Complex64_t *A, int LDA,
-                  MORSE_desc_t *descL, int *IPIV)
+                        MORSE_Complex64_t *A, int LDA,
+                        MORSE_desc_t *descL, int *IPIV)
 {
     int NB;
     int status;
@@ -131,9 +131,9 @@ int MORSE_zgetrf_incpiv(int M, int N,
     MORSE_zgetrf_incpiv_Tile_Async(&descA, descL, IPIV, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -234,7 +234,7 @@ int MORSE_zgetrf_incpiv_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV)
  *
  ******************************************************************************/
 int MORSE_zgetrf_incpiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                                   MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
 
@@ -272,10 +272,10 @@ int MORSE_zgetrf_incpiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Quick return */
-/*
-    if (chameleon_min(M, N) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_min(M, N) == 0)
+     return MORSE_SUCCESS;
+     */
 
     morse_pzgetrf_incpiv(A, L, IPIV, sequence, request);
 

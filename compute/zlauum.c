@@ -78,7 +78,7 @@
  *
  ******************************************************************************/
 int MORSE_zlauum(MORSE_enum uplo, int N,
-                  MORSE_Complex64_t *A, int LDA)
+                 MORSE_Complex64_t *A, int LDA)
 {
     int NB;
     int status;
@@ -86,7 +86,7 @@ int MORSE_zlauum(MORSE_enum uplo, int N,
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
     MORSE_desc_t descA;
-    
+
     morse = morse_context_self();
     if (morse == NULL) {
         morse_fatal_error("MORSE_zlauum", "MORSE not initialized");
@@ -129,9 +129,9 @@ int MORSE_zlauum(MORSE_enum uplo, int N,
     MORSE_zlauum_Tile_Async(uplo, &descA, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -195,7 +195,7 @@ int MORSE_zlauum_Tile(MORSE_enum uplo, MORSE_desc_t *A)
     MORSE_zlauum_Tile_Async(uplo, A, sequence, &request);
     RUNTIME_desc_flush( A, sequence );
     morse_sequence_wait(morse, sequence);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -233,7 +233,7 @@ int MORSE_zlauum_Tile(MORSE_enum uplo, MORSE_desc_t *A)
  *
  ******************************************************************************/
 int MORSE_zlauum_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                            MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
 
@@ -271,10 +271,10 @@ int MORSE_zlauum_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
         return morse_request_fail(sequence, request, -1);
     }
     /* Quick return */
-/*
-    if (chameleon_max(N, 0) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_max(N, 0) == 0)
+     return MORSE_SUCCESS;
+     */
     morse_pzlauum(uplo, A, sequence, request);
 
     return MORSE_SUCCESS;

@@ -468,11 +468,11 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
     if (uplo == MorseLower)
     {
 #if defined(CHAMELEON_COPY_DIAG)
-    {
-        int n = chameleon_min(A->mt, A->nt) * A->nb;
-        morse_zdesc_alloc(D, A->mb, A->nb, A->m, n, 0, 0, A->m, n, );
-        Dptr = &D;
-    }
+        {
+            int n = chameleon_min(A->mt, A->nt) * A->nb;
+            morse_zdesc_alloc(D, A->mb, A->nb, A->m, n, 0, 0, A->m, n, );
+            Dptr = &D;
+        }
 #endif
         subA = morse_desc_submatrix(&descA,  descA.mb,  0, descA.m -descA.mb,  descA.n-descA.nb);
         subQ = morse_desc_submatrix(&descQ2, descQ2.mb, 0, descQ2.m-descQ2.mb, descQ2.n        );
@@ -492,11 +492,11 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
     }
     else {
 #if defined(CHAMELEON_COPY_DIAG)
-    {
-        int m = chameleon_min(A->mt, A->nt) * A->mb;
-        morse_zdesc_alloc(D, A->mb, A->nb, m, A->n, 0, 0, m, A->n, );
-        Dptr = &D;
-    }
+        {
+            int m = chameleon_min(A->mt, A->nt) * A->mb;
+            morse_zdesc_alloc(D, A->mb, A->nb, m, A->n, 0, 0, m, A->n, );
+            Dptr = &D;
+        }
 #endif
         subA = morse_desc_submatrix(&descA,  0, descA.nb,  descA.m -descA.mb,  descA.n -descA.nb );
         subQ = morse_desc_submatrix(&descQ2, descQ2.mb, 0, descQ2.m-descQ2.mb, descQ2.n          );

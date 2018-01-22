@@ -142,11 +142,11 @@ int MORSE_zgeqrs_param(const libhqr_tree_t *qrtree, int M, int N, int NRHS,
     MORSE_zgeqrs_param_Tile_Async(qrtree, &descA, descTS, descTT, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
-        morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
+    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

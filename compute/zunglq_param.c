@@ -143,10 +143,10 @@ int MORSE_zunglq_param(const libhqr_tree_t *qrtree, int M, int N, int K,
     MORSE_zunglq_param_Tile_Async(qrtree, &descA, descTS, descTT, &descQ, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descQ, Q, NB, NB, LDQ, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descQ);
+    morse_zooptile2lap(descQ, Q, NB, NB, LDQ, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descQ);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -288,10 +288,10 @@ int MORSE_zunglq_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
     }
     /* Quick return - currently NOT equivalent to LAPACK's:
      * CALL DLASET( 'Full', MAX( M, N ), NRHS, ZERO, ZERO, Q, LDQ ) */
-/*
-    if (chameleon_min(M, N) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_min(M, N) == 0)
+     return MORSE_SUCCESS;
+     */
 #if defined(CHAMELEON_COPY_DIAG)
     {
         int m = chameleon_min(A->mt, A->nt) * A->mb;

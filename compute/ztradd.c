@@ -174,10 +174,10 @@ int MORSE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
         uplo, trans, alpha, &descA, beta, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap( descB, B, NB, NB, LDB, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
+    morse_zooptile2lap( descB, B, NB, NB, LDB, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -239,8 +239,8 @@ int MORSE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
  *
  ******************************************************************************/
 int MORSE_ztradd_Tile(MORSE_enum uplo, MORSE_enum trans,
-                       MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                       MORSE_Complex64_t beta,  MORSE_desc_t *B)
+                      MORSE_Complex64_t alpha, MORSE_desc_t *A,
+                      MORSE_Complex64_t beta,  MORSE_desc_t *B)
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

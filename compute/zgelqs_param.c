@@ -149,8 +149,8 @@ int MORSE_zgelqs_param(const libhqr_tree_t *qrtree, int M, int N, int NRHS,
     MORSE_zgelqs_param_Tile_Async(qrtree, &descA, descTS, descTT, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
-        morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
+    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
     morse_sequence_wait(morse, sequence);
     morse_desc_mat_free(&descA);
     morse_desc_mat_free(&descB);
@@ -305,14 +305,14 @@ int MORSE_zgelqs_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Quick return */
-/*
-    if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
-        return MORSE_SUCCESS;
-    }
-*/
+    /*
+     if (chameleon_min(M, chameleon_min(N, NRHS)) == 0) {
+     return MORSE_SUCCESS;
+     }
+     */
     /* subB = morse_desc_submatrix(B, A->m, 0, A->n-A->m, B->n);
-    morse_pzlaset( MorseUpperLower, 0., 0., subB, sequence, request);
-    free(subB); */
+     morse_pzlaset( MorseUpperLower, 0., 0., subB, sequence, request);
+     free(subB); */
 
     subB = morse_desc_submatrix(B, 0, 0, A->m, B->n);
     subA = morse_desc_submatrix(A, 0, 0, A->m, A->m);

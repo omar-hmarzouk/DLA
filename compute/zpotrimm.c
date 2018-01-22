@@ -140,13 +140,13 @@ int MORSE_zpotrimm(MORSE_enum uplo, int N,
     MORSE_zpotrimm_Tile_Async(uplo, &descA, &descB, &descC, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
-        morse_zooptile2lap(descB, A, NB, NB, LDB, N,  sequence, &request);
-        morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
-        morse_desc_mat_free(&descC);
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_zooptile2lap(descB, A, NB, NB, LDB, N,  sequence, &request);
+    morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
+    morse_desc_mat_free(&descC);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -251,7 +251,7 @@ int MORSE_zpotrimm_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE
  *
  ******************************************************************************/
 int MORSE_zpotrimm_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *C,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                              MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
 
@@ -313,7 +313,7 @@ int MORSE_zpotrimm_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
     /*
      morse_pztrtri(uplo, MorseNonUnit, A, sequence, request);
      morse_pzlauum(uplo, A, sequence, request);
-    */
+     */
 
     return MORSE_SUCCESS;
 }

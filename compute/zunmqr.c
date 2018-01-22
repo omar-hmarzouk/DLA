@@ -108,9 +108,9 @@
  *
  ******************************************************************************/
 int MORSE_zunmqr(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
-                  MORSE_Complex64_t *A, int LDA,
-                  MORSE_desc_t *descT,
-                  MORSE_Complex64_t *C, int LDC)
+                 MORSE_Complex64_t *A, int LDA,
+                 MORSE_desc_t *descT,
+                 MORSE_Complex64_t *C, int LDC)
 {
     int NB, Am;
     int status;
@@ -187,10 +187,10 @@ int MORSE_zunmqr(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
         side, trans, &descA, descT, &descC, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descC);
+    morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descC);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -248,7 +248,7 @@ int MORSE_zunmqr(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
  *
  ******************************************************************************/
 int MORSE_zunmqr_Tile(MORSE_enum side, MORSE_enum trans,
-                       MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C)
+                      MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C)
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -300,8 +300,8 @@ int MORSE_zunmqr_Tile(MORSE_enum side, MORSE_enum trans,
  *
  ******************************************************************************/
 int MORSE_zunmqr_Tile_Async(MORSE_enum side, MORSE_enum trans,
-                             MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                            MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C,
+                            MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
     MORSE_desc_t D, *Dptr = NULL;
@@ -351,10 +351,10 @@ int MORSE_zunmqr_Tile_Async(MORSE_enum side, MORSE_enum trans,
     }
     /* Quick return - currently NOT equivalent to LAPACK's:
      * CALL DLASET( 'Full', MAX( M, N ), NRHS, ZERO, ZERO, C, LDC ) */
-/*
-    if (chameleon_min(M, chameleon_min(N, K)) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_min(M, chameleon_min(N, K)) == 0)
+     return MORSE_SUCCESS;
+     */
 
 #if defined(CHAMELEON_COPY_DIAG)
     {
@@ -364,7 +364,7 @@ int MORSE_zunmqr_Tile_Async(MORSE_enum side, MORSE_enum trans,
     }
 #endif
 
-   if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
+    if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
         if ( (trans == MorseConjTrans) &&
              (side == MorseLeft) ) {
             morse_pzunmqr(side, trans, A, C, T, Dptr, sequence, request);

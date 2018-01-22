@@ -286,10 +286,10 @@ int MORSE_zungqr_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Quick return */
-/*
-    if (N <= 0)
-        return MORSE_SUCCESS;
- */
+    /*
+     if (N <= 0)
+     return MORSE_SUCCESS;
+     */
 #if defined(CHAMELEON_COPY_DIAG)
     {
         int n = chameleon_min(A->mt, A->nt) * A->nb;

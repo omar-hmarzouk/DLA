@@ -145,12 +145,12 @@ int MORSE_zgesv_nopiv(int N, int NRHS,
     MORSE_zgesv_nopiv_Tile_Async(&descA, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-        morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
-        morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
-    
+    morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
+    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -210,7 +210,7 @@ int MORSE_zgesv_nopiv_Tile(MORSE_desc_t *A, MORSE_desc_t *B)
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( B, sequence );
     morse_sequence_wait(morse, sequence);
-    
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -285,10 +285,10 @@ int MORSE_zgesv_nopiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *B,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Quick return */
-/*
-    if (chameleon_min(N, NRHS) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_min(N, NRHS) == 0)
+     return MORSE_SUCCESS;
+     */
 
     morse_pzgetrf_nopiv(A, sequence, request);
 

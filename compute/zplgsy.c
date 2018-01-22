@@ -172,7 +172,7 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, int N,
  *
  ******************************************************************************/
 int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_enum uplo,
-		               MORSE_desc_t *A,
+                       MORSE_desc_t *A,
                        unsigned long long int seed )
 {
     MORSE_context_t *morse;
