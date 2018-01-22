@@ -125,10 +125,13 @@ int MORSE_zbuild( MORSE_enum uplo, int M, int N,
     /* Set NT */
     NB = MORSE_NB;
     morse_sequence_create(morse, &sequence);
-    morse_zdesc_alloc(descA, NB, NB, LDA, N, 0, 0, M, N, morse_desc_mat_free(&descA));
+
+    /* Submit the matrix conversion */
+    morse_zlap2tile( morse, &descAl, &descAt, uplo,
+                     A, NB, NB, LDA, N, M, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zbuild_Tile_Async(uplo, &descA, user_data, user_build_callback, sequence, &request );
+    MORSE_zbuild_Tile_Async( uplo, &descAt, user_data, user_build_callback, sequence, &request );
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,

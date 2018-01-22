@@ -159,7 +159,7 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
                      A, NB, NB, LDA, N, M, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zlantr_Tile_Async(norm, uplo, diag, &descA, &value, sequence, &request);
+    MORSE_zlantr_Tile_Async( norm, uplo, diag, &descAt, &value, sequence, &request );
 
     /* Submit the matrix conversion */
 
@@ -230,7 +230,7 @@ double MORSE_zlantr_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORS
         return MORSE_ERR_NOT_INITIALIZED;
     }
     morse_sequence_create(morse, &sequence);
-    MORSE_zlantr_Tile_Async(norm, uplo, diag, A, &value, sequence, &request);
+    MORSE_zlantr_Tile_Async( norm, uplo, diag, A, &value, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 

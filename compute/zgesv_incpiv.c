@@ -144,7 +144,7 @@ int MORSE_zgesv_incpiv(int N, int NRHS,
                      B, NB, NB, LDB, NRHS, N, NRHS, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zgesv_incpiv_Tile_Async(&descA, descL, IPIV, &descB, sequence, &request);
+    MORSE_zgesv_incpiv_Tile_Async( &descAt, descL, IPIV, &descBt, sequence, &request );
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
@@ -220,7 +220,7 @@ int MORSE_zgesv_incpiv_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_d
         return MORSE_ERR_NOT_INITIALIZED;
     }
     morse_sequence_create(morse, &sequence);
-    MORSE_zgesv_incpiv_Tile_Async(A, L, IPIV, B, sequence, &request);
+    MORSE_zgesv_incpiv_Tile_Async( A, L, IPIV, B, sequence, &request );
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( B, sequence );
 

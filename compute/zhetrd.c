@@ -171,7 +171,7 @@ int MORSE_zhetrd(MORSE_enum jobz, MORSE_enum uplo, int N,
                      A, NB, NB, LDA, N, N, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zhetrd_Tile_Async(jobz, uplo, &descA, D, E, descT, Q, LDQ, sequence, &request);
+    MORSE_zhetrd_Tile_Async( jobz, uplo, &descAt, D, E, descT, Q, LDQ, sequence, &request );
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
@@ -282,7 +282,7 @@ int MORSE_zhetrd_Tile(MORSE_enum jobz, MORSE_enum uplo,
         return MORSE_ERR_NOT_INITIALIZED;
     }
     morse_sequence_create(morse, &sequence);
-    MORSE_zhetrd_Tile_Async(jobz, uplo, A, D, E, T, Q, LDQ, sequence, &request);
+    MORSE_zhetrd_Tile_Async( jobz, uplo, A, D, E, T, Q, LDQ, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 
@@ -333,8 +333,8 @@ int MORSE_zhetrd_Tile_Async(MORSE_enum jobz,
                             MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
-    MORSE_desc_t descAl, descAt;
-    MORSE_desc_t descABl, descABt;
+    MORSE_desc_t descA;
+    MORSE_desc_t descAB;
     int N, NB, LDAB;
     int status;
     MORSE_desc_t D, *Dptr = NULL;
@@ -432,7 +432,7 @@ int MORSE_zhetrd_Tile_Async(MORSE_enum jobz,
     if (Dptr != NULL) {
         morse_desc_mat_free( Dptr );
     }
-    morse_ztile2lap_cleanup( morse, &descABl, &descABt );
+    morse_desc_mat_free( &descAB );
     (void)D;
     return MORSE_SUCCESS;
 }

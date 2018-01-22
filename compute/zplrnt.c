@@ -112,10 +112,13 @@ int MORSE_zplrnt( int M, int N,
     /* Set NT */
     NB = MORSE_NB;
     morse_sequence_create(morse, &sequence);
-    morse_zdesc_alloc(descA, NB, NB, LDA, N, 0, 0, M, N, morse_desc_mat_free(&descA));
+
+    /* Submit the matrix conversion */
+    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+                     A, NB, NB, LDA, N, M, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zplrnt_Tile_Async( &descA, seed, sequence, &request );
+    MORSE_zplrnt_Tile_Async( &descAt, seed, sequence, &request );
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,

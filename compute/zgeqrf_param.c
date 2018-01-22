@@ -129,7 +129,7 @@ int MORSE_zgeqrf_param(const libhqr_tree_t *qrtree, int M, int N,
                      A, NB, NB, LDA, N, M, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zgeqrf_param_Tile_Async(qrtree, &descA, descTS, descTT, sequence, &request);
+    MORSE_zgeqrf_param_Tile_Async( qrtree, &descAt, descTS, descTT, sequence, &request );
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
@@ -201,7 +201,7 @@ int MORSE_zgeqrf_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_
         return MORSE_ERR_NOT_INITIALIZED;
     }
     morse_sequence_create(morse, &sequence);
-    MORSE_zgeqrf_param_Tile_Async(qrtree, A, TS, TT, sequence, &request);
+    MORSE_zgeqrf_param_Tile_Async( qrtree, A, TS, TT, sequence, &request );
     RUNTIME_desc_flush( A, sequence );
 
     morse_sequence_wait(morse, sequence);

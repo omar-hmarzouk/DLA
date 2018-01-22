@@ -115,14 +115,16 @@ int MORSE_zplghe( double bump, MORSE_enum uplo, int N,
     NB = MORSE_NB;
     morse_sequence_create(morse, &sequence);
 
-    morse_zdesc_alloc(descA, NB, NB, LDA, N, 0, 0, N, N, morse_desc_mat_free(&descA));
+    /* Submit the matrix conversion */
+    morse_zlap2tile( morse, &descAl, &descAt, uplo,
+                     A, NB, NB, LDA, N, N, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zplghe_Tile_Async( bump, uplo, &descA, seed, sequence, &request );
+    MORSE_zplghe_Tile_Async( bump, uplo, &descAt, seed, sequence, &request );
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
-                     MorseUpperLower, sequence, &request );
+                     uplo, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 

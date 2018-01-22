@@ -139,7 +139,7 @@ double MORSE_zlansy(MORSE_enum norm, MORSE_enum uplo, int N,
                      A, NB, NB, LDA, N, N, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zlansy_Tile_Async(norm, uplo, &descA, &value, sequence, &request);
+    MORSE_zlansy_Tile_Async( norm, uplo, &descAt, &value, sequence, &request );
 
     /* Submit the matrix conversion */
 
@@ -208,7 +208,7 @@ double MORSE_zlansy_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A)
         return MORSE_ERR_NOT_INITIALIZED;
     }
     morse_sequence_create(morse, &sequence);
-    MORSE_zlansy_Tile_Async(norm, uplo, A, &value, sequence, &request);
+    MORSE_zlansy_Tile_Async( norm, uplo, A, &value, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 

@@ -171,8 +171,7 @@ int MORSE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
                      B, NB, NB, LDB, N, M, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_ztradd_Tile_Async(
-        uplo, trans, alpha, &descA, beta, &descB, sequence, &request);
+    MORSE_ztradd_Tile_Async( uplo, trans, alpha, &descAt, beta, &descBt, sequence, &request );
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descBl, &descBt,
@@ -258,7 +257,7 @@ int MORSE_ztradd_Tile(MORSE_enum uplo, MORSE_enum trans,
         return MORSE_ERR_NOT_INITIALIZED;
     }
     morse_sequence_create(morse, &sequence);
-    MORSE_ztradd_Tile_Async(uplo, trans, alpha, A, beta, B, sequence, &request);
+    MORSE_ztradd_Tile_Async( uplo, trans, alpha, A, beta, B, sequence, &request );
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( B, sequence );
 

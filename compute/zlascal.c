@@ -118,8 +118,7 @@ int MORSE_zlascal(MORSE_enum uplo, int M, int N,
                      A, NB, NB, LDA, N, M, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zlascal_Tile_Async(
-        uplo, alpha, &descA, sequence, &request);
+    MORSE_zlascal_Tile_Async( uplo, alpha, &descAt, sequence, &request );
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
@@ -186,7 +185,7 @@ int MORSE_zlascal_Tile(MORSE_enum uplo,
         return MORSE_ERR_NOT_INITIALIZED;
     }
     morse_sequence_create(morse, &sequence);
-    MORSE_zlascal_Tile_Async(uplo, alpha, A, sequence, &request);
+    MORSE_zlascal_Tile_Async( uplo, alpha, A, sequence, &request );
     RUNTIME_sequence_wait(morse, sequence);
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -227,7 +226,7 @@ int MORSE_zlascal_Tile_Async(MORSE_enum uplo,
                              MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
-    MORSE_desc_t descAl, descAt;
+    MORSE_desc_t descA;
 
     morse = morse_context_self();
     if (morse == NULL) {
