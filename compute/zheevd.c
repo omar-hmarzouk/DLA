@@ -343,7 +343,8 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
     int N, NB, status;
     double *E;
     MORSE_Complex64_t *V;
-    MORSE_desc_t descQ2, descV;
+    MORSE_desc_t descQ2;
+    MORSE_desc_t descV;
     MORSE_desc_t *subA, *subQ, *subT;
 
     morse = morse_context_self();

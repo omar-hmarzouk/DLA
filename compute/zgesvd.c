@@ -402,7 +402,8 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
 {
     MORSE_desc_t descA;
     MORSE_desc_t descT;
-    MORSE_desc_t descU, descVT;
+    MORSE_desc_t descU;
+    MORSE_desc_t descVT;
     MORSE_desc_t descAB;
     MORSE_desc_t D, *Dptr = NULL;
     MORSE_desc_t *subA, *subT, *subUVT;

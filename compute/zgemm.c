@@ -138,7 +138,9 @@ int MORSE_zgemm(MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
     int NB;
     int Am, An, Bm, Bn;
     int status;
-    MORSE_desc_t descA, descB, descC;
+    MORSE_desc_t descA;
+    MORSE_desc_t descB;
+    MORSE_desc_t descC;
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;

@@ -91,7 +91,8 @@ int MORSE_zpotrf(MORSE_enum uplo, int N,
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
-    MORSE_desc_t descAt, descAl;
+    MORSE_desc_t descAt;
+    MORSE_desc_t descAl;
 
     morse = morse_context_self();
     if (morse == NULL) {

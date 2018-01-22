@@ -144,7 +144,10 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
-    MORSE_desc_t descQ1, descQ2, descV1, descV2;
+    MORSE_desc_t descQ1;
+    MORSE_desc_t descQ2;
+    MORSE_desc_t descV1;
+    MORSE_desc_t descV2;
     int minMK = chameleon_min( M, K );
 
     morse = morse_context_self();

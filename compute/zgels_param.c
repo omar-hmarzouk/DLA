@@ -120,7 +120,8 @@ int MORSE_zgels_param(const libhqr_tree_t *qrtree, MORSE_enum trans, int M, int 
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
-    MORSE_desc_t descA, descB;
+    MORSE_desc_t descA;
+    MORSE_desc_t descB;
 
     morse = morse_context_self();
     if (morse == NULL) {
