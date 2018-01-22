@@ -212,7 +212,10 @@ morse_zlap2tile( MORSE_context_t *morse,
         descAt->mat = A;
         /* MORSE_zgecfi_Async( lm, ln, A, MorseCM, mb, nb, */
         /*                     MorseCCRB, mb, nb, seq, req ); */
+        return MORSE_ERR_NOT_SUPPORTED;
     }
+
+    return MORSE_SUCCESS;
 }
 
 /**
@@ -231,16 +234,19 @@ morse_ztile2lap( MORSE_context_t *morse, MORSE_desc_t *descAl, MORSE_desc_t *des
         /* MORSE_zgecfi_Async( descAl->lm, descAl->ln, descAl->mat, */
         /*                     MorseCCRB, descAl->mb, descAl->nb,   */
         /*                     MorseCM, descAl->mb, descAl->nb, seq, req ); */
+        return MORSE_ERR_NOT_SUPPORTED;
     }
     RUNTIME_desc_flush( descAl, seq );
     RUNTIME_desc_flush( descAt, seq );
+
+    return MORSE_SUCCESS;
 }
 
 /**
  * @brief Internal function to cleanup the temporary data from the layout
  * conversions in LAPACK interface calls
  */
-static inline int
+static inline void
 morse_ztile2lap_cleanup( MORSE_context_t *morse, MORSE_desc_t *descAl, MORSE_desc_t *descAt )
 {
     if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {
