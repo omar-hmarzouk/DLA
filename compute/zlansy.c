@@ -135,7 +135,7 @@ double MORSE_zlansy(MORSE_enum norm, MORSE_enum uplo, int N,
     morse_sequence_create(morse, &sequence);
 
     /* Submit the matrix conversion */
-    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+    morse_zlap2tile( morse, &descAl, &descAt, uplo,
                      A, NB, NB, LDA, N, N, N, sequence, &request );
 
     /* Call the tile interface */

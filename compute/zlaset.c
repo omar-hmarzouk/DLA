@@ -128,7 +128,7 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N,
     morse_sequence_create(morse, &sequence);
 
     /* Submit the matrix conversion */
-    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+    morse_zlap2tile( morse, &descAl, &descAt, uplo,
                      A, NB, NB, LDA, N, M, N, sequence, &request );
 
     /* Call the tile interface */

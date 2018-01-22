@@ -135,7 +135,7 @@ int MORSE_zbuild( MORSE_enum uplo, int M, int N,
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
-                     MorseUpperLower, sequence, &request );
+                     uplo, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 

@@ -179,9 +179,9 @@ int MORSE_ztrmm(MORSE_enum side, MORSE_enum uplo,
     morse_sequence_create(morse, &sequence);
 
     /* Submit the matrix conversion */
-    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+    morse_zlap2tile( morse, &descAl, &descAt, uplo,
                      A, NB, NB, LDA, NA, NA, NA, sequence, &request );
-    morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
+    morse_zlap2tile( morse, &descBl, &descBt, uplo,
                      B, NB, NB, LDB, NRHS, N,  NRHS, sequence, &request );
 
     /* Call the tile interface */
@@ -189,7 +189,7 @@ int MORSE_ztrmm(MORSE_enum side, MORSE_enum uplo,
 
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descBl, &descBt,
-                     MorseUpperLower, sequence, &request );
+                     uplo, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 
