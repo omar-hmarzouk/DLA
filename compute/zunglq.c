@@ -91,8 +91,8 @@ int MORSE_zunglq(int M, int N, int K,
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
-    MORSE_desc_t descA;
-    MORSE_desc_t descQ;
+    MORSE_desc_t descAl, descAt;
+    MORSE_desc_t descQl, descQt;
 
     morse = morse_context_self();
     if (morse == NULL) {

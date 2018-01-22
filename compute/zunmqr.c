@@ -117,8 +117,8 @@ int MORSE_zunmqr(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
-    MORSE_desc_t descA;
-    MORSE_desc_t descC;
+    MORSE_desc_t descAl, descAt;
+    MORSE_desc_t descCl, descCt;
 
     morse = morse_context_self();
     if (morse == NULL) {

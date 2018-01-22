@@ -77,7 +77,7 @@ int MORSE_zgetrf_nopiv(int M, int N,
 {
     int NB;
     int status;
-    MORSE_desc_t descA ;
+    MORSE_desc_t descAl, descAt;
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;

@@ -90,7 +90,7 @@ int MORSE_ztrtri(MORSE_enum uplo, MORSE_enum diag, int N,
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
-    MORSE_desc_t descA;
+    MORSE_desc_t descAl, descAt;
 
     morse = morse_context_self();
     if (morse == NULL) {

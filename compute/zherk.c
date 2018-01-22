@@ -105,8 +105,8 @@ int MORSE_zherk(MORSE_enum uplo, MORSE_enum trans, int N, int K,
     int NB;
     int Am, An;
     int status;
-    MORSE_desc_t descA;
-    MORSE_desc_t descC;
+    MORSE_desc_t descAl, descAt;
+    MORSE_desc_t descCl, descCt;
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
