@@ -122,7 +122,8 @@ int MORSE_zlascal(MORSE_enum uplo, int M, int N,
         uplo, alpha, &descA, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseUpperLower, sequence, &request );
     RUNTIME_sequence_wait(morse, sequence);
     morse_desc_mat_free(&descA);
 

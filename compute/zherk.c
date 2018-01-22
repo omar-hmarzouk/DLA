@@ -174,8 +174,11 @@ int MORSE_zherk(MORSE_enum uplo, MORSE_enum trans, int N, int K,
     MORSE_zherk_Tile_Async(uplo, trans, alpha, &descA, beta, &descC, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
+    morse_ztile2lap( morse, &descCl, &descCt,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
     morse_desc_mat_free(&descC);
 
@@ -252,6 +255,7 @@ int MORSE_zherk_Tile(MORSE_enum uplo, MORSE_enum trans,
     MORSE_zherk_Tile_Async(uplo, trans, alpha, A, beta, C, sequence, &request);
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( C, sequence );
+
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

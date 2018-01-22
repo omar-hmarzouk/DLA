@@ -221,9 +221,13 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
     MORSE_ztpgqrt_Tile_Async(L, &descV1, descT1, &descV2, descT2, &descQ1, &descQ2, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap(descQ1, Q1, NB, NB, LDQ1, N, sequence, &request);
-    morse_zooptile2lap(descQ2, Q2, NB, NB, LDQ2, N, sequence, &request);
+    morse_ztile2lap( morse, &descQ1l, &descQ1t,
+                     MorseUpperLower, sequence, &request );
+    morse_ztile2lap( morse, &descQ2l, &descQ2t,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descV1);
     morse_desc_mat_free(&descV2);
     morse_desc_mat_free(&descQ1);
@@ -281,6 +285,7 @@ int MORSE_ztpgqrt_Tile( int L,
     MORSE_ztpgqrt_Tile_Async(L, V1, T1, V2, T2, Q1, Q2, sequence, &request);
     RUNTIME_desc_flush( Q1, sequence );
     RUNTIME_desc_flush( Q2, sequence );
+
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

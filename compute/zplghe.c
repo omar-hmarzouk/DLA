@@ -120,8 +120,11 @@ int MORSE_zplghe( double bump, MORSE_enum uplo, int N,
     /* Call the tile interface */
     MORSE_zplghe_Tile_Async( bump, uplo, &descA, seed, sequence, &request );
 
-    morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
 
     status = sequence->status;
@@ -186,7 +189,9 @@ int MORSE_zplghe_Tile( double bump, MORSE_enum uplo, MORSE_desc_t *A,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zplghe_Tile_Async( bump, uplo, A, seed, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

@@ -184,8 +184,11 @@ int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
         side, trans, &descA, descT, &descC, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
+    morse_ztile2lap( morse, &descCl, &descCt,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
     morse_desc_mat_free(&descC);
 
@@ -260,6 +263,7 @@ int MORSE_zunmlq_Tile(MORSE_enum side, MORSE_enum trans,
     MORSE_zunmlq_Tile_Async(side, trans, A, T, C, sequence, &request);
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( C, sequence );
+
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

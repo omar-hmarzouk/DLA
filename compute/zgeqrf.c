@@ -129,8 +129,11 @@ int MORSE_zgeqrf(int M, int N,
     MORSE_zgeqrf_Tile_Async(&descA, descT, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
 
     status = sequence->status;
@@ -192,6 +195,7 @@ int MORSE_zgeqrf_Tile(MORSE_desc_t *A, MORSE_desc_t *T)
     morse_sequence_create(morse, &sequence);
     MORSE_zgeqrf_Tile_Async(A, T, sequence, &request);
     RUNTIME_desc_flush( A, sequence );
+
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

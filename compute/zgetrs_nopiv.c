@@ -146,8 +146,11 @@ int MORSE_zgetrs_nopiv(MORSE_enum trans, int N, int NRHS,
     MORSE_zgetrs_nopiv_Tile_Async(&descA, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_ztile2lap( morse, &descBl, &descBt,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
     morse_desc_mat_free(&descB);
 
@@ -208,6 +211,7 @@ int MORSE_zgetrs_nopiv_Tile(MORSE_desc_t *A, MORSE_desc_t *B)
     MORSE_zgetrs_nopiv_Tile_Async(A, B, sequence, &request);
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( B, sequence );
+
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

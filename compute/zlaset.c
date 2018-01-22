@@ -135,7 +135,9 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N,
     MORSE_zlaset_Tile_Async(uplo, alpha, beta, &descA, sequence, &request);
 
     /* Submit the matrix conversion */
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
 
     morse_sequence_destroy(morse, sequence);
@@ -194,7 +196,9 @@ int MORSE_zlaset_Tile(MORSE_enum uplo,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zlaset_Tile_Async(uplo, alpha, beta, A, sequence, &request);
+
     morse_sequence_wait(morse, sequence);
+
     morse_sequence_destroy(morse, sequence);
     return MORSE_SUCCESS;
 }

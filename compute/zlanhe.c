@@ -142,9 +142,12 @@ double MORSE_zlanhe(MORSE_enum norm, MORSE_enum uplo, int N,
     MORSE_zlanhe_Tile_Async(norm, uplo, &descA, &value, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseUpperLower, sequence, &request );
     RUNTIME_desc_flush( &descA, sequence );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
 
     morse_sequence_destroy(morse, sequence);
@@ -208,7 +211,9 @@ double MORSE_zlanhe_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A)
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zlanhe_Tile_Async(norm, uplo, A, &value, sequence, &request);
+
     morse_sequence_wait(morse, sequence);
+
     morse_sequence_destroy(morse, sequence);
     return value;
 }

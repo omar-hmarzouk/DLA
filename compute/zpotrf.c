@@ -135,8 +135,8 @@ int MORSE_zpotrf(MORSE_enum uplo, int N,
     MORSE_zpotrf_Tile_Async(uplo, &descAt, sequence, &request);
 
     /* Submit the matrix conversion back */
-    morse_ztile2lap( morse, &descAl, &descAt, uplo,
-                     A, NB, NB, LDA, N, N, N, sequence, &request );
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     uplo, sequence, &request );
 
     morse_sequence_wait(morse, sequence);
 
@@ -210,6 +210,7 @@ int MORSE_zpotrf_Tile(MORSE_enum uplo, MORSE_desc_t *A)
     morse_sequence_create(morse, &sequence);
     MORSE_zpotrf_Tile_Async(uplo, A, sequence, &request);
     RUNTIME_desc_flush( A, sequence );
+
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

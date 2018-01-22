@@ -189,9 +189,13 @@ int MORSE_zgels(MORSE_enum trans, int M, int N, int NRHS,
     MORSE_zgels_Tile_Async(MorseNoTrans, &descA, descT, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
-    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseUpperLower, sequence, &request );
+    morse_ztile2lap( morse, &descBl, &descBt,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
     morse_desc_mat_free(&descB);
 
@@ -271,6 +275,7 @@ int MORSE_zgels_Tile(MORSE_enum trans, MORSE_desc_t *A,
     MORSE_zgels_Tile_Async(trans, A, T, B, sequence, &request);
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( B, sequence );
+
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

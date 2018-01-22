@@ -190,9 +190,13 @@ int MORSE_zgels_param(const libhqr_tree_t *qrtree, MORSE_enum trans, int M, int 
     MORSE_zgels_param_Tile_Async(qrtree, MorseNoTrans, &descA, descTS, descTT, &descB, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
-    morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseUpperLower, sequence, &request );
+    morse_ztile2lap( morse, &descBl, &descBt,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
     morse_desc_mat_free(&descB);
 
@@ -275,6 +279,7 @@ int MORSE_zgels_param_Tile(const libhqr_tree_t *qrtree, MORSE_enum trans, MORSE_
     MORSE_zgels_param_Tile_Async(qrtree, trans, A, TS, TT, B, sequence, &request);
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( B, sequence );
+
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

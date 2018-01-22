@@ -129,8 +129,11 @@ int MORSE_zlauum(MORSE_enum uplo, int N,
     MORSE_zlauum_Tile_Async(uplo, &descA, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap(descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
 
     status = sequence->status;
@@ -194,6 +197,7 @@ int MORSE_zlauum_Tile(MORSE_enum uplo, MORSE_desc_t *A)
     morse_sequence_create(morse, &sequence);
     MORSE_zlauum_Tile_Async(uplo, A, sequence, &request);
     RUNTIME_desc_flush( A, sequence );
+
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;

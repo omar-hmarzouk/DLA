@@ -174,8 +174,11 @@ int MORSE_zhetrd(MORSE_enum jobz, MORSE_enum uplo, int N,
     MORSE_zhetrd_Tile_Async(jobz, uplo, &descA, D, E, descT, Q, LDQ, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
 
     status = sequence->status;
@@ -279,7 +282,9 @@ int MORSE_zhetrd_Tile(MORSE_enum jobz, MORSE_enum uplo,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zhetrd_Tile_Async(jobz, uplo, A, D, E, T, Q, LDQ, sequence, &request);
+
     morse_sequence_wait(morse, sequence);
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;
@@ -408,6 +413,7 @@ int MORSE_zhetrd_Tile_Async(MORSE_enum jobz,
     /* Copy data into band structure */
     morse_pztile2band( uplo, A, &descAB,
                        sequence, request );
+
     morse_sequence_wait(morse, sequence);
 
     /* Reduce band matrix to tridiagonal matrix */

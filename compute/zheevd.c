@@ -160,8 +160,11 @@ int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N,
     MORSE_zheevd_Tile_Async(jobz, uplo, &descA, W, descT, sequence, &request);
 
     /* Submit the matrix conversion */
-    morse_zooptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
 
     status = sequence->status;
@@ -253,6 +256,7 @@ int MORSE_zheevd_Tile(MORSE_enum jobz, MORSE_enum uplo,
     MORSE_zheevd_Tile_Async(jobz, uplo, A, W, T, sequence, &request);
     RUNTIME_desc_flush( A, sequence );
     RUNTIME_desc_flush( T, sequence );
+
     morse_sequence_wait(morse, sequence);
 
     status = sequence->status;
@@ -416,7 +420,6 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
     if (status != 0) {
         morse_error("MORSE_zheevd_Tile", "MORSE_zhetrd failed");
     }
-
 
     if (jobz == MorseNoVec){
 #if !defined(CHAMELEON_SIMULATION)

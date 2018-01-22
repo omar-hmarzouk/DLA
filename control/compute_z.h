@@ -220,18 +220,17 @@ morse_zlap2tile( MORSE_context_t *morse,
  * in LAPACK interface calls
  */
 static inline int
-morse_ztile2lap( MORSE_context_t *morse,
-                 MORSE_desc_t *descAl, MORSE_desc_t *descAt,
-                 MORSE_enum uplo, MORSE_Complex64_t *A, int mb, int nb, int lm, int ln, int m, int n,
-                 MORSE_sequence_t *seq, MORSE_request_t *req )
+morse_ztile2lap( MORSE_context_t *morse, MORSE_desc_t *descAl, MORSE_desc_t *descAt,
+                 MORSE_enum uplo, MORSE_sequence_t *seq, MORSE_request_t *req )
 {
     if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {
         morse_pzlacpy( uplo, descAt, descAl, seq, req );
     }
     else {
         morse_fatal_error( "morse_ztile2lap", "INPLACE translation not supported yet");
-        /* MORSE_zgecfi_Async( lm, ln, A, MorseCCRB, mb, nb, */
-        /*                     MorseCM, mb, nb, seq, req ); */
+        /* MORSE_zgecfi_Async( descAl->lm, descAl->ln, descAl->mat, */
+        /*                     MorseCCRB, descAl->mb, descAl->nb,   */
+        /*                     MorseCM, descAl->mb, descAl->nb, seq, req ); */
     }
     RUNTIME_desc_flush( descAl, seq );
     RUNTIME_desc_flush( descAt, seq );

@@ -117,8 +117,11 @@ int MORSE_zplrnt( int M, int N,
     /* Call the tile interface */
     MORSE_zplrnt_Tile_Async( &descA, seed, sequence, &request );
 
-    morse_zooptile2lap(descA, A, NB, NB, LDA, N, sequence, &request);
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseUpperLower, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
 
     status = sequence->status;
@@ -177,7 +180,9 @@ int MORSE_zplrnt_Tile( MORSE_desc_t *A,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zplrnt_Tile_Async( A, seed, sequence, &request );
+
     morse_sequence_wait(morse, sequence);
+
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

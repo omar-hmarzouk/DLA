@@ -162,7 +162,9 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
     MORSE_zlantr_Tile_Async(norm, uplo, diag, &descA, &value, sequence, &request);
 
     /* Submit the matrix conversion */
+
     morse_sequence_wait(morse, sequence);
+
     morse_desc_mat_free(&descA);
 
     morse_sequence_destroy(morse, sequence);
@@ -228,7 +230,9 @@ double MORSE_zlantr_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORS
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zlantr_Tile_Async(norm, uplo, diag, A, &value, sequence, &request);
+
     morse_sequence_wait(morse, sequence);
+
     morse_sequence_destroy(morse, sequence);
     return value;
 }
