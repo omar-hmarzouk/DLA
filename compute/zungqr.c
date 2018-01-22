@@ -135,31 +135,20 @@ int MORSE_zungqr(int M, int N, int K,
 
     morse_sequence_create(morse, &sequence);
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
+    /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
                      A, NB, NB, LDA, N, M, K, sequence, &request );
     morse_zlap2tile( morse, &descQl, &descQt, MorseUpperLower,
                      Q, NB, NB, LDQ, N, M, N, sequence, &request );
-/*    } else {*/
-/*        morse_ziplap2tile( descA, A, NB, NB, LDA, N, 0, 0, M, K,*/
-/*                            sequence, &request);*/
-/*        morse_ziplap2tile( descQ, Q, NB, NB, LDQ, N, 0, 0, M, N,*/
-/*                            sequence, &request);*/
-/*    }*/
 
     /* Call the tile interface */
     MORSE_zungqr_Tile_Async(&descA, descT, &descQ, sequence, &request);
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
+    /* Submit the matrix conversion */
         morse_zooptile2lap(descQ, Q, NB, NB, LDQ, N,  sequence, &request);
         morse_sequence_wait(morse, sequence);
         morse_desc_mat_free(&descA);
         morse_desc_mat_free(&descQ);
-/*    } else {*/
-/*        morse_ziptile2lap( descA, A, NB, NB, LDA, K,  sequence, &request);*/
-/*        morse_ziptile2lap( descQ, Q, NB, NB, LDQ, N,  sequence, &request);*/
-/*        morse_sequence_wait(morse, sequence);*/
-/*    }*/
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

@@ -154,24 +154,16 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
 
     morse_sequence_create(morse, &sequence);
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
+    /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
                      A, NB, NB, LDA, N, M, N, sequence, &request );
-/*    } else {*/
-/*        morse_ziplap2tile(  descA, A, NB, NB, LDA, N, 0, 0, M, N,*/
-/*                            sequence, &request);*/
-/*    }*/
 
     /* Call the tile interface */
     MORSE_zlantr_Tile_Async(norm, uplo, diag, &descA, &value, sequence, &request);
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
+    /* Submit the matrix conversion */
         morse_sequence_wait(morse, sequence);
         morse_desc_mat_free(&descA);
-/*    } else {*/
-/*        morse_ziptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);*/
-/*        morse_sequence_wait(morse, sequence);*/
-/*    }*/
 
     morse_sequence_destroy(morse, sequence);
     return value;

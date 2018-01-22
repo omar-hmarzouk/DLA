@@ -116,26 +116,17 @@ int MORSE_zgetrf_nopiv(int M, int N,
 
     morse_sequence_create(morse, &sequence);
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
+    /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
                      A, NB, NB, LDA, N, N, N, sequence, &request );
-/*    } else {*/
-/*        morse_ziplap2tile(  descA, A, NB, NB, LDA, N, 0, 0, N, N,*/
-/*                             sequence, &request);*/
-/*    }*/
 
     /* Call the tile interface */
     MORSE_zgetrf_nopiv_Tile_Async(&descA, sequence, &request);
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
+    /* Submit the matrix conversion */
         morse_zooptile2lap(descA, A, NB, NB, LDA, N, sequence, &request );
         morse_sequence_wait(morse, sequence);
         morse_desc_mat_free(&descA);
-/*    } else {*/
-/*        morse_ziptile2lap( descA, A, NB, NB, LDA, N,*/
-/*                             sequence, &request );*/
-/*        morse_sequence_wait(morse, sequence);*/
-/*    }*/
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

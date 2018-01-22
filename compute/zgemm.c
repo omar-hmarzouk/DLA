@@ -210,38 +210,24 @@ int MORSE_zgemm(MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
 
     morse_sequence_create(morse, &sequence);
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
+    /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
                      A, NB, NB, LDA, An, Am, An, sequence, &request );
     morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
                      B, NB, NB, LDB, Bn, Bm, Bn, sequence, &request );
     morse_zlap2tile( morse, &descCl, &descCt, MorseUpperLower,
                      C, NB, NB, LDC, N, M,  N, sequence, &request );
-/*    } else {*/
-/*        morse_ziplap2tile( descA, A, NB, NB, LDA, An, 0, 0, Am, An, */
-/*                            sequence, &request);*/
-/*        morse_ziplap2tile( descB, B, NB, NB, LDB, Bn, 0, 0, Bm, Bn, */
-/*                            sequence, &request);*/
-/*        morse_ziplap2tile( descC, C, NB, NB, LDC, N,  0, 0, M,  N,  */
-/*                            sequence, &request);*/
-/*    }*/
 
     /* Call the tile interface */
     MORSE_zgemm_Tile_Async(
         transA, transB, alpha, &descA, &descB, beta, &descC, sequence, &request);
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
-        morse_desc_mat_free(&descC);
-/*    } else {*/
-/*        morse_ziptile2lap( descA, A, NB, NB, LDA, An,  sequence, &request);*/
-/*        morse_ziptile2lap( descB, B, NB, NB, LDB, Bn,  sequence, &request);*/
-/*        morse_ziptile2lap( descC, C, NB, NB, LDC, N,   sequence, &request);*/
-/*        morse_sequence_wait(morse, sequence);*/
-/*    }*/
+    /* Submit the matrix conversion */
+    morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
+    morse_sequence_wait(morse, sequence);
+    morse_desc_mat_free(&descA);
+    morse_desc_mat_free(&descB);
+    morse_desc_mat_free(&descC);
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

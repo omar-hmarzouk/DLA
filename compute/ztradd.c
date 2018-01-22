@@ -163,32 +163,21 @@ int MORSE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
 
     morse_sequence_create(morse, &sequence);
 
-    /* if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) { */
+    /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
                      A, NB, NB, LDA, An, Am, An, sequence, &request );
     morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
                      B, NB, NB, LDB, N, M, N, sequence, &request );
-    /* } else { */
-    /*     morse_ziplap2tile( descA, A, NB, NB, LDA, An, 0, 0, Am, An, */
-    /*                         sequence, &request); */
-    /*     morse_ziplap2tile( descB, B, NB, NB, LDB, N, 0, 0, M, N, */
-    /*                         sequence, &request); */
-    /* } */
 
     /* Call the tile interface */
     MORSE_ztradd_Tile_Async(
         uplo, trans, alpha, &descA, beta, &descB, sequence, &request);
 
-    /* if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) { */
+    /* Submit the matrix conversion */
         morse_zooptile2lap( descB, B, NB, NB, LDB, N,  sequence, &request);
         morse_sequence_wait(morse, sequence);
         morse_desc_mat_free(&descA);
         morse_desc_mat_free(&descB);
-    /* } else { */
-    /*     morse_ziptile2lap( descA, A, NB, NB, LDA, An, sequence, &request); */
-    /*     morse_ziptile2lap( descB, B, NB, NB, LDB, N,  sequence, &request); */
-    /*     morse_dynamic_sync(); */
-    /* } */
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

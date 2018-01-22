@@ -173,46 +173,28 @@ int MORSE_zgels_param(const libhqr_tree_t *qrtree, MORSE_enum trans, int M, int 
 
     morse_sequence_create(morse, &sequence);
 
+    /* Submit the matrix conversion */
     if ( M >= N ) {
-        /*        if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
-                     A, NB, NB, LDA, N, M, N, sequence, &request );
-    morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
-                     B, NB, NB, LDB, NRHS, M, NRHS, sequence, &request );
-        /*        } else {*/
-        /*            morse_ziplap2tile( descA, A, NB, NB, LDA, N,    0, 0, M, N,*/
-        /*                                sequence, &request);*/
-        /*            morse_ziplap2tile( descB, B, NB, NB, LDB, NRHS, 0, 0, M, NRHS,*/
-        /*                                sequence, &request);*/
-        /*        }*/
+        morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+                         A, NB, NB, LDA, N, M, N, sequence, &request );
+        morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
+                         B, NB, NB, LDB, NRHS, M, NRHS, sequence, &request );
     } else {
-        /*        if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-    morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
-                     A, NB, NB, LDA, N, M, N, sequence, &request );
-    morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
-                     B, NB, NB, LDB, NRHS, N, NRHS, sequence, &request );
-        /*        } else {*/
-        /*            morse_ziplap2tile( descA, A, NB, NB, LDA, N,    0, 0, M, N,*/
-        /*                                sequence, &request);*/
-        /*            morse_ziplap2tile( descB, B, NB, NB, LDB, NRHS, 0, 0, N, NRHS,*/
-        /*                                sequence, &request);*/
-        /*        }*/
+        morse_zlap2tile( morse, &descAl, &descAt, MorseUpperLower,
+                         A, NB, NB, LDA, N, M, N, sequence, &request );
+        morse_zlap2tile( morse, &descBl, &descBt, MorseUpperLower,
+                         B, NB, NB, LDB, NRHS, N, NRHS, sequence, &request );
     }
 
     /* Call the tile interface */
     MORSE_zgels_param_Tile_Async(qrtree, MorseNoTrans, &descA, descTS, descTT, &descB, sequence, &request);
 
-    /*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
+    /* Submit the matrix conversion */
     morse_zooptile2lap(descA, A, NB, NB, LDA, N,     sequence, &request);
     morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
     morse_sequence_wait(morse, sequence);
     morse_desc_mat_free(&descA);
     morse_desc_mat_free(&descB);
-    /*    } else {*/
-    /*        morse_ziptile2lap( descA, A, NB, NB, LDA, N,     sequence, &request);*/
-    /*        morse_ziptile2lap( descB, B, NB, NB, LDB, NRHS,  sequence, &request);*/
-    /*        morse_sequence_wait(morse, sequence);*/
-    /*    }*/
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
