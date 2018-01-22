@@ -192,8 +192,9 @@ int MORSE_zunmqr(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
 
     morse_sequence_wait(morse, sequence);
 
-    morse_desc_mat_free(&descA);
-    morse_desc_mat_free(&descC);
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
+    morse_ztile2lap_cleanup( morse, &descCl, &descCt );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -382,7 +383,7 @@ int MORSE_zunmqr_Tile_Async(MORSE_enum side, MORSE_enum trans,
     }
 
     if (Dptr != NULL) {
-        morse_desc_mat_free(Dptr);
+    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
     }
     (void)D;
     return MORSE_SUCCESS;

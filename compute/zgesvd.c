@@ -227,7 +227,8 @@ int MORSE_zgesvd(MORSE_enum jobu, MORSE_enum jobvt,
 
     morse_sequence_wait(morse, sequence);
 
-    morse_desc_mat_free(&descA);
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -547,7 +548,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
         fprintf(stderr, "MORSE_zgesvd_Tile_Async: LAPACKE_zgbbrd = %d\n", info );
     }
 #endif /* !defined(CHAMELEON_SIMULATION) */
-    morse_desc_mat_free(&descAB);
+    morse_ztile2lap_cleanup( morse, &descABl, &descABt );
 
     /* Transform U and Vt into tile format */
     if ( jobu != MorseNoVec ) {
@@ -626,7 +627,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
         morse_desc_mat_free( &descVT );
     free(E);
     if (Dptr != NULL) {
-        morse_desc_mat_free(Dptr);
+    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
     }
     (void)D;
     return MORSE_SUCCESS;

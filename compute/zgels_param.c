@@ -197,8 +197,9 @@ int MORSE_zgels_param(const libhqr_tree_t *qrtree, MORSE_enum trans, int M, int 
 
     morse_sequence_wait(morse, sequence);
 
-    morse_desc_mat_free(&descA);
-    morse_desc_mat_free(&descB);
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
+    morse_ztile2lap_cleanup( morse, &descBl, &descBt );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -416,7 +417,7 @@ int MORSE_zgels_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_enum trans, 
     free(subB);
 
     if (Dptr != NULL) {
-        morse_desc_mat_free(Dptr);
+    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
     }
     (void)D;
     return MORSE_SUCCESS;

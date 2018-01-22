@@ -165,7 +165,8 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
 
     morse_sequence_wait(morse, sequence);
 
-    morse_desc_mat_free(&descA);
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     morse_sequence_destroy(morse, sequence);
     return value;

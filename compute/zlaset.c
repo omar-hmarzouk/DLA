@@ -138,7 +138,8 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N,
 
     morse_sequence_wait(morse, sequence);
 
-    morse_desc_mat_free(&descA);
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     morse_sequence_destroy(morse, sequence);
     return MORSE_SUCCESS;

@@ -125,7 +125,7 @@ int MORSE_zlascal(MORSE_enum uplo, int M, int N,
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseUpperLower, sequence, &request );
     RUNTIME_sequence_wait(morse, sequence);
-    morse_desc_mat_free(&descA);
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

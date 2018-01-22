@@ -165,7 +165,8 @@ int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N,
 
     morse_sequence_wait(morse, sequence);
 
-    morse_desc_mat_free(&descA);
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -465,7 +466,7 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
     /* V   from LAPACKE_zstedc refers to V  (lapack layout) */
     /* The final eigenvectors are (Q1 Q2 V) or (Q1^h Q2 V)  */
     morse_zooplap2tile( descQ2, Q2, NB, NB, N, N, 0, 0, N, N, sequence, request,
-                        morse_desc_mat_free(&(descQ2)) );
+    morse_ztile2lap_cleanup( morse, &(descQ2)) l, &(descQ2)) t );
     morse_zooplap2tile( descV,  V,  NB, NB, N, N, 0, 0, N, N, sequence, request,
                         morse_desc_mat_free(&(descQ2)); morse_desc_mat_free(&(descV)) );
     if (uplo == MorseLower)
@@ -520,15 +521,16 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo,
     morse_sequence_wait(morse, sequence);
 
     free(subA); free(subQ); free(subT);
-    morse_desc_mat_free(&descQ2);
+    morse_ztile2lap_cleanup( morse, &descQ2l, &descQ2t );
     free(Q2);
 
-    morse_desc_mat_free(&descV);
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descVl, &descVt );
     free(V);
 
     free(E);
     if (Dptr != NULL) {
-        morse_desc_mat_free(Dptr);
+    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
     }
     (void)D;
     return MORSE_SUCCESS;

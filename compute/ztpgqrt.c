@@ -228,10 +228,11 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
 
     morse_sequence_wait(morse, sequence);
 
-    morse_desc_mat_free(&descV1);
-    morse_desc_mat_free(&descV2);
-    morse_desc_mat_free(&descQ1);
-    morse_desc_mat_free(&descQ2);
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descV1l, &descV1t );
+    morse_ztile2lap_cleanup( morse, &descV2l, &descV2t );
+    morse_ztile2lap_cleanup( morse, &descQ1l, &descQ1t );
+    morse_ztile2lap_cleanup( morse, &descQ2l, &descQ2t );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -406,7 +407,7 @@ int MORSE_ztpgqrt_Tile_Async( int L,
     /*    morse_pztpgqrtrh(Q1, T, MORSE_RHBLK, sequence, request); */
     /* } */
     if (Dptr != NULL) {
-        morse_desc_mat_free(Dptr);
+    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
     }
     (void)D;
     return MORSE_SUCCESS;

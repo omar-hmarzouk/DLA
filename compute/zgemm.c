@@ -228,9 +228,10 @@ int MORSE_zgemm(MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
 
     morse_sequence_wait(morse, sequence);
 
-    morse_desc_mat_free(&descA);
-    morse_desc_mat_free(&descB);
-    morse_desc_mat_free(&descC);
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
+    morse_ztile2lap_cleanup( morse, &descBl, &descBt );
+    morse_ztile2lap_cleanup( morse, &descCl, &descCt );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

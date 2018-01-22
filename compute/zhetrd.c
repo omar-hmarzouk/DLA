@@ -179,7 +179,8 @@ int MORSE_zhetrd(MORSE_enum jobz, MORSE_enum uplo, int N,
 
     morse_sequence_wait(morse, sequence);
 
-    morse_desc_mat_free(&descA);
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -429,9 +430,9 @@ int MORSE_zhetrd_Tile_Async(MORSE_enum jobz,
     }
 #endif /* !defined(CHAMELEON_SIMULATION) */
     if (Dptr != NULL) {
-        morse_desc_mat_free(Dptr);
+    morse_ztile2lap_cleanup( morse, &Dptrl, &Dptrt );
     }
-    morse_desc_mat_free(&descAB);
+    morse_ztile2lap_cleanup( morse, &descABl, &descABt );
     (void)D;
     return MORSE_SUCCESS;
 }
