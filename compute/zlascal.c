@@ -79,7 +79,7 @@ int MORSE_zlascal(MORSE_enum uplo, int M, int N,
     }
 
     /* Check input arguments */
-    if (uplo != MorseUpper && uplo != MorseLower && uplo != MorseUpperLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower) && (uplo != MorseUpperLower)) {
         morse_error("MORSE_zlascal", "illegal value of uplo");
         return -1;
     }
@@ -258,7 +258,7 @@ int MORSE_zlascal_Tile_Async(MORSE_enum uplo,
         descA = *A;
     }
     /* Check input arguments */
-    if (uplo != MorseUpper && uplo != MorseLower && uplo != MorseUpperLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower) && (uplo != MorseUpperLower)) {
         morse_error("MORSE_zlascal", "illegal value of uplo");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
@@ -273,7 +273,7 @@ int MORSE_zlascal_Tile_Async(MORSE_enum uplo,
          (alpha == (MORSE_Complex64_t)1.0) )
         return MORSE_SUCCESS;
 
-    morse_pzlascal( uplo, alpha, A, sequence, request);
+    morse_pzlascal( uplo, alpha, A, sequence, request );
 
     return MORSE_SUCCESS;
 }

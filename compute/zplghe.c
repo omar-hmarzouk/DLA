@@ -273,7 +273,7 @@ int MORSE_zplghe_Tile_Async( double                 bump,
     if (chameleon_min( A->m, A->n ) == 0)
         return MORSE_SUCCESS;
 
-    morse_pzplghe(bump, uplo, A, seed, sequence,  request);
+    morse_pzplghe( bump, uplo, A, seed, sequence, request );
 
     return MORSE_SUCCESS;
 }

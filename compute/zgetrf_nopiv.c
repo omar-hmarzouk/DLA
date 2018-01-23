@@ -265,7 +265,7 @@ int MORSE_zgetrf_nopiv_Tile_Async(MORSE_desc_t *A,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
 
-    morse_pzgetrf_nopiv(A, sequence, request);
+    morse_pzgetrf_nopiv( A, sequence, request );
 
     return MORSE_SUCCESS;
 }

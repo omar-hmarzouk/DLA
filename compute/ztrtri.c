@@ -98,11 +98,11 @@ int MORSE_ztrtri(MORSE_enum uplo, MORSE_enum diag, int N,
         return MORSE_ERR_NOT_INITIALIZED;
     }
     /* Check input arguments */
-    if (uplo != MorseUpper && uplo != MorseLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower)) {
         morse_error("MORSE_ztrtri", "illegal value of uplo");
         return -1;
     }
-    if (diag != MorseUnit && diag != MorseNonUnit) {
+    if ((diag != MorseUnit) && (diag != MorseNonUnit)) {
         morse_error("MORSE_ztrtri", "illegal value of diag");
         return -2;
     }
@@ -289,11 +289,11 @@ int MORSE_ztrtri_Tile_Async(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
         morse_error("MORSE_ztrtri_Tile", "only square tiles supported");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
-    if (uplo != MorseUpper && uplo != MorseLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower)) {
         morse_error("MORSE_ztrtri_Tile", "illegal value of uplo");
         return morse_request_fail(sequence, request, -1);
     }
-    if (diag != MorseUnit && diag != MorseNonUnit) {
+    if ((diag != MorseUnit) && (diag != MorseNonUnit)) {
         morse_error("MORSE_ztrtri_Tile", "illegal value of diag");
         return morse_request_fail(sequence, request, -2);
     }
@@ -302,7 +302,7 @@ int MORSE_ztrtri_Tile_Async(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
      if (chameleon_max(N, 0) == 0)
      return MORSE_SUCCESS;
      */
-    morse_pztrtri(uplo, diag, A, sequence, request);
+    morse_pztrtri( uplo, diag, A, sequence, request );
 
     return MORSE_SUCCESS;
 }

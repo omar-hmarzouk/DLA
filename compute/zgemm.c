@@ -461,7 +461,7 @@ int MORSE_zgemm_Tile_Async(MORSE_enum transA, MORSE_enum transB,
         ((alpha == (MORSE_Complex64_t)0.0 || K == 0) && beta == (MORSE_Complex64_t)1.0))
         return MORSE_SUCCESS;
 
-    morse_pzgemm(transA, transB, alpha, A, B, beta, C, sequence, request);
+    morse_pzgemm( transA, transB, alpha, A, B, beta, C, sequence, request );
 
     return MORSE_SUCCESS;
 }

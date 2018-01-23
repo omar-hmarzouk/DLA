@@ -320,8 +320,8 @@ int MORSE_zgeqrs_param_Tile_Async(const libhqr_tree_t *qrtree,
     subB = morse_desc_submatrix(B, 0, 0, A->n, B->n);
     subA = morse_desc_submatrix(A, 0, 0, A->n, A->n);
 
-    morse_pzunmqr_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, Dptr, sequence, request);
-    morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
+    morse_pzunmqr_param( qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, Dptr, sequence, request );
+    morse_pztrsm( MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request );
 
     free(subA);
     free(subB);

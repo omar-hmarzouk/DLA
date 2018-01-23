@@ -369,13 +369,13 @@ int MORSE_zunmlq_Tile_Async(MORSE_enum side, MORSE_enum trans,
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
         if ( (trans == MorseConjTrans) &&
              (side == MorseLeft) ) {
-            morse_pzunmlq(side, trans, A, C, T, Dptr, sequence, request);
+            morse_pzunmlq( side, trans, A, C, T, Dptr, sequence, request );
         } else {
-            morse_pzunmlq(side, trans, A, C, T, Dptr, sequence, request);
+            morse_pzunmlq( side, trans, A, C, T, Dptr, sequence, request );
         }
     }
     else {
-        morse_pzunmlqrh(side, trans, A, C, T, Dptr, MORSE_RHBLK, sequence, request);
+        morse_pzunmlqrh( side, trans, A, C, T, Dptr, MORSE_RHBLK, sequence, request );
     }
     if (Dptr != NULL) {
         morse_desc_mat_free( Dptr );

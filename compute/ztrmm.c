@@ -131,7 +131,7 @@ int MORSE_ztrmm(MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrmm", "illegal value of side");
         return -1;
     }
-    if (uplo != MorseUpper && uplo != MorseLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower)) {
         morse_error("MORSE_ztrmm", "illegal value of uplo");
         return -2;
     }
@@ -142,7 +142,7 @@ int MORSE_ztrmm(MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrmm", "illegal value of transA");
         return -3;
     }
-    if (diag != MorseUnit && diag != MorseNonUnit) {
+    if ((diag != MorseUnit) && (diag != MorseNonUnit)) {
         morse_error("MORSE_ztrmm", "illegal value of diag");
         return -4;
     }
@@ -364,7 +364,7 @@ int MORSE_ztrmm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrmm_Tile", "illegal value of side");
         return morse_request_fail(sequence, request, -1);
     }
-    if (uplo != MorseUpper && uplo != MorseLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower)) {
         morse_error("MORSE_ztrmm_Tile", "illegal value of uplo");
         return morse_request_fail(sequence, request, -2);
     }
@@ -372,13 +372,13 @@ int MORSE_ztrmm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrmm_Tile", "illegal value of transA");
         return morse_request_fail(sequence, request, -3);
     }
-    if (diag != MorseUnit && diag != MorseNonUnit) {
+    if ((diag != MorseUnit) && (diag != MorseNonUnit)) {
         morse_error("MORSE_ztrmm_Tile", "illegal value of diag");
         return morse_request_fail(sequence, request, -4);
     }
 
     /* Quick return */
-    morse_pztrmm(side, uplo, transA, diag, alpha, A, B, sequence, request);
+    morse_pztrmm( side, uplo, transA, diag, alpha, A, B, sequence, request );
 
     return MORSE_SUCCESS;
 }

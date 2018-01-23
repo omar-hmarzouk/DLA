@@ -406,7 +406,7 @@ int MORSE_zsyr2k_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
          ((alpha == (MORSE_Complex64_t)0.0 || K == 0) && beta == (MORSE_Complex64_t)1.0))
         return MORSE_SUCCESS;
 
-    morse_pzsyr2k(uplo, trans, alpha, A, B, beta, C, sequence, request);
+    morse_pzsyr2k( uplo, trans, alpha, A, B, beta, C, sequence, request );
 
     return MORSE_SUCCESS;
 }

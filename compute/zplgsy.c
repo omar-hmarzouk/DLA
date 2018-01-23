@@ -275,7 +275,7 @@ int MORSE_zplgsy_Tile_Async( MORSE_Complex64_t      bump,
     if (chameleon_min( A->m, A->n ) == 0)
         return MORSE_SUCCESS;
 
-    morse_pzplgsy(bump, uplo, A, seed, sequence, request);
+    morse_pzplgsy( bump, uplo, A, seed, sequence, request );
 
     return MORSE_SUCCESS;
 }

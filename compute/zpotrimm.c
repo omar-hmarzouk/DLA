@@ -94,7 +94,7 @@ int MORSE_zpotrimm(MORSE_enum uplo, int N,
         return MORSE_ERR_NOT_INITIALIZED;
     }
     /* Check input arguments */
-    if (uplo != MorseUpper && uplo != MorseLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower)) {
         morse_error("MORSE_zpotrimm", "illegal value of uplo");
         return -1;
     }
@@ -309,7 +309,7 @@ int MORSE_zpotrimm_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
         morse_error("MORSE_zpotrimm_Tile_Async", "only square tiles supported");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
-    if (uplo != MorseUpper && uplo != MorseLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower)) {
         morse_error("MORSE_zpotrimm_Tile_Async", "illegal value of uplo");
         return morse_request_fail(sequence, request, -1);
     }
@@ -318,10 +318,10 @@ int MORSE_zpotrimm_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
      if (chameleon_max(N, 0) == 0)
      return MORSE_SUCCESS;
      */
-    morse_pzpotrimm(uplo, A, B, C, sequence, request);
+    morse_pzpotrimm( uplo, A, B, C, sequence, request );
     /*
-     morse_pztrtri(uplo, MorseNonUnit, A, sequence, request);
-     morse_pzlauum(uplo, A, sequence, request);
+     morse_pztrtri( uplo, MorseNonUnit, A, sequence, request );
+     morse_pzlauum( uplo, A, sequence, request );
      */
 
     return MORSE_SUCCESS;

@@ -377,7 +377,7 @@ int MORSE_zherk_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
          ((alpha == (double)0.0 || K == 0) && beta == (double)1.0))
         return MORSE_SUCCESS;
 
-    morse_pzherk(uplo, trans, alpha, A, beta, C, sequence, request);
+    morse_pzherk( uplo, trans, alpha, A, beta, C, sequence, request );
 
     return MORSE_SUCCESS;
 }

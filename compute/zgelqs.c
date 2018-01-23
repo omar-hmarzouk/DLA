@@ -314,7 +314,7 @@ int MORSE_zgelqs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
 
     subB = morse_desc_submatrix(B, 0, 0, A->m, B->n);
     subA = morse_desc_submatrix(A, 0, 0, A->m, A->m);
-    morse_pztrsm(MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
+    morse_pztrsm( MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request );
     free(subA);
     free(subB);
 
@@ -327,10 +327,10 @@ int MORSE_zgelqs_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
 #endif
 
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
-        morse_pzunmlq(MorseLeft, MorseConjTrans, A, B, T, Dptr, sequence, request);
+        morse_pzunmlq( MorseLeft, MorseConjTrans, A, B, T, Dptr, sequence, request );
     }
     else {
-        morse_pzunmlqrh(MorseLeft, MorseConjTrans, A, B, T, Dptr, MORSE_RHBLK, sequence, request);
+        morse_pzunmlqrh( MorseLeft, MorseConjTrans, A, B, T, Dptr, MORSE_RHBLK, sequence, request );
     }
 
     if (Dptr != NULL) {

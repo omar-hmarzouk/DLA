@@ -286,7 +286,7 @@ int MORSE_zlange_Tile_Async(MORSE_enum norm, MORSE_desc_t *A, double *value,
         return MORSE_SUCCESS;
     }
 
-    morse_pzlange(norm, A, value, sequence, request);
+    morse_pzlange( norm, A, value, sequence, request );
 
     return MORSE_SUCCESS;
 }

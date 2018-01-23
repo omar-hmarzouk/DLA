@@ -123,7 +123,7 @@ int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N,
         morse_error("MORSE_zheevd", "illegal value of jobz");
         return -1;
     }
-    if (uplo != MorseLower && uplo != MorseUpper) {
+    if ((uplo != MorseLower) && (uplo != MorseUpper)) {
         morse_error("MORSE_zheevd", "illegal value of uplo");
         return -2;
     }
@@ -384,7 +384,7 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
         morse_error("MORSE_zheevd_Tile_Async", "illegal value of jobz");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
-    if (uplo != MorseLower && uplo != MorseUpper) {
+    if ((uplo != MorseLower) && (uplo != MorseUpper)) {
         morse_error("MORSE_zheevd_Tile_Async", "illegal value of uplo");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
@@ -491,7 +491,7 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
         morse_pzgemm( MorseNoTrans, MorseNoTrans,
                       1.0, &descQ2, &descV,
                       0.0, &descA,
-                      sequence, request);
+                      sequence, request );
 
     }
     else {
@@ -515,7 +515,7 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
         morse_pzgemm( MorseNoTrans, MorseNoTrans,
                       1.0, &descQ2, &descV,
                       0.0, &descA,
-                      sequence, request);
+                      sequence, request );
     }
 
     morse_sequence_wait(morse, sequence);

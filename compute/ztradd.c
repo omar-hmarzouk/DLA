@@ -379,7 +379,7 @@ int MORSE_ztradd_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
         ((alpha == (MORSE_Complex64_t)0.0) && beta == (MORSE_Complex64_t)1.0))
         return MORSE_SUCCESS;
 
-    morse_pztradd(uplo, trans, alpha, A, beta, B, sequence, request);
+    morse_pztradd( uplo, trans, alpha, A, beta, B, sequence, request );
 
     return MORSE_SUCCESS;
 }

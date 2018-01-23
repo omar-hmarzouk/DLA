@@ -292,7 +292,7 @@ int MORSE_zbuild_Tile_Async( MORSE_enum uplo, MORSE_desc_t     *A,
     if (chameleon_min( A->m, A->n ) == 0)
         return MORSE_SUCCESS;
 
-    morse_pzbuild(uplo, A, user_data, user_build_callback, sequence,  request);
+    morse_pzbuild( uplo, A, user_data, user_build_callback, sequence, request );
 
     return MORSE_SUCCESS;
 }

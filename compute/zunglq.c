@@ -308,12 +308,12 @@ int MORSE_zunglq_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q,
     }
 #endif
 
-    morse_pzlaset(MorseUpperLower, 0., 1., Q, sequence, request);
+    morse_pzlaset( MorseUpperLower, 0., 1., Q, sequence, request );
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
-        morse_pzunglq(A, Q, T, Dptr, sequence, request);
+        morse_pzunglq( A, Q, T, Dptr, sequence, request );
     }
     else {
-        morse_pzunglqrh(A, Q, T, Dptr, MORSE_RHBLK, sequence, request);
+        morse_pzunglqrh( A, Q, T, Dptr, MORSE_RHBLK, sequence, request );
     }
 
     if (Dptr != NULL) {

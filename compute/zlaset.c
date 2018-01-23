@@ -281,7 +281,7 @@ int MORSE_zlaset_Tile_Async(MORSE_enum uplo,
         return MORSE_SUCCESS;
     }
 
-    morse_pzlaset(uplo, alpha, beta, A, sequence, request);
+    morse_pzlaset( uplo, alpha, beta, A, sequence, request );
 
     return MORSE_SUCCESS;
 }

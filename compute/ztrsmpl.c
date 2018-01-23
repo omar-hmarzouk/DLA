@@ -297,7 +297,7 @@ int MORSE_ztrsmpl_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_
      if (chameleon_min(N, NRHS) == 0)
      return MORSE_SUCCESS;
      */
-    morse_pztrsmpl(A, B, L, IPIV, sequence, request);
+    morse_pztrsmpl( A, B, L, IPIV, sequence, request );
 
     return MORSE_SUCCESS;
 }

@@ -411,7 +411,7 @@ int MORSE_ztpgqrt_Tile_Async( int L,
     morse_pztpgqrt( L, V1, T1, V2, T2, Q1, Q2, Dptr, sequence, request );
     /* } */
     /* else { */
-    /*    morse_pztpgqrtrh(Q1, T, MORSE_RHBLK, sequence, request); */
+    /*    morse_pztpgqrtrh( Q1, T, MORSE_RHBLK, sequence, request ); */
     /* } */
     if (Dptr != NULL) {
         morse_desc_mat_free( Dptr );

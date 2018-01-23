@@ -308,8 +308,8 @@ int MORSE_zunglq_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
     }
 #endif
 
-    morse_pzlaset(MorseUpperLower, 0., 1., Q, sequence, request);
-    morse_pzunglq_param(qrtree, A, Q, TS, TT, Dptr, sequence, request);
+    morse_pzlaset( MorseUpperLower, 0., 1., Q, sequence, request );
+    morse_pzunglq_param( qrtree, A, Q, TS, TT, Dptr, sequence, request );
 
     if (Dptr != NULL) {
         morse_desc_mat_free( Dptr );

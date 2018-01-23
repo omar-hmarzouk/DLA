@@ -312,9 +312,9 @@ int MORSE_zgetrs_incpiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, 
      if (chameleon_min(N, NRHS) == 0)
      return MORSE_SUCCESS;
      */
-    morse_pztrsmpl(A, B, L, IPIV, sequence, request);
+    morse_pztrsmpl( A, B, L, IPIV, sequence, request );
 
-    morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, A, B, sequence, request);
+    morse_pztrsm( MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, 1.0, A, B, sequence, request );
 
     return MORSE_SUCCESS;
 }

@@ -287,10 +287,10 @@ int MORSE_zgelqf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
 #endif
 
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
-        morse_pzgelqf(A, T, Dptr, sequence, request);
+        morse_pzgelqf( A, T, Dptr, sequence, request );
     }
     else {
-        morse_pzgelqfrh(A, T, Dptr, MORSE_RHBLK, sequence, request);
+        morse_pzgelqfrh( A, T, Dptr, MORSE_RHBLK, sequence, request );
     }
     if (Dptr != NULL) {
         morse_desc_mat_free( Dptr );

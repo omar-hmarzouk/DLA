@@ -416,7 +416,7 @@ int MORSE_zsymm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
         ( (alpha == (MORSE_Complex64_t)0.0) && (beta == (MORSE_Complex64_t)1.0) ))
         return MORSE_SUCCESS;
 
-    morse_pzsymm(side, uplo, alpha, A, B, beta, C, sequence, request);
+    morse_pzsymm( side, uplo, alpha, A, B, beta, C, sequence, request );
 
     return MORSE_SUCCESS;
 }

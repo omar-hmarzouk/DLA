@@ -297,11 +297,11 @@ int MORSE_zgesv_nopiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *B,
      return MORSE_SUCCESS;
      */
 
-    morse_pzgetrf_nopiv(A, sequence, request);
+    morse_pzgetrf_nopiv( A, sequence, request );
 
-    morse_pztrsm(MorseLeft, MorseLower, MorseNoTrans, MorseUnit, (MORSE_Complex64_t)1.0, A, B, sequence, request);
+    morse_pztrsm( MorseLeft, MorseLower, MorseNoTrans, MorseUnit, (MORSE_Complex64_t)1.0, A, B, sequence, request );
 
-    morse_pztrsm(MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, (MORSE_Complex64_t)1.0, A, B, sequence, request);
+    morse_pztrsm( MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, (MORSE_Complex64_t)1.0, A, B, sequence, request );
 
     return MORSE_SUCCESS;
 }

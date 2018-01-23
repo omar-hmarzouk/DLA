@@ -318,12 +318,12 @@ int MORSE_zgelqs_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
      }
      */
     /* subB = morse_desc_submatrix(B, A->m, 0, A->n-A->m, B->n);
-     morse_pzlaset( MorseUpperLower, 0., 0., subB, sequence, request);
+     morse_pzlaset( MorseUpperLower, 0., 0., subB, sequence, request );
      free(subB); */
 
     subB = morse_desc_submatrix(B, 0, 0, A->m, B->n);
     subA = morse_desc_submatrix(A, 0, 0, A->m, A->m);
-    morse_pztrsm(MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request);
+    morse_pztrsm( MorseLeft, MorseLower, MorseNoTrans, MorseNonUnit, 1.0, subA, subB, sequence, request );
     free(subA);
     free(subB);
 
@@ -335,7 +335,7 @@ int MORSE_zgelqs_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, 
     }
 #endif
 
-    morse_pzunmlq_param(qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, Dptr, sequence, request);
+    morse_pzunmlq_param( qrtree, MorseLeft, MorseConjTrans, A, B, TS, TT, Dptr, sequence, request );
     if (Dptr != NULL) {
         morse_desc_mat_free( Dptr );
     }

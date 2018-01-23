@@ -352,10 +352,10 @@ int MORSE_ztpqrt_Tile_Async( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc
     }
 
     /* if (morse->householder == MORSE_FLAT_HOUSEHOLDER) { */
-    morse_pztpqrt(L, A, B, T, sequence, request);
+    morse_pztpqrt( L, A, B, T, sequence, request );
     /* } */
     /* else { */
-    /*    morse_pztpqrtrh(A, T, MORSE_RHBLK, sequence, request); */
+    /*    morse_pztpqrtrh( A, T, MORSE_RHBLK, sequence, request ); */
     /* } */
 
     return MORSE_SUCCESS;

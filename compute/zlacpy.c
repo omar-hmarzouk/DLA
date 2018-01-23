@@ -294,7 +294,7 @@ int MORSE_zlacpy_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
         return MORSE_SUCCESS;
     }
 
-    morse_pzlacpy(uplo, A, B, sequence, request);
+    morse_pzlacpy( uplo, A, B, sequence, request );
 
     return MORSE_SUCCESS;
 }

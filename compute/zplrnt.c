@@ -264,7 +264,7 @@ int MORSE_zplrnt_Tile_Async( MORSE_desc_t     *A,
     if (chameleon_min( A->m, A->n ) == 0)
         return MORSE_SUCCESS;
 
-    morse_pzplrnt(A, seed, sequence, request);
+    morse_pzplrnt( A, seed, sequence, request );
 
     return MORSE_SUCCESS;
 }
