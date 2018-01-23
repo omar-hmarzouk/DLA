@@ -209,7 +209,7 @@ int MORSE_zpotrf_Tile(MORSE_enum uplo, MORSE_desc_t *A)
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zpotrf_Tile_Async( uplo, A, sequence, &request );
-    RUNTIME_desc_flush( A, sequence );
+    MORSE_Desc_Flush( A, sequence );
 
     morse_sequence_wait(morse, sequence);
 

@@ -202,7 +202,7 @@ int MORSE_zgeqrf_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zgeqrf_param_Tile_Async( qrtree, A, TS, TT, sequence, &request );
-    RUNTIME_desc_flush( A, sequence );
+    MORSE_Desc_Flush( A, sequence );
 
     morse_sequence_wait(morse, sequence);
 

@@ -212,8 +212,8 @@ int MORSE_zunglq_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q)
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zunglq_Tile_Async( A, T, Q, sequence, &request );
-    RUNTIME_desc_flush( A, sequence );
-    RUNTIME_desc_flush( Q, sequence );
+    MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( Q, sequence );
 
     morse_sequence_wait(morse, sequence);
 

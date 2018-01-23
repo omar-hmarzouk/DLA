@@ -216,7 +216,7 @@ int MORSE_ztrtri_Tile(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A)
     }
     morse_sequence_create(morse, &sequence);
     MORSE_ztrtri_Tile_Async( uplo, diag, A, sequence, &request );
-    RUNTIME_desc_flush( A, sequence );
+    MORSE_Desc_Flush( A, sequence );
 
     morse_sequence_wait(morse, sequence);
 

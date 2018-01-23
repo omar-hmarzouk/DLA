@@ -66,7 +66,7 @@ int MORSE_zLapack_to_Tile(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A)
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request;
-    MORSE_desc_t B;
+    MORSE_desc_t *B;
     int status;
 
     morse = morse_context_self();
@@ -81,25 +81,21 @@ int MORSE_zLapack_to_Tile(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A)
     }
 
     /* Create the B descriptor to handle the Lapack format matrix */
-    B = morse_desc_init_user(
-        MorseComplexDouble, A->mb, A->nb, A->bsiz,
-        LDA, A->n, 0, 0, A->m, A->n, 1, 1,
-        morse_getaddr_cm, morse_getblkldd_cm, NULL );
-    B.mat  = Af77;
-    B.styp = MorseCM;
-
-    RUNTIME_desc_create( &B );
+    MORSE_Desc_Create_User( &B, Af77, MorseComplexDouble, A->mb, A->nb, A->bsiz,
+                            LDA, A->n, 0, 0, A->m, A->n, 1, 1,
+                            morse_getaddr_cm, morse_getblkldd_cm, NULL );
 
     /* Start the computation */
     morse_sequence_create(morse, &sequence);
 
-    morse_pzlacpy( MorseUpperLower, &B, A, sequence, &request );
+    morse_pzlacpy( MorseUpperLower, B, A, sequence, &request );
 
-    RUNTIME_desc_flush( &B, sequence );
-    RUNTIME_desc_flush(  A, sequence );
+    MORSE_Desc_Flush( B, sequence );
+    MORSE_Desc_Flush( A, sequence );
     morse_sequence_wait( morse, sequence );
 
-    RUNTIME_desc_destroy( &B );
+    /* Destroy temporary B descriptor */
+    MORSE_Desc_Destroy( &B );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
@@ -146,7 +142,7 @@ int MORSE_zTile_to_Lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA)
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request;
-    MORSE_desc_t B;
+    MORSE_desc_t *B;
     int status;
 
     morse = morse_context_self();
@@ -161,25 +157,21 @@ int MORSE_zTile_to_Lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA)
     }
 
     /* Create the B descriptor to handle the Lapack format matrix */
-    B = morse_desc_init_user(
-        MorseComplexDouble, A->mb, A->nb, A->bsiz,
-        LDA, A->n, 0, 0, A->m, A->n, 1, 1,
-        morse_getaddr_cm, morse_getblkldd_cm, NULL );
-    B.mat  = Af77;
-    B.styp = MorseCM;
-
-    RUNTIME_desc_create( &B );
+    MORSE_Desc_Create_User( &B, Af77, MorseComplexDouble, A->mb, A->nb, A->bsiz,
+                            LDA, A->n, 0, 0, A->m, A->n, 1, 1,
+                            morse_getaddr_cm, morse_getblkldd_cm, NULL );
 
     /* Start the computation */
     morse_sequence_create(morse, &sequence);
 
-    morse_pzlacpy( MorseUpperLower, A, &B, sequence, &request );
+    morse_pzlacpy( MorseUpperLower, A, B, sequence, &request );
 
-    RUNTIME_desc_flush(  A, sequence );
-    RUNTIME_desc_flush( &B, sequence );
+    MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( B, sequence );
+
     morse_sequence_wait( morse, sequence );
 
-    RUNTIME_desc_destroy( &B );
+    MORSE_Desc_Destroy( &B );
 
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);

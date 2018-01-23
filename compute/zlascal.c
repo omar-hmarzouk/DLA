@@ -189,7 +189,7 @@ int MORSE_zlascal_Tile(MORSE_enum uplo,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zlascal_Tile_Async( uplo, alpha, A, sequence, &request );
-    RUNTIME_sequence_wait(morse, sequence);
+    morse_sequence_wait(morse, sequence);
     status = sequence->status;
     morse_sequence_destroy(morse, sequence);
     return status;

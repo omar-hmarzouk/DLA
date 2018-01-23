@@ -221,8 +221,8 @@ int MORSE_zgesv_incpiv_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_d
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zgesv_incpiv_Tile_Async( A, L, IPIV, B, sequence, &request );
-    RUNTIME_desc_flush( A, sequence );
-    RUNTIME_desc_flush( B, sequence );
+    MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( B, sequence );
 
     morse_sequence_wait(morse, sequence);
 

@@ -275,8 +275,8 @@ int MORSE_zgels_Tile(MORSE_enum trans, MORSE_desc_t *A,
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zgels_Tile_Async( trans, A, T, B, sequence, &request );
-    RUNTIME_desc_flush( A, sequence );
-    RUNTIME_desc_flush( B, sequence );
+    MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( B, sequence );
 
     morse_sequence_wait(morse, sequence);
 

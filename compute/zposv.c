@@ -146,7 +146,7 @@ int MORSE_zposv(MORSE_enum uplo, int N, int NRHS,
     }
 
     /* Set NT & NTRHS */
-    NB    = MORSE_NB;
+    NB = MORSE_NB;
 
     morse_sequence_create(morse, &sequence);
 
@@ -239,8 +239,8 @@ int MORSE_zposv_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B)
     }
     morse_sequence_create(morse, &sequence);
     MORSE_zposv_Tile_Async( uplo, A, B, sequence, &request );
-    RUNTIME_desc_flush( A, sequence );
-    RUNTIME_desc_flush( B, sequence );
+    MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( B, sequence );
 
     morse_sequence_wait(morse, sequence);
 
