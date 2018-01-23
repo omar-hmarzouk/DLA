@@ -75,9 +75,9 @@
  * @sa MORSE_slaset
  *
  ******************************************************************************/
-int MORSE_zlaset(MORSE_enum uplo, int M, int N,
-                 MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
-                 MORSE_Complex64_t *A, int LDA)
+int MORSE_zlaset( MORSE_enum uplo, int M, int N,
+                  MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
+                  MORSE_Complex64_t *A, int LDA )
 {
     int NB;
     int status;
@@ -125,7 +125,7 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N,
     /* Set NT */
     NB   = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
     /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseDescInout, uplo,
@@ -138,12 +138,12 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N,
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseDescInout, uplo, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return MORSE_SUCCESS;
 }
 
@@ -184,26 +184,30 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N,
  * @sa MORSE_slaset_Tile
  *
  ******************************************************************************/
-int MORSE_zlaset_Tile(MORSE_enum uplo,
-                      MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
-                      MORSE_desc_t *A)
+int MORSE_zlaset_Tile( MORSE_enum uplo,
+                       MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
+                       MORSE_desc_t *A )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
+    int status;
 
     morse = morse_context_self();
     if (morse == NULL) {
         morse_fatal_error("MORSE_zlaset_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
+
     MORSE_zlaset_Tile_Async( uplo, alpha, beta, A, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    MORSE_Desc_Flush( A, sequence );
 
-    morse_sequence_destroy(morse, sequence);
-    return MORSE_SUCCESS;
+    morse_sequence_wait( morse, sequence );
+    status = sequence->status;
+    morse_sequence_destroy( morse, sequence );
+    return status;
 }
 
 /**
@@ -233,10 +237,10 @@ int MORSE_zlaset_Tile(MORSE_enum uplo,
  * @sa MORSE_slaset_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zlaset_Tile_Async(MORSE_enum uplo,
-                            MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
-                            MORSE_desc_t *A,
-                            MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zlaset_Tile_Async( MORSE_enum uplo,
+                             MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
+                             MORSE_desc_t *A,
+                             MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
 

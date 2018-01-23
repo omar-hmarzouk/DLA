@@ -78,12 +78,12 @@
  * @sa MORSE_zgeqrf
  *
  ******************************************************************************/
-int MORSE_zungqr_param(const libhqr_tree_t *qrtree,
-                       int M, int N, int K,
-                       MORSE_Complex64_t *A, int LDA,
-                       MORSE_desc_t *descTS,
-                       MORSE_desc_t *descTT,
-                       MORSE_Complex64_t *Q, int LDQ)
+int MORSE_zungqr_param( const libhqr_tree_t *qrtree,
+                        int M, int N, int K,
+                        MORSE_Complex64_t *A, int LDA,
+                        MORSE_desc_t *descTS,
+                        MORSE_desc_t *descTT,
+                        MORSE_Complex64_t *Q, int LDQ )
 {
     int NB;
     int status;
@@ -133,7 +133,7 @@ int MORSE_zungqr_param(const libhqr_tree_t *qrtree,
     /* Set NT */
     NB = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
     /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, MorseLower,
@@ -150,14 +150,14 @@ int MORSE_zungqr_param(const libhqr_tree_t *qrtree,
     morse_ztile2lap( morse, &descQl, &descQt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
     morse_ztile2lap_cleanup( morse, &descQl, &descQt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -208,15 +208,18 @@ int MORSE_zungqr_param_Tile( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE
         morse_fatal_error("MORSE_zungqr_param_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
+
     MORSE_zungqr_param_Tile_Async( qrtree, A, TS, TT, Q, sequence, &request );
+
     MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( TS, sequence );
+    MORSE_Desc_Flush( TT, sequence );
     MORSE_Desc_Flush( Q, sequence );
 
-    morse_sequence_wait(morse, sequence);
-
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 

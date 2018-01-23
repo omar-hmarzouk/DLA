@@ -106,10 +106,10 @@
  * @sa MORSE_ssymm
  *
  ******************************************************************************/
-int MORSE_zsymm(MORSE_enum side, MORSE_enum uplo, int M, int N,
-                MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                MORSE_Complex64_t *B, int LDB,
-                MORSE_Complex64_t beta,  MORSE_Complex64_t *C, int LDC)
+int MORSE_zsymm( MORSE_enum side, MORSE_enum uplo, int M, int N,
+                 MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
+                 MORSE_Complex64_t *B, int LDB,
+                 MORSE_Complex64_t beta,  MORSE_Complex64_t *C, int LDC )
 {
     int NB;
     int Am;
@@ -173,7 +173,7 @@ int MORSE_zsymm(MORSE_enum side, MORSE_enum uplo, int M, int N,
     /* Set MT & NT & KT */
     NB = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
     /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, uplo,
@@ -194,7 +194,7 @@ int MORSE_zsymm(MORSE_enum side, MORSE_enum uplo, int M, int N,
     morse_ztile2lap( morse, &descCl, &descCt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
@@ -202,7 +202,7 @@ int MORSE_zsymm(MORSE_enum side, MORSE_enum uplo, int M, int N,
     morse_ztile2lap_cleanup( morse, &descCl, &descCt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -265,9 +265,9 @@ int MORSE_zsymm(MORSE_enum side, MORSE_enum uplo, int M, int N,
  * @sa MORSE_ssymm_Tile
  *
  ******************************************************************************/
-int MORSE_zsymm_Tile(MORSE_enum side, MORSE_enum uplo,
-                     MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
-                     MORSE_Complex64_t beta,  MORSE_desc_t *C)
+int MORSE_zsymm_Tile( MORSE_enum side, MORSE_enum uplo,
+                      MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
+                      MORSE_Complex64_t beta,  MORSE_desc_t *C )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -279,16 +279,17 @@ int MORSE_zsymm_Tile(MORSE_enum side, MORSE_enum uplo,
         morse_fatal_error("MORSE_zsymm_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
+
     MORSE_zsymm_Tile_Async(side, uplo, alpha, A, B, beta, C, sequence, &request );
+
     MORSE_Desc_Flush( A, sequence );
     MORSE_Desc_Flush( B, sequence );
     MORSE_Desc_Flush( C, sequence );
 
-    morse_sequence_wait(morse, sequence);
-
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -320,10 +321,10 @@ int MORSE_zsymm_Tile(MORSE_enum side, MORSE_enum uplo,
  * @sa MORSE_ssymm_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zsymm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
-                           MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
-                           MORSE_Complex64_t beta,  MORSE_desc_t *C,
-                           MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zsymm_Tile_Async( MORSE_enum side, MORSE_enum uplo,
+                            MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
+                            MORSE_Complex64_t beta,  MORSE_desc_t *C,
+                            MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
 
@@ -414,9 +415,11 @@ int MORSE_zsymm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
     }
 
     /* Quick return */
-    if (C->m == 0 || C->n == 0 ||
-        ( (alpha == (MORSE_Complex64_t)0.0) && (beta == (MORSE_Complex64_t)1.0) ))
+    if ( (C->m == 0) || (C->n == 0) ||
+         ( (alpha == (MORSE_Complex64_t)0.0) && (beta == (MORSE_Complex64_t)1.0) ) )
+    {
         return MORSE_SUCCESS;
+    }
 
     morse_pzsymm( side, uplo, alpha, A, B, beta, C, sequence, request );
 

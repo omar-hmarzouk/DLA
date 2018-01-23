@@ -184,7 +184,7 @@ int MORSE_ztpqrt( int M, int N, int L,
     /* Set NT */
     NB = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
     /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseDescInout, MorseUpper,
@@ -201,14 +201,14 @@ int MORSE_ztpqrt( int M, int N, int L,
     morse_ztile2lap( morse, &descBl, &descBt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
     morse_ztile2lap_cleanup( morse, &descBl, &descBt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -251,7 +251,7 @@ int MORSE_ztpqrt( int M, int N, int L,
  * @sa MORSE_zgeqrs_Tile
  *
  ******************************************************************************/
-int MORSE_ztpqrt_Tile( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T  )
+int MORSE_ztpqrt_Tile( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -263,15 +263,17 @@ int MORSE_ztpqrt_Tile( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T 
         morse_fatal_error("MORSE_ztpqrt_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
+
     MORSE_ztpqrt_Tile_Async( L, A, B, T, sequence, &request );
+
     MORSE_Desc_Flush( A, sequence );
     MORSE_Desc_Flush( B, sequence );
+    MORSE_Desc_Flush( T, sequence );
 
-    morse_sequence_wait(morse, sequence);
-
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 

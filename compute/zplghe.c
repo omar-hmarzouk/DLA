@@ -113,7 +113,7 @@ int MORSE_zplghe( double bump, MORSE_enum uplo, int N,
 
     /* Set NT */
     NB = MORSE_NB;
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
     /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseDescOutput, uplo,
@@ -126,13 +126,13 @@ int MORSE_zplghe( double bump, MORSE_enum uplo, int N,
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseDescOutput, uplo, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
 
     return status;
 }
@@ -191,13 +191,15 @@ int MORSE_zplghe_Tile( double bump, MORSE_enum uplo, MORSE_desc_t *A,
         morse_fatal_error("MORSE_zplghe_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
+
     MORSE_zplghe_Tile_Async( bump, uplo, A, seed, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    MORSE_Desc_Flush( A, sequence );
 
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 

@@ -74,8 +74,8 @@
  * @sa MORSE_zpotrf
  *
  ******************************************************************************/
-int MORSE_zpotri(MORSE_enum uplo, int N,
-                 MORSE_Complex64_t *A, int LDA)
+int MORSE_zpotri( MORSE_enum uplo, int N,
+                  MORSE_Complex64_t *A, int LDA )
 {
     int NB;
     int status;
@@ -116,7 +116,7 @@ int MORSE_zpotri(MORSE_enum uplo, int N,
     /* Set NT */
     NB   = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
     /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseDescInout, uplo,
@@ -129,13 +129,13 @@ int MORSE_zpotri(MORSE_enum uplo, int N,
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseDescInout, uplo, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -195,14 +195,15 @@ int MORSE_zpotri_Tile( MORSE_enum uplo, MORSE_desc_t *A )
         morse_fatal_error("MORSE_zpotri_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
+
     MORSE_zpotri_Tile_Async( uplo, A, sequence, &request );
+
     MORSE_Desc_Flush( A, sequence );
 
-    morse_sequence_wait(morse, sequence);
-
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -237,8 +238,8 @@ int MORSE_zpotri_Tile( MORSE_enum uplo, MORSE_desc_t *A )
  * @sa MORSE_zpotrf_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zpotri_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A,
-                            MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zpotri_Tile_Async( MORSE_enum uplo, MORSE_desc_t *A,
+                             MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
 

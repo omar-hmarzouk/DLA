@@ -100,10 +100,10 @@
  * @sa MORSE_ssyev
  *
  ******************************************************************************/
-int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N,
-                 MORSE_Complex64_t *A, int LDA,
-                 double *W,
-                 MORSE_desc_t *descT)
+int MORSE_zheevd( MORSE_enum jobz, MORSE_enum uplo, int N,
+                  MORSE_Complex64_t *A, int LDA,
+                  double *W,
+                  MORSE_desc_t *descT )
 {
     int NB;
     int status;
@@ -150,7 +150,7 @@ int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N,
     /* Set NT */
     NB = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
     /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseDescInout, uplo,
@@ -163,13 +163,13 @@ int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N,
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseDescInout, uplo, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 /**
@@ -240,12 +240,12 @@ int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N,
  * @sa MORSE_ssyev
  *
  ******************************************************************************/
-int MORSE_zheevd_Tile(MORSE_enum jobz, MORSE_enum uplo,
-                      MORSE_desc_t *A, double *W, MORSE_desc_t *T)
+int MORSE_zheevd_Tile( MORSE_enum jobz, MORSE_enum uplo,
+                       MORSE_desc_t *A, double *W, MORSE_desc_t *T )
 {
-    MORSE_context_t  *morse;
+    MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
-    MORSE_request_t   request = MORSE_REQUEST_INITIALIZER;
+    MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
     int status;
 
     morse = morse_context_self();
@@ -253,15 +253,16 @@ int MORSE_zheevd_Tile(MORSE_enum jobz, MORSE_enum uplo,
         morse_fatal_error("MORSE_zheevd_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
+
     MORSE_zheevd_Tile_Async( jobz, uplo, A, W, T, sequence, &request );
+
     MORSE_Desc_Flush( A, sequence );
     MORSE_Desc_Flush( T, sequence );
 
-    morse_sequence_wait(morse, sequence);
-
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -481,7 +482,7 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
         }
 #endif
         subA = morse_desc_submatrix(&descA,  descA.mb,  0, descA.m -descA.mb,  descA.n-descA.nb);
-        subQ = morse_desc_submatrix(&descQ2, descQ2.mb, 0, descQ2.m-descQ2.mb, descQ2.n        );
+        subQ = morse_desc_submatrix(&descQ2, descQ2.mb, 0, descQ2.m-descQ2.mb, descQ2.n );
         subT = morse_desc_submatrix(&descT,  descT.mb,  0, descT.m -descT.mb,  descT.n-descT.nb);
 
         /* Compute Q2 = Q1 * Q2 */
@@ -505,7 +506,7 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
         }
 #endif
         subA = morse_desc_submatrix(&descA,  0, descA.nb,  descA.m -descA.mb,  descA.n -descA.nb );
-        subQ = morse_desc_submatrix(&descQ2, descQ2.mb, 0, descQ2.m-descQ2.mb, descQ2.n          );
+        subQ = morse_desc_submatrix(&descQ2, descQ2.mb, 0, descQ2.m-descQ2.mb, descQ2.n );
         subT = morse_desc_submatrix(&descT,  0, descT.nb,  descT.m -descT.mb,  descT.n -descT.nb );
 
         /* Compute Q2 = Q1^h * Q2 */
@@ -520,7 +521,7 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
                       sequence, request );
     }
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     free(subA); free(subQ); free(subT);
     morse_desc_mat_free( &descQ2 );

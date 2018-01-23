@@ -92,9 +92,9 @@
  * @sa MORSE_csysv
  *
  ******************************************************************************/
-int MORSE_zsysv(MORSE_enum uplo, int N, int NRHS,
-                MORSE_Complex64_t *A, int LDA,
-                MORSE_Complex64_t *B, int LDB)
+int MORSE_zsysv( MORSE_enum uplo, int N, int NRHS,
+                 MORSE_Complex64_t *A, int LDA,
+                 MORSE_Complex64_t *B, int LDB )
 {
     int NB;
     int status;
@@ -145,7 +145,7 @@ int MORSE_zsysv(MORSE_enum uplo, int N, int NRHS,
     /* Set NT & NTRHS */
     NB    = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
     /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseDescInout, uplo,
@@ -162,14 +162,14 @@ int MORSE_zsysv(MORSE_enum uplo, int N, int NRHS,
     morse_ztile2lap( morse, &descBl, &descBt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
     morse_ztile2lap_cleanup( morse, &descBl, &descBt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 /**
@@ -230,15 +230,16 @@ int MORSE_zsysv_Tile( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B )
         morse_fatal_error("MORSE_zsysv_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
+
     MORSE_zsysv_Tile_Async( uplo, A, B, sequence, &request );
+
     MORSE_Desc_Flush( A, sequence );
     MORSE_Desc_Flush( B, sequence );
 
-    morse_sequence_wait(morse, sequence);
-
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -269,8 +270,8 @@ int MORSE_zsysv_Tile( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B )
  * @sa MORSE_csysv_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zsysv_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
-                           MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zsysv_Tile_Async( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
+                            MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
 

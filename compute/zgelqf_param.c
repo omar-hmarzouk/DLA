@@ -72,9 +72,9 @@
  * @sa MORSE_zgelqs
  *
  ******************************************************************************/
-int MORSE_zgelqf_param(const libhqr_tree_t *qrtree, int M, int N,
-                       MORSE_Complex64_t *A, int LDA,
-                       MORSE_desc_t *descTS, MORSE_desc_t *descTT)
+int MORSE_zgelqf_param( const libhqr_tree_t *qrtree, int M, int N,
+                        MORSE_Complex64_t *A, int LDA,
+                        MORSE_desc_t *descTS, MORSE_desc_t *descTT )
 {
     int NB;
     int status;
@@ -117,7 +117,7 @@ int MORSE_zgelqf_param(const libhqr_tree_t *qrtree, int M, int N,
     /* Set NT */
     NB = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
     /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseDescInout, MorseUpperLower,
@@ -130,13 +130,13 @@ int MORSE_zgelqf_param(const libhqr_tree_t *qrtree, int M, int N,
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -191,14 +191,17 @@ int MORSE_zgelqf_param_Tile( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE
         morse_fatal_error("MORSE_zgelqf_param_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
+
     MORSE_zgelqf_param_Tile_Async( qrtree, A, TS, TT, sequence, &request );
+
     MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( TS, sequence );
+    MORSE_Desc_Flush( TT, sequence );
 
-    morse_sequence_wait(morse, sequence);
-
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -231,8 +234,8 @@ int MORSE_zgelqf_param_Tile( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE
  * @sa MORSE_zgelqs_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zgelqf_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT,
-                                  MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zgelqf_param_Tile_Async( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT,
+                                   MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
     MORSE_desc_t D, *Dptr = NULL;

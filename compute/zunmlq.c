@@ -105,10 +105,10 @@
  * @sa MORSE_zgelqf
  *
  ******************************************************************************/
-int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
-                 MORSE_Complex64_t *A, int LDA,
-                 MORSE_desc_t *descT,
-                 MORSE_Complex64_t *C, int LDC)
+int MORSE_zunmlq( MORSE_enum side, MORSE_enum trans, int M, int N, int K,
+                  MORSE_Complex64_t *A, int LDA,
+                  MORSE_desc_t *descT,
+                  MORSE_Complex64_t *C, int LDC )
 {
     int NB, An;
     int status;
@@ -172,7 +172,7 @@ int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
 
     /* Set MT, NT & NTRHS */
     NB   = MORSE_NB;
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
     /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, MorseUpper,
@@ -189,14 +189,14 @@ int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
     morse_ztile2lap( morse, &descCl, &descCt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
     morse_ztile2lap_cleanup( morse, &descCl, &descCt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -249,8 +249,8 @@ int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
  * @sa MORSE_zgelqf_Tile
  *
  ******************************************************************************/
-int MORSE_zunmlq_Tile(MORSE_enum side, MORSE_enum trans,
-                      MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C)
+int MORSE_zunmlq_Tile( MORSE_enum side, MORSE_enum trans,
+                       MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -262,15 +262,17 @@ int MORSE_zunmlq_Tile(MORSE_enum side, MORSE_enum trans,
         morse_fatal_error("MORSE_zunmlq_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
+
     MORSE_zunmlq_Tile_Async(side, trans, A, T, C, sequence, &request );
+
     MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( T, sequence );
     MORSE_Desc_Flush( C, sequence );
 
-    morse_sequence_wait(morse, sequence);
-
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -302,9 +304,9 @@ int MORSE_zunmlq_Tile(MORSE_enum side, MORSE_enum trans,
  * @sa MORSE_zgelqf_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zunmlq_Tile_Async(MORSE_enum side, MORSE_enum trans,
-                            MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C,
-                            MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zunmlq_Tile_Async( MORSE_enum side, MORSE_enum trans,
+                             MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C,
+                             MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
     MORSE_desc_t D, *Dptr = NULL;

@@ -97,9 +97,9 @@
  * @sa MORSE_stradd
  *
  ******************************************************************************/
-int MORSE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
-                 MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                 MORSE_Complex64_t beta,  MORSE_Complex64_t *B, int LDB)
+int MORSE_ztradd( MORSE_enum uplo, MORSE_enum trans, int M, int N,
+                  MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
+                  MORSE_Complex64_t beta,  MORSE_Complex64_t *B, int LDB )
 {
     int NB;
     int Am, An;
@@ -162,7 +162,7 @@ int MORSE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
     /* Set MT & NT & KT */
     NB = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
     /* Submit the matrix conversion */
     morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, uplo,
@@ -179,14 +179,14 @@ int MORSE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
     morse_ztile2lap( morse, &descBl, &descBt,
                      MorseDescInout, uplo, sequence, &request );
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
     /* Cleanup the temporary data */
     morse_ztile2lap_cleanup( morse, &descAl, &descAt );
     morse_ztile2lap_cleanup( morse, &descBl, &descBt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -244,9 +244,9 @@ int MORSE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
  * @sa MORSE_stradd_Tile
  *
  ******************************************************************************/
-int MORSE_ztradd_Tile(MORSE_enum uplo, MORSE_enum trans,
-                      MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                      MORSE_Complex64_t beta,  MORSE_desc_t *B)
+int MORSE_ztradd_Tile( MORSE_enum uplo, MORSE_enum trans,
+                       MORSE_Complex64_t alpha, MORSE_desc_t *A,
+                       MORSE_Complex64_t beta,  MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -258,15 +258,16 @@ int MORSE_ztradd_Tile(MORSE_enum uplo, MORSE_enum trans,
         morse_fatal_error("MORSE_ztradd_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
+
     MORSE_ztradd_Tile_Async( uplo, trans, alpha, A, beta, B, sequence, &request );
+
     MORSE_Desc_Flush( A, sequence );
     MORSE_Desc_Flush( B, sequence );
 
-    morse_sequence_wait(morse, sequence);
-
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -299,10 +300,10 @@ int MORSE_ztradd_Tile(MORSE_enum uplo, MORSE_enum trans,
  * @sa MORSE_stradd_Tile_Async
  *
  ******************************************************************************/
-int MORSE_ztradd_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
-                            MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                            MORSE_Complex64_t beta,  MORSE_desc_t *B,
-                            MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_ztradd_Tile_Async( MORSE_enum uplo, MORSE_enum trans,
+                             MORSE_Complex64_t alpha, MORSE_desc_t *A,
+                             MORSE_Complex64_t beta,  MORSE_desc_t *B,
+                             MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
     int M, N;
