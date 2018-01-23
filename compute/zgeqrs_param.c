@@ -276,10 +276,12 @@ int MORSE_zgeqrs_param_Tile_Async(const libhqr_tree_t *qrtree,
         return MORSE_ERR_UNALLOCATED;
     }
     /* Check sequence status */
-    if (sequence->status == MORSE_SUCCESS)
+    if (sequence->status == MORSE_SUCCESS) {
         request->status = MORSE_SUCCESS;
-    else
+    }
+    else {
         return morse_request_fail(sequence, request, MORSE_ERR_SEQUENCE_FLUSHED);
+    }
 
     /* Check descriptors for correctness */
     if (morse_desc_check(A) != MORSE_SUCCESS) {

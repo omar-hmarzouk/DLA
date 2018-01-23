@@ -264,10 +264,12 @@ int MORSE_zlanhe_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A, d
         return MORSE_ERR_UNALLOCATED;
     }
     /* Check sequence status */
-    if (sequence->status == MORSE_SUCCESS)
+    if (sequence->status == MORSE_SUCCESS) {
         request->status = MORSE_SUCCESS;
-    else
+    }
+    else {
         return morse_request_fail(sequence, request, MORSE_ERR_SEQUENCE_FLUSHED);
+    }
 
     /* Check descriptors for correctness */
     if (morse_desc_check(A) != MORSE_SUCCESS) {
