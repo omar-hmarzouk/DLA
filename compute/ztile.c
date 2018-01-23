@@ -61,7 +61,7 @@
  * @sa MORSE_sLapack_to_Tile
  *
  ******************************************************************************/
-int MORSE_zLapack_to_Tile(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A)
+int MORSE_zLapack_to_Tile( MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A  )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -92,6 +92,7 @@ int MORSE_zLapack_to_Tile(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A)
 
     MORSE_Desc_Flush( B, sequence );
     MORSE_Desc_Flush( A, sequence );
+
     morse_sequence_wait( morse, sequence );
 
     /* Destroy temporary B descriptor */
@@ -137,7 +138,7 @@ int MORSE_zLapack_to_Tile(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A)
  * @sa MORSE_sTile_to_Lapack
  *
  ******************************************************************************/
-int MORSE_zTile_to_Lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA)
+int MORSE_zTile_to_Lapack( MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA  )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

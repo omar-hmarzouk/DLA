@@ -183,7 +183,7 @@ int MORSE_zpotri(MORSE_enum uplo, int N,
  * @sa MORSE_zpotrf_Tile
  *
  ******************************************************************************/
-int MORSE_zpotri_Tile(MORSE_enum uplo, MORSE_desc_t *A)
+int MORSE_zpotri_Tile( MORSE_enum uplo, MORSE_desc_t *A )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

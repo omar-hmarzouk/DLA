@@ -195,7 +195,7 @@ int MORSE_zpotrf(MORSE_enum uplo, int N,
  * @sa MORSE_zpotrs_Tile
  *
  ******************************************************************************/
-int MORSE_zpotrf_Tile(MORSE_enum uplo, MORSE_desc_t *A)
+int MORSE_zpotrf_Tile( MORSE_enum uplo, MORSE_desc_t *A )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

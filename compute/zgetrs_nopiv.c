@@ -199,7 +199,7 @@ int MORSE_zgetrs_nopiv(MORSE_enum trans, int N, int NRHS,
  * @sa MORSE_zgetrf_nopiv_Tile
  *
  ******************************************************************************/
-int MORSE_zgetrs_nopiv_Tile(MORSE_desc_t *A, MORSE_desc_t *B)
+int MORSE_zgetrs_nopiv_Tile( MORSE_desc_t *A, MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

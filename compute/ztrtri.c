@@ -202,7 +202,7 @@ int MORSE_ztrtri(MORSE_enum uplo, MORSE_enum diag, int N,
  * @sa MORSE_zpotri_Tile
  *
  ******************************************************************************/
-int MORSE_ztrtri_Tile(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A)
+int MORSE_ztrtri_Tile( MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

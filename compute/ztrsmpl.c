@@ -196,7 +196,7 @@ int MORSE_ztrsmpl(int N, int NRHS,
  * @sa MORSE_zgetrf_incpiv_Tile
  *
  ******************************************************************************/
-int MORSE_ztrsmpl_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_desc_t *B)
+int MORSE_ztrsmpl_Tile( MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

@@ -84,7 +84,7 @@
  ******************************************************************************/
 int MORSE_zbuild( MORSE_enum uplo, int M, int N,
                   MORSE_Complex64_t *A, int LDA,
-                  void *user_data, void* user_build_callback)
+                  void *user_data, void* user_build_callback )
 {
     int NB;
     int status;
@@ -259,7 +259,7 @@ int MORSE_zbuild_Tile( MORSE_enum uplo, MORSE_desc_t *A,
 int MORSE_zbuild_Tile_Async( MORSE_enum uplo, MORSE_desc_t     *A,
                              void *user_data, void* user_build_callback,
                              MORSE_sequence_t *sequence,
-                             MORSE_request_t  *request)
+                             MORSE_request_t  *request )
 {
     MORSE_context_t *morse;
 
@@ -289,8 +289,9 @@ int MORSE_zbuild_Tile_Async( MORSE_enum uplo, MORSE_desc_t     *A,
     }
 
     /* Quick return */
-    if (chameleon_min( A->m, A->n ) == 0)
+    if (chameleon_min( A->m, A->n ) == 0) {
         return MORSE_SUCCESS;
+    }
 
     morse_pzbuild( uplo, A, user_data, user_build_callback, sequence, request );
 

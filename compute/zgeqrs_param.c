@@ -197,7 +197,7 @@ int MORSE_zgeqrs_param(const libhqr_tree_t *qrtree, int M, int N, int NRHS,
  * @sa MORSE_zgeqrf_Tile
  *
  ******************************************************************************/
-int MORSE_zgeqrs_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B)
+int MORSE_zgeqrs_param_Tile( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

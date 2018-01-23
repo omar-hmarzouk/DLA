@@ -203,7 +203,7 @@ int MORSE_zgelqs(int M, int N, int NRHS,
  * @sa MORSE_zgelqf_Tile
  *
  ******************************************************************************/
-int MORSE_zgelqs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B)
+int MORSE_zgelqs_Tile( MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

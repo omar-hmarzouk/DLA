@@ -197,7 +197,7 @@ int MORSE_zsytrs(MORSE_enum uplo, int N, int NRHS,
  * @sa MORSE_csytrs_Tile
  *
  ******************************************************************************/
-int MORSE_zsytrs_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B)
+int MORSE_zsytrs_Tile( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

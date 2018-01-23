@@ -205,7 +205,7 @@ int MORSE_zpotrimm(MORSE_enum uplo, int N,
  * @sa MORSE_zpotrf_Tile
  *
  ******************************************************************************/
-int MORSE_zpotrimm_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *C)
+int MORSE_zpotrimm_Tile( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *C )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

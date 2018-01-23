@@ -197,7 +197,7 @@ int MORSE_zungqr(int M, int N, int K,
  * @sa MORSE_zgeqrf_Tile
  *
  ******************************************************************************/
-int MORSE_zungqr_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q)
+int MORSE_zungqr_Tile( MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;

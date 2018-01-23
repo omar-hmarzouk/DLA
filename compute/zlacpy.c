@@ -197,7 +197,7 @@ int MORSE_zlacpy(MORSE_enum uplo, int M, int N,
  * @sa MORSE_slacpy_Tile
  *
  ******************************************************************************/
-int MORSE_zlacpy_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B)
+int MORSE_zlacpy_Tile( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
