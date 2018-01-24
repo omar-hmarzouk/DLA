@@ -349,8 +349,6 @@ int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **
  **/
 int MORSE_zLapack_to_Tile(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A);
 int MORSE_zTile_to_Lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA);
-int MORSE_zLapack_to_Tile_Async(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
-int MORSE_zTile_to_Lapack_Async(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA, MORSE_sequence_t *sequence, MORSE_request_t *request);
 
 /** ****************************************************************************
  *  User Builder function prototypes

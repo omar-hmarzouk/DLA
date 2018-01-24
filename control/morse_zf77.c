@@ -40,9 +40,7 @@
  *  FORTRAN API - math functions (simple interface)
  **/
 #define MORSE_ZLAPACK_TO_TILE MORSE_FNAME(zlapack_to_tile, ZLAPACK_TO_TILE)
-#define MORSE_ZLAPACK_TO_TILE_ASYNC MORSE_FNAME(zlapack_to_tile_async, ZLAPACK_TO_TILE_ASYNC)
 #define MORSE_ZTILE_TO_LAPACK MORSE_FNAME(ztile_to_lapack, ZTILE_TO_LAPACK)
-#define MORSE_ZTILE_TO_LAPACK_ASYNC MORSE_FNAME(ztile_to_lapack_async, ZTILE_TO_LAPACK_ASYNC)
 //#define MORSE_ZGEBRD          MORSE_FNAME(zgebrd       , ZGEBRD       )
 //#define MORSE_ZGECFI          MORSE_FNAME(zgecfi       , ZGECFI       )
 //#define MORSE_ZGECFI_ASYNC    MORSE_FNAME(zgecfi_async , ZGECFI_ASYNC )
@@ -293,14 +291,8 @@
 void MORSE_ZLAPACK_TO_TILE(MORSE_Complex64_t *Af77, int *LDA, MORSE_desc_t *A, int *info)
 { *info = MORSE_zLapack_to_Tile(Af77, *LDA, A); }
 
-void MORSE_ZLAPACK_TO_TILE_ASYNC(MORSE_Complex64_t *Af77, int *LDA, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request, int *info)
-{ *info = MORSE_zLapack_to_Tile_Async(Af77, *LDA, A, sequence, request); }
-
 void MORSE_ZTILE_TO_LAPACK(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int *LDA, int *info)
 { *info = MORSE_zTile_to_Lapack(A, Af77, *LDA); }
-
-void MORSE_ZTILE_TO_LAPACK_ASYNC(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int *LDA, MORSE_sequence_t *sequence, MORSE_request_t *request, int *info)
-{ *info = MORSE_zTile_to_Lapack_Async(A, Af77, *LDA, sequence, request); }
 
 //void MORSE_ZGEBRD(int *M, int *N, MORSE_Complex64_t *A, int *LDA, double *D, double *E, MORSE_desc_t **descT, int *info)
 //{ *info = MORSE_zgebrd(*M, *N, A, *LDA, D, E, *descT); }

@@ -97,20 +97,6 @@ module morse_z
       end interface
 
       interface
-         function MORSE_zLapack_to_Tile_Async_c(Af77,LDA,A,sequence,request) &
-          & bind(c, name='MORSE_zLapack_to_Tile_Async')
-            use iso_c_binding
-            implicit none
-            integer(kind=c_int) :: MORSE_zLapack_to_Tile_Async_c
-            type(c_ptr), value :: Af77
-            integer(kind=c_int), value :: LDA
-            type(c_ptr), value :: A
-            type(c_ptr), value :: sequence
-            type(c_ptr), value :: request
-          end function MORSE_zLapack_to_Tile_Async_c
-      end interface
-
-      interface
          function MORSE_zTile_to_Lapack_c(A,Af77,LDA) &
           & bind(c, name='MORSE_zTile_to_Lapack')
             use iso_c_binding
@@ -120,20 +106,6 @@ module morse_z
             type(c_ptr), value :: Af77
             integer(kind=c_int), value :: LDA
           end function MORSE_zTile_to_Lapack_c
-      end interface
-
-      interface
-         function MORSE_zTile_to_Lapack_Async_c(A,Af77,LDA,sequence,request) &
-          & bind(c, name='MORSE_zTile_to_Lapack_Async')
-            use iso_c_binding
-            implicit none
-            integer(kind=c_int) :: MORSE_zTile_to_Lapack_Async_c
-            type(c_ptr), value :: A
-            type(c_ptr), value :: Af77
-            integer(kind=c_int), value :: LDA
-            type(c_ptr), value :: sequence
-            type(c_ptr), value :: request
-          end function MORSE_zTile_to_Lapack_Async_c
       end interface
 
       interface
@@ -5506,29 +5478,5 @@ module morse_z
          type(c_ptr), value :: A ! Arg managed by MORSE: opaque to Fortran
          info = MORSE_zTile_to_Lapack_c(A,c_loc(Af77),LDA)
       end subroutine MORSE_zTile_to_Lapack
-
-      subroutine MORSE_zLapack_to_Tile_Async(Af77,LDA,A,sequence,request,info)
-         use iso_c_binding
-         implicit none
-         integer(kind=c_int), intent(out) :: info
-         integer(kind=c_int), intent(in) :: LDA
-         complex(kind=c_double_complex), intent(in), target :: Af77(LDA,*)
-         type(c_ptr), value :: A ! Arg managed by MORSE: opaque to Fortran
-         type(c_ptr), value :: request ! Arg managed by MORSE: opaque to Fortran
-         type(c_ptr), value :: sequence ! Arg managed by MORSE: opaque to Fortran
-         info = MORSE_zLapack_to_Tile_Async_c(c_loc(Af77),LDA,A,sequence,request)
-      end subroutine MORSE_zLapack_to_Tile_Async
-
-      subroutine MORSE_zTile_to_Lapack_Async(A,Af77,LDA,sequence,request,info)
-         use iso_c_binding
-         implicit none
-         integer(kind=c_int), intent(out) :: info
-         integer(kind=c_int), intent(in) :: LDA
-         complex(kind=c_double_complex), intent(out), target :: Af77(LDA,*)
-         type(c_ptr), value :: A ! Arg managed by MORSE: opaque to Fortran
-         type(c_ptr), value :: request ! Arg managed by MORSE: opaque to Fortran
-         type(c_ptr), value :: sequence ! Arg managed by MORSE: opaque to Fortran
-         info = MORSE_zTile_to_Lapack_Async_c(A,c_loc(Af77),LDA,sequence,request)
-      end subroutine MORSE_zTile_to_Lapack_Async
 
 end module morse_z

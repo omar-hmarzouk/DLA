@@ -28,14 +28,22 @@
  *
  **/
 
+/*******************************************************************************
+ *  LAPACK/Tile Descriptor accesses
+ **/
+#define MorseDescInput  1
+#define MorseDescOutput 2
+#define MorseDescInout  (MorseDescInput | MorseDescOutput)
+
 /***************************************************************************//**
  *  Macro for matrix conversion / Lapack interface
  **/
-#define morse_zdesc_alloc_diag(descA, mb, nb, lm, ln, i, j, m, n, p, q) \
+#define morse_zdesc_alloc_diag( descA, mb, nb, lm, ln, i, j, m, n, p, q) \
     descA = morse_desc_init_diag(                                       \
         MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                    \
         (m), (n), (i), (j), (m), (n), p, q);                            \
-    morse_desc_mat_alloc( &(descA) );
+    morse_desc_mat_alloc( &(descA) );                                   \
+    RUNTIME_desc_create( &(descA) );
 
 #define morse_zdesc_alloc( descA, mb, nb, lm, ln, i, j, m, n, free)     \
     descA = morse_desc_init(                                            \
@@ -45,34 +53,8 @@
         morse_error( __func__, "morse_desc_mat_alloc() failed");        \
         {free;};                                                        \
         return MORSE_ERR_OUT_OF_RESOURCES;                              \
-    }
-
-#define morse_zooplap2tile( descA, A, mb, nb, lm, ln, i, j, m, n, seq, req, free) \
-    descA = morse_desc_init(                                           \
-        MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                   \
-        (lm), (ln), (i), (j), (m), (n), 1, 1);                         \
-    if ( morse_desc_mat_alloc( &(descA) ) ) {                          \
-        morse_error( __func__, "morse_desc_mat_alloc() failed");        \
-        {free;};                                                        \
-        return MORSE_ERR_OUT_OF_RESOURCES;                             \
     }                                                                   \
-    morse_pzlapack_to_tile(A, lm, &descA, seq, req);
-
-#define morse_ziplap2tile( descA, A, mb, nb, lm, ln, i, j, m, n, seq, req) \
-    descA = morse_desc_init(                                         \
-        MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                 \
-        (lm), (ln), (i), (j), (m), (n), 1, 1);                        \
-    descA.mat = A;                                                    \
-    MORSE_zgecfi_Async((lm), (ln), (A), MorseCM, (mb), (nb),        \
-                        MorseCCRB, (mb), (nb), (seq), (req));
-
-
-#define morse_zooptile2lap( descA, A, mb, nb, lm, ln, seq, req)    \
-    morse_pztile_to_lapack(&descA, A, lm, seq, req);
-
-#define morse_ziptile2lap( descA, A, mb, nb, lm, ln, seq, req)         \
-    MORSE_zgecfi_Async((lm), (ln), (A), MorseCCRB, (mb), (nb),        \
-                        MorseCM, (mb), (nb), (seq), (req));
+    RUNTIME_desc_create( &(descA) );
 
 /***************************************************************************//**
  *  Declarations of internal sequential functions
@@ -171,3 +153,98 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
 void morse_pzungqr_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *Q,
                          MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
                          MORSE_sequence_t *sequence, MORSE_request_t *request);
+
+
+/**
+ * @brief Internal function to convert the lapack format to tile format in
+ * LAPACK interface calls
+ */
+static inline int
+morse_zlap2tile( MORSE_context_t *morse,
+                 MORSE_desc_t *descAl, MORSE_desc_t *descAt,
+                 MORSE_enum mode, MORSE_enum uplo,
+                 MORSE_Complex64_t *A, int mb, int nb, int lm, int ln, int m, int n,
+                 MORSE_sequence_t *seq, MORSE_request_t *req )
+{
+    /* Initialize the Lapack descriptor */
+    *descAl = morse_desc_init_user( MorseComplexDouble, mb, nb, (mb)*(nb),
+                                    lm, ln, 0, 0, m, n, 1, 1,
+                                    morse_getaddr_cm, morse_getblkldd_cm, NULL  );
+    descAl->mat = A;
+    descAl->styp = MorseCM;
+
+    /* Initialize the tile descriptor */
+    *descAt = morse_desc_init( MorseComplexDouble, mb, nb, (mb)*(nb),
+                               lm, ln, 0, 0, m, n, 1, 1 );
+
+    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {
+        if ( morse_desc_mat_alloc( descAt ) ) {
+            morse_error( "morse_zlap2tile", "morse_desc_mat_alloc() failed");
+            return MORSE_ERR_OUT_OF_RESOURCES;
+        }
+
+        RUNTIME_desc_create( descAl );
+        RUNTIME_desc_create( descAt );
+
+        if ( mode & MorseDescInput ) {
+            morse_pzlacpy( uplo, descAl, descAt, seq, req );
+        }
+    }
+    else {
+        morse_fatal_error( "morse_zlap2tile", "INPLACE translation not supported yet");
+        descAt->mat = A;
+
+        RUNTIME_desc_create( descAl );
+        RUNTIME_desc_create( descAt );
+
+        if ( mode & MorseDescInput ) {
+            /* MORSE_zgecfi_Async( lm, ln, A, MorseCM, mb, nb, */
+            /*                     MorseCCRB, mb, nb, seq, req ); */
+        }
+        return MORSE_ERR_NOT_SUPPORTED;
+    }
+
+    return MORSE_SUCCESS;
+}
+
+/**
+ * @brief Internal function to convert back the tile format to the lapack format
+ * in LAPACK interface calls
+ */
+static inline int
+morse_ztile2lap( MORSE_context_t *morse, MORSE_desc_t *descAl, MORSE_desc_t *descAt,
+                 MORSE_enum mode, MORSE_enum uplo, MORSE_sequence_t *seq, MORSE_request_t *req )
+{
+    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {
+        if ( mode & MorseDescOutput ) {
+            morse_pzlacpy( uplo, descAt, descAl, seq, req );
+        }
+    }
+    else {
+        morse_fatal_error( "morse_ztile2lap", "INPLACE translation not supported yet");
+        if ( mode & MorseDescOutput ) {
+            /* MORSE_zgecfi_Async( descAl->lm, descAl->ln, descAl->mat, */
+            /*                     MorseCCRB, descAl->mb, descAl->nb,   */
+            /*                     MorseCM, descAl->mb, descAl->nb, seq, req ); */
+        }
+        return MORSE_ERR_NOT_SUPPORTED;
+    }
+    RUNTIME_desc_flush( descAl, seq );
+    RUNTIME_desc_flush( descAt, seq );
+
+    return MORSE_SUCCESS;
+}
+
+/**
+ * @brief Internal function to cleanup the temporary data from the layout
+ * conversions in LAPACK interface calls
+ */
+static inline void
+morse_ztile2lap_cleanup( MORSE_context_t *morse, MORSE_desc_t *descAl, MORSE_desc_t *descAt )
+{
+    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {
+        morse_desc_mat_free( descAt );
+    }
+    RUNTIME_desc_destroy( descAl );
+    RUNTIME_desc_destroy( descAt );
+}

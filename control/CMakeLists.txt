@@ -50,7 +50,6 @@ set(CHAMELEON_HDRS
     global.h
     morse_f77.h
     morsewinthread.h
-    tile.h
     workspace.h
     )
 

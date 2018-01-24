@@ -105,17 +105,18 @@
  * @sa MORSE_zgelqf
  *
  ******************************************************************************/
-int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
+int MORSE_zunmlq( MORSE_enum side, MORSE_enum trans, int M, int N, int K,
                   MORSE_Complex64_t *A, int LDA,
                   MORSE_desc_t *descT,
-                  MORSE_Complex64_t *C, int LDC)
+                  MORSE_Complex64_t *C, int LDC )
 {
     int NB, An;
     int status;
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
-    MORSE_desc_t descA, descC;
+    MORSE_desc_t descAl, descAt;
+    MORSE_desc_t descCl, descCt;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -171,37 +172,31 @@ int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
 
     /* Set MT, NT & NTRHS */
     NB   = MORSE_NB;
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooplap2tile( descA, A, NB, NB, LDA, An, 0, 0, K, An, sequence, &request,
-                             morse_desc_mat_free(&(descA)) );
-        morse_zooplap2tile( descC, C, NB, NB, LDC, N, 0, 0, M,  N, sequence, &request,
-                             morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descC)));
-/*    } else {*/
-/*        morse_ziplap2tile( descA, A, NB, NB, LDA, An, 0, 0, K, An,*/
-/*                            sequence, &request);*/
-/*        morse_ziplap2tile( descC, C, NB, NB, LDC, N, 0, 0, M,  N,*/
-/*                            sequence, &request);*/
-/*    }*/
+    /* Submit the matrix conversion */
+    morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, MorseUpper,
+                     A, NB, NB, LDA, An, K, An, sequence, &request );
+    morse_zlap2tile( morse, &descCl, &descCt, MorseDescInout, MorseUpperLower,
+                     C, NB, NB, LDC, N, M,  N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zunmlq_Tile_Async(
-        side, trans, &descA, descT, &descC, sequence, &request);
+    MORSE_zunmlq_Tile_Async(  side, trans, &descAt, descT, &descCt, sequence, &request );
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descC);
-/*    } else {*/
-/*        morse_ziptile2lap( descA, A, NB, NB, LDA, An, sequence, &request);*/
-/*        morse_ziptile2lap( descC, C, NB, NB, LDC, N,  sequence, &request);*/
-/*        morse_sequence_wait(morse, sequence);*/
-/*    }*/
+    /* Submit the matrix conversion back */
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseDescInput, MorseUpper, sequence, &request );
+    morse_ztile2lap( morse, &descCl, &descCt,
+                     MorseDescInout, MorseUpperLower, sequence, &request );
+
+    morse_sequence_wait( morse, sequence );
+
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
+    morse_ztile2lap_cleanup( morse, &descCl, &descCt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -254,8 +249,8 @@ int MORSE_zunmlq(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
  * @sa MORSE_zgelqf_Tile
  *
  ******************************************************************************/
-int MORSE_zunmlq_Tile(MORSE_enum side, MORSE_enum trans,
-                       MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C)
+int MORSE_zunmlq_Tile( MORSE_enum side, MORSE_enum trans,
+                       MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -267,14 +262,17 @@ int MORSE_zunmlq_Tile(MORSE_enum side, MORSE_enum trans,
         morse_fatal_error("MORSE_zunmlq_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
-    MORSE_zunmlq_Tile_Async(side, trans, A, T, C, sequence, &request);
-    RUNTIME_desc_flush( A, sequence );
-    RUNTIME_desc_flush( C, sequence );
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_create( morse, &sequence );
 
+    MORSE_zunmlq_Tile_Async(side, trans, A, T, C, sequence, &request );
+
+    MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( T, sequence );
+    MORSE_Desc_Flush( C, sequence );
+
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -306,9 +304,9 @@ int MORSE_zunmlq_Tile(MORSE_enum side, MORSE_enum trans,
  * @sa MORSE_zgelqf_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zunmlq_Tile_Async(MORSE_enum side, MORSE_enum trans,
+int MORSE_zunmlq_Tile_Async( MORSE_enum side, MORSE_enum trans,
                              MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+                             MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
     MORSE_desc_t D, *Dptr = NULL;
@@ -327,10 +325,12 @@ int MORSE_zunmlq_Tile_Async(MORSE_enum side, MORSE_enum trans,
         return MORSE_ERR_UNALLOCATED;
     }
     /* Check sequence status */
-    if (sequence->status == MORSE_SUCCESS)
+    if (sequence->status == MORSE_SUCCESS) {
         request->status = MORSE_SUCCESS;
-    else
+    }
+    else {
         return morse_request_fail(sequence, request, MORSE_ERR_SEQUENCE_FLUSHED);
+    }
 
     /* Check descriptors for correctness */
     if (morse_desc_check(A) != MORSE_SUCCESS) {
@@ -358,10 +358,10 @@ int MORSE_zunmlq_Tile_Async(MORSE_enum side, MORSE_enum trans,
     }
     /* Quick return - currently NOT equivalent to LAPACK's:
      * CALL DLASET( 'Full', MAX( M, N ), NRHS, ZERO, ZERO, C, LDC ) */
-/*
-    if (chameleon_min(M, chameleon_min(N, K)) == 0)
-        return MORSE_SUCCESS;
-*/
+    /*
+     if (chameleon_min(M, chameleon_min(N, K)) == 0)
+     return MORSE_SUCCESS;
+     */
 #if defined(CHAMELEON_COPY_DIAG)
     {
         int m = chameleon_min(A->mt, A->nt) * A->mb;
@@ -373,16 +373,21 @@ int MORSE_zunmlq_Tile_Async(MORSE_enum side, MORSE_enum trans,
     if (morse->householder == MORSE_FLAT_HOUSEHOLDER) {
         if ( (trans == MorseConjTrans) &&
              (side == MorseLeft) ) {
-            morse_pzunmlq(side, trans, A, C, T, Dptr, sequence, request);
+            morse_pzunmlq( side, trans, A, C, T, Dptr, sequence, request );
         } else {
-            morse_pzunmlq(side, trans, A, C, T, Dptr, sequence, request);
+            morse_pzunmlq( side, trans, A, C, T, Dptr, sequence, request );
         }
     }
     else {
-        morse_pzunmlqrh(side, trans, A, C, T, Dptr, MORSE_RHBLK, sequence, request);
+        morse_pzunmlqrh( side, trans, A, C, T, Dptr, MORSE_RHBLK, sequence, request );
     }
     if (Dptr != NULL) {
-        morse_desc_mat_free(Dptr);
+        MORSE_Desc_Flush( A, sequence );
+        MORSE_Desc_Flush( C, sequence );
+        MORSE_Desc_Flush( T, sequence );
+        MORSE_Desc_Flush( Dptr, sequence );
+        morse_sequence_wait( morse, sequence );
+        morse_desc_mat_free( Dptr );
     }
     (void)D;
     return MORSE_SUCCESS;

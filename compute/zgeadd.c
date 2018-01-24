@@ -91,14 +91,15 @@
  * @sa MORSE_sgeadd
  *
  ******************************************************************************/
-int MORSE_zgeadd(MORSE_enum trans, int M, int N,
-                 MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
-                 MORSE_Complex64_t beta,  MORSE_Complex64_t *B, int LDB)
+int MORSE_zgeadd( MORSE_enum trans, int M, int N,
+                  MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
+                  MORSE_Complex64_t beta,  MORSE_Complex64_t *B, int LDB )
 {
     int NB;
     int Am, An;
     int status;
-    MORSE_desc_t descA, descB;
+    MORSE_desc_t descAl, descAt;
+    MORSE_desc_t descBl, descBt;
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
@@ -151,37 +152,31 @@ int MORSE_zgeadd(MORSE_enum trans, int M, int N,
     /* Set MT & NT & KT */
     NB = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
-    /* if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) { */
-        morse_zooplap2tile( descA, A, NB, NB, LDA, An, 0, 0, Am, An, sequence, &request,
-                             morse_desc_mat_free(&(descA)) );
-        morse_zooplap2tile( descB, B, NB, NB, LDB, N, 0, 0, M, N, sequence, &request,
-                             morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descB)));
-    /* } else { */
-    /*     morse_ziplap2tile( descA, A, NB, NB, LDA, An, 0, 0, Am, An, */
-    /*                         sequence, &request); */
-    /*     morse_ziplap2tile( descB, B, NB, NB, LDB, N, 0, 0, M, N, */
-    /*                         sequence, &request); */
-    /* } */
+    /* Submit the matrix conversion */
+    morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, MorseUpperLower,
+                     A, NB, NB, LDA, An, Am, An, sequence, &request );
+    morse_zlap2tile( morse, &descBl, &descBt, MorseDescInout, MorseUpperLower,
+                     B, NB, NB, LDB, N, M, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zgeadd_Tile_Async(
-        trans, alpha, &descA, beta, &descB, sequence, &request);
+    MORSE_zgeadd_Tile_Async( trans, alpha, &descAt, beta, &descBt, sequence, &request );
 
-    /* if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) { */
-        morse_zooptile2lap( descB, B, NB, NB, LDB, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
-    /* } else { */
-    /*     morse_ziptile2lap( descA, A, NB, NB, LDA, An, sequence, &request); */
-    /*     morse_ziptile2lap( descB, B, NB, NB, LDB, N,  sequence, &request); */
-    /*     morse_dynamic_sync(); */
-    /* } */
+    /* Submit the matrix conversion back */
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseDescInput, MorseUpperLower, sequence, &request );
+    morse_ztile2lap( morse, &descBl, &descBt,
+                     MorseDescInout, MorseUpperLower, sequence, &request );
+
+    morse_sequence_wait( morse, sequence );
+
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
+    morse_ztile2lap_cleanup( morse, &descBl, &descBt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -233,9 +228,9 @@ int MORSE_zgeadd(MORSE_enum trans, int M, int N,
  * @sa MORSE_sgeadd_Tile
  *
  ******************************************************************************/
-int MORSE_zgeadd_Tile(MORSE_enum trans,
-                      MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                      MORSE_Complex64_t beta,  MORSE_desc_t *B)
+int MORSE_zgeadd_Tile( MORSE_enum trans,
+                       MORSE_Complex64_t alpha, MORSE_desc_t *A,
+                       MORSE_Complex64_t beta,  MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -247,14 +242,16 @@ int MORSE_zgeadd_Tile(MORSE_enum trans,
         morse_fatal_error("MORSE_zgeadd_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
-    MORSE_zgeadd_Tile_Async(trans, alpha, A, beta, B, sequence, &request);
-    RUNTIME_desc_flush( A, sequence );
-    RUNTIME_desc_flush( B, sequence );
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_create( morse, &sequence );
 
+    MORSE_zgeadd_Tile_Async( trans, alpha, A, beta, B, sequence, &request );
+
+    MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( B, sequence );
+
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -287,10 +284,10 @@ int MORSE_zgeadd_Tile(MORSE_enum trans,
  * @sa MORSE_sgeadd_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zgeadd_Tile_Async(MORSE_enum trans,
-                            MORSE_Complex64_t alpha, MORSE_desc_t *A,
-                            MORSE_Complex64_t beta,  MORSE_desc_t *B,
-                            MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zgeadd_Tile_Async( MORSE_enum trans,
+                             MORSE_Complex64_t alpha, MORSE_desc_t *A,
+                             MORSE_Complex64_t beta,  MORSE_desc_t *B,
+                             MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
     int M, N;
@@ -310,10 +307,12 @@ int MORSE_zgeadd_Tile_Async(MORSE_enum trans,
         return MORSE_ERR_UNALLOCATED;
     }
     /* Check sequence status */
-    if (sequence->status == MORSE_SUCCESS)
+    if (sequence->status == MORSE_SUCCESS) {
         request->status = MORSE_SUCCESS;
-    else
+    }
+    else {
         return morse_request_fail(sequence, request, MORSE_ERR_SEQUENCE_FLUSHED);
+    }
 
     /* Check descriptors for correctness */
     if (morse_desc_check(A) != MORSE_SUCCESS) {
@@ -363,11 +362,13 @@ int MORSE_zgeadd_Tile_Async(MORSE_enum trans,
     N = B->n;
 
     /* Quick return */
-    if (M == 0 || N == 0 ||
-        ((alpha == (MORSE_Complex64_t)0.0) && beta == (MORSE_Complex64_t)1.0))
+    if ( (M == 0) || (N == 0) ||
+         ((alpha == (MORSE_Complex64_t)0.0) && (beta == (MORSE_Complex64_t)1.0)) )
+    {
         return MORSE_SUCCESS;
+    }
 
-    morse_pztradd(MorseUpperLower, trans, alpha, A, beta, B, sequence, request);
+    morse_pztradd( MorseUpperLower, trans, alpha, A, beta, B, sequence, request );
 
     return MORSE_SUCCESS;
 }

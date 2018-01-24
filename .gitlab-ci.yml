@@ -45,7 +45,7 @@ test_starpu_cuda_mpi:
       - chameleon_starpu_mpi.lcov
   script:
     - (cd build &&
-       ctest --no-compress-output -V -j 5
+       ctest --no-compress-output -V
              -R "test_shm_s|mpi_s"
              -D ExperimentalTest
              -D ExperimentalCoverage
@@ -90,7 +90,7 @@ test_starpu_simgrid:
   script:
     - source .gitlab-ci-env.sh simu
     - (cd build &&
-       ctest --no-compress-output -V -j 5
+       ctest --no-compress-output -V
             -D ExperimentalTest
             -D ExperimentalCoverage
             -D ExperimentalSubmit
@@ -130,7 +130,7 @@ test_quark:
       - chameleon_quark.lcov
   script:
     - (cd build &&
-       ctest --no-compress-output -V -j 5
+       ctest --no-compress-output -V
              -R "test_shm_s"
              -D ExperimentalTest
              -D ExperimentalCoverage

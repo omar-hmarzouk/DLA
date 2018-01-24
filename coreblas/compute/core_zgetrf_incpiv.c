@@ -86,9 +86,9 @@
  *
  ******************************************************************************/
 
-int CORE_zgetrf_incpiv(int M, int N, int IB,
-                       MORSE_Complex64_t *A, int LDA,
-                       int *IPIV, int *INFO)
+int CORE_zgetrf_incpiv( int M, int N, int IB,
+                        MORSE_Complex64_t *A, int LDA,
+                        int *IPIV, int *INFO )
 {
     int i, j, k, sb;
     int iinfo;

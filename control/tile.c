@@ -29,10 +29,8 @@
  * @brief Group routines exposed to users for matrices conversion LAPACK-Tile
  *
  */
-
 #include "control/common.h"
 #include "control/auxiliary.h"
-#include "control/tile.h"
 
 /** ***************************************************************************
  *
@@ -59,54 +57,21 @@
  *****************************************************************************/
 int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
 {
-    MORSE_context_t  *morse;
-    MORSE_sequence_t *sequence = NULL;
-    MORSE_request_t   request;
-    int status;
-
-    morse = morse_context_self();
-    if (morse == NULL) {
-        morse_fatal_error("MORSE_Lapack_to_Tile", "MORSE not initialized");
-        return MORSE_ERR_NOT_INITIALIZED;
-    }
-    /* Check descriptor for correctness */
-    if (morse_desc_check(A) != MORSE_SUCCESS) {
-        morse_error("MORSE_Lapack_to_Tile", "invalid descriptor");
-        return MORSE_ERR_ILLEGAL_VALUE;
-    }
-    morse_sequence_create(morse, &sequence);
     switch( A->dtyp ) {
-#if defined(PRECISION_s)
-    case MorseRealFloat:
-        morse_pslapack_to_tile(Af77, LDA, A, sequence, &request);
-        break;
-#endif
-
-#if defined(PRECISION_d)
-    case MorseRealDouble:
-        morse_pdlapack_to_tile(Af77, LDA, A, sequence, &request);
-        break;
-#endif
-
-#if defined(PRECISION_c)
-    case MorseComplexFloat:
-        morse_pclapack_to_tile(Af77, LDA, A, sequence, &request);
-        break;
-#endif
-
-#if defined(PRECISION_z)
     case MorseComplexDouble:
-        morse_pzlapack_to_tile(Af77, LDA, A, sequence, &request);
+        return MORSE_zLapack_to_Tile( (MORSE_Complex64_t *)Af77, LDA, A );
         break;
-#endif
-
+    case MorseComplexFloat:
+        return MORSE_cLapack_to_Tile( (MORSE_Complex32_t *)Af77, LDA, A );
+        break;
+    case MorseRealFloat:
+        return MORSE_sLapack_to_Tile( (float *)Af77, LDA, A );
+        break;
+    case MorseRealDouble:
     default:
-        morse_error("MORSE_Lapack_to_Tile", "Type unknown");
+        return MORSE_dLapack_to_Tile( (double *)Af77, LDA, A );
     }
-    RUNTIME_barrier(morse);
-    status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
-    return status;
+    return MORSE_ERR_ILLEGAL_VALUE;
 }
 
 /** ***************************************************************************
@@ -134,52 +99,19 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
  *****************************************************************************/
 int MORSE_Tile_to_Lapack(MORSE_desc_t *A, void *Af77, int LDA)
 {
-    MORSE_context_t  *morse;
-    MORSE_sequence_t *sequence = NULL;
-    MORSE_request_t   request;
-    int status;
-
-    morse = morse_context_self();
-    if (morse == NULL) {
-        morse_fatal_error("MORSE_Tile_to_Lapack", "MORSE not initialized");
-        return MORSE_ERR_NOT_INITIALIZED;
-    }
-    /* Check descriptor for correctness */
-    if (morse_desc_check(A) != MORSE_SUCCESS) {
-        morse_error("MORSE_Tile_to_Lapack", "invalid descriptor");
-        return MORSE_ERR_ILLEGAL_VALUE;
-    }
-    morse_sequence_create(morse, &sequence);
     switch( A->dtyp ) {
-#if defined(PRECISION_s)
-    case MorseRealFloat:
-        morse_pstile_to_lapack(A, Af77, LDA, sequence, &request);
-        break;
-#endif
-
-#if defined(PRECISION_d)
-    case MorseRealDouble:
-        morse_pdtile_to_lapack(A, Af77, LDA, sequence, &request);
-        break;
-#endif
-
-#if defined(PRECISION_c)
-    case MorseComplexFloat:
-        morse_pctile_to_lapack(A, Af77, LDA, sequence, &request);
-        break;
-#endif
-
-#if defined(PRECISION_z)
     case MorseComplexDouble:
-        morse_pztile_to_lapack(A, Af77, LDA, sequence, &request);
+        return MORSE_zTile_to_Lapack( A, (MORSE_Complex64_t *)Af77, LDA );
         break;
-#endif
-
+    case MorseComplexFloat:
+        return MORSE_cTile_to_Lapack( A, (MORSE_Complex32_t *)Af77, LDA );
+        break;
+    case MorseRealFloat:
+        return MORSE_sTile_to_Lapack( A, (float *)Af77, LDA );
+        break;
+    case MorseRealDouble:
     default:
-        morse_error("MORSE_Tile_to_Lapack", "Type unknown");
+        return MORSE_dTile_to_Lapack( A, (double *)Af77, LDA );
     }
-    RUNTIME_barrier(morse);
-    status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
-    return status;
+    return MORSE_ERR_ILLEGAL_VALUE;
 }

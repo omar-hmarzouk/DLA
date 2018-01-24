@@ -147,20 +147,20 @@
  * @sa MORSE_sgesvd
  *
  ******************************************************************************/
-int MORSE_zgesvd(MORSE_enum jobu, MORSE_enum jobvt,
+int MORSE_zgesvd( MORSE_enum jobu, MORSE_enum jobvt,
                   int M, int N,
                   MORSE_Complex64_t *A, int LDA,
                   double *S,
                   MORSE_desc_t *descT,
                   MORSE_Complex64_t *U, int LDU,
-                  MORSE_Complex64_t *VT, int LDVT)
+                  MORSE_Complex64_t *VT, int LDVT )
 {
     int NB;
     int status;
     MORSE_context_t  *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t   request = MORSE_REQUEST_INITIALIZER;
-    MORSE_desc_t descA;
+    MORSE_desc_t descAl, descAt;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -212,30 +212,26 @@ int MORSE_zgesvd(MORSE_enum jobu, MORSE_enum jobvt,
     /* Set MT, NT */
     NB = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
-    /* if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) { */
-    morse_zooplap2tile( descA, A, NB, NB,  LDA, N, 0, 0, M, N, sequence, &request,
-                        morse_desc_mat_free(&(descA)) );
-    /* } else { */
-    /*     morse_ziplap2tile( descA,   A, NB, NB,  LDA, N, 0, 0, M, N, */
-    /*                         sequence, &request); */
-    /* } */
+    /* Submit the matrix conversion */
+    morse_zlap2tile( morse, &descAl, &descAt, MorseDescInout, MorseUpperLower,
+                     A, NB, NB,  LDA, N, M, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zgesvd_Tile_Async(jobu, jobvt, &descA, S, descT, U, LDU, VT, LDVT, sequence, &request);
+    MORSE_zgesvd_Tile_Async( jobu, jobvt, &descAt, S, descT, U, LDU, VT, LDVT, sequence, &request );
 
-    /* if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) { */
-    morse_zooptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);
-    morse_sequence_wait(morse, sequence);
-    morse_desc_mat_free(&descA);
-    /* } else { */
-    /*     morse_ziptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request); */
-    /*     morse_sequence_wait(morse, sequence); */
-    /* } */
+    /* Submit the matrix conversion back */
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseDescInout, MorseUpperLower, sequence, &request );
+
+    morse_sequence_wait( morse, sequence );
+
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -339,16 +335,16 @@ int MORSE_zgesvd(MORSE_enum jobu, MORSE_enum jobvt,
  * @sa MORSE_sgesvd_Tile
  *
  ******************************************************************************/
-int MORSE_zgesvd_Tile(MORSE_enum jobu, MORSE_enum jobvt,
-                      MORSE_desc_t *A,
-                      double *S,
-                      MORSE_desc_t *T,
-                      MORSE_Complex64_t *U, int LDU,
-                      MORSE_Complex64_t *VT, int LDVT)
+int MORSE_zgesvd_Tile( MORSE_enum jobu, MORSE_enum jobvt,
+                       MORSE_desc_t *A,
+                       double *S,
+                       MORSE_desc_t *T,
+                       MORSE_Complex64_t *U, int LDU,
+                       MORSE_Complex64_t *VT, int LDVT )
 {
-    MORSE_context_t  *morse;
+    MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
-    MORSE_request_t   request = MORSE_REQUEST_INITIALIZER;
+    MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
     int status;
 
     morse = morse_context_self();
@@ -356,11 +352,16 @@ int MORSE_zgesvd_Tile(MORSE_enum jobu, MORSE_enum jobvt,
         morse_fatal_error("MORSE_zgesvd_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
-    MORSE_zgesvd_Tile_Async(jobu, jobvt, A, S, T, U, LDU, VT, LDVT, sequence, &request);
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_create( morse, &sequence );
+
+    MORSE_zgesvd_Tile_Async( jobu, jobvt, A, S, T, U, LDU, VT, LDVT, sequence, &request );
+
+    MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( T, sequence );
+
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -394,17 +395,18 @@ int MORSE_zgesvd_Tile(MORSE_enum jobu, MORSE_enum jobvt,
  * @sa MORSE_sgesvd_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
-                            MORSE_desc_t *A,
-                            double *S,
-                            MORSE_desc_t *T,
-                            MORSE_Complex64_t *U, int LDU,
-                            MORSE_Complex64_t *VT, int LDVT,
-                            MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
+                             MORSE_desc_t *A,
+                             double *S,
+                             MORSE_desc_t *T,
+                             MORSE_Complex64_t *U, int LDU,
+                             MORSE_Complex64_t *VT, int LDVT,
+                             MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_desc_t descA;
     MORSE_desc_t descT;
-    MORSE_desc_t descU, descVT;
+    MORSE_desc_t descU;
+    MORSE_desc_t descVT;
     MORSE_desc_t descAB;
     MORSE_desc_t D, *Dptr = NULL;
     MORSE_desc_t *subA, *subT, *subUVT;
@@ -430,10 +432,12 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
         return MORSE_ERR_UNALLOCATED;
     }
     /* Check sequence status */
-    if (sequence->status == MORSE_SUCCESS)
+    if (sequence->status == MORSE_SUCCESS) {
         request->status = MORSE_SUCCESS;
-    else
+    }
+    else {
         return morse_request_fail(sequence, request, MORSE_ERR_SEQUENCE_FLUSHED);
+    }
 
     /* Check descriptors for correctness */
     if (morse_desc_check(A) != MORSE_SUCCESS) {
@@ -534,7 +538,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
         }
     }
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
 
 #if !defined(CHAMELEON_SIMULATION)
     info = LAPACKE_zgbbrd( LAPACK_COL_MAJOR,
@@ -550,16 +554,17 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
         fprintf(stderr, "MORSE_zgesvd_Tile_Async: LAPACKE_zgbbrd = %d\n", info );
     }
 #endif /* !defined(CHAMELEON_SIMULATION) */
-    morse_desc_mat_free(&descAB);
+    morse_desc_mat_free( &descAB );
 
     /* Transform U and Vt into tile format */
     if ( jobu != MorseNoVec ) {
-        morse_zooplap2tile( descU, U, NB, NB, LDU, M, 0, 0, M, M, sequence, request, morse_desc_mat_free(&(descU)) );
+        //morse_zooplap2tile( descU, U, NB, NB, LDU, M, 0, 0, M, M, sequence, request, morse_desc_mat_free(&(descU)) );
     }
     if ( jobvt != MorseNoVec ) {
-        morse_zooplap2tile( descVT, VT, NB, NB, LDVT, N, 0, 0, N, N, sequence, request, morse_desc_mat_free(&(descVT)) );
+        //morse_zooplap2tile( descVT, VT, NB, NB, LDVT, N, 0, 0, N, N, sequence, request, morse_desc_mat_free(&(descVT)) );
     }
-    morse_sequence_wait(morse, sequence);
+
+    morse_sequence_wait( morse, sequence );
 
     subA = NULL;
     subT = NULL;
@@ -598,13 +603,14 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
 
     /* Transform U and VT into lapack layout */
     if ( jobu != MorseNoVec ) {
-        morse_zooptile2lap( descU,  U,  NB, NB, LDU,  M, sequence, request );
+        //morse_zooptile2lap( descU,  U,  NB, NB, LDU,  M, sequence, request );
     }
     if ( jobvt != MorseNoVec ) {
-        morse_zooptile2lap( descVT, VT, NB, NB, LDVT, N, sequence, request );
+        //morse_zooptile2lap( descVT, VT, NB, NB, LDVT, N, sequence, request );
     }
 
-    morse_sequence_wait(morse, sequence);
+    morse_sequence_wait( morse, sequence );
+
     if (subA) {
         free(subA); free(subUVT); free(subT);
     }
@@ -627,7 +633,7 @@ int MORSE_zgesvd_Tile_Async(MORSE_enum jobu, MORSE_enum jobvt,
         morse_desc_mat_free( &descVT );
     free(E);
     if (Dptr != NULL) {
-        morse_desc_mat_free(Dptr);
+        morse_desc_mat_free( Dptr );
     }
     (void)D;
     return MORSE_SUCCESS;

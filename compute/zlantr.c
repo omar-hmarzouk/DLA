@@ -96,7 +96,7 @@
  *
  ******************************************************************************/
 double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
-                     int M, int N, MORSE_Complex64_t *A, int LDA)
+                    int M, int N, MORSE_Complex64_t *A, int LDA )
 {
     int NB;
     int status;
@@ -104,7 +104,7 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
-    MORSE_desc_t descA;
+    MORSE_desc_t descAl, descAt;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -113,15 +113,15 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
     }
     /* Check input arguments */
     if ( (norm != MorseMaxNorm) && (norm != MorseOneNorm)
-        && (norm != MorseInfNorm) && (norm != MorseFrobeniusNorm) ) {
+         && (norm != MorseInfNorm) && (norm != MorseFrobeniusNorm) ) {
         morse_error("MORSE_zlantr", "illegal value of norm");
         return -1;
     }
-    if (uplo != MorseUpper && uplo != MorseLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower)) {
         morse_error("MORSE_zlantr", "illegal value of uplo");
         return -2;
     }
-    if (diag != MorseUnit && diag != MorseNonUnit) {
+    if ((diag != MorseUnit) && (diag != MorseNonUnit)) {
         morse_error("MORSE_zlantr", "illegal value of diag");
         return -3;
     }
@@ -140,7 +140,7 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
 
     /* Quick return */
     if (chameleon_min(N, M) == 0)
-      return (double)0.0;
+        return (double)0.0;
 
     /* Tune NB depending on M, N & NRHS; Set NBNB */
     status = morse_tune(MORSE_FUNC_ZGEMM, M, N, 0);
@@ -152,28 +152,25 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
     /* Set NT */
     NB   = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooplap2tile( descA, A, NB, NB, LDA, N, 0, 0, M, N, sequence, &request,
-                             morse_desc_mat_free(&(descA)) );
-/*    } else {*/
-/*        morse_ziplap2tile(  descA, A, NB, NB, LDA, N, 0, 0, M, N,*/
-/*                            sequence, &request);*/
-/*    }*/
+    /* Submit the matrix conversion */
+    morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, uplo,
+                     A, NB, NB, LDA, N, M, N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zlantr_Tile_Async(norm, uplo, diag, &descA, &value, sequence, &request);
+    MORSE_zlantr_Tile_Async( norm, uplo, diag, &descAt, &value, sequence, &request );
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-/*    } else {*/
-/*        morse_ziptile2lap( descA, A, NB, NB, LDA, N,  sequence, &request);*/
-/*        morse_sequence_wait(morse, sequence);*/
-/*    }*/
+    /* Submit the matrix conversion back */
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseDescInput, uplo, sequence, &request );
 
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_wait( morse, sequence );
+
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
+
+    morse_sequence_destroy( morse, sequence );
     return value;
 }
 
@@ -222,11 +219,12 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
  * @sa MORSE_slantr_Tile
  *
  ******************************************************************************/
-double MORSE_zlantr_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A)
+double MORSE_zlantr_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
+    int status;
     double value;
 
     morse = morse_context_self();
@@ -234,11 +232,16 @@ double MORSE_zlantr_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORS
         morse_fatal_error("MORSE_zlantr_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
-    MORSE_zlantr_Tile_Async(norm, uplo, diag, A, &value, sequence, &request);
-    morse_sequence_wait(morse, sequence);
-    morse_sequence_destroy(morse, sequence);
-    return value;
+    morse_sequence_create( morse, &sequence );
+
+    MORSE_zlantr_Tile_Async( norm, uplo, diag, A, &value, sequence, &request );
+
+    MORSE_Desc_Flush( A, sequence );
+
+    morse_sequence_wait( morse, sequence );
+    status = sequence->status;
+    morse_sequence_destroy( morse, sequence );
+    return ( status == MORSE_SUCCESS ) ? value : (double)status;
 }
 
 /**
@@ -268,9 +271,9 @@ double MORSE_zlantr_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORS
  * @sa MORSE_slantr_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zlantr_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
-                            MORSE_desc_t *A, double *value,
-                            MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zlantr_Tile_Async( MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
+                             MORSE_desc_t *A, double *value,
+                             MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
 
@@ -288,10 +291,12 @@ int MORSE_zlantr_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
         return MORSE_ERR_UNALLOCATED;
     }
     /* Check sequence status */
-    if (sequence->status == MORSE_SUCCESS)
+    if (sequence->status == MORSE_SUCCESS) {
         request->status = MORSE_SUCCESS;
-    else
+    }
+    else {
         return morse_request_fail(sequence, request, MORSE_ERR_SEQUENCE_FLUSHED);
+    }
 
     /* Check descriptors for correctness */
     if (morse_desc_check(A) != MORSE_SUCCESS) {
@@ -308,11 +313,11 @@ int MORSE_zlantr_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
         morse_error("MORSE_zlantr_Tile", "illegal value of norm");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
-    if (uplo != MorseUpper && uplo != MorseLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower)) {
         morse_error("MORSE_zlantr_Tile", "illegal value of uplo");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
-    if (diag != MorseUnit && diag != MorseNonUnit) {
+    if ((diag != MorseUnit) && (diag != MorseNonUnit)) {
         morse_error("MORSE_zlantr_Tile", "illegal value of diag");
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
@@ -323,7 +328,7 @@ int MORSE_zlantr_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
         return MORSE_SUCCESS;
     }
 
-    morse_pzlantr(norm, uplo, diag, A, value, sequence, request);
+    morse_pzlantr( norm, uplo, diag, A, value, sequence, request );
 
     return MORSE_SUCCESS;
 }

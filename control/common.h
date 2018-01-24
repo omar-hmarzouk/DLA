@@ -78,7 +78,6 @@
 #include "control/auxiliary.h"
 #include "control/context.h"
 #include "control/descriptor.h"
-#include "control/tile.h"
 #include "control/async.h"
 
 /*******************************************************************************
@@ -107,7 +106,6 @@
 #define MorseIPT_NoDep   0
 #define MorseIPT_Panel   1
 #define MorseIPT_All     2
-
 
 /*******************************************************************************
  *  Global array of LAPACK constants

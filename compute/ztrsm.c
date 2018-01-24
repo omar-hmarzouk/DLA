@@ -101,18 +101,19 @@
  * @sa MORSE_strsm
  *
  ******************************************************************************/
-int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
+int MORSE_ztrsm( MORSE_enum side, MORSE_enum uplo,
                  MORSE_enum transA, MORSE_enum diag,
                  int N, int NRHS, MORSE_Complex64_t alpha,
                  MORSE_Complex64_t *A, int LDA,
-                 MORSE_Complex64_t *B, int LDB)
+                 MORSE_Complex64_t *B, int LDB )
 {
     int NB, NA;
     int status;
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
-    MORSE_desc_t descA, descB;
+    MORSE_desc_t descAl, descAt;
+    MORSE_desc_t descBl, descBt;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -121,9 +122,9 @@ int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
     }
 
     if (side == MorseLeft) {
-      NA = N;
+        NA = N;
     } else {
-      NA = NRHS;
+        NA = NRHS;
     }
 
     /* Check input arguments */
@@ -131,7 +132,7 @@ int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrsm", "illegal value of side");
         return -1;
     }
-    if (uplo != MorseUpper && uplo != MorseLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower)) {
         morse_error("MORSE_ztrsm", "illegal value of uplo");
         return -2;
     }
@@ -139,7 +140,7 @@ int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrsm", "illegal value of transA");
         return -3;
     }
-    if (diag != MorseUnit && diag != MorseNonUnit) {
+    if ((diag != MorseUnit) && (diag != MorseNonUnit)) {
         morse_error("MORSE_ztrsm", "illegal value of diag");
         return -4;
     }
@@ -173,37 +174,31 @@ int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
     /* Set NT & NTRHS */
     NB = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooplap2tile( descA, A, NB, NB, LDA, NA,   0, 0, NA, NA,   sequence, &request,
-                             morse_desc_mat_free(&(descA)) );
-        morse_zooplap2tile( descB, B, NB, NB, LDB, NRHS, 0, 0, N,  NRHS, sequence, &request,
-                             morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descB)));
-/*    } else {*/
-/*        morse_ziplap2tile( descA, A, NB, NB, LDA, NA,   0, 0, NA, NA,  */
-/*                            sequence, &request);*/
-/*        morse_ziplap2tile( descB, B, NB, NB, LDB, NRHS, 0, 0, N,  NRHS,*/
-/*                            sequence, &request);*/
-/*    }*/
+    /* Submit the matrix conversion */
+    morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, uplo,
+                     A, NB, NB, LDA, NA, NA, NA, sequence, &request );
+    morse_zlap2tile( morse, &descBl, &descBt, MorseDescInout, MorseUpperLower,
+                     B, NB, NB, LDB, NRHS, N,  NRHS, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_ztrsm_Tile_Async(
-        side, uplo, transA, diag, alpha, &descA, &descB, sequence, &request);
+    MORSE_ztrsm_Tile_Async(  side, uplo, transA, diag, alpha, &descAt, &descBt, sequence, &request );
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooptile2lap(descB, B, NB, NB, LDB, NRHS,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
-/*    } else {*/
-/*        morse_ziptile2lap( descA, A, NB, NB, LDA, NA,    sequence, &request);*/
-/*        morse_ziptile2lap( descB, B, NB, NB, LDB, NRHS,  sequence, &request);*/
-/*        morse_sequence_wait(morse, sequence);*/
-/*    }*/
+    /* Submit the matrix conversion back */
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseDescInput, uplo, sequence, &request );
+    morse_ztile2lap( morse, &descBl, &descBt,
+                     MorseDescInout, MorseUpperLower, sequence, &request );
+
+    morse_sequence_wait( morse, sequence );
+
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
+    morse_ztile2lap_cleanup( morse, &descBl, &descBt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 /**
@@ -269,9 +264,9 @@ int MORSE_ztrsm(MORSE_enum side, MORSE_enum uplo,
  * @sa MORSE_strsm_Tile
  *
  ******************************************************************************/
-int MORSE_ztrsm_Tile(MORSE_enum side, MORSE_enum uplo,
+int MORSE_ztrsm_Tile( MORSE_enum side, MORSE_enum uplo,
                       MORSE_enum transA, MORSE_enum diag,
-                      MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B)
+                      MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -283,14 +278,16 @@ int MORSE_ztrsm_Tile(MORSE_enum side, MORSE_enum uplo,
         morse_fatal_error("MORSE_ztrsm_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
-    MORSE_ztrsm_Tile_Async(side, uplo, transA, diag, alpha, A, B, sequence, &request);
-    RUNTIME_desc_flush( A, sequence );
-    RUNTIME_desc_flush( B, sequence );
-    morse_sequence_wait(morse, sequence);
-    
+    morse_sequence_create( morse, &sequence );
+
+    MORSE_ztrsm_Tile_Async(side, uplo, transA, diag, alpha, A, B, sequence, &request );
+
+    MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( B, sequence );
+
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -322,10 +319,10 @@ int MORSE_ztrsm_Tile(MORSE_enum side, MORSE_enum uplo,
  * @sa MORSE_strsm_Tile_Async
  *
  ******************************************************************************/
-int MORSE_ztrsm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
+int MORSE_ztrsm_Tile_Async( MORSE_enum side, MORSE_enum uplo,
                             MORSE_enum transA, MORSE_enum diag,
                             MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
-                            MORSE_sequence_t *sequence, MORSE_request_t *request)
+                            MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
 
@@ -343,10 +340,12 @@ int MORSE_ztrsm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
         return MORSE_ERR_UNALLOCATED;
     }
     /* Check sequence status */
-    if (sequence->status == MORSE_SUCCESS)
+    if (sequence->status == MORSE_SUCCESS) {
         request->status = MORSE_SUCCESS;
-    else
+    }
+    else {
         return morse_request_fail(sequence, request, MORSE_ERR_SEQUENCE_FLUSHED);
+    }
 
     /* Check descriptors for correctness */
     if (morse_desc_check(A) != MORSE_SUCCESS) {
@@ -366,7 +365,7 @@ int MORSE_ztrsm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrsm_Tile", "illegal value of side");
         return morse_request_fail(sequence, request, -1);
     }
-    if (uplo != MorseUpper && uplo != MorseLower) {
+    if ((uplo != MorseUpper) && (uplo != MorseLower)) {
         morse_error("MORSE_ztrsm_Tile", "illegal value of uplo");
         return morse_request_fail(sequence, request, -2);
     }
@@ -374,13 +373,13 @@ int MORSE_ztrsm_Tile_Async(MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrsm_Tile", "illegal value of transA");
         return morse_request_fail(sequence, request, -3);
     }
-    if (diag != MorseUnit && diag != MorseNonUnit) {
+    if ((diag != MorseUnit) && (diag != MorseNonUnit)) {
         morse_error("MORSE_ztrsm_Tile", "illegal value of diag");
         return morse_request_fail(sequence, request, -4);
     }
 
     /* Quick return */
-    morse_pztrsm(side, uplo, transA, diag, alpha, A, B, sequence, request);
+    morse_pztrsm( side, uplo, transA, diag, alpha, A, B, sequence, request );
 
     return MORSE_SUCCESS;
 }

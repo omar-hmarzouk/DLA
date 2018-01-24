@@ -83,7 +83,7 @@
  * @param[in] LDB
  *          The leading dimension of the array B. LDB must be at least
  *          max( 1, N ), otherwise LDB must be at least max( 1, K ).
- * 
+ *
  * @param[in] beta
  *          beta specifies the scalar beta.
  *
@@ -108,14 +108,16 @@
  * @sa MORSE_sher2k
  *
  ******************************************************************************/
-int MORSE_zher2k(MORSE_enum uplo, MORSE_enum trans, int N, int K,
-                  MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB,
-                  double beta,  MORSE_Complex64_t *C, int LDC)
+int MORSE_zher2k( MORSE_enum uplo, MORSE_enum trans, int N, int K,
+                 MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB,
+                 double beta,  MORSE_Complex64_t *C, int LDC )
 {
     int NB;
     int Am, An;
     int status;
-    MORSE_desc_t descA, descB, descC;
+    MORSE_desc_t descAl, descAt;
+    MORSE_desc_t descBl, descBt;
+    MORSE_desc_t descCl, descCt;
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
@@ -135,7 +137,7 @@ int MORSE_zher2k(MORSE_enum uplo, MORSE_enum trans, int N, int K,
         morse_error("MORSE_zher2k", "illegal value of trans");
         return -2;
     }
-    if ( trans == MorseNoTrans ) { 
+    if ( trans == MorseNoTrans ) {
         Am = N; An = K;
     } else {
         Am = K; An = N;
@@ -176,42 +178,36 @@ int MORSE_zher2k(MORSE_enum uplo, MORSE_enum trans, int N, int K,
     /* Set MT & NT & KT */
     NB = MORSE_NB;
 
-    morse_sequence_create(morse, &sequence);
+    morse_sequence_create( morse, &sequence );
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooplap2tile( descA, A, NB, NB, LDA, An, 0, 0, Am, An, sequence, &request,
-                             morse_desc_mat_free(&(descA)) );
-        morse_zooplap2tile( descB, B, NB, NB, LDB, An, 0, 0, Am, An, sequence, &request,
-                             morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descB)));
-        morse_zooplap2tile( descC, C, NB, NB, LDC, N,  0, 0, N,  N,   sequence, &request,
-                             morse_desc_mat_free(&(descA)); morse_desc_mat_free(&(descB)); morse_desc_mat_free(&(descC)));
-/*    } else {*/
-/*        morse_ziplap2tile( descA, A, NB, NB, LDA, An, 0, 0, Am, An, */
-/*                            sequence, &request);*/
-/*        morse_ziplap2tile( descB, B, NB, NB, LDB, An, 0, 0, Am, An, */
-/*                            sequence, &request);*/
-/*        morse_ziplap2tile( descC, C, NB, NB, LDC, N,  0, 0, N,  N, */
-/*                            sequence, &request);*/
-/*    }*/
+    /* Submit the matrix conversion */
+    morse_zlap2tile( morse, &descAl, &descAt, MorseDescInput, MorseUpperLower,
+                     A, NB, NB, LDA, An, Am, An, sequence, &request );
+    morse_zlap2tile( morse, &descBl, &descBt, MorseDescInput, MorseUpperLower,
+                     B, NB, NB, LDB, An, Am, An, sequence, &request );
+    morse_zlap2tile( morse, &descCl, &descCt, MorseDescInout, uplo,
+                     C, NB, NB, LDC, N, N,  N, sequence, &request );
 
     /* Call the tile interface */
-    MORSE_zher2k_Tile_Async(uplo, trans, alpha, &descA, &descB, beta, &descC, sequence, &request);
+    MORSE_zher2k_Tile_Async( uplo, trans, alpha, &descAt, &descBt, beta, &descCt, sequence, &request );
 
-/*    if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {*/
-        morse_zooptile2lap(descC, C, NB, NB, LDC, N,  sequence, &request);
-        morse_sequence_wait(morse, sequence);
-        morse_desc_mat_free(&descA);
-        morse_desc_mat_free(&descB);
-        morse_desc_mat_free(&descC);
-/*    } else {*/
-/*        morse_ziptile2lap( descA, A, NB, NB, LDA, An,  sequence, &request);*/
-/*        morse_ziptile2lap( descB, B, NB, NB, LDB, An,  sequence, &request);*/
-/*        morse_ziptile2lap( descC, C, NB, NB, LDC, N,  sequence, &request);*/
-/*        morse_sequence_wait(morse, sequence);*/
-/*    }*/
+    /* Submit the matrix conversion back */
+    morse_ztile2lap( morse, &descAl, &descAt,
+                     MorseDescInput, MorseUpperLower, sequence, &request );
+    morse_ztile2lap( morse, &descBl, &descBt,
+                     MorseDescInput, MorseUpperLower, sequence, &request );
+    morse_ztile2lap( morse, &descCl, &descCt,
+                     MorseDescInout, uplo, sequence, &request );
+
+    morse_sequence_wait( morse, sequence );
+
+    /* Cleanup the temporary data */
+    morse_ztile2lap_cleanup( morse, &descAl, &descAt );
+    morse_ztile2lap_cleanup( morse, &descBl, &descBt );
+    morse_ztile2lap_cleanup( morse, &descCl, &descCt );
 
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -269,9 +265,9 @@ int MORSE_zher2k(MORSE_enum uplo, MORSE_enum trans, int N, int K,
  * @sa MORSE_sher2k
  *
  ******************************************************************************/
-int MORSE_zher2k_Tile(MORSE_enum uplo, MORSE_enum trans,
-                       MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
-                       double beta,  MORSE_desc_t *C)
+int MORSE_zher2k_Tile( MORSE_enum uplo, MORSE_enum trans,
+                      MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
+                      double beta,  MORSE_desc_t *C )
 {
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
@@ -283,15 +279,17 @@ int MORSE_zher2k_Tile(MORSE_enum uplo, MORSE_enum trans,
         morse_fatal_error("MORSE_zher2k_Tile", "MORSE not initialized");
         return MORSE_ERR_NOT_INITIALIZED;
     }
-    morse_sequence_create(morse, &sequence);
-    MORSE_zher2k_Tile_Async(uplo, trans, alpha, A, B, beta, C, sequence, &request);
-    RUNTIME_desc_flush( A, sequence );
-    RUNTIME_desc_flush( B, sequence );
-    RUNTIME_desc_flush( C, sequence );
-    morse_sequence_wait(morse, sequence);
-    
+    morse_sequence_create( morse, &sequence );
+
+    MORSE_zher2k_Tile_Async( uplo, trans, alpha, A, B, beta, C, sequence, &request );
+
+    MORSE_Desc_Flush( A, sequence );
+    MORSE_Desc_Flush( B, sequence );
+    MORSE_Desc_Flush( C, sequence );
+
+    morse_sequence_wait( morse, sequence );
     status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
+    morse_sequence_destroy( morse, sequence );
     return status;
 }
 
@@ -323,10 +321,10 @@ int MORSE_zher2k_Tile(MORSE_enum uplo, MORSE_enum trans,
  * @sa MORSE_sher2k_Tile_Async
  *
  ******************************************************************************/
-int MORSE_zher2k_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
-                             MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
-                             double beta,  MORSE_desc_t *C,
-                             MORSE_sequence_t *sequence, MORSE_request_t *request)
+int MORSE_zher2k_Tile_Async( MORSE_enum uplo, MORSE_enum trans,
+                            MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
+                            double beta,  MORSE_desc_t *C,
+                            MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
     int N, K;
@@ -346,10 +344,12 @@ int MORSE_zher2k_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
         return MORSE_ERR_UNALLOCATED;
     }
     /* Check sequence status */
-    if (sequence->status == MORSE_SUCCESS)
+    if (sequence->status == MORSE_SUCCESS) {
         request->status = MORSE_SUCCESS;
-    else
+    }
+    else {
         return morse_request_fail(sequence, request, MORSE_ERR_SEQUENCE_FLUSHED);
+    }
 
     /* Check descriptors for correctness */
     if (morse_desc_check(A) != MORSE_SUCCESS) {
@@ -405,11 +405,13 @@ int MORSE_zher2k_Tile_Async(MORSE_enum uplo, MORSE_enum trans,
     K = An;
 
     /* Quick return */
-    if ( N == 0 ||
-        ((alpha == (MORSE_Complex64_t)0.0 || K == 0) && beta == (double)1.0))
+    if ( (N == 0) ||
+         (((alpha == (MORSE_Complex64_t)0.0) || (K == 0)) && (beta == (double)1.0)) )
+    {
         return MORSE_SUCCESS;
+    }
 
-    morse_pzher2k(uplo, trans, alpha, A, B, beta, C, sequence, request);
+    morse_pzher2k( uplo, trans, alpha, A, B, beta, C, sequence, request );
 
     return MORSE_SUCCESS;
 }
