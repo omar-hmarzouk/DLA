@@ -308,25 +308,26 @@ int RUNTIME_desc_release( const MORSE_desc_t *desc )
 }
 
 /*******************************************************************************
- *  Get data on cpu - Synchronous call
+ *  Flush cached data
  **/
-int RUNTIME_desc_getoncpu( const MORSE_desc_t *desc )
+void RUNTIME_flush()
 {
-    (void)desc;
-    return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
- *  Get data on cpu - Asynchronous call
- **/
-int RUNTIME_desc_getoncpu_async( const MORSE_desc_t *desc,
-                                 MORSE_sequence_t   *sequence )
+void RUNTIME_desc_flush( const MORSE_desc_t     *desc,
+                         const MORSE_sequence_t *sequence )
 {
     parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(sequence->schedopt);
 
     parsec_dtd_data_flush_all( PARSEC_dtd_taskpool, (parsec_data_collection_t*)(desc->schedopt) );
+}
 
-    return MORSE_SUCCESS;
+void RUNTIME_data_flush( const MORSE_sequence_t *sequence,
+                         const MORSE_desc_t *A, int Am, int An )
+{
+    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(sequence->schedopt);
+
+    parsec_dtd_data_flush( PARSEC_dtd_taskpool, RTBLKADDR( A, MORSE_Complex64_t, Am, An ) );
 }
 
 /*******************************************************************************

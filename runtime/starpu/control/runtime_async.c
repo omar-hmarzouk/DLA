@@ -74,6 +74,5 @@ void RUNTIME_sequence_flush( MORSE_context_t  *morse,
     sequence->request = request;
     sequence->status = status;
     request->status = status;
-    starpu_task_wait_for_all();
     return;
 }
