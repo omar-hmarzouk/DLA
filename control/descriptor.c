@@ -747,6 +747,7 @@ int MORSE_Desc_Destroy(MORSE_desc_t **desc)
         return MORSE_ERR_UNALLOCATED;
     }
 
+    RUNTIME_desc_destroy( *desc );
     morse_desc_mat_free( *desc );
     free(*desc);
     *desc = NULL;
