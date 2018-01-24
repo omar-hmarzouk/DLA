@@ -81,4 +81,6 @@ void MORSE_TASK_zsyrk(const MORSE_option_t *options,
         PASSED_BY_REF,         RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | morse_parsec_get_arena_index(C) | AFFINITY,
         sizeof(int),           &ldc,                               VALUE,
         0);
+
+    (void)nb;
 }

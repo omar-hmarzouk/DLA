@@ -76,4 +76,6 @@ void MORSE_TASK_zhe2ge(const MORSE_option_t *options,
         PASSED_BY_REF,       RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn), OUTPUT,
         sizeof(int),        &ldb,    VALUE,
         0);
+
+    (void)mb;
 }

@@ -80,7 +80,7 @@
  ******************************************************************************/
 static inline int
 CORE_zgetrf_incpiv_parsec( parsec_execution_stream_t *context,
-                    parsec_task_t             *this_task )
+                           parsec_task_t             *this_task )
 {
     int *m;
     int *n;
@@ -110,12 +110,12 @@ CORE_zgetrf_incpiv_parsec( parsec_execution_stream_t *context,
     return 0;
 }
 
-void MORSE_TASK_zgetrf_incpiv(const MORSE_option_t *options,
-                              int m, int n, int ib, int nb,
-                              const MORSE_desc_t *A, int Am, int An, int lda,
-                              const MORSE_desc_t *L, int Lm, int Ln, int ldl,
-                              int *IPIV,
-                              MORSE_bool check_info, int iinfo)
+void MORSE_TASK_zgetrf_incpiv( const MORSE_option_t *options,
+                               int m, int n, int ib, int nb,
+                               const MORSE_desc_t *A, int Am, int An, int lda,
+                               const MORSE_desc_t *L, int Lm, int Ln, int ldl,
+                               int *IPIV,
+                               MORSE_bool check_info, int iinfo )
 {
     parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
@@ -130,4 +130,9 @@ void MORSE_TASK_zgetrf_incpiv(const MORSE_option_t *options,
         sizeof(int),           &check_info,                       VALUE,
         sizeof(int),           &iinfo,                            VALUE,
         0);
+
+    (void)L;
+    (void)Lm;
+    (void)Ln;
+    (void)ldl;
 }

@@ -26,14 +26,13 @@
 
 static inline int
 CORE_zsytrf_nopiv_parsec( parsec_execution_stream_t *context,
-                    parsec_task_t             *this_task )
+                          parsec_task_t             *this_task )
 {
     MORSE_enum *uplo;
     int *n;
     MORSE_Complex64_t *A;
     int *lda;
     int *iinfo;
-    int info;
 
     parsec_dtd_unpack_args(
         this_task,
@@ -64,4 +63,6 @@ void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
         sizeof(int),                     &lda,                 VALUE,
         sizeof(int),                     &iinfo,               VALUE,
         0);
+
+    (void)nb;
 }

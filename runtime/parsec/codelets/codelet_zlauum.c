@@ -64,4 +64,6 @@ void MORSE_TASK_zlauum(const MORSE_option_t *options,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT,
         sizeof(int),           &lda,                   VALUE,
         0);
+
+    (void)nb;
 }

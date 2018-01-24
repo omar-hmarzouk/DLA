@@ -76,4 +76,6 @@ void MORSE_TASK_zlantr(const MORSE_option_t *options,
         sizeof(double)*szeW,           NULL,           SCRATCH,
         PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT,
         0);
+
+    (void)NB;
 }

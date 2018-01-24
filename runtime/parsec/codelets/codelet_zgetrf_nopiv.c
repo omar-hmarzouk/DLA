@@ -114,4 +114,6 @@ void MORSE_TASK_zgetrf_nopiv(const MORSE_option_t *options,
         sizeof(int),           &lda,                        VALUE,
         sizeof(int),           &iinfo,                      VALUE,
         0);
+
+    (void)nb;
 }
