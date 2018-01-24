@@ -131,7 +131,6 @@ int MORSE_zplrnt( int M, int N,
 
     status = sequence->status;
     morse_sequence_destroy( morse, sequence );
-
     return status;
 }
 
