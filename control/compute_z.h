@@ -54,33 +54,6 @@
         return MORSE_ERR_OUT_OF_RESOURCES;                              \
     }
 
-#define morse_zooplap2tile( descA, A, mb, nb, lm, ln, i, j, m, n, seq, req, free) \
-    descA = morse_desc_init(                                           \
-        MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                   \
-        (lm), (ln), (i), (j), (m), (n), 1, 1);                         \
-    if ( morse_desc_mat_alloc( &(descA) ) ) {                          \
-        morse_error( __func__, "morse_desc_mat_alloc() failed");        \
-        {free;};                                                        \
-        return MORSE_ERR_OUT_OF_RESOURCES;                             \
-    }                                                                   \
-    morse_pzlapack_to_tile(A, lm, &descA, seq, req);
-
-#define morse_ziplap2tile( descA, A, mb, nb, lm, ln, i, j, m, n, seq, req) \
-    descA = morse_desc_init(                                         \
-        MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                 \
-        (lm), (ln), (i), (j), (m), (n), 1, 1);                        \
-    descA.mat = A;                                                    \
-    MORSE_zgecfi_Async((lm), (ln), (A), MorseCM, (mb), (nb),        \
-                        MorseCCRB, (mb), (nb), (seq), (req));
-
-
-#define morse_zooptile2lap( descA, A, mb, nb, lm, ln, seq, req)    \
-    morse_pztile_to_lapack(&descA, A, lm, seq, req);
-
-#define morse_ziptile2lap( descA, A, mb, nb, lm, ln, seq, req)         \
-    MORSE_zgecfi_Async((lm), (ln), (A), MorseCCRB, (mb), (nb),        \
-                        MorseCM, (mb), (nb), (seq), (req));
-
 /***************************************************************************//**
  *  Declarations of internal sequential functions
  **/
