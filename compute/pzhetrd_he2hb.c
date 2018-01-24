@@ -99,6 +99,7 @@ void morse_pzhetrd_he2hb(MORSE_enum uplo,
         MorseComplexDouble, A->mb, A->nb, (A->mb*A->nb),
         chameleon_min(A->mt, A->nt) * A->mb, A->nb, 0, 0, chameleon_min(A->mt, A->nt) * A->mb, A->nb, 1, 1);
     morse_desc_mat_alloc( AT );
+    RUNTIME_desc_create( AT );
 
     /* Let's extract the diagonal in a temporary copy that contains A and A' */
     for (k = 1; k < A->nt; k++){

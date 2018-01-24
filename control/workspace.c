@@ -94,6 +94,8 @@ int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t 
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
 
+    RUNTIME_desc_create( *desc );
+
     /* Check that everything is ok */
     status = morse_desc_check(*desc);
     if (status != MORSE_SUCCESS) {
@@ -155,6 +157,8 @@ int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **des
         free(*desc);
         return MORSE_ERR_OUT_OF_RESOURCES;
     }
+
+    RUNTIME_desc_create( *desc );
 
     return MORSE_SUCCESS;
 }

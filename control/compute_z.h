@@ -42,7 +42,8 @@
     descA = morse_desc_init_diag(                                       \
         MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                    \
         (m), (n), (i), (j), (m), (n), p, q);                            \
-    morse_desc_mat_alloc( &(descA) );
+    morse_desc_mat_alloc( &(descA) );                                   \
+    RUNTIME_desc_create( &(descA) );
 
 #define morse_zdesc_alloc( descA, mb, nb, lm, ln, i, j, m, n, free)     \
     descA = morse_desc_init(                                            \
@@ -52,7 +53,8 @@
         morse_error( __func__, "morse_desc_mat_alloc() failed");        \
         {free;};                                                        \
         return MORSE_ERR_OUT_OF_RESOURCES;                              \
-    }
+    }                                                                   \
+    RUNTIME_desc_create( &(descA) );
 
 /***************************************************************************//**
  *  Declarations of internal sequential functions
@@ -175,17 +177,15 @@ morse_zlap2tile( MORSE_context_t *morse,
     *descAt = morse_desc_init( MorseComplexDouble, mb, nb, (mb)*(nb),
                                lm, ln, 0, 0, m, n, 1, 1 );
 
-    RUNTIME_desc_create( descAl );
-    RUNTIME_desc_create( descAt );
-
     if ( MORSE_TRANSLATION == MORSE_OUTOFPLACE ) {
         if ( morse_desc_mat_alloc( descAt ) ) {
             morse_error( "morse_zlap2tile", "morse_desc_mat_alloc() failed");
-
-            RUNTIME_desc_destroy( descAl );
-            RUNTIME_desc_destroy( descAt );
             return MORSE_ERR_OUT_OF_RESOURCES;
         }
+
+        RUNTIME_desc_create( descAl );
+        RUNTIME_desc_create( descAt );
+
         if ( mode & MorseDescInput ) {
             morse_pzlacpy( uplo, descAl, descAt, seq, req );
         }
@@ -193,6 +193,10 @@ morse_zlap2tile( MORSE_context_t *morse,
     else {
         morse_fatal_error( "morse_zlap2tile", "INPLACE translation not supported yet");
         descAt->mat = A;
+
+        RUNTIME_desc_create( descAl );
+        RUNTIME_desc_create( descAt );
+
         if ( mode & MorseDescInput ) {
             /* MORSE_zgecfi_Async( lm, ln, A, MorseCM, mb, nb, */
             /*                     MorseCCRB, mb, nb, seq, req ); */

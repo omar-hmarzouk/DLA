@@ -307,7 +307,6 @@ int morse_desc_check(const MORSE_desc_t *desc)
  **/
 int morse_desc_mat_alloc( MORSE_desc_t *desc )
 {
-
     size_t size = (size_t)(desc->llm) * (size_t)(desc->lln)
         * (size_t)MORSE_Element_Size(desc->dtyp);
     if ((desc->mat = RUNTIME_malloc(size)) == NULL) {
@@ -317,7 +316,6 @@ int morse_desc_mat_alloc( MORSE_desc_t *desc )
 
     /* The matrix has already been registered by the Runtime alloc */
     desc->register_mat = 0;
-    RUNTIME_desc_create(desc);
 
     return MORSE_SUCCESS;
 }
@@ -327,8 +325,6 @@ int morse_desc_mat_alloc( MORSE_desc_t *desc )
  **/
 int morse_desc_mat_free( MORSE_desc_t *desc )
 {
-    RUNTIME_desc_destroy( desc );
-
     if ( (desc->mat       != NULL) &&
          (desc->use_mat   == 1   ) &&
          (desc->alloc_mat == 1   ) )
