@@ -378,6 +378,12 @@ int MORSE_zunmlq_param_Tile_Async( const libhqr_tree_t *qrtree, MORSE_enum side,
     morse_pzunmlq_param( qrtree, side, trans, A, C, TS, TT, Dptr, sequence, request );
 
     if (Dptr != NULL) {
+        MORSE_Desc_Flush( A, sequence );
+        MORSE_Desc_Flush( C, sequence );
+        MORSE_Desc_Flush( TS, sequence );
+        MORSE_Desc_Flush( TT, sequence );
+        MORSE_Desc_Flush( Dptr, sequence );
+        morse_sequence_wait( morse, sequence );
         morse_desc_mat_free( Dptr );
     }
     (void)D;

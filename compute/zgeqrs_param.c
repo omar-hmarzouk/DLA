@@ -331,6 +331,12 @@ int MORSE_zgeqrs_param_Tile_Async( const libhqr_tree_t *qrtree,
     free(subB);
 
     if (Dptr != NULL) {
+        MORSE_Desc_Flush( A, sequence );
+        MORSE_Desc_Flush( TS, sequence );
+        MORSE_Desc_Flush( TT, sequence );
+        MORSE_Desc_Flush( B, sequence );
+        MORSE_Desc_Flush( Dptr, sequence );
+        morse_sequence_wait( morse, sequence );
         morse_desc_mat_free( Dptr );
     }
     (void)D;

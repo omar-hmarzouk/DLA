@@ -296,6 +296,10 @@ int MORSE_zgeqrf_Tile_Async( MORSE_desc_t *A, MORSE_desc_t *T,
         morse_pzgeqrfrh( A, T, Dptr, MORSE_RHBLK, sequence, request );
     }
     if (Dptr != NULL) {
+        MORSE_Desc_Flush( A, sequence );
+        MORSE_Desc_Flush( T, sequence );
+        MORSE_Desc_Flush( Dptr, sequence );
+        morse_sequence_wait( morse, sequence );
         morse_desc_mat_free( Dptr );
     }
     (void)D;

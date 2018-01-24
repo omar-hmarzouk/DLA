@@ -421,6 +421,14 @@ int MORSE_ztpgqrt_Tile_Async( int L,
     /*    morse_pztpgqrtrh( Q1, T, MORSE_RHBLK, sequence, request ); */
     /* } */
     if (Dptr != NULL) {
+        MORSE_Desc_Flush( V1, sequence );
+        MORSE_Desc_Flush( T1, sequence );
+        MORSE_Desc_Flush( V2, sequence );
+        MORSE_Desc_Flush( T2, sequence );
+        MORSE_Desc_Flush( Q1, sequence );
+        MORSE_Desc_Flush( Q2, sequence );
+        MORSE_Desc_Flush( Dptr, sequence );
+        morse_sequence_wait( morse, sequence );
         morse_desc_mat_free( Dptr );
     }
     (void)D;
