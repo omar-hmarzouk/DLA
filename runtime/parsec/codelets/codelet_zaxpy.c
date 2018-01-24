@@ -26,7 +26,7 @@
 
 static inline int
 CORE_zaxpy_parsec( parsec_execution_stream_t *context,
-                    parsec_task_t             *this_task )
+                   parsec_task_t             *this_task )
 {
     int *M;
     MORSE_Complex64_t *alpha;

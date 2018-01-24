@@ -28,7 +28,6 @@
 
 static inline int
 CORE_ztpqrt_parsec( parsec_execution_stream_t *context,
-
                     parsec_task_t             *this_task )
 {
     int *M;

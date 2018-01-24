@@ -31,8 +31,7 @@
  **/
 static inline int
 CORE_zgemm_parsec( parsec_execution_stream_t *context,
-
-                    parsec_task_t             *this_task )
+                   parsec_task_t             *this_task )
 {
     MORSE_enum *transA;
     MORSE_enum *transB;
