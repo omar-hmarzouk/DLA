@@ -47,6 +47,8 @@ int RUNTIME_init( MORSE_context_t *morse,
     }
 
     free(argc);
+
+    (void)ncudas;
     return hres;
 }
 
@@ -84,7 +86,7 @@ void RUNTIME_resume( MORSE_context_t *morse )
  **/
 void RUNTIME_barrier( MORSE_context_t *morse )
 {
-    parsec_context_t *parsec = (parsec_context_t*)morse->schedopt;
+    parsec_context_t *parsec = (parsec_context_t*)(morse->schedopt);
     // This will be a problem with the fake tasks inserted to detect end of DTD algorithms
     parsec_context_wait( parsec );
     return;
@@ -104,6 +106,7 @@ void RUNTIME_progress( MORSE_context_t *morse )
  **/
 int RUNTIME_thread_rank( MORSE_context_t *morse )
 {
+    (void)morse;
     return 0;
 }
 
@@ -114,6 +117,7 @@ int RUNTIME_thread_size( MORSE_context_t *morse )
 {
     // TODO: fixme
     //return vpmap_get_nb_total_threads();
+    (void)morse;
     return 1;
 }
 

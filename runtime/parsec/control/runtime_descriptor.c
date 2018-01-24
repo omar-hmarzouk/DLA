@@ -118,8 +118,9 @@ morse_parsec_rank_of_key(parsec_data_collection_t *data_collection, parsec_data_
 }
 
 static inline int32_t
-morse_parsec_vpid_of(parsec_data_collection_t *data_collection, ...)
+morse_parsec_vpid_of(parsec_data_collection_t *data_collection, ... )
 {
+    (void)data_collection;
     return 0;
 }
 
@@ -268,6 +269,9 @@ void RUNTIME_desc_create( MORSE_desc_t *mdesc )
 void RUNTIME_desc_destroy( MORSE_desc_t *mdesc )
 {
     morse_parsec_desc_t *pdesc = (morse_parsec_desc_t*)(mdesc->schedopt);
+    if ( pdesc == NULL ) {
+        return;
+    }
 
     if ( pdesc->data_map != NULL ) {
         parsec_data_t **data = pdesc->data_map;
@@ -286,6 +290,7 @@ void RUNTIME_desc_destroy( MORSE_desc_t *mdesc )
     parsec_dtd_data_collection_fini( (parsec_data_collection_t *)pdesc );
 
     free(pdesc);
+    mdesc->schedopt = NULL;
     return;
 }
 
