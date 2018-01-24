@@ -154,6 +154,9 @@ void morse_pzlange( MORSE_enum norm, MORSE_desc_t *A, double *result,
                     VECNORMS_STEP1(m, n), 1 );
             }
         }
+        MORSE_Desc_Flush( VECNORMS_STEP2, sequence );
+        MORSE_Desc_Flush( VECNORMS_STEP1, sequence );
+        MORSE_Desc_Flush( RESULT, sequence );
         RUNTIME_sequence_wait(morse, sequence);
         MORSE_Desc_Destroy( &(VECNORMS_STEP2) );
         break;
@@ -271,6 +274,9 @@ void morse_pzlange( MORSE_enum norm, MORSE_desc_t *A, double *result,
                     VECNORMS_STEP1(m, n), 1 );
             }
         }
+        MORSE_Desc_Flush( VECNORMS_STEP2, sequence );
+        MORSE_Desc_Flush( VECNORMS_STEP1, sequence );
+        MORSE_Desc_Flush( RESULT, sequence );
         RUNTIME_sequence_wait(morse, sequence);
         MORSE_Desc_Destroy( &(VECNORMS_STEP2) );
         break;
@@ -339,6 +345,8 @@ void morse_pzlange( MORSE_enum norm, MORSE_desc_t *A, double *result,
             }
         }
 
+        MORSE_Desc_Flush( VECNORMS_STEP1, sequence );
+        MORSE_Desc_Flush( RESULT, sequence );
         RUNTIME_sequence_wait(morse, sequence);
         break;
 
@@ -400,6 +408,8 @@ void morse_pzlange( MORSE_enum norm, MORSE_desc_t *A, double *result,
             }
         }
 
+        MORSE_Desc_Flush( VECNORMS_STEP1, sequence );
+        MORSE_Desc_Flush( RESULT, sequence );
         RUNTIME_sequence_wait(morse, sequence);
     }
 
