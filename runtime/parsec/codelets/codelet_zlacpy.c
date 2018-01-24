@@ -29,8 +29,9 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-static int
-CORE_zlacpyx_parsec(parsec_execution_stream_t *context, parsec_task_t * this_task)
+static inline int
+CORE_zlacpyx_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *uplo;
     int *M;
@@ -56,6 +57,7 @@ CORE_zlacpyx_parsec(parsec_execution_stream_t *context, parsec_task_t * this_tas
 
     CORE_zlacpy(*uplo, *M, *N, A + (*displA), *LDA, B + (*displB), *LDB);
 
+    (void)context;
     return 0;
 }
 

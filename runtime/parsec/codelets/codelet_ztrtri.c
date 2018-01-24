@@ -24,8 +24,9 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_ztrtri_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_ztrtri_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *uplo;
     MORSE_enum *diag;
@@ -46,14 +47,15 @@ CORE_ztrtri_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 
     CORE_ztrtri(*uplo, *diag, *N, A, *LDA, &info);
 
+    (void)context;
     return 0;
 }
 
-void MORSE_TASK_ztrtri(const MORSE_option_t *options,
-                       MORSE_enum uplo, MORSE_enum diag,
-                       int n, int nb,
-                       const MORSE_desc_t *A, int Am, int An, int lda,
-                       int iinfo)
+void MORSE_TASK_ztrtri( const MORSE_option_t *options,
+                        MORSE_enum uplo, MORSE_enum diag,
+                        int n, int nb,
+                        const MORSE_desc_t *A, int Am, int An, int lda,
+                        int iinfo )
 {
     parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 

@@ -24,8 +24,9 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_ztrmm_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_ztrmm_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *side;
     MORSE_enum *uplo;
@@ -59,6 +60,7 @@ CORE_ztrmm_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
         *alpha, A, *LDA,
         B, *LDB);
 
+    (void)context;
     return 0;
 }
 

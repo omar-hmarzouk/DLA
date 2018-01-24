@@ -56,8 +56,9 @@
  *          On exit, result contains scl * sqrt( ssq )
  *
  */
-static int
-CORE_zplssq_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zplssq_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     double *SCALESUMSQ;
     double *SCLSSQ;
@@ -74,6 +75,7 @@ CORE_zplssq_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
         SCLSSQ[1] = SCLSSQ[1]     + (SCALESUMSQ[1] * (( SCALESUMSQ[0] / SCLSSQ[0] ) * ( SCALESUMSQ[0] / SCLSSQ[0] )));
     }
 
+    (void)context;
     return 0;
 }
 
@@ -90,8 +92,9 @@ void MORSE_TASK_zplssq( const MORSE_option_t *options,
         0);
 }
 
-static int
-CORE_zplssq2_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zplssq2_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     double *RESULT;
 
@@ -101,6 +104,7 @@ CORE_zplssq2_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task
 
     RESULT[0] = RESULT[0] * sqrt( RESULT[1] );
 
+    (void)context;
     return 0;
 }
 

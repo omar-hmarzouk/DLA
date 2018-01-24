@@ -26,8 +26,8 @@
 #include "coreblas/coreblas_z.h"
 
 static inline int
-CORE_zlatro_parsec(parsec_execution_stream_t    *context,
-                   parsec_task_t *this_task)
+CORE_zlatro_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *uplo;
     MORSE_enum *trans;
@@ -51,6 +51,9 @@ CORE_zlatro_parsec(parsec_execution_stream_t    *context,
 
     CORE_zlatro(*uplo, *trans, *M, *N,
                 A, *LDA, B, *LDB);
+
+    (void)context;
+    return 0;
 }
 
 /***************************************************************************//**

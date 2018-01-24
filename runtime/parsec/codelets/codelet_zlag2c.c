@@ -29,8 +29,9 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-static int
-CORE_zlag2c_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zlag2c_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     int *m;
     int *n;
@@ -51,6 +52,7 @@ CORE_zlag2c_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 
     CORE_zlag2c( *m, *n, A, *lda, B, *ldb);
 
+    (void)context;
     return 0;
 }
 
@@ -76,7 +78,7 @@ void MORSE_TASK_zlag2c(const MORSE_option_t *options,
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-static int
+static inline int
 CORE_clag2z_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
     int *m;
@@ -97,6 +99,7 @@ CORE_clag2z_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 
     CORE_clag2z( *m, *n, A, *lda, B, *ldb );
 
+    (void)context;
     return 0;
 }
 

@@ -27,8 +27,8 @@
 #include "coreblas/coreblas_z.h"
 
 static inline int
-CORE_zherfb_parsec(parsec_execution_stream_t    *context,
-                   parsec_task_t *this_task)
+CORE_zherfb_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *uplo;
     int *n;
@@ -63,6 +63,9 @@ CORE_zherfb_parsec(parsec_execution_stream_t    *context,
     CORE_zherfb(*uplo, *n, *k, *ib, *nb,
                 A, *lda, T, *ldt,
                 C, *ldc, WORK, *ldwork);
+
+    (void)context;
+    return 0;
 }
 
 void MORSE_TASK_zherfb(const MORSE_option_t *options,

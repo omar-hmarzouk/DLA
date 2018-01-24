@@ -24,8 +24,9 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_zaxpy_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zaxpy_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     int *M;
     MORSE_Complex64_t *alpha;
@@ -45,6 +46,7 @@ CORE_zaxpy_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 
     CORE_zaxpy(*M, *alpha, A, *incA, B, *incB);
 
+    (void)context;
     return 0;
 }
 

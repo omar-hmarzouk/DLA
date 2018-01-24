@@ -30,8 +30,9 @@
  *
  **/
 
-static int
-CORE_zherk_parsec(parsec_execution_stream_t *context, parsec_task_t * this_task)
+static inline int
+CORE_zherk_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *uplo;
     MORSE_enum *trans;
@@ -61,6 +62,7 @@ CORE_zherk_parsec(parsec_execution_stream_t *context, parsec_task_t * this_task)
                *alpha, A, *lda,
                *beta,  C, *ldc);
 
+    (void)context;
     return 0;
 }
 

@@ -29,8 +29,9 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-static int
-CORE_zlauum_parsec(parsec_execution_stream_t *context, parsec_task_t * this_task)
+static inline int
+CORE_zlauum_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *uplo;
     int *N;
@@ -46,6 +47,7 @@ CORE_zlauum_parsec(parsec_execution_stream_t *context, parsec_task_t * this_task
 
     CORE_zlauum(*uplo, *N, A, *LDA);
 
+    (void)context;
     return 0;
 }
 

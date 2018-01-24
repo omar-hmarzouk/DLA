@@ -24,8 +24,9 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_zgetrf_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zgetrf_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     int *m;
     int *n;
@@ -48,6 +49,7 @@ CORE_zgetrf_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 
     CORE_zgetrf( *m, *n, A, *lda, IPIV, &info );
 
+    (void)context;
     return 0;
 }
 

@@ -24,8 +24,9 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_zplgsy_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zplgsy_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_Complex64_t *bump;
     int *m;
@@ -51,6 +52,7 @@ CORE_zplgsy_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 
     CORE_zplgsy( *bump, *m, *n, A, *lda, *bigM, *m0, *n0, *seed );
 
+    (void)context;
     return 0;
 }
 

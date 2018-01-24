@@ -71,8 +71,9 @@
  *              to solve a system of equations.
  *
  ******************************************************************************/
-static int
-CORE_zgetrf_nopiv_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zgetrf_nopiv_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     int *m;
     int *n;
@@ -93,6 +94,7 @@ CORE_zgetrf_nopiv_parsec(parsec_execution_stream_t *context, parsec_task_t *this
 
     CORE_zgetrf_nopiv(*m, *n, *ib, A, *lda, &info);
 
+    (void)context;
     return 0;
 }
 

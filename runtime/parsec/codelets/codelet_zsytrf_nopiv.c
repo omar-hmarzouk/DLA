@@ -24,8 +24,9 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_zsytrf_nopiv_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zsytrf_nopiv_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *uplo;
     int *n;
@@ -44,6 +45,7 @@ CORE_zsytrf_nopiv_parsec(parsec_execution_stream_t *context, parsec_task_t *this
 
     CORE_zsytf2_nopiv(*uplo, *n, A, *lda);
 
+    (void)context;
     return 0;
 }
 

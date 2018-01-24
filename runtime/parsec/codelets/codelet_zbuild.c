@@ -27,8 +27,8 @@
 #include "coreblas/coreblas_z.h"
 
 static inline int
-CORE_zbuild_parsec(parsec_execution_stream_t    *context,
-                   parsec_task_t *this_task)
+CORE_zbuild_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_Complex64_t *A;
     int lda;
@@ -49,6 +49,8 @@ CORE_zbuild_parsec(parsec_execution_stream_t    *context,
 
     user_build_callback(row_min, row_max, col_min, col_max, A, lda, user_data);
 
+    (void)context;
+    (void)context;
     return 0;
 }
 

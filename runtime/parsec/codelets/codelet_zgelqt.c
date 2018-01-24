@@ -85,8 +85,9 @@
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
  ******************************************************************************/
-static int
-CORE_zgelqt_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zgelqt_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     int *m;
     int *n;
@@ -112,6 +113,7 @@ CORE_zgelqt_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 
     CORE_zgelqt(*m, *n, *ib, A, *lda, T, *ldt, TAU, WORK);
 
+    (void)context;
     return 0;
 }
 

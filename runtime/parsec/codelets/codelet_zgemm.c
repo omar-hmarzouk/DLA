@@ -29,9 +29,10 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-static int
-CORE_zgemm_parsec(parsec_execution_stream_t    *context,
-                  parsec_task_t *this_task)
+static inline int
+CORE_zgemm_parsec( parsec_execution_stream_t *context,
+
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *transA;
     MORSE_enum *transB;
@@ -68,6 +69,7 @@ CORE_zgemm_parsec(parsec_execution_stream_t    *context,
                        B, *ldb,
                *beta,  C, *ldc);
 
+    (void)context;
     return 0;
 }
 

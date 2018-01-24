@@ -24,9 +24,9 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_dzasum_parsec(parsec_execution_stream_t    *context,
-                   parsec_task_t *this_task)
+static inline int
+CORE_dzasum_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *storev;
     MORSE_enum *uplo;
@@ -48,6 +48,7 @@ CORE_dzasum_parsec(parsec_execution_stream_t    *context,
 
     CORE_dzasum(*storev, *uplo, *M, *N, A, *lda, work);
 
+    (void)context;
     return 0;
 }
 

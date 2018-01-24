@@ -30,8 +30,8 @@
 #include "coreblas/coreblas_z.h"
 
 static inline int
-CORE_ztsmlq_hetra1_parsec(parsec_execution_stream_t    *context,
-                          parsec_task_t *this_task)
+CORE_ztsmlq_hetra1_parsec( parsec_execution_stream_t *context,
+                           parsec_task_t             *this_task )
 {
     MORSE_enum *side;
     MORSE_enum *trans;
@@ -77,6 +77,9 @@ CORE_ztsmlq_hetra1_parsec(parsec_execution_stream_t    *context,
                        A1, *lda1, A2, *lda2,
                        V, *ldv, T, *ldt,
                        WORK, *ldwork);
+
+    (void)context;
+    return 0;
 }
 
 void MORSE_TASK_ztsmlq_hetra1(const MORSE_option_t *options,

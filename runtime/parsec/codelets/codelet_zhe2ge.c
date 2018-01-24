@@ -30,8 +30,8 @@
  *
  **/
 static inline int
-CORE_zhe2ge_parsec(parsec_execution_stream_t    *context,
-                   parsec_task_t *this_task)
+CORE_zhe2ge_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *uplo;
     int *M;
@@ -52,6 +52,9 @@ CORE_zhe2ge_parsec(parsec_execution_stream_t    *context,
         UNPACK_VALUE, &LDB);
 
     CORE_zhe2ge(*uplo, *M, *N, A, *LDA, B, *LDB);
+
+    (void)context;
+    return 0;
 }
 
 

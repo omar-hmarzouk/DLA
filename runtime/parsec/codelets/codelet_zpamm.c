@@ -168,8 +168,9 @@
 
 /***************************************************************************/
 
-static int
-CORE_zpamm_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zpamm_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     int *op;
     MORSE_enum *side;
@@ -207,6 +208,7 @@ CORE_zpamm_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 
     CORE_zpamm( *op, *side, *storev, *M, *N, *K, *L, A1, *LDA1, A2, *LDA2, V, *LDV, W, *LDW);
 
+    (void)context;
     return 0;
 }
 

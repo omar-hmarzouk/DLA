@@ -59,8 +59,9 @@
  *         The leading dimension of the array A.  LDA >= max(1,M).
  *
  **/
-static int
-CORE_zlaset_parsec(parsec_execution_stream_t *context, parsec_task_t * this_task)
+static inline int
+CORE_zlaset_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *uplo;
     int *M;
@@ -82,6 +83,7 @@ CORE_zlaset_parsec(parsec_execution_stream_t *context, parsec_task_t * this_task
 
     CORE_zlaset(*uplo, *M, *N, *alpha, *beta, A, *LDA);
 
+    (void)context;
     return 0;
 }
 

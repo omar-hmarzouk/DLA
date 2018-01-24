@@ -39,8 +39,8 @@
  *
  **/
 static inline int
-CORE_zlascal_parsec(parsec_execution_stream_t    *context,
-                    parsec_task_t *this_task)
+CORE_zlascal_parsec( parsec_execution_stream_t *context,
+                     parsec_task_t             *this_task )
 {
     MORSE_enum *uplo;
     int *M;
@@ -59,6 +59,9 @@ CORE_zlascal_parsec(parsec_execution_stream_t    *context,
         UNPACK_VALUE, &LDA);
 
     CORE_zlascal(*uplo, *M, *N, *alpha, A, *LDA);
+
+    (void)context;
+    return 0;
 }
 
 void MORSE_TASK_zlascal(const MORSE_option_t *options,

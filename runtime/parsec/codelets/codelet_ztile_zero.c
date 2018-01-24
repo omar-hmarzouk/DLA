@@ -24,8 +24,9 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_ztile_zero_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_ztile_zero_parsec( parsec_execution_stream_t *context,
+                        parsec_task_t             *this_task )
 {
     int *X1;
     int *X2;
@@ -48,12 +49,13 @@ CORE_ztile_zero_parsec(parsec_execution_stream_t *context, parsec_task_t *this_t
         for (y = *Y1; y < *Y2; y++)
             A[*lda*x+y] = 0.0;
 
+    (void)context;
     return 0;
 }
 
-void MORSE_TASK_ztile_zero(const const MORSE_option_t *options,
-                           int X1, int X2, int Y1, int Y2,
-                           const MORSE_desc_t *A, int Am, int An, int lda)
+void MORSE_TASK_ztile_zero( const MORSE_option_t *options,
+                            int X1, int X2, int Y1, int Y2,
+                            const MORSE_desc_t *A, int Am, int An, int lda )
 {
     parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 

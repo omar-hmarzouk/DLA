@@ -24,8 +24,9 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_zlange_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zlange_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     MORSE_enum *norm;
     int *M;
@@ -47,6 +48,7 @@ CORE_zlange_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 
     CORE_zlange( *norm, *M, *N, A, *LDA, work, normA );
 
+    (void)context;
     return 0;
 }
 
@@ -72,8 +74,9 @@ void MORSE_TASK_zlange(const MORSE_option_t *options,
 }
 
 #if defined(PRECISION_d) || defined(PRECISION_s)
-static int
-CORE_zlange_max_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zlange_max_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     double *A;
     double *normA;
@@ -86,6 +89,7 @@ CORE_zlange_max_parsec(parsec_execution_stream_t *context, parsec_task_t *this_t
     if ( *A > *normA )
         *normA = *A;
 
+    (void)context;
     return 0;
 }
 

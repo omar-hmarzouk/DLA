@@ -69,8 +69,9 @@
  *         \retval <0 if INFO = -k, the k-th argument had an illegal value
  *
  ******************************************************************************/
-static int
-CORE_zgessm_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zgessm_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
     int *m;
     int *n;
@@ -100,6 +101,7 @@ CORE_zgessm_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 
     CORE_zgessm(*m, *n, *k, *ib, IPIV, D, *ldd, A, *lda);
 
+    (void)context;
     return 0;
 }
 
