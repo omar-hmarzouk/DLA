@@ -57,46 +57,21 @@
  *****************************************************************************/
 int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
 {
-    MORSE_context_t  *morse;
-    MORSE_sequence_t *sequence = NULL;
-    MORSE_request_t   request;
-    MORSE_desc_t B;
-    int status;
-
-    morse = morse_context_self();
-    if (morse == NULL) {
-        morse_fatal_error("MORSE_Lapack_to_Tile", "MORSE not initialized");
-        return MORSE_ERR_NOT_INITIALIZED;
+    switch( A->dtyp ) {
+    case MorseComplexDouble:
+        return MORSE_zLapack_to_Tile( (MORSE_Complex64_t *)Af77, LDA, A );
+        break;
+    case MorseComplexFloat:
+        return MORSE_cLapack_to_Tile( (MORSE_Complex32_t *)Af77, LDA, A );
+        break;
+    case MorseRealFloat:
+        return MORSE_sLapack_to_Tile( (float *)Af77, LDA, A );
+        break;
+    case MorseRealDouble:
+    default:
+        return MORSE_dLapack_to_Tile( (double *)Af77, LDA, A );
     }
-    /* Check descriptor for correctness */
-    if (morse_desc_check(A) != MORSE_SUCCESS) {
-        morse_error("MORSE_Lapack_to_Tile", "invalid descriptor");
-        return MORSE_ERR_ILLEGAL_VALUE;
-    }
-
-    /* Create the B descriptor to handle the Lapack format matrix */
-    B = morse_desc_init_user(
-        A->dtyp, A->mb, A->nb, A->bsiz,
-        LDA, A->n, 0, 0, A->m, A->n, 1, 1,
-        morse_getaddr_cm, morse_getblkldd_cm, NULL );
-    B.mat  = Af77;
-    B.styp = MorseCM;
-
-    RUNTIME_desc_create( &B );
-
-    morse_sequence_create(morse, &sequence);
-
-    morse_pzlacpy( MorseUpperLower, &B, A, sequence, &request );
-
-    RUNTIME_desc_flush( &B, sequence );
-    RUNTIME_desc_flush(  A, sequence );
-    RUNTIME_sequence_wait( morse, sequence );
-
-    RUNTIME_desc_destroy( &B );
-
-    status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
-    return status;
+    return MORSE_ERR_ILLEGAL_VALUE;
 }
 
 /** ***************************************************************************
@@ -124,43 +99,19 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
  *****************************************************************************/
 int MORSE_Tile_to_Lapack(MORSE_desc_t *A, void *Af77, int LDA)
 {
-    MORSE_context_t  *morse;
-    MORSE_sequence_t *sequence = NULL;
-    MORSE_request_t   request;
-    MORSE_desc_t      B;
-    int status;
-
-    morse = morse_context_self();
-    if (morse == NULL) {
-        morse_fatal_error("MORSE_Tile_to_Lapack", "MORSE not initialized");
-        return MORSE_ERR_NOT_INITIALIZED;
+    switch( A->dtyp ) {
+    case MorseComplexDouble:
+        return MORSE_zTile_to_Lapack( A, (MORSE_Complex64_t *)Af77, LDA );
+        break;
+    case MorseComplexFloat:
+        return MORSE_cTile_to_Lapack( A, (MORSE_Complex32_t *)Af77, LDA );
+        break;
+    case MorseRealFloat:
+        return MORSE_sTile_to_Lapack( A, (float *)Af77, LDA );
+        break;
+    case MorseRealDouble:
+    default:
+        return MORSE_dTile_to_Lapack( A, (double *)Af77, LDA );
     }
-    /* Check descriptor for correctness */
-    if (morse_desc_check(A) != MORSE_SUCCESS) {
-        morse_error("MORSE_Tile_to_Lapack", "invalid descriptor");
-        return MORSE_ERR_ILLEGAL_VALUE;
-    }
-
-    /* Create the B descriptor to handle the Lapack format matrix */
-    B = morse_desc_init_user(
-        A->dtyp, A->mb, A->nb, A->bsiz,
-        LDA, A->n, 0, 0, A->m, A->n, 1, 1,
-        morse_getaddr_cm, morse_getblkldd_cm, NULL );
-    B.mat  = Af77;
-    B.styp = MorseCM;
-
-    RUNTIME_desc_create( &B );
-
-    morse_sequence_create(morse, &sequence);
-    morse_pzlacpy( MorseUpperLower, A, &B, sequence, &request );
-
-    RUNTIME_desc_flush(  A, sequence );
-    RUNTIME_desc_flush( &B, sequence );
-    RUNTIME_sequence_wait( morse, sequence );
-
-    RUNTIME_desc_destroy( &B );
-
-    status = sequence->status;
-    morse_sequence_destroy(morse, sequence);
-    return status;
+    return MORSE_ERR_ILLEGAL_VALUE;
 }
