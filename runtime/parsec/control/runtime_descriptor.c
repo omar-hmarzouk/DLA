@@ -238,6 +238,8 @@ void RUNTIME_desc_create( MORSE_desc_t *mdesc )
     parsec_dtd_data_collection_init(data_collection);
 
     /* arena init */
+    pdesc->arena_index = 0;
+
     /* taskpool init to bypass a requirement of PaRSEC  */
 #if defined(CHAMELEON_USE_MPI)
     parsec_dtd_taskpool_new();
