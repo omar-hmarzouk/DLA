@@ -33,7 +33,7 @@
  **/
 #define MorseDescInput  1
 #define MorseDescOutput 2
-#define MorseDescInout  3
+#define MorseDescInout  (MorseDescInput | MorseDescOutput)
 
 /***************************************************************************//**
  *  Macro for matrix conversion / Lapack interface
