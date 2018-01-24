@@ -43,12 +43,9 @@ int RUNTIME_sequence_destroy( MORSE_context_t  *morse,
     parsec_taskpool_t *parsec_dtd_tp = (parsec_taskpool_t *)(sequence->schedopt);
 
     assert( parsec_dtd_tp );
-
-    // TODO: switch to a partial wait
-    //parsec_dtd_taskpool_wait(parsec, parsec_dtd_tp);
-    parsec_context_wait( parsec );
-
+    parsec_dtd_taskpool_wait( parsec, parsec_dtd_tp );
     parsec_taskpool_free( parsec_dtd_tp );
+
     sequence->schedopt = NULL;
     return MORSE_SUCCESS;
 }
