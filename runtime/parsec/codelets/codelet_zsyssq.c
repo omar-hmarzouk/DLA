@@ -28,24 +28,19 @@ static inline int
 CORE_zsyssq_parsec( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )
 {
-    MORSE_enum *uplo;
-    int *n;
+    MORSE_enum uplo;
+    int n;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     double *SCALESUMSQ;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &n,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_DATA,  &SCALESUMSQ );
+        this_task, &uplo, &n, &A, &lda, &SCALESUMSQ );
 
-    CORE_zsyssq( *uplo, *n, A, *lda, &SCALESUMSQ[0], &SCALESUMSQ[1]);
+    CORE_zsyssq( uplo, n, A, lda, &SCALESUMSQ[0], &SCALESUMSQ[1]);
 
     (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zsyssq( const MORSE_option_t *options,
@@ -62,5 +57,5 @@ void MORSE_TASK_zsyssq( const MORSE_option_t *options,
         PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),                               INPUT,
         sizeof(int),            &lda,                   VALUE,
         PASSED_BY_REF,          RTBLKADDR( SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn ),    INOUT,
-        0);
+        PARSEC_DTD_ARG_END );
 }

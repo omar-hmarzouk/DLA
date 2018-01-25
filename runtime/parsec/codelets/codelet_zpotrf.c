@@ -33,22 +33,22 @@ static inline int
 CORE_zpotrf_parsec( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )
 {
-    MORSE_enum *uplo;
-    int *tempkm, *ldak, *iinfo;
+    MORSE_enum uplo;
+    int tempkm, ldak, iinfo, info;
     MORSE_Complex64_t *A;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &tempkm,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &ldak,
-        UNPACK_VALUE, &iinfo );
+        this_task, &uplo, &tempkm, &A, &ldak, &iinfo );
 
-    CORE_zpotrf(*uplo, *tempkm, A, *ldak, iinfo);
+    CORE_zpotrf( uplo, tempkm, A, ldak, &info );
 
+    /* if ( (sequence->status == MORSE_SUCCESS) && (info != 0) ) { */
+    /*     RUNTIME_sequence_flush( (MORSE_context_t*)quark, sequence, request, iinfo+info ); */
+    /* } */
     (void)context;
-    return 0;
+    (void)info;
+    (void)iinfo;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zpotrf(const MORSE_option_t *options,
@@ -65,7 +65,7 @@ void MORSE_TASK_zpotrf(const MORSE_option_t *options,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | morse_parsec_get_arena_index(A) | AFFINITY,
         sizeof(int),           &lda,                              VALUE,
         sizeof(int),           &iinfo,                            VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 
     (void)nb;
 }

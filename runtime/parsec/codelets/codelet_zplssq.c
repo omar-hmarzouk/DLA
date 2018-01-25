@@ -64,9 +64,7 @@ CORE_zplssq_parsec( parsec_execution_stream_t *context,
     double *SCLSSQ;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_DATA,  &SCALESUMSQ,
-        UNPACK_DATA,  &SCLSSQ );
+        this_task, &SCALESUMSQ, &SCLSSQ );
 
     if( SCLSSQ[0] < SCALESUMSQ[0] ) {
         SCLSSQ[1] = SCALESUMSQ[1] + (SCLSSQ[1]     * (( SCLSSQ[0] / SCALESUMSQ[0] ) * ( SCLSSQ[0] / SCALESUMSQ[0] )));
@@ -76,7 +74,7 @@ CORE_zplssq_parsec( parsec_execution_stream_t *context,
     }
 
     (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zplssq( const MORSE_option_t *options,
@@ -89,7 +87,7 @@ void MORSE_TASK_zplssq( const MORSE_option_t *options,
         PARSEC_dtd_taskpool, CORE_zplssq_parsec, options->priority, "plssq",
         PASSED_BY_REF,         RTBLKADDR( SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn ),    INPUT,
         PASSED_BY_REF,         RTBLKADDR( SCLSSQ, double, SCLSSQm, SCLSSQn ),                INOUT,
-        0);
+        PARSEC_DTD_ARG_END );
 }
 
 static inline int
@@ -99,13 +97,12 @@ CORE_zplssq2_parsec( parsec_execution_stream_t *context,
     double *RESULT;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_DATA, &RESULT );
+        this_task, &RESULT );
 
     RESULT[0] = RESULT[0] * sqrt( RESULT[1] );
 
     (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zplssq2( const MORSE_option_t *options,
@@ -116,5 +113,5 @@ void MORSE_TASK_zplssq2( const MORSE_option_t *options,
     parsec_dtd_taskpool_insert_task(
         PARSEC_dtd_taskpool, CORE_zplssq2_parsec, options->priority, "plssq2",
         PASSED_BY_REF,         RTBLKADDR( RESULT, double, RESULTm, RESULTn ),     INOUT,
-        0);
+        PARSEC_DTD_ARG_END );
 }

@@ -32,38 +32,28 @@
 
 static inline int
 CORE_zherk_parsec( parsec_execution_stream_t *context,
-                    parsec_task_t             *this_task )
+                   parsec_task_t             *this_task )
 {
-    MORSE_enum *uplo;
-    MORSE_enum *trans;
-    int *n;
-    int *k;
-    double *alpha;
+    MORSE_enum uplo;
+    MORSE_enum trans;
+    int n;
+    int k;
+    double alpha;
     MORSE_Complex64_t *A;
-    int *lda;
-    double *beta;
+    int lda;
+    double beta;
     MORSE_Complex64_t *C;
-    int *ldc;
+    int ldc;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &trans,
-        UNPACK_VALUE, &n,
-        UNPACK_VALUE, &k,
-        UNPACK_VALUE, &alpha,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_VALUE, &beta,
-        UNPACK_DATA,  &C,
-        UNPACK_VALUE, &ldc );
+        this_task, &uplo, &trans, &n, &k, &alpha, &A, &lda, &beta, &C, &ldc );
 
-    CORE_zherk(*uplo, *trans, *n, *k,
-               *alpha, A, *lda,
-               *beta,  C, *ldc);
+    CORE_zherk( uplo, trans, n, k,
+                alpha, A, lda,
+                beta,  C, ldc);
 
     (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zherk(const MORSE_option_t *options,
@@ -86,7 +76,7 @@ void MORSE_TASK_zherk(const MORSE_option_t *options,
         sizeof(double),        &beta,                             VALUE,
         PASSED_BY_REF,         RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | morse_parsec_get_arena_index(C) | AFFINITY,
         sizeof(int),           &ldc,                              VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 
     (void)nb;
 }

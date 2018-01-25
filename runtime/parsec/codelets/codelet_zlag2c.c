@@ -33,27 +33,21 @@ static inline int
 CORE_zlag2c_parsec( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )
 {
-    int *m;
-    int *n;
+    int m;
+    int n;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     MORSE_Complex32_t *B;
-    int *ldb;
+    int ldb;
     int info;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &m,
-        UNPACK_VALUE, &n,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_DATA,  &B,
-        UNPACK_VALUE, &ldb );
+        this_task, &m, &n, &A, &lda, &B, &ldb );
 
-    CORE_zlag2c( *m, *n, A, *lda, B, *ldb);
+    CORE_zlag2c( m, n, A, lda, B, ldb );
 
     (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zlag2c(const MORSE_option_t *options,
@@ -70,7 +64,7 @@ void MORSE_TASK_zlag2c(const MORSE_option_t *options,
         sizeof(int),                        &lda,       VALUE,
         PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex32_t, Bm, Bn ),     OUTPUT,
         sizeof(int),                        &ldb,       VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }
 
 /***************************************************************************//**
@@ -81,26 +75,20 @@ void MORSE_TASK_zlag2c(const MORSE_option_t *options,
 static inline int
 CORE_clag2z_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {
-    int *m;
-    int *n;
+    int m;
+    int n;
     MORSE_Complex32_t *A;
-    int *lda;
+    int lda;
     MORSE_Complex64_t *B;
-    int *ldb;
+    int ldb;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &m,
-        UNPACK_VALUE, &n,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_DATA,  &B,
-        UNPACK_VALUE, &ldb );
+        this_task, &m, &n, &A, &lda, &B, &ldb );
 
-    CORE_clag2z( *m, *n, A, *lda, B, *ldb );
+    CORE_clag2z( m, n, A, lda, B, ldb );
 
     (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_clag2z(const MORSE_option_t *options,
@@ -118,5 +106,5 @@ void MORSE_TASK_clag2z(const MORSE_option_t *options,
         sizeof(int),                        &lda,       VALUE,
         PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT,
         sizeof(int),                        &ldb,       VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }

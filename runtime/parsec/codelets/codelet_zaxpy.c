@@ -28,30 +28,24 @@ static inline int
 CORE_zaxpy_parsec( parsec_execution_stream_t *context,
                    parsec_task_t             *this_task )
 {
-    int *M;
-    MORSE_Complex64_t *alpha;
+    int M;
+    MORSE_Complex64_t alpha;
     MORSE_Complex64_t *A;
-    int *incA;
+    int incA;
     MORSE_Complex64_t *B;
-    int *incB;
+    int incB;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &M,
-        UNPACK_VALUE, &alpha,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &incA,
-        UNPACK_DATA,  &B,
-        UNPACK_VALUE, &incB );
+        this_task, &M, &alpha, &A, &incA, &B, &incB );
 
-    CORE_zaxpy(*M, *alpha, A, *incA, B, *incB);
+    CORE_zaxpy( M, alpha, A, incA, B, incB );
 
     (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zaxpy(const MORSE_option_t *options,
-                      int M, MORSE_Complex64_t *alpha,
+                      int M, MORSE_Complex64_t alpha,
                       const MORSE_desc_t *A, int Am, int An, int incA,
                       const MORSE_desc_t *B, int Bm, int Bn, int incB)
 {
@@ -65,5 +59,5 @@ void MORSE_TASK_zaxpy(const MORSE_option_t *options,
         sizeof(int),               &incA, VALUE,
         PASSED_BY_REF,  RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ), INOUT,
         sizeof(int),               &incB, VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }

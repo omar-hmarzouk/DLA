@@ -59,33 +59,27 @@
  **/
 static inline int
 CORE_zlaset2_parsec( parsec_execution_stream_t *context,
-                    parsec_task_t             *this_task )
+                     parsec_task_t             *this_task )
 {
-    MORSE_enum *uplo;
-    int *M;
-    int *N;
-    MORSE_Complex64_t *alpha;
+    MORSE_enum uplo;
+    int M;
+    int N;
+    MORSE_Complex64_t alpha;
     MORSE_Complex64_t *A;
-    int *LDA;
+    int LDA;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &M,
-        UNPACK_VALUE, &N,
-        UNPACK_VALUE, &alpha,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &LDA );
+        this_task, &uplo, &M, &N, &alpha, &A, &LDA );
 
-    CORE_zlaset2(*uplo, *M, *N, *alpha, A, *LDA);
+    CORE_zlaset2( uplo, M, N, alpha, A, LDA );
 
     (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zlaset2(const MORSE_option_t *options,
-                       MORSE_enum uplo, int M, int N,
-                       MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int LDA)
+                        MORSE_enum uplo, int M, int N,
+                        MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int LDA)
 {
     parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
@@ -97,5 +91,5 @@ void MORSE_TASK_zlaset2(const MORSE_option_t *options,
         sizeof(MORSE_enum),                &alpha,     VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT,
         sizeof(int),                       &LDA,       VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }

@@ -33,25 +33,17 @@ CORE_zbuild_parsec( parsec_execution_stream_t *context,
     MORSE_Complex64_t *A;
     int lda;
     void *user_data;
-    void (*user_build_callback)(int row_min, int row_max, int col_min, int col_max, void *buffer, int ld, void *user_data) ;
+    void (*user_build_callback)( int row_min, int row_max, int col_min, int col_max,
+                                 void *buffer, int ld, void *user_data );
     int row_min, row_max, col_min, col_max;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &row_min,
-        UNPACK_VALUE, &row_max,
-        UNPACK_VALUE, &col_min,
-        UNPACK_VALUE, &col_max,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_VALUE, &user_data,
-        UNPACK_VALUE, &user_build_callback );
+        this_task, &row_min, &row_max, &col_min, &col_max, &A, &lda, &user_data, &user_build_callback );
 
     user_build_callback(row_min, row_max, col_min, col_max, A, lda, user_data);
 
     (void)context;
-    (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zbuild( const MORSE_option_t *options,
@@ -75,5 +67,5 @@ void MORSE_TASK_zbuild( const MORSE_option_t *options,
         sizeof(int),   &lda,                              VALUE,
         sizeof(void*), &user_data,                        VALUE,
         sizeof(void*), &user_build_callback,              VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }

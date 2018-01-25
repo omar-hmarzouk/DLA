@@ -33,28 +33,21 @@ static inline int
 CORE_zhe2ge_parsec( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )
 {
-    MORSE_enum *uplo;
-    int *M;
-    int *N;
+    MORSE_enum uplo;
+    int M;
+    int N;
     const MORSE_Complex64_t *A;
-    int *LDA;
+    int LDA;
     MORSE_Complex64_t *B;
-    int *LDB;
+    int LDB;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &M,
-        UNPACK_VALUE, &N,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &LDA,
-        UNPACK_DATA,  &B,
-        UNPACK_VALUE, &LDB);
+        this_task, &uplo, &M, &N, &A, &LDA, &B, &LDB);
 
-    CORE_zhe2ge(*uplo, *M, *N, A, *LDA, B, *LDB);
+    CORE_zhe2ge( uplo, M, N, A, LDA, B, LDB );
 
     (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 
@@ -75,7 +68,7 @@ void MORSE_TASK_zhe2ge(const MORSE_option_t *options,
         sizeof(int),        &lda,    VALUE,
         PASSED_BY_REF,       RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn), OUTPUT,
         sizeof(int),        &ldb,    VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 
     (void)mb;
 }

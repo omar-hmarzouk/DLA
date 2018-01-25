@@ -28,29 +28,22 @@ static inline int
 CORE_zgetrf_parsec( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )
 {
-    int *m;
-    int *n;
+    int m;
+    int n;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     int *IPIV;
     MORSE_bool *check_info;
-    int *iinfo;
+    int iinfo;
     int info;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &m,
-        UNPACK_VALUE, &n,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_SCRATCH, &IPIV,
-        UNPACK_VALUE, &check_info,
-        UNPACK_VALUE, &iinfo );
+        this_task, &m, &n, &A, &lda, &IPIV, &check_info, &iinfo );
 
-    CORE_zgetrf( *m, *n, A, *lda, IPIV, &info );
+    CORE_zgetrf( m, n, A, lda, IPIV, &info );
 
     (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zgetrf(const MORSE_option_t *options,
@@ -70,5 +63,5 @@ void MORSE_TASK_zgetrf(const MORSE_option_t *options,
         sizeof(int)*nb,      IPIV,                        SCRATCH,
         sizeof(MORSE_bool), &check_info,                 VALUE,
         sizeof(int),        &iinfo,                      VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }

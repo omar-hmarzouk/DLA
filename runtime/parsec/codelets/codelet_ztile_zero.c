@@ -28,29 +28,23 @@ static inline int
 CORE_ztile_zero_parsec( parsec_execution_stream_t *context,
                         parsec_task_t             *this_task )
 {
-    int *X1;
-    int *X2;
-    int *Y1;
-    int *Y2;
+    int X1;
+    int X2;
+    int Y1;
+    int Y2;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     int x, y;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &X1,
-        UNPACK_VALUE, &X2,
-        UNPACK_VALUE, &Y1,
-        UNPACK_VALUE, &Y2,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda );
+        this_task, &X1, &X2, &Y1, &Y2, &A, &lda );
 
-    for (x = *X1; x < *X2; x++)
-        for (y = *Y1; y < *Y2; y++)
-            A[*lda*x+y] = 0.0;
+    for (x = X1; x < X2; x++)
+        for (y = Y1; y < Y2; y++)
+            A[lda * x + y] = 0.0;
 
     (void)context;
-    return 0;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_ztile_zero( const MORSE_option_t *options,
@@ -67,5 +61,5 @@ void MORSE_TASK_ztile_zero( const MORSE_option_t *options,
         sizeof(int),       &Y2,                       VALUE,
         PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT,
         sizeof(int),       &lda,                      VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }
