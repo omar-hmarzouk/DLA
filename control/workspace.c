@@ -199,6 +199,8 @@ int MORSE_Dealloc_Workspace(MORSE_desc_t **desc)
         return MORSE_ERR_UNALLOCATED;
     }
     morse_desc_mat_free( *desc );
+    RUNTIME_desc_destroy( *desc );
+
     free(*desc);
     *desc = NULL;
     return MORSE_SUCCESS;
