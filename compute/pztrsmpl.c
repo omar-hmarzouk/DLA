@@ -37,8 +37,8 @@
 /*******************************************************************************
  *  Parallel forward substitution for tile LU - dynamic scheduling
  **/
-void morse_pztrsmpl(MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *L, int *IPIV,
-                           MORSE_sequence_t *sequence, MORSE_request_t *request)
+void morse_pztrsmpl( MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *L, int *IPIV,
+                     MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
     MORSE_option_t options;

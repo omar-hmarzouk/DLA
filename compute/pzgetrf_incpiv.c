@@ -35,9 +35,9 @@
 
 #define A(_m_,_n_) A, _m_, _n_
 #if defined(CHAMELEON_COPY_DIAG)
-#define DIAG(_k_) DIAG, _k_, 0
+#define D(k)   D, k, 0
 #else
-#define DIAG(_k_) A, _k_, _k_
+#define D(k)   A, k, k
 #endif
 #define L(_m_,_n_) L,  _m_,  _n_
 #define IPIV(_m_,_n_) &(IPIV[(int64_t)A->mb*((int64_t)(_m_)+(int64_t)A->mt*(int64_t)(_n_))])
@@ -45,13 +45,13 @@
 /*******************************************************************************
  *  Parallel tile LU factorization - dynamic scheduling
  **/
-void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
-                          MORSE_sequence_t *sequence, MORSE_request_t *request)
+void morse_pzgetrf_incpiv( MORSE_desc_t *A, MORSE_desc_t *L, MORSE_desc_t *D, int *IPIV,
+                           MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
-    MORSE_desc_t *DIAG = NULL;
     MORSE_context_t *morse;
     MORSE_option_t options;
-    size_t h_work_size, d_work_size;
+    size_t ws_worker = 0;
+    size_t ws_host = 0;
 
     int k, m, n;
     int ldak, ldam;
@@ -65,14 +65,19 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
     RUNTIME_options_init(&options, morse, sequence, request);
 
     ib = MORSE_IB;
-    h_work_size  = sizeof(MORSE_Complex64_t)*( ib*L->nb );
-    d_work_size  = 0;
 
-    RUNTIME_options_ws_alloc( &options, h_work_size, d_work_size );
+    /*
+     * zgetrf_incpiv = 0
+     * zgessm        = 0
+     * ztstrf        = A->mb * ib
+     * zssssm        = 0
+     */
+    ws_worker = A->mb * ib;
 
-    /* necessary to avoid dependencies between tasks regarding the diag tile */
-    DIAG = (MORSE_desc_t*)malloc(sizeof(MORSE_desc_t));
-    morse_zdesc_alloc_diag(*DIAG, A->mb, A->nb, chameleon_min(A->m, A->n), A->nb, 0, 0, chameleon_min(A->m, A->n), A->nb, A->p, A->q);
+    ws_worker *= sizeof(MORSE_Complex64_t);
+    ws_host   *= sizeof(MORSE_Complex64_t);
+
+    RUNTIME_options_ws_alloc( &options, ws_worker, ws_host );
 
     for (k = 0; k < minMNT; k++) {
         RUNTIME_iteration_push(morse, k);
@@ -94,7 +99,7 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
                 &options,
                 MorseUpperLower, tempkm, tempkn, A->nb,
                 A(k, k), ldak,
-                DIAG(k), ldak);
+                D(k), ldak);
 #endif
         }
 
@@ -105,7 +110,7 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
                 tempkm, tempnn, tempkm, ib, L->nb,
                 IPIV(k, k),
                 L(k, k), L->mb,
-                DIAG(k), ldak,
+                D(k), ldak,
                 A(k, n), ldak);
         }
         for (m = k+1; m < A->mt; m++) {
@@ -138,7 +143,5 @@ void morse_pzgetrf_incpiv(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV,
 
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-
-    morse_desc_mat_free(DIAG);
-    free(DIAG);
+    (void)D;
 }
