@@ -133,6 +133,7 @@ int MORSE_zgetrf_incpiv( int M, int N,
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
+    MORSE_Desc_Flush( descL, sequence );
 
     morse_sequence_wait( morse, sequence );
 

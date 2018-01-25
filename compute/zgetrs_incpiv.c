@@ -157,6 +157,7 @@ int MORSE_zgetrs_incpiv( MORSE_enum trans, int N, int NRHS,
                      MorseDescInput, MorseUpperLower, sequence, &request );
     morse_ztile2lap( morse, &descBl, &descBt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
+    MORSE_Desc_Flush( descL, sequence );
 
     morse_sequence_wait( morse, sequence );
 

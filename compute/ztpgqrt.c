@@ -232,6 +232,8 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
                      MorseDescInout, MorseUpperLower, sequence, &request );
     morse_ztile2lap( morse, &descQ2l, &descQ2t,
                      MorseDescInout, MorseUpperLower, sequence, &request );
+    MORSE_Desc_Flush( descT1, sequence );
+    MORSE_Desc_Flush( descT2, sequence );
 
     morse_sequence_wait( morse, sequence );
 

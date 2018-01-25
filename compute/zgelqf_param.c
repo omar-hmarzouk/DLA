@@ -129,6 +129,8 @@ int MORSE_zgelqf_param( const libhqr_tree_t *qrtree, int M, int N,
     /* Submit the matrix conversion back */
     morse_ztile2lap( morse, &descAl, &descAt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
+    MORSE_Desc_Flush( descTS, sequence );
+    MORSE_Desc_Flush( descTT, sequence );
 
     morse_sequence_wait( morse, sequence );
 

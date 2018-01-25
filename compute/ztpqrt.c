@@ -200,6 +200,7 @@ int MORSE_ztpqrt( int M, int N, int L,
                      MorseDescInout, MorseUpper, sequence, &request );
     morse_ztile2lap( morse, &descBl, &descBt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
+    MORSE_Desc_Flush( descT, sequence );
 
     morse_sequence_wait( morse, sequence );
 
