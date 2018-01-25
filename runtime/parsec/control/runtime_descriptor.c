@@ -332,9 +332,16 @@ void RUNTIME_desc_flush( const MORSE_desc_t     *desc,
 void RUNTIME_data_flush( const MORSE_sequence_t *sequence,
                          const MORSE_desc_t *A, int Am, int An )
 {
-    parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(sequence->schedopt);
+    /*
+     * For now, we do nothing in this function as in PaRSEC, once the data is
+     * flushed it cannot be reused in the same sequence, when this issue will be
+     * fixed, we will uncomment this function
+     */
+    /* parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(sequence->schedopt); */
+    /* parsec_dtd_data_flush( PARSEC_dtd_taskpool, RTBLKADDR( A, MORSE_Complex64_t, Am, An ) ); */
 
-    parsec_dtd_data_flush( PARSEC_dtd_taskpool, RTBLKADDR( A, MORSE_Complex64_t, Am, An ) );
+    (void)sequence; (void)A; (void)Am; (void)An;
+    return;
 }
 
 /*******************************************************************************
