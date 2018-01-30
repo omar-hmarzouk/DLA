@@ -25,10 +25,10 @@
 #endif
 
 #ifdef CHAMELEON_ENABLE_PRUNING_STATS
-unsigned long RUNTIME_total_tasks;
-unsigned long RUNTIME_exec_tasks;
-unsigned long RUNTIME_comm_tasks;
-unsigned long RUNTIME_changed_tasks;
+unsigned long RUNTIME_total_tasks   = 0;
+unsigned long RUNTIME_exec_tasks    = 0;
+unsigned long RUNTIME_comm_tasks    = 0;
+unsigned long RUNTIME_changed_tasks = 0;
 #endif
 
 double RUNTIME_get_time(){
@@ -81,7 +81,8 @@ void RUNTIME_start_stats(){
 
 void RUNTIME_stop_stats(){
 #ifdef CHAMELEON_ENABLE_PRUNING_STATS
-    fprintf(stderr, "\ntasks: %u = exec: %u + comm: %u + changed: %u\n", RUNTIME_total_tasks, RUNTIME_exec_tasks, RUNTIME_comm_tasks, RUNTIME_changed_tasks);
+    fprintf( stderr, "\ntasks: %ul = exec: %ul + comm: %ul + changed: %ul\n",
+             RUNTIME_total_tasks, RUNTIME_exec_tasks, RUNTIME_comm_tasks, RUNTIME_changed_tasks );
 #endif
 }
 

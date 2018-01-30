@@ -170,7 +170,10 @@ Test(int64_t n, int *iparam) {
 
     if ( iparam[IPARAM_WARMUP] ) {
       int status = RunTest( iparam, dparam, &(t[0]));
-      if (status != MORSE_SUCCESS) return status;
+      if (status != MORSE_SUCCESS) {
+          free(t);
+          return status;
+      }
     }
 
     sumgf  = 0.0;

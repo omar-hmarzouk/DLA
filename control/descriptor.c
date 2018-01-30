@@ -430,6 +430,7 @@ int MORSE_Desc_Create(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, int mb
 
         if ((desc->mat = RUNTIME_malloc(size)) == NULL) {
             morse_error("MORSE_Desc_Create", "malloc() failed");
+            free(desc);
             return MORSE_ERR_OUT_OF_RESOURCES;
         }
         desc->use_mat      = 1;
