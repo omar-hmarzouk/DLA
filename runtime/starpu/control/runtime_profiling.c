@@ -81,7 +81,7 @@ void RUNTIME_start_stats(){
 
 void RUNTIME_stop_stats(){
 #ifdef CHAMELEON_ENABLE_PRUNING_STATS
-    fprintf( stderr, "\ntasks: %ul = exec: %ul + comm: %ul + changed: %ul\n",
+    fprintf( stderr, "\ntasks: %lu = exec: %lu + comm: %lu + changed: %lu\n",
              RUNTIME_total_tasks, RUNTIME_exec_tasks, RUNTIME_comm_tasks, RUNTIME_changed_tasks );
 #endif
 }
