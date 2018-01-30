@@ -134,9 +134,12 @@ int testing_zpemv(int argc, char **argv)
     LAPACKE_zlarnv_work(1, ISEED, 1, &beta0 );
 
     /* Check if unable to allocate memory */
-    if ( (!A) || (!X) || (!Y0) || (!work) ) {
+    if ( (!A) || (!A0) || (!X) || (!Y) || (!Y0) || (!work) ) {
+        free(A); free(A0);
+        free(X); free(Y); free(Y0);
+        free(work);
         printf("Out of Memory \n ");
-        exit(0);
+        return -2;
     }
 
     /* Initialize Data */

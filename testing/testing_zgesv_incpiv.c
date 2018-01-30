@@ -196,7 +196,10 @@ int testing_zgesv_incpiv(int argc, char **argv)
     int *IPIV;
 
     /* Check if unable to allocate memory */
-    if ( (!A1) || (!A2)|| (!B1) || (!B2) ) {
+    if ( (!A1) || (!A2)|| (!B1) || (!B2) )
+    {
+        free(A1); free(A2);
+        free(B1); free(B2);
         printf("Out of Memory \n ");
         return -2;
     }

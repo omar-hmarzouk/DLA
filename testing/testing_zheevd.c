@@ -72,7 +72,11 @@ int testing_zheevd(int argc, char **argv)
     MORSE_desc_t      *T;
 
     /* Check if unable to allocate memory */
-    if ( (!A2) || (!W1) || (!W2) ){
+    if ( (!A2) || (!W1) || (!W2) || !(work) )
+    {
+        free(A2);
+        free(W1); free(W2);
+        free(work);
         printf("Out of Memory \n ");
         return -2;
     }

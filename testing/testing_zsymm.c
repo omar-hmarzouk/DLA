@@ -81,7 +81,10 @@ int testing_zsymm(int argc, char **argv)
     MORSE_Complex64_t *Cfinal = (MORSE_Complex64_t *)malloc(LDCxN*sizeof(MORSE_Complex64_t));
 
     /* Check if unable to allocate memory */
-    if ((!A)||(!B)||(!Cinit)||(!Cfinal)){
+    if ( (!A) || (!B) || (!C) || (!Cinit) || (!Cfinal) )
+    {
+        free(A); free(B); free(C);
+        free(Cinit); free(Cfinal);
         printf("Out of Memory \n ");
         return -2;
     }

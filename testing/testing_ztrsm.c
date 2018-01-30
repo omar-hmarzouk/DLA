@@ -77,7 +77,10 @@ int testing_ztrsm(int argc, char **argv)
     MORSE_Complex64_t *Bfinal = (MORSE_Complex64_t *)malloc(LDBxN*sizeof(MORSE_Complex64_t));
 
     /* Check if unable to allocate memory */
-    if ( (!A) || (!B) || (!Binit) || (!Bfinal)){
+    if ( (!A) || (!B) || (!Binit) || (!Bfinal) )
+    {
+        free(A); free(B);
+        free(Binit); free(Bfinal);
         printf("Out of Memory \n ");
         return -2;
     }

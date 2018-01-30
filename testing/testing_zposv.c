@@ -189,13 +189,16 @@ int testing_zposv(int argc, char **argv)
     int info_solution, info_factorization;
     int trans1, trans2;
 
-    MORSE_Complex64_t *A1   = (MORSE_Complex64_t *)malloc(LDA*N*sizeof(MORSE_Complex64_t));
-    MORSE_Complex64_t *A2   = (MORSE_Complex64_t *)malloc(LDA*N*sizeof(MORSE_Complex64_t));
-    MORSE_Complex64_t *B1   = (MORSE_Complex64_t *)malloc(LDB*NRHS*sizeof(MORSE_Complex64_t));
-    MORSE_Complex64_t *B2   = (MORSE_Complex64_t *)malloc(LDB*NRHS*sizeof(MORSE_Complex64_t));
+    MORSE_Complex64_t *A1 = (MORSE_Complex64_t *)malloc(LDA*N*sizeof(MORSE_Complex64_t));
+    MORSE_Complex64_t *A2 = (MORSE_Complex64_t *)malloc(LDA*N*sizeof(MORSE_Complex64_t));
+    MORSE_Complex64_t *B1 = (MORSE_Complex64_t *)malloc(LDB*NRHS*sizeof(MORSE_Complex64_t));
+    MORSE_Complex64_t *B2 = (MORSE_Complex64_t *)malloc(LDB*NRHS*sizeof(MORSE_Complex64_t));
 
     /* Check if unable to allocate memory */
-    if ((!A1)||(!A2)||(!B1)||(!B2)){
+    if ( (!A1) || (!A2)|| (!B1) || (!B2) )
+    {
+        free(A1); free(A2);
+        free(B1); free(B2);
         printf("Out of Memory \n ");
         return -2;
     }

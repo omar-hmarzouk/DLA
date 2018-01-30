@@ -87,6 +87,8 @@ int testing_zgeqrf_qdwh(int argc, char **argv)
 
     /* Check if unable to allocate memory */
     if ( (!A) || (!A1) || (!A2) || (!Q1) || (!Q2) ){
+        free(A); free(A1); free(A2);
+        free(Q1); free(Q2);
         printf("Out of Memory \n ");
         return -2;
     }
