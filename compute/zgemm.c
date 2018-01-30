@@ -152,11 +152,11 @@ int MORSE_zgemm( MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
     }
 
     /* Check input arguments */
-    if (((transA < MorseNoTrans) || (transA > MorseConjTrans))) {
+    if ((transA < MorseNoTrans) || (transA > MorseConjTrans)) {
         morse_error("MORSE_zgemm", "illegal value of transA");
         return -1;
     }
-    if (((transB < MorseNoTrans) || (transB > MorseConjTrans))) {
+    if ((transB < MorseNoTrans) || (transB > MorseConjTrans)) {
         morse_error("MORSE_zgemm", "illegal value of transB");
         return -2;
     }
@@ -401,11 +401,11 @@ int MORSE_zgemm_Tile_Async( MORSE_enum transA, MORSE_enum transB,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Check input arguments */
-    if (((transA < MorseNoTrans) || (transA > MorseConjTrans))) {
+    if ((transA < MorseNoTrans) || (transA > MorseConjTrans)) {
         morse_error("MORSE_zgemm_Tile_Async", "illegal value of transA");
         return morse_request_fail(sequence, request, -1);
     }
-    if (((transB < MorseNoTrans) || (transB > MorseConjTrans))) {
+    if ((transB < MorseNoTrans) || (transB > MorseConjTrans)) {
         morse_error("MORSE_zgemm_Tile_Async", "illegal value of transB");
         return morse_request_fail(sequence, request, -2);
     }
