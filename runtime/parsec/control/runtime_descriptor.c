@@ -188,7 +188,8 @@ morse_parsec_key_to_string(parsec_data_collection_t *data_collection, parsec_dat
     res = snprintf(buffer, buffer_size, "(%d, %d)", m, n);
     if (res < 0)
     {
-        printf("error in key_to_string for tile (%u, %u) key: %u\n", m, n, datakey);
+        printf("error in key_to_string for tile (%u, %u) key: %u\n",
+               (unsigned int)m, (unsigned int)n, datakey);
     }
     return res;
 }
