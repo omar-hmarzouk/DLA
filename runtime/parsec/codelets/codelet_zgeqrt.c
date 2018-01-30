@@ -86,34 +86,27 @@
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
  ******************************************************************************/
-static int
-CORE_zgeqrt_parsec (parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zgeqrt_parsec ( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    int *m;
-    int *n;
-    int *ib;
+    int m;
+    int n;
+    int ib;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     MORSE_Complex64_t *T;
-    int *ldt;
+    int ldt;
     MORSE_Complex64_t *TAU;
     MORSE_Complex64_t *WORK;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &m,
-        UNPACK_VALUE, &n,
-        UNPACK_VALUE, &ib,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_DATA,  &T,
-        UNPACK_VALUE, &ldt,
-        UNPACK_SCRATCH, &TAU,
-        UNPACK_SCRATCH, &WORK );
+        this_task, &m, &n, &ib, &A, &lda, &T, &ldt, &TAU, &WORK );
 
-    CORE_zgeqrt(*m, *n, *ib, A, *lda, T, *ldt, TAU, WORK);
+    CORE_zgeqrt( m, n, ib, A, lda, T, ldt, TAU, WORK );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zgeqrt(const MORSE_option_t *options,
@@ -134,5 +127,5 @@ void MORSE_TASK_zgeqrt(const MORSE_option_t *options,
         sizeof(int),           &ldt,                           VALUE,
         sizeof(MORSE_Complex64_t)*nb,       NULL,              SCRATCH,
         sizeof(MORSE_Complex64_t)*ib*nb,    NULL,              SCRATCH,
-        0);
+        PARSEC_DTD_ARG_END );
 }

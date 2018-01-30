@@ -24,42 +24,33 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_ztrmm_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_ztrmm_parsec( parsec_execution_stream_t *context,
+                   parsec_task_t             *this_task )
 {
-    MORSE_enum *side;
-    MORSE_enum *uplo;
-    MORSE_enum *transA;
-    MORSE_enum *diag;
-    int *M;
-    int *N;
-    MORSE_Complex64_t *alpha;
+    MORSE_enum side;
+    MORSE_enum uplo;
+    MORSE_enum transA;
+    MORSE_enum diag;
+    int M;
+    int N;
+    MORSE_Complex64_t alpha;
     MORSE_Complex64_t *A;
-    int *LDA;
+    int LDA;
     MORSE_Complex64_t *B;
-    int *LDB;
+    int LDB;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &side,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &transA,
-        UNPACK_VALUE, &diag,
-        UNPACK_VALUE, &M,
-        UNPACK_VALUE, &N,
-        UNPACK_VALUE, &alpha,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &LDA,
-        UNPACK_DATA,  &B,
-        UNPACK_VALUE, &LDB );
+        this_task, &side, &uplo, &transA, &diag, &M, &N, &alpha, &A, &LDA, &B, &LDB );
 
-    CORE_ztrmm(*side, *uplo,
-        *transA, *diag,
-        *M, *N,
-        *alpha, A, *LDA,
-        B, *LDB);
+    CORE_ztrmm( side, uplo,
+        transA, diag,
+        M, N,
+        alpha, A, LDA,
+        B, LDB);
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_ztrmm(const MORSE_option_t *options,
@@ -83,5 +74,7 @@ void MORSE_TASK_ztrmm(const MORSE_option_t *options,
         sizeof(int),            &lda,                   VALUE,
         PASSED_BY_REF,          RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT,
         sizeof(int),            &ldb,                   VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
+
+    (void)nb;
 }

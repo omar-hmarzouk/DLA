@@ -24,27 +24,23 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_zsytrf_nopiv_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zsytrf_nopiv_parsec( parsec_execution_stream_t *context,
+                          parsec_task_t             *this_task )
 {
-    MORSE_enum *uplo;
-    int *n;
+    MORSE_enum uplo;
+    int n;
     MORSE_Complex64_t *A;
-    int *lda;
-    int *iinfo;
-    int info;
+    int lda;
+    int iinfo;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &n,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_VALUE, &iinfo );
+        this_task, &uplo, &n, &A, &lda, &iinfo );
 
-    CORE_zsytf2_nopiv(*uplo, *n, A, *lda);
+    CORE_zsytf2_nopiv( uplo, n, A, lda );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
@@ -61,5 +57,7 @@ void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT,
         sizeof(int),                     &lda,                 VALUE,
         sizeof(int),                     &iinfo,               VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
+
+    (void)nb;
 }

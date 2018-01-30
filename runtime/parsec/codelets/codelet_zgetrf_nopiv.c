@@ -71,29 +71,25 @@
  *              to solve a system of equations.
  *
  ******************************************************************************/
-static int
-CORE_zgetrf_nopiv_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zgetrf_nopiv_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    int *m;
-    int *n;
-    int *ib;
+    int m;
+    int n;
+    int ib;
     MORSE_Complex64_t *A;
-    int *lda;
-    int *iinfo;
+    int lda;
+    int iinfo;
     int info;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &m,
-        UNPACK_VALUE, &n,
-        UNPACK_VALUE, &ib,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_VALUE, &iinfo );
+        this_task, &m, &n, &ib, &A, &lda, &iinfo );
 
-    CORE_zgetrf_nopiv(*m, *n, *ib, A, *lda, &info);
+    CORE_zgetrf_nopiv( m, n, ib, A, lda, &info );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zgetrf_nopiv(const MORSE_option_t *options,
@@ -111,5 +107,7 @@ void MORSE_TASK_zgetrf_nopiv(const MORSE_option_t *options,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT,
         sizeof(int),           &lda,                        VALUE,
         sizeof(int),           &iinfo,                      VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
+
+    (void)nb;
 }

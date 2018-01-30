@@ -24,43 +24,33 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_zsyr2k_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zsyr2k_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    MORSE_enum *uplo;
-    MORSE_enum *trans;
-    int *n;
-    int *k;
-    MORSE_Complex64_t *alpha;
+    MORSE_enum uplo;
+    MORSE_enum trans;
+    int n;
+    int k;
+    MORSE_Complex64_t alpha;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     MORSE_Complex64_t *B;
-    int *ldb;
-    MORSE_Complex64_t *beta;
+    int ldb;
+    MORSE_Complex64_t beta;
     MORSE_Complex64_t *C;
-    int *ldc;
+    int ldc;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &trans,
-        UNPACK_VALUE, &n,
-        UNPACK_VALUE, &k,
-        UNPACK_VALUE, &alpha,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_DATA,  &B,
-        UNPACK_VALUE, &ldb,
-        UNPACK_VALUE, &beta,
-        UNPACK_DATA,  &C,
-        UNPACK_VALUE, &ldc );
+        this_task, &uplo, &trans, &n, &k, &alpha, &A, &lda, &B, &ldb, &beta, &C, &ldc );
 
-    CORE_zsyr2k(*uplo, *trans, *n, *k,
-                *alpha, A, *lda,
-                        B, *ldb,
-                *beta,  C, *ldc);
+    CORE_zsyr2k( uplo, trans, n, k,
+                alpha, A, lda,
+                        B, ldb,
+                beta,  C, ldc);
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zsyr2k(const MORSE_option_t *options,
@@ -79,12 +69,14 @@ void MORSE_TASK_zsyr2k(const MORSE_option_t *options,
         sizeof(int),            &n,                     VALUE,
         sizeof(int),            &k,                     VALUE,
         sizeof(MORSE_Complex64_t), &alpha,              VALUE,
-        PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
+        PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | morse_parsec_get_arena_index(A),
         sizeof(int),            &lda,                   VALUE,
-        PASSED_BY_REF,          RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INPUT,
+        PASSED_BY_REF,          RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INPUT | morse_parsec_get_arena_index(B),
         sizeof(int),            &ldb,                   VALUE,
         sizeof(MORSE_Complex64_t), &beta,               VALUE,
-        PASSED_BY_REF,          RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | AFFINITY,
+        PASSED_BY_REF,          RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | morse_parsec_get_arena_index(C) | AFFINITY,
         sizeof(int),            &ldc,                   VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
+
+    (void)nb;
 }

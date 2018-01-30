@@ -27,42 +27,32 @@
 #include "coreblas/coreblas_z.h"
 
 static inline int
-CORE_zherfb_parsec(parsec_execution_stream_t    *context,
-                   parsec_task_t *this_task)
+CORE_zherfb_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    MORSE_enum *uplo;
-    int *n;
-    int *k;
-    int *ib;
-    int *nb;
+    MORSE_enum uplo;
+    int n;
+    int k;
+    int ib;
+    int nb;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     MORSE_Complex64_t *T;
-    int *ldt;
+    int ldt;
     MORSE_Complex64_t *C;
-    int *ldc;
+    int ldc;
     MORSE_Complex64_t *WORK;
-    int *ldwork;
+    int ldwork;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE,   &uplo,
-        UNPACK_VALUE,   &n,
-        UNPACK_VALUE,   &k,
-        UNPACK_VALUE,   &ib,
-        UNPACK_VALUE,   &nb,
-        UNPACK_DATA,    &A,
-        UNPACK_VALUE,   &lda,
-        UNPACK_DATA,    &T,
-        UNPACK_VALUE,   &ldt,
-        UNPACK_DATA,    &C,
-        UNPACK_VALUE,   &ldc,
-        UNPACK_SCRATCH, &WORK,
-        UNPACK_VALUE,   &ldwork);
+        this_task,   &uplo,   &n,   &k,   &ib,   &nb, &A,   &lda, &T,   &ldt, &C,   &ldc, &WORK,   &ldwork);
 
-    CORE_zherfb(*uplo, *n, *k, *ib, *nb,
-                A, *lda, T, *ldt,
-                C, *ldc, WORK, *ldwork);
+    CORE_zherfb( uplo, n, k, ib, nb,
+                A, lda, T, ldt,
+                C, ldc, WORK, ldwork);
+
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zherfb(const MORSE_option_t *options,
@@ -89,5 +79,5 @@ void MORSE_TASK_zherfb(const MORSE_option_t *options,
         sizeof(int),        &ldc,  VALUE,
         sizeof(MORSE_Complex64_t)*2*nb*nb,  NULL, SCRATCH,
         sizeof(int),        &nb,   VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }

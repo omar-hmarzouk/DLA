@@ -37,6 +37,10 @@ if ( CHAMELEON_SCHED_QUARK )
   # No need for those extra diagonale tiles
   set( CHAMELEON_COPY_DIAG OFF )
 endif()
+if ( CHAMELEON_SCHED_PARSEC )
+  # Actual DIAG can not be used with PaRSEC
+  set( CHAMELEON_COPY_DIAG OFF )
+endif()
 
 mark_as_advanced(CHAMELEON_COPY_DIAG)
 

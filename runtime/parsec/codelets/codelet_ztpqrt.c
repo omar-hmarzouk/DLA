@@ -26,40 +26,30 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_ztpqrt_parsec(parsec_execution_stream_t    *context,
-                   parsec_task_t *this_task)
+static inline int
+CORE_ztpqrt_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    int *M;
-    int *N;
-    int *L;
-    int *ib;
+    int M;
+    int N;
+    int L;
+    int ib;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     MORSE_Complex64_t *B;
-    int *ldb;
+    int ldb;
     MORSE_Complex64_t *T;
-    int *ldt;
+    int ldt;
     MORSE_Complex64_t *WORK;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE,   &M,
-        UNPACK_VALUE,   &N,
-        UNPACK_VALUE,   &L,
-        UNPACK_VALUE,   &ib,
-        UNPACK_DATA,    &A,
-        UNPACK_VALUE,   &lda,
-        UNPACK_DATA,    &B,
-        UNPACK_VALUE,   &ldb,
-        UNPACK_DATA,    &T,
-        UNPACK_VALUE,   &ldt,
-        UNPACK_SCRATCH, &WORK );
+        this_task,   &M,   &N,   &L,   &ib, &A,   &lda, &B,   &ldb, &T,   &ldt, &WORK );
 
-    CORE_ztpqrt( *M, *N, *L, *ib,
-                 A, *lda, B, *ldb, T, *ldt, WORK );
+    CORE_ztpqrt( M, N, L, ib,
+                 A, lda, B, ldb, T, ldt, WORK );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
@@ -83,5 +73,5 @@ void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
         PASSED_BY_REF,  RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ), OUTPUT,
         sizeof(int),   &ldt, VALUE,
         sizeof(MORSE_Complex64_t)*ib*nb, NULL, SCRATCH,
-        0);
+        PARSEC_DTD_ARG_END );
 }

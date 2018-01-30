@@ -154,6 +154,8 @@ int MORSE_zgelqs_param( const libhqr_tree_t *qrtree, int M, int N, int NRHS,
                      MorseDescInput, MorseUpperLower, sequence, &request );
     morse_ztile2lap( morse, &descBl, &descBt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
+    MORSE_Desc_Flush( descTS, sequence );
+    MORSE_Desc_Flush( descTT, sequence );
 
     morse_sequence_wait( morse, sequence );
 

@@ -26,50 +26,35 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_ztpmqrt_parsec(parsec_execution_stream_t    *context,
-                    parsec_task_t *this_task)
+static inline int
+CORE_ztpmqrt_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    MORSE_enum *side;
-    MORSE_enum *trans;
-    int *M;
-    int *N;
-    int *K;
-    int *L;
-    int *ib;
+    MORSE_enum side;
+    MORSE_enum trans;
+    int M;
+    int N;
+    int K;
+    int L;
+    int ib;
     const MORSE_Complex64_t *V;
-    int *ldv;
+    int ldv;
     const MORSE_Complex64_t *T;
-    int *ldt;
+    int ldt;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     MORSE_Complex64_t *B;
-    int *ldb;
+    int ldb;
     MORSE_Complex64_t *WORK;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE,   &side,
-        UNPACK_VALUE,   &trans,
-        UNPACK_VALUE,   &M,
-        UNPACK_VALUE,   &N,
-        UNPACK_VALUE,   &K,
-        UNPACK_VALUE,   &L,
-        UNPACK_VALUE,   &ib,
-        UNPACK_DATA,    &V,
-        UNPACK_VALUE,   &ldv,
-        UNPACK_DATA,    &T,
-        UNPACK_VALUE,   &ldt,
-        UNPACK_DATA,    &A,
-        UNPACK_VALUE,   &lda,
-        UNPACK_DATA,    &B,
-        UNPACK_VALUE,   &ldb,
-        UNPACK_SCRATCH, &WORK );
+        this_task,   &side,   &trans,   &M,   &N,   &K,   &L,   &ib, &V,   &ldv, &T,   &ldt, &A,   &lda, &B,   &ldb, &WORK );
 
-    CORE_ztpmqrt( *side, *trans, *M, *N, *K, *L, *ib,
-                  V, *ldv, T, *ldt, A, *lda, B, *ldb, WORK );
+    CORE_ztpmqrt( side, trans, M, N, K, L, ib,
+                  V, ldv, T, ldt, A, lda, B, ldb, WORK );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
@@ -100,5 +85,5 @@ void MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
         PASSED_BY_REF,       RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ), INOUT,
         sizeof(int),        &ldb,   VALUE,
         sizeof(MORSE_Complex64_t)*ib*nb, NULL, SCRATCH,
-        0);
+        PARSEC_DTD_ARG_END );
 }

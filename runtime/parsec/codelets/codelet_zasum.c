@@ -24,31 +24,25 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_dzasum_parsec(parsec_execution_stream_t    *context,
-                   parsec_task_t *this_task)
+static inline int
+CORE_dzasum_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    MORSE_enum *storev;
-    MORSE_enum *uplo;
-    int *M;
-    int *N;
+    MORSE_enum storev;
+    MORSE_enum uplo;
+    int M;
+    int N;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     double *work;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &storev,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &M,
-        UNPACK_VALUE, &N,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_DATA,  &work );
+        this_task, &storev, &uplo, &M, &N, &A, &lda, &work );
 
-    CORE_dzasum(*storev, *uplo, *M, *N, A, *lda, work);
+    CORE_dzasum( storev, uplo, M, N, A, lda, work );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_dzasum(const MORSE_option_t *options,
@@ -67,5 +61,5 @@ void MORSE_TASK_dzasum(const MORSE_option_t *options,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),           &lda,                              VALUE,
         PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     INOUT,
-        0);
+        PARSEC_DTD_ARG_END );
 }

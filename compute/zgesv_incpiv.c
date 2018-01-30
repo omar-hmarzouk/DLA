@@ -151,6 +151,7 @@ int MORSE_zgesv_incpiv( int N, int NRHS,
                      MorseDescInout, MorseUpperLower, sequence, &request );
     morse_ztile2lap( morse, &descBl, &descBt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
+    MORSE_Desc_Flush( descL, sequence );
 
     morse_sequence_wait( morse, sequence );
 
@@ -267,6 +268,7 @@ int MORSE_zgesv_incpiv_Tile_Async( MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, 
                                    MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;
+    MORSE_desc_t D, *Dptr = NULL;
 
     morse = morse_context_self();
     if (morse == NULL) {
@@ -313,11 +315,28 @@ int MORSE_zgesv_incpiv_Tile_Async( MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, 
      return MORSE_SUCCESS;
      */
 
-    morse_pzgetrf_incpiv( A, L, IPIV, sequence, request );
+#if defined(CHAMELEON_COPY_DIAG)
+    {
+        int n = chameleon_min(A->mt, A->nt) * A->nb;
+        morse_zdesc_alloc(D, A->mb, A->nb, A->m, n, 0, 0, A->m, n, );
+        Dptr = &D;
+    }
+#endif
+
+    morse_pzgetrf_incpiv( A, L, Dptr, IPIV, sequence, request );
 
     morse_pztrsmpl( A, B, L, IPIV, sequence, request );
 
     morse_pztrsm( MorseLeft, MorseUpper, MorseNoTrans, MorseNonUnit, (MORSE_Complex64_t)1.0, A, B, sequence, request );
 
+    if (Dptr != NULL) {
+        MORSE_Desc_Flush( A, sequence );
+        MORSE_Desc_Flush( L, sequence );
+        MORSE_Desc_Flush( Dptr, sequence );
+        MORSE_Desc_Flush( B, sequence );
+        morse_sequence_wait( morse, sequence );
+        morse_desc_mat_free( Dptr );
+    }
+    (void)D;
     return MORSE_SUCCESS;
 }

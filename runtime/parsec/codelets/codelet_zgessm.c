@@ -69,43 +69,33 @@
  *         \retval <0 if INFO = -k, the k-th argument had an illegal value
  *
  ******************************************************************************/
-static int
-CORE_zgessm_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zgessm_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    int *m;
-    int *n;
-    int *k;
-    int *ib;
+    int m;
+    int n;
+    int k;
+    int ib;
     int *IPIV;
     MORSE_Complex64_t *L;
-    int *ldl;
+    int ldl;
     MORSE_Complex64_t *D;
-    int *ldd;
+    int ldd;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &m,
-        UNPACK_VALUE, &n,
-        UNPACK_VALUE, &k,
-        UNPACK_VALUE, &ib,
-        UNPACK_SCRATCH, &IPIV,
-        UNPACK_DATA,  &L,
-        UNPACK_VALUE, &ldl,
-        UNPACK_DATA,  &D,
-        UNPACK_VALUE, &ldd,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda );
+        this_task, &m, &n, &k, &ib, &IPIV, &L, &ldl, &D, &ldd, &A, &lda );
 
-    CORE_zgessm(*m, *n, *k, *ib, IPIV, D, *ldd, A, *lda);
+    CORE_zgessm( m, n, k, ib, IPIV, D, ldd, A, lda );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zgessm(const MORSE_option_t *options,
-                       int m, int n, int k, int ib, int nb,
-                       int *IPIV,
+                       int m, int n, int k, int ib, int nb, int *IPIV,
                        const MORSE_desc_t *L, int Lm, int Ln, int ldl,
                        const MORSE_desc_t *D, int Dm, int Dn, int ldd,
                        const MORSE_desc_t *A, int Am, int An, int lda)
@@ -125,5 +115,5 @@ void MORSE_TASK_zgessm(const MORSE_option_t *options,
         sizeof(int),           &ldd,                              VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT,
         sizeof(int),           &lda,                              VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }

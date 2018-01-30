@@ -194,6 +194,7 @@ int MORSE_zgels( MORSE_enum trans, int M, int N, int NRHS,
                      MorseDescInout, MorseUpperLower, sequence, &request );
     morse_ztile2lap( morse, &descBl, &descBt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
+    MORSE_Desc_Flush( descT, sequence );
 
     morse_sequence_wait( morse, sequence );
 

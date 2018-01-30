@@ -29,7 +29,7 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  *  CORE_zgetrf_incpiv computes an LU factorization of a general M-by-N tile A
- *  using partial pivoting with row interchanges.
+ *  using partial pivoting with row int erchanges.
  *
  *  The factorization has the form
  *
@@ -62,7 +62,7 @@
  *
  * @param[out] IPIV
  *         The pivot indices; for 1 <= i <= min(M,N), row i of the
- *         tile was interchanged with row IPIV(i).
+ *         tile was int erchanged with row IPIV(i).
  *
  * @param[out] INFO
  *         See returned value.
@@ -78,42 +78,36 @@
  *              to solve a system of equations.
  *
  ******************************************************************************/
-static int
-CORE_zgetrf_incpiv_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zgetrf_incpiv_parsec( parsec_execution_stream_t *context,
+                           parsec_task_t             *this_task )
 {
-    int *m;
-    int *n;
-    int *ib;
+    int m;
+    int n;
+    int ib;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     int *IPIV;
     MORSE_bool *check_info;
-    int *iinfo;
+    int iinfo;
 
     int info;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &m,
-        UNPACK_VALUE, &n,
-        UNPACK_VALUE, &ib,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_SCRATCH, &IPIV,
-        UNPACK_VALUE, &check_info,
-        UNPACK_VALUE, &iinfo );
+        this_task, &m, &n, &ib, &A, &lda, &IPIV, &check_info, &iinfo );
 
-    CORE_zgetrf_incpiv(*m, *n, *ib, A, *lda, IPIV, &info);
+    CORE_zgetrf_incpiv( m, n, ib, A, lda, IPIV, &info );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
-void MORSE_TASK_zgetrf_incpiv(const MORSE_option_t *options,
-                              int m, int n, int ib, int nb,
-                              const MORSE_desc_t *A, int Am, int An, int lda,
-                              const MORSE_desc_t *L, int Lm, int Ln, int ldl,
-                              int *IPIV,
-                              MORSE_bool check_info, int iinfo)
+void MORSE_TASK_zgetrf_incpiv( const MORSE_option_t *options,
+                               int m, int n, int ib, int nb,
+                               const MORSE_desc_t *A, int Am, int An, int lda,
+                               const MORSE_desc_t *L, int Lm, int Ln, int ldl,
+                               int *IPIV,
+                               MORSE_bool check_info, int iinfo )
 {
     parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
@@ -127,5 +121,10 @@ void MORSE_TASK_zgetrf_incpiv(const MORSE_option_t *options,
         sizeof(int)*nb,        IPIV,                              SCRATCH,
         sizeof(int),           &check_info,                       VALUE,
         sizeof(int),           &iinfo,                            VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
+
+    (void)L;
+    (void)Lm;
+    (void)Ln;
+    (void)ldl;
 }

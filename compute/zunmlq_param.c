@@ -187,6 +187,8 @@ int MORSE_zunmlq_param( const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum
                      MorseDescInput, MorseUpper, sequence, &request );
     morse_ztile2lap( morse, &descCl, &descCt,
                      MorseDescInout, MorseUpperLower, sequence, &request );
+    MORSE_Desc_Flush( descTS, sequence );
+    MORSE_Desc_Flush( descTT, sequence );
 
     morse_sequence_wait( morse, sequence );
 

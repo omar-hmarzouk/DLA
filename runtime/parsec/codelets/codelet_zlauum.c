@@ -29,24 +29,22 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-static int
-CORE_zlauum_parsec(parsec_execution_stream_t *context, parsec_task_t * this_task)
+static inline int
+CORE_zlauum_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    MORSE_enum *uplo;
-    int *N;
+    MORSE_enum uplo;
+    int N;
     MORSE_Complex64_t *A;
-    int *LDA;
+    int LDA;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &N,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &LDA );
+        this_task, &uplo, &N, &A, &LDA );
 
-    CORE_zlauum(*uplo, *N, A, *LDA);
+    CORE_zlauum( uplo, N, A, LDA );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zlauum(const MORSE_option_t *options,
@@ -61,5 +59,7 @@ void MORSE_TASK_zlauum(const MORSE_option_t *options,
         sizeof(int),           &n,                     VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT,
         sizeof(int),           &lda,                   VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
+
+    (void)nb;
 }

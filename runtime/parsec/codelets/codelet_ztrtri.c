@@ -24,36 +24,32 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_ztrtri_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_ztrtri_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    MORSE_enum *uplo;
-    MORSE_enum *diag;
-    int *N;
+    MORSE_enum uplo;
+    MORSE_enum diag;
+    int N;
     MORSE_Complex64_t *A;
-    int *LDA;
-    int *iinfo;
+    int LDA;
+    int iinfo;
     int info;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &diag,
-        UNPACK_VALUE, &N,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &LDA,
-        UNPACK_VALUE, &iinfo );
+        this_task, &uplo, &diag, &N, &A, &LDA, &iinfo );
 
-    CORE_ztrtri(*uplo, *diag, *N, A, *LDA, &info);
+    CORE_ztrtri( uplo, diag, N, A, LDA, &info );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
-void MORSE_TASK_ztrtri(const MORSE_option_t *options,
-                       MORSE_enum uplo, MORSE_enum diag,
-                       int n, int nb,
-                       const MORSE_desc_t *A, int Am, int An, int lda,
-                       int iinfo)
+void MORSE_TASK_ztrtri( const MORSE_option_t *options,
+                        MORSE_enum uplo, MORSE_enum diag,
+                        int n, int nb,
+                        const MORSE_desc_t *A, int Am, int An, int lda,
+                        int iinfo )
 {
     parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
@@ -65,5 +61,7 @@ void MORSE_TASK_ztrtri(const MORSE_option_t *options,
         PASSED_BY_REF,              RTBLKADDR( A, MORSE_Complex64_t, Am, An ),   INOUT,
         sizeof(int),                &lda,                   VALUE,
         sizeof(int),                &iinfo,                 VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
+
+    (void)nb;
 }

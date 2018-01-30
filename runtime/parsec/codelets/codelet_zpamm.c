@@ -168,46 +168,33 @@
 
 /***************************************************************************/
 
-static int
-CORE_zpamm_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zpamm_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    int *op;
-    MORSE_enum *side;
-    int *storev;
-    int *M;
-    int *N;
-    int *K;
-    int *L;
+    int op;
+    MORSE_enum side;
+    int storev;
+    int M;
+    int N;
+    int K;
+    int L;
     MORSE_Complex64_t *A1;
-    int *LDA1;
+    int LDA1;
     MORSE_Complex64_t *A2;
-    int *LDA2;
+    int LDA2;
     MORSE_Complex64_t *V;
-    int *LDV;
+    int LDV;
     MORSE_Complex64_t *W;
-    int *LDW;
+    int LDW;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &op,
-        UNPACK_VALUE, &side,
-        UNPACK_VALUE, &storev,
-        UNPACK_VALUE, &M,
-        UNPACK_VALUE, &N,
-        UNPACK_VALUE, &K,
-        UNPACK_VALUE, &L,
-        UNPACK_DATA,  &A1,
-        UNPACK_VALUE, &LDA1,
-        UNPACK_DATA,  &A2,
-        UNPACK_VALUE, &LDA2,
-        UNPACK_DATA,  &V,
-        UNPACK_VALUE, &LDV,
-        UNPACK_DATA,  &W,
-        UNPACK_VALUE, &LDW );
+        this_task, &op, &side, &storev, &M, &N, &K, &L, &A1, &LDA1, &A2, &LDA2, &V, &LDV, &W, &LDW );
 
-    CORE_zpamm( *op, *side, *storev, *M, *N, *K, *L, A1, *LDA1, A2, *LDA2, V, *LDV, W, *LDW);
+    CORE_zpamm( op, side, storev, M, N, K, L, A1, LDA1, A2, LDA2, V, LDV, W, LDW );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void
@@ -238,5 +225,5 @@ MORSE_TASK_zpamm(const MORSE_option_t *options,
         sizeof(int),                        &ldv,               VALUE,
         PASSED_BY_REF,         RTBLKADDR( W, MORSE_Complex64_t, Wm, Wn ),        INOUT,
         sizeof(int),                        &ldw,               VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }

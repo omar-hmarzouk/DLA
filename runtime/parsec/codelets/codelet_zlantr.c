@@ -24,32 +24,25 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_zlantr_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zlantr_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    MORSE_enum *norm, *uplo, *diag;
-    int *M;
-    int *N;
+    MORSE_enum norm, uplo, diag;
+    int M;
+    int N;
     MORSE_Complex64_t *A;
-    int *LDA;
+    int LDA;
     double *work;
     double *normA;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &norm,
-        UNPACK_VALUE, &uplo,
-        UNPACK_VALUE, &diag,
-        UNPACK_VALUE, &M,
-        UNPACK_VALUE, &N,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &LDA,
-        UNPACK_SCRATCH, &work,
-        UNPACK_DATA,  &normA );
+        this_task, &norm, &uplo, &diag, &M, &N, &A, &LDA, &work, &normA );
 
-    CORE_zlantr( *norm, *uplo, *diag, *M, *N, A, *LDA, work, normA);
+    CORE_zlantr( norm, uplo, diag, M, N, A, LDA, work, normA );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zlantr(const MORSE_option_t *options,
@@ -73,5 +66,7 @@ void MORSE_TASK_zlantr(const MORSE_option_t *options,
         sizeof(int),                   &LDA,           VALUE,
         sizeof(double)*szeW,           NULL,           SCRATCH,
         PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT,
-        0);
+        PARSEC_DTD_ARG_END );
+
+    (void)NB;
 }

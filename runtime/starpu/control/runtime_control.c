@@ -236,15 +236,14 @@ int RUNTIME_thread_size( MORSE_context_t *morse )
  **/
 int RUNTIME_comm_rank( MORSE_context_t *morse )
 {
-    int rank;
+    int rank = 0;
+
 #if defined(CHAMELEON_USE_MPI)
 #  if defined(HAVE_STARPU_MPI_COMM_RANK)
     starpu_mpi_comm_rank( MPI_COMM_WORLD, &rank );
 #  else
     MPI_Comm_rank( MPI_COMM_WORLD, &rank );
 #  endif
-#else
-    rank = 0;
 #endif
 
     (void)morse;

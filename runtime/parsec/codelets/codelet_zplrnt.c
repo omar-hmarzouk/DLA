@@ -24,32 +24,26 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_zplrnt_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_zplrnt_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    int *m;
-    int *n;
+    int m;
+    int n;
     MORSE_Complex64_t *A;
-    int *lda;
-    int *bigM;
-    int *m0;
-    int *n0;
-    unsigned long long int *seed;
+    int lda;
+    int bigM;
+    int m0;
+    int n0;
+    unsigned long long int seed;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE, &m,
-        UNPACK_VALUE, &n,
-        UNPACK_DATA,  &A,
-        UNPACK_VALUE, &lda,
-        UNPACK_VALUE, &bigM,
-        UNPACK_VALUE, &m0,
-        UNPACK_VALUE, &n0,
-        UNPACK_VALUE, &seed );
+        this_task, &m, &n, &A, &lda, &bigM, &m0, &n0, &seed );
 
-    CORE_zplrnt( *m, *n, A, *lda, *bigM, *m0, *n0, *seed );
+    CORE_zplrnt( m, n, A, lda, bigM, m0, n0, seed );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_zplrnt( const MORSE_option_t *options,
@@ -68,5 +62,5 @@ void MORSE_TASK_zplrnt( const MORSE_option_t *options,
         sizeof(int),       &m0,                         VALUE,
         sizeof(int),       &n0,                         VALUE,
         sizeof(unsigned long long int),       &seed,    VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }

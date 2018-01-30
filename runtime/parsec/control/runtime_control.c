@@ -1,10 +1,16 @@
 /**
  *
- * @copyright (c) 2009-2015 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2015 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright 2012-2017 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation.  All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ * @file runtime_control.c
+ *
+ * @version 1.0.0
+ * @author Reazul Hoque
+ * @author Mathieu Faverge
+ * @date 2017-01-12
  *
  **/
 #include <stdio.h>
@@ -16,71 +22,43 @@
 #endif
 
 /*******************************************************************************
- * Thread rank.
- **/
-int RUNTIME_rank(MORSE_context_t *morse)
-{
-    return 0;
-}
-
-/*******************************************************************************
  * Initialize MORSE
  **/
-int RUNTIME_init_scheduler(MORSE_context_t *morse, int nworkers, int ncudas, int nthreads_per_worker)
+int RUNTIME_init( MORSE_context_t *morse,
+                  int ncpus,
+                  int ncudas,
+                  int nthreads_per_worker )
 {
     int hres = -1, default_ncores = -1;
     int *argc = (int *)malloc(sizeof(int));
     *argc = 0;
 
     /* Initializing parsec context */
-    if( 0 < nworkers ) {
-        default_ncores = nworkers;
+    if( 0 < ncpus ) {
+        default_ncores = ncpus;
     }
     morse->parallel_enabled = MORSE_TRUE;
     morse->schedopt = (void *)parsec_init(default_ncores, argc, NULL);
 
     if(NULL != morse->schedopt) {
-        morse->nworkers = nworkers;
+        morse->nworkers = ncpus;
         morse->nthreads_per_worker = nthreads_per_worker;
         hres = 0;
     }
 
     free(argc);
+
+    (void)ncudas;
     return hres;
 }
 
 /*******************************************************************************
  * Finalize MORSE
  */
-void RUNTIME_finalize_scheduler(MORSE_context_t *morse)
+void RUNTIME_finalize( MORSE_context_t *morse )
 {
     parsec_context_t *parsec = (parsec_context_t*)morse->schedopt;
     parsec_fini(&parsec);
-    return;
-}
-
-/*******************************************************************************
- * Barrier MORSE.
- **/
-void RUNTIME_barrier(MORSE_context_t *morse)
-{
-    parsec_context_t *parsec = (parsec_context_t*)morse->schedopt;
-    // This will be a problem with the fake tasks inserted to detect end of DTD algorithms
-    //parsec_context_wait( parsec );
-    return;
-}
-
-/*******************************************************************************
- *  Set iteration numbers for traces
- **/
-void RUNTIME_iteration_push( MORSE_context_t *morse, unsigned long iteration )
-{
-    (void)morse; (void)iteration;
-    return;
-}
-void RUNTIME_iteration_pop( MORSE_context_t *morse )
-{
-    (void)morse;
     return;
 }
 
@@ -104,37 +82,69 @@ void RUNTIME_resume( MORSE_context_t *morse )
 }
 
 /*******************************************************************************
+ * Barrier MORSE.
+ **/
+void RUNTIME_barrier( MORSE_context_t *morse )
+{
+    parsec_context_t *parsec = (parsec_context_t*)(morse->schedopt);
+    // This will be a problem with the fake tasks inserted to detect end of DTD algorithms
+    parsec_context_wait( parsec );
+    return;
+}
+
+/*******************************************************************************
+ *  Display a progress information when executing the tasks
+ **/
+void RUNTIME_progress( MORSE_context_t *morse )
+{
+    (void)morse;
+    return;
+}
+
+/*******************************************************************************
+ * Thread rank.
+ **/
+int RUNTIME_thread_rank( MORSE_context_t *morse )
+{
+    (void)morse;
+    return 0;
+}
+
+/*******************************************************************************
+ * Thread rank.
+ **/
+int RUNTIME_thread_size( MORSE_context_t *morse )
+{
+    // TODO: fixme
+    //return vpmap_get_nb_total_threads();
+    (void)morse;
+    return 1;
+}
+
+/*******************************************************************************
  *  This returns the rank of this process
  **/
-void RUNTIME_comm_rank( int *rank )
+int RUNTIME_comm_rank( MORSE_context_t *morse )
 {
+    int rank = 0;
 #if defined(CHAMELEON_USE_MPI)
-    MPI_Comm_rank(MPI_COMM_WORLD, rank);
-#else
-    *rank = 0;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 #endif
-    return;
+
+    (void)morse;
+    return rank;
 }
 
 /*******************************************************************************
  *  This returns the size of the distributed computation
  **/
-void RUNTIME_comm_size( int *size )
+int RUNTIME_comm_size( MORSE_context_t *morse )
 {
+    int size = 0;
 #if defined(CHAMELEON_USE_MPI)
-    MPI_Comm_size(MPI_COMM_WORLD, size);
-#else
-    *size = 1;
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
 #endif
-    return;
-}
 
-/*******************************************************************************
- *  This returns the number of workers
- **/
-int RUNTIME_get_thread_nbr()
-{
-    // TODO: fixme
-    //return vpmap_get_nb_total_threads();
-    return 0;
+    (void)morse;
+    return size;
 }

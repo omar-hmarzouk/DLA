@@ -24,48 +24,35 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_ztstrf_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_ztstrf_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    int *m;
-    int *n;
-    int *ib;
-    int *nb;
+    int m;
+    int n;
+    int ib;
+    int nb;
     MORSE_Complex64_t *U;
-    int *ldu;
+    int ldu;
     MORSE_Complex64_t *A;
-    int *lda;
+    int lda;
     MORSE_Complex64_t *L;
-    int *ldl;
+    int ldl;
     int *IPIV;
     MORSE_Complex64_t *WORK;
-    int *ldwork;
+    int ldwork;
     MORSE_bool *check_info;
-    int *iinfo;
+    int iinfo;
 
     int info;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE,   &m,
-        UNPACK_VALUE,   &n,
-        UNPACK_VALUE,   &ib,
-        UNPACK_VALUE,   &nb,
-        UNPACK_DATA,    &U,
-        UNPACK_VALUE,   &ldu,
-        UNPACK_DATA,    &A,
-        UNPACK_VALUE,   &lda,
-        UNPACK_DATA,    &L,
-        UNPACK_VALUE,   &ldl,
-        UNPACK_SCRATCH, &IPIV,
-        UNPACK_SCRATCH, &WORK,
-        UNPACK_VALUE,   &ldwork,
-        UNPACK_VALUE,   &check_info,
-        UNPACK_VALUE,   &iinfo );
+        this_task,   &m,   &n,   &ib,   &nb, &U,   &ldu, &A,   &lda, &L,   &ldl, &IPIV, &WORK,   &ldwork,   &check_info,   &iinfo );
 
-    CORE_ztstrf(*m, *n, *ib, *nb, U, *ldu, A, *lda, L, *ldl, IPIV, WORK, *ldwork, &info);
+    CORE_ztstrf( m, n, ib, nb, U, ldu, A, lda, L, ldl, IPIV, WORK, ldwork, &info );
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_ztstrf(const MORSE_option_t *options,
@@ -95,5 +82,5 @@ void MORSE_TASK_ztstrf(const MORSE_option_t *options,
         sizeof(int),           &nb,                               VALUE,
         sizeof(int),           &check_info,                       VALUE,
         sizeof(int),           &iinfo,                            VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }

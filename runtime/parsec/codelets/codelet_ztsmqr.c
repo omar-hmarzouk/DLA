@@ -24,53 +24,37 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-static int
-CORE_ztsmqr_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
+static inline int
+CORE_ztsmqr_parsec( parsec_execution_stream_t *context,
+                    parsec_task_t             *this_task )
 {
-    MORSE_enum *side;
-    MORSE_enum *trans;
-    int *m1;
-    int *n1;
-    int *m2;
-    int *n2;
-    int *k;
-    int *ib;
+    MORSE_enum side;
+    MORSE_enum trans;
+    int m1;
+    int n1;
+    int m2;
+    int n2;
+    int k;
+    int ib;
     MORSE_Complex64_t *A1;
-    int *lda1;
+    int lda1;
     MORSE_Complex64_t *A2;
-    int *lda2;
+    int lda2;
     MORSE_Complex64_t *V;
-    int *ldv;
+    int ldv;
     MORSE_Complex64_t *T;
-    int *ldt;
+    int ldt;
     MORSE_Complex64_t *WORK;
-    int *ldwork;
+    int ldwork;
 
     parsec_dtd_unpack_args(
-        this_task,
-        UNPACK_VALUE,   &side,
-        UNPACK_VALUE,   &trans,
-        UNPACK_VALUE,   &m1,
-        UNPACK_VALUE,   &n1,
-        UNPACK_VALUE,   &m2,
-        UNPACK_VALUE,   &n2,
-        UNPACK_VALUE,   &k,
-        UNPACK_VALUE,   &ib,
-        UNPACK_DATA,    &A1,
-        UNPACK_VALUE,   &lda1,
-        UNPACK_DATA,    &A2,
-        UNPACK_VALUE,   &lda2,
-        UNPACK_DATA,    &V,
-        UNPACK_VALUE,   &ldv,
-        UNPACK_DATA,    &T,
-        UNPACK_VALUE,   &ldt,
-        UNPACK_SCRATCH, &WORK,
-        UNPACK_VALUE,   &ldwork );
+        this_task,   &side,   &trans,   &m1,   &n1,   &m2,   &n2,   &k,   &ib, &A1,   &lda1, &A2,   &lda2, &V,   &ldv, &T,   &ldt, &WORK,   &ldwork );
 
-    CORE_ztsmqr(*side, *trans, *m1, *n1, *m2, *n2, *k, *ib,
-                A1, *lda1, A2, *lda2, V, *ldv, T, *ldt, WORK, *ldwork);
+    CORE_ztsmqr( side, trans, m1, n1, m2, n2, k, ib,
+                A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
 
-    return 0;
+    (void)context;
+    return PARSEC_HOOK_RETURN_DONE;
 }
 
 void MORSE_TASK_ztsmqr(const MORSE_option_t *options,
@@ -105,5 +89,5 @@ void MORSE_TASK_ztsmqr(const MORSE_option_t *options,
         sizeof(int),           &ldt,                               VALUE,
         sizeof(MORSE_Complex64_t)*ib*nb,    NULL,                  SCRATCH,
         sizeof(int),           &ldwork,                            VALUE,
-        0);
+        PARSEC_DTD_ARG_END );
 }
