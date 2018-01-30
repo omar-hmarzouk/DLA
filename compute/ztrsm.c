@@ -136,7 +136,7 @@ int MORSE_ztrsm( MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrsm", "illegal value of uplo");
         return -2;
     }
-    if ((transA >= MorseNoTrans) && (transA <= MorseConjTrans) ) {
+    if (((transA < MorseNoTrans) || (transA > MorseConjTrans)) ) {
         morse_error("MORSE_ztrsm", "illegal value of transA");
         return -3;
     }
@@ -369,7 +369,7 @@ int MORSE_ztrsm_Tile_Async( MORSE_enum side, MORSE_enum uplo,
         morse_error("MORSE_ztrsm_Tile", "illegal value of uplo");
         return morse_request_fail(sequence, request, -2);
     }
-    if ((transA >= MorseNoTrans) && (transA <= MorseConjTrans)) {
+    if (((transA < MorseNoTrans) || (transA > MorseConjTrans))) {
         morse_error("MORSE_ztrsm_Tile", "illegal value of transA");
         return morse_request_fail(sequence, request, -3);
     }

@@ -121,7 +121,7 @@ int MORSE_ztradd( MORSE_enum uplo, MORSE_enum trans, int M, int N,
         morse_error("MORSE_ztradd", "illegal value of uplo");
         return -1;
     }
-    if ((trans >= MorseNoTrans) && (trans <= MorseConjTrans)) {
+    if (((trans < MorseNoTrans) || (trans > MorseConjTrans))) {
         morse_error("MORSE_ztradd", "illegal value of trans");
         return -2;
     }
@@ -340,7 +340,7 @@ int MORSE_ztradd_Tile_Async( MORSE_enum uplo, MORSE_enum trans,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Check input arguments */
-    if ((trans >= MorseNoTrans) && (trans <= MorseConjTrans)) {
+    if (((trans < MorseNoTrans) || (trans > MorseConjTrans))) {
         morse_error("MORSE_ztradd_Tile_Async", "illegal value of trans");
         return morse_request_fail(sequence, request, -1);
     }
