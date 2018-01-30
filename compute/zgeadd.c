@@ -111,7 +111,7 @@ int MORSE_zgeadd( MORSE_enum trans, int M, int N,
     }
 
     /* Check input arguments */
-    if ((trans != MorseNoTrans) && (trans != MorseTrans) && (trans != MorseConjTrans)) {
+    if ((trans >= MorseNoTrans) && (trans <= MorseConjTrans)) {
         morse_error("MORSE_zgeadd", "illegal value of trans");
         return -1;
     }
@@ -324,7 +324,7 @@ int MORSE_zgeadd_Tile_Async( MORSE_enum trans,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
     /* Check input arguments */
-    if ((trans != MorseNoTrans) && (trans != MorseTrans) && (trans != MorseConjTrans)) {
+    if ((trans >= MorseNoTrans) && (trans <= MorseConjTrans)) {
         morse_error("MORSE_zgeadd_Tile_Async", "illegal value of trans");
         return morse_request_fail(sequence, request, -1);
     }
