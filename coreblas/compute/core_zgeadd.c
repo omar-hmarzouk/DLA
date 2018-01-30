@@ -93,9 +93,7 @@ int CORE_zgeadd(MORSE_enum trans, int M, int N,
 {
     int i, j;
 
-    if ((trans != MorseNoTrans) &&
-        (trans != MorseTrans)   &&
-        (trans != MorseConjTrans))
+    if ((trans < MorseNoTrans) || (trans > MorseConjTrans))
     {
         coreblas_error(1, "illegal value of trans");
         return -1;

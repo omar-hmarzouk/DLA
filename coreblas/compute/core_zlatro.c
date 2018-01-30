@@ -99,7 +99,7 @@ int CORE_zlatro(MORSE_enum uplo, MORSE_enum trans,
         coreblas_error(1, "Illegal value of uplo");
         return -1;
     }
-    if ((trans != MorseConjTrans) && (trans != MorseNoTrans) && (trans != MorseTrans) ) {
+    if ((trans < MorseNoTrans) || (trans > MorseConjTrans)) {
         coreblas_error(2, "Illegal value of trans");
         return -2;
     }
