@@ -199,7 +199,10 @@ int testing_zpotri(int argc, char **argv)
     MORSE_Complex64_t *WORK = (MORSE_Complex64_t *)malloc(2*LDA*sizeof(MORSE_Complex64_t));
 
     /* Check if unable to allocate memory */
-    if ((!A1)||(!A2)){
+    if ( (!A1) || (!A2) || (!WORK) )
+    {
+        free(A1); free(A2);
+        free(WORK);
         printf("Out of Memory \n ");
         return -2;
     }

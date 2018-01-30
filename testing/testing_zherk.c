@@ -77,7 +77,9 @@ int testing_zherk(int argc, char **argv)
     MORSE_Complex64_t *Cfinal = (MORSE_Complex64_t *)malloc(LDCxN*sizeof(MORSE_Complex64_t));
 
     /* Check if unable to allocate memory */
-    if ( (!A) || (!Cinit) || (!Cfinal) ){
+    if ( (!A) || (!C) || (!Cinit) || (!Cfinal) ){
+        free(A); free(C);
+        free(Cinit); free(Cfinal);
         printf("Out of Memory \n ");
         return -2;
     }

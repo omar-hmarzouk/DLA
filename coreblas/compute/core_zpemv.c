@@ -146,7 +146,7 @@ int CORE_zpemv(MORSE_enum trans, int storev,
 
 
     /* Check input arguments */
-    if ((trans != MorseNoTrans) && (trans != MorseTrans) && (trans != MorseConjTrans)) {
+    if ((trans < MorseNoTrans) || (trans > MorseConjTrans)) {
         coreblas_error(1, "Illegal value of trans");
         return -1;
     }

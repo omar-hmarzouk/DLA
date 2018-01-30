@@ -89,7 +89,11 @@ int testing_zgels_systolic(int argc, char **argv)
     MORSE_desc_t *TT = NULL;
 
     /* Check if unable to allocate memory */
-    if ((!A1)||(!A2)||(!B1)||(!B2)||(!Q)){
+    if ( (!A1) || (!A2) || (!B1) || (!B2) || (!Q) )
+    {
+        free(A1); free(A2);
+        free(B1); free(B2);
+        free(Q);
         printf("Out of Memory \n ");
         return -2;
     }

@@ -16,7 +16,7 @@
 #     Univ. of Tennessee,
 #     King Abdullah Univesity of Science and Technology
 #     Univ. of California Berkeley,
-#     Univ. of Colorado Denver. 
+#     Univ. of Colorado Denver.
 #
 #  @version 0.9.0
 #  @author Cedric Castagnede

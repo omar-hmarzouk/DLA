@@ -118,9 +118,7 @@ int CORE_ztradd(MORSE_enum uplo, MORSE_enum trans, int M, int N,
         return -1;
     }
 
-    if ((trans != MorseNoTrans) &&
-        (trans != MorseTrans)   &&
-        (trans != MorseConjTrans))
+    if ((trans < MorseNoTrans) || (trans > MorseConjTrans))
     {
         coreblas_error(2, "illegal value of trans");
         return -2;

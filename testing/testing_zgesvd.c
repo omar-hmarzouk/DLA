@@ -100,6 +100,8 @@ int testing_zgesvd(int argc, char **argv)
 
     /* Check if unable to allocate memory */
     if ( (!A1) || (!S1) || (!S2) || (!work) ) {
+        free(A1); free(work);
+        free(S1); free(S2);
         printf("Out of Memory \n ");
         return -2;
     }

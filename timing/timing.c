@@ -674,17 +674,21 @@ main(int argc, char *argv[]) {
         MORSE_Set(MORSE_HOUSEHOLDER_SIZE, iparam[IPARAM_RHBLK]);
     }
 
-    if (iparam[IPARAM_PROFILE] == 1)
+    if (iparam[IPARAM_PROFILE] == 1) {
         MORSE_Enable(MORSE_PROFILING_MODE);
+    }
 
-    if (iparam[IPARAM_PROGRESS] == 1)
+    if (iparam[IPARAM_PROGRESS] == 1) {
         MORSE_Enable(MORSE_PROGRESS);
+    }
 
-    if (iparam[IPARAM_PRINT_WARNINGS] == 0)
+    if (iparam[IPARAM_PRINT_WARNINGS] == 0) {
         MORSE_Disable(MORSE_WARNINGS);
+    }
 
-    if (iparam[IPARAM_GEMM3M] == 1)
+    if (iparam[IPARAM_GEMM3M] == 1) {
         MORSE_Enable(MORSE_GEMM3M);
+    }
 
 #if defined(CHAMELEON_USE_MPI)
     nbnode = MORSE_Comm_size();
@@ -702,8 +706,9 @@ main(int argc, char *argv[]) {
     /* Layout conversion */
     MORSE_Set(MORSE_TRANSLATION_MODE, iparam[IPARAM_INPLACE]);
 
-    if ( MORSE_My_Mpi_Rank() == 0 )
+    if ( MORSE_My_Mpi_Rank() == 0 ) {
         print_header( argv[0], iparam);
+    }
 
     if (step < 1) step = 1;
 
