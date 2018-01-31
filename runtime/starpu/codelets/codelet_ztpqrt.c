@@ -25,46 +25,6 @@
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
-void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
-                        int M, int N, int L, int ib, int nb,
-                        const MORSE_desc_t *A, int Am, int An, int lda,
-                        const MORSE_desc_t *B, int Bm, int Bn, int ldb,
-                        const MORSE_desc_t *T, int Tm, int Tn, int ldt )
-{
-    struct starpu_codelet *codelet = &cl_ztpqrt;
-    void (*callback)(void*) = options->profiling ? cl_ztpqrt_callback : NULL;
-
-    MORSE_BEGIN_ACCESS_DECLARATION;
-    MORSE_ACCESS_RW(A, Am, An);
-    MORSE_ACCESS_RW(B, Bm, Bn);
-    MORSE_ACCESS_W(T, Tm, Tn);
-    MORSE_END_ACCESS_DECLARATION;
-
-    starpu_insert_task(
-        starpu_mpi_codelet(codelet),
-        STARPU_VALUE, &M,     sizeof(int),
-        STARPU_VALUE, &N,     sizeof(int),
-        STARPU_VALUE, &L,     sizeof(int),
-        STARPU_VALUE, &ib,    sizeof(int),
-        STARPU_RW,     RTBLKADDR(A, MORSE_Complex64_t, Am, An),
-        STARPU_VALUE, &lda,   sizeof(int),
-        STARPU_RW,     RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),
-        STARPU_VALUE, &ldb,   sizeof(int),
-        STARPU_W,      RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),
-        STARPU_VALUE, &ldt,   sizeof(int),
-        /* Other options */
-        STARPU_SCRATCH,   options->ws_worker,
-        STARPU_PRIORITY,  options->priority,
-        STARPU_CALLBACK,  callback,
-#if defined(CHAMELEON_CODELETS_HAVE_NAME)
-        STARPU_NAME, "ztpqrt",
-#endif
-        0);
-
-    (void)ib; (void)nb;
-}
-
-
 #if !defined(CHAMELEON_SIMULATION)
 static void cl_ztpqrt_cpu_func(void *descr[], void *cl_arg)
 {
@@ -93,8 +53,50 @@ static void cl_ztpqrt_cpu_func(void *descr[], void *cl_arg)
 }
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
-
 /*
  * Codelet definition
  */
 CODELETS_CPU(ztpqrt, 4, cl_ztpqrt_cpu_func)
+
+void
+MORSE_TASK_ztpqrt( const MORSE_option_t *options,
+                   int M, int N, int L, int ib, int nb,
+                   const MORSE_desc_t *A, int Am, int An, int lda,
+                   const MORSE_desc_t *B, int Bm, int Bn, int ldb,
+                   const MORSE_desc_t *T, int Tm, int Tn, int ldt )
+{
+    struct starpu_codelet *codelet = &cl_ztpqrt;
+    void (*callback)(void*) = options->profiling ? cl_ztpqrt_callback : NULL;
+
+    MORSE_BEGIN_ACCESS_DECLARATION;
+    MORSE_ACCESS_RW(A, Am, An);
+    MORSE_ACCESS_RW(B, Bm, Bn);
+    MORSE_ACCESS_W(T, Tm, Tn);
+    MORSE_END_ACCESS_DECLARATION;
+
+    starpu_insert_task(
+        starpu_mpi_codelet(codelet),
+        STARPU_VALUE, &M,     sizeof(int),
+        STARPU_VALUE, &N,     sizeof(int),
+        STARPU_VALUE, &L,     sizeof(int),
+        STARPU_VALUE, &ib,    sizeof(int),
+        STARPU_RW,     RTBLKADDR(A, MORSE_Complex64_t, Am, An),
+        STARPU_VALUE, &lda,   sizeof(int),
+        STARPU_RW,     RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn),
+        STARPU_VALUE, &ldb,   sizeof(int),
+        STARPU_W,      RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),
+        STARPU_VALUE, &ldt,   sizeof(int),
+        /* Other options */
+        STARPU_SCRATCH,   options->ws_worker,
+        STARPU_PRIORITY,  options->priority,
+        STARPU_CALLBACK,  callback,
+#if defined(CHAMELEON_USE_MPI)
+        STARPU_EXECUTE_ON_NODE, B->get_rankof(B, Bm, Bn),
+#endif
+#if defined(CHAMELEON_CODELETS_HAVE_NAME)
+        STARPU_NAME, "ztpqrt",
+#endif
+        0);
+
+    (void)ib; (void)nb;
+}

@@ -111,7 +111,6 @@ void MORSE_TASK_ztsqrt(const MORSE_option_t *options,
     MORSE_ACCESS_RW(A1, A1m, A1n);
     MORSE_ACCESS_RW(A2, A2m, A2n);
     MORSE_ACCESS_W(T, Tm, Tn);
-    MORSE_RANK_CHANGED(A2->get_rankof(A2, A2m, A2n));
     MORSE_END_ACCESS_DECLARATION;
 
     starpu_insert_task(
@@ -131,10 +130,12 @@ void MORSE_TASK_ztsqrt(const MORSE_option_t *options,
         STARPU_VALUE,    &h_work,            sizeof(MORSE_starpu_ws_t *),
         STARPU_PRIORITY,  options->priority,
         STARPU_CALLBACK,  callback,
+#if defined(CHAMELEON_USE_MPI)
+        STARPU_EXECUTE_ON_NODE, A2->get_rankof(A2, A2m, A2n),
+#endif
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
         STARPU_NAME, "ztsqrt",
 #endif
-        STARPU_EXECUTE_ON_NODE, A2->get_rankof(A2, A2m, A2n),
         0);
 }
 
