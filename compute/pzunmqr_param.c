@@ -35,7 +35,8 @@
  */
 void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                          MORSE_enum side, MORSE_enum trans,
-                         MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
+                         MORSE_desc_t *A, MORSE_desc_t *B,
+                         MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *D,
                          MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;
@@ -95,7 +96,7 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
             for (k = 0; k < K; k++) {
                 RUNTIME_iteration_push(morse, k);
 
-                tempkn   = k == A->nt-1 ? A->n-k*A->nb : A->nb;
+                tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
 
                 T = TS;
                 for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
@@ -131,10 +132,11 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                             B(m, n), ldbm);
                     }
                 }
+
                 /* Setting the order of the tiles*/
                 libhqr_walk_stepk(qrtree, k, tiles + (k+1));
 
-                for (i = k+1; i < B->mt; i++) {
+                for (i = k+1; i < A->mt; i++) {
                     m = tiles[i];
                     p = qrtree->currpiv(qrtree, k, m);
 
@@ -142,6 +144,8 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                     ldam = BLKLDD(A, m);
                     ldbm = BLKLDD(B, m);
                     ldbp = BLKLDD(B, p);
+
+                    /* TT or TS */
                     if(qrtree->gettype(qrtree, k, m) == 0){
                         L = 0;
                         T = TS;
@@ -190,7 +194,7 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                 /* Setting the order of the tiles*/
                 libhqr_walk_stepk(qrtree, k, tiles + (k+1));
 
-                for (i = B->mt-1; i > k; i--) {
+                for (i = A->mt-1; i > k; i--) {
                     m = tiles[i];
                     p = qrtree->currpiv(qrtree, k, m);
 
@@ -279,10 +283,10 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
 
                 tempkn = k == A->nt-1 ? A->n - k*A->nb : A->nb;
 
-                /* Setting the order of tiles */
+                /* Setting the order of the tiles*/
                 libhqr_walk_stepk(qrtree, k, tiles + (k+1));
 
-                for (i = B->nt-1; i > k; i--) {
+                for (i = A->nt-1; i > k; i--) {
                     n = tiles[i];
                     p = qrtree->currpiv(qrtree, k, n);
 
@@ -357,7 +361,6 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                             B(m, n), ldbm);
                     }
                 }
-
                 RUNTIME_iteration_pop(morse);
             }
         }
@@ -407,16 +410,17 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                 /* Setting the order of tiles */
                 libhqr_walk_stepk(qrtree, k, tiles + (k+1));
 
-                for (i = k+1; i < B->nt; i++) {
+                for (i = k+1; i < A->nt; i++) {
                     n = tiles[i];
                     p = qrtree->currpiv(qrtree, k, n);
 
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                     ldan = BLKLDD(A, n);
                     ldbp = BLKLDD(B, p);
+
                     if(qrtree->gettype(qrtree, k, n) == 0){
                         L = 0;
-                        T = T;
+                        T = TS;
                     }
                     else {
                         L = tempmm;

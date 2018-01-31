@@ -275,7 +275,8 @@ void morse_pzunmqrrh( MORSE_enum side, MORSE_enum trans,
                 RUNTIME_iteration_pop(morse);
             }
         }
-    } else {
+    }
+    else {
         if (trans == MorseConjTrans) {
             /*
              *  MorseRight / MorseConjTrans

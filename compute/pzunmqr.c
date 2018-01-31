@@ -168,7 +168,7 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
             for (k = minMT-1; k >= 0; k--) {
                 RUNTIME_iteration_push(morse, k);
 
-                tempkm = k == B->mt-1 ? B->m-k*B->mb : B->mb;
+                tempkm   = k == B->mt-1 ? B->m-k*B->mb : B->mb;
                 tempkmin = k == minMT-1 ? minM-k*A->nb : A->nb;
                 ldak = BLKLDD(A, k);
                 ldbk = BLKLDD(B, k);
@@ -206,7 +206,6 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
                     D(k), ldak );
 #endif
 #endif
-
                 for (n = 0; n < B->nt; n++) {
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
 
@@ -233,8 +232,8 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
             for (k = minMT-1; k >= 0; k--) {
                 RUNTIME_iteration_push(morse, k);
 
-                tempkn = k == B->nt-1 ? B->n-k*B->nb : B->nb;
-                tempkmin = k == minMT-1 ? minM-k*A->nb : A->nb;
+                tempkn   = k == B->nt - 1 ? B->n - k * B->nb : B->nb;
+                tempkmin = k == minMT - 1 ? minM - k * A->nb : A->nb;
                 ldak = BLKLDD(A, k);
                 ldbk = BLKLDD(B, k);
                 for (n = B->nt-1; n > k; n--) {
