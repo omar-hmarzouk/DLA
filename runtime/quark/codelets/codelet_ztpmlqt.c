@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelet_ztpqrt.c
+ * @file codelet_ztpmlqt.c
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -27,7 +27,7 @@
 #include "coreblas/coreblas_z.h"
 
 static void
-CORE_ztpmqrt_quark( Quark *quark )
+CORE_ztpmlqt_quark( Quark *quark )
 {
     MORSE_enum side;
     MORSE_enum trans;
@@ -49,11 +49,11 @@ CORE_ztpmqrt_quark( Quark *quark )
     quark_unpack_args_16( quark, side, trans, M, N, K, L, ib,
                           V, ldv, T, ldt, A, lda, B, ldb, WORK );
 
-    CORE_ztpmqrt( side, trans, M, N, K, L, ib,
+    CORE_ztpmlqt( side, trans, M, N, K, L, ib,
                   V, ldv, T, ldt, A, lda, B, ldb, WORK );
 }
 
-void MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
+void MORSE_TASK_ztpmlqt( const MORSE_option_t *options,
                          MORSE_enum side, MORSE_enum trans,
                          int M, int N, int K, int L, int ib, int nb,
                          const MORSE_desc_t *V, int Vm, int Vn, int ldv,
@@ -64,10 +64,10 @@ void MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_TSMQR;
 
-    int shapeV = ( L == 0 ) ? 0 : (QUARK_REGION_U | QUARK_REGION_D);
+    int shapeV = ( L == 0 ) ? 0 : (QUARK_REGION_L | QUARK_REGION_D);
 
     QUARK_Insert_Task(
-        opt->quark, CORE_ztpmqrt_quark, (Quark_Task_Flags*)opt,
+        opt->quark, CORE_ztpmlqt_quark, (Quark_Task_Flags*)opt,
         sizeof(MORSE_enum),              &side,  VALUE,
         sizeof(MORSE_enum),              &trans, VALUE,
         sizeof(int),                     &M,     VALUE,

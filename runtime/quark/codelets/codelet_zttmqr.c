@@ -32,7 +32,8 @@
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-void CORE_zttmqr_quark(Quark *quark)
+static void
+CORE_zttmqr_quark( Quark *quark )
 {
     MORSE_enum side;
     MORSE_enum trans;
@@ -165,23 +166,23 @@ void MORSE_TASK_zttmqr(const MORSE_option_t *options,
     quark_option_t *opt = (quark_option_t*)(options->schedopt);
     DAG_CORE_TTMQR;
     QUARK_Insert_Task(opt->quark, CORE_zttmqr_quark, (Quark_Task_Flags*)opt,
-        sizeof(MORSE_enum),                &side,  VALUE,
-        sizeof(MORSE_enum),                &trans, VALUE,
-        sizeof(int),                        &m1,    VALUE,
-        sizeof(int),                        &n1,    VALUE,
-        sizeof(int),                        &m2,    VALUE,
-        sizeof(int),                        &n2,    VALUE,
-        sizeof(int),                        &k,     VALUE,
-        sizeof(int),                        &ib,    VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A1, MORSE_Complex64_t, A1m, A1n),            INOUT,
-        sizeof(int),                        &lda1,  VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(A2, MORSE_Complex64_t, A2m, A2n),            INOUT,
-        sizeof(int),                        &lda2,  VALUE,
-        sizeof(MORSE_Complex64_t)*nb*nb,    RTBLKADDR(V, MORSE_Complex64_t, Vm, Vn),             INPUT|QUARK_REGION_D|QUARK_REGION_U,
-        sizeof(int),                        &ldv,   VALUE,
-        sizeof(MORSE_Complex64_t)*ib*nb,    RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),             INPUT,
-        sizeof(int),                        &ldt,   VALUE,
-        sizeof(MORSE_Complex64_t)*ib*nb,    NULL,          SCRATCH,
-        sizeof(int),                        &ldwork,    VALUE,
+        sizeof(MORSE_enum),              &side,  VALUE,
+        sizeof(MORSE_enum),              &trans, VALUE,
+        sizeof(int),                     &m1,    VALUE,
+        sizeof(int),                     &n1,    VALUE,
+        sizeof(int),                     &m2,    VALUE,
+        sizeof(int),                     &n2,    VALUE,
+        sizeof(int),                     &k,     VALUE,
+        sizeof(int),                     &ib,    VALUE,
+        sizeof(MORSE_Complex64_t)*nb*nb, RTBLKADDR(A1, MORSE_Complex64_t, A1m, A1n), INOUT,
+        sizeof(int),                     &lda1,  VALUE,
+        sizeof(MORSE_Complex64_t)*nb*nb, RTBLKADDR(A2, MORSE_Complex64_t, A2m, A2n), INOUT | LOCALITY,
+        sizeof(int),                     &lda2,  VALUE,
+        sizeof(MORSE_Complex64_t)*nb*nb, RTBLKADDR(V, MORSE_Complex64_t, Vm, Vn),    INPUT | QUARK_REGION_U | QUARK_REGION_D,
+        sizeof(int),                     &ldv,   VALUE,
+        sizeof(MORSE_Complex64_t)*ib*nb, RTBLKADDR(T, MORSE_Complex64_t, Tm, Tn),    INPUT,
+        sizeof(int),                     &ldt,   VALUE,
+        sizeof(MORSE_Complex64_t)*ib*nb, NULL,          SCRATCH,
+        sizeof(int),                     &ldwork, VALUE,
         0);
 }
