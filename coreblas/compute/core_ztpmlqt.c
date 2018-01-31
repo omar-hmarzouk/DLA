@@ -112,8 +112,8 @@
  *        V = [V1] [V2].
  *
  *  The size of the trapezoidal block V2 is determined by the parameter L,
- *  where 0 <= L <= K; V2 is upper trapezoidal, consisting of the first L
- *  rows of a K-by-K upper triangular matrix.  If L=K, V2 is upper triangular;
+ *  where 0 <= L <= K; V2 is lower trapezoidal, consisting of the first L
+ *  rows of a K-by-K upper triangular matrix.  If L=K, V2 is lower triangular;
  *  if L=0, there is no trapezoidal block, hence V = V1 is rectangular.
  *
  *  If side = MorseLeft:  C = [A]  where A is K-by-N,  B is M-by-N and V is K-by-M.

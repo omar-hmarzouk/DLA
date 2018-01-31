@@ -54,7 +54,7 @@ static void cl_ztpmlqt_cpu_func(void *descr[], void *cl_arg)
                   V, ldv, T, ldt, A, lda, B, ldb, WORK );
 }
 
-#if defined(CHAMELEON_USE_CUDA)
+#if defined(CHAMELEON_USE_CUDA) && 0
 static void cl_ztpmlqt_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
@@ -100,7 +100,8 @@ static void cl_ztpmlqt_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-CODELETS(ztpmlqt, 5, cl_ztpmlqt_cpu_func, cl_ztpmlqt_cuda_func, STARPU_CUDA_ASYNC)
+CODELETS_CPU(ztpmlqt, 5, cl_ztpmlqt_cpu_func)
+//CODELETS(ztpmlqt, 5, cl_ztpmlqt_cpu_func, cl_ztpmlqt_cuda_func, STARPU_CUDA_ASYNC)
 
 void
 MORSE_TASK_ztpmlqt( const MORSE_option_t *options,
