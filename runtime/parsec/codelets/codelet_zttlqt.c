@@ -41,7 +41,7 @@ CORE_zttlqt_parsec( parsec_execution_stream_t *context,
     MORSE_Complex64_t *WORK;
 
     parsec_dtd_unpack_args(
-        this_task,   &m,   &n,   &ib, &A1,   &lda1, &A2,   &lda2, &T,   &ldt, &TAU, &WORK );
+        this_task, &m, &n, &ib, &A1, &lda1, &A2, &lda2, &T, &ldt, &TAU, &WORK );
 
     CORE_zttlqt( m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK );
 

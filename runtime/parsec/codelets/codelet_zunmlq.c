@@ -44,10 +44,10 @@ CORE_zunmlq_parsec( parsec_execution_stream_t *context,
     int ldwork;
 
     parsec_dtd_unpack_args(
-        this_task,   &side,   &trans,   &m,   &n,   &k,   &ib, &A,   &lda, &T,   &ldt, &C,   &ldc, &WORK,   &ldwork );
+        this_task, &side, &trans, &m, &n, &k, &ib, &A, &lda, &T, &ldt, &C, &ldc, &WORK, &ldwork );
 
     CORE_zunmlq( side, trans, m, n, k, ib,
-                A, lda, T, ldt, C, ldc, WORK, ldwork);
+                 A, lda, T, ldt, C, ldc, WORK, ldwork);
 
     (void)context;
     return PARSEC_HOOK_RETURN_DONE;

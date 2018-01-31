@@ -43,7 +43,7 @@ CORE_ztpqrt_parsec( parsec_execution_stream_t *context,
     MORSE_Complex64_t *WORK;
 
     parsec_dtd_unpack_args(
-        this_task,   &M,   &N,   &L,   &ib, &A,   &lda, &B,   &ldb, &T,   &ldt, &WORK );
+        this_task, &M, &N, &L, &ib, &A, &lda, &B, &ldb, &T, &ldt, &WORK );
 
     CORE_ztpqrt( M, N, L, ib,
                  A, lda, B, ldb, T, ldt, WORK );
@@ -72,6 +72,6 @@ void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
         sizeof(int),   &ldb, VALUE,
         PASSED_BY_REF,  RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ), OUTPUT,
         sizeof(int),   &ldt, VALUE,
-        sizeof(MORSE_Complex64_t)*ib*nb, NULL, SCRATCH,
+        sizeof(MORSE_Complex64_t)*(ib+1)*nb, NULL, SCRATCH,
         PARSEC_DTD_ARG_END );
 }

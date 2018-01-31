@@ -48,10 +48,10 @@ CORE_zttmqr_parsec( parsec_execution_stream_t *context,
     int ldwork;
 
     parsec_dtd_unpack_args(
-        this_task,   &side,   &trans,   &m1,   &n1,   &m2,   &n2,   &k,   &ib, &A1,   &lda1, &A2,   &lda2, &V,   &ldv, &T,   &ldt, &WORK,   &ldwork );
+        this_task, &side, &trans, &m1, &n1, &m2, &n2, &k, &ib, &A1, &lda1, &A2, &lda2, &V, &ldv, &T, &ldt, &WORK, &ldwork );
 
     CORE_zttmqr( side, trans, m1, n1, m2, n2, k, ib,
-                A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
+                 A1, lda1, A2, lda2, V, ldv, T, ldt, WORK, ldwork);
 
     (void)context;
     return PARSEC_HOOK_RETURN_DONE;
@@ -80,15 +80,15 @@ void MORSE_TASK_zttmqr(const MORSE_option_t *options,
         sizeof(int),           &n2,                               VALUE,
         sizeof(int),           &k,                                VALUE,
         sizeof(int),           &ib,                               VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A1, MORSE_Complex64_t, A1m, A1n ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( A1, MORSE_Complex64_t, A1m, A1n ), INOUT,
         sizeof(int),           &lda1,                             VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A2, MORSE_Complex64_t, A2m, A2n ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( A2, MORSE_Complex64_t, A2m, A2n ), INOUT,
         sizeof(int),           &lda2,                             VALUE,
-        PASSED_BY_REF,         RTBLKADDR( V, MORSE_Complex64_t, Vm, Vn ),        INPUT,
+        PASSED_BY_REF,         RTBLKADDR( V, MORSE_Complex64_t, Vm, Vn ),    INPUT,
         sizeof(int),           &ldv,                              VALUE,
-        PASSED_BY_REF,         RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ),        INPUT,
+        PASSED_BY_REF,         RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ),    INPUT,
         sizeof(int),           &ldt,                              VALUE,
-        sizeof(MORSE_Complex64_t)*ib*nb,    NULL,                           SCRATCH,
+        sizeof(MORSE_Complex64_t)*ib*nb,    NULL,                            SCRATCH,
         sizeof(int),           &ldwork,                           VALUE,
         PARSEC_DTD_ARG_END );
 }

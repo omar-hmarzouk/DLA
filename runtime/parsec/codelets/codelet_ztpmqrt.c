@@ -48,7 +48,7 @@ CORE_ztpmqrt_parsec( parsec_execution_stream_t *context,
     MORSE_Complex64_t *WORK;
 
     parsec_dtd_unpack_args(
-        this_task,   &side,   &trans,   &M,   &N,   &K,   &L,   &ib, &V,   &ldv, &T,   &ldt, &A,   &lda, &B,   &ldb, &WORK );
+        this_task, &side, &trans, &M, &N, &K, &L, &ib, &V, &ldv, &T, &ldt, &A, &lda, &B, &ldb, &WORK );
 
     CORE_ztpmqrt( side, trans, M, N, K, L, ib,
                   V, ldv, T, ldt, A, lda, B, ldb, WORK );
