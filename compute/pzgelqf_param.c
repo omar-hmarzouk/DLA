@@ -26,14 +26,10 @@
 #include <stdlib.h>
 #include "libhqr.h"
 
-#define A(m,n)  A,  (m), (n)
-#define TS(m,n) TS, (m), (n)
-#define TT(m,n) TT, (m), (n)
-#if defined(CHAMELEON_COPY_DIAG)
-#define D(m,n)  D,  (m), (n)
-#else
-#define D(m,n)  A,  (m), (n)
-#endif
+#define A(m,n) A, (m), (n)
+#define T(m,n) T, (m), (n)
+#define D(m,n) D, (m), (n)
+
 
 /*
  *  Parallel tile LQ factorization (reduction Householder) - dynamic scheduling
@@ -44,11 +40,12 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
 {
     MORSE_context_t *morse;
     MORSE_option_t options;
+    MORSE_desc_t *T;
     size_t ws_worker = 0;
     size_t ws_host = 0;
 
     int k, m, n, i, p;
-    int K;
+    int K, L;
     int ldak, ldam;
     int tempkmin, tempkm, tempnn, tempmm, temppn;
     int ib;
@@ -60,6 +57,10 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
     RUNTIME_options_init(&options, morse, sequence, request);
 
     ib = MORSE_IB;
+
+    if ( D == NULL ) {
+        D = A;
+    }
 
     /*
      * zgelqt = A->nb * (ib+1)
@@ -98,6 +99,8 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
 
         tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
         ldak = BLKLDD(A, k);
+
+        T = TS;
         /* The number of geqrt to apply */
         for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
             p = qrtree->getm(qrtree, k, i);
@@ -106,9 +109,9 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
 
             MORSE_TASK_zgelqt(
                 &options,
-                tempkm, temppn, ib, TS->nb,
+                tempkm, temppn, ib, T->nb,
                 A( k, p), ldak,
-                TS(k, p), TS->mb);
+                T(k, p), T->mb);
             if ( k < (A->mt-1) ) {
 #if defined(CHAMELEON_COPY_DIAG)
                 MORSE_TASK_zlacpy(
@@ -131,10 +134,10 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
                 MORSE_TASK_zunmlq(
                     &options,
                     MorseRight, MorseConjTrans,
-                   tempmm, temppn, tempkmin, ib, TS->nb,
-                    D( k, p), ldak,
-                    TS(k, p), TS->mb,
-                    A( m, p), ldam);
+                   tempmm, temppn, tempkmin, ib, T->nb,
+                    D(k, p), ldak,
+                    T(k, p), T->mb,
+                    A(m, p), ldam);
             }
         }
 
@@ -146,58 +149,60 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
             p = qrtree->currpiv(qrtree, k, n);
 
             tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
+            temppn = p == A->nt-1 ? A->n-p*A->nb : A->nb;
 
             /* Tiles killed is a TS */
-            if(qrtree->gettype(qrtree, k, n) == 0){
-                MORSE_TASK_ztslqt(
-                    &options,
-                    tempkm, tempnn, ib, TS->nb,
-                    A( k, p), ldak,
-                    A( k, n), ldak,
-                    TS(k, n), TS->mb);
-
-                for (m = k+1; m < A->mt; m++) {
-                    tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
-                    ldam = BLKLDD(A, m);
-                    MORSE_TASK_ztsmlq(
-                        &options,
-                        MorseRight, MorseConjTrans,
-                        tempmm, A->nb, tempmm, tempnn, tempkm, ib, TS->nb,
-                        A( m, p), ldam,
-                        A( m, n), ldam,
-                        A( k, n), ldak,
-                        TS(k, n), TS->mb);
-                }
+            if (qrtree->gettype(qrtree, k, n) == 0) {
+                T = TS;
+                L = 0;
+            }
+            else {
+                T = TT;
+                L = tempnn;
             }
 
-            /* Tiles killed is a TT */
-            else {
-                MORSE_TASK_zttlqt(
-                    &options,
-                    tempkm, tempnn, ib, TT->nb,
-                    A( k, p), ldak,
-                    A( k, n), ldak,
-                    TT(k, n), TT->mb);
+            RUNTIME_data_migrate( sequence, A(k, p),
+                                  A->get_rankof( A, k, n ) );
+            RUNTIME_data_migrate( sequence, A(k, n),
+                                  A->get_rankof( A, k, n ) );
 
-                for (m = k+1; m < A->mt; m++) {
-                    tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
-                    ldam = BLKLDD(A, m);
-                    MORSE_TASK_zttmlq(
-                        &options,
-                        MorseRight, MorseConjTrans,
-                        tempmm, A->nb, tempmm, tempnn, tempkm, ib, TT->nb,
-                        A( m, p), ldam,
-                        A( m, n), ldam,
-                        A( k, n), ldak,
-                        TT(k, n), TT->mb);
-                }
+            MORSE_TASK_ztplqt(
+                &options,
+                tempkm, tempnn, chameleon_min(L, tempkm), ib, T->nb,
+                A(k, p), ldak,
+                A(k, n), ldak,
+                T(k, n), T->mb);
+
+            for (m = k+1; m < A->mt; m++) {
+                tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
+                ldam = BLKLDD(A, m);
+
+                RUNTIME_data_migrate( sequence, A(m, p),
+                                      A->get_rankof( A, m, n ) );
+                RUNTIME_data_migrate( sequence, A(m, n),
+                                      A->get_rankof( A, m, n ) );
+
+                MORSE_TASK_ztpmlqt(
+                    &options,
+                    MorseRight, MorseConjTrans,
+                    tempmm, tempnn, tempkm, L, ib, T->nb,
+                    A(k, n), ldak,
+                    T(k, n), T->mb,
+                    A(m, p), ldam,
+                    A(m, n), ldam);
             }
         }
+
+        /* Restore the original location of the tiles */
+        for (m = k; m < A->mt; m++) {
+            RUNTIME_data_migrate( sequence, A(m, k),
+                                  A->get_rankof( A, m, k ) );
+        }
+
         RUNTIME_iteration_pop(morse);
     }
 
     free(tiles);
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    (void)D;
 }
