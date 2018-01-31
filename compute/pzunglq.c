@@ -34,9 +34,9 @@
 #define Q(m,n) Q,  m,  n
 #define T(m,n) T,  m,  n
 #if defined(CHAMELEON_COPY_DIAG)
-#define D(k) D, k, 0
+#define D(k)   D,  k,  0
 #else
-#define D(k) A, k, k
+#define D(k)   D,  k,  k
 #endif
 
 /*******************************************************************************
@@ -67,6 +67,10 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
         minMT = A->nt;
     } else {
         minMT = A->mt;
+    }
+
+    if (D == NULL) {
+        D = A;
     }
 
     /*
@@ -103,14 +107,18 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
             for (m = 0; m < Q->mt; m++) {
                 tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
                 ldqm = BLKLDD(Q, m);
-                MORSE_TASK_ztsmlq(
+
+                RUNTIME_data_migrate( sequence, Q(m, k),
+                                      Q->get_rankof( Q, m, n ) );
+
+                MORSE_TASK_ztpmlqt(
                     &options,
                     MorseRight, MorseNoTrans,
-                    tempmm, Q->nb, tempmm, tempnn, tempAkm, ib, T->nb,
-                    Q(m, k), ldqm,
-                    Q(m, n), ldqm,
+                    tempmm, tempnn, tempAkm, 0, ib, T->nb,
                     A(k, n), ldak,
-                    T(k, n), T->mb);
+                    T(k, n), T->mb,
+                    Q(m, k), ldqm,
+                    Q(m, n), ldqm);
             }
         }
 #if defined(CHAMELEON_COPY_DIAG)
@@ -130,6 +138,10 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
         for (m = k; m < Q->mt; m++) {
             tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
             ldqm = BLKLDD(Q, m);
+
+            RUNTIME_data_migrate( sequence, Q(m, k),
+                                  Q->get_rankof( Q, m, k ) );
+
             MORSE_TASK_zunmlq(
                 &options,
                 MorseRight, MorseNoTrans,
@@ -144,5 +156,4 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
 
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    (void)D;
 }

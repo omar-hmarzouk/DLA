@@ -25,15 +25,10 @@
 #include "control/common.h"
 #include <stdlib.h>
 
-#define A(m,n) A,  (m),  (n)
-#define Q(m,n) Q,  (m),  (n)
-#define TS(m,n) TS,  (m),  (n)
-#define TT(m,n) TT,  (m),  (n)
-#if defined(CHAMELEON_COPY_DIAG)
+#define A(m,n) A, (m), (n)
+#define Q(m,n) Q, (m), (n)
+#define T(m,n) T, (m), (n)
 #define D(m,n) D, (m), (n)
-#else
-#define D(m,n) A, (m), (n)
-#endif
 
 /**
  *  Parallel construction of Q using tile V - dynamic scheduling
@@ -44,11 +39,12 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
 {
     MORSE_context_t *morse;
     MORSE_option_t options;
+    MORSE_desc_t *T;
     size_t ws_worker = 0;
     size_t ws_host = 0;
 
     int k, m, n, i, p;
-    int K;
+    int K, L;
     int ldak, ldqm;
     int tempkm, tempkmin, temppn, tempnn, tempmm;
     int ib;
@@ -60,6 +56,10 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
     RUNTIME_options_init(&options, morse, sequence, request);
 
     ib = MORSE_IB;
+
+    if (D == NULL) {
+        D = A;
+    }
 
     /*
      * zunmqr = A->nb * ib
@@ -103,37 +103,36 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
 
             tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
 
-            /* TT or TS */
-
+            /* TS or TT */
             if(qrtree->gettype(qrtree, k, n) == 0){
-                for (m = k; m < Q->mt; m++) {
-                    tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
-                    ldqm = BLKLDD(Q, m);
-                    MORSE_TASK_ztsmlq(
-                        &options,
-                        MorseRight, MorseNoTrans,
-                        tempmm, Q->nb, tempmm, tempnn, tempkm, ib, TS->nb,
-                        Q( m, p), ldqm,
-                        Q( m, n), ldqm,
-                        A( k, n), ldak,
-                        TS(k, n), TS->mb);
-                }
+                L = 0;
+                T = TS;
             }
             else {
-                for (m = k; m < Q->mt; m++) {
-                    tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
-                    ldqm = BLKLDD(Q, m);
-                    MORSE_TASK_zttmlq(
-                        &options,
-                        MorseRight, MorseNoTrans,
-                        tempmm, Q->nb, tempmm, tempnn, tempkm, ib, TT->nb,
-                        Q( m, p), ldqm,
-                        Q( m, n), ldqm,
-                        A( k, n), ldak,
-                        TT(k, n), TT->mb);
-                }
+                L = tempnn;
+                T = TT;
+            }
+            for (m = k; m < Q->mt; m++) {
+                tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
+                ldqm = BLKLDD(Q, m);
+
+                RUNTIME_data_migrate( sequence, Q(m, p),
+                                      Q->get_rankof( Q, m, n ) );
+                RUNTIME_data_migrate( sequence, Q(m, n),
+                                      Q->get_rankof( Q, m, n ) );
+
+                MORSE_TASK_ztpmlqt(
+                    &options,
+                    MorseRight, MorseNoTrans,
+                    tempmm, tempnn, tempkm, L, ib, T->nb,
+                    A(k, n), ldak,
+                    T(k, n), T->mb,
+                    Q(m, p), ldqm,
+                    Q(m, n), ldqm);
             }
         }
+
+        T = TS;
         for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
             p = qrtree->getm(qrtree, k, i);
 
@@ -157,13 +156,17 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
             for (m = k; m < Q->mt; m++) {
                 tempmm = m == Q->mt-1 ? Q->m-m*Q->mb : Q->mb;
                 ldqm = BLKLDD(Q, m);
+
+                RUNTIME_data_migrate( sequence, Q(m, p),
+                                      Q->get_rankof( Q, m, p ) );
+
                 MORSE_TASK_zunmlq(
                     &options,
                     MorseRight, MorseNoTrans,
-                    tempmm, temppn, tempkmin, ib, TS->nb,
-                    D( k, p), ldak,
-                    TS(k, p), TS->mb,
-                    Q( m, p), ldqm);
+                    tempmm, temppn, tempkmin, ib, T->nb,
+                    D(k, p), ldak,
+                    T(k, p), T->mb,
+                    Q(m, p), ldqm);
             }
         }
         RUNTIME_iteration_pop(morse);
@@ -172,5 +175,4 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
     free(tiles);
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    (void)D;
 }

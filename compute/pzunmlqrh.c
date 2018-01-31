@@ -259,6 +259,10 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
 #endif
                     for (n = 0; n < B->nt; n++) {
                         tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+
+                        RUNTIME_data_migrate( sequence, B(N, n),
+                                              B->get_rankof( B, N, n ) );
+
                         MORSE_TASK_zunmlq(
                             &options,
                             side, trans,
