@@ -174,7 +174,7 @@ int CORE_ztpmqrt( MORSE_enum side, MORSE_enum trans,
                      WORK, ldwork );
     }
     /* TT case */
-    else  if( L == M ) {
+    else if( L == M ) {
         CORE_zttmqr( side, trans, m1, n1, M, N, K, IB,
                      A, LDA, B, LDB, V, LDV, T, LDT,
                      WORK, ldwork );

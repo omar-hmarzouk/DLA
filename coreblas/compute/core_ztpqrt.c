@@ -132,6 +132,11 @@ int CORE_ztpqrt( int M, int N, int L, int IB,
         coreblas_error(6, "Illegal value of LDT");
         return -10;
     }
+    if ((L != 0) && (L != chameleon_min(M, N))) {
+        //LAPACKE_ztpmqrt_work( LAPACK_COL_MAJOR, M, N, K, L, IB, V, LDV, T, LDT, A, LDA, B, LDB, WORK );
+        coreblas_error( 6, "Illegal value of L (only 0 or min(M,N) handled for now)");
+        return -6;
+    }
 #endif /*!defined(NDEBUG)*/
 
     /* Quick return */
@@ -141,13 +146,13 @@ int CORE_ztpqrt( int M, int N, int L, int IB,
     if ( L == 0 ) {
         CORE_ztsqrt( M, N, IB, A, LDA, B, LDB, T, LDT, WORK, WORK+N );
     }
-    else if (L == M) {
+    else /* if (L == M) */ {
         CORE_zttqrt( M, N, IB, A, LDA, B, LDB, T, LDT, WORK, WORK+N );
     }
-    else {
-        //LAPACKE_ztpqrt_work( LAPACK_COL_MAJOR, M, N, L, IB, A, LDA, B, LDB, T, LDT, WORK );
-        coreblas_error( 3, "Illegal value of L (only 0 or M handled for now)");
-        return -3;
-    }
+    /* else { */
+    /*     //LAPACKE_ztpqrt_work( LAPACK_COL_MAJOR, M, N, L, IB, A, LDA, B, LDB, T, LDT, WORK ); */
+    /*     coreblas_error( 3, "Illegal value of L (only 0 or M handled for now)"); */
+    /*     return -3; */
+    /* } */
     return MORSE_SUCCESS;
 }
