@@ -36,6 +36,10 @@
 
 /* Communication engine */
 #cmakedefine CHAMELEON_USE_MPI
+#cmakedefine CHAMELEON_USE_MIGRATE
+#if !defined(CHAMELEON_USE_MPI) && defined(CHAMELEON_USE_MIGRATE)
+#undef CHAMELEON_USE_MIGRATE
+#endif
 
 /* GPU Support */
 #cmakedefine CHAMELEON_USE_CUDA

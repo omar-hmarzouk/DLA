@@ -445,6 +445,39 @@ RUNTIME_data_flush( const MORSE_sequence_t *sequence,
                     const MORSE_desc_t *A, int Am, int An );
 
 /**
+ * @brief Migrate a single piece of data.
+ *
+ * This function migrate a piece of data from its original rank to the new_rank
+ * and changes its ownership.
+ *
+ * @param[in] sequence
+ *            The sequence in which the data is used.
+ *
+ * @param[in] A
+ *            The descriptor to which the piece of data belongs.
+ *
+ * @param[in] Am
+ *            The row coordinate of the piece of data in the matrix
+ *
+ * @param[in] An
+ *            The column coordinate of the piece of data in the matrix
+ *
+ * @param[in] new_rank
+ *            The new_rank on which to migrate the data
+ */
+#if defined(CHAMELEON_USE_MIGRATE)
+void
+RUNTIME_data_migrate( const MORSE_sequence_t *sequence,
+                      const MORSE_desc_t *A, int Am, int An, int new_rank );
+#else
+static inline void
+RUNTIME_data_migrate( const MORSE_sequence_t *sequence,
+                      const MORSE_desc_t *A, int Am, int An, int new_rank ) {
+    (void)sequence; (void)A; (void)Am; (void)An; (void)new_rank;
+}
+#endif
+
+/**
  * @brief Get the pointer to the data or the runtime handler associated to the
  * piece of data (m, n) in desc.
  *
