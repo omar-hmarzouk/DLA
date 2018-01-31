@@ -175,7 +175,7 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D, int BS,
 
                 MORSE_TASK_ztpqrt(
                     &options,
-                    tempMRDm, tempkn, tempMRDm, ib, T->nb,
+                    tempMRDm, tempkn, chameleon_min( tempMRDm, tempkn ), ib, T->nb,
                     A (M   , k), ldaM,
                     A (M+RD, k), ldaMRD,
                     T2(M+RD, k), T->mb);

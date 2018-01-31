@@ -166,7 +166,7 @@ void morse_pzgeqrf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
 
             MORSE_TASK_ztpqrt(
                 &options,
-                tempmm, tempkn, L, ib, T->nb,
+                tempmm, tempkn, chameleon_min(L, tempkn), ib, T->nb,
                 A(p, k), ldap,
                 A(m, k), ldam,
                 T(m, k), T->mb);
