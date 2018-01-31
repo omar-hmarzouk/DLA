@@ -103,7 +103,7 @@ set( RP_CHAMELEON_PRECISIONS  "s;d;c;z" )
 include(RulesPrecisions)
 
 option(CHAMELEON_USE_MIGRATE
-  "This options enables the data migration in QR algorithms" OFF)
+  "This options enables the data migration in QR algorithms" ON)
 
 # Options to select the runtime
 # -----------------------------

@@ -91,6 +91,14 @@ RUNTIME_data_flush( const MORSE_sequence_t *sequence,
     return;
 }
 
+#if defined(CHAMELEON_USE_MIGRATE)
+void RUNTIME_data_migrate( const MORSE_sequence_t *sequence,
+                           const MORSE_desc_t *A, int Am, int An, int new_rank )
+{
+    (void)sequence; (void)A; (void)Am; (void)An; (void)new_rank;
+}
+#endif
+
 void *RUNTIME_data_getaddr( const MORSE_desc_t *desc, int m, int n )
 {
     return desc->get_blkaddr( desc, m, n );
