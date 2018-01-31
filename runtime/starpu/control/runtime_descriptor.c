@@ -388,6 +388,26 @@ void RUNTIME_data_flush( const MORSE_sequence_t *sequence,
     (void)sequence;
 }
 
+#if defined(CHAMELEON_USE_MIGRATE)
+void RUNTIME_data_migrate( const MORSE_sequence_t *sequence,
+                           const MORSE_desc_t *A, int Am, int An, int new_rank )
+{
+    starpu_data_handle_t *handle = (starpu_data_handle_t*)(A->schedopt);
+    starpu_data_handle_t lhandle;
+    handle += ((int64_t)(A->lmt) * (int64_t)An + (int64_t)Am);
+
+    lhandle = *handle;
+    if ( lhandle == NULL ) {
+        /* Register the data */
+        lhandle = RUNTIME_data_getaddr( A, Am, An );
+    }
+
+    starpu_mpi_data_migrate( MPI_COMM_WORLD, lhandle, new_rank );
+
+    (void)sequence;
+}
+#endif
+
 /*******************************************************************************
  *  Get data addr
  **/
