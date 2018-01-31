@@ -102,6 +102,9 @@ set( RP_CHAMELEON_DICTIONNARY ${MORSE_CMAKE_MODULE_PATH}/precision_generator/sub
 set( RP_CHAMELEON_PRECISIONS  "s;d;c;z" )
 include(RulesPrecisions)
 
+option(CHAMELEON_USE_MIGRATE
+  "This options enables the data migration in QR algorithms" OFF)
+
 # Options to select the runtime
 # -----------------------------
 
