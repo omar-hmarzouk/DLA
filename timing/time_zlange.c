@@ -1,6 +1,8 @@
 /**
  *
- * @Copyright (c) 2009-2014 The University of Tennessee and The University
+ * @file time_zlange.c
+ *
+ * @Copyright 2009-2014 The University of Tennessee and The University
  *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.

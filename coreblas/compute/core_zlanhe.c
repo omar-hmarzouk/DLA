@@ -1,5 +1,7 @@
 /**
  *
+ * @file core_zlanhe.c
+ *
  * @copyright 2009-2014 The University of Tennessee and The University of
  *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
@@ -7,7 +9,6 @@
  *
  ***
  *
- * @file core_zlanhe.c
  *
  *  PLASMA core_blas kernel
  *  PLASMA is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,

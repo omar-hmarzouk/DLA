@@ -269,7 +269,6 @@ On Unix-like operating systems, it also requires Make.
 The CHAMELEON project can not be configured for an in-source build.
 You will get an error message if you try to compile in-source.
 Please clean the root of your project by deleting the generated
-@file{CMakeCache.txt} file (and other CMake generated files).
 
 @example
 mkdir build
@@ -287,9 +286,7 @@ sub-directory of the CHAMELEON base source directory or anywhere else.
 @example
 cmake <path to SOURCE_DIR> -DOPTION1= -DOPTION2= ...
 @end example
-@file{<path to SOURCE_DIR>} represents the root of CHAMELEON project where
 stands
-the main (parent) @file{CMakeLists.txt} file.
 Details about options that are useful to give to @command{cmake <path to
 SOURCE_DIR>} are given in @ref{Compilation configuration}.
 

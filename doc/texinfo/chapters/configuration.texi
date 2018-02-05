@@ -138,16 +138,12 @@ This feature should be used to make experiments on the scheduler behaviors and
 performances not to produce solutions of linear systems.
 
 @item @option{-DCHAMELEON_ENABLE_DOCS=trigger} (default: @code{ON})
-to control build of the documentation contained in @file{docs/} sub-directory
 @item @option{-DCHAMELEON_ENABLE_EXAMPLE=trigger} (default: @code{ON})
 to control build of the examples executables (API usage)
-contained in @file{example/} sub-directory
 @item @option{-DCHAMELEON_ENABLE_TESTING=trigger} (default: @code{ON})
 to control build of testing executables (numerical check) contained in
-@file{testing/} sub-directory
 @item @option{-DCHAMELEON_ENABLE_TIMING=trigger} (default: @code{ON})
 to control build of timing executables (performances check) contained in
-@file{timing/} sub-directory
 
 @item @option{-DCHAMELEON_PREC_S=trigger} (default: @code{ON})
 to enable the support of simple arithmetic precision (float in C)
@@ -181,7 +177,6 @@ The possible values for @option{var} are:
 @item ...
 @end table
 to force CMake to find a specific BLAS library, see the full list of BLA_VENDOR
-in @file{FindBLAS.cmake} in @file{cmake_modules/morse/find}.
 By default @option{BLA_VENDOR} is empty so that CMake tries to detect all
 possible BLAS vendor with a preference for Intel MKL.
 @end table
@@ -200,7 +195,6 @@ LAPACK - LAPACKE - QUARK - STARPU - TMG.
 See paragraph about @ref{Dependencies detection} for details.
 
 Libraries detected with an official CMake module (see module files in
-@file{CMAKE_ROOT/Modules/}):
 @itemize @bullet
 @item CUDA
 @item MPI
@@ -208,7 +202,6 @@ Libraries detected with an official CMake module (see module files in
 @end itemize
 
 Libraries detected with CHAMELEON cmake modules (see module files in
-@file{cmake_modules/morse/find/} directory of CHAMELEON sources):
 @itemize @bullet
 @item BLAS
 @item CBLAS
@@ -296,7 +289,6 @@ files.
 Finally, to generate the trace file which can be opened with
 @uref{http://vite.gforge.inria.fr/, Vite} program, you have to use the
 @command{starpu_fxt_tool} executable of StarPU.
-This tool should be in @file{path/to/your/install/starpu/bin}.
 You can use it to generate the trace file like this:
 @itemize @bullet
 @item @command{path/to/your/install/starpu/bin/starpu_fxt_tool -i prof_filename}
@@ -320,7 +312,6 @@ Simulation mode can be enabled by setting the cmake option
 @option{-DCHAMELEON_SIMULATION=ON}.
 This mode allows you to simulate execution of algorithms with StarPU compiled
 with @uref{http://simgrid.gforge.inria.fr/, SimGrid}.
-To do so, we provide some perfmodels in the @file{simucore/perfmodels/}
 directory of CHAMELEON sources.
 To use these perfmodels, please set the following
 @itemize @bullet

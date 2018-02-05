@@ -64,7 +64,6 @@
 ! software, even if advised of the possibility of such damage.
 !
 !
-! @file morse_f90.f90
 !
 !  MORSE fortran 90 interface
 !  MORSE is a software package provided by Univ. of Tennessee,

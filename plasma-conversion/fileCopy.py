@@ -37,7 +37,6 @@
 #
 ###
 #
-#  @file fileCopy.py
 #
 #  @project MORSE
 #  MORSE is a software package provided by:

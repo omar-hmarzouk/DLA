@@ -1,5 +1,7 @@
 /**
  *
+ * @file pztpqrt.c
+ *
  * @copyright 2009-2016 The University of Tennessee and The University of
  *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2018 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
@@ -8,7 +10,6 @@
  *
  ***
  *
- * @file pztpqrt.c
  *
  *  MORSE computational routines
  *  MORSE is a software package provided by Univ. of Tennessee,

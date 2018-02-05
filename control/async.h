@@ -1,5 +1,7 @@
 /**
  *
+ * @file async.h
+ *
  * @copyright 2009-2014 The University of Tennessee and The University of
  *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
@@ -9,7 +11,6 @@
 /***
  *
  *
- * @file async.h
  *
  *  MORSE auxiliary routines
  *  MORSE is a software package provided by Univ. of Tennessee,

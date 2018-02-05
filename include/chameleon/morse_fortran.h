@@ -37,7 +37,6 @@
 
 !**
 !
-! @file morse_fortran.h
 !
 !  MORSE FORTRAN header
 !  MORSE is a software package provided by Univ. of Tennessee,

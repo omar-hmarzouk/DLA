@@ -1,11 +1,12 @@
 /**
  *
+ * @file codelet_ztpmqrt.c
+ *
  * @copyright 2009-2016 The University of Tennessee and The University of
  *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @file codelet_ztpmqrt.c
  *
  * MORSE codelets kernel
  * MORSE is a software package provided by Univ. of Tennessee,

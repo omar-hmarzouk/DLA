@@ -1,10 +1,11 @@
 ###
 #
+# @file CMakeLists.txt
+#
 # @copyright (c) 2017 Inria. All rights reserved.
 #
 ###
 #
-#  @file CMakeLists.txt
 #
 #  @project MORSE
 #  MORSE is a software package provided by:
