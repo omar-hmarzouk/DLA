@@ -62,7 +62,7 @@ int morse_desc_check    (const MORSE_desc_t *desc);
 int morse_desc_mat_alloc(MORSE_desc_t *desc);
 int morse_desc_mat_free (MORSE_desc_t *desc);
 
-#define BLKLDD(A, k) A->get_blkldd( A,k )
+#define BLKLDD(A, k) A->get_blkldd( A, k )
 
 /**
  *  Internal function to return address of block (m,n) with m,n = block indices
@@ -176,7 +176,9 @@ inline static int morse_getblkldd_cm(const MORSE_desc_t *A, int m) {
  */
 inline static int morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n)
 {
-    return (m % desc->p) * desc->q + (n % desc->q);
+    int mm = m + A->i / A->mb;
+    int nn = n + A->j / A->nb;
+    return (mm % desc->p) * desc->q + (nn % desc->q);
 }
 
 /**
@@ -184,8 +186,9 @@ inline static int morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n)
  */
 inline static int morse_getrankof_2d_diag(const MORSE_desc_t *desc, int m, int n)
 {
+    int mm = m + A->i / A->mb;
     assert( n == 0 );
-    return (m % desc->p) * desc->q + (m % desc->q);
+    return (mm % desc->p) * desc->q + (mm % desc->q);
 }
 
 

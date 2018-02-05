@@ -262,7 +262,8 @@ void RUNTIME_desc_create( MORSE_desc_t *mdesc )
     default: morse_fatal_error("MORSE_Element_Size", "undefined type"); break;
     }
 
-    parsec_matrix_add2arena_tile( parsec_dtd_arenas[pdesc->arena_index], datatype, mdesc->mb*mdesc->nb*MORSE_Element_Size(mdesc->dtyp) );
+    parsec_matrix_add2arena_tile( parsec_dtd_arenas[pdesc->arena_index], datatype,
+                                  mdesc->mb * mdesc->nb * MORSE_Element_Size(mdesc->dtyp) );
 #endif
     /* /\* Overwrite the leading dimensions to store the padding *\/ */
     /* mdesc->llm = mdesc->mb * mdesc->lmt; */
@@ -287,7 +288,9 @@ void RUNTIME_desc_destroy( MORSE_desc_t *mdesc )
 
         for(i=0; i<nb_local_tiles; i++, data++)
         {
-            parsec_data_destroy( *data );
+            if (*data) {
+                parsec_data_destroy( *data );
+            }
         }
 
         free( pdesc->data_map );
