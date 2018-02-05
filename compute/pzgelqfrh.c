@@ -5,9 +5,7 @@
  * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                          Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file pzgelqfrh.c
  *

@@ -6,7 +6,6 @@
  *                          Univ. Bordeaux. All rights reserved.
  *
  **/
-
 #ifndef _MORSE_PARSEC_H_
 #define _MORSE_PARSEC_H_
 

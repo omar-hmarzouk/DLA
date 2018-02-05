@@ -5,9 +5,7 @@
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file morse_struct.h
  *
@@ -23,7 +21,6 @@
  * @date 2011-06-01
  *
  **/
-
 #ifndef _MORSE_STRUCT_H_
 #define _MORSE_STRUCT_H_
 

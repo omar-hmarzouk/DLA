@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file basic_zpotrf.c
  *
@@ -21,7 +19,6 @@
  * @precisions normal z -> s d c
  *
  **/
-
 #include "posv_morse_functions.h"
 
 int main(int argc, char *argv[]) {

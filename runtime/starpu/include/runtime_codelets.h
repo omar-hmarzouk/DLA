@@ -5,9 +5,7 @@
  * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file runtime_codelets.h
  *
@@ -23,7 +21,6 @@
  * @date 2011-06-01
  *
  **/
-
 #ifndef _CODELETS_H_
 #define _CODELETS_H_
 

@@ -5,9 +5,7 @@
  * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file codelet_zgetrf.c
  *
@@ -25,7 +23,6 @@
  * @precisions normal z -> c d s
  *
  **/
-
 #include "chameleon_quark.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"

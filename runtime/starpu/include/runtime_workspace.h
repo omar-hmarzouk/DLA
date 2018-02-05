@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file runtime_workspace.h
  *
@@ -21,7 +19,6 @@
  * @date 2011-06-01
  *
  **/
-
 #ifndef _MORSE_STARPU_WORKSPACE_H_
 #define _MORSE_STARPU_WORKSPACE_H_
 

@@ -5,9 +5,7 @@
  * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file codelet_ztrmm.c
  *
@@ -35,7 +33,6 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-
 void MORSE_TASK_ztrmm(const MORSE_option_t *options,
                       MORSE_enum side, MORSE_enum uplo, MORSE_enum transA, MORSE_enum diag,
                       int m, int n, int nb,

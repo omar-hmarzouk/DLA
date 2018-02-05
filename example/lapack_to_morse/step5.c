@@ -5,9 +5,7 @@
  * @copyright 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file step5.c
  *
@@ -20,7 +18,6 @@
  * @date 2014-10-29
  *
  **/
-
 #include "step5.h"
 
 /*

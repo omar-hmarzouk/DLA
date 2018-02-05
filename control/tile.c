@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file tile.c
  *
@@ -20,9 +18,7 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
-
-/**
+ ***
  *
  * @defgroup Tile
  * @brief Group routines exposed to users for matrices conversion LAPACK-Tile

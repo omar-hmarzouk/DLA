@@ -6,7 +6,6 @@
  *                      Univ. Bordeaux. All rights reserved.
  *
  **/
-
 #ifndef TIMING_H
 #define TIMING_H
 

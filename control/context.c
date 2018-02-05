@@ -5,9 +5,7 @@
  * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file context.c
  *
@@ -21,9 +19,7 @@
  * @author Cedric Castagnede
  * @date 2012-09-15
  *
- **/
-
-/**
+ ***
  *
  * @defgroup Options
  * @brief Group routines exposed to users to handle options
@@ -109,7 +105,6 @@ MORSE_context_t *morse_context_self()
 /*******************************************************************************
  *  Clean the context
  **/
-
 int morse_context_destroy(){
 
     RUNTIME_context_destroy(morse_ctxt);

@@ -6,7 +6,6 @@
  *                      Univ. Bordeaux. All rights reserved.
  *
  **/
-
 /*****************************************************************************
   Copyright (c) 2010, Intel Corp.
   All rights reserved.

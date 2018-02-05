@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file codelet_ztsmlq_hetra1.c
  *
@@ -31,7 +29,6 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-
 void MORSE_TASK_ztsmlq_hetra1(const MORSE_option_t *options,
                               MORSE_enum side, MORSE_enum trans,
                               int m1, int n1, int m2, int n2, int k, int ib, int nb,

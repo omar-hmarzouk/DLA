@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file core_zgemm.c
  *
@@ -34,7 +32,6 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-
 void CORE_zgemm(MORSE_enum transA, int transB,
                 int M, int N, int K,
                 MORSE_Complex64_t alpha, const MORSE_Complex64_t *A, int LDA,

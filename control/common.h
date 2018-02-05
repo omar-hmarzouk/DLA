@@ -5,9 +5,7 @@
  * @copyright 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file common.h
  *
@@ -22,7 +20,6 @@
  * @date 2012-09-15
  *
  **/
-
 /*******************************************************************************
  *  MORSE facilities of interest to both MORSE core developer
  *  and also of interest to MORSE community contributor.

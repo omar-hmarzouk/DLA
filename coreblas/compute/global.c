@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file global.c
  *
@@ -21,7 +19,6 @@
  * @date 2010-11-15
  *
  **/
-
 static int coreblas_gemm3m_enabled = 0;
 
 void

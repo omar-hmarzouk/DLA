@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file core_zlauum.c
  *
@@ -35,7 +33,6 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-
 void CORE_zlauum(MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA)
 {
     LAPACKE_zlauum_work(LAPACK_COL_MAJOR, morse_lapack_const(uplo), N, A, LDA );

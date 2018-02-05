@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file codelet_zlatro.c
  *
@@ -35,7 +33,6 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-
 void MORSE_TASK_zlatro(const MORSE_option_t *options,
                        MORSE_enum uplo, MORSE_enum trans,
                        int m, int n, int mb,

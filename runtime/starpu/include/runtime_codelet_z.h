@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file runtime_codelet_z.h
  *
@@ -24,7 +22,6 @@
  * @precisions normal z -> c d s
  *
  **/
-
 #ifndef _CODELETS_Z_H_
 #define _CODELETS_Z_H_
 

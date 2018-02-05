@@ -5,9 +5,7 @@
  * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file descriptor.c
  *
@@ -20,9 +18,7 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
-
-/**
+ ***
  *
  * @defgroup Descriptor
  * @brief Group descriptor routines exposed to users

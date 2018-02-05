@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file core_zhe2ge.c
  *
@@ -35,7 +33,6 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-
 void CORE_zhe2ge(MORSE_enum uplo, int M, int N,
                  const MORSE_Complex64_t *A, int LDA,
                  MORSE_Complex64_t *B, int LDB)

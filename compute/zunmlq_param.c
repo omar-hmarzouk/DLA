@@ -4,9 +4,7 @@
  *                      Tennessee Research Foundation. All rights reserved.
  * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file zunmlq_param.c
  *

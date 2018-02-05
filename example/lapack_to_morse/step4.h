@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file step4.h
  *
@@ -20,7 +18,6 @@
  * @date 2014-10-29
  *
  **/
-
 #ifndef STEP4_H
 #define STEP4_H
 

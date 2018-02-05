@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file gkkleader.h
  *
@@ -24,7 +22,6 @@
  * @date 2010-11-15
  *
  **/
-
 #ifndef GKKLEADERS_H
 #define GKKLEADERS_H
 

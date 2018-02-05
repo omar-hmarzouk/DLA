@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file runtime_codelet_profile.h
  *
@@ -23,7 +21,6 @@
  * @date 2011-06-01
  *
  **/
-
 #ifndef __CODELET_PROFILE_H__
 #define __CODELET_PROFILE_H__
 

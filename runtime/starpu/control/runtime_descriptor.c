@@ -411,7 +411,6 @@ void RUNTIME_data_migrate( const MORSE_sequence_t *sequence,
 /*******************************************************************************
  *  Get data addr
  **/
-
 /* For older revision of StarPU, STARPU_MAIN_RAM is not defined */
 #ifndef STARPU_MAIN_RAM
 #define STARPU_MAIN_RAM 0

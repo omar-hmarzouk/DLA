@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file core_zsytf2_nopiv.c
  *
@@ -36,7 +34,6 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-
 static MORSE_Complex64_t zone  =  1.;
 static MORSE_Complex64_t mzone = -1.;
 

@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file morse_types.h
  *
@@ -23,7 +21,6 @@
  * @date 2011-06-01
  *
  **/
-
 #ifndef _MORSE_TYPES_H_
 #define _MORSE_TYPES_H_
 
@@ -55,7 +52,6 @@ typedef long MORSE_size;
 /** ****************************************************************************
  * MORSE Complex numbers
  **/
-
 #define MORSE_HAS_COMPLEX_H 1
 
 #if defined(_WIN32)
@@ -113,7 +109,6 @@ typedef long MORSE_size;
 /*******************************************************************************
  *  MORSE Deprecated attribute
  **/
-
 #if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
 #define MORSE_DEPRECATED  __attribute__((__deprecated__))
 #else

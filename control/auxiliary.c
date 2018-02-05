@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file auxiliary.c
  *
@@ -22,9 +20,7 @@
  * @author Cedric Castagnede
  * @date 2012-09-15
  *
- **/
-
-/**
+ ***
  *
  * @defgroup Auxiliary
  * @brief Group auxiliary routines exposed to users

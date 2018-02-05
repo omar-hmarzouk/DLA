@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file compute_z.h
  *
@@ -26,7 +24,6 @@
  * @precisions normal z -> c d s
  *
  **/
-
 /*******************************************************************************
  *  LAPACK/Tile Descriptor accesses
  **/

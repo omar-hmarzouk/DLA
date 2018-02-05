@@ -6,7 +6,6 @@
  *                      Univ. Bordeaux. All rights reserved.
  *
  **/
-
 /***
  *
  *

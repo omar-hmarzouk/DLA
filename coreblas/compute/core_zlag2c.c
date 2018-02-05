@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file core_zlag2c.c
  *
@@ -33,7 +31,6 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-
 void CORE_zlag2c(int m, int n,
                  const MORSE_Complex64_t *A, int lda,
                  MORSE_Complex32_t *B, int ldb, int *info)
@@ -49,7 +46,6 @@ void CORE_zlag2c(int m, int n,
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-
 void CORE_clag2z(int m, int n,
                  const MORSE_Complex32_t *A, int lda,
                  MORSE_Complex64_t *B, int ldb)

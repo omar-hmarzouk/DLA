@@ -6,7 +6,6 @@
  *                      Univ. Bordeaux. All rights reserved.
  *
  **/
-
 #ifndef LAPACK_HEADER_INCLUDED
 #define LAPACK_HEADER_INCLUDED
 

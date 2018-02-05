@@ -7,7 +7,6 @@
  *
  **/
 
-
 /**
  *
  * @file pztile2band.c

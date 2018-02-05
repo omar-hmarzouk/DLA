@@ -5,9 +5,7 @@
  * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file control.c
  *
@@ -21,9 +19,7 @@
  * @author Cedric Castagnede
  * @date 2012-09-15
  *
- **/
-
-/**
+ ***
  *
  * @defgroup Control
  * @brief Group routines exposed to users to control MORSE state

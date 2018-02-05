@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file posv_morse_functions.h
  *
@@ -20,7 +18,6 @@
  * @date 2014-10-13
  *
  **/
-
 #ifndef POSV_MORSE_FUNCTIONS_H
 #define POSV_MORSE_FUNCTIONS_H
 

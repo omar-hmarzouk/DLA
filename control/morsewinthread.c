@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file morsewinthread.c
  *
@@ -21,7 +19,6 @@
  * @date 2012-09-15
  *
  **/
-
 #include "control/morsewinthread.h"
 
 #include <limits.h>

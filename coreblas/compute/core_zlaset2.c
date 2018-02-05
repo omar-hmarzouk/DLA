@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file core_zlaset2.c
  *
@@ -63,7 +61,6 @@
  *         The leading dimension of the array A.  LDA >= max(1,M).
  *
  **/
-
 void CORE_zlaset2(MORSE_enum uplo, int M, int N,
                   MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA)
 {

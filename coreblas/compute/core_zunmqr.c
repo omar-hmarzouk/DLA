@@ -6,7 +6,6 @@
  *                      Univ. Bordeaux. All rights reserved.
  *
  **/
-
  /**
  *
  * @file core_zunmqr.c

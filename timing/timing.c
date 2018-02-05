@@ -5,9 +5,7 @@
  * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file timing.c
  *
@@ -23,7 +21,6 @@
  * @date 2010-11-15
  *
  **/
-
 #if defined( _WIN32 ) || defined( _WIN64 )
 #define int64_t __int64
 #endif

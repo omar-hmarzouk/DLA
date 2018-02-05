@@ -310,8 +310,7 @@ RUNTIME_sequence_flush( MORSE_context_t  *ctxt,
  *
  * @name RUNTIME Memory management
  * @{
- **/
-/**
+ ***
  * @brief Allocate size bytes through the runtime memory management system if any, or with malloc otherwise.
  *
  * This function allows to allocate pinned memory if needed, or eventually not
@@ -342,9 +341,7 @@ RUNTIME_free( void *ptr, size_t size );
  *
  * @name RUNTIME Descriptor functions
  * @{
- **/
-
-/**
+ ***
  * @brief Initialize runtime specific data structure to a given descriptor.
  *
  * @param[in,out] desc

@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file core_zherk.c
  *
@@ -37,7 +35,6 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-
 void CORE_zherk(MORSE_enum uplo, MORSE_enum trans,
                 int N, int K,
                 double alpha, const MORSE_Complex64_t *A, int LDA,

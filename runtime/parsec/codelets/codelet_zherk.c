@@ -5,9 +5,7 @@
  * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  * @file codelet_zherk.c
  *
  *  MORSE codelets kernel
@@ -28,7 +26,6 @@
  * @ingroup CORE_MORSE_Complex64_t
  *
  **/
-
 static inline int
 CORE_zherk_parsec( parsec_execution_stream_t *context,
                    parsec_task_t             *this_task )

@@ -5,9 +5,7 @@
  * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file out_of_core.h
  *
@@ -20,7 +18,6 @@
  * @date 2016-08-23
  *
  **/
-
 #ifndef OOC_H
 #define OOC_H
 

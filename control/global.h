@@ -5,9 +5,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
  * @file global.h
  *
@@ -22,7 +20,6 @@
  * @date 2010-11-15
  *
  **/
-
 /*******************************************************************************
  *  MORSE internals of interest to MORSE core developers, but not necessarily
  *  of interest to MORSE community contributors.
