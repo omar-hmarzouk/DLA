@@ -25,8 +25,6 @@
  */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
-#undef REAL
-#define COMPLEX
 
 /**
  *
