@@ -27,8 +27,6 @@
 #ifndef _MORSE_CORE_ZBLAS_H_
 #define _MORSE_CORE_ZBLAS_H_
 
-#define COMPLEX
-
 /**
  *  Declarations of serial kernels - alphabetical order
  */
@@ -128,7 +126,6 @@ void CORE_zhbtype3cb(int N, int NB,
 void CORE_zhegst(int itype, MORSE_enum uplo, int N,
                  MORSE_Complex64_t *A, int LDA,
                  MORSE_Complex64_t *B, int LDB, int *INFO);
-#ifdef COMPLEX
 void CORE_zhemm(MORSE_enum side, MORSE_enum uplo,
                 int M, int N,
                 MORSE_Complex64_t alpha, const MORSE_Complex64_t *A, int LDA,
@@ -146,7 +143,6 @@ void CORE_zher2k(MORSE_enum uplo, MORSE_enum trans,
 int  CORE_zhessq(MORSE_enum uplo, int N,
                  const MORSE_Complex64_t *A, int LDA,
                  double *scale, double *sumsq);
-#endif
 int  CORE_zherfb(MORSE_enum uplo, int N, int K, int IB, int NB,
                  const MORSE_Complex64_t *A,    int LDA,
                  const MORSE_Complex64_t *T,    int LDT,
@@ -158,11 +154,9 @@ void CORE_zlacpy(MORSE_enum uplo, int M, int N,
 void CORE_zlange(int norm, int M, int N,
                  const MORSE_Complex64_t *A, int LDA,
                  double *work, double *normA);
-#ifdef COMPLEX
 void CORE_zlanhe(int norm, MORSE_enum uplo, int N,
                  const MORSE_Complex64_t *A, int LDA,
                  double *work, double *normA);
-#endif
 void CORE_zlansy(int norm, MORSE_enum uplo, int N,
                  const MORSE_Complex64_t *A, int LDA,
                  double *work, double *normA);
@@ -405,7 +399,4 @@ int  CORE_zunmqr(MORSE_enum side, MORSE_enum trans,
                  const MORSE_Complex64_t *T, int LDT,
                  MORSE_Complex64_t *C, int LDC,
                  MORSE_Complex64_t *WORK, int LDWORK);
-
-#undef COMPLEX
-
 #endif
