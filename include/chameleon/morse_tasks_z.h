@@ -27,7 +27,6 @@
 #ifndef _MORSE_TASKS_Z_H_
 #define _MORSE_TASKS_Z_H_
 
-#define COMPLEX
 
 /**
  *  Declarations of QUARK wrappers (called by MORSE) - alphabetical order
@@ -195,7 +194,6 @@ void MORSE_TASK_zlange(const MORSE_option_t *options,
 void MORSE_TASK_zlange_max(const MORSE_option_t *options,
                            const MORSE_desc_t *A, int Am, int An,
                            const MORSE_desc_t *B, int Bm, int Bn);
-#ifdef COMPLEX
 void MORSE_TASK_zhessq( const MORSE_option_t *options,
                         MORSE_enum uplo, int n,
                         const MORSE_desc_t *A, int Am, int An, int lda,
@@ -204,7 +202,6 @@ void MORSE_TASK_zlanhe(const MORSE_option_t *options,
                        MORSE_enum norm, MORSE_enum uplo, int N, int NB,
                        const MORSE_desc_t *A, int Am, int An, int LDA,
                        const MORSE_desc_t *B, int Bm, int Bn);
-#endif
 void MORSE_TASK_zlansy(const MORSE_option_t *options,
                        MORSE_enum norm, MORSE_enum uplo, int N, int NB,
                        const MORSE_desc_t *A, int Am, int An, int LDA,
@@ -467,7 +464,5 @@ void MORSE_TASK_zunmqr(const MORSE_option_t *options,
 void MORSE_TASK_zbuild( const MORSE_option_t *options,
                         const MORSE_desc_t *A, int Am, int An, int lda,
                         void *user_data, void* user_build_callback );
-
-#undef COMPLEX
 
 #endif

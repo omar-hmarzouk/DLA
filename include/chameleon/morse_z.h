@@ -27,9 +27,6 @@
 #ifndef _MORSE_Z_H_
 #define _MORSE_Z_H_
 
-#undef REAL
-#define COMPLEX
-
 BEGIN_C_DECLS
 
 /**
@@ -56,11 +53,9 @@ int MORSE_zgetrf_nopiv(int M, int N, MORSE_Complex64_t *A, int LDA);
 //int MORSE_zgetrs(MORSE_enum trans, int N, int NRHS, MORSE_Complex64_t *A, int LDA, int *IPIV, MORSE_Complex64_t *B, int LDB);
 int MORSE_zgetrs_incpiv(MORSE_enum trans, int N, int NRHS, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descL, int *IPIV, MORSE_Complex64_t *B, int LDB);
 int MORSE_zgetrs_nopiv(MORSE_enum trans, int N, int NRHS, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB);
-#ifdef COMPLEX
 int MORSE_zhemm(MORSE_enum side, MORSE_enum uplo, int M, int N, MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB, MORSE_Complex64_t beta, MORSE_Complex64_t *C, int LDC);
 int MORSE_zherk(MORSE_enum uplo, MORSE_enum trans, int N, int K, double alpha, MORSE_Complex64_t *A, int LDA, double beta, MORSE_Complex64_t *C, int LDC);
 int MORSE_zher2k(MORSE_enum uplo, MORSE_enum trans, int N, int K, MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB, double beta, MORSE_Complex64_t *C, int LDC);
-#endif
 //int MORSE_zheev(MORSE_enum jobz, MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA, double *W, MORSE_desc_t *descT, MORSE_Complex64_t *Q, int LDQ);
 int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA, double *W, MORSE_desc_t *descT);
 //int MORSE_zhegv(MORSE_enum itype, MORSE_enum jobz, MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB, double *W, MORSE_desc_t *descT, MORSE_Complex64_t *Q, int LDQ);
@@ -69,9 +64,7 @@ int MORSE_zheevd(MORSE_enum jobz, MORSE_enum uplo, int N, MORSE_Complex64_t *A, 
 int MORSE_zhetrd(MORSE_enum jobz, MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA, double *D, double *E, MORSE_desc_t *descT, MORSE_Complex64_t *Q, int LDQ);
 int MORSE_zlacpy(MORSE_enum uplo, int M, int N, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB);
 double MORSE_zlange(MORSE_enum norm, int M, int N, MORSE_Complex64_t *A, int LDA);
-#ifdef COMPLEX
 double MORSE_zlanhe(MORSE_enum norm, MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA);
-#endif
 double MORSE_zlansy(MORSE_enum norm, MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA);
 double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, int M, int N, MORSE_Complex64_t *A, int LDA);
 int MORSE_zlascal(MORSE_enum uplo, int M, int N, MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA);
@@ -79,9 +72,7 @@ int MORSE_zlaset(MORSE_enum uplo, int M, int N, MORSE_Complex64_t alpha, MORSE_C
 //int MORSE_zlaswp(int N, MORSE_Complex64_t *A, int LDA, int K1, int K2, int *IPIV, int INCX);
 //int MORSE_zlaswpc(int N, MORSE_Complex64_t *A, int LDA, int K1, int K2, int *IPIV, int INCX);
 int MORSE_zlauum(MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA);
-#ifdef COMPLEX
 int MORSE_zplghe( double bump, MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA, unsigned long long int seed );
-#endif
 int MORSE_zplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA, unsigned long long int seed );
 int MORSE_zplrnt( int M, int N, MORSE_Complex64_t *A, int LDA, unsigned long long int seed );
 int MORSE_zposv(MORSE_enum uplo, int N, int NRHS, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB);
@@ -135,11 +126,9 @@ int MORSE_zgetrf_nopiv_Tile(MORSE_desc_t *A);
 //int MORSE_zgetrs_Tile(MORSE_enum trans, MORSE_desc_t *A, int *IPIV, MORSE_desc_t *B);
 int MORSE_zgetrs_incpiv_Tile(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_desc_t *B);
 int MORSE_zgetrs_nopiv_Tile(MORSE_desc_t *A, MORSE_desc_t *B);
-#ifdef COMPLEX
 int MORSE_zhemm_Tile(MORSE_enum side, MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_Complex64_t beta, MORSE_desc_t *C);
 int MORSE_zherk_Tile(MORSE_enum uplo, MORSE_enum trans, double alpha, MORSE_desc_t *A, double beta, MORSE_desc_t *C);
 int MORSE_zher2k_Tile(MORSE_enum uplo, MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, double beta, MORSE_desc_t *C);
-#endif
 //int MORSE_zheev_Tile(MORSE_enum jobz, MORSE_enum uplo, MORSE_desc_t *A, double *W, MORSE_desc_t *T, MORSE_Complex64_t *Q, int LDQ);
 int MORSE_zheevd_Tile(MORSE_enum jobz, MORSE_enum uplo, MORSE_desc_t *A, double *W, MORSE_desc_t *T);
 //int MORSE_zhegv_Tile( MORSE_enum itype, MORSE_enum jobz, MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, double *W, MORSE_desc_t *T, MORSE_desc_t *Q);
@@ -148,9 +137,7 @@ int MORSE_zheevd_Tile(MORSE_enum jobz, MORSE_enum uplo, MORSE_desc_t *A, double 
 int MORSE_zhetrd_Tile(MORSE_enum jobz, MORSE_enum uplo, MORSE_desc_t *A, double *D, double *E, MORSE_desc_t *T, MORSE_Complex64_t *Q, int LDQ);
 int MORSE_zlacpy_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B);
 double MORSE_zlange_Tile(MORSE_enum norm, MORSE_desc_t *A);
-#ifdef COMPLEX
 double MORSE_zlanhe_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A);
-#endif
 double MORSE_zlansy_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A);
 double MORSE_zlantr_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A);
 int MORSE_zlascal_Tile(MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_desc_t *A);
@@ -158,9 +145,7 @@ int MORSE_zlaset_Tile(MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_Complex64_
 //int MORSE_zlaswp_Tile(MORSE_desc_t *A, int K1, int K2, int *IPIV, int INCX);
 //int MORSE_zlaswpc_Tile(MORSE_desc_t *A, int K1, int K2, int *IPIV, int INCX);
 int MORSE_zlauum_Tile(MORSE_enum uplo, MORSE_desc_t *A);
-#ifdef COMPLEX
 int MORSE_zplghe_Tile(double bump, MORSE_enum uplo, MORSE_desc_t *A, unsigned long long int seed );
-#endif
 int MORSE_zplgsy_Tile(MORSE_Complex64_t bump, MORSE_enum uplo, MORSE_desc_t *A, unsigned long long int seed );
 int MORSE_zplrnt_Tile(MORSE_desc_t *A, unsigned long long int seed );
 int MORSE_zposv_Tile(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B);
@@ -211,11 +196,9 @@ int MORSE_zgetrf_nopiv_Tile_Async(MORSE_desc_t *A, MORSE_sequence_t *sequence, M
 //int MORSE_zgetrs_Tile_Async(MORSE_enum trans, MORSE_desc_t *A, int *IPIV, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zgetrs_incpiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zgetrs_nopiv_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
-#ifdef COMPLEX
 int MORSE_zhemm_Tile_Async(MORSE_enum side, MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_Complex64_t beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zherk_Tile_Async(MORSE_enum uplo, MORSE_enum trans, double alpha, MORSE_desc_t *A, double beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zher2k_Tile_Async(MORSE_enum uplo, MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, double beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request);
-#endif
 //int MORSE_zheev_Tile_Async(MORSE_enum jobz, MORSE_enum uplo, MORSE_desc_t *A, double *W, MORSE_desc_t *T, MORSE_Complex64_t *Q, int LDQ, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo, MORSE_desc_t *A, double *W, MORSE_desc_t *T, MORSE_sequence_t *sequence, MORSE_request_t *request);
 //int MORSE_zhegv_Tile_Async( MORSE_enum itype, MORSE_enum jobz, MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, double *W, MORSE_desc_t *T, MORSE_desc_t *Q, MORSE_sequence_t *sequence, MORSE_request_t *request);
@@ -224,9 +207,7 @@ int MORSE_zheevd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo, MORSE_desc_t *A, d
 int MORSE_zhetrd_Tile_Async(MORSE_enum jobz, MORSE_enum uplo, MORSE_desc_t *A, double *D, double *E, MORSE_desc_t *T, MORSE_Complex64_t *Q, int LDQ, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zlacpy_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zlange_Tile_Async(MORSE_enum norm, MORSE_desc_t *A, double *value, MORSE_sequence_t *sequence, MORSE_request_t *request);
-#ifdef COMPLEX
 int MORSE_zlanhe_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A, double *value, MORSE_sequence_t *sequence, MORSE_request_t *request);
-#endif
 int MORSE_zlansy_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A, double *value, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zlantr_Tile_Async(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A, double *value, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zlascal_Tile_Async(MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
@@ -234,9 +215,7 @@ int MORSE_zlaset_Tile_Async(MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_Comp
 //int MORSE_zlaswp_Tile_Async(MORSE_desc_t *A, int K1, int K2, int *IPIV, int INCX, MORSE_sequence_t *sequence, MORSE_request_t *request);
 //int MORSE_zlaswpc_Tile_Async(MORSE_desc_t *A, int K1, int K2, int *IPIV, int INCX, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zlauum_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
-#ifdef COMPLEX
 int MORSE_zplghe_Tile_Async(double bump, MORSE_enum uplo, MORSE_desc_t *A, unsigned long long int seed, MORSE_sequence_t *sequence, MORSE_request_t *request );
-#endif
 int MORSE_zplgsy_Tile_Async(MORSE_Complex64_t bump, MORSE_enum uplo, MORSE_desc_t *A, unsigned long long int seed, MORSE_sequence_t *sequence, MORSE_request_t *request );
 int MORSE_zplrnt_Tile_Async(MORSE_desc_t *A, unsigned long long int seed, MORSE_sequence_t *sequence, MORSE_request_t *request );
 int MORSE_zposv_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
@@ -353,7 +332,5 @@ int MORSE_zbuild_Tile(MORSE_enum uplo,  MORSE_desc_t *A, void *user_data, void* 
 int MORSE_zbuild_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, void *user_data, void* user_build_callback, MORSE_sequence_t *sequence, MORSE_request_t  *request);
 
 END_C_DECLS
-
-#undef COMPLEX
 
 #endif
