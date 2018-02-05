@@ -149,12 +149,13 @@ void morse_pzgeqrf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
             ldap = BLKLDD(A, p);
             ldam = BLKLDD(A, m);
 
-            /* Tiles killed is a TS */
             if (qrtree->gettype(qrtree, k, m) == 0) {
+                /* TS kernel */
                 T = TS;
                 L = 0;
             }
             else {
+                /* TT kernel */
                 T = TT;
                 L = tempmm;
             }

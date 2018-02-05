@@ -103,12 +103,13 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
 
             tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
 
-            /* TS or TT */
             if(qrtree->gettype(qrtree, k, n) == 0){
+                /* TS kernel */
                 L = 0;
                 T = TS;
             }
             else {
+                /* TT kernel */
                 L = tempnn;
                 T = TT;
             }

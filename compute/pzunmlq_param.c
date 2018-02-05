@@ -144,12 +144,13 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                     ldbp = BLKLDD(B, p);
                     ldbm = BLKLDD(B, m);
 
-                    /* TT or TS */
                     if(qrtree->gettype(qrtree, k, m) == 0){
+                        /* TS kernel */
                         L = 0;
                         T = TS;
                     }
                     else {
+                        /* TT kernel */
                         L = A->nb;
                         T = TT;
                     }
@@ -202,12 +203,13 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                     ldbp = BLKLDD(B, p);
                     ldbm = BLKLDD(B, m);
 
-                    /* TT or TS */
                     if(qrtree->gettype(qrtree, k, m) == 0){
+                        /* TS kernel */
                         L = 0;
                         T = TS;
                     }
                     else {
+                        /* TT kernel */
                         L = A->nb;
                         T = TT;
                     }
@@ -292,12 +294,13 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                     ldbp = BLKLDD(B, p);
 
-                    /* TS or TT */
                     if(qrtree->gettype(qrtree, k, n) == 0){
+                        /* TS kernel */
                         L = 0;
                         T = TS;
                     }
                     else {
+                        /* TT kernel */
                         L = tempnn;
                         T = TT;
                     }
@@ -416,10 +419,12 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                     ldbp = BLKLDD(B, p);
 
                     if(qrtree->gettype(qrtree, k, n) == 0){
+                        /* TS kernel */
                         L = 0;
                         T = TS;
                     }
                     else {
+                        /* TT kernel */
                         L = tempnn;
                         T = TT;
                     }

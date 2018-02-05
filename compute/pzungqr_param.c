@@ -109,12 +109,13 @@ void morse_pzungqr_param(const libhqr_tree_t *qrtree,
             ldqm = BLKLDD(Q, m);
             ldqp = BLKLDD(Q, p);
 
-            /* TT or TS */
             if(qrtree->gettype(qrtree, k , m) == 0) {
+                /* TS kernel */
                 T = TS;
                 L = 0;
             }
             else {
+                /* TT kernel */
                 T = TT;
                 L = tempmm;
             }

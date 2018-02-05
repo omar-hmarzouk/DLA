@@ -145,12 +145,13 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                     ldbm = BLKLDD(B, m);
                     ldbp = BLKLDD(B, p);
 
-                    /* TT or TS */
                     if(qrtree->gettype(qrtree, k, m) == 0){
+                        /* TS kernel */
                         L = 0;
                         T = TS;
                     }
                     else {
+                        /* TT kernel */
                         L = tempmm;
                         T = TT;
                     }
@@ -203,12 +204,13 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                     ldbm = BLKLDD(B, m);
                     ldbp = BLKLDD(B, p);
 
-                    /* TT or TS */
                     if(qrtree->gettype(qrtree, k, m) == 0){
+                        /* TS kernel */
                         L = 0;
                         T = TS;
                     }
                     else {
+                        /* TT kernel */
                         L = tempmm;
                         T = TT;
                     }
@@ -294,12 +296,13 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                     ldan = BLKLDD(A, n);
                     ldbp = BLKLDD(B, p);
 
-                    /* TS or TT */
                     if(qrtree->gettype(qrtree, k, n) == 0){
+                        /* TS kernel */
                         L = 0;
                         T = TS;
                     }
                     else {
+                        /* TT kernel */
                         L = tempmm;
                         T = TT;
                     }
@@ -419,10 +422,12 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                     ldbp = BLKLDD(B, p);
 
                     if(qrtree->gettype(qrtree, k, n) == 0){
+                        /* TS kernel */
                         L = 0;
                         T = TS;
                     }
                     else {
+                        /* TT kernel */
                         L = tempmm;
                         T = TT;
                     }

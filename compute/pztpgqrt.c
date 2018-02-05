@@ -106,6 +106,7 @@ void morse_pztpgqrt( int L,
 
             for (n = k; n < Q2->nt; n++) {
                 tempnn = n == Q2->nt-1 ? Q2->n-n*Q2->nb : Q2->nb;
+                /* TT kernel */
                 MORSE_TASK_ztpmqrt(
                     &options,
                     MorseLeft, MorseNoTrans,
@@ -123,6 +124,7 @@ void morse_pztpgqrt( int L,
             ldqm = BLKLDD(Q1, m);
             for (n = k; n < Q1->nt; n++) {
                 tempnn = n == Q1->nt-1 ? Q1->n-n*Q1->nb : Q1->nb;
+                /* TS kernel */
                 MORSE_TASK_ztpmqrt(
                     &options,
                     MorseLeft, MorseNoTrans,

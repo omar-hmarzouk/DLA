@@ -140,6 +140,7 @@ void morse_pzunmqrrh( MORSE_enum side, MORSE_enum trans,
                             RUNTIME_data_migrate( sequence, B(m, n),
                                                   B->get_rankof( B, m, n ) );
 
+                            /* TS kernel */
                             MORSE_TASK_ztpmqrt(
                                 &options, side, trans,
                                 tempmm, tempnn, tempkn, 0, ib, T->nb,
@@ -164,6 +165,7 @@ void morse_pzunmqrrh( MORSE_enum side, MORSE_enum trans,
                             RUNTIME_data_migrate( sequence, B(M+RD, n),
                                                   B->get_rankof( B, M+RD, n ) );
 
+                            /* TT kernel */
                             MORSE_TASK_ztpmqrt(
                                 &options, side, trans,
                                 tempMRDm, tempnn, tempkn, tempMRDm, ib, T->nb,
@@ -208,6 +210,7 @@ void morse_pzunmqrrh( MORSE_enum side, MORSE_enum trans,
                             RUNTIME_data_migrate( sequence, B(M+RD, n),
                                                   B->get_rankof( B, M+RD, n ) );
 
+                            /* TT kernel */
                             MORSE_TASK_ztpmqrt(
                                 &options, side, trans,
                                 tempMRDm, tempnn, tempkn, tempMRDm, ib, T->nb,
@@ -235,6 +238,7 @@ void morse_pzunmqrrh( MORSE_enum side, MORSE_enum trans,
                             RUNTIME_data_migrate( sequence, B(m, n),
                                                   B->get_rankof( B, m, n ) );
 
+                            /* TS kernel */
                             MORSE_TASK_ztpmqrt(
                                 &options, side, trans,
                                 tempmm, tempnn, tempkn, 0, ib, T->nb,
@@ -301,6 +305,7 @@ void morse_pzunmqrrh( MORSE_enum side, MORSE_enum trans,
                             RUNTIME_data_migrate( sequence, B(m, M+RD),
                                                   B->get_rankof( B, m, M+RD ) );
 
+                            /* TT kernel */
                             MORSE_TASK_ztpmqrt(
                                 &options, side, trans,
                                 tempmm, tempMRDm, tempkn, tempmm, ib, T->nb,
@@ -328,6 +333,7 @@ void morse_pzunmqrrh( MORSE_enum side, MORSE_enum trans,
                             RUNTIME_data_migrate( sequence, B(m, m),
                                                   B->get_rankof( B, m, n ) );
 
+                            /* TS kernel */
                             MORSE_TASK_ztpmqrt(
                                 &options, side, trans,
                                 tempmm, tempnn, tempkn, 0, ib, T->nb,
@@ -419,6 +425,7 @@ void morse_pzunmqrrh( MORSE_enum side, MORSE_enum trans,
                             RUNTIME_data_migrate( sequence, B(m, n),
                                                   B->get_rankof( B, m, n ) );
 
+                            /* TS kernel */
                             MORSE_TASK_ztpmqrt(
                                 &options, side, trans,
                                 tempmm, tempnn, tempkn, 0, ib, T->nb,
@@ -442,6 +449,7 @@ void morse_pzunmqrrh( MORSE_enum side, MORSE_enum trans,
                             RUNTIME_data_migrate( sequence, B(m, M+RD),
                                                   B->get_rankof( B, m, M+RD ) );
 
+                            /* TT kernel */
                             MORSE_TASK_ztpmqrt(
                                 &options, side, trans,
                                 tempmm, tempMRDm, tempkn, tempmm, ib, T->nb,

@@ -111,6 +111,7 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                     RUNTIME_data_migrate( sequence, Q(M+RD, n),
                                           Q->get_rankof( Q, M+RD, n ) );
 
+                    /* TT kernel */
                     MORSE_TASK_ztpmqrt(
                         &options,
                         MorseLeft, MorseNoTrans,
@@ -140,6 +141,7 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                     RUNTIME_data_migrate( sequence, Q(m, n),
                                           Q->get_rankof( Q, m, n ) );
 
+                    /* TS kernel */
                     MORSE_TASK_ztpmqrt(
                         &options,
                         MorseLeft, MorseNoTrans,

@@ -138,6 +138,7 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D, int BS,
                 RUNTIME_data_migrate( sequence, A(k, N),
                                       A->get_rankof( A, k, n ) );
 
+                /* TS kernel */
                 MORSE_TASK_ztplqt(
                     &options,
                     tempkm, tempnn, 0, ib, T->nb,
@@ -172,6 +173,7 @@ void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D, int BS,
                 RUNTIME_data_migrate( sequence, A(k, N+RD),
                                       A->get_rankof( A, k, N+RD ) );
 
+                /* TT kernel */
                 MORSE_TASK_ztplqt(
                     &options,
                     tempkm, tempNRDn, chameleon_min(tempNRDn, tempkm), ib, T->nb,
