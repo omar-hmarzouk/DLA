@@ -174,21 +174,21 @@ inline static int morse_getblkldd_cm(const MORSE_desc_t *A, int m) {
 /**
  *  Internal function to return MPI rank of element A(m,n) with m,n = block indices
  */
-inline static int morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n)
+inline static int morse_getrankof_2d(const MORSE_desc_t *A, int m, int n)
 {
     int mm = m + A->i / A->mb;
     int nn = n + A->j / A->nb;
-    return (mm % desc->p) * desc->q + (nn % desc->q);
+    return (mm % A->p) * A->q + (nn % A->q);
 }
 
 /**
  *  Internal function to return MPI rank of element DIAG(m,0) with m,n = block indices
  */
-inline static int morse_getrankof_2d_diag(const MORSE_desc_t *desc, int m, int n)
+inline static int morse_getrankof_2d_diag(const MORSE_desc_t *A, int m, int n)
 {
     int mm = m + A->i / A->mb;
     assert( n == 0 );
-    return (mm % desc->p) * desc->q + (mm % desc->q);
+    return (mm % A->p) * A->q + (mm % A->q);
 }
 
 
