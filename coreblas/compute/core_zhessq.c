@@ -23,8 +23,6 @@
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 
-#define COMPLEX
-
 #define UPDATE( __nb, __value )                                         \
     if (__value != 0. ){                                                \
         if ( *scale < __value ) {                                       \
@@ -113,7 +111,7 @@ int CORE_zhessq(MORSE_enum uplo, int N,
                 tmp = fabs(*ptr);
                 UPDATE( 2., tmp );
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
                 ptr++;
                 tmp = fabs(*ptr);
                 UPDATE( 2., tmp );
@@ -124,7 +122,7 @@ int CORE_zhessq(MORSE_enum uplo, int N,
             tmp = fabs(*ptr);
             UPDATE( 1., tmp );
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
             ptr++;
 #endif
         }
@@ -138,7 +136,7 @@ int CORE_zhessq(MORSE_enum uplo, int N,
             UPDATE( 1., tmp );
             ptr++;
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
             ptr++;
 #endif
 
@@ -147,7 +145,7 @@ int CORE_zhessq(MORSE_enum uplo, int N,
                 tmp = fabs(*ptr);
                 UPDATE( 2., tmp );
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
                 ptr++;
                 tmp = fabs(*ptr);
                 UPDATE( 2., tmp );

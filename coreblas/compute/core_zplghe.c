@@ -25,9 +25,6 @@
  */
 #include "coreblas.h"
 
-#define COMPLEX
-#undef REAL
-
 /*
  Rnd64seed is a global variable but it doesn't spoil thread safety. All matrix
  generating threads only read Rnd64seed. It is safe to set Rnd64seed before
@@ -41,7 +38,7 @@
 #define RndF_Mul 5.4210108624275222e-20f
 #define RndD_Mul 5.4210108624275222e-20
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define NBELEM   2
 #else
 #define NBELEM   1
@@ -87,7 +84,7 @@ void CORE_zplghe( double bump, int m, int n, MORSE_Complex64_t *A, int lda,
             for (i = j; i < m; i++) {
                 *tmp = 0.5f - ran * RndF_Mul;
                 ran  = Rnd64_A * ran + Rnd64_C;
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
                 *tmp += I*(0.5f - ran * RndF_Mul);
                 ran   = Rnd64_A * ran + Rnd64_C;
 #endif
@@ -98,7 +95,7 @@ void CORE_zplghe( double bump, int m, int n, MORSE_Complex64_t *A, int lda,
         }
 
         for (j = 0; j < n; j++) {
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
             A[j+j*lda] += bump - I*cimag( A[j+j*lda] );
 #else
             A[j+j*lda] += bump;
@@ -119,7 +116,7 @@ void CORE_zplghe( double bump, int m, int n, MORSE_Complex64_t *A, int lda,
             for (i = 0; i < m; i++) {
                 *tmp = 0.5f - ran * RndF_Mul;
                 ran  = Rnd64_A * ran + Rnd64_C;
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
                 *tmp += I*(0.5f - ran * RndF_Mul);
                 ran   = Rnd64_A * ran + Rnd64_C;
 #endif
@@ -142,7 +139,7 @@ void CORE_zplghe( double bump, int m, int n, MORSE_Complex64_t *A, int lda,
             for (j = 0; j < n; j++) {
                 A[j*lda+i] = 0.5f - ran * RndF_Mul;
                 ran = Rnd64_A * ran + Rnd64_C;
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
                 A[j*lda+i] -= I*(0.5f - ran * RndF_Mul);
                 ran = Rnd64_A * ran + Rnd64_C;
 #endif

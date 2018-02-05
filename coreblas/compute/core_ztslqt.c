@@ -25,8 +25,6 @@
  */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
-#undef REAL
-#define COMPLEX
 
 /**
  *
@@ -142,7 +140,7 @@ int CORE_ztslqt(int M, int N, int IB,
             /*
              * Generate elementary reflector H( II*IB+I ) to annihilate A( II*IB+I, II*IB+I:N ).
              */
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
             LAPACKE_zlacgv_work(N, &A2[ii+i], LDA2);
             LAPACKE_zlacgv_work(1, &A1[LDA1*(ii+i)+ii+i], LDA1);
 #endif
@@ -184,7 +182,7 @@ int CORE_ztslqt(int M, int N, int IB,
                 CBLAS_SADDR(alpha), &A2[ii], LDA2,
                 &A2[ii+i], LDA2,
                 CBLAS_SADDR(zzero), &T[LDT*(ii+i)], 1);
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
             LAPACKE_zlacgv_work(N, &A2[ii+i], LDA2 );
             LAPACKE_zlacgv_work(1, &A1[LDA1*(ii+i)+ii+i], LDA1 );
 #endif
