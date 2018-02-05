@@ -112,10 +112,8 @@ extern "C" {
 
 #include "control/compute_s.h"
 #include "control/compute_d.h"
-#define COMPLEX
 #include "control/compute_c.h"
 #include "control/compute_z.h"
-#undef COMPLEX
 
 /*
 void morse_pdlag2s(MORSE_context_t *morse);
