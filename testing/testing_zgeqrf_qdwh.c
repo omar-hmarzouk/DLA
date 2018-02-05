@@ -35,9 +35,6 @@
 #include <coreblas/coreblas_z.h>
 #include "testing_zauxiliary.h"
 
-#undef REAL
-#define COMPLEX
-
 static int check_orthogonality(int, int, const MORSE_Complex64_t*, int, double);
 static int check_factorization(int, int, const MORSE_Complex64_t*, int, const MORSE_Complex64_t*, int, MORSE_Complex64_t*, int, double);
 

@@ -31,9 +31,6 @@
 #include <coreblas.h>
 #include "testing_zauxiliary.h"
 
-#define COMPLEX
-#undef REAL
-
 /*--------------------------------------------------------------
  * Check the pemv
  */
@@ -164,7 +161,7 @@ int testing_zpemv(int argc, char **argv)
         }
 
         /* Colwise ConjTrans & Rowwise NoTrans */
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
         for (t=0; t<3; t++)
 #else
         for (t=0; t<2; t++)

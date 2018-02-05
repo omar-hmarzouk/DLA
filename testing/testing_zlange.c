@@ -31,9 +31,6 @@
 #include <coreblas.h>
 #include "testing_zauxiliary.h"
 
-#undef REAL
-#define COMPLEX
-
 int testing_zlange(int argc, char **argv)
 {
     int hres = 0;
@@ -111,50 +108,50 @@ int testing_zlange(int argc, char **argv)
 
     }
 
-    #ifdef COMPLEX
-        /* MORSE ZLANTR */
-        for(n=1; n<3; n++) {
-            for(u=0; u<2; u++) {
-                int d;
-                for(d=0; d<2; d++) {
-                    normmorse = MORSE_zlantr(norm[n], uplo[u], diag[d], M, N, A, LDA);
-                    normlapack = LAPACKE_zlantr_work(LAPACK_COL_MAJOR, morse_lapack_const(norm[n]), morse_lapack_const(uplo[u]),
-                                                     morse_lapack_const(diag[d]), M, N, A, LDA, work);
-                    printf("LAPACK %e, CHAMELEON %e\n", normlapack, normmorse);
+#if defined(PRECISION_z) || defined(PRECISION_c)
+    /* MORSE ZLANTR */
+    for(n=1; n<3; n++) {
+        for(u=0; u<2; u++) {
+            int d;
+            for(d=0; d<2; d++) {
+                normmorse = MORSE_zlantr(norm[n], uplo[u], diag[d], M, N, A, LDA);
+                normlapack = LAPACKE_zlantr_work(LAPACK_COL_MAJOR, morse_lapack_const(norm[n]), morse_lapack_const(uplo[u]),
+                                                 morse_lapack_const(diag[d]), M, N, A, LDA, work);
+                printf("LAPACK %e, CHAMELEON %e\n", normlapack, normmorse);
 
-                    result = fabs(normmorse - normlapack) / (normlapack * eps);
-                    switch(norm[n]) {
-                    case MorseMaxNorm:
-                        /* result should be perfectly equal */
-                        break;
-                    case MorseInfNorm:
-                        /* Sum order on the line can differ */
-                        result = result / (double)N;
-                        break;
-                    case MorseOneNorm:
-                        /* Sum order on the column can differ */
-                        result = result / (double)M;
-                        break;
-                    case MorseFrobeniusNorm:
-                        /* Sum oreder on every element can differ */
-                        result = result / ((double)M * (double)N);
-                        break;
-                    }
-
-                    printf("***************************************************\n");
-                    if ( result < 1. ) {
-                        printf(" ---- TESTING ZLANTR (%s, %s, %s)......... PASSED !\n",
-                               normstr[n], uplostr[u], diagstr[d]);
-                    }
-                    else {
-                        printf(" - TESTING ZLANTR (%s, %s, %s)... FAILED !\n",
-                               normstr[n], uplostr[u], diagstr[d]);
-                    }
-                    printf("***************************************************\n");
+                result = fabs(normmorse - normlapack) / (normlapack * eps);
+                switch(norm[n]) {
+                case MorseMaxNorm:
+                    /* result should be perfectly equal */
+                    break;
+                case MorseInfNorm:
+                    /* Sum order on the line can differ */
+                    result = result / (double)N;
+                    break;
+                case MorseOneNorm:
+                    /* Sum order on the column can differ */
+                    result = result / (double)M;
+                    break;
+                case MorseFrobeniusNorm:
+                    /* Sum oreder on every element can differ */
+                    result = result / ((double)M * (double)N);
+                    break;
                 }
+
+                printf("***************************************************\n");
+                if ( result < 1. ) {
+                    printf(" ---- TESTING ZLANTR (%s, %s, %s)......... PASSED !\n",
+                           normstr[n], uplostr[u], diagstr[d]);
+                }
+                else {
+                    printf(" - TESTING ZLANTR (%s, %s, %s)... FAILED !\n",
+                           normstr[n], uplostr[u], diagstr[d]);
+                }
+                printf("***************************************************\n");
             }
         }
-    #endif
+    }
+#endif
 
     /* MORSE ZLANSY */
     for(n=0; n<4; n++) {
@@ -193,51 +190,51 @@ int testing_zlange(int argc, char **argv)
         }
     }
 
-    #ifdef COMPLEX
-        /* MORSE ZLANHE */
-        {
-          int j;
-          for (j=0; j<min(M,N); j++) {
+#if defined(PRECISION_z) || defined(PRECISION_c)
+    /* MORSE ZLANHE */
+    {
+        int j;
+        for (j=0; j<min(M,N); j++) {
             A[j*LDA+j] -= I*cimag(A[j*LDA+j]);
-          }
         }
+    }
 
-        for(n=0; n<4; n++) {
-            for(u=0; u<2; u++) {
-                normmorse = MORSE_zlanhe(norm[n], uplo[u], min(M,N), A, LDA);
-                normlapack = LAPACKE_zlanhe_work(LAPACK_COL_MAJOR, morse_lapack_const(norm[n]), morse_lapack_const(uplo[u]), min(M,N), A, LDA, work);
-                printf("LAPACK %e, CHAMELEON %e\n", normlapack, normmorse);
+    for(n=0; n<4; n++) {
+        for(u=0; u<2; u++) {
+            normmorse = MORSE_zlanhe(norm[n], uplo[u], min(M,N), A, LDA);
+            normlapack = LAPACKE_zlanhe_work(LAPACK_COL_MAJOR, morse_lapack_const(norm[n]), morse_lapack_const(uplo[u]), min(M,N), A, LDA, work);
+            printf("LAPACK %e, CHAMELEON %e\n", normlapack, normmorse);
 
-                result = fabs(normmorse - normlapack) / (normlapack * eps);
-                switch(norm[n]) {
-                case MorseMaxNorm:
-                    /* result should be perfectly equal */
-                    break;
-                case MorseInfNorm:
-                    /* Sum order on the line can differ */
-                    result = result / (double)N;
-                    break;
-                case MorseOneNorm:
-                    /* Sum order on the column can differ */
-                    result = result / (double)M;
-                    break;
-                case MorseFrobeniusNorm:
-                    /* Sum oreder on every element can differ */
-                    result = result / ((double)M * (double)N);
-                    break;
-                }
-
-                printf("***************************************************\n");
-                if ( result < 1. ) {
-                    printf(" ---- TESTING ZLANHE (%s, %s)......... PASSED !\n", normstr[n], uplostr[u]);
-                }
-                else {
-                    printf(" - TESTING ZLANHE (%s, %s)... FAILED !\n", normstr[n], uplostr[u]);
-                }
-                printf("***************************************************\n");
+            result = fabs(normmorse - normlapack) / (normlapack * eps);
+            switch(norm[n]) {
+            case MorseMaxNorm:
+                /* result should be perfectly equal */
+                break;
+            case MorseInfNorm:
+                /* Sum order on the line can differ */
+                result = result / (double)N;
+                break;
+            case MorseOneNorm:
+                /* Sum order on the column can differ */
+                result = result / (double)M;
+                break;
+            case MorseFrobeniusNorm:
+                /* Sum oreder on every element can differ */
+                result = result / ((double)M * (double)N);
+                break;
             }
+
+            printf("***************************************************\n");
+            if ( result < 1. ) {
+                printf(" ---- TESTING ZLANHE (%s, %s)......... PASSED !\n", normstr[n], uplostr[u]);
+            }
+            else {
+                printf(" - TESTING ZLANHE (%s, %s)... FAILED !\n", normstr[n], uplostr[u]);
+            }
+            printf("***************************************************\n");
         }
-    #endif
+    }
+#endif
 
     free(A);
     free(work);
