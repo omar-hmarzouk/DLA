@@ -36,7 +36,7 @@
 #
 ###
 #
-#  @file insert-licence.sh
+#  @file insert-licence-chameleon.sh
 #
 #  @project MORSE
 #  MORSE is a software package provided by:

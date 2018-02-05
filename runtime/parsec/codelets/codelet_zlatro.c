@@ -6,7 +6,7 @@
  *                      Univ. Bordeaux. All rights reserved.
  *
  ***
- * @file qwrapper_zlatro.c
+ * @file codelet_zlatro.c
  *
  *  PLASMA core_blas quark wrapper
  *  PLASMA is a software package provided by Univ. of Tennessee,

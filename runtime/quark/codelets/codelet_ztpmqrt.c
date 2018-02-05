@@ -7,7 +7,7 @@
  *
  ***
  *
- * @file codelet_ztpqrt.c
+ * @file codelet_ztpmqrt.c
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,

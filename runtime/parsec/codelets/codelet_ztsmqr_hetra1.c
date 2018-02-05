@@ -7,7 +7,7 @@
  *
  ***
  *
- * @file codelets_ztsmqr_hetra1.c
+ * @file codelet_ztsmqr_hetra1.c
  *
  *  PLASMA core_blas quark wrapper
  *  PLASMA is a software package provided by Univ. of Tennessee,

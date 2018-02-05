@@ -7,7 +7,7 @@
  *
  ***
  *
- * @file cuda_zmerge.c
+ * @file cuda_zgemerge.c
  *
  *  MORSE cudablas kernel
  *  MORSE is a software package provided by Univ. of Tennessee,

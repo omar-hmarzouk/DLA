@@ -7,7 +7,7 @@
  *
  ***
  *
- * @file qwrapper_zherfb.c
+ * @file codelet_zherfb.c
  *
  *  PLASMA core_blas quark wrapper
  *  PLASMA is a software package provided by Univ. of Tennessee,

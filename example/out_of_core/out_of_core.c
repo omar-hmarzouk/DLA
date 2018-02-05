@@ -7,7 +7,7 @@
  *
  ***
  *
- * @file ooc.c
+ * @file out_of_core.c
  *
  *  MORSE example routines
  *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,

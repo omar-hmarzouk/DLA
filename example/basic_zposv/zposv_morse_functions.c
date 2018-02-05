@@ -7,7 +7,7 @@
  *
  ***
  *
- * @file basic_zpotrf.c
+ * @file zposv_morse_functions.c
  *
  *  MORSE example routines
  *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,

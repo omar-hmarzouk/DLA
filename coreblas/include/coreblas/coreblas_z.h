@@ -7,7 +7,7 @@
  *
  ***
  *
- * @file core_zblas.h
+ * @file coreblas_z.h
  *
  *  PLASMA auxiliary routines
  *  PLASMA is a software package provided by Univ. of Tennessee,

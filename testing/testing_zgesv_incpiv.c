@@ -7,7 +7,7 @@
  *
  ***
  *
- * @file testing_zgesv.c
+ * @file testing_zgesv_incpiv.c
  *
  *  MORSE testing routines
  *  MORSE is a software package provided by Univ. of Tennessee,

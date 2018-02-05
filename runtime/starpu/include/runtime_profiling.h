@@ -7,7 +7,7 @@
  *
  ***
  *
- * @file runtime_progiling.h
+ * @file runtime_profiling.h
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
