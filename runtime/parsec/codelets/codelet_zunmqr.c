@@ -44,10 +44,10 @@ CORE_zunmqr_parsec( parsec_execution_stream_t *context,
     int ldwork;
 
     parsec_dtd_unpack_args(
-        this_task,   &side,   &trans,   &m,   &n,   &k,   &ib, &A,   &lda, &T,   &ldt, &C,   &ldc, &WORK,   &ldwork );
+        this_task, &side, &trans, &m, &n, &k, &ib, &A, &lda, &T, &ldt, &C, &ldc, &WORK, &ldwork );
 
     CORE_zunmqr( side, trans, m, n, k, ib,
-                A, lda, T, ldt, C, ldc, WORK, ldwork);
+                 A, lda, T, ldt, C, ldc, WORK, ldwork);
 
     (void)context;
     return PARSEC_HOOK_RETURN_DONE;
@@ -70,13 +70,13 @@ void MORSE_TASK_zunmqr(const MORSE_option_t *options,
         sizeof(int),           &n,                                 VALUE,
         sizeof(int),           &k,                                 VALUE,
         sizeof(int),           &ib,                                VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ), INPUT,
         sizeof(int),           &lda,                               VALUE,
-        PASSED_BY_REF,         RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ),     INPUT,
+        PASSED_BY_REF,         RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ), INPUT,
         sizeof(int),           &ldt,                               VALUE,
-        PASSED_BY_REF,         RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ), INOUT,
         sizeof(int),           &ldc,                               VALUE,
-        sizeof(MORSE_Complex64_t)*ib*nb,   NULL,                   SCRATCH,
+        sizeof(MORSE_Complex64_t)*ib*nb,   NULL,                          SCRATCH,
         sizeof(int),           &nb,                                VALUE,
         PARSEC_DTD_ARG_END );
 }

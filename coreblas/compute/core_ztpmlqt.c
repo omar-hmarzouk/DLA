@@ -10,7 +10,7 @@
 
 /**
  *
- * @file core_ztpmqrt.c
+ * @file core_ztpmlqt.c
  *
  *  PLASMA core_blas kernel
  *  PLASMA is a software package provided by Univ. of Tennessee,
@@ -29,7 +29,7 @@
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- * CORE_ztpmqrt applies a complex orthogonal matrix Q obtained from a
+ * CORE_ztpmlqt applies a complex orthogonal matrix Q obtained from a
  * "triangular-pentagonal" complex block reflector H to a general complex matrix
  * C, which consists of two blocks A and B.
  *
@@ -109,18 +109,17 @@
  *  H(1), H(2), ..., H(K); V is composed of a rectangular block V1 and a
  *  trapezoidal block V2:
  *
- *        V = [V1]
- *            [V2].
+ *        V = [V1] [V2].
  *
  *  The size of the trapezoidal block V2 is determined by the parameter L,
- *  where 0 <= L <= K; V2 is upper trapezoidal, consisting of the first L
- *  rows of a K-by-K upper triangular matrix.  If L=K, V2 is upper triangular;
+ *  where 0 <= L <= K; V2 is lower trapezoidal, consisting of the first L
+ *  rows of a K-by-K upper triangular matrix.  If L=K, V2 is lower triangular;
  *  if L=0, there is no trapezoidal block, hence V = V1 is rectangular.
  *
- *  If side = MorseLeft:  C = [A]  where A is K-by-N,  B is M-by-N and V is M-by-K.
+ *  If side = MorseLeft:  C = [A]  where A is K-by-N,  B is M-by-N and V is K-by-M.
  *                            [B]
  *
- *  If side = MorseRight: C = [A B]  where A is M-by-K, B is M-by-N and V is N-by-K.
+ *  If side = MorseRight: C = [A B]  where A is M-by-K, B is M-by-N and V is K-by-N.
  *
  *  The complex orthogonal matrix Q is formed from V and T.
  *
@@ -140,7 +139,7 @@
  *
  ******************************************************************************/
 
-int CORE_ztpmqrt( MORSE_enum side, MORSE_enum trans,
+int CORE_ztpmlqt( MORSE_enum side, MORSE_enum trans,
                   int M, int N, int K, int L, int IB,
                   const MORSE_Complex64_t *V, int LDV,
                   const MORSE_Complex64_t *T, int LDT,
@@ -164,23 +163,23 @@ int CORE_ztpmqrt( MORSE_enum side, MORSE_enum trans,
     else {
         m1 = M;
         n1 = K;
-        ldwork = m1;
+        ldwork = chameleon_max( n1, N );
     }
 
     /* TS case */
     if (L == 0) {
-        CORE_ztsmqr( side, trans, m1, n1, M, N, K, IB,
+        CORE_ztsmlq( side, trans, m1, n1, M, N, K, IB,
                      A, LDA, B, LDB, V, LDV, T, LDT,
                      WORK, ldwork );
     }
     /* TT case */
-    else if( L == M ) {
-        CORE_zttmqr( side, trans, m1, n1, M, N, K, IB,
+    else if( L == N ) {
+        CORE_zttmlq( side, trans, m1, n1, M, N, K, IB,
                      A, LDA, B, LDB, V, LDV, T, LDT,
                      WORK, ldwork );
     }
     else {
-        //LAPACKE_ztpmqrt_work( LAPACK_COL_MAJOR, M, N, K, L, IB, V, LDV, T, LDT, A, LDA, B, LDB, WORK );
+        //LAPACKE_ztpmlqt_work( LAPACK_COL_MAJOR, M, N, K, L, IB, V, LDV, T, LDT, A, LDA, B, LDB, WORK );
         coreblas_error( 6, "Illegal value of L (only 0 or M handled for now)");
         return -6;
     }

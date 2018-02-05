@@ -79,7 +79,9 @@ set(CODELETS_ZSRC
     codelets/codelet_zssssm.c
     codelets/codelet_zsyssq.c
     codelets/codelet_zsytrf_nopiv.c
+    codelets/codelet_ztplqt.c
     codelets/codelet_ztpqrt.c
+    codelets/codelet_ztpmlqt.c
     codelets/codelet_ztpmqrt.c
     codelets/codelet_ztradd.c
     codelets/codelet_ztrasm.c

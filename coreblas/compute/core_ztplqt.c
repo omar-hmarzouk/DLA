@@ -10,7 +10,7 @@
 
 /**
  *
- * @file core_ztpqrt.c
+ * @file core_ztplqt.c
  *
  *  PLASMA core_blas kernel
  *  PLASMA is a software package provided by Univ. of Tennessee,
@@ -30,60 +30,55 @@
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- * CORE_ztpqrt computes a blocked QR factorization of a complex
+ * CORE_ztplqt computes a blocked LQ factorization of a complex
  * "triangular-pentagonal" matrix C, which is composed of a
  * triangular block A and pentagonal block B, using the compact
  * WY representation for Q.
  *
- *  C = | A | = Q * R
- *      | B |
+ *  C = | A B | = L * Q
  *
  *******************************************************************************
  *
  * @param[in] M
- *         The number of rows of the tile B. M >= 0.
+ *         The number of rows of the tile B, and the order of the
+ *         triangular matrix A. M >= 0.
  *
  * @param[in] N
- *          The number of columns of the matrix B, and the order of the matrix
- *          A. N >= 0.
- *
- * @param[in] IB
- *         The inner-blocking size.  N >= IB >= 0.
+ *         The number of columns of the matrix B.
  *
  * @param[in] L
- *          The number of rows of the upper trapezoidal part of B.
+ *          The number of rows of the lower trapezoidal part of B.
  *          MIN(M,N) >= L >= 0.  See Further Details.
  *
+ * @param[in] IB
+ *         The inner-blocking size.  M >= IB >= 0.
+ *
  * @param[in,out] A
- *          On entry, the upper triangular N-by-N matrix A.
- *          On exit, the elements on and above the diagonal of the array
- *          contain the upper triangular matrix R.
+ *          On entry, the lower triangular M-by-M matrix A.
+ *          On exit, the elements on and below the diagonal of the array
+ *          contain the lower triangular matrix L.
  *
  * @param[in] LDA
- *          The leading dimension of the array A. LDA >= max(1,N).
+ *          The leading dimension of the array A. LDA >= max(1,M).
  *
  * @param[in,out] B
- *          On entry, the pentagonal M-by-N matrix B.  The first M-L rows
- *          are rectangular, and the last L rows are upper trapezoidal.
- *          On exit, B contains the pentagonal matrix V.  See Further Details.
+ *          On entry, the pentagonal M-by-N matrix B. The first N-L columns
+ *          are rectangular, and the last L columns are lower trapezoidal.
+ *          On exit, B contains the pentagonal matrix V. See Further Details.
  *
  * @param[in] LDB
  *          The leading dimension of the array B.  LDB >= max(1,M).
  *
  * @param[out] T
  *         The IB-by-N triangular factor T of the block reflector.
- *         T is upper triangular by block (economic storage);
- *         The rest of the array is not referenced.
+ *         The lower triangular block reflectors stored in compact form
+ *         as a sequence of upper triangular blocks. See Further Details.
  *
  * @param[in] LDT
  *         The leading dimension of the array T. LDT >= IB.
  *
- * @param[out] TAU
- *         The scalar factors of the elementary reflectors (see Further
- *         Details).
- *
  * @param[out] WORK
- *          WORK is COMPLEX*16 array, dimension ((IB+1)*N)
+ *          WORK is COMPLEX*16 array, dimension ((IB+1)*M)
  *
  *******************************************************************************
  *
@@ -92,7 +87,7 @@
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
  ******************************************************************************/
-int CORE_ztpqrt( int M, int N, int L, int IB,
+int CORE_ztplqt( int M, int N, int L, int IB,
                  MORSE_Complex64_t *A, int LDA,
                  MORSE_Complex64_t *B, int LDB,
                  MORSE_Complex64_t *T, int LDT,
@@ -116,7 +111,7 @@ int CORE_ztpqrt( int M, int N, int L, int IB,
         coreblas_error(4, "Illegal value of IB");
         return -4;
     }
-    if ((LDA < chameleon_max(1,N)) && (N > 0)) {
+    if ((LDA < chameleon_max(1,M)) && (M > 0)) {
         coreblas_error(6, "Illegal value of LDA");
         return -6;
     }
@@ -129,7 +124,7 @@ int CORE_ztpqrt( int M, int N, int L, int IB,
         return -10;
     }
     if ((L != 0) && (L != chameleon_min(M, N))) {
-        //LAPACKE_ztpmqrt_work( LAPACK_COL_MAJOR, M, N, K, L, IB, V, LDV, T, LDT, A, LDA, B, LDB, WORK );
+        //LAPACKE_ztpmlqt_work( LAPACK_COL_MAJOR, M, N, K, L, IB, V, LDV, T, LDT, A, LDA, B, LDB, WORK );
         coreblas_error( 6, "Illegal value of L (only 0 or min(M,N) handled for now)");
         return -6;
     }
@@ -140,13 +135,13 @@ int CORE_ztpqrt( int M, int N, int L, int IB,
         return MORSE_SUCCESS;
 
     if ( L == 0 ) {
-        CORE_ztsqrt( M, N, IB, A, LDA, B, LDB, T, LDT, WORK, WORK+N );
+        CORE_ztslqt( M, N, IB, A, LDA, B, LDB, T, LDT, WORK, WORK+M );
     }
     else /* if (L == M) */ {
-        CORE_zttqrt( M, N, IB, A, LDA, B, LDB, T, LDT, WORK, WORK+N );
+        CORE_zttlqt( M, N, IB, A, LDA, B, LDB, T, LDT, WORK, WORK+M );
     }
     /* else { */
-    /*     //LAPACKE_ztpqrt_work( LAPACK_COL_MAJOR, M, N, L, IB, A, LDA, B, LDB, T, LDT, WORK ); */
+    /*     //LAPACKE_ztplqt_work( LAPACK_COL_MAJOR, M, N, L, IB, A, LDA, B, LDB, T, LDT, WORK ); */
     /*     coreblas_error( 3, "Illegal value of L (only 0 or M handled for now)"); */
     /*     return -3; */
     /* } */

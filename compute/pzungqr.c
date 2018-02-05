@@ -34,9 +34,9 @@
 #define Q(m,n) Q,  m,  n
 #define T(m,n) T,  m,  n
 #if defined(CHAMELEON_COPY_DIAG)
-#define D(k) D, k, 0
+#define D(k)   D,  k,  0
 #else
-#define D(k) A, k, k
+#define D(k)   D,  k,  k
 #endif
 
 /*******************************************************************************
@@ -67,6 +67,10 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
         minMT = A->nt;
     } else {
         minMT = A->mt;
+    }
+
+    if (D == NULL) {
+        D = A;
     }
 
     /*
@@ -105,16 +109,22 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
             ldqm = BLKLDD(Q, m);
             for (n = k; n < Q->nt; n++) {
                 tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
-                MORSE_TASK_ztsmqr(
+
+                RUNTIME_data_migrate( sequence, Q(k, n),
+                                      Q->get_rankof( Q, m, n ) );
+
+                /* TS kernel */
+                MORSE_TASK_ztpmqrt(
                     &options,
                     MorseLeft, MorseNoTrans,
-                    Q->mb, tempnn, tempmm, tempnn, tempAkn, ib, T->nb,
-                    Q(k, n), ldqk,
-                    Q(m, n), ldqm,
+                    tempmm, tempnn, tempAkn, 0, ib, T->nb,
                     A(m, k), ldam,
-                    T(m, k), T->mb);
+                    T(m, k), T->mb,
+                    Q(k, n), ldqk,
+                    Q(m, n), ldqm);
             }
         }
+
 #if defined(CHAMELEON_COPY_DIAG)
         MORSE_TASK_zlacpy(
             &options,
@@ -131,11 +141,16 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
 #endif
         for (n = k; n < Q->nt; n++) {
             tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
+
+            /* Restore the original location of the tiles */
+            RUNTIME_data_migrate( sequence, Q(k, n),
+                                  Q->get_rankof( Q, k, n ) );
+
             MORSE_TASK_zunmqr(
                 &options,
                 MorseLeft, MorseNoTrans,
                 tempkm, tempnn, tempkmin, ib, T->nb,
-                D(k), ldak,
+                D(k),    ldak,
                 T(k, k), T->mb,
                 Q(k, n), ldqk);
         }
@@ -144,5 +159,4 @@ void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
 
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    (void)D;
 }

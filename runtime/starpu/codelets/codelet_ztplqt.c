@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelet_ztpqrt.c
+ * @file codelet_ztplqt.c
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -26,7 +26,7 @@
 #include "runtime_codelet_z.h"
 
 #if !defined(CHAMELEON_SIMULATION)
-static void cl_ztpqrt_cpu_func(void *descr[], void *cl_arg)
+static void cl_ztplqt_cpu_func(void *descr[], void *cl_arg)
 {
     int M;
     int N;
@@ -48,7 +48,7 @@ static void cl_ztpqrt_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args( cl_arg, &M, &N, &L, &ib,
                                 &lda, &ldb, &ldt );
 
-    CORE_ztpqrt( M, N, L, ib,
+    CORE_ztplqt( M, N, L, ib,
                  A, lda, B, ldb, T, ldt, WORK );
 }
 #endif /* !defined(CHAMELEON_SIMULATION) */
@@ -56,17 +56,17 @@ static void cl_ztpqrt_cpu_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-CODELETS_CPU(ztpqrt, 4, cl_ztpqrt_cpu_func)
+CODELETS_CPU(ztplqt, 4, cl_ztplqt_cpu_func)
 
 void
-MORSE_TASK_ztpqrt( const MORSE_option_t *options,
+MORSE_TASK_ztplqt( const MORSE_option_t *options,
                    int M, int N, int L, int ib, int nb,
                    const MORSE_desc_t *A, int Am, int An, int lda,
                    const MORSE_desc_t *B, int Bm, int Bn, int ldb,
                    const MORSE_desc_t *T, int Tm, int Tn, int ldt )
 {
-    struct starpu_codelet *codelet = &cl_ztpqrt;
-    void (*callback)(void*) = options->profiling ? cl_ztpqrt_callback : NULL;
+    struct starpu_codelet *codelet = &cl_ztplqt;
+    void (*callback)(void*) = options->profiling ? cl_ztplqt_callback : NULL;
 
     MORSE_BEGIN_ACCESS_DECLARATION;
     MORSE_ACCESS_RW(A, Am, An);
@@ -94,7 +94,7 @@ MORSE_TASK_ztpqrt( const MORSE_option_t *options,
         STARPU_EXECUTE_ON_NODE, B->get_rankof(B, Bm, Bn),
 #endif
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-        STARPU_NAME, "ztpqrt",
+        STARPU_NAME, (L == 0) ? "ztplqs" : "ztplqt",
 #endif
         0);
 

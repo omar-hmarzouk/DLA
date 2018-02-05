@@ -86,6 +86,7 @@ void morse_pztpqrt( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T,
             tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
             templm = m == maxmt-1 ? tempmm       : 0;
             ldbm = BLKLDD(B, m);
+            /* TT kernel */
             MORSE_TASK_ztpqrt(
                 &options,
                 tempmm, tempkn, templm, ib, T->nb,

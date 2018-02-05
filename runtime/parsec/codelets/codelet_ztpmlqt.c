@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelet_ztpqrt.c
+ * @file codelet_ztpmlqt.c
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -27,7 +27,7 @@
 #include "coreblas/coreblas_z.h"
 
 static inline int
-CORE_ztpmqrt_parsec( parsec_execution_stream_t *context,
+CORE_ztpmlqt_parsec( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )
 {
     MORSE_enum side;
@@ -50,14 +50,14 @@ CORE_ztpmqrt_parsec( parsec_execution_stream_t *context,
     parsec_dtd_unpack_args(
         this_task, &side, &trans, &M, &N, &K, &L, &ib, &V, &ldv, &T, &ldt, &A, &lda, &B, &ldb, &WORK );
 
-    CORE_ztpmqrt( side, trans, M, N, K, L, ib,
+    CORE_ztpmlqt( side, trans, M, N, K, L, ib,
                   V, ldv, T, ldt, A, lda, B, ldb, WORK );
 
     (void)context;
     return PARSEC_HOOK_RETURN_DONE;
 }
 
-void MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
+void MORSE_TASK_ztpmlqt( const MORSE_option_t *options,
                          MORSE_enum side, MORSE_enum trans,
                          int M, int N, int K, int L, int ib, int nb,
                          const MORSE_desc_t *V, int Vm, int Vn, int ldv,
@@ -68,7 +68,7 @@ void MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
     parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
     parsec_dtd_taskpool_insert_task(
-        PARSEC_dtd_taskpool, CORE_ztpmqrt_parsec, options->priority, "tpmqrt",
+        PARSEC_dtd_taskpool, CORE_ztpmlqt_parsec, options->priority, "tpmlqt",
         sizeof(MORSE_enum), &side,  VALUE,
         sizeof(MORSE_enum), &trans, VALUE,
         sizeof(int),        &M,     VALUE,

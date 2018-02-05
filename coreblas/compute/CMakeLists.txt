@@ -74,7 +74,9 @@ set(ZSRC
     core_zsyrk.c
     core_zsyssq.c
     core_zsytf2_nopiv.c
+    core_ztplqt.c
     core_ztpqrt.c
+    core_ztpmlqt.c
     core_ztpmqrt.c
     core_ztradd.c
     core_ztrasm.c

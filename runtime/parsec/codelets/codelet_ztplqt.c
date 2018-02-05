@@ -10,7 +10,7 @@
 
 /**
  *
- * @file codelet_ztpqrt.c
+ * @file codelet_ztplqt.c
  *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
@@ -27,7 +27,7 @@
 #include "coreblas/coreblas_z.h"
 
 static inline int
-CORE_ztpqrt_parsec( parsec_execution_stream_t *context,
+CORE_ztplqt_parsec( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )
 {
     int M;
@@ -45,14 +45,14 @@ CORE_ztpqrt_parsec( parsec_execution_stream_t *context,
     parsec_dtd_unpack_args(
         this_task, &M, &N, &L, &ib, &A, &lda, &B, &ldb, &T, &ldt, &WORK );
 
-    CORE_ztpqrt( M, N, L, ib,
+    CORE_ztplqt( M, N, L, ib,
                  A, lda, B, ldb, T, ldt, WORK );
 
     (void)context;
     return PARSEC_HOOK_RETURN_DONE;
 }
 
-void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
+void MORSE_TASK_ztplqt( const MORSE_option_t *options,
                          int M, int N, int L, int ib, int nb,
                          const MORSE_desc_t *A, int Am, int An, int lda,
                          const MORSE_desc_t *B, int Bm, int Bn, int ldb,
@@ -61,7 +61,7 @@ void MORSE_TASK_ztpqrt( const MORSE_option_t *options,
     parsec_taskpool_t* PARSEC_dtd_taskpool = (parsec_taskpool_t *)(options->sequence->schedopt);
 
     parsec_dtd_taskpool_insert_task(
-        PARSEC_dtd_taskpool, CORE_ztpqrt_parsec, options->priority, "tpqrt",
+        PARSEC_dtd_taskpool, CORE_ztplqt_parsec, options->priority, "tplqt",
         sizeof(int),   &M,   VALUE,
         sizeof(int),   &N,   VALUE,
         sizeof(int),   &L,   VALUE,

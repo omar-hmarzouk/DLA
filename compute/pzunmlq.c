@@ -3,8 +3,7 @@
  * @copyright (c) 2009-2014 The University of Tennessee and The University
  *                          of Tennessee Research Foundation.
  *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
  *
  **/
 
@@ -35,12 +34,12 @@
 #define B(m,n) B,  m,  n
 #define T(m,n) T,  m,  n
 #if defined(CHAMELEON_COPY_DIAG)
-#define D(k) D, k, 0
+#define D(k)   D,  k,  0
 #else
-#define D(k) A, k, k
+#define D(k)   D,  k,  k
 #endif
 
-/*******************************************************************************
+/**
  *  Parallel application of Q using tile V - LQ factorization - dynamic scheduling
  **/
 void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
@@ -70,6 +69,10 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
     } else {
         minM  = A->m;
         minMT = A->mt;
+    }
+
+    if (D == NULL) {
+        D = A;
     }
 
     /*
@@ -133,24 +136,35 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                     ldbm = BLKLDD(B, m);
                     for (n = 0; n < B->nt; n++) {
                         tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
-                        MORSE_TASK_ztsmlq(
+
+                        RUNTIME_data_migrate( sequence, B(k, n),
+                                              B->get_rankof( B, m, n ) );
+
+                        /* TS kernel */
+                        MORSE_TASK_ztpmlqt(
                             &options,
                             side, trans,
-                            B->mb, tempnn, tempmm, tempnn, tempkmin, ib, T->nb,
-                            B(k, n), ldbk,
-                            B(m, n), ldbm,
+                            tempmm, tempnn, tempkmin, 0, ib, T->nb,
                             A(k, m), ldak,
-                            T(k, m), T->mb);
+                            T(k, m), T->mb,
+                            B(k, n), ldbk,
+                            B(m, n), ldbm);
                     }
+                }
+
+                /* Restore the original location of the tiles */
+                for (n = 0; n < B->nt; n++) {
+                    RUNTIME_data_migrate( sequence, B(k, n),
+                                          B->get_rankof( B, k, n ) );
                 }
 
                 RUNTIME_iteration_pop(morse);
             }
         }
+        /*
+         *  MorseLeft / MorseConjTrans
+         */
         else {
-            /*
-             *  MorseLeft / MorseConjTrans
-             */
             for (k = minMT-1; k >= 0; k--) {
                 RUNTIME_iteration_push(morse, k);
 
@@ -162,15 +176,20 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                     tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                     ldbm = BLKLDD(B, m);
                     for (n = 0; n < B->nt; n++) {
-                        tempnn   = n == B->nt-1 ? B->n-n*B->nb : B->nb;
-                        MORSE_TASK_ztsmlq(
+                        tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+
+                        RUNTIME_data_migrate( sequence, B(k, n),
+                                              B->get_rankof( B, m, n ) );
+
+                        /* TS kernel */
+                        MORSE_TASK_ztpmlqt(
                             &options,
                             side, trans,
-                            B->mb, tempnn, tempmm, tempnn, tempkmin, ib, T->nb,
-                            B(k, n), ldbk,
-                            B(m, n), ldbm,
+                            tempmm, tempnn, tempkmin, 0, ib, T->nb,
                             A(k, m), ldak,
-                            T(k, m), T->mb);
+                            T(k, m), T->mb,
+                            B(k, n), ldbk,
+                            B(m, n), ldbm);
                     }
                 }
 #if defined(CHAMELEON_COPY_DIAG)
@@ -189,6 +208,10 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
 #endif
                 for (n = 0; n < B->nt; n++) {
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
+
+                    RUNTIME_data_migrate( sequence, B(k, n),
+                                          B->get_rankof( B, k, n ) );
+
                     MORSE_TASK_zunmlq(
                         &options,
                         side, trans,
@@ -197,35 +220,39 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                         T(k, k), T->mb,
                         B(k, n), ldbk);
                 }
-
                 RUNTIME_iteration_pop(morse);
             }
         }
     }
+    /*
+     *  MorseRight / MorseNoTrans
+     */
     else {
         if (trans == MorseNoTrans) {
-            /*
-             *  MorseRight / MorseNoTrans
-             */
             for (k = minMT-1; k >= 0; k--) {
                 RUNTIME_iteration_push(morse, k);
 
-                tempkn   = k == B->nt -1 ? B->n -k*B->nb : B->nb;
-                tempkmin = k == minMT-1 ? minM-k*A->nb : A->nb;
+                tempkn   = k == B->nt - 1 ? B->n - k * B->nb : B->nb;
+                tempkmin = k == minMT - 1 ? minM - k * A->nb : A->nb;
                 ldak = BLKLDD(A, k);
                 for (n = B->nt-1; n > k; n--) {
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                     for (m = 0; m < B->mt; m++) {
                         tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                         ldbm = BLKLDD(B, m);
-                        MORSE_TASK_ztsmlq(
+
+                        RUNTIME_data_migrate( sequence, B(m, k),
+                                              B->get_rankof( B, m, n ) );
+
+                        /* TS kernel */
+                        MORSE_TASK_ztpmlqt(
                             &options,
                             side, trans,
-                            tempmm, B->nb, tempmm, tempnn, tempkmin, ib, T->nb,
-                            B(m, k), ldbm,
-                            B(m, n), ldbm,
+                            tempmm, tempnn, tempkmin, 0, ib, T->nb,
                             A(k, n), ldak,
-                            T(k, n), T->mb);
+                            T(k, n), T->mb,
+                            B(m, k), ldbm,
+                            B(m, n), ldbm);
                     }
                 }
 #if defined(CHAMELEON_COPY_DIAG)
@@ -245,6 +272,10 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                 for (m = 0; m < B->mt; m++) {
                     tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                     ldbm = BLKLDD(B, m);
+
+                    RUNTIME_data_migrate( sequence, B(m, k),
+                                          B->get_rankof( B, m, k ) );
+
                     MORSE_TASK_zunmlq(
                         &options,
                         side, trans,
@@ -257,14 +288,14 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                 RUNTIME_iteration_pop(morse);
             }
         }
+        /*
+         *  MorseRight / MorseConjTrans
+         */
         else {
-            /*
-             *  MorseRight / MorseConjTrans
-             */
             for (k = 0; k < minMT; k++) {
                 RUNTIME_iteration_push(morse, k);
 
-                tempkn   = k == B->nt -1 ? B->n -k*B->nb : B->nb;
+                tempkn   = k == B->nt-1 ? B->n-k*B->nb : B->nb;
                 tempkmin = k == minMT-1 ? minM-k*A->mb : A->mb;
                 ldak = BLKLDD(A, k);
 #if defined(CHAMELEON_COPY_DIAG)
@@ -297,15 +328,26 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                     for (m = 0; m < B->mt; m++) {
                         tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                         ldbm = BLKLDD(B, m);
-                        MORSE_TASK_ztsmlq(
+
+                        RUNTIME_data_migrate( sequence, B(m, k),
+                                              B->get_rankof( B, m, n ) );
+
+                        /* TS kernel */
+                        MORSE_TASK_ztpmlqt(
                             &options,
                             side, trans,
-                            tempmm, B->nb, tempmm, tempnn, tempkmin, ib, T->nb,
-                            B(m, k), ldbm,
-                            B(m, n), ldbm,
+                            tempmm, tempnn, tempkmin, 0, ib, T->nb,
                             A(k, n), ldak,
-                            T(k, n), T->mb);
+                            T(k, n), T->mb,
+                            B(m, k), ldbm,
+                            B(m, n), ldbm);
                     }
+                }
+
+                /* Restore the original location of the tiles */
+                for (m = 0; m < B->mt; m++) {
+                    RUNTIME_data_migrate( sequence, B(m, k),
+                                          B->get_rankof( B, m, k ) );
                 }
 
                 RUNTIME_iteration_pop(morse);
@@ -315,5 +357,4 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
 
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    (void)D;
 }

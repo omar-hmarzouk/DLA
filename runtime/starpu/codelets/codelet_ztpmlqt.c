@@ -6,7 +6,7 @@
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @file codelet_ztpmqrt.c
+ * @file codelet_ztpmlqt.c
  *
  * MORSE codelets kernel
  * MORSE is a software package provided by Univ. of Tennessee,
@@ -22,7 +22,7 @@
 #include "runtime_codelet_z.h"
 
 #if !defined(CHAMELEON_SIMULATION)
-static void cl_ztpmqrt_cpu_func(void *descr[], void *cl_arg)
+static void cl_ztpmlqt_cpu_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
     MORSE_enum trans;
@@ -50,13 +50,12 @@ static void cl_ztpmqrt_cpu_func(void *descr[], void *cl_arg)
     starpu_codelet_unpack_args( cl_arg, &side, &trans, &M, &N, &K, &L, &ib,
                                 &ldv, &ldt, &lda, &ldb );
 
-    CORE_ztpmqrt( side, trans, M, N, K, L, ib,
+    CORE_ztpmlqt( side, trans, M, N, K, L, ib,
                   V, ldv, T, ldt, A, lda, B, ldb, WORK );
 }
 
-
-#if defined(CHAMELEON_USE_CUDA)
-static void cl_ztpmqrt_cuda_func(void *descr[], void *cl_arg)
+#if defined(CHAMELEON_USE_CUDA) && 0
+static void cl_ztpmlqt_cuda_func(void *descr[], void *cl_arg)
 {
     MORSE_enum side;
     MORSE_enum trans;
@@ -86,7 +85,7 @@ static void cl_ztpmqrt_cuda_func(void *descr[], void *cl_arg)
 
     RUNTIME_getStream(stream);
 
-    CUDA_ztpmqrt(
+    CUDA_ztpmlqt(
             side, trans, M, N, K, L, ib,
             V, ldv, T, ldt, A, lda, B, ldb,
             W, stream );
@@ -101,10 +100,11 @@ static void cl_ztpmqrt_cuda_func(void *descr[], void *cl_arg)
 /*
  * Codelet definition
  */
-CODELETS(ztpmqrt, 5, cl_ztpmqrt_cpu_func, cl_ztpmqrt_cuda_func, STARPU_CUDA_ASYNC)
+CODELETS_CPU(ztpmlqt, 5, cl_ztpmlqt_cpu_func)
+//CODELETS(ztpmlqt, 5, cl_ztpmlqt_cpu_func, cl_ztpmlqt_cuda_func, STARPU_CUDA_ASYNC)
 
 void
-MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
+MORSE_TASK_ztpmlqt( const MORSE_option_t *options,
                     MORSE_enum side, MORSE_enum trans,
                     int M, int N, int K, int L, int ib, int nb,
                     const MORSE_desc_t *V, int Vm, int Vn, int ldv,
@@ -112,8 +112,8 @@ MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
                     const MORSE_desc_t *A, int Am, int An, int lda,
                     const MORSE_desc_t *B, int Bm, int Bn, int ldb )
 {
-    struct starpu_codelet *codelet = &cl_ztpmqrt;
-    void (*callback)(void*) = options->profiling ? cl_ztpmqrt_callback : NULL;
+    struct starpu_codelet *codelet = &cl_ztpmlqt;
+    void (*callback)(void*) = options->profiling ? cl_ztpmlqt_callback : NULL;
 
     MORSE_BEGIN_ACCESS_DECLARATION;
     MORSE_ACCESS_R(V, Vm, Vn);
@@ -147,7 +147,7 @@ MORSE_TASK_ztpmqrt( const MORSE_option_t *options,
         STARPU_EXECUTE_ON_NODE, B->get_rankof(B, Bm, Bn),
 #endif
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
-        STARPU_NAME, (( L == 0 ) ? "ztsmqr" : "ztpmqrt"),
+        STARPU_NAME, (( L == 0 ) ? "ztsmlq" : "ztpmlqt"),
 #endif
         0);
 

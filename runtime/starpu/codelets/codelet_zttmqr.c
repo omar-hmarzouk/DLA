@@ -143,39 +143,12 @@ void MORSE_TASK_zttmqr(const MORSE_option_t *options,
     struct starpu_codelet *codelet = &cl_zttmqr;
     void (*callback)(void*) = options->profiling ? cl_zttmqr_callback : NULL;
     int ldwork = side == MorseLeft ? ib : nb;
-    int sizeA1 = lda1*n1;
-    int sizeA2 = lda2*n2;
-    int sizeV = ldv*k;
-    int sizeT = ldt*n1;
-    int execution_rank = A2->get_rankof( A2, A2m, A2n );
-    int rank_changed=0;
-    (void)execution_rank;
-
-    /*  force execution on the rank owning the largest data (tile) */
-    int threshold;
-    char* env = getenv("MORSE_COMM_FACTOR_THRESHOLD");
-    if (env != NULL)
-        threshold = (unsigned)atoi(env);
-    else
-        threshold = 10;
-    if ( sizeA1 > threshold*sizeA2 ){
-        execution_rank = A1->get_rankof( A1, A1m, A1n );
-        rank_changed = 1;
-    }else if( sizeV > threshold*sizeA2 ){
-        execution_rank = V->get_rankof( V, Vm, Vn );
-        rank_changed = 1;
-    }else if( sizeT > threshold*sizeA2 ){
-        execution_rank = T->get_rankof( T, Tm, Tn );
-        rank_changed = 1;
-    }
 
     MORSE_BEGIN_ACCESS_DECLARATION;
     MORSE_ACCESS_RW(A1, A1m, A1n);
     MORSE_ACCESS_RW(A2, A2m, A2n);
     MORSE_ACCESS_R(V, Vm, Vn);
     MORSE_ACCESS_R(T, Tm, Tn);
-    if (rank_changed)
-        MORSE_RANK_CHANGED(execution_rank);
     MORSE_END_ACCESS_DECLARATION;
 
     starpu_insert_task(
@@ -202,7 +175,7 @@ void MORSE_TASK_zttmqr(const MORSE_option_t *options,
         STARPU_PRIORITY,  options->priority,
         STARPU_CALLBACK,  callback,
 #if defined(CHAMELEON_USE_MPI)
-        STARPU_EXECUTE_ON_NODE, execution_rank,
+        STARPU_EXECUTE_ON_NODE, A2->get_rankof(A2, A2m, A2n),
 #endif
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
         STARPU_NAME, "zttmqr",

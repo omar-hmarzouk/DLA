@@ -25,15 +25,10 @@
 #include "control/common.h"
 #include <stdlib.h>
 
-#define A(m,n) A,  m,  n
-#define Q(m,n) Q,  m,  n
-#define TS(m,n) TS,  m,  n
-#define TT(m,n) TT,  m,  n
-#if defined(CHAMELEON_COPY_DIAG)
-#define D(m,n) D,  m,  n
-#else
-#define D(m,n) A,  m,  n
-#endif
+#define A(m,n) A, m, n
+#define Q(m,n) Q, m, n
+#define T(m,n) T, m, n
+#define D(m,n) D, m, n
 
 /**
  *  Parallel construction of Q using tile V (application to identity) - dynamic scheduling
@@ -45,10 +40,11 @@ void morse_pzungqr_param(const libhqr_tree_t *qrtree,
 {
     MORSE_context_t *morse;
     MORSE_option_t options;
+    MORSE_desc_t *T;
     size_t ws_worker = 0;
     size_t ws_host = 0;
 
-    int k, m, n, i, p;
+    int k, m, n, i, p, L;
     int ldam, ldqm, ldqp;
     int tempmm, tempnn, tempkmin, tempkn;
     int ib, minMT;
@@ -65,6 +61,10 @@ void morse_pzungqr_param(const libhqr_tree_t *qrtree,
         minMT = A->nt;
     } else {
         minMT = A->mt;
+    }
+
+    if (D == NULL) {
+        D = A;
     }
 
     /*
@@ -109,36 +109,37 @@ void morse_pzungqr_param(const libhqr_tree_t *qrtree,
             ldqm = BLKLDD(Q, m);
             ldqp = BLKLDD(Q, p);
 
-            /* TT or TS */
-
-            if(qrtree->gettype(qrtree, k , m) == 0){
-                for (n = k; n < Q->nt; n++) {
-                    tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
-                    MORSE_TASK_ztsmqr(
-                        &options,
-                        MorseLeft, MorseNoTrans,
-                        Q->mb, tempnn, tempmm, tempnn, tempkn, ib, TS->nb,
-                        Q(p, n), ldqp,
-                        Q(m, n), ldqm,
-                        A(m, k), ldam,
-                        TS(m, k), TS->mb);
-                }
+            if(qrtree->gettype(qrtree, k , m) == 0) {
+                /* TS kernel */
+                T = TS;
+                L = 0;
             }
             else {
-                for (n = k; n < Q->nt; n++) {
-                    tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
-                    MORSE_TASK_zttmqr(
-                        &options,
-                        MorseLeft, MorseNoTrans,
-                        Q->mb, tempnn, tempmm, tempnn, tempkn, ib, TT->nb,
-                        Q(p, n), ldqp,
-                        Q(m, n), ldqm,
-                        A(m, k), ldam,
-                        TT(m, k), TT->mb);
-                }
+                /* TT kernel */
+                T = TT;
+                L = tempmm;
+            }
+
+            for (n = k; n < Q->nt; n++) {
+                tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
+
+                RUNTIME_data_migrate( sequence, Q(p, n),
+                                      Q->get_rankof( Q, m, n ) );
+                RUNTIME_data_migrate( sequence, Q(m, n),
+                                      Q->get_rankof( Q, m, n ) );
+
+                MORSE_TASK_ztpmqrt(
+                    &options,
+                    MorseLeft, MorseNoTrans,
+                    tempmm, tempnn, tempkn, L, ib, T->nb,
+                    A(m, k), ldam,
+                    T(m, k), T->mb,
+                    Q(p, n), ldqp,
+                    Q(m, n), ldqm);
             }
         }
 
+        T = TS;
         for (i = 0; i < qrtree->getnbgeqrf(qrtree, k); i++) {
             m = qrtree->getm(qrtree, k, i);
 
@@ -161,14 +162,20 @@ void morse_pzungqr_param(const libhqr_tree_t *qrtree,
                 D(m, k), ldam );
 #endif
 #endif
+
             for (n = k; n < Q->nt; n++) {
                 tempnn = n == Q->nt-1 ? Q->n-n*Q->nb : Q->nb;
+
+                /* Restore the original location of the tiles */
+                RUNTIME_data_migrate( sequence, Q(m, n),
+                                      Q->get_rankof( Q, m, n ) );
+
                 MORSE_TASK_zunmqr(
                     &options,
                     MorseLeft, MorseNoTrans,
-                    tempmm, tempnn, tempkmin, ib, TS->nb,
+                    tempmm, tempnn, tempkmin, ib, T->nb,
                     D(m, k), ldam,
-                    TS(m, k), TS->mb,
+                    T(m, k), T->mb,
                     Q(m, n), ldqm);
             }
         }
@@ -178,5 +185,4 @@ void morse_pzungqr_param(const libhqr_tree_t *qrtree,
     free(tiles);
     RUNTIME_options_ws_free(&options);
     RUNTIME_options_finalize(&options, morse);
-    (void)D;
 }

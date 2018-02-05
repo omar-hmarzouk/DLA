@@ -137,6 +137,9 @@ void MORSE_TASK_zttqrt(const MORSE_option_t *options,
         STARPU_SCRATCH,   options->ws_worker,
         STARPU_PRIORITY,  options->priority,
         STARPU_CALLBACK,  callback,
+#if defined(CHAMELEON_USE_MPI)
+        STARPU_EXECUTE_ON_NODE, A2->get_rankof(A2, A2m, A2n),
+#endif
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
         STARPU_NAME, "zttqrt",
 #endif
