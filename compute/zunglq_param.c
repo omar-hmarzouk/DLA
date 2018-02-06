@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon zunglq_param wrappers
  *
  * @version 1.0.0
  * @author Mathieu Faverge

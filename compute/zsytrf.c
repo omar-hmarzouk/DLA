@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon zsytrf wrappers
  *
  * @version 1.0.0
  * @author Florent Pruvost

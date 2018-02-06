@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon zplgsy parallel algorithm
  *
  * @version 1.0.0
  * @comment This file is a copy of pzplgsy.c,

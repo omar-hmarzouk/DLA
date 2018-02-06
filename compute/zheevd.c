@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon zheevd wrappers
  *
  * @version 1.0.0
  * @author Azzam Haidar

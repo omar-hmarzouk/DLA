@@ -7,7 +7,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon zbuild wrappers
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

@@ -10,7 +10,7 @@
  *
  ***
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon ztpqrt wrappers
  *
  * @version 1.0.0
  * @author Mathieu Faverge

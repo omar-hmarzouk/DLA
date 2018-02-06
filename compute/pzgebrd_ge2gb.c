@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon zgebrd_ge2gb parallel algorithm
  *
  * @version 1.0.0
  * @author Hatem Ltaief

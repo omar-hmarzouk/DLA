@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon zgemm wrappers
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon zlascal parallel algorithm
  *
  * @version 1.0.0
  * @author Dalal Sukkari

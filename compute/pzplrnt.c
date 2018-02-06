@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon zplrnt parallel algorithm
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

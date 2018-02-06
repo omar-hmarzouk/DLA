@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon ztile2band parallel algorithm
  *
  * @version 1.0.0
  * @author Azzam Haidar

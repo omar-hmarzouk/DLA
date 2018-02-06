@@ -10,7 +10,7 @@
  *
  ***
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon zlascal wrappers
  *
  * @version 1.0.0
  * @author Dalal Sukkari

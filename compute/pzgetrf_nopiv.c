@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon zgetrf_nopiv parallel algorithm
  *
  * @version 1.0.0
  * @author Omar Zenati

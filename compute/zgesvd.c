@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon zgesvd wrappers
  *
  * @version 1.0.0
  * @author Gregoire Pichon

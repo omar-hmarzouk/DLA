@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon zher2k wrappers
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

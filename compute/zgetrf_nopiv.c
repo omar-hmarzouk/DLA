@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon zgetrf_nopiv wrappers
  *
  * @version 1.0.0
  * @author Omar Zenati

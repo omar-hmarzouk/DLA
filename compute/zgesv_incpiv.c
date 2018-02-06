@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon zgesv_incpiv wrappers
  *  Release Date: November, 15th 2009
  *
  * @version 1.0.0

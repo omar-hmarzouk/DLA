@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon computational routines
+ * @brief Chameleon zgelqs_param wrappers
  *
  * @version 1.0.0
  * @author Raphael Boucherie

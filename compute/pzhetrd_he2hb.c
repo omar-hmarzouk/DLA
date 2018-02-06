@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon zhetrd_he2hb parallel algorithm
  *
  * @version 1.0.0
  * @author Hatem Ltaief
