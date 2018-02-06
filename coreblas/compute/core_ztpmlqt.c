@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon core_blas kernel
+ * @brief Chameleon core_ztpmlqt CPU kernel
  *
  * @version 1.0.0
  * @author Mathieu Faverge

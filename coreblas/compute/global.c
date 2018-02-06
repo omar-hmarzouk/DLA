@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon global coreblas variables and functions
  *
  * @version 1.0.0
  * @author Jakub Kurzak

@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon core_blas kernel
+ * @brief Chameleon core_zherfb CPU kernel
  *
  * @version 1.0.0
  * @author Hatem Ltaief

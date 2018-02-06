@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon core_blas kernel
+ * @brief Chameleon core_zgetrf_incpiv CPU kernel
  *
  * @version 1.0.0
  * @comment This file has been automatically generated
