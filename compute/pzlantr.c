@@ -18,7 +18,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include <stdlib.h>
 #include <math.h>
 #include "control/common.h"
@@ -27,9 +27,9 @@
 #define VECNORMS_STEP1(m, n) VECNORMS_STEP1, m, n
 #define VECNORMS_STEP2(m, n) VECNORMS_STEP2, m, n
 #define RESULT(m, n) RESULT, m, n
-/*******************************************************************************
+/**
  *
- **/
+ */
 void morse_pzlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
                    MORSE_desc_t *A, double *result,
                    MORSE_sequence_t *sequence, MORSE_request_t *request)

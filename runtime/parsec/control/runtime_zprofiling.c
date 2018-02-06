@@ -16,7 +16,7 @@
  * @author Mathieu Faverge
  * @date 2017-01-12
  *
- **/
+ */
 #include "chameleon_parsec.h"
 
 void RUNTIME_zdisplay_allprofile()

@@ -23,11 +23,11 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "control/common.h"
 #include "control/workspace.h"
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -48,11 +48,11 @@
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgeev(int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(N, N, MORSE_FUNC_ZGEEV, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -73,11 +73,11 @@ int MORSE_Alloc_Workspace_zgeev(int N, MORSE_desc_t **descT, int p, int q) {
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgehrd(int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(N, N, MORSE_FUNC_ZGEHRD, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -100,11 +100,11 @@ int MORSE_Alloc_Workspace_zgehrd(int N, MORSE_desc_t **descT, int p, int q) {
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgebrd(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGEBRD, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -128,11 +128,11 @@ int MORSE_Alloc_Workspace_zgebrd(int M, int N, MORSE_desc_t **descT, int p, int 
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgels(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -162,11 +162,11 @@ int MORSE_Alloc_Workspace_zgels(int M, int N, MORSE_desc_t **descT, int p, int q
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgels_Tile(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -196,11 +196,11 @@ int MORSE_Alloc_Workspace_zgels_Tile(int M, int N, MORSE_desc_t **descT, int p, 
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgeqrf(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -230,11 +230,11 @@ int MORSE_Alloc_Workspace_zgeqrf(int M, int N, MORSE_desc_t **descT, int p, int 
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgeqrf_Tile(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -264,11 +264,11 @@ int MORSE_Alloc_Workspace_zgeqrf_Tile(int M, int N, MORSE_desc_t **descT, int p,
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgelqf(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -297,11 +297,11 @@ int MORSE_Alloc_Workspace_zgelqf(int M, int N, MORSE_desc_t **descT, int p, int 
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgelqf_Tile(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGELS, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -327,11 +327,11 @@ int MORSE_Alloc_Workspace_zgelqf_Tile(int M, int N, MORSE_desc_t **descT, int p,
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgesv_incpiv(int N, MORSE_desc_t **descL, int **IPIV, int p, int q) {
     return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -357,12 +357,12 @@ int MORSE_Alloc_Workspace_zgesv_incpiv(int N, MORSE_desc_t **descL, int **IPIV, 
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgesv_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV, int p, int q)
 {
     return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV, p, q);
 }
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -391,11 +391,11 @@ int MORSE_Alloc_Workspace_zgesv_incpiv_Tile(int N, MORSE_desc_t **descL, int **I
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgesvd(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZGESVD, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -430,11 +430,11 @@ int MORSE_Alloc_Workspace_zgesvd(int M, int N, MORSE_desc_t **descT, int p, int 
  * @sa MORSE_zgetrf_incpiv_Tile
  * @sa MORSE_zgetrf_incpiv_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgetrf_incpiv(int M, int N, MORSE_desc_t **descL, int **IPIV, int p, int q) {
     return morse_alloc_ipiv(M, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -459,11 +459,11 @@ int MORSE_Alloc_Workspace_zgetrf_incpiv(int M, int N, MORSE_desc_t **descL, int 
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV, int p, int q) {
     return morse_alloc_ipiv(N, N, MORSE_FUNC_ZGESV, MorseComplexDouble, descL, (void**)IPIV, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -491,11 +491,11 @@ int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zheev(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEEV, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -523,11 +523,11 @@ int MORSE_Alloc_Workspace_zheev(int M, int N, MORSE_desc_t **descT, int p, int q
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zheevd(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEEVD, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -555,11 +555,11 @@ int MORSE_Alloc_Workspace_zheevd(int M, int N, MORSE_desc_t **descT, int p, int 
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zhegv(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEGV, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -587,11 +587,11 @@ int MORSE_Alloc_Workspace_zhegv(int M, int N, MORSE_desc_t **descT, int p, int q
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zhegvd(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHEGVD, MorseComplexDouble, descT, p, q); }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -619,6 +619,6 @@ int MORSE_Alloc_Workspace_zhegvd(int M, int N, MORSE_desc_t **descT, int p, int 
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Alloc_Workspace_zhetrd(int M, int N, MORSE_desc_t **descT, int p, int q) {
     return morse_alloc_ibnb_tile(M, N, MORSE_FUNC_ZHETRD, MorseComplexDouble, descT, p, q); }

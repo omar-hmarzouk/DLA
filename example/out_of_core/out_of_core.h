@@ -15,7 +15,7 @@
  * @author Florent Pruvost
  * @date 2016-08-23
  *
- **/
+ */
 #ifndef OOC_H
 #define OOC_H
 
@@ -87,7 +87,7 @@ enum iparam_ooc {
 
 /* Specific routines */
 
-/******************************************************************************
+/**
  * Initialize integer parameters
  */
 static void init_iparam(int iparam[IPARAM_SIZEOF]){
@@ -98,7 +98,7 @@ static void init_iparam(int iparam[IPARAM_SIZEOF]){
     iparam[IPARAM_OUTOFCORE     ] = 2000;
  }
 
-/******************************************************************************
+/**
  * Print how to use the program
  */
 static void show_help(char *prog_name) {
@@ -115,7 +115,7 @@ static void show_help(char *prog_name) {
             "\n");
 }
 
-/******************************************************************************
+/**
  * Read arguments following ooc program call
  */
 static void read_args(int argc, char *argv[], int *iparam){
@@ -141,7 +141,7 @@ static void read_args(int argc, char *argv[], int *iparam){
     }
 }
 
-/******************************************************************************
+/**
  * Print a header message to summarize main parameters
  */
 static void print_header(char *prog_name, int * iparam) {

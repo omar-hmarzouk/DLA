@@ -15,12 +15,12 @@
  * @author Reazul Hoque
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_parsec.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -64,7 +64,7 @@
  *         \retval MORSE_SUCCESS successful exit
  *         \retval <0 if INFO = -k, the k-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 static inline int
 CORE_zgessm_parsec( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )

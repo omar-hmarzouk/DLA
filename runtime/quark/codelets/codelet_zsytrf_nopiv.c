@@ -22,7 +22,7 @@
  * @date 2011-10-09
  * @precisions normal z -> c
  *
- **/
+ */
 #include "chameleon_quark.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"

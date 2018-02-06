@@ -17,14 +17,14 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #include <stdlib.h>
 #include <unistd.h>
 #include "chameleon_starpu.h"
 
-/*******************************************************************************
+/**
  *  Set the tag sizes
- **/
+ */
 #if defined(CHAMELEON_USE_MPI)
 
 /* Take 24 bits for the tile id, and 7 bits for descriptor id.
@@ -59,9 +59,9 @@ void RUNTIME_comm_set_tag_sizes( int user_tag_width,
     (void)user_tag_width; (void)user_tag_sep;
 }
 
-/*******************************************************************************
+/**
  *  Malloc/Free of the data
- **/
+ */
 #ifdef STARPU_MALLOC_SIMULATION_FOLDED
 #define FOLDED STARPU_MALLOC_SIMULATION_FOLDED
 #else
@@ -93,9 +93,9 @@ void RUNTIME_free( void  *ptr,
 #endif
 }
 
-/*******************************************************************************
+/**
  *  Create data descriptor
- **/
+ */
 void RUNTIME_desc_create( MORSE_desc_t *desc )
 {
     int64_t lmt = desc->lmt;
@@ -196,9 +196,9 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
 #endif
 }
 
-/*******************************************************************************
+/**
  *  Destroy data descriptor
- **/
+ */
 void RUNTIME_desc_destroy( MORSE_desc_t *desc )
 {
     desc->occurences--;
@@ -243,9 +243,9 @@ void RUNTIME_desc_destroy( MORSE_desc_t *desc )
     }
 }
 
-/*******************************************************************************
+/**
  *  Acquire data
- **/
+ */
 int RUNTIME_desc_acquire( const MORSE_desc_t *desc )
 {
     starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);
@@ -269,9 +269,9 @@ int RUNTIME_desc_acquire( const MORSE_desc_t *desc )
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *  Release data
- **/
+ */
 int RUNTIME_desc_release( const MORSE_desc_t *desc )
 {
     starpu_data_handle_t *handle = (starpu_data_handle_t*)(desc->schedopt);
@@ -295,9 +295,9 @@ int RUNTIME_desc_release( const MORSE_desc_t *desc )
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *  Flush cached data
- **/
+ */
 void RUNTIME_flush()
 {
 #if defined(CHAMELEON_USE_MPI)
@@ -305,7 +305,7 @@ void RUNTIME_flush()
 #endif
 }
 
-/*****************************************************************************
+/**
  * Different implementations of the flush call based on StarPU version
  */
 #ifdef HAVE_STARPU_DATA_WONT_USE
@@ -408,9 +408,9 @@ void RUNTIME_data_migrate( const MORSE_sequence_t *sequence,
 }
 #endif
 
-/*******************************************************************************
+/**
  *  Get data addr
- **/
+ */
 /* For older revision of StarPU, STARPU_MAIN_RAM is not defined */
 #ifndef STARPU_MAIN_RAM
 #define STARPU_MAIN_RAM 0

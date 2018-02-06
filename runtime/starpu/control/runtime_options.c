@@ -17,7 +17,7 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "chameleon_starpu.h"

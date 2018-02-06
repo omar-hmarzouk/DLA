@@ -22,16 +22,16 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_parsec.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 static inline int
 CORE_zlascal_parsec( parsec_execution_stream_t *context,
                      parsec_task_t             *this_task )

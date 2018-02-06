@@ -17,11 +17,11 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
-/*******************************************************************************
+ */
+/**
  *  MORSE internals of interest to MORSE core developers, but not necessarily
  *  of interest to MORSE community contributors.
- **/
+ */
 #ifndef _MORSE_GLOBAL_H_
 #define _MORSE_GLOBAL_H_
 
@@ -31,9 +31,9 @@
 #include <pthread.h>
 #endif
 
-/*******************************************************************************
+/**
  *  Numerical operations
- **/
+ */
 #define MORSE_FUNC_SGELS    1
 #define MORSE_FUNC_SPOSV    2
 #define MORSE_FUNC_SGESV    3

@@ -20,15 +20,15 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
 #define B(m,n) B,  m,  n
 #define C(m,n) C,  m,  n
-/*******************************************************************************
+/**
  *  Parallel tile Hermitian rank-k update - dynamic scheduling
- **/
+ */
 void morse_pzsyr2k(MORSE_enum uplo, MORSE_enum trans,
                           MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
                           MORSE_Complex64_t beta,  MORSE_desc_t *C,

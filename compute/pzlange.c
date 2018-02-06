@@ -20,7 +20,7 @@
  * @date 2014-07-21
  * @precisions normal z -> s d c
  *
- **/
+ */
 //ALLOC_WS :  A->mb
 //ALLOC_WS :  A->nb
 //WS_ADD :  A->mb + A->nb
@@ -31,9 +31,9 @@
 #define VECNORMS_STEP2(m, n) VECNORMS_STEP2, m, n
 #define RESULT(m, n) RESULT, m, n
 
-/*****************************************************************************
+/**
  *
- **/
+ */
 void morse_pzlange( MORSE_enum norm, MORSE_desc_t *A, double *result,
                     MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

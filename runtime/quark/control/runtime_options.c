@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2011-10-29
  *
- **/
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "chameleon_quark.h"

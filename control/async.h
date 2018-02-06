@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #ifndef _MORSE_ASYNC_H_
 #define _MORSE_ASYNC_H_
 
@@ -26,9 +26,9 @@
 extern "C" {
 #endif
 
-/*******************************************************************************
+/**
  *  Internal routines
- **/
+ */
 int morse_request_fail     (MORSE_sequence_t *sequence, MORSE_request_t *request, int error);
 int morse_sequence_create  (MORSE_context_t *MORSE, MORSE_sequence_t **sequence);
 int morse_sequence_destroy (MORSE_context_t *MORSE, MORSE_sequence_t *sequence);

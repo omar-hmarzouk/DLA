@@ -22,15 +22,15 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 void CORE_ztrtri(MORSE_enum uplo, MORSE_enum diag, int N, MORSE_Complex64_t *A, int LDA, int *info)
 {
     *info = LAPACKE_ztrtri_work(

@@ -21,7 +21,7 @@
  * @date 2011-05-24
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n) A,  (m),  (n)
@@ -37,7 +37,7 @@
 /**
  *  Parallel construction of Q using tile V (application to identity;
  *  reduction Householder) - dynamic scheduling
- **/
+ */
 void morse_pzunglqrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                      MORSE_desc_t *T, MORSE_desc_t *D, int BS,
                      MORSE_sequence_t *sequence, MORSE_request_t *request)

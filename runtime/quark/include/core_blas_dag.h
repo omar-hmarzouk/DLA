@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #ifndef _MORSE_CORE_BLAS_DAG_H_
 #define _MORSE_CORE_BLAS_DAG_H_
 

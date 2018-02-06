@@ -13,8 +13,8 @@
  *
  * @version 1.0.0
  *
- **/
-/*****************************************************************************
+ */
+/**
   Copyright (c) 2010, Intel Corp.
   All rights reserved.
 
@@ -45,7 +45,7 @@
 * Contents: Native C interface to LAPACK
 * Author: Intel Corporation
 * Generated November, 2011
-*****************************************************************************/
+*/
 
 #ifndef _LAPACKE_H_
 #define _LAPACKE_H_

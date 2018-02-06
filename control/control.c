@@ -30,7 +30,7 @@
 #include "control/common.h"
 #include "chameleon/morse_runtime.h"
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Control
  *
@@ -49,13 +49,13 @@
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Init(int cores, int gpus)
 {
     return MORSE_InitPar(cores, gpus, -1);
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Control
  *
@@ -77,7 +77,7 @@ int MORSE_Init(int cores, int gpus)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_InitPar(int ncpus, int ncudas, int nthreads_per_worker)
 {
     MORSE_context_t *morse;
@@ -108,7 +108,7 @@ int MORSE_InitPar(int ncpus, int ncudas, int nthreads_per_worker)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Control
  *
@@ -119,7 +119,7 @@ int MORSE_InitPar(int ncpus, int ncudas, int nthreads_per_worker)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Finalize(void)
 {
     MORSE_context_t *morse = morse_context_self();
@@ -142,7 +142,7 @@ int MORSE_Finalize(void)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Control
  *
@@ -153,7 +153,7 @@ int MORSE_Finalize(void)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Pause(void)
 {
     MORSE_context_t *morse = morse_context_self();
@@ -165,7 +165,7 @@ int MORSE_Pause(void)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Control
  *
@@ -177,7 +177,7 @@ int MORSE_Pause(void)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Resume(void)
 {
     MORSE_context_t *morse = morse_context_self();
@@ -189,7 +189,7 @@ int MORSE_Resume(void)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Control
  *
@@ -200,7 +200,7 @@ int MORSE_Resume(void)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Distributed_start(void)
 {
     MORSE_context_t *morse = morse_context_self();
@@ -212,7 +212,7 @@ int MORSE_Distributed_start(void)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Control
  *
@@ -223,7 +223,7 @@ int MORSE_Distributed_start(void)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Distributed_stop(void)
 {
     MORSE_context_t *morse = morse_context_self();
@@ -235,7 +235,7 @@ int MORSE_Distributed_stop(void)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Control
  *
@@ -246,7 +246,7 @@ int MORSE_Distributed_stop(void)
  * @retval The size of the distributed computation
  * @retval -1 if context not initialized
  *
- *****************************************************************************/
+ */
 int MORSE_Comm_size()
 {
     MORSE_context_t *morse = morse_context_self();
@@ -258,7 +258,7 @@ int MORSE_Comm_size()
     return RUNTIME_comm_size( morse );
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Control
  *
@@ -269,7 +269,7 @@ int MORSE_Comm_size()
  * @retval The rank of the distributed computation
  * @retval -1 if context not initialized
  *
- *****************************************************************************/
+ */
 int MORSE_Comm_rank()
 {
     MORSE_context_t *morse = morse_context_self();
@@ -281,7 +281,7 @@ int MORSE_Comm_rank()
     return RUNTIME_comm_rank( morse );
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Control
  *
@@ -293,7 +293,7 @@ int MORSE_Comm_rank()
  * @return
  *          \retval The number of CPU workers started
  *
- *****************************************************************************/
+ */
 int MORSE_GetThreadNbr( )
 {
     MORSE_context_t *morse = morse_context_self();

@@ -16,7 +16,7 @@
  * @author Mathieu Faverge
  * @date 2017-01-12
  *
- **/
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "chameleon_parsec.h"
@@ -25,9 +25,9 @@
 #include <mpi.h>
 #endif
 
-/*******************************************************************************
+/**
  * Initialize MORSE
- **/
+ */
 int RUNTIME_init( MORSE_context_t *morse,
                   int ncpus,
                   int ncudas,
@@ -56,7 +56,7 @@ int RUNTIME_init( MORSE_context_t *morse,
     return hres;
 }
 
-/*******************************************************************************
+/**
  * Finalize MORSE
  */
 void RUNTIME_finalize( MORSE_context_t *morse )
@@ -66,28 +66,28 @@ void RUNTIME_finalize( MORSE_context_t *morse )
     return;
 }
 
-/*******************************************************************************
+/**
  *  To suspend the processing of new tasks by workers
- **/
+ */
 void RUNTIME_pause( MORSE_context_t *morse )
 {
     (void)morse;
     return;
 }
 
-/*******************************************************************************
+/**
  *  This is the symmetrical call to RUNTIME_pause,
  *  used to resume the workers polling for new tasks.
- **/
+ */
 void RUNTIME_resume( MORSE_context_t *morse )
 {
     (void)morse;
     return;
 }
 
-/*******************************************************************************
+/**
  * Barrier MORSE.
- **/
+ */
 void RUNTIME_barrier( MORSE_context_t *morse )
 {
     parsec_context_t *parsec = (parsec_context_t*)(morse->schedopt);
@@ -96,27 +96,27 @@ void RUNTIME_barrier( MORSE_context_t *morse )
     return;
 }
 
-/*******************************************************************************
+/**
  *  Display a progress information when executing the tasks
- **/
+ */
 void RUNTIME_progress( MORSE_context_t *morse )
 {
     (void)morse;
     return;
 }
 
-/*******************************************************************************
+/**
  * Thread rank.
- **/
+ */
 int RUNTIME_thread_rank( MORSE_context_t *morse )
 {
     (void)morse;
     return 0;
 }
 
-/*******************************************************************************
+/**
  * Thread rank.
- **/
+ */
 int RUNTIME_thread_size( MORSE_context_t *morse )
 {
     // TODO: fixme
@@ -125,9 +125,9 @@ int RUNTIME_thread_size( MORSE_context_t *morse )
     return 1;
 }
 
-/*******************************************************************************
+/**
  *  This returns the rank of this process
- **/
+ */
 int RUNTIME_comm_rank( MORSE_context_t *morse )
 {
     int rank = 0;
@@ -139,9 +139,9 @@ int RUNTIME_comm_rank( MORSE_context_t *morse )
     return rank;
 }
 
-/*******************************************************************************
+/**
  *  This returns the size of the distributed computation
- **/
+ */
 int RUNTIME_comm_size( MORSE_context_t *morse )
 {
     int size = 0;

@@ -22,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -75,7 +75,7 @@
  * @sa MORSE_sorgqr
  * @sa MORSE_zgeqrf
  *
- ******************************************************************************/
+ */
 int MORSE_zungqr( int M, int N, int K,
                   MORSE_Complex64_t *A, int LDA,
                   MORSE_desc_t *descT,
@@ -192,7 +192,7 @@ int MORSE_zungqr( int M, int N, int K,
  * @sa MORSE_sorgqr_Tile
  * @sa MORSE_zgeqrf_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zungqr_Tile( MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q )
 {
     MORSE_context_t *morse;
@@ -246,7 +246,7 @@ int MORSE_zungqr_Tile( MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q )
  * @sa MORSE_sorgqr_Tile_Async
  * @sa MORSE_zgeqrf_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zungqr_Tile_Async( MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *Q,
                              MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

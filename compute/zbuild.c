@@ -19,7 +19,7 @@
  * @date 2016-09-05
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -78,7 +78,7 @@
  * @sa MORSE_dbuild
  * @sa MORSE_sbuild
  *
- ******************************************************************************/
+ */
 int MORSE_zbuild( MORSE_enum uplo, int M, int N,
                   MORSE_Complex64_t *A, int LDA,
                   void *user_data, void* user_build_callback )
@@ -186,7 +186,7 @@ int MORSE_zbuild( MORSE_enum uplo, int M, int N,
  * @sa MORSE_dbuild_Tile
  * @sa MORSE_sbuild_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zbuild_Tile( MORSE_enum uplo, MORSE_desc_t *A,
                        void *user_data, void* user_build_callback )
 {
@@ -254,7 +254,7 @@ int MORSE_zbuild_Tile( MORSE_enum uplo, MORSE_desc_t *A,
  * @sa MORSE_dbuild_Tile_Async
  * @sa MORSE_sbuild_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zbuild_Tile_Async( MORSE_enum uplo, MORSE_desc_t     *A,
                              void *user_data, void* user_build_callback,
                              MORSE_sequence_t *sequence,

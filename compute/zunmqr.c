@@ -22,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -101,7 +101,7 @@
  * @sa MORSE_sormqr
  * @sa MORSE_zgeqrf
  *
- ******************************************************************************/
+ */
 int MORSE_zunmqr( MORSE_enum side, MORSE_enum trans, int M, int N, int K,
                   MORSE_Complex64_t *A, int LDA,
                   MORSE_desc_t *descT,
@@ -248,7 +248,7 @@ int MORSE_zunmqr( MORSE_enum side, MORSE_enum trans, int M, int N, int K,
  * @sa MORSE_sormqr_Tile
  * @sa MORSE_zgeqrf_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zunmqr_Tile( MORSE_enum side, MORSE_enum trans,
                        MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C )
 {
@@ -303,7 +303,7 @@ int MORSE_zunmqr_Tile( MORSE_enum side, MORSE_enum trans,
  * @sa MORSE_sormqr_Tile_Async
  * @sa MORSE_zgeqrf_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zunmqr_Tile_Async( MORSE_enum side, MORSE_enum trans,
                              MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C,
                              MORSE_sequence_t *sequence, MORSE_request_t *request )

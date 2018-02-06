@@ -20,19 +20,19 @@
  * @date 2010-11-15
  * @precisions mixed zc -> ds
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
 #define B(m,n) B,  m,  n
 #define SA(m,n) SA,  m,  n
 #define SB(m,n) SB,  m,  n
-/*******************************************************************************
+/**
  *
- **/
-/*******************************************************************************
+ */
+/**
  *
- **/
+ */
 void morse_pclag2z(MORSE_desc_t *SA, MORSE_desc_t *B,
                           MORSE_sequence_t *sequence, MORSE_request_t *request)
 {

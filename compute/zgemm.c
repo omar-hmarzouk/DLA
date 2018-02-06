@@ -20,7 +20,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -124,7 +124,7 @@
  * @sa MORSE_dgemm
  * @sa MORSE_sgemm
  *
- ******************************************************************************/
+ */
 int MORSE_zgemm( MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
                  MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
                  MORSE_Complex64_t *B, int LDB,
@@ -294,7 +294,7 @@ int MORSE_zgemm( MORSE_enum transA, MORSE_enum transB, int M, int N, int K,
  * @sa MORSE_dgemm_Tile
  * @sa MORSE_sgemm_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zgemm_Tile( MORSE_enum transA, MORSE_enum transB,
                       MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
                       MORSE_Complex64_t beta,  MORSE_desc_t *C )
@@ -350,7 +350,7 @@ int MORSE_zgemm_Tile( MORSE_enum transA, MORSE_enum transB,
  * @sa MORSE_dgemm_Tile_Async
  * @sa MORSE_sgemm_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zgemm_Tile_Async( MORSE_enum transA, MORSE_enum transB,
                             MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
                             MORSE_Complex64_t beta,  MORSE_desc_t *C,

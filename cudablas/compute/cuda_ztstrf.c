@@ -16,7 +16,7 @@
  * @date 2015-09-16
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "cudablas.h"
 
 #if defined(CHAMELEON_USE_MAGMA) && 0

@@ -15,16 +15,16 @@
  * @author Reazul Hoque
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_parsec.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 static inline int
 CORE_zlag2c_parsec( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )
@@ -63,11 +63,11 @@ void MORSE_TASK_zlag2c(const MORSE_option_t *options,
         PARSEC_DTD_ARG_END );
 }
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 static inline int
 CORE_clag2z_parsec(parsec_execution_stream_t *context, parsec_task_t *this_task)
 {

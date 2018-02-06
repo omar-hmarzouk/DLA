@@ -16,7 +16,7 @@
  * @author Guillaume Sylvand
  * @date 2016-09-05
  *
- **/
+ */
 #include "step7.h"
 
 /*

@@ -14,10 +14,10 @@
  * @date 2015-09-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -51,7 +51,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 
 int CORE_zaxpy(int M, MORSE_Complex64_t alpha,
                const MORSE_Complex64_t *A, int incA,

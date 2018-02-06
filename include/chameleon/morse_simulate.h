@@ -15,7 +15,7 @@
  * @author Florent Pruvost
  * @date 2014-10-02
  *
- **/
+ */
 #ifndef _MORSE_SIMULATE_H_
 #define _MORSE_SIMULATE_H_
 

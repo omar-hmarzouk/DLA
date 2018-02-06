@@ -17,7 +17,7 @@
  * @author Florent Pruvost
  * @date 2011-06-01
  *
- **/
+ */
 #ifndef _MORSE_STARPU_H_
 #define _MORSE_STARPU_H_
 
@@ -72,7 +72,7 @@
 
 typedef struct starpu_conf starpu_conf_t;
 
-/******************************************************************************/
+/**/
 
 /*
  * MPI Redefinitions

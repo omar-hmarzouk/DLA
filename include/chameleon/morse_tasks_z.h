@@ -23,15 +23,15 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #ifndef _MORSE_TASKS_Z_H_
 #define _MORSE_TASKS_Z_H_
 
 #define COMPLEX
 
-/** ****************************************************************************
+/**
  *  Declarations of QUARK wrappers (called by MORSE) - alphabetical order
- **/
+ */
 void MORSE_TASK_dzasum(const MORSE_option_t *options,
                        MORSE_enum storev, MORSE_enum uplo, int M, int N,
                        const MORSE_desc_t *A, int Am, int An, int lda,

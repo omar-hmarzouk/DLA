@@ -18,12 +18,12 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/cblas.h"
 #include <math.h>
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -65,7 +65,7 @@
  *          On exit, contains the sums of the absolute values per column or row
  *          added to the input values.
  *
- ******************************************************************************/
+ */
 
 void CORE_ztrasm(MORSE_enum storev, MORSE_enum uplo, MORSE_enum diag,
                  int M, int N,

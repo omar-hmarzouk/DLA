@@ -22,11 +22,11 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/cblas.h"
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -95,7 +95,7 @@
  *         \retval MORSE_SUCCESS successful exit
  *         \retval <0 if INFO = -k, the k-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 
 int CORE_zssssm(int M1, int N1, int M2, int N2, int K, int IB,
                 MORSE_Complex64_t *A1, int LDA1,

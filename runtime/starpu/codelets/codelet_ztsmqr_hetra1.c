@@ -18,7 +18,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
@@ -26,7 +26,7 @@
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 void MORSE_TASK_ztsmqr_hetra1(const MORSE_option_t *options,
                               MORSE_enum side, MORSE_enum trans,
                               int m1, int n1, int m2, int n2, int k, int ib, int nb,

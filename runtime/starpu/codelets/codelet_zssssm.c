@@ -22,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
@@ -95,7 +95,7 @@
  *         \retval MORSE_SUCCESS successful exit
  *         \retval <0 if INFO = -k, the k-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 
 void MORSE_TASK_zssssm(const MORSE_option_t *options,
                        int m1, int n1, int m2, int n2, int k, int ib, int nb,

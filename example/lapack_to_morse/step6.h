@@ -15,7 +15,7 @@
  * @author Florent Pruvost
  * @date 2014-10-29
  *
- **/
+ */
 #ifndef STEP6_H
 #define STEP6_H
 
@@ -46,7 +46,7 @@ enum iparam_step6 {
 
 /* Specific routines used in step6.c main program */
 
-/******************************************************************************
+/**
  * Initialize integer parameters
  */
 static void init_iparam(int iparam[IPARAM_SIZEOF]){
@@ -61,7 +61,7 @@ static void init_iparam(int iparam[IPARAM_SIZEOF]){
     iparam[IPARAM_Q             ] = 1;
  }
 
-/******************************************************************************
+/**
  * Print how to use the program
  */
 static void show_help(char *prog_name) {
@@ -80,7 +80,7 @@ static void show_help(char *prog_name) {
             "\n");
 }
 
-/******************************************************************************
+/**
  * Read arguments following step6 program call
  */
 static void read_args(int argc, char *argv[], int *iparam){
@@ -110,7 +110,7 @@ static void read_args(int argc, char *argv[], int *iparam){
     }
 }
 
-/******************************************************************************
+/**
  * Print a header message to summarize main parameters
  */
 static void print_header(char *prog_name, int * iparam) {

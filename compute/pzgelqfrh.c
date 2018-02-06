@@ -23,7 +23,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n)  A,  (m),  (n)

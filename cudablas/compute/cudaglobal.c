@@ -15,12 +15,12 @@
  * @author Mathieu Faverge
  * @date 2017-04-06
  *
- **/
+ */
 #include "cudablas.h"
 
-/*******************************************************************************
+/**
  *  LAPACK Constants
- **/
+ */
 int morse_cublas_constants[] =
 {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

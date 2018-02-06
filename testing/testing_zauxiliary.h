@@ -17,7 +17,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #ifndef TESTING_ZAUXILIARY_H
 #define TESTING_ZAUXILIARY_H
 

@@ -21,7 +21,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -95,7 +95,7 @@
  * @sa MORSE_dtrsm
  * @sa MORSE_strsm
  *
- ******************************************************************************/
+ */
 int MORSE_ztrsm( MORSE_enum side, MORSE_enum uplo,
                  MORSE_enum transA, MORSE_enum diag,
                  int N, int NRHS, MORSE_Complex64_t alpha,
@@ -258,7 +258,7 @@ int MORSE_ztrsm( MORSE_enum side, MORSE_enum uplo,
  * @sa MORSE_dtrsm_Tile
  * @sa MORSE_strsm_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_ztrsm_Tile( MORSE_enum side, MORSE_enum uplo,
                       MORSE_enum transA, MORSE_enum diag,
                       MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B )
@@ -313,7 +313,7 @@ int MORSE_ztrsm_Tile( MORSE_enum side, MORSE_enum uplo,
  * @sa MORSE_dtrsm_Tile_Async
  * @sa MORSE_strsm_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_ztrsm_Tile_Async( MORSE_enum side, MORSE_enum uplo,
                             MORSE_enum transA, MORSE_enum diag,
                             MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,

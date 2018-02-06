@@ -15,7 +15,7 @@
  * @author Reazul Hoque
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_parsec.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
@@ -54,7 +54,7 @@
  * @param[in] LDA
  *         The leading dimension of the array A.  LDA >= max(1,M).
  *
- **/
+ */
 static inline int
 CORE_zlaset_parsec( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )

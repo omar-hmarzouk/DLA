@@ -17,7 +17,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 #include <stdlib.h>
 #include <string.h>
@@ -94,7 +94,7 @@
  * @sa MORSE_dsyev
  * @sa MORSE_ssyev
  *
- ******************************************************************************/
+ */
 int MORSE_zheevd( MORSE_enum jobz, MORSE_enum uplo, int N,
                   MORSE_Complex64_t *A, int LDA,
                   double *W,
@@ -234,7 +234,7 @@ int MORSE_zheevd( MORSE_enum jobz, MORSE_enum uplo, int N,
  * @sa MORSE_dsyev
  * @sa MORSE_ssyev
  *
- ******************************************************************************/
+ */
 int MORSE_zheevd_Tile( MORSE_enum jobz, MORSE_enum uplo,
                        MORSE_desc_t *A, double *W, MORSE_desc_t *T )
 {
@@ -326,7 +326,7 @@ int MORSE_zheevd_Tile( MORSE_enum jobz, MORSE_enum uplo,
  * @sa MORSE_dsyev_Tile_Async
  * @sa MORSE_ssyev_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
                              MORSE_desc_t *A, double *W, MORSE_desc_t *T,
                              MORSE_sequence_t *sequence, MORSE_request_t *request )

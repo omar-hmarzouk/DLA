@@ -20,7 +20,7 @@
  * @date 2010-11-15
  * @precisions mixed zc -> ds
  *
- **/
+ */
 #include "chameleon_quark.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"

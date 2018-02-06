@@ -22,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
@@ -34,9 +34,9 @@
 #define D(k)   D,  k,  k
 #endif
 
-/*******************************************************************************
+/**
  *  Parallel construction of Q using tile V (application to identity) - dynamic scheduling
- **/
+ */
 void morse_pzungqr(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc_t *D,
                    MORSE_sequence_t *sequence, MORSE_request_t *request)
 {

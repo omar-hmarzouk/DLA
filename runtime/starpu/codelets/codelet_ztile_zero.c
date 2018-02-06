@@ -18,13 +18,13 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
-/*****************************************************************************
+/**
  *
- **/
+ */
 void MORSE_TASK_ztile_zero( const MORSE_option_t *options,
                             int X1, int X2, int Y1, int Y2,
                             const MORSE_desc_t *A, int Am, int An, int lda )
@@ -53,9 +53,9 @@ void MORSE_TASK_ztile_zero( const MORSE_option_t *options,
         0);
 }
 
-/*****************************************************************************
+/**
  *
- **/
+ */
 #if !defined(CHAMELEON_SIMULATION)
 static void cl_ztile_zero_cpu_func(void *descr[], void *cl_arg)
 {

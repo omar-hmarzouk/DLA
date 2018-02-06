@@ -16,7 +16,7 @@
  * @date 2015-09-17
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "cudablas.h"
 
 #if !defined(CHAMELEON_USE_CUBLAS_V2)
@@ -76,7 +76,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 int CUDA_zgeadd(MORSE_enum trans,
                 int m, int n,
                 const cuDoubleComplex *alpha,

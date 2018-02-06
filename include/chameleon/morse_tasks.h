@@ -16,7 +16,7 @@
  * @author Cedric Augonnet
  * @date 2011-06-01
  *
- **/
+ */
 #ifndef _MORSE_TASKS_H_
 #define _MORSE_TASKS_H_
 
@@ -24,9 +24,9 @@
 
 BEGIN_C_DECLS
 
-/*******************************************************************************
+/**
  * MORSE Task submission routines
- **/
+ */
 void MORSE_TASK_ztile_zero(const MORSE_option_t *options,
                            int X1, int X2, int Y1, int Y2,
                            const MORSE_desc_t *A, int Am, int An, int lda);

@@ -17,15 +17,15 @@
  * @author Cedric Castagnede
  * @date 2011-06-01
  *
- **/
+ */
 #ifndef _MORSE_TYPES_H_
 #define _MORSE_TYPES_H_
 
 #include "chameleon/chameleon_config.h"
 
-/** ****************************************************************************
+/**
  *  System requirements
- **/
+ */
 #include <stddef.h>
 #if defined( _WIN32 )
   /* This must be included before INPUT is defined below, otherwise we
@@ -37,18 +37,18 @@
 #endif /* _WIN32 */
 
 
-/** ****************************************************************************
+/**
  *  MORSE types
- **/
+ */
 typedef int  MORSE_enum;
 typedef int  MORSE_bool;
 typedef long MORSE_index;
 typedef long MORSE_size;
 
 
-/** ****************************************************************************
+/**
  * MORSE Complex numbers
- **/
+ */
 #define MORSE_HAS_COMPLEX_H 1
 
 #if defined(_WIN32)
@@ -103,9 +103,9 @@ typedef long MORSE_size;
     #endif
 #endif /* MORSE_COMPLEX_CPP */
 
-/*******************************************************************************
+/**
  *  MORSE Deprecated attribute
- **/
+ */
 #if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
 #define MORSE_DEPRECATED  __attribute__((__deprecated__))
 #else
@@ -114,9 +114,9 @@ typedef long MORSE_size;
 
 BEGIN_C_DECLS
 
-/*******************************************************************************
+/**
  *  Global utilities
- **/
+ */
 static inline int chameleon_max( int a, int b ) {
     if ( a > b ) return a; else return b;
 }

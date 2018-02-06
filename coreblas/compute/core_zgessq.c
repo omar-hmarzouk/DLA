@@ -18,7 +18,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include <math.h>
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
@@ -35,7 +35,7 @@
         }                                                               \
     }
 
-/*****************************************************************************
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *

@@ -21,17 +21,17 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
-/*******************************************************************************
+ */
+/**
  *  LAPACK/Tile Descriptor accesses
- **/
+ */
 #define MorseDescInput  1
 #define MorseDescOutput 2
 #define MorseDescInout  (MorseDescInput | MorseDescOutput)
 
-/***************************************************************************//**
+/**
  *  Macro for matrix conversion / Lapack interface
- **/
+ */
 #define morse_zdesc_alloc_diag( descA, mb, nb, lm, ln, i, j, m, n, p, q) \
     descA = morse_desc_init_diag(                                       \
         MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                    \
@@ -50,16 +50,16 @@
     }                                                                   \
     RUNTIME_desc_create( &(descA) );
 
-/***************************************************************************//**
+/**
  *  Declarations of internal sequential functions
- **/
+ */
 int morse_zshift(MORSE_context_t *morse, int m, int n, MORSE_Complex64_t *A,
                   int nprob, int me, int ne, int L,
                   MORSE_sequence_t *sequence, MORSE_request_t *request);
 
-/***************************************************************************//**
+/**
  *  Declarations of parallel functions (dynamic scheduling) - alphabetical order
- **/
+ */
 void morse_pzbarrier_pnl2tl(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzbarrier_row2tl(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzbarrier_tl2pnl(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);

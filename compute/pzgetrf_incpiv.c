@@ -22,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 //ALLOC_WS :  ib*L->nb
 //WS_ADD :  ib*L->nb
 #include "control/common.h"
@@ -37,9 +37,9 @@
 #define L(_m_,_n_) L,  _m_,  _n_
 #define IPIV(_m_,_n_) &(IPIV[(int64_t)A->mb*((int64_t)(_m_)+(int64_t)A->mt*(int64_t)(_n_))])
 
-/*******************************************************************************
+/**
  *  Parallel tile LU factorization - dynamic scheduling
- **/
+ */
 void morse_pzgetrf_incpiv( MORSE_desc_t *A, MORSE_desc_t *L, MORSE_desc_t *D, int *IPIV,
                            MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

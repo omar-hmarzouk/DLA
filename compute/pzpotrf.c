@@ -23,13 +23,13 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
-/*******************************************************************************
+/**
  *  Parallel tile Cholesky factorization - dynamic scheduling
- **/
+ */
 void morse_pzpotrf(MORSE_enum uplo, MORSE_desc_t *A,
                    MORSE_sequence_t *sequence, MORSE_request_t *request)
 {

@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2012-09-15
  *
- **/
+ */
 #include "control/morsewinthread.h"
 
 #include <limits.h>

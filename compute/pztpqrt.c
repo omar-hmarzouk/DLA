@@ -17,16 +17,16 @@
  * @date 2016-12-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
 #define B(m,n) B,  m,  n
 #define T(m,n) T,  m,  n
 
-/*******************************************************************************
+/**
  *  Parallel tile QR factorization - dynamic scheduling
- **/
+ */
 void morse_pztpqrt( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T,
                     MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

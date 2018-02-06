@@ -17,7 +17,7 @@
  * @author Cedric Castagnede
  * @date 2012-09-15
  *
- **/
+ */
 #ifndef _MORSE_DESCRIPTOR_H_
 #define _MORSE_DESCRIPTOR_H_
 
@@ -30,9 +30,9 @@
 extern "C" {
 #endif
 
-/*******************************************************************************
+/**
  *  Internal routines
- **/
+ */
 inline static void* morse_geteltaddr(const MORSE_desc_t *A, int m, int n, int eltsize);
 inline static void* morse_getaddr_cm    (const MORSE_desc_t *A, int m, int n);
 inline static void* morse_getaddr_ccrb  (const MORSE_desc_t *A, int m, int n);
@@ -40,7 +40,7 @@ inline static void* morse_getaddr_null  (const MORSE_desc_t *A, int m, int n);
 inline static int   morse_getblkldd_cm  (const MORSE_desc_t *A, int m);
 inline static int   morse_getblkldd_ccrb(const MORSE_desc_t *A, int m);
 
-/*****************************************************************
+/**
  *  Data distributions
  */
 inline static int   morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n);
@@ -64,9 +64,9 @@ int morse_desc_mat_free (MORSE_desc_t *desc);
 
 #define BLKLDD(A, k) A->get_blkldd( A,k )
 
-/*******************************************************************************
+/**
  *  Internal function to return address of block (m,n) with m,n = block indices
- **/
+ */
 inline static void* morse_getaddr_ccrb(const MORSE_desc_t *A, int m, int n)
 {
     size_t mm = m + A->i / A->mb;
@@ -96,9 +96,9 @@ inline static void* morse_getaddr_ccrb(const MORSE_desc_t *A, int m, int n)
     return (void*)((intptr_t)A->mat + (offset*eltsize) );
 }
 
-/*******************************************************************************
+/**
  *  Internal function to return address of block (m,n) with m,n = block indices
- **/
+ */
 inline static void *morse_getaddr_cm(const MORSE_desc_t *A, int m, int n)
 {
     size_t mm = m + A->i / A->mb;
@@ -116,19 +116,19 @@ inline static void *morse_getaddr_cm(const MORSE_desc_t *A, int m, int n)
     return (void*)((intptr_t)A->mat + (offset*eltsize) );
 }
 
-/*******************************************************************************
+/**
  *  Internal function to return address of block (m,n) with m,n = block indices
  *  This version lets the runtime allocate on-demand.
- **/
+ */
 inline static void *morse_getaddr_null(const MORSE_desc_t *A, int m, int n)
 {
     (void)A; (void)m; (void)n;
     return NULL;
 }
 
-/*******************************************************************************
+/**
  *  Internal function to return address of element A(m,n) with m,n = matrix indices
- **/
+ */
 inline static void* morse_geteltaddr(const MORSE_desc_t *A, int m, int n, int eltsize) // Not used anywhere ?!
 {
     size_t mm = (m + A->i)/A->mb;
@@ -156,9 +156,9 @@ inline static void* morse_geteltaddr(const MORSE_desc_t *A, int m, int n, int el
     return (void*)((intptr_t)A->mat + (offset*eltsize) );
 }
 
-/*******************************************************************************
+/**
  *  Internal function to return the leading dimension of element A(m,*) with m,n = block indices
- **/
+ */
 inline static int morse_getblkldd_ccrb(const MORSE_desc_t *A, int m)
 {
     int mm = m + A->i / A->mb;
@@ -171,17 +171,17 @@ inline static int morse_getblkldd_cm(const MORSE_desc_t *A, int m) {
 }
 
 
-/*******************************************************************************
+/**
  *  Internal function to return MPI rank of element A(m,n) with m,n = block indices
- **/
+ */
 inline static int morse_getrankof_2d(const MORSE_desc_t *desc, int m, int n)
 {
     return (m % desc->p) * desc->q + (n % desc->q);
 }
 
-/*******************************************************************************
+/**
  *  Internal function to return MPI rank of element DIAG(m,0) with m,n = block indices
- **/
+ */
 inline static int morse_getrankof_2d_diag(const MORSE_desc_t *desc, int m, int n)
 {
     assert( n == 0 );
@@ -189,9 +189,9 @@ inline static int morse_getrankof_2d_diag(const MORSE_desc_t *desc, int m, int n
 }
 
 
-/*******************************************************************************
+/**
  * Detect if the tile is local or not
- **/
+ */
 inline static int morse_desc_islocal( const MORSE_desc_t *A, int m, int n )
 {
 #if defined(CHAMELEON_USE_MPI)
@@ -202,7 +202,7 @@ inline static int morse_desc_islocal( const MORSE_desc_t *A, int m, int n )
 #endif /* defined(CHAMELEON_USE_MPI) */
 }
 
-/*******************************************************************************
+/**
  * Declare data accesses of codelets using these macros, for instance:
  * MORSE_BEGIN_ACCESS_DECLARATION
  * MORSE_ACCESS_R(A, Am, An)

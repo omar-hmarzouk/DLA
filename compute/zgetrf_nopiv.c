@@ -20,7 +20,7 @@
  *
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -66,7 +66,7 @@
  * @sa MORSE_dgetrf_nopiv
  * @sa MORSE_sgetrf_nopiv
  *
- ******************************************************************************/
+ */
 int MORSE_zgetrf_nopiv( int M, int N,
                         MORSE_Complex64_t *A, int LDA )
 {
@@ -166,7 +166,7 @@ int MORSE_zgetrf_nopiv( int M, int N,
  * @sa MORSE_sgetrf_nopiv_Tile
  * @sa MORSE_zgetrs_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zgetrf_nopiv_Tile( MORSE_desc_t *A )
 {
     MORSE_context_t *morse;
@@ -223,7 +223,7 @@ int MORSE_zgetrf_nopiv_Tile( MORSE_desc_t *A )
  * @sa MORSE_sgetrf_nopiv_Tile_Async
  * @sa MORSE_zgetrs_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zgetrf_nopiv_Tile_Async( MORSE_desc_t *A,
                                    MORSE_sequence_t *sequence,
                                    MORSE_request_t *request )

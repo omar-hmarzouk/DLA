@@ -17,7 +17,7 @@
  * @author Cedric Castagnede
  * @date 2011-06-01
  *
- **/
+ */
 #ifndef _CODELETS_H_
 #define _CODELETS_H_
 

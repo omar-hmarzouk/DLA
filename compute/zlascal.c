@@ -17,7 +17,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -67,7 +67,7 @@
  * @sa MORSE_dlascal
  * @sa MORSE_slascal
  *
- ******************************************************************************/
+ */
 int MORSE_zlascal( MORSE_enum uplo, int M, int N,
                    MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA )
 {
@@ -179,7 +179,7 @@ int MORSE_zlascal( MORSE_enum uplo, int M, int N,
  * @sa MORSE_dlascal_Tile
  * @sa MORSE_slascal_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zlascal_Tile( MORSE_enum uplo,
                         MORSE_Complex64_t alpha, MORSE_desc_t *A )
 {
@@ -233,7 +233,7 @@ int MORSE_zlascal_Tile( MORSE_enum uplo,
  * @sa MORSE_dlascal_Tile_Async
  * @sa MORSE_slascal_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zlascal_Tile_Async( MORSE_enum uplo,
                               MORSE_Complex64_t alpha, MORSE_desc_t *A,
                               MORSE_sequence_t *sequence, MORSE_request_t *request )

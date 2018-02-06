@@ -22,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
@@ -91,7 +91,7 @@
  *              singular, and division by zero will occur if it is used
  *              to solve a system of equations.
  *
- ******************************************************************************/
+ */
 
 void MORSE_TASK_ztstrf(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,

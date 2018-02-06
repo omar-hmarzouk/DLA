@@ -22,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -81,7 +81,7 @@
  * @sa MORSE_dgesv_incpiv
  * @sa MORSE_sgesv_incpiv
  *
- ******************************************************************************/
+ */
 int MORSE_zgesv_incpiv( int N, int NRHS,
                         MORSE_Complex64_t *A, int LDA,
                         MORSE_desc_t *descL, int *IPIV,
@@ -203,7 +203,7 @@ int MORSE_zgesv_incpiv( int N, int NRHS,
  * @sa MORSE_sgesv_incpiv_Tile
  * @sa MORSE_zcgesv_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zgesv_incpiv_Tile( MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
@@ -259,7 +259,7 @@ int MORSE_zgesv_incpiv_Tile( MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_
  * @sa MORSE_sgesv_incpiv_Tile_Async
  * @sa MORSE_zcgesv_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zgesv_incpiv_Tile_Async( MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_desc_t *B,
                                    MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

@@ -9,7 +9,7 @@
  *
  * @version 1.0.0
  *
- **/
+ */
 #ifndef TIMING_H
 #define TIMING_H
 
@@ -166,7 +166,7 @@ enum dparam_timing {
         memcpy(_name_, _orig_, (_lda_) * (_n_) * sizeof(_type_) );           \
     }
 
-/*********************
+/**
  *
  * Macro for trace generation
  *
@@ -189,7 +189,7 @@ enum dparam_timing {
         MORSE_Disable(MORSE_BOUND);            \
     }
 
-/*********************
+/**
  *
  * Macro for DAG generation
  *
@@ -207,7 +207,7 @@ enum dparam_timing {
 #define STOP_DAG()   do {} while(0);
 #endif
 
-/*********************
+/**
  *
  * Synchro for distributed computations
  *
@@ -220,7 +220,7 @@ enum dparam_timing {
 #define STOP_DISTRIBUTED()   do {} while(0);
 #endif
 
-/*********************
+/**
  *
  * General Macros for timing
  *

@@ -20,13 +20,13 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m, n) A,  m,  n
-/*******************************************************************************
+/**
  *  morse_pzplghe - Generate a random matrix by tiles.
- **/
+ */
 void morse_pzplrnt( MORSE_desc_t *A, unsigned long long int seed,
                     MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

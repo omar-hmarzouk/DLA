@@ -15,7 +15,7 @@
  * @author Florent Pruvost
  * @date 2014-10-29
  *
- **/
+ */
 #include "out_of_core.h"
 
 /*

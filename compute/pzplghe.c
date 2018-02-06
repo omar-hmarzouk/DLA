@@ -23,13 +23,13 @@
  * @date 2016-08-01
  * @precisions normal z -> c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
-/*******************************************************************************
+/**
  *  morse_pzplghe - Generate a random hermitian (positive definite if 'bump' is large enough) half-matrix by tiles.
- **/
+ */
 void morse_pzplghe( double bump, MORSE_enum uplo, MORSE_desc_t *A,
                     unsigned long long int seed,
                     MORSE_sequence_t *sequence, MORSE_request_t *request )

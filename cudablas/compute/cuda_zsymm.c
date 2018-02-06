@@ -16,7 +16,7 @@
  * @date 2015-09-17
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "cudablas.h"
 
 int CUDA_zsymm(MORSE_enum side, MORSE_enum uplo,

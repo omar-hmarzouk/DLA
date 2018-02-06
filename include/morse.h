@@ -18,7 +18,7 @@
  * @author Florent Pruvost
  * @date 2012-09-15
  *
- **/
+ */
 #ifndef _MORSE_H_
 #define _MORSE_H_
 

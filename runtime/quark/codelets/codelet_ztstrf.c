@@ -22,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_quark.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
@@ -58,7 +58,7 @@ void CORE_ztstrf_quark(Quark *quark)
     }
 }
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -123,7 +123,7 @@ void CORE_ztstrf_quark(Quark *quark)
  *              singular, and division by zero will occur if it is used
  *              to solve a system of equations.
  *
- ******************************************************************************/
+ */
 void MORSE_TASK_ztstrf(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,
                        const MORSE_desc_t *U, int Um, int Un, int ldu,

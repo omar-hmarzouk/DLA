@@ -15,12 +15,12 @@
  * @author Reazul Hoque
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_parsec.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -66,7 +66,7 @@
  *              singular, and division by zero will occur if it is used
  *              to solve a system of equations.
  *
- ******************************************************************************/
+ */
 static inline int
 CORE_zgetrf_nopiv_parsec( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )

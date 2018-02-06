@@ -22,15 +22,15 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 void CORE_zpotrf(MORSE_enum uplo, int N, MORSE_Complex64_t *A, int LDA, int *INFO)
 {
     *INFO = LAPACKE_zpotrf_work(

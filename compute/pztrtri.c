@@ -22,13 +22,13 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
-/*******************************************************************************
+/**
  *  Parallel tile triangular matrix inverse - dynamic scheduling
- **/
+ */
 void morse_pztrtri(MORSE_enum uplo, MORSE_enum diag, MORSE_desc_t *A,
                           MORSE_sequence_t *sequence, MORSE_request_t *request)
 {

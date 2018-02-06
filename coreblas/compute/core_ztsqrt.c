@@ -22,13 +22,13 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 #undef REAL
 #define COMPLEX
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -89,7 +89,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 
 
 int CORE_ztsqrt(int M, int N, int IB,

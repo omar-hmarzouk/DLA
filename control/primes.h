@@ -19,7 +19,7 @@
  * based on the GKK algorithm by Gustavson, Karlsson, Kagstrom
  * and its fortran implementation.
  *
- **/
+ */
 #ifndef PRIMES_H
 #define PRIMES_H
 

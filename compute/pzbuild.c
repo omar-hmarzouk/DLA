@@ -21,11 +21,11 @@
  * @date 2016-09-05
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m, n) A,  m,  n
-/*******************************************************************************
+/**
  *  Parallel tile matrix generation
  *
  *******************************************************************************
@@ -52,7 +52,7 @@
  * @param[out] request
  *          Identifies this function call (for exception handling purposes).
  *
- *******************************************************************************/
+ */
 void morse_pzbuild( MORSE_enum uplo, MORSE_desc_t *A, void *user_data, void* user_build_callback,
                     MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

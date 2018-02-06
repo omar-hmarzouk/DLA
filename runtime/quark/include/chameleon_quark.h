@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2011-06-01
  *
- **/
+ */
 #ifndef _MORSE_QUARK_H_
 #define _MORSE_QUARK_H_
 

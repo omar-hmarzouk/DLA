@@ -20,7 +20,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -68,7 +68,7 @@
  * @sa MORSE_spotri
  * @sa MORSE_zpotrf
  *
- ******************************************************************************/
+ */
 int MORSE_zpotrimm( MORSE_enum uplo, int N,
                     MORSE_Complex64_t *A, int LDA,
                     MORSE_Complex64_t *B, int LDB,
@@ -199,7 +199,7 @@ int MORSE_zpotrimm( MORSE_enum uplo, int N,
  * @sa MORSE_spotri_Tile
  * @sa MORSE_zpotrf_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zpotrimm_Tile( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *C )
 {
     MORSE_context_t *morse;
@@ -256,7 +256,7 @@ int MORSE_zpotrimm_Tile( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORS
  * @sa MORSE_spotri_Tile_Async
  * @sa MORSE_zpotrf_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zpotrimm_Tile_Async( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *C,
                                MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

@@ -12,7 +12,7 @@
  * @version 1.0.0
  * @precisions normal z -> c d s
  *
- **/
+ */
 #ifndef TIMING_ZAUXILIARY_H
 #define TIMING_ZAUXILIARY_H
 

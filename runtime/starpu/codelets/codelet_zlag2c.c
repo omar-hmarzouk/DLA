@@ -20,7 +20,7 @@
  * @date 2010-11-15
  * @precisions mixed zc -> ds
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
@@ -28,7 +28,7 @@
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 void MORSE_TASK_zlag2c(const MORSE_option_t *options,
                        int m, int n, int nb,
                        const MORSE_desc_t *A, int Am, int An, int lda,

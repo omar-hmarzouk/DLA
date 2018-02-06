@@ -15,15 +15,15 @@
  * @author Florent Pruvost
  * @date 2017-05-03
  *
- **/
+ */
 #ifndef _MORSE_F77_H_
 #define _MORSE_F77_H_
 
 #include "chameleon/morse_mangling.h"
 
-/** ****************************************************************************
+/**
  *  Determine FORTRAN names
- **/
+ */
 #define MORSE_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname, MORSE_##UCNAME)
 #define MORSE_TILE_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname##_tile, MORSE_##UCNAME##_TILE)
 #define MORSE_ASYNC_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname##_tile_async, MORSE_##UCNAME##_TILE_ASYNC)

@@ -18,7 +18,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -77,7 +77,7 @@
  * @sa MORSE_dlange
  * @sa MORSE_slange
  *
- ******************************************************************************/
+ */
 double MORSE_zlange(MORSE_enum norm, int M, int N,
                     MORSE_Complex64_t *A, int LDA )
 {
@@ -187,7 +187,7 @@ double MORSE_zlange(MORSE_enum norm, int M, int N,
  * @sa MORSE_dlange_Tile
  * @sa MORSE_slange_Tile
  *
- ******************************************************************************/
+ */
 double MORSE_zlange_Tile(MORSE_enum norm, MORSE_desc_t *A )
 {
     MORSE_context_t *morse;
@@ -239,7 +239,7 @@ double MORSE_zlange_Tile(MORSE_enum norm, MORSE_desc_t *A )
  * @sa MORSE_dlange_Tile_Async
  * @sa MORSE_slange_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zlange_Tile_Async( MORSE_enum norm, MORSE_desc_t *A, double *value,
                              MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

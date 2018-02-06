@@ -24,14 +24,14 @@
  * @date 2014-10-10
  * @precisions normal z -> c
  *
- **/
+ */
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 static MORSE_Complex64_t zone  =  1.;
 static MORSE_Complex64_t mzone = -1.;
 

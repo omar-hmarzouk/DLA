@@ -22,14 +22,14 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 void CORE_zgemm(MORSE_enum transA, int transB,
                 int M, int N, int K,
                 MORSE_Complex64_t alpha, const MORSE_Complex64_t *A, int LDA,
@@ -57,7 +57,7 @@ void CORE_zgemm(MORSE_enum transA, int transB,
 }
 
 
-/***************************************************************************/
+/**/
 
 
 

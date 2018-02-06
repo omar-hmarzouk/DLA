@@ -15,7 +15,7 @@
  * @author Cedric Augonnet
  * @date 2011-06-01
  *
- **/
+ */
 #ifndef _MORSE_STARPU_WORKSPACE_H_
 #define _MORSE_STARPU_WORKSPACE_H_
 

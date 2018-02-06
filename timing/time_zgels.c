@@ -12,7 +12,7 @@
  * @version 1.0.0
  * @precisions normal z -> c d s
  *
- **/
+ */
 #define _TYPE  MORSE_Complex64_t
 #define _PREC  double
 #define _LAMCH LAPACKE_dlamch_work

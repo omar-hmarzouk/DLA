@@ -16,7 +16,7 @@
  * @date 2016-12-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 
 /**
@@ -132,7 +132,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 
 int CORE_ztpmlqt( MORSE_enum side, MORSE_enum trans,
                   int M, int N, int K, int L, int IB,

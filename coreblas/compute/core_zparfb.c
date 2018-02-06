@@ -21,12 +21,12 @@
  * @date 2011-06-14
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/cblas.h"
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -136,7 +136,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 /* This kernel is never traced so return type on previous line for convert2eztrace.pl script */
 int
 CORE_zparfb(MORSE_enum side, MORSE_enum trans, MORSE_enum direct, MORSE_enum storev,

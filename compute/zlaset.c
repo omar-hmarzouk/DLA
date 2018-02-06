@@ -20,7 +20,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -69,7 +69,7 @@
  * @sa MORSE_dlaset
  * @sa MORSE_slaset
  *
- ******************************************************************************/
+ */
 int MORSE_zlaset( MORSE_enum uplo, int M, int N,
                   MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
                   MORSE_Complex64_t *A, int LDA )
@@ -178,7 +178,7 @@ int MORSE_zlaset( MORSE_enum uplo, int M, int N,
  * @sa MORSE_dlaset_Tile
  * @sa MORSE_slaset_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zlaset_Tile( MORSE_enum uplo,
                        MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
                        MORSE_desc_t *A )
@@ -231,7 +231,7 @@ int MORSE_zlaset_Tile( MORSE_enum uplo,
  * @sa MORSE_dlaset_Tile_Async
  * @sa MORSE_slaset_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zlaset_Tile_Async( MORSE_enum uplo,
                              MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
                              MORSE_desc_t *A,

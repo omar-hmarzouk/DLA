@@ -22,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/cblas.h"
 #include "chameleon_quark.h"
 #include "chameleon/morse_tasks_z.h"
@@ -46,7 +46,7 @@ void CORE_zgessm_quark(Quark *quark)
     CORE_zgessm(m, n, k, ib, IPIV, D, ldd, A, lda);
 }
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -90,7 +90,7 @@ void CORE_zgessm_quark(Quark *quark)
  *         \retval MORSE_SUCCESS successful exit
  *         \retval <0 if INFO = -k, the k-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 void MORSE_TASK_zgessm(const MORSE_option_t *options,
                        int m, int n, int k, int ib, int nb,
                        int *IPIV,

@@ -16,11 +16,11 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 #include "coreblas/lapacke.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -76,7 +76,7 @@
  *         \retval MORSE_SUCCESS successful exit
  *         \retval <0 if INFO = -k, the k-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 #if defined(MORSE_HAVE_WEAK)
 #pragma weak CORE_zlatro = PCORE_zlatro
 #define CORE_zlatro PCORE_zlatro

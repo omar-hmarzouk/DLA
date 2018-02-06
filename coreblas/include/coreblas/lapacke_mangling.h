@@ -13,7 +13,7 @@
  *
  * @version 1.0.0
  *
- **/
+ */
 #ifndef LAPACK_HEADER_INCLUDED
 #define LAPACK_HEADER_INCLUDED
 

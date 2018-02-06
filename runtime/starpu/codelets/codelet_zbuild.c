@@ -23,7 +23,7 @@
  * @date 2016-09-05
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 

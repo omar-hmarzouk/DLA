@@ -16,7 +16,7 @@
  * @date 2015-09-16
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "cudablas.h"
 
 /**
@@ -142,7 +142,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 int
 CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
             MORSE_enum direct, MORSE_enum storev,

@@ -21,7 +21,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
@@ -60,7 +60,7 @@
  * @param[in] LDA
  *         The leading dimension of the array A.  LDA >= max(1,M).
  *
- **/
+ */
 void MORSE_TASK_zlaset(const MORSE_option_t *options,
                        MORSE_enum uplo, int M, int N,
                        MORSE_Complex64_t alpha, MORSE_Complex64_t beta,

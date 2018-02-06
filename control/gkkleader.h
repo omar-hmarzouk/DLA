@@ -18,7 +18,7 @@
  * based on the GKK algorithm by Gustavson, Karlsson, Kagstrom
  * and its fortran implementation.
  *
- **/
+ */
 #ifndef GKKLEADERS_H
 #define GKKLEADERS_H
 

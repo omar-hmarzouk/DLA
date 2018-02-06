@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2011-10-29
  *
- **/
+ */
 #include "chameleon_quark.h"
 #include "chameleon/chameleon_timer.h"
 
@@ -54,9 +54,9 @@ void RUNTIME_kernelprofile_display(void)
     morse_warning("RUNTIME_kernelprofile_display(quark)", "Kernel profiling is not available with Quark\n");
 }
 
-/*******************************************************************************
+/**
  *  Set iteration numbers for traces
- **/
+ */
 void RUNTIME_iteration_push( MORSE_context_t *morse, unsigned long iteration )
 {
     (void)morse; (void)iteration;

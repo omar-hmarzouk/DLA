@@ -16,7 +16,7 @@
  * @date 2014-10-13
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "posv_morse_functions.h"
 
 int main(int argc, char *argv[]) {

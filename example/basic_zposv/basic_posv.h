@@ -15,7 +15,7 @@
  * @author Florent Pruvost
  * @date 2014-10-13
  *
- **/
+ */
 #ifndef BASIC_POSV_H
 #define BASIC_POSV_H
 

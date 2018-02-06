@@ -16,7 +16,7 @@
  * @author Mathieu Faverge
  * @date 2017-01-12
  *
- **/
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "chameleon_parsec.h"

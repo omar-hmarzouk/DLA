@@ -17,7 +17,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 #include <stdlib.h>
 
@@ -33,9 +33,9 @@
 #define E(m, n) A, m, n
 #endif
 
-/*******************************************************************************
+/**
  *  Parallel tile BAND Tridiagonal Reduction - dynamic scheduler
- **/
+ */
 void morse_pzhetrd_he2hb(MORSE_enum uplo,
                          MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *E,
                          MORSE_sequence_t *sequence, MORSE_request_t *request)

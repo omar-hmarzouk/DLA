@@ -18,7 +18,7 @@
  * @date 2011-11-03
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
@@ -81,7 +81,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 void MORSE_TASK_ztradd(const MORSE_option_t *options,
                        MORSE_enum uplo, MORSE_enum trans, int m, int n, int nb,
                        MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,

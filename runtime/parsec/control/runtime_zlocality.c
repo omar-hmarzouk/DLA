@@ -16,7 +16,7 @@
  * @author Mathieu Faverge
  * @date 2017-01-12
  *
- **/
+ */
 #include "runtime/PaRSEC/include/chameleon_parsec.h"
 
 void RUNTIME_zlocality_allrestrict( uint32_t where )

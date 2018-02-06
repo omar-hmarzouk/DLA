@@ -19,7 +19,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 #if !defined(CHAMELEON_SIMULATION)
 #include <coreblas/lapacke.h>
@@ -107,7 +107,7 @@
  * @sa MORSE_dsytrd
  * @sa MORSE_ssytrd
  *
- ******************************************************************************/
+ */
 int MORSE_zhetrd( MORSE_enum jobz, MORSE_enum uplo, int N,
                   MORSE_Complex64_t *A, int LDA,
                   double *D,
@@ -261,7 +261,7 @@ int MORSE_zhetrd( MORSE_enum jobz, MORSE_enum uplo, int N,
  * @sa MORSE_ssytrd_Tile
  * @sa MORSE_zhetrd_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zhetrd_Tile( MORSE_enum jobz, MORSE_enum uplo,
                        MORSE_desc_t *A, double *D, double *E,
                        MORSE_desc_t *T, MORSE_Complex64_t *Q, int LDQ )
@@ -320,7 +320,7 @@ int MORSE_zhetrd_Tile( MORSE_enum jobz, MORSE_enum uplo,
  * @sa MORSE_dsytrd_Tile_Async
  * @sa MORSE_ssytrd_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zhetrd_Tile_Async( MORSE_enum jobz,
                              MORSE_enum uplo,
                              MORSE_desc_t *A,

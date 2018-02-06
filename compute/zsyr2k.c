@@ -20,7 +20,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -102,7 +102,7 @@
  * @sa MORSE_dsyr2k
  * @sa MORSE_ssyr2k
  *
- ******************************************************************************/
+ */
 int MORSE_zsyr2k( MORSE_enum uplo, MORSE_enum trans, int N, int K,
                  MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t *B, int LDB,
                  MORSE_Complex64_t beta,  MORSE_Complex64_t *C, int LDC )
@@ -259,7 +259,7 @@ int MORSE_zsyr2k( MORSE_enum uplo, MORSE_enum trans, int N, int K,
  * @sa MORSE_dsyr2k
  * @sa MORSE_ssyr2k
  *
- ******************************************************************************/
+ */
 int MORSE_zsyr2k_Tile( MORSE_enum uplo, MORSE_enum trans,
                       MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
                       MORSE_Complex64_t beta,  MORSE_desc_t *C )
@@ -315,7 +315,7 @@ int MORSE_zsyr2k_Tile( MORSE_enum uplo, MORSE_enum trans,
  * @sa MORSE_dsyr2k_Tile_Async
  * @sa MORSE_ssyr2k_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zsyr2k_Tile_Async( MORSE_enum uplo, MORSE_enum trans,
                             MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B,
                             MORSE_Complex64_t beta,  MORSE_desc_t *C,

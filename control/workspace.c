@@ -28,9 +28,9 @@
 #include "control/auxiliary.h"
 #include "control/workspace.h"
 
-/*******************************************************************************
+/**
  *
- **/
+ */
 int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc, int p, int q)
 {
     int status;
@@ -100,9 +100,9 @@ int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t 
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *
- **/
+ */
 int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc, void **IPIV, int p, int q)
 {
     int status;
@@ -156,7 +156,7 @@ int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **des
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -173,7 +173,7 @@ int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **des
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Dealloc_Workspace(MORSE_desc_t **desc)
 {
     MORSE_context_t *morse;

@@ -22,12 +22,12 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 #include "coreblas/cblas.h"
 #include <math.h>
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -92,7 +92,7 @@
  *              singular, and division by zero will occur if it is used
  *              to solve a system of equations.
  *
- ******************************************************************************/
+ */
 
 
 int CORE_ztstrf(int M, int N, int IB, int NB,

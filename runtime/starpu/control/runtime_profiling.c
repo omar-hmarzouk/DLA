@@ -17,7 +17,7 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #include <math.h>
 #include "chameleon_starpu.h"
 #if defined(HAVE_STARPU_FXT_PROFILING)
@@ -35,9 +35,9 @@ double RUNTIME_get_time(){
     return starpu_timing_now()*1e-6;
 }
 
-/*******************************************************************************
+/**
  *  Set iteration numbers for traces
- **/
+ */
 void RUNTIME_iteration_push( MORSE_context_t *morse, unsigned long iteration )
 {
     (void)morse;

@@ -17,7 +17,7 @@
  * @date 2017-05-17
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -72,7 +72,7 @@
  * @sa MORSE_sgeqrf
  * @sa MORSE_zgeqrs
  *
- ******************************************************************************/
+ */
 int MORSE_zgeqrf_param( const libhqr_tree_t *qrtree, int M, int N,
                         MORSE_Complex64_t *A, int LDA,
                         MORSE_desc_t *descTS, MORSE_desc_t *descTT )
@@ -185,7 +185,7 @@ int MORSE_zgeqrf_param( const libhqr_tree_t *qrtree, int M, int N,
  * @sa MORSE_sgeqrf_param_Tile
  * @sa MORSE_zgeqrs_param_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zgeqrf_param_Tile( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT )
 {
     MORSE_context_t *morse;
@@ -240,7 +240,7 @@ int MORSE_zgeqrf_param_Tile( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE
  * @sa MORSE_sgeqrf_param_Tile_Async
  * @sa MORSE_zgeqrs_param_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zgeqrf_param_Tile_Async( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT,
                                    MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

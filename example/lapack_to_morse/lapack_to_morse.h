@@ -15,7 +15,7 @@
  * @author Florent Pruvost
  * @date 2014-10-29
  *
- **/
+ */
 #ifndef LAPACK_TO_MORSE_H
 #define LAPACK_TO_MORSE_H
 

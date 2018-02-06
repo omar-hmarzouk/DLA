@@ -21,14 +21,14 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
-/*******************************************************************************
+/**
  *  Parallel initializztion a 2-D array A to 
  *  ALPHA on the offdiagonals.
- **/
+ */
 void morse_pzlaset2(MORSE_enum uplo, MORSE_Complex64_t alpha, 
                            MORSE_desc_t *A,
                            MORSE_sequence_t *sequence, MORSE_request_t *request)

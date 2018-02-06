@@ -17,7 +17,7 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #include <stdlib.h>
 #include "chameleon_starpu.h"
 
@@ -32,9 +32,9 @@ int _starpu_is_initialized(void);
 #endif
 #endif
 
-/*******************************************************************************
+/**
  *  Create new context
- **/
+ */
 void RUNTIME_context_create( MORSE_context_t *morse )
 {
     starpu_conf_t *conf;
@@ -54,9 +54,9 @@ void RUNTIME_context_create( MORSE_context_t *morse )
     return;
 }
 
-/*******************************************************************************
+/**
  *  Clean the context
- **/
+ */
 void RUNTIME_context_destroy( MORSE_context_t *morse )
 {
     /* StarPU was already initialized by an external library */
@@ -66,7 +66,7 @@ void RUNTIME_context_destroy( MORSE_context_t *morse )
     return;
 }
 
-/*******************************************************************************
+/**
  *
  */
 void RUNTIME_enable( MORSE_enum lever )
@@ -85,9 +85,9 @@ void RUNTIME_enable( MORSE_enum lever )
     return;
 }
 
-/*******************************************************************************
+/**
  *
- **/
+ */
 void RUNTIME_disable( MORSE_enum lever )
 {
     switch (lever)

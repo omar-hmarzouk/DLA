@@ -16,7 +16,7 @@
  * @date 2011-10-29
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "chameleon_quark.h"
 
 void RUNTIME_zlocality_allrestrict( uint32_t where )

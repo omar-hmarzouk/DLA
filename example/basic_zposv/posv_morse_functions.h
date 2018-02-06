@@ -15,7 +15,7 @@
  * @author Florent Pruvost
  * @date 2014-10-13
  *
- **/
+ */
 #ifndef POSV_MORSE_FUNCTIONS_H
 #define POSV_MORSE_FUNCTIONS_H
 

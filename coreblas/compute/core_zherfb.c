@@ -16,7 +16,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 #include "coreblas/lapacke.h"
 
@@ -89,7 +89,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 #if defined(MORSE_HAVE_WEAK)
 #pragma weak CORE_zherfb = PCORE_zherfb
 #define CORE_zherfb PCORE_zherfb

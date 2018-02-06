@@ -18,15 +18,15 @@
  * @author Cedric Castagnede
  * @date 2012-09-15
  *
- **/
+ */
 #ifndef _MORSE_CONTEXT_H_
 #define _MORSE_CONTEXT_H_
 
 #include "chameleon/morse_struct.h"
 
-/*******************************************************************************
+/**
  *  Routines to handle threads context
- **/
+ */
 #ifdef __cplusplus
 extern "C" {
 #endif

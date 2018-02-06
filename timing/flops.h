@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2010-12-20
  *
- **/
+ */
 /*
  * This file provide the flops formula for all Level 3 BLAS and some
  * Lapack routines.  Each macro uses the same size parameters as the
@@ -31,9 +31,9 @@
 #ifndef _FLOPS_H_
 #define _FLOPS_H_
 
-/************************************************************************
+/**
  *           Generic formula coming from LAWN 41
- ***********************************************************************/
+ */
 
 /*
  * Level 2 BLAS 
@@ -166,9 +166,9 @@
                                 :                  ((double)(__m) * ((double)(__m) * (2. * (double)(__n) - 2./3. * (double)(__m) + 1. ) - (double)(__n) +  5./3.)) )
 
 
-/*******************************************************************************
+/**
  *               Users functions
- ******************************************************************************/
+ */
 
 /*
  * Level 2 BLAS 

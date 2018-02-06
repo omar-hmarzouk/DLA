@@ -20,7 +20,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -92,7 +92,7 @@
  * @sa MORSE_dherk
  * @sa MORSE_sherk
  *
- ******************************************************************************/
+ */
 int MORSE_zherk( MORSE_enum uplo, MORSE_enum trans, int N, int K,
                  double alpha, MORSE_Complex64_t *A, int LDA,
                  double beta,  MORSE_Complex64_t *C, int LDC )
@@ -235,7 +235,7 @@ int MORSE_zherk( MORSE_enum uplo, MORSE_enum trans, int N, int K,
  * @sa MORSE_dherk
  * @sa MORSE_sherk
  *
- ******************************************************************************/
+ */
 int MORSE_zherk_Tile( MORSE_enum uplo, MORSE_enum trans,
                       double alpha, MORSE_desc_t *A,
                       double beta,  MORSE_desc_t *C )
@@ -290,7 +290,7 @@ int MORSE_zherk_Tile( MORSE_enum uplo, MORSE_enum trans,
  * @sa MORSE_dherk_Tile_Async
  * @sa MORSE_sherk_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zherk_Tile_Async( MORSE_enum uplo, MORSE_enum trans,
                             double alpha, MORSE_desc_t *A,
                             double beta,  MORSE_desc_t *C,

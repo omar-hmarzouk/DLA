@@ -21,7 +21,7 @@
  * @date 2011-06-14
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/cblas.h"
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
@@ -40,7 +40,7 @@ static inline int CORE_zpamm_w(MORSE_enum side, MORSE_enum trans, MORSE_enum upl
                                const MORSE_Complex64_t *V, int LDV,
                                      MORSE_Complex64_t *W, int LDW);
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -178,7 +178,7 @@ static inline int CORE_zpamm_w(MORSE_enum side, MORSE_enum trans, MORSE_enum upl
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 int
 CORE_zpamm(int op, MORSE_enum side, MORSE_enum storev,
            int M, int N, int K, int L,
@@ -301,7 +301,7 @@ CORE_zpamm(int op, MORSE_enum side, MORSE_enum storev,
     return MORSE_SUCCESS;
 }
 
-/***************************************************************************/
+/**/
 static inline int
 CORE_zpamm_w(MORSE_enum side, MORSE_enum trans, MORSE_enum uplo,
              int M, int N, int K, int L,
@@ -443,7 +443,7 @@ CORE_zpamm_w(MORSE_enum side, MORSE_enum trans, MORSE_enum uplo,
     return MORSE_SUCCESS;
 }
 
-/***************************************************************************/
+/**/
 static inline int
 CORE_zpamm_a2(MORSE_enum side, MORSE_enum trans, MORSE_enum uplo,
               int M, int N, int K, int L,
@@ -570,6 +570,6 @@ CORE_zpamm_a2(MORSE_enum side, MORSE_enum trans, MORSE_enum uplo,
 
 
 
-/***************************************************************************//**
+/**
  *
- **/
+ */

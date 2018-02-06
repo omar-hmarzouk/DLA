@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2011-06-01
  *
- **/
+ */
 #ifndef _PROFILING_H_
 #define _PROFILING_H_
 

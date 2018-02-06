@@ -27,9 +27,9 @@
 #include "control/common.h"
 #include "chameleon/morse_runtime.h"
 
-/*******************************************************************************
+/**
  *  Register an exception.
- **/
+ */
 int morse_request_fail(MORSE_sequence_t *sequence, MORSE_request_t *request, int status)
 {
     sequence->request = request;
@@ -38,9 +38,9 @@ int morse_request_fail(MORSE_sequence_t *sequence, MORSE_request_t *request, int
     return status;
 }
 
-/*******************************************************************************
+/**
  *  Create a sequence
- **/
+ */
 int morse_sequence_create(MORSE_context_t *morse, MORSE_sequence_t **sequence)
 {
     if ((*sequence = malloc(sizeof(MORSE_sequence_t))) == NULL) {
@@ -54,9 +54,9 @@ int morse_sequence_create(MORSE_context_t *morse, MORSE_sequence_t **sequence)
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *  Destroy a sequence
- **/
+ */
 int morse_sequence_destroy(MORSE_context_t *morse, MORSE_sequence_t *sequence)
 {
     RUNTIME_sequence_destroy( morse, sequence );
@@ -64,16 +64,16 @@ int morse_sequence_destroy(MORSE_context_t *morse, MORSE_sequence_t *sequence)
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *  Wait for the completion of a sequence
- **/
+ */
 int morse_sequence_wait(MORSE_context_t *morse, MORSE_sequence_t *sequence)
 {
     RUNTIME_sequence_wait( morse, sequence );
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Sequences
  *
@@ -89,7 +89,7 @@ int morse_sequence_wait(MORSE_context_t *morse, MORSE_sequence_t *sequence)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Sequence_Create(MORSE_sequence_t **sequence)
 {
     MORSE_context_t *morse;
@@ -104,7 +104,7 @@ int MORSE_Sequence_Create(MORSE_sequence_t **sequence)
     return status;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Sequences
  *
@@ -120,7 +120,7 @@ int MORSE_Sequence_Create(MORSE_sequence_t **sequence)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Sequence_Destroy(MORSE_sequence_t *sequence)
 {
     MORSE_context_t *morse;
@@ -139,7 +139,7 @@ int MORSE_Sequence_Destroy(MORSE_sequence_t *sequence)
     return status;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Sequences
  *
@@ -155,7 +155,7 @@ int MORSE_Sequence_Destroy(MORSE_sequence_t *sequence)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Sequence_Wait(MORSE_sequence_t *sequence)
 {
     MORSE_context_t *morse;
@@ -174,7 +174,7 @@ int MORSE_Sequence_Wait(MORSE_sequence_t *sequence)
     return status;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Sequences
  *
@@ -193,7 +193,7 @@ int MORSE_Sequence_Wait(MORSE_sequence_t *sequence)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Sequence_Flush(MORSE_sequence_t *sequence, MORSE_request_t *request)
 {
     MORSE_context_t *morse;

@@ -22,13 +22,13 @@
  * @date 2010-11-15
  * @precisions mixed zc -> ds
  *
- **/
+ */
 #ifndef _MORSE_CORE_ZCBLAS_H_
 #define _MORSE_CORE_ZCBLAS_H_
 
-/** ****************************************************************************
+/**
  *  Declarations of serial kernels - alphabetical order
- **/
+ */
 void CORE_clag2z(int m, int n,
                  const MORSE_Complex32_t *A, int lda,
                  MORSE_Complex64_t *B, int ldb);

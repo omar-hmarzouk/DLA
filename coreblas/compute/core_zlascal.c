@@ -17,7 +17,7 @@
  * @date 2015-11-05
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 #include "coreblas/cblas.h"
 #include <math.h>
@@ -56,7 +56,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 int
 CORE_zlascal( MORSE_enum uplo, int m, int n,
               MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int lda )

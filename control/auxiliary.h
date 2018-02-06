@@ -18,7 +18,7 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #ifndef _MORSE_AUXILIARY_H_
 #define _MORSE_AUXILIARY_H_
 
@@ -28,18 +28,18 @@
 extern "C" {
 #endif
 
-/*******************************************************************************
+/**
  *  Internal routines
- **/
+ */
 void morse_warning      (const char *func_name, const char* msg_text);
 void morse_error        (const char *func_name, const char* msg_text);
 void morse_fatal_error  (const char *func_name, const char* msg_text);
 int  morse_rank         (MORSE_context_t *morse);
 int  morse_tune         (MORSE_enum func, int M, int N, int NRHS);
 
-/*******************************************************************************
+/**
  *  API routines
- **/
+ */
 int  MORSE_Version      (int *ver_major, int *ver_minor, int *ver_micro);
 int  MORSE_Element_Size (int type);
 int  MORSE_My_Mpi_Rank  (void);

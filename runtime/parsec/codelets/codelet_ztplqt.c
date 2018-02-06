@@ -16,7 +16,7 @@
  * @date 2016-12-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "chameleon_parsec.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"

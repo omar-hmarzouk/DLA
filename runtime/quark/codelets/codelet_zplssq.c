@@ -18,7 +18,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include <math.h>
 #include "chameleon_quark.h"
 #include "chameleon/morse_tasks_z.h"
@@ -39,7 +39,7 @@ void CORE_zplssq_quark(Quark *quark)
     }
 }
 
-/*****************************************************************************
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *

@@ -19,11 +19,11 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include <coreblas/lapacke.h>
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -114,7 +114,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 #if defined(MORSE_HAVE_WEAK)
 #pragma weak CORE_ztsmqr_hetra1 = PCORE_ztsmqr_hetra1
 #define CORE_ztsmqr_hetra1 PCORE_ztsmqr_hetra1

@@ -18,7 +18,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/cblas.h"
 #include <math.h>
 #include "coreblas.h"
@@ -30,7 +30,7 @@
  *
  */
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -67,7 +67,7 @@
  *          Array of dimension M if storev = MorseRowwise; N otherwise.
  *          On exit, contains the sums of the absolute values per column or row.
  *
- ******************************************************************************/
+ */
 
 void CORE_dzasum(MORSE_enum storev, MORSE_enum uplo, int M, int N,
                  const MORSE_Complex64_t *A, int lda, double *work)

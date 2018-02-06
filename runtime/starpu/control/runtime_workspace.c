@@ -16,7 +16,7 @@
  * @author Mathieu Faverge
  * @date 2011-06-01
  *
- **/
+ */
 #include "chameleon_starpu.h"
 
 static void RUNTIME_allocate_workspace_on_workers(void *arg)

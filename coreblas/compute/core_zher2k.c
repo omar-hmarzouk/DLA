@@ -22,17 +22,17 @@
  * @date 2010-11-15
  * @precisions normal z -> c
  *
- **/
+ */
 #include "coreblas.h"
 
 #undef REAL
 #define COMPLEX
 #ifdef COMPLEX
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 void CORE_zher2k(MORSE_enum uplo, MORSE_enum trans,
                  int N, int K,
                  MORSE_Complex64_t alpha, const MORSE_Complex64_t *A, int LDA,

@@ -18,7 +18,7 @@
  * @date 2011-06-01
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "chameleon_quark.h"
 
 void RUNTIME_zdisplay_allprofile()

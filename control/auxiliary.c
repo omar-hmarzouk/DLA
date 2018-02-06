@@ -32,7 +32,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
-/*******************************************************************************
+/**
  *
  *  Indicates a recoverable problem.
  *  User's erroneous action without severe consequences.
@@ -45,7 +45,7 @@
  * @param[in] msg_text
  *          Warning message to display.
  *
- ******************************************************************************/
+ */
 void morse_warning(const char *func_name, const char *msg_text)
 {
     MORSE_context_t *morse;
@@ -57,7 +57,7 @@ void morse_warning(const char *func_name, const char *msg_text)
         fprintf(stderr, "MORSE WARNING: %s(): %s\n", func_name, msg_text);
 }
 
-/*******************************************************************************
+/**
  *
  *  Indicates a recoverable problem.
  *  User's erroneous action with potentially severe consequences.
@@ -70,13 +70,13 @@ void morse_warning(const char *func_name, const char *msg_text)
  * @param[in] msg_text
  *          Warning message to display.
  *
- ******************************************************************************/
+ */
 void morse_error(const char *func_name, const char *msg_text)
 {
     fprintf(stderr, "MORSE ERROR: %s(): %s\n", func_name, msg_text);
 }
 
-/*******************************************************************************
+/**
  *
  *  Unexpected behavior within the library.
  *  Unrecoverable user errors.
@@ -88,24 +88,24 @@ void morse_error(const char *func_name, const char *msg_text)
  * @param[in] msg_text
  *          Warning message to display.
  *
- ******************************************************************************/
+ */
 void morse_fatal_error(const char *func_name, const char *msg_text)
 {
     fprintf(stderr, "MORSE FATAL ERROR: %s(): %s\n", func_name, msg_text);
     exit(0);
 }
 
-/*******************************************************************************
+/**
  *  Returns core id
- **/
+ */
 int morse_rank(MORSE_context_t *morse)
 {
     return RUNTIME_thread_rank( morse );
 }
 
-/*******************************************************************************
+/**
  *  Tune block size nb and internal block size ib
- **/
+ */
 int morse_tune(MORSE_enum func, int M, int N, int NRHS)
 {
     MORSE_context_t *morse;
@@ -120,7 +120,7 @@ int morse_tune(MORSE_enum func, int M, int N, int NRHS)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Auxiliary
  *
@@ -142,7 +142,7 @@ int morse_tune(MORSE_enum func, int M, int N, int NRHS)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Version(int *ver_major, int *ver_minor, int *ver_micro)
 {
     if (! ver_major && ! ver_minor && ! ver_micro)
@@ -160,7 +160,7 @@ int MORSE_Version(int *ver_major, int *ver_minor, int *ver_micro)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Auxiliary
  *
@@ -183,7 +183,7 @@ int MORSE_Version(int *ver_major, int *ver_minor, int *ver_micro)
  * @return
  *          \retval Element size in bytes
  *
- *****************************************************************************/
+ */
 int MORSE_Element_Size(int type)
 {
     switch(type) {
@@ -199,7 +199,7 @@ int MORSE_Element_Size(int type)
     }
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Auxiliary
  *
@@ -212,7 +212,7 @@ int MORSE_Element_Size(int type)
  * @return
  *          \retval MPI rank
  *
- *****************************************************************************/
+ */
 int MORSE_My_Mpi_Rank(void)
 {
 #if defined(CHAMELEON_USE_MPI)
@@ -227,9 +227,9 @@ int MORSE_My_Mpi_Rank(void)
 #endif
 }
 
-/*******************************************************************************
+/**
  *  Display a progress percentage in stderr
- **/
+ */
 void update_progress(int currentValue, int maximumValue) {
     div_t res ;
     static int progress = -1; /* varie de 0 a 100 au cours du calcul concerne */

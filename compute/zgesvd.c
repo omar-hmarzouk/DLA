@@ -17,7 +17,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -141,7 +141,7 @@
  * @sa MORSE_dgesvd
  * @sa MORSE_sgesvd
  *
- ******************************************************************************/
+ */
 int MORSE_zgesvd( MORSE_enum jobu, MORSE_enum jobvt,
                   int M, int N,
                   MORSE_Complex64_t *A, int LDA,
@@ -329,7 +329,7 @@ int MORSE_zgesvd( MORSE_enum jobu, MORSE_enum jobvt,
  * @sa MORSE_dgesvd_Tile
  * @sa MORSE_sgesvd_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zgesvd_Tile( MORSE_enum jobu, MORSE_enum jobvt,
                        MORSE_desc_t *A,
                        double *S,
@@ -389,7 +389,7 @@ int MORSE_zgesvd_Tile( MORSE_enum jobu, MORSE_enum jobvt,
  * @sa MORSE_dgesvd_Tile_Async
  * @sa MORSE_sgesvd_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
                              MORSE_desc_t *A,
                              double *S,

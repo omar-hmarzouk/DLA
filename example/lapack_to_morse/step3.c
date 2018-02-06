@@ -15,7 +15,7 @@
  * @author Florent Pruvost
  * @date 2014-10-29
  *
- **/
+ */
 #include "step3.h"
 
 /*

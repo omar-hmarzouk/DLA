@@ -21,7 +21,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 
@@ -58,7 +58,7 @@
  * @param[in] LDA
  *         The leading dimension of the array A.  LDA >= max(1,M).
  *
- **/
+ */
 void CORE_zlaset2(MORSE_enum uplo, int M, int N,
                   MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA)
 {

@@ -16,12 +16,12 @@
  * @date 2014-10-13
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "posv_users_functions.h"
 
-/*******************************************************************************
+/**
  *  Function that allocate an array of pointers to square tiles (allocated to 0)
- **/
+ */
 MORSE_Complex64_t **allocate_tile_matrix(int m, int n, int nb){
     int i;
     int mt, nt;

@@ -25,7 +25,7 @@
 #include "control/common.h"
 #include "control/auxiliary.h"
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Tile
  *
@@ -47,7 +47,7 @@
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
 {
     switch( A->dtyp ) {
@@ -67,7 +67,7 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
     return MORSE_ERR_ILLEGAL_VALUE;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Tile
  *
@@ -89,7 +89,7 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Tile_to_Lapack(MORSE_desc_t *A, void *Af77, int LDA)
 {
     switch( A->dtyp ) {

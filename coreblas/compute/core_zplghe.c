@@ -22,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c
  *
- **/
+ */
 #include "coreblas.h"
 
 #define COMPLEX

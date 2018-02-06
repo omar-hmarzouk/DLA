@@ -20,17 +20,17 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
 #define B(m,n) B,  m,  n
-/*******************************************************************************
+/**
  *
- **/
-/*******************************************************************************
+ */
+/**
  *
- **/
+ */
 void morse_pzlacpy(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
                           MORSE_sequence_t *sequence, MORSE_request_t *request)
 {

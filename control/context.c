@@ -40,15 +40,15 @@
 #include "coreblas.h"
 #endif
 
-/*******************************************************************************
+/**
  *  Global data
- **/
+ */
 /* master threads context lookup table */
 static MORSE_context_t *morse_ctxt = NULL;
 
-/*******************************************************************************
+/**
  *  Create new context
- **/
+ */
 MORSE_context_t *morse_context_create()
 {
     MORSE_context_t *morse;
@@ -92,17 +92,17 @@ MORSE_context_t *morse_context_create()
 }
 
 
-/*******************************************************************************
+/**
  *  Return context for a thread
- **/
+ */
 MORSE_context_t *morse_context_self()
 {
     return morse_ctxt;
 }
 
-/*******************************************************************************
+/**
  *  Clean the context
- **/
+ */
 int morse_context_destroy(){
 
     RUNTIME_context_destroy(morse_ctxt);
@@ -112,7 +112,7 @@ int morse_context_destroy(){
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Options
  *
@@ -133,7 +133,7 @@ int morse_context_destroy(){
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Enable(MORSE_enum option)
 {
     MORSE_context_t *morse;
@@ -181,7 +181,7 @@ int MORSE_Enable(MORSE_enum option)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Options
  *
@@ -202,7 +202,7 @@ int MORSE_Enable(MORSE_enum option)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Disable(MORSE_enum option)
 {
     MORSE_context_t *morse;
@@ -245,7 +245,7 @@ int MORSE_Disable(MORSE_enum option)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Options
  *
@@ -266,7 +266,7 @@ int MORSE_Disable(MORSE_enum option)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Set(MORSE_enum param, int value)
 {
     MORSE_context_t *morse;
@@ -339,7 +339,7 @@ int MORSE_Set(MORSE_enum param, int value)
     return MORSE_SUCCESS;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Options
  *
@@ -360,7 +360,7 @@ int MORSE_Set(MORSE_enum param, int value)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Get(MORSE_enum param, int *value)
 {
     MORSE_context_t *morse;

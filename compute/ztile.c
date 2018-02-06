@@ -18,7 +18,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -55,7 +55,7 @@
  * @sa MORSE_dLapack_to_Tile
  * @sa MORSE_sLapack_to_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zLapack_to_Tile( MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A )
 {
     MORSE_context_t *morse;
@@ -132,7 +132,7 @@ int MORSE_zLapack_to_Tile( MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A )
  * @sa MORSE_dTile_to_Lapack
  * @sa MORSE_sTile_to_Lapack
  *
- ******************************************************************************/
+ */
 int MORSE_zTile_to_Lapack( MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA )
 {
     MORSE_context_t *morse;

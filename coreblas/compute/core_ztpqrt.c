@@ -16,7 +16,7 @@
  * @date 2016-12-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 
@@ -86,7 +86,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 int CORE_ztpqrt( int M, int N, int L, int IB,
                  MORSE_Complex64_t *A, int LDA,
                  MORSE_Complex64_t *B, int LDB,

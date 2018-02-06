@@ -18,7 +18,7 @@
  * @date 2011-06-01
  * @precisions normal z -> c d s
  *
- **/
+ */
 #ifndef _CODELETS_Z_H_
 #define _CODELETS_Z_H_
 

@@ -23,15 +23,15 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #ifndef _MORSE_CORE_ZBLAS_H_
 #define _MORSE_CORE_ZBLAS_H_
 
 #define COMPLEX
 
-/** ****************************************************************************
+/**
  *  Declarations of serial kernels - alphabetical order
- **/
+ */
 void CORE_dzasum(int storev, MORSE_enum uplo, int M, int N,
                  const MORSE_Complex64_t *A, int lda, double *work);
 void CORE_zbrdalg(MORSE_enum uplo, int N, int NB,

@@ -23,7 +23,7 @@
  * @date 2014-10-09
  * @precisions normal z -> c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -86,7 +86,7 @@
  * @sa MORSE_zsysv_Tile_Async
  * @sa MORSE_csysv
  *
- ******************************************************************************/
+ */
 int MORSE_zsysv( MORSE_enum uplo, int N, int NRHS,
                  MORSE_Complex64_t *A, int LDA,
                  MORSE_Complex64_t *B, int LDB )
@@ -212,7 +212,7 @@ int MORSE_zsysv( MORSE_enum uplo, int N, int NRHS,
  * @sa MORSE_zsysv_Tile_Async
  * @sa MORSE_csysv_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zsysv_Tile( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
@@ -264,7 +264,7 @@ int MORSE_zsysv_Tile( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B )
  * @sa MORSE_zsysv_Tile
  * @sa MORSE_csysv_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zsysv_Tile_Async( MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
                             MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

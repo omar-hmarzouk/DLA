@@ -16,7 +16,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_parsec.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
@@ -44,9 +44,9 @@ CORE_zlatro_parsec( parsec_execution_stream_t *context,
     return PARSEC_HOOK_RETURN_DONE;
 }
 
-/***************************************************************************//**
+/**
  *
- **/
+ */
 void MORSE_TASK_zlatro(const MORSE_option_t *options,
                        MORSE_enum uplo, MORSE_enum trans,
                        int m, int n, int mb,

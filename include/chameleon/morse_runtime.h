@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2011-06-01
  *
- **/
+ */
 #ifndef _MORSE_RUNTIME_H_
 #define _MORSE_RUNTIME_H_
 
@@ -494,7 +494,7 @@ RUNTIME_data_getaddr( const MORSE_desc_t *A, int Am, int An );
  *
  * @name RUNTIME Insert task options management
  * @{
- **/
+ */
 void  RUNTIME_options_init     (MORSE_option_t*, MORSE_context_t*, MORSE_sequence_t*, MORSE_request_t*);
 void  RUNTIME_options_finalize (MORSE_option_t*, MORSE_context_t *);
 int   RUNTIME_options_ws_alloc (MORSE_option_t*, size_t, size_t);
@@ -507,7 +507,7 @@ int   RUNTIME_options_ws_free  (MORSE_option_t*);
  *
  * @name RUNTIME Kernel locality management
  * @{
- **/
+ */
 void RUNTIME_zlocality_allrestore ();
 void RUNTIME_clocality_allrestore ();
 void RUNTIME_dlocality_allrestore ();
@@ -534,7 +534,7 @@ void RUNTIME_slocality_onerestore (MORSE_kernel_t);
  *
  * @name RUNTIME Profiling
  * @{
- **/
+ */
 void   RUNTIME_schedprofile_display ();
 void   RUNTIME_kernelprofile_display();
 double RUNTIME_get_time();

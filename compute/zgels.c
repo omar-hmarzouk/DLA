@@ -21,7 +21,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 #include <stdlib.h>
 
@@ -101,7 +101,7 @@
  * @sa MORSE_dgels
  * @sa MORSE_sgels
  *
- ******************************************************************************/
+ */
 int MORSE_zgels( MORSE_enum trans, int M, int N, int NRHS,
                  MORSE_Complex64_t *A, int LDA,
                  MORSE_desc_t *descT,
@@ -255,7 +255,7 @@ int MORSE_zgels( MORSE_enum trans, int M, int N, int NRHS,
  * @sa MORSE_dgels_Tile
  * @sa MORSE_sgels_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zgels_Tile( MORSE_enum trans, MORSE_desc_t *A,
                       MORSE_desc_t *T, MORSE_desc_t *B )
 {
@@ -311,7 +311,7 @@ int MORSE_zgels_Tile( MORSE_enum trans, MORSE_desc_t *A,
  * @sa MORSE_dgels_Tile_Async
  * @sa MORSE_sgels_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zgels_Tile_Async( MORSE_enum trans, MORSE_desc_t *A,
                             MORSE_desc_t *T, MORSE_desc_t *B,
                             MORSE_sequence_t *sequence, MORSE_request_t *request )

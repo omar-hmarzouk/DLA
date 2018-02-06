@@ -18,7 +18,7 @@
  * @date 2015-11-03
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 
 /**
@@ -78,7 +78,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 #if defined(MORSE_HAVE_WEAK)
 #pragma weak CORE_ztradd = PCORE_ztradd
 #define CORE_ztradd PCORE_ztradd

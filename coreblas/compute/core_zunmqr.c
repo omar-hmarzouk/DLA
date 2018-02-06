@@ -7,7 +7,7 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
+ */
  /**
  *
  * @brief Chameleon core_zunmqr CPU kernel
@@ -23,11 +23,11 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -110,7 +110,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 
 int CORE_zunmqr(MORSE_enum side, MORSE_enum trans,
                 int M, int N, int K, int IB,

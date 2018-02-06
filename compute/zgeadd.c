@@ -18,7 +18,7 @@
  * @date 2011-11-03
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -85,7 +85,7 @@
  * @sa MORSE_dgeadd
  * @sa MORSE_sgeadd
  *
- ******************************************************************************/
+ */
 int MORSE_zgeadd( MORSE_enum trans, int M, int N,
                   MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
                   MORSE_Complex64_t beta,  MORSE_Complex64_t *B, int LDB )
@@ -222,7 +222,7 @@ int MORSE_zgeadd( MORSE_enum trans, int M, int N,
  * @sa MORSE_dgeadd_Tile
  * @sa MORSE_sgeadd_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zgeadd_Tile( MORSE_enum trans,
                        MORSE_Complex64_t alpha, MORSE_desc_t *A,
                        MORSE_Complex64_t beta,  MORSE_desc_t *B )
@@ -278,7 +278,7 @@ int MORSE_zgeadd_Tile( MORSE_enum trans,
  * @sa MORSE_dgeadd_Tile_Async
  * @sa MORSE_sgeadd_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zgeadd_Tile_Async( MORSE_enum trans,
                              MORSE_Complex64_t alpha, MORSE_desc_t *A,
                              MORSE_Complex64_t beta,  MORSE_desc_t *B,

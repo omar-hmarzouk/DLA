@@ -17,7 +17,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T, MORSE_desc_t D,

@@ -23,7 +23,7 @@
  * @date 2016-08-01
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -69,7 +69,7 @@
  * @sa MORSE_splgsy
  * @sa MORSE_zplgsy
  *
- ******************************************************************************/
+ */
 int MORSE_zplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, int N,
                   MORSE_Complex64_t *A, int LDA,
                   unsigned long long int seed )
@@ -172,7 +172,7 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, int N,
  * @sa MORSE_splgsy_Tile
  * @sa MORSE_zplgsy_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_enum uplo,
                        MORSE_desc_t *A,
                        unsigned long long int seed )
@@ -228,7 +228,7 @@ int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_enum uplo,
  * @sa MORSE_zplgsy_Tile_Async
  * @sa MORSE_zplgsy_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zplgsy_Tile_Async( MORSE_Complex64_t      bump,
                              MORSE_enum             uplo,
                              MORSE_desc_t             *A,

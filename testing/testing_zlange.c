@@ -19,7 +19,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

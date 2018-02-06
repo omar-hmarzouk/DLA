@@ -16,7 +16,7 @@
  * @date 2015-09-17
  * @precisions normal z -> c
  *
- **/
+ */
 #include "cudablas.h"
 
 int CUDA_zher2k(MORSE_enum uplo, MORSE_enum trans,

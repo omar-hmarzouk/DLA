@@ -18,12 +18,12 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include <math.h>
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
-/*****************************************************************************
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *

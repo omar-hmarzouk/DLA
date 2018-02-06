@@ -21,7 +21,7 @@
  * @date 2011-06-14
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/cblas.h"
 #include "chameleon_quark.h"
 #include "chameleon/morse_tasks_z.h"
@@ -190,7 +190,7 @@ CORE_zpamm_quark(Quark *quark)
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 void
 MORSE_TASK_zpamm(const MORSE_option_t *options,
                  int op, MORSE_enum side, int storev,

@@ -18,7 +18,7 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #if defined( _WIN32 ) || defined( _WIN64 )
 #define int64_t __int64
 #endif

@@ -16,13 +16,13 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m, n) A,  m,  n
 /**
  *  Parallel scale of a matrix A
- **/
+ */
 void morse_pzlascal(MORSE_enum uplo, MORSE_Complex64_t alpha, MORSE_desc_t *A,
                     MORSE_sequence_t *sequence, MORSE_request_t *request)
 {

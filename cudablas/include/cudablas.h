@@ -16,7 +16,7 @@
  * @date 2015-09-16
  * @precisions normal z -> c d s
  *
- **/
+ */
 #ifndef _CUDA_BLAS_H_
 #define _CUDA_BLAS_H_
 
@@ -60,16 +60,16 @@
 
 #endif /* defined(CHAMELEON_USE_CUBLAS_V2) */
 
-/** ****************************************************************************
+/**
  * MORSE types and constants
- **/
+ */
 #include "chameleon/morse_types.h"
 #include "chameleon/morse_struct.h"
 #include "chameleon/morse_constants.h"
 
-/** ****************************************************************************
+/**
  * CUDA BLAS headers
- **/
+ */
 BEGIN_C_DECLS
 
 #include "cudablas/cudablas_z.h"
@@ -79,14 +79,14 @@ BEGIN_C_DECLS
 
 END_C_DECLS
 
-/** ****************************************************************************
+/**
  * Coreblas Error
- **/
+ */
 #define cudablas_error(k, str) fprintf(stderr, "%s: Parameter %d / %s\n", __func__, k, str)
 
-/** ****************************************************************************
+/**
  *  LAPACK Constants
- **/
+ */
 BEGIN_C_DECLS
 
 extern char *morse_lapack_constants[];

@@ -17,14 +17,14 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "chameleon_starpu.h"
 
-/*******************************************************************************
+/**
  *
- **/
+ */
 int RUNTIME_init( MORSE_context_t *morse,
                   int ncpus,
                   int ncudas,
@@ -114,7 +114,7 @@ int RUNTIME_init( MORSE_context_t *morse,
     return hres;
 }
 
-/*******************************************************************************
+/**
  *
  */
 void RUNTIME_finalize( MORSE_context_t *morse )
@@ -138,9 +138,9 @@ void RUNTIME_finalize( MORSE_context_t *morse )
     return;
 }
 
-/*******************************************************************************
+/**
  *  To suspend the processing of new tasks by workers
- **/
+ */
 void RUNTIME_pause( MORSE_context_t *morse )
 {
     (void)morse;
@@ -148,10 +148,10 @@ void RUNTIME_pause( MORSE_context_t *morse )
     return;
 }
 
-/*******************************************************************************
+/**
  *  This is the symmetrical call to RUNTIME_pause,
  *  used to resume the workers polling for new tasks.
- **/
+ */
 void RUNTIME_resume( MORSE_context_t *morse )
 {
     (void)morse;
@@ -159,9 +159,9 @@ void RUNTIME_resume( MORSE_context_t *morse )
     return;
 }
 
-/*******************************************************************************
+/**
  *  Busy-waiting barrier
- **/
+ */
 void RUNTIME_barrier( MORSE_context_t *morse )
 {
     (void)morse;
@@ -177,9 +177,9 @@ extern void (*update_progress_callback)(int, int);
 // no progress indicator for algorithms faster than 'PROGRESS_MINIMUM_DURATION' seconds
 #define PROGRESS_MINIMUM_DURATION 10
 
-/*******************************************************************************
+/**
  *  Display a progress information when executing the tasks
- **/
+ */
 void RUNTIME_progress( MORSE_context_t *morse )
 {
     int tasksLeft, current, timer = 0;
@@ -213,27 +213,27 @@ void RUNTIME_progress( MORSE_context_t *morse )
     return;
 }
 
-/*******************************************************************************
+/**
  * Thread rank.
- **/
+ */
 int RUNTIME_thread_rank( MORSE_context_t *morse )
 {
     (void)morse;
     return starpu_worker_get_id();
 }
 
-/*******************************************************************************
+/**
  * Number of threads.
- **/
+ */
 int RUNTIME_thread_size( MORSE_context_t *morse )
 {
     (void)morse;
     return starpu_worker_get_count_by_type( STARPU_CPU_WORKER );
 }
 
-/*******************************************************************************
+/**
  *  The process rank
- **/
+ */
 int RUNTIME_comm_rank( MORSE_context_t *morse )
 {
     int rank = 0;
@@ -250,9 +250,9 @@ int RUNTIME_comm_rank( MORSE_context_t *morse )
     return rank;
 }
 
-/*******************************************************************************
+/**
  *  This returns the size of the distributed computation
- **/
+ */
 int RUNTIME_comm_size( MORSE_context_t *morse )
 {
     int size;

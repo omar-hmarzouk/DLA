@@ -17,7 +17,7 @@
  * @author Florent Pruvost
  * @date 2010-11-15
  *
- **/
+ */
 #include <stdlib.h>
 #include "control/common.h"
 #include "morse.h"
@@ -27,9 +27,9 @@
 extern "C" {
 #endif
 
-    /*******************************************************************************
+    /**
      *  FORTRAN API - auxiliary function prototypes
-     **/
+     */
     void MORSE_INIT(int *CORES, int *NGPUS, int *INFO)
     {   *INFO = MORSE_Init(*CORES, *NGPUS); }
 
@@ -60,9 +60,9 @@ extern "C" {
         *INFO = MORSE_SUCCESS;
     }
 
-    /***************************************************************************
+    /**
      *  FORTRAN API - descriptor allocation and deallocation
-     **/
+     */
     void MORSE_DESC_CREATE(MORSE_desc_t **desc, void *mat, MORSE_enum *dtyp,
                            int *mb, int *nb, int *bsiz, int *lm, int *ln,
                            int *i, int *j, int *m, int *n, int *p, int *q,
@@ -93,9 +93,9 @@ extern "C" {
     void MORSE_DESC_DESTROY(MORSE_desc_t **desc, int *INFO)
     {   *INFO = MORSE_Desc_Destroy(desc); }
 
-    /***************************************************************************
+    /**
      *  FORTRAN API - conversion from LAPACK F77 matrix layout to tile layout
-     **/
+     */
     void MORSE_LAPACK_TO_TILE(intptr_t *Af77, int *LDA, intptr_t *A, int *INFO)
     {   *INFO = MORSE_Lapack_to_Tile( (void *)Af77, *LDA, (MORSE_desc_t *)(*A)); }
 

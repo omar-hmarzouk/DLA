@@ -20,11 +20,11 @@
  * @date 2010-11-15
  * @precisions normal z -> c
  *
- **/
+ */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -73,7 +73,7 @@
  * @param[out] normA
  *          On exit, normA is the norm of matrix A.
  *
- ******************************************************************************/
+ */
 
 void CORE_zlanhe(int norm, MORSE_enum uplo, int N,
                  const MORSE_Complex64_t *A, int LDA,

@@ -16,13 +16,13 @@
  * @author Cedric Augonnet
  * @date 2011-06-01
  *
- **/
+ */
 #ifndef _MORSE_KERNELS_H_
 #define _MORSE_KERNELS_H_
 
-/** ****************************************************************************
+/**
  * Used to apply operations on specific kernels
- **/
+ */
 typedef enum morse_kernel_e {
 
   MORSE_GEMM,

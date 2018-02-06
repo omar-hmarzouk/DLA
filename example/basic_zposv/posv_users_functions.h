@@ -15,15 +15,15 @@
  * @author Florent Pruvost
  * @date 2014-10-13
  *
- **/
+ */
 #ifndef POSV_USERS_FUNCTIONS_H
 #define POSV_USERS_FUNCTIONS_H
 
 #include "basic_posv.h"
 
-/*******************************************************************************
+/**
  *  Function to return address of block (m,n)
- **/
+ */
 inline static void* user_getaddr_arrayofpointers(const MORSE_desc_t *A, int m, int n)
 {
     MORSE_Complex64_t **matA = (MORSE_Complex64_t **)A->mat;
@@ -42,18 +42,18 @@ inline static void* user_getaddr_arrayofpointers(const MORSE_desc_t *A, int m, i
     return (void*)( *(matA + offset) );
 }
 
-/*******************************************************************************
+/**
  *  Function to return the leading dimension of element A(m,*)
- **/
+ */
 inline static int user_getblkldd_arrayofpointers(const MORSE_desc_t *A, int m)
 {
     (void)m;
     return A->mb;
 }
 
-/*******************************************************************************
+/**
  *  Function to return MPI rank of element A(m,n)
- **/
+ */
 inline static int user_getrankof_2d(const MORSE_desc_t *desc, int m, int n)
 {
     return (m % desc->p) * desc->q + (n % desc->q);

@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2012-09-15
  *
- **/
+ */
 #ifndef MORSEWINTHREAD_H
 #define MORSEWINTHREAD_H
 

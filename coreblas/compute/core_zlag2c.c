@@ -20,30 +20,30 @@
  * @date 2010-11-15
  * @precisions mixed zc -> ds
  *
- **/
+ */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 void CORE_zlag2c(int m, int n,
                  const MORSE_Complex64_t *A, int lda,
                  MORSE_Complex32_t *B, int ldb, int *info)
 {
     *info = LAPACKE_zlag2c_work(LAPACK_COL_MAJOR, m, n, A, lda, B, ldb);
 }
-/***************************************************************************/
+/**/
 
-/***************************************************************************/
+/**/
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 void CORE_clag2z(int m, int n,
                  const MORSE_Complex32_t *A, int lda,
                  MORSE_Complex64_t *B, int ldb)

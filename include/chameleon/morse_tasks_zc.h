@@ -22,13 +22,13 @@
  * @date 2010-11-15
  * @precisions mixed zc -> ds
  *
- **/
+ */
 #ifndef _MORSE_TASKS_Z_H_
 #define _MORSE_TASKS_Z_H_
 
-/** ****************************************************************************
+/**
  *  Declarations of QUARK wrappers (called by MORSE) - alphabetical order
- **/
+ */
 void MORSE_TASK_clag2z(MORSE_option_t *options,
                        int m, int n, int nb,
                        MORSE_desc_t *A, int Am, int An, int lda,

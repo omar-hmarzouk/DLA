@@ -22,14 +22,14 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 void CORE_zsymm(MORSE_enum side, MORSE_enum uplo,
                 int M, int N,
                 MORSE_Complex64_t alpha, const MORSE_Complex64_t *A, int LDA,

@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #ifndef _MORSE_WORKSPACE_H_
 #define _MORSE_WORKSPACE_H_
 
@@ -24,9 +24,9 @@
 extern "C" {
 #endif
 
-/*******************************************************************************
+/**
  *  Internal routines
- **/
+ */
 int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc, int p, int q);
 int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc, void **IPIV, int p, int q);
 

@@ -21,14 +21,14 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n) A,  m,  n
-/*******************************************************************************
+/**
  *  Parallel initialization a 2-D array A to BETA on the diagonal and
  *  ALPHA on the offdiagonals.
- **/
+ */
 void morse_pzlaset(MORSE_enum uplo,
                           MORSE_Complex64_t alpha, MORSE_Complex64_t beta,
                           MORSE_desc_t *A,

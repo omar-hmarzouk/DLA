@@ -22,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
@@ -30,7 +30,7 @@
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
- **/
+ */
 void MORSE_TASK_zhemm(const MORSE_option_t *options,
                       MORSE_enum side, MORSE_enum uplo,
                       int m, int n, int nb,

@@ -23,7 +23,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include <stdlib.h>
 #include "control/common.h"
 #include "control/morse_f77.h"
@@ -31,9 +31,9 @@
 #define COMPLEX
 
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - math functions (simple interface)
- **/
+ */
 #define MORSE_ZLAPACK_TO_TILE MORSE_FNAME(zlapack_to_tile, ZLAPACK_TO_TILE)
 #define MORSE_ZTILE_TO_LAPACK MORSE_FNAME(ztile_to_lapack, ZTILE_TO_LAPACK)
 //#define MORSE_ZGEBRD          MORSE_FNAME(zgebrd       , ZGEBRD       )
@@ -111,9 +111,9 @@
 #define MORSE_ZUNMLQ          MORSE_FNAME(zunmlq       , ZUNMLQ       )
 #define MORSE_ZUNMQR          MORSE_FNAME(zunmqr       , ZUNMQR       )
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - math functions (native interface)
- **/
+ */
 //#define MORSE_ZGEBRD_TILE          MORSE_TILE_FNAME(zgebrd       , ZGEBRD       )
 #define MORSE_ZGELQF_TILE          MORSE_TILE_FNAME(zgelqf       , ZGELQF       )
 #define MORSE_ZGELQS_TILE          MORSE_TILE_FNAME(zgelqs       , ZGELQS       )
@@ -184,9 +184,9 @@
 #define MORSE_ZUNMLQ_TILE          MORSE_TILE_FNAME(zunmlq       , ZUNMLQ       )
 #define MORSE_ZUNMQR_TILE          MORSE_TILE_FNAME(zunmqr       , ZUNMQR       )
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - math functions (asynchronous interface)
- **/
+ */
 //#define MORSE_ZGEBRD_TILE_ASYNC          MORSE_ASYNC_FNAME(zgebrd       , ZGEBRD       )
 #define MORSE_ZGELQF_TILE_ASYNC          MORSE_ASYNC_FNAME(zgelqf       , ZGELQF       )
 #define MORSE_ZGELQS_TILE_ASYNC          MORSE_ASYNC_FNAME(zgelqs       , ZGELQS       )
@@ -254,9 +254,9 @@
 #define MORSE_ZUNMLQ_TILE_ASYNC          MORSE_ASYNC_FNAME(zunmlq       , ZUNMLQ       )
 #define MORSE_ZUNMQR_TILE_ASYNC          MORSE_ASYNC_FNAME(zunmqr       , ZUNMQR       )
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - workspace allocation
- **/
+ */
 //#define MORSE_ALLOC_WORKSPACE_ZGEBRD              MORSE_WS_FNAME(zgebrd            , ZGEBRD            )
 //#define MORSE_ALLOC_WORKSPACE_ZGEEV               MORSE_WS_FNAME(zgeev             , ZGEEV             )
 //#define MORSE_ALLOC_WORKSPACE_ZGEHRD              MORSE_WS_FNAME(zgehrd            , ZGEHRD            )
@@ -280,9 +280,9 @@
 
 
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - math functions (simple interface)
- **/
+ */
 void MORSE_ZLAPACK_TO_TILE(MORSE_Complex64_t *Af77, int *LDA, MORSE_desc_t *A, int *info)
 { *info = MORSE_zLapack_to_Tile(Af77, *LDA, A); }
 
@@ -488,9 +488,9 @@ void MORSE_ZUNMQR(MORSE_enum *side, MORSE_enum *trans, int *M, int *N, int *K, M
 { *info = MORSE_zunmqr(*side, *trans, *M, *N, *K, A, *LDA, *descT, B, *LDB); }
 
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - math functions (native interface)
- **/
+ */
 //void MORSE_ZGEBRD_TILE(MORSE_desc_t *A, double *D, double *E, MORSE_desc_t *T, int *info)
 //{ *info = MORSE_zgebrd_Tile(A, D, E, T); }
 
@@ -678,9 +678,9 @@ void MORSE_ZUNMQR_TILE(MORSE_enum *side, MORSE_enum *trans, MORSE_desc_t *A, MOR
 { *info = MORSE_zunmqr_Tile(*side, *trans, A, T, B); }
 
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - math functions (asynchronous interface)
- **/
+ */
 //void MORSE_ZGEBRD_TILE_ASYNC(MORSE_desc_t *A, double *D, double *E, MORSE_desc_t *T, MORSE_sequence_t *sequence, MORSE_request_t *request, int *info)
 //{ *info = MORSE_zgebrd_Tile_Async(A, D, E, T, sequence, request); }
 
@@ -868,9 +868,9 @@ void MORSE_ZUNMQR_TILE_ASYNC(MORSE_enum *side, MORSE_enum *trans, MORSE_desc_t *
 { *info = MORSE_zunmqr_Tile_Async(*side, *trans, A, T, B, sequence, request); }
 
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - workspace allocation
- **/
+ */
 //void MORSE_ALLOC_WORKSPACE_ZGEBRD(int *M, int *N, MORSE_desc_t **descT, int *info)
 //{ *info = MORSE_Alloc_Workspace_zgebrd(*M, *N, descT); }
 //

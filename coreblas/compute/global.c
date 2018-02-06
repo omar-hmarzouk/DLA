@@ -16,7 +16,7 @@
  * @author Piotr Luszczek
  * @date 2010-11-15
  *
- **/
+ */
 static int coreblas_gemm3m_enabled = 0;
 
 void
@@ -29,9 +29,9 @@ get_coreblas_gemm3m_enabled(void) {
     return coreblas_gemm3m_enabled;
 }
 
-/*******************************************************************************
+/**
  *  LAPACK Constants
- **/
+ */
 char *morse_lapack_constants[] =
 {
     "", "", "", "", "", "", "", "", "", "",

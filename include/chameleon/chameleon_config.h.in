@@ -15,7 +15,7 @@
  * @author Florent Pruvost
  * @date 2017-01-06
  *
- **/
+ */
 #ifndef CHAMELEON_CONFIG_H_HAS_BEEN_INCLUDED
 #define CHAMELEON_CONFIG_H_HAS_BEEN_INCLUDED
 

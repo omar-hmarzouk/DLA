@@ -14,7 +14,7 @@
  * Provide a simple timer for examples and runtimes which do not provide their
  * own timer.
  *
- **/
+ */
 #ifndef _chameleon_timer_h_
 #define _chameleon_timer_h_
 

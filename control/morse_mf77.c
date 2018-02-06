@@ -16,7 +16,7 @@
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #include <stdlib.h>
 #include "control/common.h"
 
@@ -42,9 +42,9 @@
 extern "C" {
 #endif
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - math functions (simple interface)
- **/
+ */
 //void MORSE_ZCGESV(int *N, int *NRHS, MORSE_Complex64_t *A, int *LDA, int *IPIV, MORSE_Complex64_t *B, int *LDB, MORSE_Complex64_t *X, int *LDX, int *ITER, int *INFO)
 //{   *INFO = MORSE_zcgesv(*N, *NRHS, A, *LDA, IPIV, B, *LDB, X, *LDX, ITER); }
 //
@@ -73,9 +73,9 @@ extern "C" {
 }
 #endif
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - math functions (native interface)
- **/
+ */
 //void MORSE_ZCGESV_TILE(intptr_t *A, int *IPIV, intptr_t *B, intptr_t *X, int *ITER, int *INFO)
 //{   *INFO = MORSE_zcgesv_Tile((MORSE_desc_t *)(*A), IPIV, (MORSE_desc_t *)(*B), (MORSE_desc_t *)(*X), ITER); }
 //

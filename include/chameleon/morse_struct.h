@@ -17,7 +17,7 @@
  * @author Cedric Castagnede
  * @date 2011-06-01
  *
- **/
+ */
 #ifndef _MORSE_STRUCT_H_
 #define _MORSE_STRUCT_H_
 
@@ -27,12 +27,12 @@
 
 BEGIN_C_DECLS
 
-/** ****************************************************************************
+/**
  * RUNTIME headers to include types of :
  *         - QUARK
  *         - PaRSEC
  *         - StarPU
- **/
+ */
 typedef enum morse_sched_e {
   RUNTIME_SCHED_QUARK,
   RUNTIME_SCHED_PARSEC,
@@ -40,7 +40,7 @@ typedef enum morse_sched_e {
 } MORSE_sched_t;
 
 
-/** ****************************************************************************
+/**
  *  Tile matrix descriptor
  *
  *  Matrices are stored in a contiguous data chunk containning in order
@@ -109,9 +109,9 @@ struct morse_desc_s {
 };
 
 
-/** ****************************************************************************
+/**
  *  MORSE request uniquely identifies each asynchronous function call.
- **/
+ */
 typedef struct morse_context_s {
     MORSE_sched_t      scheduler;
     int                nworkers;
@@ -144,18 +144,18 @@ typedef struct morse_context_s {
 } MORSE_context_t;
 
 
-/** ****************************************************************************
+/**
  *  MORSE request uniquely identifies each asynchronous function call.
- **/
+ */
 typedef struct morse_request_s {
     MORSE_enum status; // MORSE_SUCCESS or appropriate error code
 } MORSE_request_t;
 
 
-/** ****************************************************************************
+/**
  *  MORSE sequence uniquely identifies a set of asynchronous function calls
  *  sharing common exception handling.
- **/
+ */
 typedef struct morse_sequence_s {
     MORSE_bool       status;    /* MORSE_SUCCESS or appropriate error code */
     MORSE_request_t *request;   /* failed request                          */
@@ -163,9 +163,9 @@ typedef struct morse_sequence_s {
 } MORSE_sequence_t;
 
 
-/** ****************************************************************************
+/**
  *  MORSE options
- **/
+ */
 typedef struct morse_option_s {
     MORSE_sequence_t *sequence;
     MORSE_request_t  *request;

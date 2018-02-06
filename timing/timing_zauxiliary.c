@@ -12,7 +12,7 @@
  * @version 1.0.0
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

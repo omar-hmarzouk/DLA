@@ -16,7 +16,7 @@
  * @author Reazul Hoque
  * @date 2018-02-06
  *
- **/
+ */
 #ifndef _MORSE_PARSEC_H_
 #define _MORSE_PARSEC_H_
 
