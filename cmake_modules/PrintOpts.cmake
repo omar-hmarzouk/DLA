@@ -20,7 +20,7 @@
 #
 # @version 1.0.0
 #  @author Florent Pruvost
-#  @date 10-11-2014
+#  @date 2014-11-10
 #
 ###
 set(dep_message "\nConfiguration of Chameleon:\n"

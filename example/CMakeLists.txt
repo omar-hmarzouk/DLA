@@ -18,7 +18,7 @@
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver.
 #
-#  @date 17-10-2014
+#  @date 2014-10-17
 #
 ###
 if (CHAMELEON_SIMULATION)

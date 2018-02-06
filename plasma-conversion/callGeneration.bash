@@ -25,7 +25,7 @@
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
 #  @author Florent Pruvost
-#  @date 30-11-2015
+#  @date 2015-11-30
 #
 ###
 

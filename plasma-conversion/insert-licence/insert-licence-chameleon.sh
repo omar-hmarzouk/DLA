@@ -50,7 +50,7 @@
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
 #  @author Florent Pruvost
-#  @date 13-07-2012
+#  @date 2012-07-13
 #
 ###
 for i in $(find . -name "*.c" -or -name "*.h" -not -path "*svn*" -not -name "morse_fortran.h")

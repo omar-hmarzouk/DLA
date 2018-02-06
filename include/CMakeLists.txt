@@ -23,7 +23,7 @@
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
 #  @author Florent Pruvost
-#  @date 13-07-2012
+#  @date 2012-07-13
 #
 ###
 
