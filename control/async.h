@@ -7,11 +7,9 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-/***
+ ***
  *
- *
- *  MORSE auxiliary routines
+ * @brief Chameleon asynchronous management header
  *
  * @version 1.0.0
  * @author Jakub Kurzak

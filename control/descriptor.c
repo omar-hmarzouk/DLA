@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon descriptors routines
  *
  * @version 1.0.0
  * @author Mathieu Faverge

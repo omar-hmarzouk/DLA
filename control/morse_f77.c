@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon Fortran77 interface
  *
  * @version 1.0.0
  * @author Bilel Hadri

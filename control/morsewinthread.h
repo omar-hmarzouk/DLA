@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon thread routines
+ * @brief Chameleon Windows thread interface header
  *
  * @version 1.0.0
  * @author Piotr Luszczek

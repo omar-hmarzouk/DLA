@@ -9,16 +9,15 @@
  *
  ***
  *
- * @brief Chameleon InPlaceTransformation module
- *
- *  This work is the implementation of an inplace transformation 
- *  based on the GKK algorithm by Gustavson, Karlsson, Kagstrom 
- *  and its fortran implementation.
- *
+ * @brief Chameleon InPlaceTransformation prime numbers module header
  * @version 1.0.0
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2010-11-15
+ *
+ * This work is the implementation of an inplace transformation
+ * based on the GKK algorithm by Gustavson, Karlsson, Kagstrom
+ * and its fortran implementation.
  *
  **/
 #ifndef PRIMES_H

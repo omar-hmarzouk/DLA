@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon Fortran names
+ * @brief Chameleon Fortran77 naming macros
  *
  * @version 1.0.0
  * @author Florent Pruvost

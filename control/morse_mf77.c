@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon mixed-precision computational routines
+ * @brief Chameleon Fortran77 interface for mixed-precision computational routines
  *
  * @version 1.0.0
  * @author Bilel Hadri

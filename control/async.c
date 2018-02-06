@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon asynchronous management routines
  *
  * @version 1.0.0
  * @author Jakub Kurzak

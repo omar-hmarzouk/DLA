@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon layout conversion wrappers
  *
  * @version 1.0.0
  * @author Jakub Kurzak

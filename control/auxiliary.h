@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon auxiliary header
  *
  * @version 1.0.0
  * @author Jakub Kurzak

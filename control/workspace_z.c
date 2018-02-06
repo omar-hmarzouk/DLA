@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon precision dependent workspace routines
  *
  * @version 1.0.0
  * @comment This file has been automatically generated
