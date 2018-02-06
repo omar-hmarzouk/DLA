@@ -8,7 +8,7 @@
  *                      Univ. Bordeaux. All rights reserved.
  ***
  *
- * @brief Chameleon cudablas kernel
+ * @brief Chameleon cuda_zttmqr GPU kernel
  *
  * @version 1.0.0
  * @author Florent Pruvost

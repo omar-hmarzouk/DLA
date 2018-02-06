@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon cudablas headers
+ * @brief Chameleon GPU MORSE_Complex64_t kernels header
  *
  * @version 1.0.0
  * @author Florent Pruvost

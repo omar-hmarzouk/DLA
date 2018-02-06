@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon cudablas kernel
+ * @brief Chameleon cuda_zlarfb GPU kernel
  *
  * Code originated from MAGMA
  *

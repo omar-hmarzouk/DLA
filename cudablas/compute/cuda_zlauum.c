@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon cudablas kernel
+ * @brief Chameleon cuda_zlauum GPU kernel
  *
  * @version 1.0.0
  * @author Florent Pruvost

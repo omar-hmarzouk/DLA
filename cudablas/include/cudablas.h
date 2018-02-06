@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon cudablas headers
+ * @brief Chameleon GPU kernels main header
  *
  * @version 1.0.0
  * @author Florent Pruvost
