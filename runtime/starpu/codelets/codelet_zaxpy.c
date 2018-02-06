@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon zaxpy StarPU codelet
  *
  * @version 1.0.0
  * @author Florent Pruvost

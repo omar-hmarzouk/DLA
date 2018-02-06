@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon zgetrf_nopiv Quark codelet
  *
  * @version 1.0.0
  * @author Omar Zenati

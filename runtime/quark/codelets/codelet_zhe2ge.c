@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon zhe2ge Quark codelet
  *
  * @version 1.0.0
  * @precisions normal z -> c d s

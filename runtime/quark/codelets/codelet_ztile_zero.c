@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon ztile_zero Quark codelet
  *
  * @version 1.0.0
  * @author Hatem Ltaief

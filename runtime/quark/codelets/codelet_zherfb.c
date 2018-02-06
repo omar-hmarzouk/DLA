@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon core_blas quark wrapper
+ * @brief Chameleon zherfb Quark codelet
  *
  * @version 1.0.0
  * @author Hatem Ltaief

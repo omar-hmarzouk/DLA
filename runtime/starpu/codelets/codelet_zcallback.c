@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon zcallback StarPU codelet
  *
  * @version 1.0.0
  *  @author Mathieu Faverge

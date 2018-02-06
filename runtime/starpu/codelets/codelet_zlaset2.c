@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon zlaset2 StarPU codelet
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

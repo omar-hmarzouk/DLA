@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon zsytrf_nopiv PaRSEC codelet
  *
  * @version 1.0.0
  * @author Reazul Hoque

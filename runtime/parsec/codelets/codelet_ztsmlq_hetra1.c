@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon core_blas quark wrapper
+ * @brief Chameleon ztsmlq_hetra1 PaRSEC codelet
  *
  * @version 1.0.0
  * @author Hatem Ltaief

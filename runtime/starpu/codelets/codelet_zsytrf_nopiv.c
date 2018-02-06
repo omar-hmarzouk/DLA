@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon zsytrf_nopiv StarPU codelet
  *
  * @version 1.0.0
  * @author Hatem Ltaief
