@@ -123,8 +123,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                             T(k, N), T->mb,
                             B(N, n), ldbN);
                     }
-                    MORSE_TASK_dataflush( &options, D(k, N) );
-                    MORSE_TASK_dataflush( &options, T(k, N) );
+                    RUNTIME_data_flush( sequence, D(k, N) );
+                    RUNTIME_data_flush( sequence, T(k, N) );
 
                     for (m = N+1; m < chameleon_min(N+BS, A->nt); m++) {
                         tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
@@ -146,8 +146,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 B(N, n), ldbN,
                                 B(m, n), ldbm);
                         }
-                        MORSE_TASK_dataflush( &options, A(k, m) );
-                        MORSE_TASK_dataflush( &options, T(k, m) );
+                        RUNTIME_data_flush( sequence, A(k, m) );
+                        RUNTIME_data_flush( sequence, T(k, m) );
                     }
                 }
                 for (RD = BS; RD < A->nt-k; RD *= 2) {
@@ -173,8 +173,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 B (N,    n), ldbN,
                                 B (N+RD, n), ldbNRD);
                         }
-                        MORSE_TASK_dataflush( &options, A (k, N+RD) );
-                        MORSE_TASK_dataflush( &options, T2(k, N+RD) );
+                        RUNTIME_data_flush( sequence, A (k, N+RD) );
+                        RUNTIME_data_flush( sequence, T2(k, N+RD) );
                     }
                 }
 
@@ -221,8 +221,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 B (N,    n), ldbN,
                                 B (N+RD, n), ldbNRD);
                         }
-                        MORSE_TASK_dataflush( &options, A (k, N+RD) );
-                        MORSE_TASK_dataflush( &options, T2(k, N+RD) );
+                        RUNTIME_data_flush( sequence, A (k, N+RD) );
+                        RUNTIME_data_flush( sequence, T2(k, N+RD) );
                     }
                 }
                 for (N = k; N < A->nt; N += BS) {
@@ -250,8 +250,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 B(N, n), ldbN,
                                 B(m, n), ldbm);
                         }
-                        MORSE_TASK_dataflush( &options, A(k, m) );
-                        MORSE_TASK_dataflush( &options, T(k, m) );
+                        RUNTIME_data_flush( sequence, A(k, m) );
+                        RUNTIME_data_flush( sequence, T(k, m) );
                     }
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
@@ -282,8 +282,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                             T(k, N), T->mb,
                             B(N, n), ldbN);
                     }
-                    MORSE_TASK_dataflush( &options, D(k, N) );
-                    MORSE_TASK_dataflush( &options, T(k, N) );
+                    RUNTIME_data_flush( sequence, D(k, N) );
+                    RUNTIME_data_flush( sequence, T(k, N) );
                 }
                 RUNTIME_iteration_pop(morse);
             }
@@ -324,8 +324,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 B (m, N   ), ldbm,
                                 B (m, N+RD), ldbm);
                         }
-                        MORSE_TASK_dataflush( &options, A (k, N+RD) );
-                        MORSE_TASK_dataflush( &options, T2(k, N+RD) );
+                        RUNTIME_data_flush( sequence, A (k, N+RD) );
+                        RUNTIME_data_flush( sequence, T2(k, N+RD) );
                     }
                 }
                 for (N = k; N < A->nt; N += BS) {
@@ -352,8 +352,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 B(m, N), ldbm,
                                 B(m, n), ldbm);
                         }
-                        MORSE_TASK_dataflush( &options, A(k, n) );
-                        MORSE_TASK_dataflush( &options, T(k, n) );
+                        RUNTIME_data_flush( sequence, A(k, n) );
+                        RUNTIME_data_flush( sequence, T(k, n) );
                     }
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
@@ -385,8 +385,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                             T(k, N), T->mb,
                             B(m, N), ldbm);
                     }
-                    MORSE_TASK_dataflush( &options, D(k, N) );
-                    MORSE_TASK_dataflush( &options, T(k, N) );
+                    RUNTIME_data_flush( sequence, D(k, N) );
+                    RUNTIME_data_flush( sequence, T(k, N) );
                 }
 
                 RUNTIME_iteration_pop(morse);
@@ -429,8 +429,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                             T(k, N), T->mb,
                             B(m, N), ldbm);
                     }
-                    MORSE_TASK_dataflush( &options, D(k, N) );
-                    MORSE_TASK_dataflush( &options, T(k, N) );
+                    RUNTIME_data_flush( sequence, D(k, N) );
+                    RUNTIME_data_flush( sequence, T(k, N) );
 
                     for (n = N+1; n < chameleon_min(N+BS, A->nt); n++) {
                         tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
@@ -453,8 +453,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 B(m, N), ldbm,
                                 B(m, n), ldbm);
                         }
-                        MORSE_TASK_dataflush( &options, A(k, n) );
-                        MORSE_TASK_dataflush( &options, T(k, n) );
+                        RUNTIME_data_flush( sequence, A(k, n) );
+                        RUNTIME_data_flush( sequence, T(k, n) );
                     }
                 }
                 for (RD = BS; RD < A->nt-k; RD *= 2) {
@@ -479,8 +479,8 @@ void morse_pzunmlqrh(MORSE_enum side, MORSE_enum trans,
                                 B (m, N   ), ldbm,
                                 B (m, N+RD), ldbm);
                         }
-                        MORSE_TASK_dataflush( &options, A (k, N+RD) );
-                        MORSE_TASK_dataflush( &options, T2(k, N+RD) );
+                        RUNTIME_data_flush( sequence, A (k, N+RD) );
+                        RUNTIME_data_flush( sequence, T2(k, N+RD) );
                     }
                 }
 

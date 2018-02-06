@@ -128,8 +128,8 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                         B(k, n), ldbk);
                 }
 
-                MORSE_TASK_dataflush( &options, D(k)    );
-                MORSE_TASK_dataflush( &options, T(k, k) );
+                RUNTIME_data_flush( sequence, D(k)    );
+                RUNTIME_data_flush( sequence, T(k, k) );
 
                 for (m = k+1; m < B->mt; m++) {
                     tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
@@ -151,8 +151,8 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                             B(m, n), ldbm);
                     }
 
-                    MORSE_TASK_dataflush( &options, A(k, m) );
-                    MORSE_TASK_dataflush( &options, T(k, m) );
+                    RUNTIME_data_flush( sequence, A(k, m) );
+                    RUNTIME_data_flush( sequence, T(k, m) );
                 }
 
                 /* Restore the original location of the tiles */
@@ -195,8 +195,8 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                             B(m, n), ldbm);
                     }
 
-                    MORSE_TASK_dataflush( &options, A(k, m) );
-                    MORSE_TASK_dataflush( &options, T(k, m) );
+                    RUNTIME_data_flush( sequence, A(k, m) );
+                    RUNTIME_data_flush( sequence, T(k, m) );
                 }
 #if defined(CHAMELEON_COPY_DIAG)
                 MORSE_TASK_zlacpy(
@@ -226,8 +226,8 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                         T(k, k), T->mb,
                         B(k, n), ldbk);
                 }
-                MORSE_TASK_dataflush( &options, D(k)    );
-                MORSE_TASK_dataflush( &options, T(k, k) );
+                RUNTIME_data_flush( sequence, D(k)    );
+                RUNTIME_data_flush( sequence, T(k, k) );
                 RUNTIME_iteration_pop(morse);
             }
         }
@@ -263,8 +263,8 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                             B(m, n), ldbm);
                     }
 
-                    MORSE_TASK_dataflush( &options, A(k, n) );
-                    MORSE_TASK_dataflush( &options, T(k, n) );
+                    RUNTIME_data_flush( sequence, A(k, n) );
+                    RUNTIME_data_flush( sequence, T(k, n) );
                 }
 #if defined(CHAMELEON_COPY_DIAG)
                 MORSE_TASK_zlacpy(
@@ -296,8 +296,8 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                         B(m, k), ldbm);
                 }
 
-                MORSE_TASK_dataflush( &options, D(k)    );
-                MORSE_TASK_dataflush( &options, T(k, k) );
+                RUNTIME_data_flush( sequence, D(k)    );
+                RUNTIME_data_flush( sequence, T(k, k) );
 
                 RUNTIME_iteration_pop(morse);
             }
@@ -338,8 +338,8 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                         B(m, k), ldbm);
                 }
 
-                MORSE_TASK_dataflush( &options, D(k)    );
-                MORSE_TASK_dataflush( &options, T(k, k) );
+                RUNTIME_data_flush( sequence, D(k)    );
+                RUNTIME_data_flush( sequence, T(k, k) );
 
                 for (n = k+1; n < B->nt; n++) {
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
@@ -361,8 +361,8 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
                             B(m, n), ldbm);
                     }
 
-                    MORSE_TASK_dataflush( &options, A(k, n) );
-                    MORSE_TASK_dataflush( &options, T(k, n) );
+                    RUNTIME_data_flush( sequence, A(k, n) );
+                    RUNTIME_data_flush( sequence, T(k, n) );
                 }
 
                 /* Restore the original location of the tiles */

@@ -116,8 +116,8 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
                     Q(m, k), ldqm,
                     Q(m, n), ldqm);
             }
-            MORSE_TASK_dataflush( &options, A(k, n) );
-            MORSE_TASK_dataflush( &options, T(k, n) );
+            RUNTIME_data_flush( sequence, A(k, n) );
+            RUNTIME_data_flush( sequence, T(k, n) );
         }
 #if defined(CHAMELEON_COPY_DIAG)
         MORSE_TASK_zlacpy(
@@ -148,8 +148,8 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
                 T(k, k), T->mb,
                 Q(m, k), ldqm);
         }
-        MORSE_TASK_dataflush( &options, D(k)    );
-        MORSE_TASK_dataflush( &options, T(k, k) );
+        RUNTIME_data_flush( sequence, D(k)    );
+        RUNTIME_data_flush( sequence, T(k, k) );
 
         RUNTIME_iteration_pop(morse);
     }
