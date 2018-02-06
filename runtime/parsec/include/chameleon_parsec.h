@@ -7,7 +7,14 @@
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
+ ***
+ *
+ * @brief Chameleon PaRSEC runtime header
+ *
  * @version 1.0.0
+ * @author Mathieu Faverge
+ * @author Reazul Hoque
+ * @date 2018-02-06
  *
  **/
 #ifndef _MORSE_PARSEC_H_

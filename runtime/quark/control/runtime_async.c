@@ -7,7 +7,9 @@
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @brief Chameleon async routines
+ ***
+ *
+ * @brief Chameleon Quark asynchronous routines
  *
  * @version 1.0.0
  * @author Jakub Kurzak

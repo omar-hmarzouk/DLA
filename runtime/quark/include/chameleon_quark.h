@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon Quark runtime main header
  *
  * @version 1.0.0
  * @author Mathieu Faverge
