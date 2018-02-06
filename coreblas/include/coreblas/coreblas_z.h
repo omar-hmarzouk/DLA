@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon CPU MORSE_Complex64_t kernels header
  *
  * @version 1.0.0
  * @comment This file has been automatically generated
