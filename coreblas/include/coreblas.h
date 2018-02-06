@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon CPU kernel main header
+ * @brief Chameleon CPU kernels main header
  *
  * @version 1.0.0
  * @author Jakub Kurzak
