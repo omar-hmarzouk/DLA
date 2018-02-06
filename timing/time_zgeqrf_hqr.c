@@ -69,6 +69,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     llvl = iparam[IPARAM_LOWLVL_TREE];
     qr_a = iparam[IPARAM_RHBLK];
     domino =  iparam[IPARAM_QR_DOMINO];
+
     libhqr_init_hqr( &qrtree,
                      ( M >= N ) ? LIBHQR_QR : LIBHQR_LQ,
                      &matrix, llvl, hlvl, qr_a, P, domino, 0);

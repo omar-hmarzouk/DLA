@@ -63,10 +63,6 @@
 #include <getopt.h>
 #endif /* defined(CHAMELEON_HAVE_GETOPT_H) */
 
-#ifdef TIMING_LAPACKE
-int MORSE_My_Mpi_Rank() { return 0; }
-#endif
-
 static int RunTest(int *iparam, _PREC *dparam, double *t_);
 static inline void* morse_getaddr_null(const MORSE_desc_t *A, int m, int n)
 {
@@ -112,9 +108,7 @@ Test(int64_t n, int *iparam) {
 
     thrdnbr = iparam[IPARAM_THRDNBR];
     niter   = iparam[IPARAM_NITER];
-#ifdef TIMING_LAPACKE
-    thrdnbr = 1; //otherwise the following test is negative and we can't test lapacke
-#endif /* TIMING_LAPACKE */
+
     M    = iparam[IPARAM_M];
     N    = iparam[IPARAM_N];
     K    = iparam[IPARAM_K];
@@ -204,7 +198,6 @@ Test(int64_t n, int *iparam) {
         }
         gflops = flops / t[iter];
 
-#ifndef TIMING_LAPACKE
 #if defined (CHAMELEON_SCHED_STARPU)
         /* TODO: create chameleon interface encapsulating this instead */
         if (iparam[IPARAM_BOUND])
@@ -216,7 +209,6 @@ Test(int64_t n, int *iparam) {
             upper_gflops  = (flops / (tmin / 1000.0));
             sumgf_upper += upper_gflops;
         }
-#endif
 #endif
         sumt   += t[iter];
         sumgf  += gflops;
@@ -504,7 +496,7 @@ set_iparam_default(int *iparam){
     iparam[IPARAM_THRDNBR       ] = -1;
     iparam[IPARAM_THRDNBR_SUBGRP] = 1;
     iparam[IPARAM_M             ] = -1;
-    iparam[IPARAM_N             ] = -1;
+    iparam[IPARAM_N             ] = 500;
     iparam[IPARAM_K             ] = 1;
     iparam[IPARAM_LDA           ] = -1;
     iparam[IPARAM_LDB           ] = -1;
@@ -632,8 +624,7 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
 
 int
 main(int argc, char *argv[]) {
-    int i, m, n, mx, nx;
-    int status;
+    int i, m, mx, nx;
     int nbnode = 1;
     int start =  500;
     int stop  = 5000;
@@ -653,12 +644,10 @@ main(int argc, char *argv[]) {
     }
 #endif
 
-    n  = iparam[IPARAM_N];
     m  = iparam[IPARAM_M];
     mx = iparam[IPARAM_MX];
     nx = iparam[IPARAM_NX];
 
-#ifndef TIMING_LAPACKE
     /* Initialize MORSE */
     MORSE_Init( iparam[IPARAM_THRDNBR],
                 iparam[IPARAM_NCUDAS] );
@@ -720,37 +709,27 @@ main(int argc, char *argv[]) {
 
     if (step < 1) step = 1;
 
-    status = Test( -1, iparam ); /* print header */
+    int status = Test( -1, iparam ); /* print header */
     if (status != MORSE_SUCCESS) return status;
-    if ( n == -1 ){
-        for (i = start; i <= stop; i += step)
-        {
-            if ( nx > 0 ) {
-                iparam[IPARAM_M] = i;
+    for (i = start; i <= stop; i += step)
+    {
+        if ( nx > 0 ) {
+            iparam[IPARAM_M] = i;
             iparam[IPARAM_N] = chameleon_max(1, i/nx);
-            } else if ( mx > 0 ) {
-                iparam[IPARAM_M] = chameleon_max(1, i/mx);
-                iparam[IPARAM_N] = i;
-            } else {
-                if ( m == -1 )
-                    iparam[IPARAM_M] = i;
-                iparam[IPARAM_N] = i;
-            }
-            status = Test( iparam[IPARAM_N], iparam );
-            if (status != MORSE_SUCCESS) return status;
-            success += status;
+        } else if ( mx > 0 ) {
+            iparam[IPARAM_M] = chameleon_max(1, i/mx);
+            iparam[IPARAM_N] = i;
+        } else {
+            if ( m == -1 )
+                iparam[IPARAM_M] = i;
+            iparam[IPARAM_N] = i;
         }
-    } else{
-        if ( m == -1 )
-            iparam[IPARAM_M] = n;
-        iparam[IPARAM_N] = n;
-        status = Test( iparam[IPARAM_N], iparam );
+        int status = Test( iparam[IPARAM_N], iparam );
         if (status != MORSE_SUCCESS) return status;
         success += status;
     }
-#ifndef TIMING_LAPACKE
+
     MORSE_Finalize();
-#endif
     return success;
 }
 
