@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon example routines
+ * @brief Chameleon examples common header
  *
  * @version 1.0.0
  * @author Florent Pruvost

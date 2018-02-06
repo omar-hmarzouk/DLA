@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon example routines
+ * @brief Chameleon out_of_core example
  *
  * @version 1.0.0
  * @author Florent Pruvost

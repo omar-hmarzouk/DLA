@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon example routines
+ * @brief Chameleon basic_posv example header
  *
  * @version 1.0.0
  * @author Florent Pruvost

@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon example routines
+ * @brief Chameleon zposv_users_functions example
  *
  * @version 1.0.0
  * @author Florent Pruvost
