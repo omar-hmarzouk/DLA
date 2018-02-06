@@ -15,7 +15,7 @@
  *  Univ. of California Berkeley and Univ. of Colorado Denver,
  *  and INRIA Bordeaux Sud-Ouest
  *
- * @version 0.9.0
+ * @version 1.0.0
  * @author Jakub Kurzak
  * @author Hatem Ltaief
  * @date 2010-11-15

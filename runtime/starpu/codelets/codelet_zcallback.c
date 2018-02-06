@@ -15,7 +15,7 @@
  *  Univ. of California Berkeley and Univ. of Colorado Denver,
  *  and INRIA Bordeaux Sud-Ouest
  *
- *  @version 2.3.1
+ * @version 1.0.0
  *  @author Mathieu Faverge
  *  @author Cedric Augonnet
  *  @author Florent Pruvost

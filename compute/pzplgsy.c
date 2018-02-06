@@ -14,7 +14,7 @@
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 2.5.0
+ * @version 1.0.0
  * @comment This file is a copy of pzplgsy.c,
             wich has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0

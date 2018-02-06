@@ -14,7 +14,7 @@
  *  PLASMA is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
  *  University of Bordeaux, Bordeaux INP
  *
- * @version 2.6.0
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.6.0 for MORSE 1.0.0
  * @author Julien Langou

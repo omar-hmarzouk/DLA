@@ -7,7 +7,6 @@
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- *
  * @version 1.0.0
  * @author Reazul Hoque
  * @author Mathieu Faverge

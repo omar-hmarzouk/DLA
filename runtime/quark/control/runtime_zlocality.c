@@ -13,7 +13,7 @@
  * Univ. of California Berkeley and Univ. of Colorado Denver,
  * and INRIA Bordeaux Sud-Ouest
  *
- * @version
+ * @version 1.0.0
  * @author Vijay Joshi
  * @date 2011-10-29
  * @precisions normal z -> s d c

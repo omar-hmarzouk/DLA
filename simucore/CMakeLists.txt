@@ -18,7 +18,6 @@
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver.
 #
-#  @version 0.9.0
 #  @date 02-10-2014
 #
 ###

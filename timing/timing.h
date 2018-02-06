@@ -7,6 +7,8 @@
  * @copyright 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
+ * @version 1.0.0
+ *
  **/
 #ifndef TIMING_H
 #define TIMING_H

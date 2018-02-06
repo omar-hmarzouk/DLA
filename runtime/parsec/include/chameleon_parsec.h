@@ -7,6 +7,8 @@
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
+ * @version 1.0.0
+ *
  **/
 #ifndef _MORSE_PARSEC_H_
 #define _MORSE_PARSEC_H_

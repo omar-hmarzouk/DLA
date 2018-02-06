@@ -46,7 +46,6 @@
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver. 
 # 
-#  @version 1.0.0
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge

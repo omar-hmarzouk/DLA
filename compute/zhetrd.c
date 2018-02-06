@@ -14,7 +14,7 @@
  *  PLASMA is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
- * @version 2.7.1
+ * @version 1.0.0
  * @author Azzam Haidar
  * @author Hatem Ltaief
  * @author Gregoire Pichon

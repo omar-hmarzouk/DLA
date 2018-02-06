@@ -15,7 +15,7 @@
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver. 
 #
-#  @version 1.0.0
+# @version 1.0.0
 #  @author Florent Pruvost
 #  @date 25-08-2017
 #
