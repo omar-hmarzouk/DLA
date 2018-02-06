@@ -9,12 +9,12 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon elementary kernels enum
  *
  * @version 1.0.0
- *  @author Mathieu Faverge
- *  @author Cedric Augonnet
- *  @date 2011-06-01
+ * @author Mathieu Faverge
+ * @author Cedric Augonnet
+ * @date 2011-06-01
  *
  **/
 #ifndef _MORSE_KERNELS_H_

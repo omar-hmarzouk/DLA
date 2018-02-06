@@ -1,4 +1,4 @@
-!!!
+!**
 !
 ! -- Inria
 ! -- (C) Copyright 2012
@@ -33,15 +33,9 @@
 ! The fact that you are presently reading this means that you have had
 ! knowledge of the CeCILL-B license and that you accept its terms.
 !
-!!!
-
 !**
 !
-!
-!  MORSE FORTRAN header
-!  MORSE is a software package provided by Univ. of Tennessee,
-!  Univ. of California Berkeley and Univ. of Colorado Denver
-!
+! @brief Chameleon Fortran77 header
 ! @version 1.0.0
 ! @author Bilel Hadri
 ! @author Mathieu Faverge

@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon header
+ * @brief Chameleon structures
  *
  * @version 1.0.0
  * @author Cedric Augonnet

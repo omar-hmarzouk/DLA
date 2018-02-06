@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon header file for double _Complex routines
+ * @brief Chameleon MORSE_complex64_t wrappers
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

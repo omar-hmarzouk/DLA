@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon header
+ * @brief Chameleon basic datatypes header
  *
  * @version 1.0.0
  * @author Cedric Augonnet

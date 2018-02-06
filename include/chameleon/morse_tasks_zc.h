@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon complex mixed precision elementary tasks header
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

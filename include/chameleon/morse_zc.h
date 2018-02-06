@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon header file for iterative refinement routines
+ * @brief Chameleon mixed precision wrappers header
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

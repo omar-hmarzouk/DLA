@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon auxiliary routines
+ * @brief Chameleon MORSE_Complex64_t elementary tasks header
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

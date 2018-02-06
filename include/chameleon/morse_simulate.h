@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon SimGrid simulation header
  *
  * @version 1.0.0
  * @author Florent Pruvost
