@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon StarPU profiling and kernel locality header
  *
  * @version 1.0.0
  * @author Mathieu Faverge

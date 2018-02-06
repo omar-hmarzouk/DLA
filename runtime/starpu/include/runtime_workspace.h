@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon codelets kernel
+ * @brief Chameleon StarPU workspace header
  *
  * @version 1.0.0
  * @author Cedric Augonnet

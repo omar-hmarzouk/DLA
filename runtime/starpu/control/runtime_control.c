@@ -7,7 +7,9 @@
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @brief Chameleon auxiliary routines
+ ***
+ *
+ * @brief Chameleon StarPU control routines
  *
  * @version 1.0.0
  * @author Mathieu Faverge

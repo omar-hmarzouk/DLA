@@ -7,7 +7,9 @@
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @brief Chameleon codelets kernel
+ ***
+ *
+ * @brief Chameleon StarPU workspaces routines
  *
  * @version 1.0.0
  * @author Cedric Augonnet
