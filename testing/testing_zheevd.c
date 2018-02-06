@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon testing routines
+ * @brief Chameleon zheevd testing
  *
  * @version 1.0.0
  * @author Hatem Ltaief

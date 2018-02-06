@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon testing routines
+ * @brief Chameleon zgels_systolic testing
  *
  * @version 1.0.0
  * @author Mathieu Faverge

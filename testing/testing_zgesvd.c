@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon testing routines
+ * @brief Chameleon zgesvd testing
  *
  * @version 1.0.0
  * @author Azzam Haidar

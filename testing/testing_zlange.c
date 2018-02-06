@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon testing routines
+ * @brief Chameleon zlange testing
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

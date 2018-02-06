@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon testing routines
+ * @brief Chameleon zhemm testing
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

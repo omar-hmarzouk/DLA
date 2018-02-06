@@ -9,7 +9,7 @@
  *
  ***
  *
- * @brief Chameleon testing routines
+ * @brief Chameleon MORSE_Complex64_t auxiliary testings routines
  *
  * @version 1.0.0
  * @author Mathieu Faverge
