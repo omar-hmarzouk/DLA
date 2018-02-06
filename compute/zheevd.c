@@ -11,8 +11,6 @@
  *
  *  PLASMA computational routines
  *  Release Date: November, 15th 2009
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
  * @version 1.0.0
  * @author Azzam Haidar

@@ -11,8 +11,6 @@
  *
  *  MORSE computational routines
  *  Release Date: November, 15th 2009
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

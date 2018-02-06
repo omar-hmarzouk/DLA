@@ -8,8 +8,6 @@
  *                      Univ. Bordeaux. All rights reserved.
  *
  *  MORSE auxiliary routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
  * @version 1.0.0
  * @author Cedric Augonnet

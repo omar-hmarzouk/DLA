@@ -9,8 +9,6 @@
  ***
  *
  *  MORSE cudablas kernel
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver,
  *  and INRIA Bordeaux Sud-Ouest
  *
  * @version 1.0.0

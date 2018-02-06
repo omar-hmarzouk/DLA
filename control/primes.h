@@ -10,8 +10,6 @@
  ***
  *
  *  MORSE InPlaceTransformation module
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
  *
  *  This work is the implementation of an inplace transformation 
  *  based on the GKK algorithm by Gustavson, Karlsson, Kagstrom 
