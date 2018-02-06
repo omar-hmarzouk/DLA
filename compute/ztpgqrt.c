@@ -10,7 +10,6 @@
  *
  ***
  *
- *
  *  MORSE computational routines
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
@@ -258,7 +257,6 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
  *  representation for Q. See MORSE_ztpqrt() to generate V.
  *
  *******************************************************************************
- *
  *
  *******************************************************************************
  *

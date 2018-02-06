@@ -9,7 +9,6 @@
  *
  ***
  *
- *
  *  PLASMA core_blas kernel
  *  PLASMA is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
@@ -86,7 +85,6 @@ static inline int CORE_zpamm_w(MORSE_enum side, MORSE_enum trans, MORSE_enum upl
  *              \    |    |                 |    M - L    | L  |
  *                \  |    |  L
  *           _      \|____|  _
- *
  *
  *  RIGHT (columnwise and rowwise):
  *

@@ -66,7 +66,6 @@
  *                \  |    |  L
  *           _      \|____|  _
  *
- *
  *  RIGHT (columnwise and rowwise):
  *
  *          |         K         |                   |    N    |

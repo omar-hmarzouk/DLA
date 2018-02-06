@@ -9,7 +9,6 @@
  *
  ***
  *
- *
  *  PLASMA core_blas kernel
  *  PLASMA is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
@@ -72,7 +71,6 @@
  *         The leading dimension of the array B.
  *         LDB >= max(1,N), if trans == Pasma[Conj]Trans.
  *         LDB >= max(1,M), if trans == PasmaNoTrans.
- *
  *
  *******************************************************************************
  *

@@ -7,7 +7,6 @@
  * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- *
  *  MORSE computational routines
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver

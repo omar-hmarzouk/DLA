@@ -7,7 +7,6 @@
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- *
  *  CHAMELEON runtimes API
  *
  *  CHAMELEON is a software package provided by Univ. of Tennessee,

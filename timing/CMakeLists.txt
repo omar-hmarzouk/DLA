@@ -9,7 +9,6 @@
 #
 ###
 #
-#
 #  @project MORSE
 #  MORSE is a software package provided by:
 #     Inria Bordeaux - Sud-Ouest,

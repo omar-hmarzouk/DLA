@@ -7,7 +7,6 @@
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- *
  * MORSE codelets kernel
  * MORSE is a software package provided by Univ. of Tennessee,
  * Univ. of California Berkeley and Univ. of Colorado Denver

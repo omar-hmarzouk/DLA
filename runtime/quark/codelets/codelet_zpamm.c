@@ -9,7 +9,6 @@
  *
  ***
  *
- *
  *  MORSE codelets kernel
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver
@@ -98,7 +97,6 @@ CORE_zpamm_quark(Quark *quark)
  *              \    |    |                 |    M - L    | L  |
  *                \  |    |  L
  *           _      \|____|  _
- *
  *
  *  RIGHT (columnwise and rowwise):
  *

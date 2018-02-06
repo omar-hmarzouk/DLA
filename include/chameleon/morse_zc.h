@@ -9,7 +9,6 @@
  *
  ***
  *
- *
  *  MORSE header file for iterative refinement routines
  *  MORSE is a software package provided by Univ. of Tennessee,
  *  Univ. of California Berkeley and Univ. of Colorado Denver

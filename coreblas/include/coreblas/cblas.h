@@ -9,7 +9,6 @@
  *
  ***
  *
- *
  *  MORSE cblas header
  *  MORSE is a software package provided
  *    Inria Bordeaux Sud-Ouest,
