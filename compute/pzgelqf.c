@@ -127,7 +127,6 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
                 T(k, k), T->mb,
                 A(m, k), ldam);
         }
-
         MORSE_TASK_dataflush( &options, D(k)    );
         MORSE_TASK_dataflush( &options, T(k, k) );
 
@@ -160,7 +159,6 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
                     A(m, k), ldam,
                     A(m, n), ldam);
             }
-
             MORSE_TASK_dataflush( &options, A(k, n) );
             MORSE_TASK_dataflush( &options, T(k, n) );
         }

@@ -272,10 +272,10 @@ void morse_pzunmqr_param(const libhqr_tree_t *qrtree,
                             T(m, k), T->mb,
                             B(m, n), ldbm);
                     }
-                }
 
-                MORSE_TASK_dataflush( &options, D(m, k) );
-                MORSE_TASK_dataflush( &options, T(m, k) );
+                    MORSE_TASK_dataflush( &options, D(m, k) );
+                    MORSE_TASK_dataflush( &options, T(m, k) );
+                }
 
                 RUNTIME_iteration_pop(morse);
             }

@@ -116,6 +116,9 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                         Q (M,    n), ldqM,
                         Q (M+RD, n), ldqMRD);
                 }
+
+                MORSE_TASK_dataflush( &options, A (M+RD, k) );
+                MORSE_TASK_dataflush( &options, T2(M+RD, k) );
             }
         }
         for (M = k; M < A->mt; M += BS) {
@@ -146,6 +149,8 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                         Q(M, n), ldqM,
                         Q(m, n), ldqm);
                 }
+                MORSE_TASK_dataflush( &options, A(m, k) );
+                MORSE_TASK_dataflush( &options, T(m, k) );
             }
 
 #if defined(CHAMELEON_COPY_DIAG)
@@ -178,6 +183,8 @@ void morse_pzungqrrh(MORSE_desc_t *A, MORSE_desc_t *Q,
                     T(M, k), T->mb,
                     Q(M, n), ldqM);
             }
+            MORSE_TASK_dataflush( &options, D(M, k) );
+            MORSE_TASK_dataflush( &options, T(M, k) );
         }
         RUNTIME_iteration_pop(morse);
     }

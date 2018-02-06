@@ -148,7 +148,6 @@ void morse_pzunglq(MORSE_desc_t *A, MORSE_desc_t *Q, MORSE_desc_t *T, MORSE_desc
                 T(k, k), T->mb,
                 Q(m, k), ldqm);
         }
-
         MORSE_TASK_dataflush( &options, D(k)    );
         MORSE_TASK_dataflush( &options, T(k, k) );
 

@@ -196,10 +196,10 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
                             B(k, n), ldbk,
                             B(m, n), ldbm);
                     }
-
                     MORSE_TASK_dataflush( &options, A(m, k) );
                     MORSE_TASK_dataflush( &options, T(m, k) );
                 }
+
 #if defined(CHAMELEON_COPY_DIAG)
                 MORSE_TASK_zlacpy(
                     &options,

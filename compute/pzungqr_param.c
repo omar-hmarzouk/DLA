@@ -176,7 +176,7 @@ void morse_pzungqr_param(const libhqr_tree_t *qrtree,
                     T(m, k), T->mb,
                     Q(m, n), ldqm);
             }
-            MORSE_TASK_dataflush( &options, A(m, k) );
+            MORSE_TASK_dataflush( &options, D(m, k) );
             MORSE_TASK_dataflush( &options, T(m, k) );
         }
 

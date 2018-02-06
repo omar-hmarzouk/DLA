@@ -130,7 +130,7 @@ void morse_pzunmlq(MORSE_enum side, MORSE_enum trans,
 
                 MORSE_TASK_dataflush( &options, D(k)    );
                 MORSE_TASK_dataflush( &options, T(k, k) );
- 
+
                 for (m = k+1; m < B->mt; m++) {
                     tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                     ldbm = BLKLDD(B, m);
