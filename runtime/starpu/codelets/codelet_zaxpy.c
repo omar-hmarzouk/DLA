@@ -10,8 +10,6 @@
  ***
  *
  *  MORSE codelets kernel
- *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
- *  University of Bordeaux, Bordeaux INP
  *
  * @version 1.0.0
  * @author Florent Pruvost
