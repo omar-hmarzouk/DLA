@@ -9,8 +9,7 @@
  *
  ***
  *
- *  MORSE auxiliary routines
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon auxiliary routines
  *
  * @version 1.0.0
  * @author Jakub Kurzak

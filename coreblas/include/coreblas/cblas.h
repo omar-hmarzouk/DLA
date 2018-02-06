@@ -9,12 +9,7 @@
  *
  ***
  *
- *  MORSE cblas header
- *  MORSE is a software package provided
- *    Inria Bordeaux Sud-Ouest,
- *    Univ. of Tennessee,
- *    Univ. of California Berkeley and
- *    Univ. of Colorado Denver.
+ * @brief Chameleon cblas header
  *
  * @version 1.0.0
  * @author Cedric Castagnede

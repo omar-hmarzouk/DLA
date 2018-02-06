@@ -9,8 +9,7 @@
  *
  ***
  *
- *  MORSE header
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon header
  *
  * @version 1.0.0
  * @author Cedric Augonnet
@@ -24,7 +23,7 @@
 
 /** ****************************************************************************
  *
- *  MORSE constants - CBLAS & LAPACK
+ * @brief Chameleon constants - CBLAS & LAPACK
  *  The naming and numbering is consistent with:
  *
  *    1) CBLAS from Netlib (http://www.netlib.org/blas/blast-forum/cblas.tgz),

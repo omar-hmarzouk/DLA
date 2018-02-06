@@ -9,7 +9,7 @@
  *
  ***
  *
- *  MORSE computational routines
+ * @brief Chameleon computational routines
  *  Release Date: November, 15th 2009
  *
  * @version 1.0.0

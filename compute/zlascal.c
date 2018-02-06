@@ -10,7 +10,7 @@
  *
  ***
  *
- *  MORSE computational routines
+ * @brief Chameleon computational routines
  *
  * @version 1.0.0
  * @author Dalal Sukkari

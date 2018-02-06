@@ -9,7 +9,7 @@
  *
  ***
  *
- *  MORSE header file for double _Complex routines
+ * @brief Chameleon header file for double _Complex routines
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

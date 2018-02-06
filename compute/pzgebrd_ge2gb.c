@@ -9,7 +9,7 @@
  *
  ***
  *
- *  PLASMA auxiliary routines
+ * @brief Chameleon auxiliary routines
  *
  * @version 1.0.0
  * @author Hatem Ltaief

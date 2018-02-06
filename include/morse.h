@@ -9,15 +9,14 @@
  *
  ***
  *
- *  MORSE main header
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon main header
  *
  * @version 1.0.0
- *  @author Mathieu Faverge
- *  @author Cedric Augonnet
- *  @author Cedric Castagnede
- *  @author Florent Pruvost
- *  @date 2012-09-15
+ * @author Mathieu Faverge
+ * @author Cedric Augonnet
+ * @author Cedric Castagnede
+ * @author Florent Pruvost
+ * @date 2012-09-15
  *
  **/
 #ifndef _MORSE_H_

@@ -9,7 +9,7 @@
  *
  ***
  *
- *  MORSE Fortran names
+ * @brief Chameleon Fortran names
  *
  * @version 1.0.0
  * @author Florent Pruvost

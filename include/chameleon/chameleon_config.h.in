@@ -9,12 +9,11 @@
  *
  ***
  *
- *  MORSE main header
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon configuration file
  *
  * @version 1.0.0
- *  @author Florent Pruvost
- *  @date 2017-01-06
+ * @author Florent Pruvost
+ * @date 2017-01-06
  *
  **/
 #ifndef CHAMELEON_CONFIG_H_HAS_BEEN_INCLUDED

@@ -9,7 +9,7 @@
  *
  ***
  *
- *  MORSE thread routines
+ * @brief Chameleon thread routines
  *
  * @version 1.0.0
  * @author Piotr Luszczek

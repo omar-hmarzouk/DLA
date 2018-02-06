@@ -9,7 +9,7 @@
  *
  ***
  *
- *  MORSE InPlaceTransformation module
+ * @brief Chameleon InPlaceTransformation module
  *
  *  This work is the implementation of an inplace transformation 
  *  based on the GKK algorithm by Gustavson, Karlsson, Kagstrom 

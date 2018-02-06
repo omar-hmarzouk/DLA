@@ -9,7 +9,7 @@
  *
  ***
  *
- *  MORSE example routines
+ * @brief Chameleon example routines
  *
  * @version 1.0.0
  * @author Florent Pruvost

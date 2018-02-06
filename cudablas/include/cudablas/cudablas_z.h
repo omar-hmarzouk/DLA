@@ -9,8 +9,7 @@
  *
  ***
  *
- *  MORSE cudablas headers
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon cudablas headers
  *
  * @version 1.0.0
  * @author Florent Pruvost

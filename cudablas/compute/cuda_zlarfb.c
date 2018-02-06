@@ -9,8 +9,7 @@
  *
  ***
  *
- *  MORSE cudablas kernel
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon cudablas kernel
  *
  * Code originated from MAGMA
  *

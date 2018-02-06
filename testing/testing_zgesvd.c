@@ -9,7 +9,7 @@
  *
  ***
  *
- *  PLASMA testing routines
+ * @brief Chameleon testing routines
  *
  * @version 1.0.0
  * @author Azzam Haidar

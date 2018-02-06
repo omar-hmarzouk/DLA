@@ -9,8 +9,7 @@
  *
  ***
  *
- *  MORSE codelets kernel
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon common header file
  *
  * @version 1.0.0
  * @author Mathieu Faverge

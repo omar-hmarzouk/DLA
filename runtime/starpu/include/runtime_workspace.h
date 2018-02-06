@@ -9,8 +9,7 @@
  *
  ***
  *
- *  MORSE codelets kernel
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon codelets kernel
  *
  * @version 1.0.0
  * @author Cedric Augonnet

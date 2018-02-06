@@ -9,7 +9,7 @@
  *
  ***
  *
- *  MORSE mixed-precision computational routines
+ * @brief Chameleon mixed-precision computational routines
  *
  * @version 1.0.0
  * @author Bilel Hadri

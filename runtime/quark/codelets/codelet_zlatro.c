@@ -9,7 +9,7 @@
  *
  ***
  *
- *  PLASMA core_blas quark wrapper
+ * @brief Chameleon core_blas quark wrapper
  *
  * @version 1.0.0
  * @author Azzam Haidar

@@ -8,8 +8,7 @@
  *                      Univ. Bordeaux. All rights reserved.
  ***
  *
- *  MORSE cudablas kernel
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon cudablas kernel
  *
  * @version 1.0.0
  * @author Florent Pruvost

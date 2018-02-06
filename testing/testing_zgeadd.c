@@ -9,7 +9,7 @@
  *
  ***
  *
- *  MORSE testing routines
+ * @brief Chameleon testing routines
  *
  * @version 1.0.0
  * @comment This file has been automatically generated

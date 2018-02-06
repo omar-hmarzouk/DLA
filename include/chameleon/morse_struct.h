@@ -9,8 +9,7 @@
  *
  ***
  *
- *  MORSE header
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon header
  *
  * @version 1.0.0
  * @author Cedric Augonnet

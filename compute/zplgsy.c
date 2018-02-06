@@ -9,7 +9,7 @@
  *
  ***
  *
- *  MORSE computational routines
+ * @brief Chameleon computational routines
  *
  * @version 1.0.0
  * @comment This file is a copy of zplgsy.c,

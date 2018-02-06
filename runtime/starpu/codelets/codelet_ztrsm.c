@@ -9,7 +9,7 @@
  *
  ***
  *
- *  MORSE codelets kernel
+ * @brief Chameleon codelets kernel
  *
  * @version 1.0.0
  * @comment This file has been automatically generated
