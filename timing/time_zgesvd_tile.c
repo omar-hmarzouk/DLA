@@ -17,7 +17,7 @@
 #define _PREC  double
 #define _LAMCH LAPACKE_dlamch_work
 
-#define _NAME  "PLASMA_zheev_Tile"
+#define _NAME  "MORSE_zheev_Tile"
 /* See Lawn 41 page 120 */
 #define _FMULS FMULS_GEBRD( M, N )
 #define _FADDS FADDS_GEBRD( M, N )

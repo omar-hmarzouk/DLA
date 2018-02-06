@@ -17,7 +17,7 @@
 #define _PREC  double
 #define _LAMCH LAPACKE_dlamch_work
 
-#define _NAME  "PLASMA_zheevd_Tile"
+#define _NAME  "MORSE_zheevd_Tile"
 /* See Lawn 41 page 120 */
 #define _FMULS ((2. / 3.) * ((double)N * (double)N * (double)N))
 #define _FADDS ((2. / 3.) * ((double)N * (double)N * (double)N))
