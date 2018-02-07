@@ -8,76 +8,117 @@ stages:
 
 before_script:
   - git submodule update --init --recursive
-  - source .gitlab-ci-env.sh
+  - source .gitlab-ci-env.sh $SIMU
   - mkdir -p build
 
-build_starpu_cuda_mpi:
+.build_script_template: &build_script
   stage: build
-  artifacts:
-    name: build_starpu_cuda_mpi
-    expire_in: 48 hours
-    paths:
-      - build
-      - chameleon-build-starpu.log
   script:
+    - echo BUILD_OPTIONS $BUILD_OPTIONS
+    - echo VERSION $VERSION
     - (cd build &&
        cmake -C ../cmake_modules/gitlab-ci-initial-cache.cmake ..
-             -DCHAMELEON_USE_CUDA=ON
-             -DCHAMELEON_USE_MPI=ON &&
+             $BUILD_OPTIONS &&
         ctest --no-compress-output -V -j 5
              -D ExperimentalBuild
              -D ExperimentalSubmit
-             | tee ../chameleon-build-starpu.log)
+             | tee ../chameleon_${VERSION}.log)
     - (cd build &&
-       make install | tee -a ../chameleon-build-starpu.log &&
+       make install | tee -a ../chameleon_${VERSION}.log &&
        rm install/ -r)
 
-test_starpu_cuda_mpi:
+.test_script_template: &test_script
   stage: test
-  dependencies:
-    - build_starpu_cuda_mpi
-  artifacts:
-    name: test_starpu_cuda_mpi
-    expire_in: 48 hours
-    paths:
-      - build
-      - chameleon-build-starpu.log
-      - chameleon_starpu_mpi.lcov
   script:
+    - echo TESTS_RESTRICTION $TESTS_RESTRICTION
+    - echo VERSION $VERSION
     - (cd build &&
-       ctest --no-compress-output -V
-             -R "test_shm_s|mpi_s"
+       eval "ctest --no-compress-output -V
+             $TESTS_RESTRICTION
              -D ExperimentalTest
              -D ExperimentalCoverage
              -D ExperimentalSubmit
-             | tee -a ../chameleon-build-starpu.log)
-    - lcov --directory build --capture --output-file chameleon_starpu_mpi.lcov
+             | tee -a ../chameleon_${VERSION}.log")
+    - lcov --directory build --capture --output-file ../chameleon_${VERSION}.lcov
+
+build_starpu:
+  <<: *build_script
+  artifacts:
+    name: build_starpu
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon_starpu.log
+  variables:
+    BUILD_OPTIONS: "-DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=ON"
+    VERSION: starpu
 
 build_starpu_simgrid:
-  stage: build
+  <<: *build_script
   artifacts:
     name: build_starpu_simgrid
     expire_in: 48 hours
     paths:
       - build
-      - chameleon-build-starpu-simgrid.log
-  script:
-    - source .gitlab-ci-env.sh simu
-    - (cd build &&
-       cmake -C ../cmake_modules/gitlab-ci-initial-cache.cmake ..
-             -DCHAMELEON_SIMULATION=ON
-             -DCHAMELEON_USE_CUDA=ON
-             -DCHAMELEON_USE_MPI=OFF &&
-       ctest --no-compress-output -V -j 5
-            -D ExperimentalBuild
-            -D ExperimentalSubmit
-            | tee ../chameleon-build-starpu-simgrid.log)
-    - (cd build &&
-       make install | tee -a ../chameleon-build-starpu-simgrid.log &&
-       rm install/ -r)
+      - chameleon_starpu_simgrid.log
+  variables:
+    SIMU: simu
+    BUILD_OPTIONS: "-DCHAMELEON_SIMULATION=ON -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=OFF"
+    VERSION: starpu_simgrid
 
-test_starpu_simgrid:
-  stage: test
+build_quark:
+  <<: *build_script
+  artifacts:
+    name: build_quark
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon_quark.log
+  variables:
+    BUILD_OPTIONS: "-DCHAMELEON_SCHED_QUARK=ON"
+    VERSION: quark
+
+test_starpu_branches:
+  <<: *test_script
+  variables:
+    TESTS_RESTRICTION: "-R \"shm_s|mpi_s\""
+    VERSION: starpu
+  dependencies:
+    - build_starpu
+  artifacts:
+    name: test_starpu
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon_starpu.log
+      - chameleon_starpu.lcov
+  only:
+    - branches
+  except:
+    - master
+
+test_starpu_master:
+  <<: *test_script
+  variables:
+    TESTS_RESTRICTION: ""
+    VERSION: starpu
+  dependencies:
+    - build_starpu
+  artifacts:
+    name: test_starpu
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon_starpu.log
+      - chameleon_starpu.lcov
+  only:
+    - master@solverstack/chameleon
+
+test_starpu_simgrid_branches:
+  <<: *test_script
+  variables:
+    TESTS_RESTRICTION: "-R \"shm_s|mpi_s\""
+    VERSION: starpu_simgrid
   dependencies:
     - build_starpu_simgrid
   artifacts:
@@ -85,81 +126,88 @@ test_starpu_simgrid:
     expire_in: 48 hours
     paths:
       - build
-      - chameleon-build-starpu-simgrid.log
+      - chameleon_starpu_simgrid.log
       - chameleon_starpu_simgrid.lcov
-  script:
-    - source .gitlab-ci-env.sh simu
-    - (cd build &&
-       ctest --no-compress-output -V
-            -D ExperimentalTest
-            -D ExperimentalCoverage
-            -D ExperimentalSubmit
-            | tee -a ../chameleon-build-starpu-simgrid.log)
-    - lcov --directory build --capture --output-file chameleon_starpu_simgrid.lcov
+  only:
+    - branches
+  except:
+    - master
 
-build_quark:
-  stage: build
+test_starpu_simgrid_master:
+  <<: *test_script
+  variables:
+    TESTS_RESTRICTION: ""
+    VERSION: starpu_simgrid
+  dependencies:
+    - build_starpu_simgrid
   artifacts:
-    name: build_quark
+    name: test_starpu_simgrid
     expire_in: 48 hours
     paths:
       - build
-      - chameleon-build-quark.log
-  script:
-    - (cd build &&
-       cmake -C ../cmake_modules/gitlab-ci-initial-cache.cmake ..
-            -DCHAMELEON_SCHED_QUARK=ON &&
-       ctest --no-compress-output -V -j 5
-             -D ExperimentalBuild
-             -D ExperimentalSubmit
-             | tee ../chameleon-build-quark.log)
-    - (cd build &&
-       make install | tee -a ../chameleon-build-quark.log &&
-       rm install/ -r)
+      - chameleon_starpu_simgrid.log
+      - chameleon_starpu_simgrid.lcov
+  only:
+    - master@solverstack/chameleon
 
-test_quark:
-  stage: test
+test_quark_branches:
+  <<: *test_script
+  variables:
+    TESTS_RESTRICTION: "-R \"shm_s|mpi_s\""
+    VERSION: quark
   dependencies:
     - build_quark
   artifacts:
-    name: build_quark
+    name: test_quark
     expire_in: 48 hours
     paths:
       - build
-      - chameleon-build-quark.log
+      - chameleon_quark.log
       - chameleon_quark.lcov
-  script:
-    - (cd build &&
-       ctest --no-compress-output -V
-             -R "test_shm_s"
-             -D ExperimentalTest
-             -D ExperimentalCoverage
-             -D ExperimentalSubmit
-             | tee -a ../chameleon-build-quark.log)
-    - lcov --directory build --capture --output-file chameleon_quark.lcov
+  only:
+    - branches
+  except:
+    - master
+
+test_quark_master:
+  <<: *test_script
+  variables:
+    TESTS_RESTRICTION: ""
+    VERSION: quark
+  dependencies:
+    - build_quark
+  artifacts:
+    name: test_quark
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon_quark.log
+      - chameleon_quark.lcov
+  only:
+    - master@solverstack/chameleon
 
 sonar:
   stage: analysis
   dependencies:
-    - test_starpu_cuda_mpi
-    - test_starpu_simgrid
-    - test_quark
+    - test_starpu_master
+    - test_starpu_simgrid_master
+    - test_quark_master
   artifacts:
     name: chameleon_analysis
     expire_in: 1 week
     paths:
-      - chameleon-build.log
-      - chameleon-coverage.xml
-      - chameleon-cppcheck.xml
-      - chameleon-rats.xml
+      - chameleon_build.log
+      - chameleon_coverage.xml
+      - chameleon_cppcheck.xml
+      - chameleon_rats.xml
       - sonar.log
   script:
-    - cat *.log > chameleon-build.log
-    - lcov -a $PWD/chameleon_starpu_mpi.lcov
+    - cat *.log > chameleon_build.log
+    - lcov -a $PWD/chameleon_starpu.lcov
            -a $PWD/chameleon_starpu_simgrid.lcov
            -a $PWD/chameleon_quark.lcov
            -o $PWD/chameleon.lcov
-    - lcov_cobertura.py chameleon.lcov --output chameleon-coverage.xml
+    - lcov_cobertura.py chameleon.lcov --output chameleon_coverage.xml
     - ./tools/analysis.sh
   only:
     - master@solverstack/chameleon
