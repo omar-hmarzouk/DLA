@@ -31,11 +31,11 @@ developers must follow and that should be read by contributors.
 *** Prerequisites
 
      To generate the documentation you need to have [[http://www.stack.nl/~dimitri/doxygen/][Doxygen]] and
-     [[https://www.gnu.org/software/texinfo/][Texinfo]] installed on your system.
+     [[https://orgmode.org/][org-mode]] installed on your system.
 
      For example, on Debian systems:
      #+begin_src sh
-     sudo apt install doxygen texinfo texlive texlive-latex-extra emacs
+     sudo apt install doxygen org-mode texlive texlive-latex-extra emacs
      #+end_src
 
 *** configure + make documentation
