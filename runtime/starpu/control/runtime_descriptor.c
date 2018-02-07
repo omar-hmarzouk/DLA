@@ -34,6 +34,48 @@ static int tag_width = 31;
 static int tag_sep   = 24;
 static int _tag_mpi_initialized_ = 0;
 
+static inline int
+chameleon_starpu_tag_init( int user_tag_width,
+                           int user_tag_sep )
+{
+    if (!_tag_mpi_initialized_) {
+        int *tag_ub = NULL;
+        int ok = 0;
+
+        tag_width = user_tag_width;
+        tag_sep   = user_tag_sep;
+
+#if defined(HAVE_STARPU_MPI_COMM_GET_ATTR)
+        starpu_mpi_comm_get_attr(MPI_COMM_WORLD, MPI_TAG_UB, &tag_ub, &ok);
+#else
+        MPI_Comm_get_attr(MPI_COMM_WORLD, MPI_TAG_UB, &tag_ub, &ok);
+#endif
+
+        if ( !ok ) {
+            morse_error("RUNTIME_desc_create", "MPI_TAG_UB not known by StarPU");
+        }
+
+        while ( ((uintptr_t)((1UL<<tag_width) - 1) > (uintptr_t)(*tag_ub) ) &&
+                (tag_width >= TAG_WIDTH_MIN) )
+        {
+            tag_width--;
+            tag_sep--;
+        }
+
+        if ( tag_width < TAG_WIDTH_MIN ) {
+            morse_error("RUNTIME_desc_create", "MPI_TAG_UB too small to identify all the data");
+            return;
+        }
+
+        _tag_mpi_initialized_ = 1;
+        return MORSE_SUCCESS;
+    }
+    else {
+        return MORSE_ERR_REINITIALIZED;
+    }
+}
+
+
 #ifndef HAVE_STARPU_MPI_DATA_REGISTER
 #define starpu_mpi_data_register( handle_, tag_, owner_ )       \
     do {                                                        \
@@ -48,10 +90,9 @@ void RUNTIME_comm_set_tag_sizes( int user_tag_width,
                                  int user_tag_sep )
 {
 #if defined(CHAMELEON_USE_MPI)
-    if (_tag_mpi_initialized_ == 0) {
-        tag_width = user_tag_width;
-        tag_sep   = user_tag_sep;
-    } else {
+    int rc;
+    rc = chameleon_starpu_tag_init( user_tag_width, user_tag_sep );
+    if ( rc != MORSE_SUCCESS ) {
         morse_error("RUNTIME_user_tag_size",
                     "must be called before creating any Morse descriptor with MORSE_Desc_create(). The tag sizes will not be modified.");
     }
@@ -155,30 +196,7 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
      * Check that we are not going over MPI tag limitations
      */
     {
-        if (!_tag_mpi_initialized_) {
-            int *tag_ub = NULL;
-            int ok = 0;
-
-            MPI_Comm_get_attr(MPI_COMM_WORLD, MPI_TAG_UB, &tag_ub, &ok);
-
-            if ( !ok ) {
-                morse_error("RUNTIME_desc_create", "MPI_TAG_UB not known by MPI");
-            }
-
-            while ( ((uintptr_t)((1UL<<tag_width) - 1) > (uintptr_t)(*tag_ub) ) &&
-                    (tag_width >= TAG_WIDTH_MIN) )
-            {
-                tag_width--;
-                tag_sep--;
-            }
-
-            if ( tag_width < TAG_WIDTH_MIN ) {
-                morse_error("RUNTIME_desc_create", "MPI_TAG_UB too small to identify all the data");
-                return;
-            }
-
-            _tag_mpi_initialized_ = 1;
-        }
+        chameleon_starpu_tag_init( tag_width, tag_sep );
 
         /* Check that we won't create overflow in tags used */
         if ( ((uintptr_t)(lnt*lmt)) > ((uintptr_t)(1UL<<tag_sep)) ) {
