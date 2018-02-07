@@ -118,10 +118,13 @@ void RUNTIME_set_reduction_methods(starpu_data_handle_t handle, MORSE_enum dtyp)
 
 #if defined(CHAMELEON_USE_MPI) && defined(HAVE_STARPU_MPI_CACHED_RECEIVE)
 static inline int
-chameleon_starpu_data_iscached(const MORSE_desc_t *A, int Am, int An)
+chameleon_starpu_data_iscached(const MORSE_desc_t *A, int m, int n)
 {
-    starpu_data_handle_t *ptrtile = (starpu_data_handle_t*)(A->schedopt);
-    ptrtile += ((int64_t)(A->lmt) * (int64_t)An + (int64_t)Am);
+    int64_t mm = m + (A->i / A->mb);
+    int64_t nn = n + (A->j / A->nb);
+
+    starpu_data_handle_t *ptrtile = A->schedopt;
+    ptrtile += ((int64_t)A->lmt) * nn + mm;
 
     if (!(*ptrtile))
         return 0;
