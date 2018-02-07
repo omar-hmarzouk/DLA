@@ -135,6 +135,8 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
                     T(k, p), T->mb,
                     A(m, p), ldam);
             }
+            RUNTIME_data_flush( sequence, D(k, p) );
+            RUNTIME_data_flush( sequence, T(k, p) );
         }
 
         /* Setting the order of the tiles */
@@ -188,6 +190,8 @@ void morse_pzgelqf_param( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
                     A(m, p), ldam,
                     A(m, n), ldam);
             }
+            RUNTIME_data_flush( sequence, A(k, n) );
+            RUNTIME_data_flush( sequence, T(k, n) );
         }
 
         /* Restore the original location of the tiles */

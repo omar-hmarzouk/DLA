@@ -127,6 +127,8 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
                     Q(m, p), ldqm,
                     Q(m, n), ldqm);
             }
+            RUNTIME_data_flush( sequence, A(k, n) );
+            RUNTIME_data_flush( sequence, T(k, n) );
         }
 
         T = TS;
@@ -165,7 +167,10 @@ void morse_pzunglq_param(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_des
                     T(k, p), T->mb,
                     Q(m, p), ldqm);
             }
+            RUNTIME_data_flush( sequence, D(k, p) );
+            RUNTIME_data_flush( sequence, T(k, p) );
         }
+
         RUNTIME_iteration_pop(morse);
     }
 

@@ -127,6 +127,9 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
                 T(k, k), T->mb,
                 A(m, k), ldam);
         }
+        RUNTIME_data_flush( sequence, D(k)    );
+        RUNTIME_data_flush( sequence, T(k, k) );
+
         for (n = k+1; n < A->nt; n++) {
             tempnn = n == A->nt-1 ? A->n-n*A->nb : A->nb;
 
@@ -156,6 +159,8 @@ void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
                     A(m, k), ldam,
                     A(m, n), ldam);
             }
+            RUNTIME_data_flush( sequence, A(k, n) );
+            RUNTIME_data_flush( sequence, T(k, n) );
         }
 
         /* Restore the original location of the tiles */

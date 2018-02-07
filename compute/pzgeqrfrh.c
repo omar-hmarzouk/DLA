@@ -125,6 +125,8 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D, int BS,
                     T(M, k), T->mb,
                     A(M, n), ldaM);
             }
+            RUNTIME_data_flush( sequence, D(M, k) );
+            RUNTIME_data_flush( sequence, T(M, k) );
 
             for (m = M+1; m < chameleon_min(M+BS, A->mt); m++) {
                 tempmm = m == A->mt-1 ? A->m-m*A->mb : A->mb;
@@ -156,6 +158,8 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D, int BS,
                         A(M, n), ldaM,
                         A(m, n), ldam);
                 }
+                RUNTIME_data_flush( sequence, A(m, k) );
+                RUNTIME_data_flush( sequence, T(m, k) );
             }
         }
         for (RD = BS; RD < A->mt-k; RD *= 2) {
@@ -194,6 +198,8 @@ void morse_pzgeqrfrh(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D, int BS,
                         A (M,    n), ldaM,
                         A (M+RD, n), ldaMRD);
                 }
+                RUNTIME_data_flush( sequence, A (M+RD, k) );
+                RUNTIME_data_flush( sequence, T2(M+RD, k) );
             }
         }
 
