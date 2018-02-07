@@ -117,7 +117,6 @@ enum iparam_examples {
     /* Added for StarPU version */
     IPARAM_PROFILE,
     IPARAM_PRINT_ERRORS,
-    IPARAM_PEAK,
     IPARAM_PARALLEL_TASKS,
     IPARAM_NO_CPU,
     IPARAM_BOUND,
@@ -132,7 +131,6 @@ enum dparam_examples {
   IPARAM_XNORM,
   IPARAM_RNORM,
   IPARAM_AinvNORM,
-  IPARAM_ESTIMATED_PEAK,
   IPARAM_RES,
   /* Begin section for hydra integration tool */
   IPARAM_THRESHOLD_CHECK, /* Maximum value accepted for: |Ax-b||/N/eps/(||A||||x||+||b||) */
@@ -179,7 +177,6 @@ static void init_iparam(int iparam[IPARAM_SIZEOF]){
     iparam[IPARAM_Q             ] = 1;
     iparam[IPARAM_PROFILE       ] = 0;
     iparam[IPARAM_PRINT_ERRORS  ] = 0;
-    iparam[IPARAM_PEAK          ] = 0;
     iparam[IPARAM_PARALLEL_TASKS] = 0;
     iparam[IPARAM_NO_CPU        ] = 0;
     iparam[IPARAM_BOUND         ] = 0;
@@ -210,7 +207,6 @@ static void print_header(char *prog_name, int * iparam) {
     const char *bound_header   = iparam[IPARAM_BOUND]   ? "   thGflop/s" : "";
     const char *check_header   = iparam[IPARAM_CHECK]   ? "     ||Ax-b||       ||A||       ||x||       ||b|| ||Ax-b||/N/eps/(||A||||x||+||b||)  RETURN" : "";
     const char *inverse_header = iparam[IPARAM_INVERSE] ? " ||I-A*Ainv||       ||A||    ||Ainv||       ||Id - A*Ainv||/((||A|| ||Ainv||).N.eps)" : "";
-    const char *peak_header    = iparam[IPARAM_PEAK]    ? "  (% of peak)  peak" : "";
 #if defined(CHAMELEON_SIMULATION)
     double    eps = 0.;
 #else
@@ -235,8 +231,8 @@ static void print_header(char *prog_name, int * iparam) {
             iparam[IPARAM_IB],
             eps );
 
-    printf( "#     M       N  K/NRHS   seconds   Gflop/s Deviation%s%s%s\n",
-            bound_header, peak_header, iparam[IPARAM_INVERSE] ? inverse_header : check_header);
+    printf( "#     M       N  K/NRHS   seconds   Gflop/s Deviation%s%s\n",
+            bound_header, iparam[IPARAM_INVERSE] ? inverse_header : check_header);
     printf( "# %5.0d   %5.0d   %5.0d\n", iparam[IPARAM_N], iparam[IPARAM_N], iparam[IPARAM_K]);
     return;
 }

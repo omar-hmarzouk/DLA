@@ -57,7 +57,6 @@ enum iparam_timing {
     /* Added for StarPU version */
     IPARAM_PROFILE,
     IPARAM_PRINT_WARNINGS,
-    IPARAM_PEAK,
     IPARAM_PARALLEL_TASKS,
     IPARAM_NO_CPU,
     IPARAM_BOUND,
@@ -80,7 +79,6 @@ enum dparam_timing {
   IPARAM_XNORM,
   IPARAM_RNORM,
   IPARAM_AinvNORM,
-  IPARAM_ESTIMATED_PEAK,
   IPARAM_RES,
   /* Begin section for hydra integration tool */
   IPARAM_THRESHOLD_CHECK, /* Maximum value accepted for: |Ax-b||/N/eps/(||A||||x||+||b||) */

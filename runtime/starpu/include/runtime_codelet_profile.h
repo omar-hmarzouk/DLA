@@ -67,53 +67,11 @@
                     }                                                                          \
             }                                                                                  \
     }                                                                                          \
-    void estimate_##name##_sustained_peak(double *res_peak)                                    \
-    {                                                                                          \
-        /* We use a heuristic where we assume that all GPUs have some work, and                \
-         * that some CPUs may not have been involved. This may not be                          \
-         * applicable to small problems where only a subset of the processing                  \
-         * units are used. We assume that all CPUs are the same, so we multiply                \
-         * the best performance obtained on a CPU by the number of CPUs, and we                \
-         * add this to the sum of the performance obtained by the GPUs. */                     \
-        double peak = 0.0;                                                                     \
-        double best_cpu = 0.0;                                                                 \
-        unsigned ncpus = 0;                                                                    \
-                                                                                               \
-        unsigned worker;                                                                       \
-        for (worker = 0; worker < starpu_worker_get_count(); worker++)                         \
-            {                                                                                  \
-                unsigned cpu_worker = (starpu_worker_get_type(worker) == STARPU_CPU_WORKER);   \
-                if (cpu_worker)                                                                \
-                    ncpus++;                                                                   \
-                                                                                               \
-                if (name##_perf[worker].n > 0)                                                 \
-                    {                                                                          \
-                        long   n    = name##_perf[worker].n;                                   \
-                        double sum  = name##_perf[worker].sum;                                 \
-                        double avg = sum / n;                                                  \
-                                                                                               \
-                        if (cpu_worker)                                                        \
-                            {                                                                  \
-                                if (avg > best_cpu)                                            \
-                                    best_cpu = avg;                                            \
-                            }                                                                  \
-                        else                                                                   \
-                            {                                                                  \
-                                peak += avg;                                                   \
-                            }                                                                  \
-                    }                                                                          \
-            }                                                                                  \
-                                                                                               \
-        peak += ncpus * best_cpu;                                                              \
-                                                                                               \
-        *res_peak = peak;                                                                      \
-    }                                                                                          \
 
 #define CHAMELEON_CL_CB_HEADER(name)                        \
     extern struct starpu_perfmodel*cl_##name##_save;    \
     extern struct starpu_perfmodel cl_##name##_fake;    \
     void cl_##name##_callback();                        \
-    void profiling_display_##name##_info(void);         \
-    void estimate_##name##_sustained_peak(double *res)
+    void profiling_display_##name##_info(void);
 
 #endif /* __CODELET_PROFILE_H__ */

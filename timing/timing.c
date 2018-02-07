@@ -221,34 +221,30 @@ Test(int64_t n, int *iparam) {
     if ( MORSE_My_Mpi_Rank() == 0) {
         printf( "%9.3f %9.2f +-%7.2f  ", sumt/niter, gflops, sd);
 
-        if (iparam[IPARAM_BOUND])
+        if (iparam[IPARAM_BOUND]) {
             printf(" %9.2f",  sumgf_upper/niter);
-
-        if ( iparam[IPARAM_PEAK] )
-        {
-            if (dparam[IPARAM_ESTIMATED_PEAK]<0.0f)
-                printf("  n/a    n/a   ");
-            else
-                printf("  %5.2f%%  %9.2f ", 100.0f*(gflops/dparam[IPARAM_ESTIMATED_PEAK]), dparam[IPARAM_ESTIMATED_PEAK]);
         }
 
         if ( iparam[IPARAM_CHECK] ){
             hres = ( dparam[IPARAM_RES] / n / eps / (dparam[IPARAM_ANORM] * dparam[IPARAM_XNORM] + dparam[IPARAM_BNORM] ) > dparam[IPARAM_THRESHOLD_CHECK] );
 
-            if (hres)
+            if (hres) {
                 printf( "%8.5e %8.5e %8.5e %8.5e                       %8.5e FAILURE",
                     dparam[IPARAM_RES], dparam[IPARAM_ANORM], dparam[IPARAM_XNORM], dparam[IPARAM_BNORM],
                     dparam[IPARAM_RES] / n / eps / (dparam[IPARAM_ANORM] * dparam[IPARAM_XNORM] + dparam[IPARAM_BNORM] ));
-            else
+            }
+            else {
                 printf( "%8.5e %8.5e %8.5e %8.5e                       %8.5e SUCCESS",
                     dparam[IPARAM_RES], dparam[IPARAM_ANORM], dparam[IPARAM_XNORM], dparam[IPARAM_BNORM],
                     dparam[IPARAM_RES] / n / eps / (dparam[IPARAM_ANORM] * dparam[IPARAM_XNORM] + dparam[IPARAM_BNORM] ));
+            }
         }
 
-        if ( iparam[IPARAM_INVERSE] )
+        if ( iparam[IPARAM_INVERSE] ) {
             printf( " %8.5e %8.5e %8.5e     %8.5e",
                     dparam[IPARAM_RNORM], dparam[IPARAM_ANORM], dparam[IPARAM_AinvNORM],
                     dparam[IPARAM_RNORM] /((dparam[IPARAM_ANORM] * dparam[IPARAM_AinvNORM])*n*eps));
+        }
 
         printf("\n");
 
@@ -387,7 +383,6 @@ show_help(char *prog_name) {
             "    -s, --sync             Enable synchronous calls in wrapper function such as POTRI\n"
             "    -o, --ooc              Enable out-of-core (available only with StarPU)\n"
             "    -G, --gemm3m           Use gemm3m complex method\n"
-            //"        --peak             ?\n"todo
             "        --bound            Compare result to area bound\n"
             "\n");
 }
@@ -398,7 +393,6 @@ print_header(char *prog_name, int * iparam) {
     const char *bound_header   = iparam[IPARAM_BOUND]   ? "   thGflop/s" : "";
     const char *check_header   = iparam[IPARAM_CHECK]   ? "     ||Ax-b||       ||A||       ||x||       ||b|| ||Ax-b||/N/eps/(||A||||x||+||b||)  RETURN" : "";
     const char *inverse_header = iparam[IPARAM_INVERSE] ? " ||I-A*Ainv||       ||A||    ||Ainv||       ||Id - A*Ainv||/((||A|| ||Ainv||).N.eps)" : "";
-    const char *peak_header    = iparam[IPARAM_PEAK]    ? "  (% of peak)  peak" : "";
 #if defined(CHAMELEON_SIMULATION)
     _PREC    eps = 0.;
 #else
@@ -431,8 +425,8 @@ print_header(char *prog_name, int * iparam) {
             iparam[IPARAM_IB],
             eps );
 
-    printf( "#     M       N  K/NRHS   seconds   Gflop/s Deviation%s%s%s\n",
-            bound_header, peak_header, iparam[IPARAM_INVERSE] ? inverse_header : check_header);
+    printf( "#     M       N  K/NRHS   seconds   Gflop/s Deviation%s%s\n",
+            bound_header, iparam[IPARAM_INVERSE] ? inverse_header : check_header);
     return;
 }
 
@@ -482,7 +476,6 @@ static struct option long_options[] =
     {"sync",          no_argument,       0,      's'},
     {"ooc",           no_argument,       0,      'o'},
     {"gemm3m",        no_argument,       0,      'G'},
-    {"peak",          no_argument,       0,      '4'},
     {"bound",         no_argument,       0,      '5'},
     {0, 0, 0, 0}
 };
@@ -496,7 +489,7 @@ set_iparam_default(int *iparam){
     iparam[IPARAM_THRDNBR       ] = -1;
     iparam[IPARAM_THRDNBR_SUBGRP] = 1;
     iparam[IPARAM_M             ] = -1;
-    iparam[IPARAM_N             ] = 500;
+    iparam[IPARAM_N             ] = -1;
     iparam[IPARAM_K             ] = 1;
     iparam[IPARAM_LDA           ] = -1;
     iparam[IPARAM_LDB           ] = -1;
@@ -611,7 +604,6 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
         case 's' : iparam[IPARAM_ASYNC         ] = 0; break;
         case 'o' : iparam[IPARAM_OOC           ] = 1; break;
         case 'G' : iparam[IPARAM_GEMM3M        ] = 1; break;
-        case '4' : iparam[IPARAM_PEAK          ] = 1; break;
         case '5' : iparam[IPARAM_BOUND         ] = 1; break;
         case 'h' :
         case '?' :
@@ -624,7 +616,8 @@ parse_arguments(int *_argc, char ***_argv, int *iparam, int *start, int *stop, i
 
 int
 main(int argc, char *argv[]) {
-    int i, m, mx, nx;
+    int i, m, n, mx, nx;
+    int status;
     int nbnode = 1;
     int start =  500;
     int stop  = 5000;
@@ -644,6 +637,7 @@ main(int argc, char *argv[]) {
     }
 #endif
 
+    n  = iparam[IPARAM_N];
     m  = iparam[IPARAM_M];
     mx = iparam[IPARAM_MX];
     nx = iparam[IPARAM_NX];
@@ -709,26 +703,41 @@ main(int argc, char *argv[]) {
 
     if (step < 1) step = 1;
 
-    int status = Test( -1, iparam ); /* print header */
+    status = Test( -1, iparam ); /* print header */
     if (status != MORSE_SUCCESS) return status;
-    for (i = start; i <= stop; i += step)
-    {
-        if ( nx > 0 ) {
-            iparam[IPARAM_M] = i;
-            iparam[IPARAM_N] = chameleon_max(1, i/nx);
-        } else if ( mx > 0 ) {
-            iparam[IPARAM_M] = chameleon_max(1, i/mx);
-            iparam[IPARAM_N] = i;
-        } else {
-            if ( m == -1 )
+    if ( n == -1 ){
+        for (i = start; i <= stop; i += step)
+        {
+            if ( nx > 0 ) {
                 iparam[IPARAM_M] = i;
-            iparam[IPARAM_N] = i;
+                iparam[IPARAM_N] = chameleon_max(1, i/nx);
+            }
+            else if ( mx > 0 ) {
+                iparam[IPARAM_M] = chameleon_max(1, i/mx);
+                iparam[IPARAM_N] = i;
+            }
+            else {
+                if ( m == -1 ) {
+                    iparam[IPARAM_M] = i;
+                }
+                iparam[IPARAM_N] = i;
+            }
+            status = Test( iparam[IPARAM_N], iparam );
+            if (status != MORSE_SUCCESS) {
+                return status;
+            }
+            success += status;
         }
-        int status = Test( iparam[IPARAM_N], iparam );
+    }
+    else {
+        if ( m == -1 ) {
+            iparam[IPARAM_M] = n;
+        }
+        iparam[IPARAM_N] = n;
+        status = Test( iparam[IPARAM_N], iparam );
         if (status != MORSE_SUCCESS) return status;
         success += status;
     }
-
     MORSE_Finalize();
     return success;
 }

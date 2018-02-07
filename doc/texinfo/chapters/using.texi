@@ -83,36 +83,53 @@ copy from LAPACK matrix layout to tile matrix layout are necessary.
   List of main options that can be used in timing:
   @itemize @bullet
     @item @option{--help}: show usage
-    @item @option{--threads}: Number of CPU workers (default:
-@option{_SC_NPROCESSORS_ONLN})
-    @item @option{--gpus}: number of GPU workers (default: @option{0})
-    @item @option{--n_range=R}: range of N values, with
-@option{R=Start:Stop:Step}
-(default: @option{500:5000:500})
-    @item @option{--m=X}: dimension (M) of the matrices (default: @option{N})
-    @item @option{--k=X}: dimension (K) of the matrices (default: @option{1}),
-useful for GEMM algorithm (k is the shared dimension and must be defined >1 to
-consider matrices and not vectors)
-    @item @option{--nrhs=X}: number of right-hand size (default: @option{1})
-    @item @option{--nb=X}: block/tile size. (default: @option{128})
-    @item @option{--ib=X}: inner-blocking/IB size. (default: @option{32})
-    @item @option{--niter=X}: number of iterations performed for each test
-(default: @option{1})
-    @item @option{--rhblk=X}: if X > 0, enable Householder mode for QR and LQ
-factorization. X is the size of each subdomain (default: @option{0})
-    @item @option{--[no]check}: check result (default: @option{nocheck})
-    @item @option{--[no]profile}: print profiling informations (default:
-@option{noprofile})
-    @item @option{--[no]trace}: enable/disable trace generation (default:
-@option{notrace})
-    @item @option{--[no]dag}: enable/disable DAG generation (default:
-@option{nodag})
-    @item @option{--[no]inv}: check on inverse (default: @option{noinv})
-    @item @option{--nocpu}: all GPU kernels are exclusively executed on GPUs
-    @item @option{--ooc}: Enable out-of-core (available only with StarPU)
-    @item @option{--bound}: Compare result to area bound (available only with StarPU)
-(default: @option{0})
-  @end itemize
+    @item Machine parameters
+    @itemize @bullet
+       @item @option{-t x, --threads=x}: Number of CPU workers (default: automatic detection through runtime)
+       @item @option{-g x, --gpus=x}: Number of GPU workers (default: @option{0})
+       @item @option{-P x, --P=x}:  Rows (P) in the PxQ process grid (deafult: @option{1})
+       @item @option{--nocpu}: All GPU kernels are exclusively executed on GPUs (default: @option{0})
+    @end itemize
+    @item Matrix parameters
+    @itemize @bullet
+      @item @option{-m x, --m=x, --M=x}: Dimension (M) of the matrices (default: @option{N})
+      @item @option{-n x, --n=x, --N=x}: Dimension (N) of the matrices
+      @item @option{-N R, --n_range=R}: Range of N values to time with R=Start:Stop:Step (default: @option{500:5000:500})
+      @item @option{-k x, --k=x, --K=x, --nrhs=x}: Dimension (K) of the matrices or number of right-hand size (default: @option{1}). This is useful for GEMM like algorithms (k is the shared dimension and must be defined >1 to consider matrices and not vectors)
+      @item @option{-b x, --nb=x}: NB size. (default: @option{320})
+      @item @option{-i x, --ib=x}: IB size. (default: @option{32})
+    @end itemize
+    @item Check/prints
+    @itemize @bullet
+      @item @option{--niter=x}: number of iterations performed for each test (default: @option{1})
+      @item @option{-W, --nowarnings}: Do not show warnings
+      @item @option{-w, --nowarmup}: Cancel the warmup run to pre-load libraries
+      @item @option{-c, --check}: Check result
+      @item @option{-C, --inv}: Check on inverse
+      @item @option{--mode=x}: Change the xLATMS matrix mode generation for SVD/EVD (default: @option{4}). It must be between 0 and 20 included.
+    @end itemize
+    @item Profiling parameters
+    @itemize @bullet
+      @item @option{-T, --trace}: Enable trace generation
+      @item @option{--progress}: Display progress indicator
+      @item @option{-d, --dag}: Enable DAG generation. Generates a dot_dag_file.dot.
+      @item @option{-p, --profile}: Print profiling informations
+    @end itemize
+    @item HQR parameters
+    @itemize @bullet
+      @item @option{-a x, --qr_a=x, --rhblk=x}: Define the size of the local TS trees in housholder reduction trees for QR and LQ factorization. N is the size of each subdomain (default: @option{-1})
+      @item @option{-l x, --llvl=x}: Tree used for low level reduction inside nodes (default: @option{-1})
+      @item @option{-L x, --hlvl=x}: Tree used for high level reduction between nodes, only if P > 1 (default: @option{-1}). Possible values are -1: Automatic, 0: Flat, 1: Greedy, 2: Fibonacci, 3: Binary, 4: Replicated greedy.
+      @item @option{-D, --domino}: Enable the domino between upper and lower trees
+    @end itemize
+    @item Advanced options
+    @itemize @bullet
+      @item @option{--nobigmat}: Disable single large matrix allocation for multiple tiled allocations
+      @item @option{-s, --sync}: Enable synchronous calls in wrapper function such as POTRI
+      @item @option{-o, --ooc}: Enable out-of-core (available only with StarPU)
+      @item @option{-G, --gemm3m}: Use gemm3m complex method
+      @item @option{--bound}: Compare result to area bound
+    @end itemize
 
   List of timing algorithms available:
   @itemize @bullet
