@@ -93,10 +93,10 @@ int main(int argc, char *argv[]) {
      *     - set of RHS vectors B       : size N x NRHS
      *     - set of solutions vectors X : size N x NRHS
      */
-    PASTE_CODE_ALLOCATE_MATRIX( A, double, N, N    );
-    PASTE_CODE_ALLOCATE_MATRIX( B, double, N, NRHS );
-    PASTE_CODE_ALLOCATE_MATRIX( X, double, N, NRHS );
-    PASTE_CODE_ALLOCATE_MATRIX( Acpy, double, N, N );
+    double *A    = malloc( N * N    * sizeof(double) );
+    double *Acpy = malloc( N * N    * sizeof(double) );
+    double *B    = malloc( N * NRHS * sizeof(double) );
+    double *X    = malloc( N * NRHS * sizeof(double) );
 
     /* generate A matrix with random values such that it is spd */
     MORSE_dplgsy( (double)N, MorseUpperLower, N, A, N, 51 );

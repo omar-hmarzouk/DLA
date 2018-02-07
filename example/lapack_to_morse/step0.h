@@ -120,15 +120,4 @@ static void print_header(char *prog_name, int * iparam) {
     return;
 }
 
-/**
- * Macro to allocate a matrix as a 1D array
- */
-#define PASTE_CODE_ALLOCATE_MATRIX(_name_, _type_, _m_, _n_)    \
-    _type_ *_name_ = NULL;                                      \
-    _name_ = (_type_*)malloc( (_m_) * (_n_) * sizeof(_type_) ); \
-    if ( ! _name_ ) {                                           \
-        fprintf(stderr, "Out of Memory for %s\n", #_name_);     \
-        return -1;                                              \
-    }
-
 #endif /* STEP0_H */
