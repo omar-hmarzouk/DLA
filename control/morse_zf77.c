@@ -27,9 +27,6 @@
 #include <stdlib.h>
 #include "control/common.h"
 #include "control/morse_f77.h"
-#undef REAL
-#define COMPLEX
-
 
 /**
  *  FORTRAN API - math functions (simple interface)
@@ -63,19 +60,19 @@
 //#define MORSE_ZHEGST          MORSE_FNAME(zhegst       , ZHEGST       )
 //#define MORSE_ZHEGV           MORSE_FNAME(zhegv        , ZHEGV        )
 //#define MORSE_ZHEGVD          MORSE_FNAME(zhegvd       , ZHEGVD       )
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZHEMM           MORSE_FNAME(zhemm        , ZHEMM        )
 #endif
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZHER2K          MORSE_FNAME(zher2k       , ZHER2K       )
 #endif
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZHERK           MORSE_FNAME(zherk        , ZHERK        )
 #endif
 //#define MORSE_ZHETRD          MORSE_FNAME(zhetrd       , ZHETRD       )
 #define MORSE_ZLACPY          MORSE_FNAME(zlacpy       , ZLACPY       )
 #define MORSE_ZLANGE          MORSE_FNAME(zlange       , ZLANGE       )
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZLANHE          MORSE_FNAME(zlanhe       , ZLANHE       )
 #endif
 #define MORSE_ZLANSY          MORSE_FNAME(zlansy       , ZLANSY       )
@@ -84,7 +81,7 @@
 //#define MORSE_ZLASWP          MORSE_FNAME(zlaswp       , ZLASWP       )
 //#define MORSE_ZLASWPC         MORSE_FNAME(zlaswpc      , ZLASWPC      )
 #define MORSE_ZLAUUM          MORSE_FNAME(zlauum       , ZLAUUM       )
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZPLGHE          MORSE_FNAME(zplghe       , ZPLGHE       )
 #endif
 #define MORSE_ZPLGSY          MORSE_FNAME(zplgsy       , ZPLGSY       )
@@ -137,19 +134,19 @@
 //#define MORSE_ZHEGST_TILE          MORSE_TILE_FNAME(zhegst       , ZHEGST       )
 //#define MORSE_ZHEGV_TILE           MORSE_TILE_FNAME(zhegv        , ZHEGV        )
 //#define MORSE_ZHEGVD_TILE          MORSE_TILE_FNAME(zhegvd       , ZHEGVD       )
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZHEMM_TILE           MORSE_TILE_FNAME(zhemm        , ZHEMM        )
 #endif
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZHER2K_TILE          MORSE_TILE_FNAME(zher2k       , ZHER2K       )
 #endif
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZHERK_TILE           MORSE_TILE_FNAME(zherk        , ZHERK        )
 #endif
 //#define MORSE_ZHETRD_TILE          MORSE_TILE_FNAME(zhetrd       , ZHETRD       )
 #define MORSE_ZLACPY_TILE          MORSE_TILE_FNAME(zlacpy       , ZLACPY       )
 #define MORSE_ZLANGE_TILE          MORSE_TILE_FNAME(zlange       , ZLANGE       )
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZLANHE_TILE          MORSE_TILE_FNAME(zlanhe       , ZLANHE       )
 #endif
 #define MORSE_ZLANSY_TILE          MORSE_TILE_FNAME(zlansy       , ZLANSY       )
@@ -157,7 +154,7 @@
 //#define MORSE_ZLASWP_TILE          MORSE_TILE_FNAME(zlaswp       , ZLASWP       )
 //#define MORSE_ZLASWPC_TILE         MORSE_TILE_FNAME(zlaswpc      , ZLASWPC      )
 #define MORSE_ZLAUUM_TILE          MORSE_TILE_FNAME(zlauum       , ZLAUUM       )
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZPLGHE_TILE          MORSE_TILE_FNAME(zplghe       , ZPLGHE       )
 #endif
 #define MORSE_ZPLGSY_TILE          MORSE_TILE_FNAME(zplgsy       , ZPLGSY       )
@@ -210,7 +207,7 @@
 //#define MORSE_ZHEGST_TILE_ASYNC          MORSE_ASYNC_FNAME(zhegst       , ZHEGST       )
 //#define MORSE_ZHEGV_TILE_ASYNC           MORSE_ASYNC_FNAME(zhegv        , ZHEGV        )
 //#define MORSE_ZHEGVD_TILE_ASYNC          MORSE_ASYNC_FNAME(zhegvd       , ZHEGVD       )
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZHEMM_TILE_ASYNC           MORSE_ASYNC_FNAME(zhemm        , ZHEMM        )
 #define MORSE_ZHER2K_TILE_ASYNC          MORSE_ASYNC_FNAME(zher2k       , ZHER2K       )
 #define MORSE_ZHERK_TILE_ASYNC           MORSE_ASYNC_FNAME(zherk        , ZHERK        )
@@ -218,7 +215,7 @@
 //#define MORSE_ZHETRD_TILE_ASYNC          MORSE_ASYNC_FNAME(zhetrd       , ZHETRD       )
 #define MORSE_ZLACPY_TILE_ASYNC          MORSE_ASYNC_FNAME(zlacpy       , ZLACPY       )
 #define MORSE_ZLANGE_TILE_ASYNC          MORSE_ASYNC_FNAME(zlange       , ZLANGE       )
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZLANHE_TILE_ASYNC          MORSE_ASYNC_FNAME(zlanhe       , ZLANHE       )
 #endif
 #define MORSE_ZLANSY_TILE_ASYNC          MORSE_ASYNC_FNAME(zlansy       , ZLANSY       )
@@ -227,7 +224,7 @@
 //#define MORSE_ZLASWP_TILE_ASYNC          MORSE_ASYNC_FNAME(zlaswp       , ZLASWP       )
 //#define MORSE_ZLASWPC_TILE_ASYNC         MORSE_ASYNC_FNAME(zlaswpc      , ZLASWPC      )
 #define MORSE_ZLAUUM_TILE_ASYNC          MORSE_ASYNC_FNAME(zlauum       , ZLAUUM       )
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 #define MORSE_ZPLGHE_TILE_ASYNC          MORSE_ASYNC_FNAME(zplghe       , ZPLGHE       )
 #endif
 #define MORSE_ZPLGSY_TILE_ASYNC          MORSE_ASYNC_FNAME(zplgsy       , ZPLGSY       )
@@ -370,17 +367,17 @@ void MORSE_ZGETRS_NOPIV(MORSE_enum *trans, int *N, int *NRHS, MORSE_Complex64_t 
 //void MORSE_ZHEGVD(MORSE_enum *itype, MORSE_enum *jobz, MORSE_enum *uplo, int *N, MORSE_Complex64_t *A, int *LDA, MORSE_Complex64_t *B, int *LDB, double *W, MORSE_desc_t **descT, MORSE_Complex64_t *Q, int *LDQ, int *info)
 //{ *info = MORSE_zhegvd(*itype, *jobz, *uplo, *N, A, *LDA, B, *LDB, W, *descT, Q, *LDQ); }
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZHEMM(MORSE_enum *side, MORSE_enum *uplo, int *M, int *N, MORSE_Complex64_t *alpha, MORSE_Complex64_t *A, int *LDA, MORSE_Complex64_t *B, int *LDB, MORSE_Complex64_t *beta, MORSE_Complex64_t *C, int *LDC, int *info)
 { *info = MORSE_zhemm(*side, *uplo, *M, *N, *alpha, A, *LDA, B, *LDB, *beta, C, *LDC); }
 #endif
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZHER2K(MORSE_enum *uplo, MORSE_enum *trans, int *N, int *K, MORSE_Complex64_t *alpha, MORSE_Complex64_t *A, int *LDA, MORSE_Complex64_t *B, int *LDB, double *beta, MORSE_Complex64_t *C, int *LDC, int *info)
 { *info = MORSE_zher2k(*uplo, *trans, *N, *K, *alpha, A, *LDA, B, *LDB, *beta, C, *LDC); }
 #endif
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZHERK(MORSE_enum *uplo, MORSE_enum *trans, int *N, int *K, double *alpha, MORSE_Complex64_t *A, int *LDA, double *beta, MORSE_Complex64_t *C, int *LDC, int *info)
 { *info = MORSE_zherk(*uplo, *trans, *N, *K, *alpha, A, *LDA, *beta, C, *LDC); }
 #endif
@@ -394,7 +391,7 @@ void MORSE_ZLACPY(MORSE_enum *uplo, int *M, int *N, MORSE_Complex64_t *A, int *L
 void MORSE_ZLANGE(MORSE_enum *norm, int *M, int *N, MORSE_Complex64_t *A, int *LDA, double *result)
 { *result = MORSE_zlange(*norm, *M, *N, A, *LDA); }
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZLANHE(MORSE_enum *norm, MORSE_enum *uplo, int *N, MORSE_Complex64_t *A, int *LDA, double *result)
 { *result = MORSE_zlanhe(*norm, *uplo, *N, A, *LDA); }
 #endif
@@ -417,7 +414,7 @@ void MORSE_ZLASET(MORSE_enum *uplo, int *M, int *N, MORSE_Complex64_t *alpha, MO
 void MORSE_ZLAUUM(MORSE_enum *uplo, int *N, MORSE_Complex64_t *A, int *LDA, int *info)
 { *info = MORSE_zlauum(*uplo, *N, A, *LDA); }
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZPLGHE(double *bump, MORSE_enum *uplo, int *N, MORSE_Complex64_t *A, int *LDA, unsigned long long int  *seed, int *info)
 { *info = MORSE_zplghe(*bump, *uplo, *N, A, *LDA, *seed); }
 #endif
@@ -560,17 +557,17 @@ void MORSE_ZGETRS_NOPIV_TILE(MORSE_desc_t *A, MORSE_desc_t *B, int *info)
 //void MORSE_ZHEGVD_TILE(MORSE_enum *itype, MORSE_enum *jobz, MORSE_enum *uplo, MORSE_desc_t *A, MORSE_desc_t *B, double *W, MORSE_desc_t *T, MORSE_desc_t *Q, int *info)
 //{ *info = MORSE_zhegvd_Tile(*itype, *jobz, *uplo, A, B, W, T, Q); }
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZHEMM_TILE(MORSE_enum *side, MORSE_enum *uplo, MORSE_Complex64_t *alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_Complex64_t *beta, MORSE_desc_t *C, int *info)
 { *info = MORSE_zhemm_Tile(*side, *uplo, *alpha, A, B, *beta, C); }
 #endif
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZHER2K_TILE(MORSE_enum *uplo, MORSE_enum *trans, MORSE_Complex64_t *alpha, MORSE_desc_t *A, MORSE_desc_t *B, double *beta, MORSE_desc_t *C, int *info)
 { *info = MORSE_zher2k_Tile(*uplo, *trans, *alpha, A, B, *beta, C); }
 #endif
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZHERK_TILE(MORSE_enum *uplo, MORSE_enum *trans, double *alpha, MORSE_desc_t *A, double *beta, MORSE_desc_t *C, int *info)
 { *info = MORSE_zherk_Tile(*uplo, *trans, *alpha, A, *beta, C); }
 #endif
@@ -584,7 +581,7 @@ void MORSE_ZLACPY_TILE(MORSE_enum *uplo, MORSE_desc_t *A, MORSE_desc_t *B, int *
 void MORSE_ZLANGE_TILE(MORSE_enum *norm, MORSE_desc_t *A, double *result)
 { *result = MORSE_zlange_Tile(*norm, A); }
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZLANHE_TILE(MORSE_enum *norm, MORSE_enum *uplo, MORSE_desc_t *A, double *result)
 { *result = MORSE_zlanhe_Tile(*norm, *uplo, A); }
 #endif
@@ -607,7 +604,7 @@ void MORSE_ZLASET_TILE(MORSE_enum *uplo, MORSE_Complex64_t *alpha, MORSE_Complex
 void MORSE_ZLAUUM_TILE(MORSE_enum *uplo, MORSE_desc_t *A, int *info)
 { *info = MORSE_zlauum_Tile(*uplo, A); }
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZPLGHE_TILE(double *bump, MORSE_enum *uplo, MORSE_desc_t *A, unsigned long long int  *seed, int *info)
 { *info = MORSE_zplghe_Tile(*bump, *uplo, A, *seed); }
 #endif
@@ -750,17 +747,17 @@ void MORSE_ZGETRS_NOPIV_TILE_ASYNC(MORSE_desc_t *A, MORSE_desc_t *B, MORSE_seque
 //void MORSE_ZHEGVD_TILE_ASYNC(MORSE_enum *itype, MORSE_enum *jobz, MORSE_enum *uplo, MORSE_desc_t *A, MORSE_desc_t *B, double *W, MORSE_desc_t *T, MORSE_desc_t *Q, MORSE_sequence_t *sequence, MORSE_request_t *request, int *info)
 //{ *info = MORSE_zhegvd_Tile_Async(*itype, *jobz, *uplo, A, B, W, T, Q, sequence, request); }
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZHEMM_TILE_ASYNC(MORSE_enum *side, MORSE_enum *uplo, MORSE_Complex64_t *alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_Complex64_t *beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request, int *info)
 { *info = MORSE_zhemm_Tile_Async(*side, *uplo, *alpha, A, B, *beta, C, sequence, request); }
 #endif
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZHER2K_TILE_ASYNC(MORSE_enum *uplo, MORSE_enum *trans, MORSE_Complex64_t *alpha, MORSE_desc_t *A, MORSE_desc_t *B, double *beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request, int *info)
 { *info = MORSE_zher2k_Tile_Async(*uplo, *trans, *alpha, A, B, *beta, C, sequence, request); }
 #endif
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZHERK_TILE_ASYNC(MORSE_enum *uplo, MORSE_enum *trans, double *alpha, MORSE_desc_t *A, double *beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request, int *info)
 { *info = MORSE_zherk_Tile_Async(*uplo, *trans, *alpha, A, *beta, C, sequence, request); }
 #endif
@@ -774,7 +771,7 @@ void MORSE_ZLACPY_TILE_ASYNC(MORSE_enum *uplo, MORSE_desc_t *A, MORSE_desc_t *B,
 void MORSE_ZLANGE_TILE_ASYNC(MORSE_enum *norm, MORSE_desc_t *A, double *value, MORSE_sequence_t *sequence, MORSE_request_t *request, int *info)
 { *info = MORSE_zlange_Tile_Async(*norm, A, value, sequence, request); }
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZLANHE_TILE_ASYNC(MORSE_enum *norm, MORSE_enum *uplo, MORSE_desc_t *A, double *value, MORSE_sequence_t *sequence, MORSE_request_t *request, int *info)
 { *info = MORSE_zlanhe_Tile_Async(*norm, *uplo, A, value, sequence, request); }
 #endif
@@ -797,7 +794,7 @@ void MORSE_ZLASET_TILE_ASYNC(MORSE_enum *uplo, MORSE_Complex64_t *alpha, MORSE_C
 void MORSE_ZLAUUM_TILE_ASYNC(MORSE_enum *uplo, MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request, int *info)
 { *info = MORSE_zlauum_Tile_Async(*uplo, A, sequence, request); }
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
 void MORSE_ZPLGHE_TILE_ASYNC(double *bump, MORSE_enum *uplo, MORSE_desc_t *A, unsigned long long int *seed, MORSE_sequence_t *sequence, MORSE_request_t * *request, int *info)
 { *info = MORSE_zplghe_Tile_Async(*bump, *uplo, A, *seed, sequence, *request); }
 #endif

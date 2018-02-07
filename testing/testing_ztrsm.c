@@ -32,9 +32,6 @@
 #include <coreblas.h>
 #include "testing_zauxiliary.h"
 
-#undef REAL
-#define COMPLEX
-
 static int check_solution(MORSE_enum side, MORSE_enum uplo, MORSE_enum trans, MORSE_enum diag,
                           int M, int N, MORSE_Complex64_t alpha,
                           MORSE_Complex64_t *A, int LDA,
@@ -103,7 +100,7 @@ int testing_ztrsm(int argc, char **argv)
 
     for (s=0; s<2; s++) {
         for (u=0; u<2; u++) {
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
             for (t=0; t<3; t++) {
 #else
             for (t=0; t<2; t++) {

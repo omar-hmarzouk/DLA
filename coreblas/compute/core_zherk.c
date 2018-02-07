@@ -25,9 +25,6 @@
  */
 #include "coreblas.h"
 
-#undef REAL
-#define COMPLEX
-#ifdef COMPLEX
 /**
  *
  * @ingroup CORE_MORSE_Complex64_t
@@ -45,6 +42,3 @@ void CORE_zherk(MORSE_enum uplo, MORSE_enum trans,
         alpha, A, LDA,
         beta, C, LDC);
 }
-
-
-#endif

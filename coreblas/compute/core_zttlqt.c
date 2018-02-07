@@ -25,8 +25,6 @@
  */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
-#undef REAL
-#define COMPLEX
 
 /**
  *
@@ -111,7 +109,7 @@ int CORE_zttlqt(int M, int N, int IB,
 {
     static MORSE_Complex64_t zone  = 1.0;
     static MORSE_Complex64_t zzero = 0.0;
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
     static int                ione  = 1;
 #endif
 
@@ -154,7 +152,7 @@ int CORE_zttlqt(int M, int N, int IB,
             /*
              * Generate elementary reflector H( II*IB+I ) to annihilate A( II*IB+I, II*IB+I:M ).
              */
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
             LAPACKE_zlacgv_work(ni, &A2[j], LDA2);
             LAPACKE_zlacgv_work(ione, &A1[LDA1*j+j], LDA1);
 #endif
@@ -216,7 +214,7 @@ int CORE_zttlqt(int M, int N, int IB,
 
             }
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
             LAPACKE_zlacgv_work(ni, &A2[j], LDA2 );
             LAPACKE_zlacgv_work(ione, &A1[LDA1*j+j], LDA1 );
 #endif

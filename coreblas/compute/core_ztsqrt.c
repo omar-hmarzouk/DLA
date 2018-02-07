@@ -25,8 +25,6 @@
  */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
-#undef REAL
-#define COMPLEX
 
 /**
  *
@@ -144,7 +142,7 @@ int CORE_ztsqrt(int M, int N, int IB,
                     sb-i-1,
                     &A1[LDA1*(ii+i+1)+(ii+i)], LDA1,
                     WORK, 1);
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
                 LAPACKE_zlacgv_work(sb-i-1, WORK, 1);
 #endif
                 cblas_zgemv(
@@ -153,14 +151,14 @@ int CORE_ztsqrt(int M, int N, int IB,
                     CBLAS_SADDR(zone), &A2[LDA2*(ii+i+1)], LDA2,
                     &A2[LDA2*(ii+i)], 1,
                     CBLAS_SADDR(zone), WORK, 1);
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
                 LAPACKE_zlacgv_work(sb-i-1, WORK, 1 );
 #endif
                 cblas_zaxpy(
                     sb-i-1, CBLAS_SADDR(alpha),
                     WORK, 1,
                     &A1[LDA1*(ii+i+1)+ii+i], LDA1);
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
                 LAPACKE_zlacgv_work(sb-i-1, WORK, 1 );
 #endif
                 cblas_zgerc(

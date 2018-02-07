@@ -23,8 +23,6 @@
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 
-#define COMPLEX
-
 #define UPDATE( __nb, __value )                                         \
     if (__value != 0. ){                                                \
         if ( *scale < __value ) {                                       \
@@ -89,7 +87,6 @@
  *          \retval -k, the k-th argument had an illegal value
  *
  */
-
 int CORE_zgessq(int M, int N,
                 const MORSE_Complex64_t *A, int LDA,
                 double *scale, double *sumsq)
@@ -104,7 +101,7 @@ int CORE_zgessq(int M, int N,
             tmp = fabs(*ptr);
             UPDATE( 1., tmp );
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
             ptr++;
             tmp = fabs(*ptr);
             UPDATE( 1., tmp );

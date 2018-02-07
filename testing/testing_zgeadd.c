@@ -35,9 +35,6 @@
 #include <mpi.h>
 #endif
 
-#undef REAL
-#define COMPLEX
-
 static int check_tr_solution(MORSE_enum uplo, MORSE_enum trans, int M, int N,
                              MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA,
                              MORSE_Complex64_t beta, MORSE_Complex64_t *Bref, MORSE_Complex64_t *Bmorse, int LDB);
@@ -105,7 +102,7 @@ int testing_zgeadd(int argc, char **argv)
     LAPACKE_zlarnv_work(IONE, ISEED, LDAxN, A);
     LAPACKE_zlarnv_work(IONE, ISEED, LDBxN, B);
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
     for (t=0; t<3; t++) {
 #else
     for (t=0; t<2; t++) {
@@ -143,7 +140,7 @@ int testing_zgeadd(int argc, char **argv)
     LAPACKE_zlarnv_work(IONE, ISEED, LDAxN, A);
     LAPACKE_zlarnv_work(IONE, ISEED, LDBxN, B);
 
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
     for (t=0; t<3; t++) {
 #else
     for (t=0; t<2; t++) {

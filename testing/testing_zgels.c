@@ -34,9 +34,6 @@
 #include <coreblas.h>
 #include "testing_zauxiliary.h"
 
-#undef REAL
-#define COMPLEX
-
 enum blas_order_type {
             blas_rowmajor = 101,
             blas_colmajor = 102 };

@@ -28,10 +28,6 @@
 #include <sys/resource.h>
 #endif
 #include <morse.h>
-#undef REAL
-#define COMPLEX
-#undef SINGLE
-#define DOUBLE
 #include "testing_zauxiliary.h"
 
 int   IONE     = 1;
@@ -199,7 +195,7 @@ int main (int argc, char **argv)
     else if ( strcmp(func, "GEMM") == 0 ) {
         info += testing_zgemm( argc, argv );
     }
-#ifdef COMPLEX
+#if defined(PRECISION_z) || defined(PRECISION_c)
     else if ( strcmp(func, "HEMM") == 0 ) {
         info += testing_zhemm( argc, argv );
     }
