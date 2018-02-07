@@ -1,27 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file morse_mf77.c
  *
- *  MORSE mixed-precision computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon Fortran77 interface for mixed-precision computational routines
+ *
+ * @version 1.0.0
  * @author Bilel Hadri
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #include <stdlib.h>
 #include "control/common.h"
 
@@ -47,9 +42,9 @@
 extern "C" {
 #endif
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - math functions (simple interface)
- **/
+ */
 //void MORSE_ZCGESV(int *N, int *NRHS, MORSE_Complex64_t *A, int *LDA, int *IPIV, MORSE_Complex64_t *B, int *LDB, MORSE_Complex64_t *X, int *LDX, int *ITER, int *INFO)
 //{   *INFO = MORSE_zcgesv(*N, *NRHS, A, *LDA, IPIV, B, *LDB, X, *LDX, ITER); }
 //
@@ -78,9 +73,9 @@ extern "C" {
 }
 #endif
 
-/***************************************************************************//**
+/**
  *  FORTRAN API - math functions (native interface)
- **/
+ */
 //void MORSE_ZCGESV_TILE(intptr_t *A, int *IPIV, intptr_t *B, intptr_t *X, int *ITER, int *INFO)
 //{   *INFO = MORSE_zcgesv_Tile((MORSE_desc_t *)(*A), IPIV, (MORSE_desc_t *)(*B), (MORSE_desc_t *)(*X), ITER); }
 //

@@ -1,23 +1,22 @@
 /**
  *
+ * @file runtime_workspace.c
+ *
  * @copyright 2009-2014 The University of Tennessee and The University of
- *                      Tennessee Research Foundation.  All rights reserved.
+ *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @file runtime_workspace.c
+ ***
  *
- *  MORSE codelets kernel
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver,
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon StarPU workspaces routines
  *
- * @version 2.3.1
+ * @version 1.0.0
  * @author Cedric Augonnet
  * @author Mathieu Faverge
  * @date 2011-06-01
  *
- **/
+ */
 #include "chameleon_starpu.h"
 
 static void RUNTIME_allocate_workspace_on_workers(void *arg)

@@ -1,19 +1,15 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file zungqr_param.c
  *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
+ *
+ * @brief Chameleon zungqr_param wrappers
  *
  * @version 1.0.0
  * @author Mathieu Faverge
@@ -21,7 +17,7 @@
  * @date 2017-05-17
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -77,7 +73,7 @@
  * @sa MORSE_sorgqr
  * @sa MORSE_zgeqrf
  *
- ******************************************************************************/
+ */
 int MORSE_zungqr_param( const libhqr_tree_t *qrtree,
                         int M, int N, int K,
                         MORSE_Complex64_t *A, int LDA,
@@ -197,7 +193,7 @@ int MORSE_zungqr_param( const libhqr_tree_t *qrtree,
  * @sa MORSE_sorgqr_Tile
  * @sa MORSE_zgeqrf_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zungqr_param_Tile( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *Q )
 {
     MORSE_context_t *morse;
@@ -252,7 +248,7 @@ int MORSE_zungqr_param_Tile( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE
  * @sa MORSE_sorgqr_Tile_Async
  * @sa MORSE_zgeqrf_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zungqr_param_Tile_Async( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *Q, MORSE_sequence_t *sequence, MORSE_request_t *request )
 {
     MORSE_context_t *morse;

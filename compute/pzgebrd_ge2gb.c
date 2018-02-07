@@ -1,28 +1,23 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file pzgebrd_ge2gb.c
  *
- *  PLASMA auxiliary routines
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.8.0
+ ***
+ *
+ * @brief Chameleon zgebrd_ge2gb parallel algorithm
+ *
+ * @version 1.0.0
  * @author Hatem Ltaief
  * @author Azzam Haidar
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T, MORSE_desc_t D,

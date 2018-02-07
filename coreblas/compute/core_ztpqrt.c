@@ -1,27 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2016 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
- *                          Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file core_ztpqrt.c
  *
- *  PLASMA core_blas kernel
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2016 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon core_ztpqrt CPU kernel
+ *
+ * @version 1.0.0
  * @author Mathieu Faverge
  * @date 2016-12-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/lapacke.h"
 #include "coreblas.h"
 
@@ -91,7 +86,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 int CORE_ztpqrt( int M, int N, int L, int IB,
                  MORSE_Complex64_t *A, int LDA,
                  MORSE_Complex64_t *B, int LDB,

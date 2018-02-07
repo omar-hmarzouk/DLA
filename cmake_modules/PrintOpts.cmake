@@ -1,14 +1,13 @@
 ###
 #
-# @copyright (c) 2009-2014 The University of Tennessee and The University
-#                          of Tennessee Research Foundation.
-#                          All rights reserved.
-# @copyright (c) 2012-2016 Inria. All rights reserved.
-# @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+# @file PrintOpts.cmake
+#
+# @copyright 2009-2014 The University of Tennessee and The University of
+#                      Tennessee Research Foundation. All rights reserved.
+# @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+#                      Univ. Bordeaux. All rights reserved.
 #
 ###
-#
-#  @file PrintOpts.cmake
 #
 #  @project MORSE
 #  MORSE is a software package provided by:
@@ -18,9 +17,9 @@
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver.
 #
-#  @version 0.9.0
+# @version 1.0.0
 #  @author Florent Pruvost
-#  @date 10-11-2014
+#  @date 2014-11-10
 #
 ###
 set(dep_message "\nConfiguration of Chameleon:\n"

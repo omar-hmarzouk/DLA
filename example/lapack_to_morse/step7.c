@@ -1,28 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file step7.c
  *
- *  MORSE example routines
- *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
- *  University of Bordeaux, Bordeaux INP
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
+ *
+ * @brief Chameleon step7 example
  *
  * @version 1.0.0
  * @author Florent Pruvost
  * @author Guillaume Sylvand
  * @date 2016-09-05
  *
- **/
-
+ */
 #include "step7.h"
 
 /*

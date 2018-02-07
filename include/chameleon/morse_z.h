@@ -1,22 +1,17 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file morse_z.h
  *
- *  MORSE header file for double _Complex routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.5.0
+ ***
+ *
+ * @brief Chameleon MORSE_complex64_t wrappers
+ *
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Jakub Kurzak
@@ -28,7 +23,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #ifndef _MORSE_Z_H_
 #define _MORSE_Z_H_
 
@@ -37,9 +32,9 @@
 
 BEGIN_C_DECLS
 
-/** ****************************************************************************
+/**
  *  Declarations of math functions (LAPACK layout) - alphabetical order
- **/
+ */
 int MORSE_zgeadd(MORSE_enum trans, int M, int N, MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA, MORSE_Complex64_t beta, MORSE_Complex64_t *B, int LDB);
 //int MORSE_zgebrd(int M, int N, MORSE_Complex64_t *A, int LDA, double *D, double *E, MORSE_desc_t *descT);
 //int MORSE_zgecon(MORSE_enum norm, int N, MORSE_Complex64_t *A, int LDA, double anorm, double *rcond);
@@ -116,9 +111,9 @@ int MORSE_zunmqr(MORSE_enum side, MORSE_enum trans, int M, int N, int K, MORSE_C
 //int MORSE_zgecfi(int m, int n, MORSE_Complex64_t *A, MORSE_enum fin, int imb, int inb, MORSE_enum fout, int omb, int onb);
 //int MORSE_zgetmi(int m, int n, MORSE_Complex64_t *A, MORSE_enum fin, int mb,  int nb);
 
-/** ****************************************************************************
+/**
  *  Declarations of math functions (tile layout) - alphabetical order
- **/
+ */
 int MORSE_zgeadd_Tile(MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_Complex64_t beta, MORSE_desc_t *B);
 //int MORSE_zgebrd_Tile(MORSE_desc_t *A, double *D, double *E, MORSE_desc_t *T);
 //int MORSE_zgecon_Tile(MORSE_enum norm, MORSE_desc_t *A, double anorm, double *rcond);
@@ -192,9 +187,9 @@ int MORSE_zungqr_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B);
 int MORSE_zunmlq_Tile(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B);
 int MORSE_zunmqr_Tile(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B);
 
-/** ****************************************************************************
+/**
  *  Declarations of math functions (tile layout, asynchronous execution) - alphabetical order
- **/
+ */
 int MORSE_zgeadd_Tile_Async(MORSE_enum trans, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_Complex64_t beta, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 //int MORSE_zgebrd_Tile_Async(MORSE_desc_t *A, double *D, double *E, MORSE_desc_t *T, MORSE_sequence_t *sequence, MORSE_request_t *request);
 //int MORSE_zgecon_Tile_Async(MORSE_enum norm, MORSE_desc_t *A, double anorm, double *rcond, MORSE_sequence_t *sequence, MORSE_request_t *request);
@@ -274,9 +269,9 @@ int MORSE_zunmqr_Tile_Async(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, 
 /**
  *  Declarations of libhqr dependent functions.
  */
-/** ****************************************************************************
+/**
  *  Declarations of math functions (LAPACK layout) - alphabetical order
- **/
+ */
 int MORSE_zgels_param(const libhqr_tree_t *qrtree, MORSE_enum trans, int M, int N, int NRHS, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *descTT, MORSE_Complex64_t *B, int LDB);
 int MORSE_zgelqf_param(const libhqr_tree_t *qrtree, int M, int N, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *descTT);
 int MORSE_zgelqs_param(const libhqr_tree_t *qrtree, int M, int N, int NRHS, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *descTT, MORSE_Complex64_t *B, int LDB);
@@ -287,9 +282,9 @@ int MORSE_zungqr_param(const libhqr_tree_t *qrtree, int M, int N, int K, MORSE_C
 int MORSE_zunmlq_param(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans, int M, int N, int K, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descT, MORSE_desc_t *TT, MORSE_Complex64_t *B, int LDB);
 int MORSE_zunmlq_param(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans, int M, int N, int K, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descT, MORSE_desc_t *TT, MORSE_Complex64_t *B, int LDB);
 int MORSE_zunmqr_param(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans, int M, int N, int K, MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descTS, MORSE_desc_t *TT, MORSE_Complex64_t *B, int LDB);
-/** ****************************************************************************
+/**
  *  Declarations of math functions (tile layout) - alphabetical order
- **/
+ */
 int MORSE_zgels_param_Tile(const libhqr_tree_t *qrtree, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B);
 int MORSE_zgelqf_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT);
 int MORSE_zgelqs_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B);
@@ -300,9 +295,9 @@ int MORSE_zungqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_
 int MORSE_zungqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B);
 int MORSE_zunmlq_param_Tile(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B);
 int MORSE_zunmqr_param_Tile(const libhqr_tree_t *qrtree, MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B);
-/** ****************************************************************************
+/**
  *  Declarations of math functions (tile layout, asynchronous execution) - alphabetical order
- **/
+ */
 int MORSE_zgels_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_enum trans, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zgelqf_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_sequence_t *sequence, MORSE_request_t *request);
 int MORSE_zgelqs_param_Tile_Async(const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B, MORSE_sequence_t *sequence, MORSE_request_t *request);
@@ -332,9 +327,9 @@ int MORSE_Alloc_Workspace_zhegv( int M, int N, MORSE_desc_t **descT, int p, int 
 int MORSE_Alloc_Workspace_zhegvd( int M, int N, MORSE_desc_t **descT, int p, int q);
 int MORSE_Alloc_Workspace_zhetrd(int M, int N, MORSE_desc_t **descT, int p, int q);
 
-/** ****************************************************************************
+/**
  *  Declarations of workspace allocation functions (tile layout, asynchronous execution) - alphabetical order
- **/
+ */
 int MORSE_Alloc_Workspace_zgetri_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *W);
 
 /* Warning: Those functions are deprecated */
@@ -344,15 +339,15 @@ int MORSE_Alloc_Workspace_zgeqrf_Tile(int M, int N, MORSE_desc_t **descT, int p,
 int MORSE_Alloc_Workspace_zgesv_incpiv_Tile (int N, MORSE_desc_t **descL, int **IPIV, int p, int q);
 int MORSE_Alloc_Workspace_zgetrf_incpiv_Tile(int N, MORSE_desc_t **descL, int **IPIV, int p, int q);
 
-/** ****************************************************************************
+/**
  *  Auxiliary function prototypes
- **/
+ */
 int MORSE_zLapack_to_Tile(MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A);
 int MORSE_zTile_to_Lapack(MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA);
 
-/** ****************************************************************************
+/**
  *  User Builder function prototypes
- **/
+ */
 int MORSE_zbuild(MORSE_enum uplo, int M, int N, MORSE_Complex64_t *A, int LDA, void *user_data, void* user_build_callback);
 int MORSE_zbuild_Tile(MORSE_enum uplo,  MORSE_desc_t *A, void *user_data, void* user_build_callback );
 int MORSE_zbuild_Tile_Async(MORSE_enum uplo, MORSE_desc_t *A, void *user_data, void* user_build_callback, MORSE_sequence_t *sequence, MORSE_request_t  *request);

@@ -1,27 +1,23 @@
 /**
  *
- * @copyright (c) 2009-2016 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
- *                          Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file pztpgqrt.c
  *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2016 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2018 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ * @copyright 2016-2018 KAUST. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon computational routines
+ *
+ * @version 1.0.0
  * @author Mathieu Faverge
  * @date 2016-12-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define V1(m,n) V1,  m,  n
@@ -36,9 +32,9 @@
 #define D(k)    V1, k, k
 #endif
 
-/*******************************************************************************
+/**
  *  Parallel tile QR factorization - dynamic scheduling
- **/
+ */
 void morse_pztpgqrt( int L,
                      MORSE_desc_t *V1, MORSE_desc_t *T1,
                      MORSE_desc_t *V2, MORSE_desc_t *T2,

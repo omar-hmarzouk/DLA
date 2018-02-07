@@ -1,22 +1,17 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file compute_z.h
  *
- *  MORSE auxiliary routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.5.0
+ ***
+ *
+ * @brief Chameleon computational functions header
+ *
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Jakub Kurzak
@@ -26,18 +21,17 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
-
-/*******************************************************************************
+ */
+/**
  *  LAPACK/Tile Descriptor accesses
- **/
+ */
 #define MorseDescInput  1
 #define MorseDescOutput 2
 #define MorseDescInout  (MorseDescInput | MorseDescOutput)
 
-/***************************************************************************//**
+/**
  *  Macro for matrix conversion / Lapack interface
- **/
+ */
 #define morse_zdesc_alloc_diag( descA, mb, nb, lm, ln, i, j, m, n, p, q) \
     descA = morse_desc_init_diag(                                       \
         MorseComplexDouble, (mb), (nb), ((mb)*(nb)),                    \
@@ -56,16 +50,16 @@
     }                                                                   \
     RUNTIME_desc_create( &(descA) );
 
-/***************************************************************************//**
+/**
  *  Declarations of internal sequential functions
- **/
+ */
 int morse_zshift(MORSE_context_t *morse, int m, int n, MORSE_Complex64_t *A,
                   int nprob, int me, int ne, int L,
                   MORSE_sequence_t *sequence, MORSE_request_t *request);
 
-/***************************************************************************//**
+/**
  *  Declarations of parallel functions (dynamic scheduling) - alphabetical order
- **/
+ */
 void morse_pzbarrier_pnl2tl(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzbarrier_row2tl(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzbarrier_tl2pnl(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);

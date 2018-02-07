@@ -1,27 +1,21 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file lapack_to_morse.h
  *
- *  MORSE example routines
- *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
- *  University of Bordeaux, Bordeaux INP
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
+ *
+ * @brief Chameleon examples common header
  *
  * @version 1.0.0
  * @author Florent Pruvost
  * @date 2014-10-29
  *
- **/
-
+ */
 #ifndef LAPACK_TO_MORSE_H
 #define LAPACK_TO_MORSE_H
 

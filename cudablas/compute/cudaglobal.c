@@ -1,29 +1,26 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University of
- *                          Tennessee Research Foundation.  All rights reserved.
- * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
- *                          Univ. Bordeaux. All rights reserved.
- *
- **/
-/**
- *
  * @file cudaglobal.c
  *
- *  MORSE auxiliary routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon global cudablas variables and functions
+ *
+ * @version 1.0.0
  * @author Mathieu Faverge
  * @date 2017-04-06
  *
- **/
+ */
 #include "cudablas.h"
 
-/*******************************************************************************
+/**
  *  LAPACK Constants
- **/
+ */
 int morse_cublas_constants[] =
 {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

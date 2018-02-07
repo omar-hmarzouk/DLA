@@ -1,42 +1,35 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file morse_constants.h
  *
- *  MORSE header
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver,
- *  and INRIA Bordeaux Sud-Ouest
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon global constants
+ *
+ * @version 1.0.0
  * @author Cedric Augonnet
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2011-06-01
  *
- **/
-
+ */
 #ifndef _MORSE_CONSTANTS_H_
 #define _MORSE_CONSTANTS_H_
 
-/** ****************************************************************************
+/**
  *
- *  MORSE constants - CBLAS & LAPACK
+ * @brief Chameleon constants - CBLAS & LAPACK
  *  The naming and numbering is consistent with:
  *
  *    1) CBLAS from Netlib (http://www.netlib.org/blas/blast-forum/cblas.tgz),
  *    2) C Interface to LAPACK from Netlib (http://www.netlib.org/lapack/lapwrapc/).
  *
- **/
+ */
 #define MorseByte              0
 #define MorseInteger           1
 #define MorseRealFloat         2
@@ -109,18 +102,18 @@
 
 #define morse_const_neg(const) (((const-1)^0x01)+1)
 
-/** ****************************************************************************
+/**
  *  MORSE constants - boolean
- **/
+ */
 #define MORSE_FALSE  0
 #define MORSE_TRUE   1
 
 #define MORSE_CPU    ((1ULL)<<1)
 #define MORSE_CUDA   ((1ULL)<<3)
 
-/** ****************************************************************************
+/**
  *  State machine switches
- **/
+ */
 #define MORSE_WARNINGS        1
 #define MORSE_ERRORS          2
 #define MORSE_AUTOTUNING      3
@@ -131,9 +124,9 @@
 #define MORSE_PROGRESS        8
 #define MORSE_GEMM3M          9
 
-/** ****************************************************************************
+/**
  *  MORSE constants - configuration parameters
- **/
+ */
 #define MORSE_CONCURRENCY       1
 #define MORSE_TILE_SIZE         2
 #define MORSE_INNER_BLOCK_SIZE  3
@@ -147,9 +140,9 @@
 #define MORSE_INPLACE           1
 #define MORSE_OUTOFPLACE        2
 
-/** ****************************************************************************
+/**
  *  MORSE constants - success & error codes
- **/
+ */
 #define MORSE_SUCCESS                 0
 #define MORSE_ERR_NOT_INITIALIZED  -101
 #define MORSE_ERR_REINITIALIZED    -102
@@ -163,23 +156,23 @@
 #define MORSE_ERR_UNEXPECTED       -110
 #define MORSE_ERR_SEQUENCE_FLUSHED -111
 
-/** ****************************************************************************
+/**
  * Kernels options
- **/
+ */
 #define MORSE_PRIORITY_MIN  0
 #define MORSE_PRIORITY_MAX  INT_MAX
 
 
-/*******************************************************************************
+/**
  *  Scheduler properties
- **/
+ */
 #define PRIORITY        16
 #define CALLBACK        17
 #define REDUX           18
 
-/** ****************************************************************************
+/**
  *  MORSE ???
- **/
+ */
 #define MORSE_REQUEST_INITIALIZER {MORSE_SUCCESS}
 
 #endif

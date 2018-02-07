@@ -1,28 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file global.c
  *
- *  MORSE auxiliary routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon global coreblas variables and functions
+ *
+ * @version 1.0.0
  * @author Jakub Kurzak
  * @author Piotr Luszczek
  * @date 2010-11-15
  *
- **/
-
+ */
 static int coreblas_gemm3m_enabled = 0;
 
 void
@@ -35,9 +29,9 @@ get_coreblas_gemm3m_enabled(void) {
     return coreblas_gemm3m_enabled;
 }
 
-/*******************************************************************************
+/**
  *  LAPACK Constants
- **/
+ */
 char *morse_lapack_constants[] =
 {
     "", "", "", "", "", "", "", "", "", "",

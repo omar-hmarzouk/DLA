@@ -155,8 +155,6 @@ Compilation and link with CHAMELEON libraries have been tested with
 
 Lets imagine you have a file main.c that you want to link with CHAMELEON
 static libraries.
-Lets consider @file{/home/yourname/install/chameleon} is the install directory
-of CHAMELEON containing sub-directories @file{include/} and @file{lib/}.
 Here could be your compilation command with gcc compiler:
 @example
 gcc -I/home/yourname/install/chameleon/include -o main.o -c main.c
@@ -178,7 +176,6 @@ BLAS/LAPACK/CBLAS/LAPACKE), @option{pthread}, @option{m} (math) and
 @option{rt}.
 These libraries will depend on the configuration of your CHAMELEON build.
 You can find these dependencies in .pc files we generate during compilation and
-that are installed in the sub-directory @file{lib/pkgconfig} of your
 CHAMELEON install directory.
 Note also that you could need to specify where to find these libraries with
 @option{-L} option of your compiler/linker.
@@ -313,7 +310,6 @@ step6 is an example about distributed computation with MPI.
 Finally step7 shows how to let Chameleon initialize user's data
 (matrices/vectors) in parallel.
 
-Source files can be found in the @file{example/lapack_to_morse/}
 directory.
 If CMake option @option{CHAMELEON_ENABLE_EXAMPLE} is @option{ON} then source
 files are compiled with the project libraries.
@@ -531,7 +527,6 @@ Firsts arguments are the same than @code{MORSE_Desc_Create} routine.
 Following arguments allows you to give pointer to functions that manage the
 access to tiles from the structure given as second argument.
 Here for example, @code{matA} is an array containing addresses to tiles, see
-the function @code{allocate_tile_matrix} defined in @file{step3.h}.
 The three functions you have to define for @code{Desc_Create_User} are:
 @itemize @bullet
 @item a function that returns address of tile @math{A(m,n)}, m and n standing
@@ -542,7 +537,6 @@ indexes: @math{A(m=0,n=0)}, @math{A(m=0,n=1)}, @math{A(m=1,n=0)},
 @item a function that returns the leading dimension of tile @math{A(m,*)}
 @item a function that returns MPI rank of tile @math{A(m,n)}
 @end itemize
-Examples for these functions are vizible in @file{step3.h}.
 Note that the way we define these functions is related to the tile matrix
 format and to the data distribution considered.
 This example should not be used with MPI since all tiles are affected to
@@ -866,7 +860,6 @@ Parameters to be set:
 @item @code{MORSE_HOUSEHOLDER_MODE}: type of householder trees (FLAT or TREE),
 @item @code{MORSE_HOUSEHOLDER_SIZE}: size of the groups in householder trees,
 @item @code{MORSE_TRANSLATION_MODE}: related to the
-@code{MORSE_Lapack_to_Tile}, see @file{ztile.c}.
 @end itemize
 
 Get value of MORSE parameter.
@@ -901,10 +894,9 @@ Routines computing linear algebra of the form
 @uref{http://www.netlib.org/lapack/lug/node24.html} availables:
 
 @verbatim
-/** ********************************************************
+/**
  *  Declarations of computational functions (LAPACK layout)
  **/
-
 int MORSE_zgelqf(int M, int N, MORSE_Complex64_t *A, int LDA,
                  MORSE_desc_t *descT);
 
@@ -1073,10 +1065,9 @@ int MORSE_zunmqr(MORSE_enum side, MORSE_enum trans, int M, int N, int K,
                  MORSE_Complex64_t *A, int LDA, MORSE_desc_t *descT,
                  MORSE_Complex64_t *B, int LDB);
 
-/** ******************************************************
+/**
  *  Declarations of computational functions (tile layout)
  **/
-
 int MORSE_zgelqf_Tile(MORSE_desc_t *A, MORSE_desc_t *T);
 
 int MORSE_zgelqs_Tile(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B);
@@ -1208,11 +1199,10 @@ int MORSE_zunmlq_Tile(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A,
 int MORSE_zunmqr_Tile(MORSE_enum side, MORSE_enum trans, MORSE_desc_t *A,
                       MORSE_desc_t *T, MORSE_desc_t *B);
 
-/** ****************************************
+/**
  *  Declarations of computational functions
  *  (tile layout, asynchronous execution)
  **/
-
 int MORSE_zgelqf_Tile_Async(MORSE_desc_t *A, MORSE_desc_t *T,
                             MORSE_sequence_t *sequence,
                             MORSE_request_t *request);

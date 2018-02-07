@@ -1,22 +1,17 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file zunmqr.c
  *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.5.0
+ ***
+ *
+ * @brief Chameleon zunmqr wrappers
+ *
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Hatem Ltaief
@@ -27,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -106,7 +101,7 @@
  * @sa MORSE_sormqr
  * @sa MORSE_zgeqrf
  *
- ******************************************************************************/
+ */
 int MORSE_zunmqr( MORSE_enum side, MORSE_enum trans, int M, int N, int K,
                   MORSE_Complex64_t *A, int LDA,
                   MORSE_desc_t *descT,
@@ -253,7 +248,7 @@ int MORSE_zunmqr( MORSE_enum side, MORSE_enum trans, int M, int N, int K,
  * @sa MORSE_sormqr_Tile
  * @sa MORSE_zgeqrf_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zunmqr_Tile( MORSE_enum side, MORSE_enum trans,
                        MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C )
 {
@@ -308,7 +303,7 @@ int MORSE_zunmqr_Tile( MORSE_enum side, MORSE_enum trans,
  * @sa MORSE_sormqr_Tile_Async
  * @sa MORSE_zgeqrf_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zunmqr_Tile_Async( MORSE_enum side, MORSE_enum trans,
                              MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *C,
                              MORSE_sequence_t *sequence, MORSE_request_t *request )

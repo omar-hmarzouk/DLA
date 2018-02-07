@@ -1,29 +1,24 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file ztile.c
  *
- *  MORSE auxiliary routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon auxiliary routines
+ *
+ * @version 1.0.0
  * @author Jakub Kurzak
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -60,7 +55,7 @@
  * @sa MORSE_dLapack_to_Tile
  * @sa MORSE_sLapack_to_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zLapack_to_Tile( MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A )
 {
     MORSE_context_t *morse;
@@ -137,7 +132,7 @@ int MORSE_zLapack_to_Tile( MORSE_Complex64_t *Af77, int LDA, MORSE_desc_t *A )
  * @sa MORSE_dTile_to_Lapack
  * @sa MORSE_sTile_to_Lapack
  *
- ******************************************************************************/
+ */
 int MORSE_zTile_to_Lapack( MORSE_desc_t *A, MORSE_Complex64_t *Af77, int LDA )
 {
     MORSE_context_t *morse;

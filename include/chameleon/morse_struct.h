@@ -1,30 +1,23 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2017 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file morse_struct.h
  *
- *  MORSE header
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver,
- *  and INRIA Bordeaux Sud-Ouest
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon structures
+ *
+ * @version 1.0.0
  * @author Cedric Augonnet
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2011-06-01
  *
- **/
-
+ */
 #ifndef _MORSE_STRUCT_H_
 #define _MORSE_STRUCT_H_
 
@@ -34,12 +27,12 @@
 
 BEGIN_C_DECLS
 
-/** ****************************************************************************
+/**
  * RUNTIME headers to include types of :
  *         - QUARK
  *         - PaRSEC
  *         - StarPU
- **/
+ */
 typedef enum morse_sched_e {
   RUNTIME_SCHED_QUARK,
   RUNTIME_SCHED_PARSEC,
@@ -47,7 +40,7 @@ typedef enum morse_sched_e {
 } MORSE_sched_t;
 
 
-/** ****************************************************************************
+/**
  *  Tile matrix descriptor
  *
  *  Matrices are stored in a contiguous data chunk containning in order
@@ -116,9 +109,9 @@ struct morse_desc_s {
 };
 
 
-/** ****************************************************************************
+/**
  *  MORSE request uniquely identifies each asynchronous function call.
- **/
+ */
 typedef struct morse_context_s {
     MORSE_sched_t      scheduler;
     int                nworkers;
@@ -151,18 +144,18 @@ typedef struct morse_context_s {
 } MORSE_context_t;
 
 
-/** ****************************************************************************
+/**
  *  MORSE request uniquely identifies each asynchronous function call.
- **/
+ */
 typedef struct morse_request_s {
     MORSE_enum status; // MORSE_SUCCESS or appropriate error code
 } MORSE_request_t;
 
 
-/** ****************************************************************************
+/**
  *  MORSE sequence uniquely identifies a set of asynchronous function calls
  *  sharing common exception handling.
- **/
+ */
 typedef struct morse_sequence_s {
     MORSE_bool       status;    /* MORSE_SUCCESS or appropriate error code */
     MORSE_request_t *request;   /* failed request                          */
@@ -170,9 +163,9 @@ typedef struct morse_sequence_s {
 } MORSE_sequence_t;
 
 
-/** ****************************************************************************
+/**
  *  MORSE options
- **/
+ */
 typedef struct morse_option_s {
     MORSE_sequence_t *sequence;
     MORSE_request_t  *request;

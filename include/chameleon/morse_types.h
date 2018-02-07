@@ -1,38 +1,31 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file morse_types.h
  *
- *  MORSE header
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver,
- *  and INRIA Bordeaux Sud-Ouest
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon basic datatypes header
+ *
+ * @version 1.0.0
  * @author Cedric Augonnet
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2011-06-01
  *
- **/
-
+ */
 #ifndef _MORSE_TYPES_H_
 #define _MORSE_TYPES_H_
 
 #include "chameleon/chameleon_config.h"
 
-/** ****************************************************************************
+/**
  *  System requirements
- **/
+ */
 #include <stddef.h>
 #if defined( _WIN32 )
   /* This must be included before INPUT is defined below, otherwise we
@@ -44,19 +37,18 @@
 #endif /* _WIN32 */
 
 
-/** ****************************************************************************
+/**
  *  MORSE types
- **/
+ */
 typedef int  MORSE_enum;
 typedef int  MORSE_bool;
 typedef long MORSE_index;
 typedef long MORSE_size;
 
 
-/** ****************************************************************************
+/**
  * MORSE Complex numbers
- **/
-
+ */
 #define MORSE_HAS_COMPLEX_H 1
 
 #if defined(_WIN32)
@@ -111,10 +103,9 @@ typedef long MORSE_size;
     #endif
 #endif /* MORSE_COMPLEX_CPP */
 
-/*******************************************************************************
+/**
  *  MORSE Deprecated attribute
- **/
-
+ */
 #if (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 1))
 #define MORSE_DEPRECATED  __attribute__((__deprecated__))
 #else
@@ -123,9 +114,9 @@ typedef long MORSE_size;
 
 BEGIN_C_DECLS
 
-/*******************************************************************************
+/**
  *  Global utilities
- **/
+ */
 static inline int chameleon_max( int a, int b ) {
     if ( a > b ) return a; else return b;
 }

@@ -1,27 +1,21 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file step2.h
  *
- *  MORSE example routines
- *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
- *  University of Bordeaux, Bordeaux INP
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
+ *
+ * @brief Chameleon step2 example header
  *
  * @version 1.0.0
  * @author Florent Pruvost
  * @date 2014-10-29
  *
- **/
-
+ */
 #ifndef STEP2_H
 #define STEP2_H
 
@@ -43,7 +37,7 @@ enum iparam_step2 {
 
 /* Specific routines used in step2.c main program */
 
-/******************************************************************************
+/**
  * Initialize integer parameters
  */
 static void init_iparam(int iparam[IPARAM_SIZEOF]){
@@ -52,7 +46,7 @@ static void init_iparam(int iparam[IPARAM_SIZEOF]){
     iparam[IPARAM_NRHS          ] = 1;
  }
 
-/******************************************************************************
+/**
  * Print how to use the program
  */
 static void show_help(char *prog_name) {
@@ -67,7 +61,7 @@ static void show_help(char *prog_name) {
             "\n");
 }
 
-/******************************************************************************
+/**
  * Read arguments following step2 program call
  */
 static void read_args(int argc, char *argv[], int *iparam){
@@ -89,7 +83,7 @@ static void read_args(int argc, char *argv[], int *iparam){
     }
 }
 
-/******************************************************************************
+/**
  * Print a header message to summarize main parameters
  */
 static void print_header(char *prog_name, int * iparam) {
@@ -125,7 +119,7 @@ static void print_header(char *prog_name, int * iparam) {
     return;
 }
 
-/******************************************************************************
+/**
  * Macro to allocate a matrix as a 1D array
  */
 #define PASTE_CODE_ALLOCATE_MATRIX(_name_, _type_, _m_, _n_)    \

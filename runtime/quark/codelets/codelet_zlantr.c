@@ -1,29 +1,24 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file codelet_zlantr.c
  *
- *  MORSE codelets kernel
- *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
- *  University of Bordeaux, Bordeaux INP
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.6.0
+ ***
+ *
+ * @brief Chameleon zlantr Quark codelet
+ *
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.6.0 for MORSE 1.0.0
  * @author Mathieu Faverge
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_quark.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"

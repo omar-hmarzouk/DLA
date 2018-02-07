@@ -1,33 +1,28 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file cudablas_z.h
  *
- *  MORSE cudablas headers
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver,
- *  and INRIA Bordeaux Sud-Ouest
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
+ ***
+ *
+ * @brief Chameleon GPU MORSE_Complex64_t kernels header
+ *
+ * @version 1.0.0
  * @author Florent Pruvost
  * @date 2015-09-16
  * @precisions normal z -> c d s
  *
- **/
+ */
 #ifndef _MORSE_CUDA_ZBLAS_H_
 #define _MORSE_CUDA_ZBLAS_H_
 
-/** ****************************************************************************
+/**
  *  Declarations of cuda kernels - alphabetical order
- **/
+ */
 int CUDA_zgeadd( MORSE_enum trans, int m, int n, const cuDoubleComplex *alpha, const cuDoubleComplex *A, int lda, const cuDoubleComplex *beta, cuDoubleComplex *B, int ldb, CUBLAS_STREAM_PARAM );
 int CUDA_zgemerge( MORSE_enum side, MORSE_enum diag, int M, int N, cuDoubleComplex *A, int LDA, cuDoubleComplex *B, int LDB, CUBLAS_STREAM_PARAM );
 int CUDA_zgemm(  MORSE_enum transa, MORSE_enum transb, int m, int n, int k, cuDoubleComplex *alpha, const cuDoubleComplex *A, int lda, const cuDoubleComplex *B, int ldb, cuDoubleComplex *beta, cuDoubleComplex *C, int ldc, CUBLAS_STREAM_PARAM );

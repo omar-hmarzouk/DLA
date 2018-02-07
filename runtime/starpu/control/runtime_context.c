@@ -1,23 +1,23 @@
 /**
  *
+ * @file runtime_context.c
+ *
  * @copyright 2009-2014 The University of Tennessee and The University of
- *                      Tennessee Research Foundation.  All rights reserved.
+ *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @file runtime_context.c
+ ***
  *
- *  MORSE auxiliary routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @brief Chameleon StarPU context routines
  *
- * @version 0.9.0
+ * @version 1.0.0
  * @author Cedric Augonnet
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #include <stdlib.h>
 #include "chameleon_starpu.h"
 
@@ -32,9 +32,9 @@ int _starpu_is_initialized(void);
 #endif
 #endif
 
-/*******************************************************************************
+/**
  *  Create new context
- **/
+ */
 void RUNTIME_context_create( MORSE_context_t *morse )
 {
     starpu_conf_t *conf;
@@ -54,9 +54,9 @@ void RUNTIME_context_create( MORSE_context_t *morse )
     return;
 }
 
-/*******************************************************************************
+/**
  *  Clean the context
- **/
+ */
 void RUNTIME_context_destroy( MORSE_context_t *morse )
 {
     /* StarPU was already initialized by an external library */
@@ -66,7 +66,7 @@ void RUNTIME_context_destroy( MORSE_context_t *morse )
     return;
 }
 
-/*******************************************************************************
+/**
  *
  */
 void RUNTIME_enable( MORSE_enum lever )
@@ -85,9 +85,9 @@ void RUNTIME_enable( MORSE_enum lever )
     return;
 }
 
-/*******************************************************************************
+/**
  *
- **/
+ */
 void RUNTIME_disable( MORSE_enum lever )
 {
     switch (lever)

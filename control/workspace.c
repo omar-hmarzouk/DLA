@@ -1,29 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file workspace.c
  *
- *  MORSE auxiliary routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon workspace routines
+ *
+ * @version 1.0.0
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2012-09-15
  *
- **/
-
-/**
+ ***
  *
  * @defgroup Workspace
  * @brief Group routines exposed to users about specific workspaces management
@@ -35,9 +28,9 @@
 #include "control/auxiliary.h"
 #include "control/workspace.h"
 
-/*******************************************************************************
+/**
  *
- **/
+ */
 int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc, int p, int q)
 {
     int status;
@@ -107,9 +100,9 @@ int morse_alloc_ibnb_tile(int M, int N, MORSE_enum func, int type, MORSE_desc_t 
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *
- **/
+ */
 int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **desc, void **IPIV, int p, int q)
 {
     int status;
@@ -163,7 +156,7 @@ int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **des
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *
  * @ingroup Workspace
  *
@@ -180,7 +173,7 @@ int morse_alloc_ipiv(int M, int N, MORSE_enum func, int type, MORSE_desc_t **des
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- ******************************************************************************/
+ */
 int MORSE_Dealloc_Workspace(MORSE_desc_t **desc)
 {
     MORSE_context_t *morse;

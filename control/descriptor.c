@@ -1,29 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file descriptor.c
  *
- *  MORSE auxiliary routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon descriptors routines
+ *
+ * @version 1.0.0
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
-
-/**
+ ***
  *
  * @defgroup Descriptor
  * @brief Group descriptor routines exposed to users
@@ -102,7 +95,7 @@ static int nbdesc = 0;
  *
  * @return  The descriptor with the matrix description parameters set.
  *
- *****************************************************************************/
+ */
 MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
                                   int lm, int ln, int i, int j,
                                   int m,  int n,  int p, int q,
@@ -198,9 +191,9 @@ MORSE_desc_t morse_desc_init_user(MORSE_enum dtyp, int mb, int nb, int bsiz,
     return desc;
 }
 
-/*******************************************************************************
+/**
  *  Internal static descriptor initializer
- **/
+ */
 MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
                              int lm, int ln, int i, int j,
                              int m,  int n,  int p, int q)
@@ -209,9 +202,9 @@ MORSE_desc_t morse_desc_init(MORSE_enum dtyp, int mb, int nb, int bsiz,
                                 morse_getaddr_ccrb, morse_getblkldd_ccrb, morse_getrankof_2d);
 }
 
-/*******************************************************************************
+/**
  *  Internal static descriptor initializer for a block diagonal matrix
- **/
+ */
 MORSE_desc_t morse_desc_init_diag(MORSE_enum dtyp, int mb, int nb, int bsiz,
                                   int lm, int ln, int i, int j,
                                   int m,  int n,  int p, int q)
@@ -220,9 +213,9 @@ MORSE_desc_t morse_desc_init_diag(MORSE_enum dtyp, int mb, int nb, int bsiz,
                                 morse_getaddr_ccrb, morse_getblkldd_ccrb, morse_getrankof_2d_diag);
 }
 
-/*******************************************************************************
+/**
  *  Internal static descriptor initializer for submatrices
- **/
+ */
 MORSE_desc_t* morse_desc_submatrix(MORSE_desc_t *descA, int i, int j, int m, int n)
 {
     MORSE_desc_t *descB = malloc(sizeof(MORSE_desc_t));
@@ -255,9 +248,9 @@ MORSE_desc_t* morse_desc_submatrix(MORSE_desc_t *descA, int i, int j, int m, int
     return descB;
 }
 
-/*******************************************************************************
+/**
  *  Check for descriptor correctness
- **/
+ */
 int morse_desc_check(const MORSE_desc_t *desc)
 {
     if (desc == NULL) {
@@ -302,9 +295,9 @@ int morse_desc_check(const MORSE_desc_t *desc)
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *
- **/
+ */
 int morse_desc_mat_alloc( MORSE_desc_t *desc )
 {
     size_t size = (size_t)(desc->llm) * (size_t)(desc->lln)
@@ -320,9 +313,9 @@ int morse_desc_mat_alloc( MORSE_desc_t *desc )
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *
- **/
+ */
 int morse_desc_mat_free( MORSE_desc_t *desc )
 {
     if ( (desc->mat       != NULL) &&
@@ -399,7 +392,7 @@ int morse_desc_mat_free( MORSE_desc_t *desc )
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Desc_Create(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, int mb, int nb, int bsiz,
                       int lm, int ln, int i, int j, int m, int n, int p, int q)
 {
@@ -513,7 +506,7 @@ int MORSE_Desc_Create(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, int mb
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Desc_Create_User(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, int mb, int nb, int bsiz,
                            int lm, int ln, int i, int j, int m, int n, int p, int q,
                            void* (*get_blkaddr)( const MORSE_desc_t*, int, int ),
@@ -610,7 +603,7 @@ int MORSE_Desc_Create_User(MORSE_desc_t **descptr, void *mat, MORSE_enum dtyp, i
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Desc_Create_OOC_User(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int nb, int bsiz,
                                int lm, int ln, int i, int j, int m, int n, int p, int q,
                                int (*get_rankof)( const MORSE_desc_t*, int, int ))
@@ -706,7 +699,7 @@ int MORSE_Desc_Create_OOC_User(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, 
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Desc_Create_OOC(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int nb, int bsiz,
                           int lm, int ln, int i, int j, int m, int n, int p, int q)
 {
@@ -732,7 +725,7 @@ int MORSE_Desc_Create_OOC(MORSE_desc_t **descptr, MORSE_enum dtyp, int mb, int n
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Desc_Destroy(MORSE_desc_t **desc)
 {
     MORSE_context_t *morse;
@@ -773,7 +766,7 @@ int MORSE_Desc_Destroy(MORSE_desc_t **desc)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Desc_Acquire (MORSE_desc_t  *desc) {
     return RUNTIME_desc_acquire( desc );
 }
@@ -797,7 +790,7 @@ int MORSE_Desc_Acquire (MORSE_desc_t  *desc) {
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Desc_Release (MORSE_desc_t  *desc) {
     return RUNTIME_desc_release( desc );
 }
@@ -819,7 +812,7 @@ int MORSE_Desc_Release (MORSE_desc_t  *desc) {
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Desc_Flush( MORSE_desc_t     *desc,
                       MORSE_sequence_t *sequence )
 {
@@ -850,7 +843,7 @@ int MORSE_Desc_Flush( MORSE_desc_t     *desc,
  * @return
  *          \retval none
  *
- *****************************************************************************/
+ */
 void MORSE_user_tag_size(int user_tag_width, int user_tag_sep) {
     RUNTIME_comm_set_tag_sizes( user_tag_width, user_tag_sep );
     return;

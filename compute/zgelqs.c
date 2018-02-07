@@ -1,22 +1,17 @@
 /**
  *
- * @copyright 2009-2014 The University of Tennessee and The University
- *                      of Tennessee Research Foundation.
- *                      All rights reserved.
+ * @file zgelqs.c
+ *
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
- * @file zgelqs.c
+ * @brief Chameleon zgelqs wrappers
  *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
- *
- * @version 2.5.0
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Jakub Kurzak
@@ -26,7 +21,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 #include <stdlib.h>
 
@@ -80,7 +75,7 @@
  * @sa MORSE_sgelqs
  * @sa MORSE_zgelqf
  *
- ******************************************************************************/
+ */
 int MORSE_zgelqs( int M, int N, int NRHS,
                   MORSE_Complex64_t *A, int LDA,
                   MORSE_desc_t *descT,
@@ -203,7 +198,7 @@ int MORSE_zgelqs( int M, int N, int NRHS,
  * @sa MORSE_sgelqs_Tile
  * @sa MORSE_zgelqf_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zgelqs_Tile( MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
@@ -259,7 +254,7 @@ int MORSE_zgelqs_Tile( MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B )
  * @sa MORSE_sgelqs_Tile_Async
  * @sa MORSE_zgelqf_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zgelqs_Tile_Async( MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *B,
                              MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

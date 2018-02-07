@@ -1,22 +1,17 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file codelet_ztstrf.c
  *
- *  MORSE codelets kernel
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.5.0
+ ***
+ *
+ * @brief Chameleon ztstrf StarPU codelet
+ *
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Hatem Ltaief
@@ -27,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
@@ -96,7 +91,7 @@
  *              singular, and division by zero will occur if it is used
  *              to solve a system of equations.
  *
- ******************************************************************************/
+ */
 
 void MORSE_TASK_ztstrf(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,

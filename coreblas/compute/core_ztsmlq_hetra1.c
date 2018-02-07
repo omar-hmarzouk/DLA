@@ -1,33 +1,28 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file core_ztsmlq_hetra1.c
  *
- *  PLASMA core_blas kernel
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.7.1
+ ***
+ *
+ * @brief Chameleon core_ztsmlq_hetra1 CPU kernel
+ *
+ * @version 1.0.0
  * @author Hatem Ltaief
  * @author Mathieu Faverge
  * @author Azzam Haidar
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include <coreblas/lapacke.h>
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -117,7 +112,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 #if defined(MORSE_HAVE_WEAK)
 #pragma weak CORE_ztsmlq_hetra1 = PCORE_ztsmlq_hetra1
 #define CORE_ztsmlq_hetra1 PCORE_ztsmlq_hetra1

@@ -1,20 +1,15 @@
 /**
  *
- * @copyright 2009-2014 The University of Tennessee and The University
- *                      of Tennessee Research Foundation.
- *                      All rights reserved.
+ * @file zgelqs_param.c
+ *
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- **/
-
-/**
+ ***
  *
- * @file zgelqs_param.c
- *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @brief Chameleon zgelqs_param wrappers
  *
  * @version 1.0.0
  * @author Raphael Boucherie
@@ -22,7 +17,7 @@
  * @date 2017-05-17
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 #include <stdlib.h>
 
@@ -82,7 +77,7 @@
  * @sa MORSE_sgelqs
  * @sa MORSE_zgelqf
  *
- ******************************************************************************/
+ */
 int MORSE_zgelqs_param( const libhqr_tree_t *qrtree, int M, int N, int NRHS,
                         MORSE_Complex64_t *A, int LDA,
                         MORSE_desc_t *descTS, MORSE_desc_t *descTT,
@@ -209,7 +204,7 @@ int MORSE_zgelqs_param( const libhqr_tree_t *qrtree, int M, int N, int NRHS,
  * @sa MORSE_sgelqs_Tile
  * @sa MORSE_zgelqf_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zgelqs_param_Tile( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
                              MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B )
 {
@@ -267,7 +262,7 @@ int MORSE_zgelqs_param_Tile( const libhqr_tree_t *qrtree, MORSE_desc_t *A,
  * @sa MORSE_sgelqs_Tile_Async
  * @sa MORSE_zgelqf_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zgelqs_param_Tile_Async( const libhqr_tree_t *qrtree, MORSE_desc_t *A, MORSE_desc_t *TS, MORSE_desc_t *TT, MORSE_desc_t *B,
                                    MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

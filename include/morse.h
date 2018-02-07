@@ -1,30 +1,24 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @file morse.h
  *
- **/
-
-/**
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- *  @file morse.h
+ ***
  *
- *  MORSE main header
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver,
- *  and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon main header
  *
- *  @version 0.9.0
- *  @author Mathieu Faverge
- *  @author Cedric Augonnet
- *  @author Cedric Castagnede
- *  @author Florent Pruvost
- *  @date 2012-09-15
+ * @version 1.0.0
+ * @author Mathieu Faverge
+ * @author Cedric Augonnet
+ * @author Cedric Castagnede
+ * @author Florent Pruvost
+ * @date 2012-09-15
  *
- **/
+ */
 #ifndef _MORSE_H_
 #define _MORSE_H_
 

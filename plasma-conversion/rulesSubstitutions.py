@@ -37,8 +37,6 @@
 #
 ###
 #
-#  @file rulesSubstitutions.py
-#
 #  @project MORSE
 #  MORSE is a software package provided by:
 #     Inria Bordeaux - Sud-Ouest,
@@ -51,7 +49,7 @@
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
-#  @date 13-07-2012
+#  @date 2012-07-13
 #   
 ###
 

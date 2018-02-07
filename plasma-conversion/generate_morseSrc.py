@@ -37,8 +37,6 @@
 #
 ###
 #
-#  @file generate_morseSrc.py 
-#
 #  @project MORSE
 #  MORSE is a software package provided by:
 #     Inria Bordeaux - Sud-Ouest,
@@ -47,11 +45,10 @@
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver. 
 # 
-#  @version 1.0.0
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
-#  @date 13-07-2012
+#  @date 2012-07-13
 #   
 ###
 

@@ -1,23 +1,20 @@
 /**
  *
- * @copyright 2009-2016 The University of Tennessee and The University
- *                      of Tennessee Research Foundation.
- *                      All rights reserved.
+ * @file codelet_ztpmqrt.c
+ *
+ * @copyright 2009-2016 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @file codelet_ztpmqrt.c
+ * @brief Chameleon ztpmqrt StarPU codelet
  *
- * MORSE codelets kernel
- * MORSE is a software package provided by Univ. of Tennessee,
- * Univ. of California Berkeley and Univ. of Colorado Denver
- *
- * @version 0.9.0
+ * @version 1.0.0
  * @author Mathieu Faverge
  * @date 2016-12-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 

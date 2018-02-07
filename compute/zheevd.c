@@ -1,28 +1,23 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
  * @file zheevd.c
  *
- *  PLASMA computational routines
- *  Release Date: November, 15th 2009
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.7.1
+ ***
+ *
+ * @brief Chameleon zheevd wrappers
+ *
+ * @version 1.0.0
  * @author Azzam Haidar
  * @author Hatem Ltaief
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 #include <stdlib.h>
 #include <string.h>
@@ -99,7 +94,7 @@
  * @sa MORSE_dsyev
  * @sa MORSE_ssyev
  *
- ******************************************************************************/
+ */
 int MORSE_zheevd( MORSE_enum jobz, MORSE_enum uplo, int N,
                   MORSE_Complex64_t *A, int LDA,
                   double *W,
@@ -239,7 +234,7 @@ int MORSE_zheevd( MORSE_enum jobz, MORSE_enum uplo, int N,
  * @sa MORSE_dsyev
  * @sa MORSE_ssyev
  *
- ******************************************************************************/
+ */
 int MORSE_zheevd_Tile( MORSE_enum jobz, MORSE_enum uplo,
                        MORSE_desc_t *A, double *W, MORSE_desc_t *T )
 {
@@ -331,7 +326,7 @@ int MORSE_zheevd_Tile( MORSE_enum jobz, MORSE_enum uplo,
  * @sa MORSE_dsyev_Tile_Async
  * @sa MORSE_ssyev_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
                              MORSE_desc_t *A, double *W, MORSE_desc_t *T,
                              MORSE_sequence_t *sequence, MORSE_request_t *request )

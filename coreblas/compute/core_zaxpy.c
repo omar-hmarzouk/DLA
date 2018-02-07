@@ -1,25 +1,23 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2015 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file core_zaxpy.c
  *
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
+ *
+ * @version 1.0.0
  * @author Florent Pruvost
  * @date 2015-09-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -53,7 +51,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 
 int CORE_zaxpy(int M, MORSE_Complex64_t alpha,
                const MORSE_Complex64_t *A, int incA,

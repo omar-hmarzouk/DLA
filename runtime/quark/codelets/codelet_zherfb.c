@@ -1,27 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @file codelet_zherfb.c
  *
- **/
-
-/**
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @file qwrapper_zherfb.c
+ ***
  *
- *  PLASMA core_blas quark wrapper
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @brief Chameleon zherfb Quark codelet
  *
- * @version 2.8.0
+ * @version 1.0.0
  * @author Hatem Ltaief
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_quark.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"

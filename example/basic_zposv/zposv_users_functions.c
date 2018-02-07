@@ -1,33 +1,27 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @file zposv_users_functions.c
  *
- **/
-
-/**
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @file basic_zpotrf.c
+ ***
  *
- *  MORSE example routines
- *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
- *  University of Bordeaux, Bordeaux INP
+ * @brief Chameleon zposv_users_functions example
  *
  * @version 1.0.0
  * @author Florent Pruvost
  * @date 2014-10-13
  * @precisions normal z -> s d c
  *
- **/
-
+ */
 #include "posv_users_functions.h"
 
-/*******************************************************************************
+/**
  *  Function that allocate an array of pointers to square tiles (allocated to 0)
- **/
+ */
 MORSE_Complex64_t **allocate_tile_matrix(int m, int n, int nb){
     int i;
     int mt, nt;

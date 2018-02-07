@@ -1,22 +1,17 @@
 /**
  *
- * @copyright (c) 2009-2015 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2015 Inria. All rights reserved.
- * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file codelet_zgeadd.c
  *
- *  MORSE codelets kernel
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2015 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.5.0
+ ***
+ *
+ * @brief Chameleon zgeadd PaRSEC codelet
+ *
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Mathieu Faverge
@@ -24,7 +19,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_parsec.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
@@ -105,7 +100,7 @@ CORE_zgeadd_parsec( parsec_execution_stream_t *context,
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 void MORSE_TASK_zgeadd(const MORSE_option_t *options,
                        MORSE_enum trans, int m, int n, int nb,
                        MORSE_Complex64_t alpha, const MORSE_desc_t *A, int Am, int An, int lda,

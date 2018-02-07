@@ -1,30 +1,26 @@
 /**
  *
- * @copyright (c) 2009-2015 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2015 Inria. All rights reserved.
- * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
  * @file codelet_zgeqrt.c
  *
- *  MORSE codelets kernel
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2015 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.5.0
+ ***
+ *
+ * @brief Chameleon zgeqrt PaRSEC codelet
+ *
+ * @version 1.0.0
  * @author Reazul Hoque
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_parsec.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -85,7 +81,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 static inline int
 CORE_zgeqrt_parsec ( parsec_execution_stream_t *context,
                     parsec_task_t             *this_task )

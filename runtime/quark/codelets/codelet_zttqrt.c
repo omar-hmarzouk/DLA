@@ -1,22 +1,17 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file codelet_zttqrt.c
  *
- *  MORSE codelets kernel
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.5.0
+ ***
+ *
+ * @brief Chameleon zttqrt Quark codelet
+ *
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Hatem Ltaief
@@ -27,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_quark.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
@@ -123,7 +118,7 @@ void CORE_zttqrt_quark(Quark *quark)
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 void MORSE_TASK_zttqrt(const MORSE_option_t *options,
                        int m, int n, int ib, int nb,
                        const MORSE_desc_t *A1, int A1m, int A1n, int lda1,

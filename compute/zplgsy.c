@@ -1,22 +1,17 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file zplgsy.c
  *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.5.0
+ ***
+ *
+ * @brief Chameleon zplgsy wrappers
+ *
+ * @version 1.0.0
  * @comment This file is a copy of zplgsy.c,
  *          wich has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
@@ -28,7 +23,7 @@
  * @date 2016-08-01
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -74,7 +69,7 @@
  * @sa MORSE_splgsy
  * @sa MORSE_zplgsy
  *
- ******************************************************************************/
+ */
 int MORSE_zplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, int N,
                   MORSE_Complex64_t *A, int LDA,
                   unsigned long long int seed )
@@ -177,7 +172,7 @@ int MORSE_zplgsy( MORSE_Complex64_t bump, MORSE_enum uplo, int N,
  * @sa MORSE_splgsy_Tile
  * @sa MORSE_zplgsy_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_enum uplo,
                        MORSE_desc_t *A,
                        unsigned long long int seed )
@@ -233,7 +228,7 @@ int MORSE_zplgsy_Tile( MORSE_Complex64_t bump, MORSE_enum uplo,
  * @sa MORSE_zplgsy_Tile_Async
  * @sa MORSE_zplgsy_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zplgsy_Tile_Async( MORSE_Complex64_t      bump,
                              MORSE_enum             uplo,
                              MORSE_desc_t             *A,

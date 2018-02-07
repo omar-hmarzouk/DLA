@@ -1,35 +1,30 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file codelet_ztile_zero.c
  *
- *  MORSE codelets kernel
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon ztile_zero StarPU codelet
+ *
+ * @version 1.0.0
  * @author Hatem Ltaief
  * @author Mathieu Faverge
  * @author Jakub Kurzak
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
-/*****************************************************************************
+/**
  *
- **/
+ */
 void MORSE_TASK_ztile_zero( const MORSE_option_t *options,
                             int X1, int X2, int Y1, int Y2,
                             const MORSE_desc_t *A, int Am, int An, int lda )
@@ -58,9 +53,9 @@ void MORSE_TASK_ztile_zero( const MORSE_option_t *options,
         0);
 }
 
-/*****************************************************************************
+/**
  *
- **/
+ */
 #if !defined(CHAMELEON_SIMULATION)
 static void cl_ztile_zero_cpu_func(void *descr[], void *cl_arg)
 {

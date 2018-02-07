@@ -1,20 +1,15 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2017 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file morse_f77.c
  *
- *  MORSE auxiliary routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
+ *
+ * @brief Chameleon Fortran77 interface
  *
  * @version 1.0.0
  * @author Bilel Hadri
@@ -22,7 +17,7 @@
  * @author Florent Pruvost
  * @date 2010-11-15
  *
- **/
+ */
 #include <stdlib.h>
 #include "control/common.h"
 #include "morse.h"
@@ -32,9 +27,9 @@
 extern "C" {
 #endif
 
-    /*******************************************************************************
+    /**
      *  FORTRAN API - auxiliary function prototypes
-     **/
+     */
     void MORSE_INIT(int *CORES, int *NGPUS, int *INFO)
     {   *INFO = MORSE_Init(*CORES, *NGPUS); }
 
@@ -65,9 +60,9 @@ extern "C" {
         *INFO = MORSE_SUCCESS;
     }
 
-    /***************************************************************************
+    /**
      *  FORTRAN API - descriptor allocation and deallocation
-     **/
+     */
     void MORSE_DESC_CREATE(MORSE_desc_t **desc, void *mat, MORSE_enum *dtyp,
                            int *mb, int *nb, int *bsiz, int *lm, int *ln,
                            int *i, int *j, int *m, int *n, int *p, int *q,
@@ -98,9 +93,9 @@ extern "C" {
     void MORSE_DESC_DESTROY(MORSE_desc_t **desc, int *INFO)
     {   *INFO = MORSE_Desc_Destroy(desc); }
 
-    /***************************************************************************
+    /**
      *  FORTRAN API - conversion from LAPACK F77 matrix layout to tile layout
-     **/
+     */
     void MORSE_LAPACK_TO_TILE(intptr_t *Af77, int *LDA, intptr_t *A, int *INFO)
     {   *INFO = MORSE_Lapack_to_Tile( (void *)Af77, *LDA, (MORSE_desc_t *)(*A)); }
 

@@ -1,4 +1,3 @@
-
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,7 +50,7 @@ enum iparam_step1 {
 
 /* Specific routines used in step1.c main program */
 
-/******************************************************************************
+/**
  * Initialize integer parameters
  */
 static void init_iparam(int iparam[IPARAM_SIZEOF]){
@@ -60,7 +59,7 @@ static void init_iparam(int iparam[IPARAM_SIZEOF]){
     iparam[IPARAM_NRHS          ] = 1;
  }
 
-/******************************************************************************
+/**
  * Print how to use the program
  */
 static void show_help(char *prog_name) {
@@ -75,7 +74,7 @@ static void show_help(char *prog_name) {
             "\n");
 }
 
-/******************************************************************************
+/**
  * Read arguments following step1 program call
  */
 static void read_args(int argc, char *argv[], int *iparam){
@@ -97,7 +96,7 @@ static void read_args(int argc, char *argv[], int *iparam){
     }
 }
 
-/******************************************************************************
+/**
  * Print a header message to summarize main parameters
  */
 static void print_header(char *prog_name, int * iparam) {
@@ -133,7 +132,7 @@ static void print_header(char *prog_name, int * iparam) {
     return;
 }
 
-/******************************************************************************
+/**
  * Macro to allocate a matrix as a 1D array
  */
 #define PASTE_CODE_ALLOCATE_MATRIX(_name_, _type_, _m_, _n_)    \

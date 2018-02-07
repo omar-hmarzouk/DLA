@@ -1,28 +1,23 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file zgesvd.c
  *
- *  PLASMA computational routines
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.8.0
+ ***
+ *
+ * @brief Chameleon zgesvd wrappers
+ *
+ * @version 1.0.0
  * @author Gregoire Pichon
  * @author Mathieu Faverge
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -146,7 +141,7 @@
  * @sa MORSE_dgesvd
  * @sa MORSE_sgesvd
  *
- ******************************************************************************/
+ */
 int MORSE_zgesvd( MORSE_enum jobu, MORSE_enum jobvt,
                   int M, int N,
                   MORSE_Complex64_t *A, int LDA,
@@ -334,7 +329,7 @@ int MORSE_zgesvd( MORSE_enum jobu, MORSE_enum jobvt,
  * @sa MORSE_dgesvd_Tile
  * @sa MORSE_sgesvd_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zgesvd_Tile( MORSE_enum jobu, MORSE_enum jobvt,
                        MORSE_desc_t *A,
                        double *S,
@@ -394,7 +389,7 @@ int MORSE_zgesvd_Tile( MORSE_enum jobu, MORSE_enum jobvt,
  * @sa MORSE_dgesvd_Tile_Async
  * @sa MORSE_sgesvd_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
                              MORSE_desc_t *A,
                              double *S,

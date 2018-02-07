@@ -1,13 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2015 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
- *                          Univ. Bordeaux. All rights reserved.
+ * @file chameleon_parsec.h
  *
- **/
-
+ * @copyright 2009-2015 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
+ *
+ * @brief Chameleon PaRSEC runtime header
+ *
+ * @version 1.0.0
+ * @author Mathieu Faverge
+ * @author Reazul Hoque
+ * @date 2018-02-06
+ *
+ */
 #ifndef _MORSE_PARSEC_H_
 #define _MORSE_PARSEC_H_
 

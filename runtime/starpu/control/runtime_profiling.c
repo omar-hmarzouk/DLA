@@ -1,23 +1,23 @@
 /**
  *
+ * @file runtime_profiling.c
+ *
  * @copyright 2009-2014 The University of Tennessee and The University of
- *                      Tennessee Research Foundation.  All rights reserved.
+ *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @file runtime_profiling.c
+ ***
  *
- *  MORSE auxiliary routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @brief Chameleon StarPU profiling routines
  *
- * @version 0.9.0
+ * @version 1.0.0
  * @author Cedric Augonnet
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
+ */
 #include <math.h>
 #include "chameleon_starpu.h"
 #if defined(HAVE_STARPU_FXT_PROFILING)
@@ -35,9 +35,9 @@ double RUNTIME_get_time(){
     return starpu_timing_now()*1e-6;
 }
 
-/*******************************************************************************
+/**
  *  Set iteration numbers for traces
- **/
+ */
 void RUNTIME_iteration_push( MORSE_context_t *morse, unsigned long iteration )
 {
     (void)morse;

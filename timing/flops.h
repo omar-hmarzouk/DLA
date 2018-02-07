@@ -1,25 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file flops.h
+ *
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
  *
  *  File provided by Univ. of Tennessee,
  *
- * @version 0.9.0
+ * @version 1.0.0
  * @author Mathieu Faverge
  * @author Cedric Castagnede
  * @date 2010-12-20
  *
- **/
+ */
 /*
  * This file provide the flops formula for all Level 3 BLAS and some
  * Lapack routines.  Each macro uses the same size parameters as the
@@ -34,9 +31,9 @@
 #ifndef _FLOPS_H_
 #define _FLOPS_H_
 
-/************************************************************************
+/**
  *           Generic formula coming from LAWN 41
- ***********************************************************************/
+ */
 
 /*
  * Level 2 BLAS 
@@ -169,9 +166,9 @@
                                 :                  ((double)(__m) * ((double)(__m) * (2. * (double)(__n) - 2./3. * (double)(__m) + 1. ) - (double)(__n) +  5./3.)) )
 
 
-/*******************************************************************************
+/**
  *               Users functions
- ******************************************************************************/
+ */
 
 /*
  * Level 2 BLAS 

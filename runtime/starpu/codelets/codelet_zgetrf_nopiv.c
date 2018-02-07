@@ -1,22 +1,17 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014, 2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file codelet_zgetrf_nopiv.c
  *
- *  MORSE codelets kernel
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.6.0
+ ***
+ *
+ * @brief Chameleon zgetrf_nopiv StarPU codelet
+ *
+ * @version 1.0.0
  * @author Omar Zenati
  * @author Mathieu Faverge
  * @author Emmanuel Agullo
@@ -24,7 +19,7 @@
  * @date 2013-02-01
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_starpu.h"
 #include "runtime_codelet_z.h"
 
@@ -74,7 +69,7 @@
  *              singular, and division by zero will occur if it is used
  *              to solve a system of equations.
  *
- ******************************************************************************/
+ */
 
 void MORSE_TASK_zgetrf_nopiv(const MORSE_option_t *options,
                               int m, int n, int ib, int nb,

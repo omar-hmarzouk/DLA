@@ -1,23 +1,22 @@
 /**
  *
+ * @file runtime_zlocality.c
+ *
  * @copyright 2009-2014 The University of Tennessee and The University of
- *                      Tennessee Research Foundation.  All rights reserved.
+ *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @file runtime_zlocality.c
+ ***
  *
- * MORSE codelets kernel
- * MORSE is a software package provided by Univ. of Tennessee,
- * Univ. of California Berkeley and Univ. of Colorado Denver,
- * and INRIA Bordeaux Sud-Ouest
+ * @brief Chameleon Quark MORSE_Complex64_t kernel locality management
  *
- * @version
+ * @version 1.0.0
  * @author Vijay Joshi
  * @date 2011-10-29
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "chameleon_quark.h"
 
 void RUNTIME_zlocality_allrestrict( uint32_t where )

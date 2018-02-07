@@ -1,25 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University of
- *                          Tennessee Research Foundation.  All rights reserved.
- * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
- *                          Univ. Bordeaux. All rights reserved.
- *
- **/
-/**
- *
  * @file cuda_zgeadd.c
  *
- *  MORSE cudablas kernel
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver,
- *  and INRIA Bordeaux Sud-Ouest
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
+ ***
+ *
+ * @brief Chameleon cuda_zgeadd GPU kernel
+ *
+ * @version 1.0.0
  * @author Mathieu Faverge
  * @date 2015-09-17
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "cudablas.h"
 
 #if !defined(CHAMELEON_USE_CUBLAS_V2)
@@ -79,7 +76,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 int CUDA_zgeadd(MORSE_enum trans,
                 int m, int n,
                 const cuDoubleComplex *alpha,

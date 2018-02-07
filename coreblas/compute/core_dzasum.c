@@ -1,29 +1,24 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file core_dzasum.c
  *
- *  PLASMA core_blas kernel
- *  PLASMA is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
- *  University of Bordeaux, Bordeaux INP
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.6.0
+ ***
+ *
+ * @brief Chameleon core_dzasum CPU kernel
+ *
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.6.0 for MORSE 1.0.0
  * @author Mathieu Faverge
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas/cblas.h"
 #include <math.h>
 #include "coreblas.h"
@@ -35,7 +30,7 @@
  *
  */
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -72,7 +67,7 @@
  *          Array of dimension M if storev = MorseRowwise; N otherwise.
  *          On exit, contains the sums of the absolute values per column or row.
  *
- ******************************************************************************/
+ */
 
 void CORE_dzasum(MORSE_enum storev, MORSE_enum uplo, int M, int N,
                  const MORSE_Complex64_t *A, int lda, double *work)

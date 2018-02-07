@@ -36,8 +36,6 @@
 #
 ###
 #
-#  @file insert-licence.sh
-#
 #  @project MORSE
 #  MORSE is a software package provided by:
 #     Inria Bordeaux - Sud-Ouest,
@@ -46,12 +44,12 @@
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver.
 #
-#  @version 1.0.0
+# @version 1.0.0
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
 #  @author Florent Pruvost
-#  @date 13-07-2012
+#  @date 2012-07-13
 #
 ###
 for i in $(find . -name "*.c" -or -name "*.h" -not -path "*svn*" -not -name "morse_fortran.h")

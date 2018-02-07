@@ -1,29 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file tile.c
  *
- *  MORSE auxiliary routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon layout conversion wrappers
+ *
+ * @version 1.0.0
  * @author Jakub Kurzak
  * @author Cedric Castagnede
  * @date 2010-11-15
  *
- **/
-
-/**
+ ***
  *
  * @defgroup Tile
  * @brief Group routines exposed to users for matrices conversion LAPACK-Tile
@@ -32,7 +25,7 @@
 #include "control/common.h"
 #include "control/auxiliary.h"
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Tile
  *
@@ -54,7 +47,7 @@
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
 {
     switch( A->dtyp ) {
@@ -74,7 +67,7 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
     return MORSE_ERR_ILLEGAL_VALUE;
 }
 
-/** ***************************************************************************
+/**
  *
  * @ingroup Tile
  *
@@ -96,7 +89,7 @@ int MORSE_Lapack_to_Tile(void *Af77, int LDA, MORSE_desc_t *A)
  * @return
  *          \retval MORSE_SUCCESS successful exit
  *
- *****************************************************************************/
+ */
 int MORSE_Tile_to_Lapack(MORSE_desc_t *A, void *Af77, int LDA)
 {
     switch( A->dtyp ) {

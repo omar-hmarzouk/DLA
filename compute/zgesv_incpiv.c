@@ -1,22 +1,18 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
  * @file zgesv_incpiv.c
  *
- *  MORSE computational routines
- *  Release Date: November, 15th 2009
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.5.0
+ ***
+ *
+ * @brief Chameleon zgesv_incpiv wrappers
+ *  Release Date: November, 15th 2009
+ *
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Jakub Kurzak
@@ -26,7 +22,7 @@
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -85,7 +81,7 @@
  * @sa MORSE_dgesv_incpiv
  * @sa MORSE_sgesv_incpiv
  *
- ******************************************************************************/
+ */
 int MORSE_zgesv_incpiv( int N, int NRHS,
                         MORSE_Complex64_t *A, int LDA,
                         MORSE_desc_t *descL, int *IPIV,
@@ -207,7 +203,7 @@ int MORSE_zgesv_incpiv( int N, int NRHS,
  * @sa MORSE_sgesv_incpiv_Tile
  * @sa MORSE_zcgesv_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zgesv_incpiv_Tile( MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_desc_t *B )
 {
     MORSE_context_t *morse;
@@ -263,7 +259,7 @@ int MORSE_zgesv_incpiv_Tile( MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_
  * @sa MORSE_sgesv_incpiv_Tile_Async
  * @sa MORSE_zcgesv_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zgesv_incpiv_Tile_Async( MORSE_desc_t *A, MORSE_desc_t *L, int *IPIV, MORSE_desc_t *B,
                                    MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

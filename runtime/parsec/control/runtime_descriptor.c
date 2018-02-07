@@ -1,18 +1,22 @@
 /**
  *
+ * @file runtime_descriptor.c
+ *
  * @copyright 2012-2017 The University of Tennessee and The University of
- *                      Tennessee Research Foundation.  All rights reserved.
+ *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @file runtime_descriptor.c
+ ***
+ *
+ * @brief Chameleon PaRSEC descriptor routines
  *
  * @version 1.0.0
  * @author Reazul Hoque
  * @author Mathieu Faverge
  * @date 2017-01-12
  *
- **/
+ */
 #include <stdlib.h>
 #include "chameleon_parsec.h"
 #include <parsec/data.h>
@@ -195,9 +199,9 @@ morse_parsec_key_to_string(parsec_data_collection_t *data_collection, parsec_dat
 }
 #endif
 
-/*******************************************************************************
+/**
  *  Create data descriptor
- **/
+ */
 void RUNTIME_desc_create( MORSE_desc_t *mdesc )
 {
     parsec_data_collection_t *data_collection;
@@ -266,9 +270,9 @@ void RUNTIME_desc_create( MORSE_desc_t *mdesc )
     return;
 }
 
-/*******************************************************************************
+/**
  *  Destroy data descriptor
- **/
+ */
 void RUNTIME_desc_destroy( MORSE_desc_t *mdesc )
 {
     morse_parsec_desc_t *pdesc = (morse_parsec_desc_t*)(mdesc->schedopt);
@@ -297,27 +301,27 @@ void RUNTIME_desc_destroy( MORSE_desc_t *mdesc )
     return;
 }
 
-/*******************************************************************************
+/**
  *  Acquire data
- **/
+ */
 int RUNTIME_desc_acquire( const MORSE_desc_t *desc )
 {
     (void)desc;
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *  Release data
- **/
+ */
 int RUNTIME_desc_release( const MORSE_desc_t *desc )
 {
     (void)desc;
     return MORSE_SUCCESS;
 }
 
-/*******************************************************************************
+/**
  *  Flush cached data
- **/
+ */
 void RUNTIME_flush()
 {
 }
@@ -353,9 +357,9 @@ void RUNTIME_data_migrate( const MORSE_sequence_t *sequence,
 }
 #endif
 
-/*******************************************************************************
+/**
  *  Get data addr
- **/
+ */
 void *RUNTIME_desc_getaddr( const MORSE_desc_t *desc, int m, int n )
 {
     assert(0); /* This should not be called because we also need the handle to match the address we need. */

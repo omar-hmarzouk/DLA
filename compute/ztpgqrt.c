@@ -1,27 +1,23 @@
 /**
  *
- * @copyright (c) 2009-2016 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
- *                          Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file ztpgqrt.c
  *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2016 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2018 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ * @copyright 2016-2018 KAUST. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon ztpgqrt wrappers
+ *
+ * @version 1.0.0
  * @author Mathieu Faverge
  * @date 2016-12-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -132,7 +128,7 @@
  * @sa MORSE_stpgqrt
  * @sa MORSE_zgeqrs
  *
- ******************************************************************************/
+ */
 int MORSE_ztpgqrt( int M, int N, int K, int L,
                    MORSE_Complex64_t *V1, int LDV1, MORSE_desc_t *descT1,
                    MORSE_Complex64_t *V2, int LDV2, MORSE_desc_t *descT2,
@@ -260,7 +256,6 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
  *
  *******************************************************************************
  *
- *
  *******************************************************************************
  *
  * @return
@@ -275,7 +270,7 @@ int MORSE_ztpgqrt( int M, int N, int K, int L,
  * @sa MORSE_stpgqrt_Tile
  * @sa MORSE_zgeqrs_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_ztpgqrt_Tile( int L,
                         MORSE_desc_t *V1, MORSE_desc_t *T1,
                         MORSE_desc_t *V2, MORSE_desc_t *T2,
@@ -336,7 +331,7 @@ int MORSE_ztpgqrt_Tile( int L,
  * @sa MORSE_stpgqrt_Tile_Async
  * @sa MORSE_zgeqrs_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_ztpgqrt_Tile_Async( int L,
                               MORSE_desc_t *V1, MORSE_desc_t *T1,
                               MORSE_desc_t *V2, MORSE_desc_t *T2,

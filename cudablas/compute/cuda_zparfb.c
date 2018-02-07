@@ -1,27 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file cuda_zparfb.c
  *
- *  MORSE cudablas kernel
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver,
- *  and INRIA Bordeaux Sud-Ouest
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
+ ***
+ *
+ * @brief Chameleon cuda_zparfb GPU kernel
+ *
+ * @version 1.0.0
  * @author Florent Pruvost
  * @date 2015-09-16
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "cudablas.h"
 
 /**
@@ -147,7 +142,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 int
 CUDA_zparfb(MORSE_enum side, MORSE_enum trans,
             MORSE_enum direct, MORSE_enum storev,

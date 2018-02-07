@@ -1,18 +1,15 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
  * @file zbuild.c
  *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.5.0
+ * @brief Chameleon zbuild wrappers
+ *
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Mathieu Faverge
@@ -22,7 +19,7 @@
  * @date 2016-09-05
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -81,7 +78,7 @@
  * @sa MORSE_dbuild
  * @sa MORSE_sbuild
  *
- ******************************************************************************/
+ */
 int MORSE_zbuild( MORSE_enum uplo, int M, int N,
                   MORSE_Complex64_t *A, int LDA,
                   void *user_data, void* user_build_callback )
@@ -189,7 +186,7 @@ int MORSE_zbuild( MORSE_enum uplo, int M, int N,
  * @sa MORSE_dbuild_Tile
  * @sa MORSE_sbuild_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zbuild_Tile( MORSE_enum uplo, MORSE_desc_t *A,
                        void *user_data, void* user_build_callback )
 {
@@ -257,7 +254,7 @@ int MORSE_zbuild_Tile( MORSE_enum uplo, MORSE_desc_t *A,
  * @sa MORSE_dbuild_Tile_Async
  * @sa MORSE_sbuild_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zbuild_Tile_Async( MORSE_enum uplo, MORSE_desc_t     *A,
                              void *user_data, void* user_build_callback,
                              MORSE_sequence_t *sequence,

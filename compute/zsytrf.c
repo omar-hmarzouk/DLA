@@ -1,28 +1,23 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file zsytrf.c
  *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.5.0
+ ***
+ *
+ * @brief Chameleon zsytrf wrappers
+ *
+ * @version 1.0.0
  * @author Florent Pruvost
  * @author Marc Sergent
  * @date 2014-10-09
  * @precisions normal z -> c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -77,7 +72,7 @@
  * @sa MORSE_ssytrf
  * @sa MORSE_zpotrs
  *
- ******************************************************************************/
+ */
 int MORSE_zsytrf( MORSE_enum uplo, int N,
                   MORSE_Complex64_t *A, int LDA )
 {
@@ -183,7 +178,7 @@ int MORSE_zsytrf( MORSE_enum uplo, int N,
  * @sa MORSE_zsytrf_Tile_Async
  * @sa MORSE_csytrf_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zsytrf_Tile( MORSE_enum uplo, MORSE_desc_t *A )
 {
     MORSE_context_t *morse;
@@ -234,7 +229,7 @@ int MORSE_zsytrf_Tile( MORSE_enum uplo, MORSE_desc_t *A )
  * @sa MORSE_zsytrf_Tile
  * @sa MORSE_csytrf_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zsytrf_Tile_Async( MORSE_enum uplo, MORSE_desc_t *A,
                              MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

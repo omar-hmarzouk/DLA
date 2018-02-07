@@ -1,16 +1,20 @@
 /**
  *
+ * @file chameleon_timer.h
+ *
  * @copyright 2009-2014 The University of Tennessee and The University of
- *                      Tennessee Research Foundation.  All rights reserved.
+ *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @file chameleon_timer.h
+ * @version 1.0.0
+ *
+ * @brief Chameleon timer
  *
  * Provide a simple timer for examples and runtimes which do not provide their
  * own timer.
  *
- **/
+ */
 #ifndef _chameleon_timer_h_
 #define _chameleon_timer_h_
 
@@ -38,29 +42,29 @@ gettimeofday(struct timeval* tv, struct timezone* tz)
     static int       tzflag;
 
     if (NULL != tv)
-        {
-            GetSystemTimeAsFileTime(&ft);
-            tmpres |=  ft.dwHighDateTime;
-            tmpres <<= 32;
-            tmpres |=  ft.dwLowDateTime;
+    {
+        GetSystemTimeAsFileTime(&ft);
+        tmpres |=  ft.dwHighDateTime;
+        tmpres <<= 32;
+        tmpres |=  ft.dwLowDateTime;
 
-            /*converting file time to unix epoch*/
-            tmpres /= 10;  /*convert into microseconds*/
-            tmpres -= DELTA_EPOCH_IN_MICROSECS;
+        /*converting file time to unix epoch*/
+        tmpres /= 10;  /*convert into microseconds*/
+        tmpres -= DELTA_EPOCH_IN_MICROSECS;
 
-            tv->tv_sec  = (long)(tmpres / 1000000UL);
-            tv->tv_usec = (long)(tmpres % 1000000UL);
-        }
+        tv->tv_sec  = (long)(tmpres / 1000000UL);
+        tv->tv_usec = (long)(tmpres % 1000000UL);
+    }
     if (NULL != tz)
+    {
+        if (!tzflag)
         {
-            if (!tzflag)
-                {
-                    _tzset();
-                    tzflag++;
-                }
-            tz->tz_minuteswest = _timezone / 60;
-            tz->tz_dsttime     = _daylight;
+            _tzset();
+            tzflag++;
         }
+        tz->tz_minuteswest = _timezone / 60;
+        tz->tz_dsttime     = _daylight;
+    }
     return 0;
 }
 

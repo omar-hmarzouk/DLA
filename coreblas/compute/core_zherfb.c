@@ -1,27 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file core_zherfb.c
  *
- *  PLASMA core_blas kernel
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.8.0
+ ***
+ *
+ * @brief Chameleon core_zherfb CPU kernel
+ *
+ * @version 1.0.0
  * @author Hatem Ltaief
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 #include "coreblas/lapacke.h"
 
@@ -94,7 +89,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 #if defined(MORSE_HAVE_WEAK)
 #pragma weak CORE_zherfb = PCORE_zherfb
 #define CORE_zherfb PCORE_zherfb

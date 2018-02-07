@@ -1,27 +1,23 @@
 /**
  *
- * @copyright (c) 2009-2016 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2016 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
- *                          Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file ztpqrt.c
  *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2016 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2018 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ * @copyright 2016-2018 KAUST. All rights reserved.
  *
- * @version 0.9.0
+ ***
+ *
+ * @brief Chameleon ztpqrt wrappers
+ *
+ * @version 1.0.0
  * @author Mathieu Faverge
  * @date 2016-12-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -127,7 +123,7 @@
  * @sa MORSE_stpqrt
  * @sa MORSE_zgeqrs
  *
- ******************************************************************************/
+ */
 int MORSE_ztpqrt( int M, int N, int L,
                   MORSE_Complex64_t *A, int LDA,
                   MORSE_Complex64_t *B, int LDB,
@@ -251,7 +247,7 @@ int MORSE_ztpqrt( int M, int N, int L,
  * @sa MORSE_stpqrt_Tile
  * @sa MORSE_zgeqrs_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_ztpqrt_Tile( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T )
 {
     MORSE_context_t *morse;
@@ -306,7 +302,7 @@ int MORSE_ztpqrt_Tile( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T 
  * @sa MORSE_stpqrt_Tile_Async
  * @sa MORSE_zgeqrs_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_ztpqrt_Tile_Async( int L, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_desc_t *T,
                              MORSE_sequence_t *sequence, MORSE_request_t *request )
 {

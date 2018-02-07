@@ -1,15 +1,13 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file time_zgeqrf_hqr.c
+ *
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
  *
  * @version 1.0.0
  * @author Mathieu Faverge
@@ -17,7 +15,7 @@
  * @date 2017-06-08
  * @precisions normal z -> c d s
  *
- **/
+ */
 #define _TYPE  MORSE_Complex64_t
 #define _PREC  double
 #define _LAMCH LAPACKE_dlamch_work

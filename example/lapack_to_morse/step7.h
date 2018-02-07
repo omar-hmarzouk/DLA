@@ -1,28 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file step7.h
  *
- *  MORSE example routines
- *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
- *  University of Bordeaux, Bordeaux INP
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
+ *
+ * @brief Chameleon step7 example header
  *
  * @version 1.0.0
  * @author Florent Pruvost
  * @author Guillaume Sylvand
  * @date 2016-09-05
  *
- **/
-
+ */
 #ifndef step7_H
 #define step7_H
 
@@ -54,7 +48,7 @@ enum iparam_step7 {
 
 /* Specific routines used in step7.c main program */
 
-/******************************************************************************
+/**
  * Initialize integer parameters
  */
 static void init_iparam(int iparam[IPARAM_SIZEOF]){
@@ -69,7 +63,7 @@ static void init_iparam(int iparam[IPARAM_SIZEOF]){
     iparam[IPARAM_Q             ] = 1;
  }
 
-/******************************************************************************
+/**
  * Callback function used to build matrix blocks
  * Morse_build_callback_plgsy : random symmetric positive definite
  * Morse_build_callback_plrnt : random
@@ -94,7 +88,7 @@ static void Morse_build_callback_plrnt(int row_min, int row_max, int col_min, in
   CORE_dplrnt(row_max-row_min+1, col_max-col_min+1, buffer, ld, data->bigM, row_min, col_min, data->seed);
 }
 
-/******************************************************************************
+/**
  * Print how to use the program
  */
 static void show_help(char *prog_name) {
@@ -113,7 +107,7 @@ static void show_help(char *prog_name) {
             "\n");
 }
 
-/******************************************************************************
+/**
  * Read arguments following step7 program call
  */
 static void read_args(int argc, char *argv[], int *iparam){
@@ -143,7 +137,7 @@ static void read_args(int argc, char *argv[], int *iparam){
     }
 }
 
-/******************************************************************************
+/**
  * Print a header message to summarize main parameters
  */
 static void print_header(char *prog_name, int * iparam) {

@@ -1,23 +1,23 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @file time_zheevd_tile.c
  *
- **/
-
-/**
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
+ ***
+ *
+ * @version 1.0.0
  * @precisions normal z -> c d s
  *
- **/
+ */
 #define _TYPE  MORSE_Complex64_t
 #define _PREC  double
 #define _LAMCH LAPACKE_dlamch_work
 
-#define _NAME  "PLASMA_zheevd_Tile"
+#define _NAME  "MORSE_zheevd_Tile"
 /* See Lawn 41 page 120 */
 #define _FMULS ((2. / 3.) * ((double)N * (double)N * (double)N))
 #define _FADDS ((2. / 3.) * ((double)N * (double)N * (double)N))

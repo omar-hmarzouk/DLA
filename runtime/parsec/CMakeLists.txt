@@ -1,14 +1,13 @@
 ###
 #
-# @copyright (c) 2009-2015 The University of Tennessee and The University
-#                          of Tennessee Research Foundation.
-#                          All rights reserved.
-# @copyright (c) 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
-#                          Univ. Bordeaux. All rights reserved.
+# @file CMakeLists.txt
+#
+# @copyright 2009-2015 The University of Tennessee and The University of
+#                      Tennessee Research Foundation. All rights reserved.
+# @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+#                      Univ. Bordeaux. All rights reserved.
 #
 ###
-#
-#  @file CMakeLists.txt
 #
 #  @project CHAMELEON
 #  CHAMELEON is a software package provided by:
@@ -18,12 +17,12 @@
 #     Univ. of California Berkeley,
 #     Univ. of Colorado Denver.
 #
-#  @version 0.9.0
+# @version 1.0.0
 #  @author Cedric Castagnede
 #  @author Emmanuel Agullo
 #  @author Mathieu Faverge
 #  @author Florent Pruvost
-#  @date 13-07-2012
+#  @date 2012-07-13
 #
 ###
 cmake_minimum_required(VERSION 2.8)

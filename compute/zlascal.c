@@ -2,16 +2,22 @@
  *
  * @file zlascal.c
  *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2016 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2018 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ * @copyright 2016-2018 KAUST. All rights reserved.
  *
- * @version 2.8.0
+ ***
+ *
+ * @brief Chameleon zlascal wrappers
+ *
+ * @version 1.0.0
  * @author Dalal Sukkari
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 /**
@@ -61,7 +67,7 @@
  * @sa MORSE_dlascal
  * @sa MORSE_slascal
  *
- ******************************************************************************/
+ */
 int MORSE_zlascal( MORSE_enum uplo, int M, int N,
                    MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int LDA )
 {
@@ -173,7 +179,7 @@ int MORSE_zlascal( MORSE_enum uplo, int M, int N,
  * @sa MORSE_dlascal_Tile
  * @sa MORSE_slascal_Tile
  *
- ******************************************************************************/
+ */
 int MORSE_zlascal_Tile( MORSE_enum uplo,
                         MORSE_Complex64_t alpha, MORSE_desc_t *A )
 {
@@ -227,7 +233,7 @@ int MORSE_zlascal_Tile( MORSE_enum uplo,
  * @sa MORSE_dlascal_Tile_Async
  * @sa MORSE_slascal_Tile_Async
  *
- ******************************************************************************/
+ */
 int MORSE_zlascal_Tile_Async( MORSE_enum uplo,
                               MORSE_Complex64_t alpha, MORSE_desc_t *A,
                               MORSE_sequence_t *sequence, MORSE_request_t *request )

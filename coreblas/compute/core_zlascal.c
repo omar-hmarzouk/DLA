@@ -1,16 +1,23 @@
 /**
+ *
  * @file core_zlascal.c
  *
- *  MORSE computational routines
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2016 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2018 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ * @copyright 2016-2018 KAUST. All rights reserved.
  *
- * @version 2.8.0
+ ***
+ *
+ * @brief Chameleon core_zlascal CPU kernel
+ *
+ * @version 1.0.0
  * @author Dalal Sukkari
  * @date 2015-11-05
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 #include "coreblas/cblas.h"
 #include <math.h>
@@ -49,7 +56,7 @@
  *          \retval MORSE_SUCCESS successful exit
  *          \retval <0 if -i, the i-th argument had an illegal value
  *
- ******************************************************************************/
+ */
 int
 CORE_zlascal( MORSE_enum uplo, int m, int n,
               MORSE_Complex64_t alpha, MORSE_Complex64_t *A, int lda )

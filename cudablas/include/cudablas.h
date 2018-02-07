@@ -1,27 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2015 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file cudablas.h
  *
- *  MORSE cudablas headers
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver,
- *  and INRIA Bordeaux Sud-Ouest
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
+ ***
+ *
+ * @brief Chameleon GPU kernels main header
+ *
+ * @version 1.0.0
  * @author Florent Pruvost
  * @date 2015-09-16
  * @precisions normal z -> c d s
  *
- **/
+ */
 #ifndef _CUDA_BLAS_H_
 #define _CUDA_BLAS_H_
 
@@ -65,16 +60,16 @@
 
 #endif /* defined(CHAMELEON_USE_CUBLAS_V2) */
 
-/** ****************************************************************************
+/**
  * MORSE types and constants
- **/
+ */
 #include "chameleon/morse_types.h"
 #include "chameleon/morse_struct.h"
 #include "chameleon/morse_constants.h"
 
-/** ****************************************************************************
+/**
  * CUDA BLAS headers
- **/
+ */
 BEGIN_C_DECLS
 
 #include "cudablas/cudablas_z.h"
@@ -84,14 +79,14 @@ BEGIN_C_DECLS
 
 END_C_DECLS
 
-/** ****************************************************************************
+/**
  * Coreblas Error
- **/
+ */
 #define cudablas_error(k, str) fprintf(stderr, "%s: Parameter %d / %s\n", __func__, k, str)
 
-/** ****************************************************************************
+/**
  *  LAPACK Constants
- **/
+ */
 BEGIN_C_DECLS
 
 extern char *morse_lapack_constants[];

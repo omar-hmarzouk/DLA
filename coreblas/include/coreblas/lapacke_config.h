@@ -1,14 +1,20 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @file lapacke_config.h
  *
- **/
-
-/*****************************************************************************
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
+ *
+ * @brief Chameleon lapacke configuration header
+ *
+ * @version 1.0.0
+ *
+ */
+/**
   Copyright (c) 2010, Intel Corp.
   All rights reserved.
 
@@ -39,7 +45,7 @@
 * Contents: Native C interface to LAPACK
 * Author: Intel Corporation
 * Generated May, 2011
-*****************************************************************************/
+*/
 
 #ifndef _LAPACKE_CONFIG_H_
 #define _LAPACKE_CONFIG_H_

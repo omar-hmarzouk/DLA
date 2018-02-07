@@ -1,34 +1,29 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2017 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file morse_f77.h
  *
- *  MORSE Fortran names
- *  MORSE is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ ***
+ *
+ * @brief Chameleon Fortran77 naming macros
  *
  * @version 1.0.0
  * @author Florent Pruvost
  * @date 2017-05-03
  *
- **/
+ */
 #ifndef _MORSE_F77_H_
 #define _MORSE_F77_H_
 
 #include "chameleon/morse_mangling.h"
 
-/** ****************************************************************************
+/**
  *  Determine FORTRAN names
- **/
+ */
 #define MORSE_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname, MORSE_##UCNAME)
 #define MORSE_TILE_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname##_tile, MORSE_##UCNAME##_TILE)
 #define MORSE_ASYNC_FNAME(lcname, UCNAME) MORSE_GLOBAL(morse_##lcname##_tile_async, MORSE_##UCNAME##_TILE_ASYNC)

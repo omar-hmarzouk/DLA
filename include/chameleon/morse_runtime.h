@@ -1,25 +1,22 @@
 /**
  *
+ * @file morse_runtime.h
+ *
  * @copyright 2009-2014 The University of Tennessee and The University of
- *                      Tennessee Research Foundation.  All rights reserved.
+ *                      Tennessee Research Foundation. All rights reserved.
  * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
- * @file runtime.h
+ ***
  *
- *  CHAMELEON runtimes API
- *
- *  CHAMELEON is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver,
- *  and Inria Bordeaux Sud-Ouest
- *
- * @version 0.9.0
+ * @brief Chameleon runtimes API
+ * @version 1.0.0
  * @author Mathieu Faverge
  * @author Cedric Augonnet
  * @author Cedric Castagnede
  * @date 2011-06-01
  *
- **/
+ */
 #ifndef _MORSE_RUNTIME_H_
 #define _MORSE_RUNTIME_H_
 
@@ -310,8 +307,7 @@ RUNTIME_sequence_flush( MORSE_context_t  *ctxt,
  *
  * @name RUNTIME Memory management
  * @{
- **/
-/**
+ ***
  * @brief Allocate size bytes through the runtime memory management system if any, or with malloc otherwise.
  *
  * This function allows to allocate pinned memory if needed, or eventually not
@@ -342,9 +338,7 @@ RUNTIME_free( void *ptr, size_t size );
  *
  * @name RUNTIME Descriptor functions
  * @{
- **/
-
-/**
+ ***
  * @brief Initialize runtime specific data structure to a given descriptor.
  *
  * @param[in,out] desc
@@ -500,7 +494,7 @@ RUNTIME_data_getaddr( const MORSE_desc_t *A, int Am, int An );
  *
  * @name RUNTIME Insert task options management
  * @{
- **/
+ */
 void  RUNTIME_options_init     (MORSE_option_t*, MORSE_context_t*, MORSE_sequence_t*, MORSE_request_t*);
 void  RUNTIME_options_finalize (MORSE_option_t*, MORSE_context_t *);
 int   RUNTIME_options_ws_alloc (MORSE_option_t*, size_t, size_t);
@@ -513,7 +507,7 @@ int   RUNTIME_options_ws_free  (MORSE_option_t*);
  *
  * @name RUNTIME Kernel locality management
  * @{
- **/
+ */
 void RUNTIME_zlocality_allrestore ();
 void RUNTIME_clocality_allrestore ();
 void RUNTIME_dlocality_allrestore ();
@@ -540,7 +534,7 @@ void RUNTIME_slocality_onerestore (MORSE_kernel_t);
  *
  * @name RUNTIME Profiling
  * @{
- **/
+ */
 void   RUNTIME_schedprofile_display ();
 void   RUNTIME_kernelprofile_display();
 double RUNTIME_get_time();

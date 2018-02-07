@@ -1,22 +1,17 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file core_zgetf2_nopiv.c
  *
- *  PLASMA core_blas kernel
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.6.0
+ ***
+ *
+ * @brief Chameleon core_zgetf2_nopiv CPU kernel
+ *
+ * @version 1.0.0
  * @author Omar Zenati
  * @author Mathieu Faverge
  * @author Emmanuel Agullo
@@ -24,12 +19,12 @@
  * @date 2013-02-01
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "coreblas.h"
 #include <math.h>
 #include "coreblas/lapacke.h"
 
-/***************************************************************************//**
+/**
  *
  * @ingroup CORE_MORSE_Complex64_t
  *
@@ -71,7 +66,7 @@
  *              singular, and division by zero will occur if it is used
  *              to solve a system of equations.
  *
- ******************************************************************************/
+ */
 int
 CORE_zgetf2_nopiv(int M, int N,
                   MORSE_Complex64_t *A, int LDA)

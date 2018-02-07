@@ -1,26 +1,22 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @file codelet_zlatro.c
  *
- **/
-
-/**
- * @file qwrapper_zlatro.c
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- *  PLASMA core_blas quark wrapper
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ ***
  *
- * @version 2.8.0
+ * @brief Chameleon core_blas PaRSEC wrapper
+ *
+ * @version 1.0.0
  * @author Azzam Haidar
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include "chameleon_parsec.h"
 #include "chameleon/morse_tasks_z.h"
 #include "coreblas/coreblas_z.h"
@@ -48,9 +44,9 @@ CORE_zlatro_parsec( parsec_execution_stream_t *context,
     return PARSEC_HOOK_RETURN_DONE;
 }
 
-/***************************************************************************//**
+/**
  *
- **/
+ */
 void MORSE_TASK_zlatro(const MORSE_option_t *options,
                        MORSE_enum uplo, MORSE_enum trans,
                        int m, int n, int mb,

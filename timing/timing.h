@@ -1,13 +1,15 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @file timing.h
  *
- **/
-
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2015 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
+ *
+ * @version 1.0.0
+ *
+ */
 #ifndef TIMING_H
 #define TIMING_H
 
@@ -164,7 +166,7 @@ enum dparam_timing {
         memcpy(_name_, _orig_, (_lda_) * (_n_) * sizeof(_type_) );           \
     }
 
-/*********************
+/**
  *
  * Macro for trace generation
  *
@@ -187,7 +189,7 @@ enum dparam_timing {
         MORSE_Disable(MORSE_BOUND);            \
     }
 
-/*********************
+/**
  *
  * Macro for DAG generation
  *
@@ -205,7 +207,7 @@ enum dparam_timing {
 #define STOP_DAG()   do {} while(0);
 #endif
 
-/*********************
+/**
  *
  * Synchro for distributed computations
  *
@@ -218,7 +220,7 @@ enum dparam_timing {
 #define STOP_DISTRIBUTED()   do {} while(0);
 #endif
 
-/*********************
+/**
  *
  * General Macros for timing
  *

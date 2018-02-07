@@ -1,29 +1,24 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-/**
- *
  * @file pzlantr.c
  *
- *  MORSE auxiliary routines
- *  MORSE is a software package provided by Inria Bordeaux - Sud-Ouest, LaBRI,
- *  University of Bordeaux, Bordeaux INP
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.6.0
+ ***
+ *
+ * @brief Chameleon zlantr parallel algorithm
+ *
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.6.0 for MORSE 1.0.0
  * @author Mathieu Faverge
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #include <stdlib.h>
 #include <math.h>
 #include "control/common.h"
@@ -32,9 +27,9 @@
 #define VECNORMS_STEP1(m, n) VECNORMS_STEP1, m, n
 #define VECNORMS_STEP2(m, n) VECNORMS_STEP2, m, n
 #define RESULT(m, n) RESULT, m, n
-/*******************************************************************************
+/**
  *
- **/
+ */
 void morse_pzlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
                    MORSE_desc_t *A, double *result,
                    MORSE_sequence_t *sequence, MORSE_request_t *request)

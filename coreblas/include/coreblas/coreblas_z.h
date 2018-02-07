@@ -1,22 +1,17 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @file coreblas_z.h
  *
- **/
-
-/**
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @file core_zblas.h
+ ***
  *
- *  PLASMA auxiliary routines
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @brief Chameleon CPU MORSE_Complex64_t kernels header
  *
- * @version 2.5.0
+ * @version 1.0.0
  * @comment This file has been automatically generated
  *          from Plasma 2.5.0 for MORSE 1.0.0
  * @author Jakub Kurzak
@@ -28,15 +23,15 @@
  * @date 2010-11-15
  * @precisions normal z -> c d s
  *
- **/
+ */
 #ifndef _MORSE_CORE_ZBLAS_H_
 #define _MORSE_CORE_ZBLAS_H_
 
 #define COMPLEX
 
-/** ****************************************************************************
+/**
  *  Declarations of serial kernels - alphabetical order
- **/
+ */
 void CORE_dzasum(int storev, MORSE_enum uplo, int M, int N,
                  const MORSE_Complex64_t *A, int lda, double *work);
 void CORE_zbrdalg(MORSE_enum uplo, int N, int NB,

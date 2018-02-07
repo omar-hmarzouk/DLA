@@ -1,38 +1,32 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
- *
- **/
-
-
-/**
- *
  * @file pztile2band.c
  *
- *  PLASMA auxiliary routines
- *  PLASMA is a software package provided by Univ. of Tennessee,
- *  Univ. of California Berkeley and Univ. of Colorado Denver
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- * @version 2.8.0
+ ***
+ *
+ * @brief Chameleon ztile2band parallel algorithm
+ *
+ * @version 1.0.0
  * @author Azzam Haidar
  * @author Gregoire Pichon
  * @author Mathieu Faverge
  * @date 2010-11-15
  * @precisions normal z -> s d c
  *
- **/
+ */
 #include "control/common.h"
 
 #define A(m,n)   A,  m, n
 #define B(m, n)  B, m, n
 
-/*******************************************************************************
+/**
  *  Parallel copy of a band matrix from full NxN tile storage to band storage (LDABxN).
- **/
+ */
 void morse_pztile2band(MORSE_enum uplo, MORSE_desc_t *A, MORSE_desc_t *B,
                        MORSE_sequence_t *sequence, MORSE_request_t *request)
 {

@@ -1,29 +1,21 @@
 /**
  *
- * @copyright (c) 2009-2014 The University of Tennessee and The University
- *                          of Tennessee Research Foundation.
- *                          All rights reserved.
- * @copyright (c) 2012-2014 Inria. All rights reserved.
- * @copyright (c) 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria, Univ. Bordeaux. All rights reserved.
+ * @file cblas.h
  *
- **/
-
-/**
+ * @copyright 2009-2014 The University of Tennessee and The University of
+ *                      Tennessee Research Foundation. All rights reserved.
+ * @copyright 2012-2014 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ *                      Univ. Bordeaux. All rights reserved.
  *
- *  @file cblas.h
+ ***
  *
- *  MORSE cblas header
- *  MORSE is a software package provided
- *    Inria Bordeaux Sud-Ouest,
- *    Univ. of Tennessee,
- *    Univ. of California Berkeley and
- *    Univ. of Colorado Denver.
+ * @brief Chameleon cblas header
  *
- *  @version 0.9.0
- *  @author Cedric Castagnede
- *  @date 2012-09-15
+ * @version 1.0.0
+ * @author Cedric Castagnede
+ * @date 2012-09-15
  *
- **/
+ */
 #ifndef CBLAS_H
 #define CBLAS_H
 #include <stddef.h>
