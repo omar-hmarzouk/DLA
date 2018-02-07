@@ -81,7 +81,7 @@ build_quark:
 test_starpu_branches:
   <<: *test_script
   variables:
-    TESTS_RESTRICTION: "-R \"shm_s|mpi_s\""
+    TESTS_RESTRICTION: "-R \"test_shm_s|test_mpi_s\""
     VERSION: starpu
   dependencies:
     - build_starpu
@@ -100,7 +100,7 @@ test_starpu_branches:
 test_starpu_master:
   <<: *test_script
   variables:
-    TESTS_RESTRICTION: ""
+    TESTS_RESTRICTION: "-R test_"
     VERSION: starpu
   dependencies:
     - build_starpu
@@ -117,7 +117,7 @@ test_starpu_master:
 test_starpu_simgrid_branches:
   <<: *test_script
   variables:
-    TESTS_RESTRICTION: "-R \"shm_s|mpi_s\""
+    TESTS_RESTRICTION: "-R \"test_shm_s|test_mpi_s\""
     VERSION: starpu_simgrid
   dependencies:
     - build_starpu_simgrid
@@ -136,7 +136,7 @@ test_starpu_simgrid_branches:
 test_starpu_simgrid_master:
   <<: *test_script
   variables:
-    TESTS_RESTRICTION: ""
+    TESTS_RESTRICTION: "-R test_"
     VERSION: starpu_simgrid
   dependencies:
     - build_starpu_simgrid
@@ -153,7 +153,7 @@ test_starpu_simgrid_master:
 test_quark_branches:
   <<: *test_script
   variables:
-    TESTS_RESTRICTION: "-R \"shm_s|mpi_s\""
+    TESTS_RESTRICTION: "-R \"test_shm_s|test_mpi_s\""
     VERSION: quark
   dependencies:
     - build_quark
@@ -172,7 +172,7 @@ test_quark_branches:
 test_quark_master:
   <<: *test_script
   variables:
-    TESTS_RESTRICTION: ""
+    TESTS_RESTRICTION: "-R test_"
     VERSION: quark
   dependencies:
     - build_quark
