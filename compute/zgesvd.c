@@ -622,12 +622,14 @@ int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
     }
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
-    if (jobu != MorseNoVec)
+    if (jobu != MorseNoVec) {
         morse_desc_mat_free( &descU );
-    if (jobvt != MorseNoVec)
+    }
+    if (jobvt != MorseNoVec) {
         morse_desc_mat_free( &descVT );
+    }
     free(E);
-    if (Dptr != NULL) {
+    if ( Dptr ) {
         morse_desc_mat_free( Dptr );
     }
     (void)D;
