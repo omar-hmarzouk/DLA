@@ -64,7 +64,7 @@ chameleon_starpu_tag_init( int user_tag_width,
 
         if ( tag_width < TAG_WIDTH_MIN ) {
             morse_error("RUNTIME_desc_create", "MPI_TAG_UB too small to identify all the data");
-            return;
+            return MORSE_ERR_OUT_OF_RESOURCES;
         }
 
         _tag_mpi_initialized_ = 1;
