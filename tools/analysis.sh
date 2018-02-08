@@ -2,7 +2,7 @@
 
 # Performs an analysis of Chameleon source code:
 # - we consider to be in Chameleon's source code root
-# - we consider having the coverage file chameleon-coverage.xml in the root directory
+# - we consider having the coverage file chameleon_coverage.xml in the root directory
 # - we consider having cppcheck, rats, sonar-scanner programs available in the environment
 
 # filter sources:
@@ -14,9 +14,9 @@
 # Undefine this because not relevant in our configuration
 export UNDEFINITIONS="-UCHAMELEON_USE_OPENCL -UWIN32 -UWIN64 -U_MSC_EXTENSIONS -U_MSC_VER -U__SUNPRO_C -U__SUNPRO_CC -U__sun -Usun -U__cplusplus"
 # run cppcheck analysis
-cppcheck -v -f --language=c --platform=unix64 --enable=all --xml --xml-version=2 --suppress=missingIncludeSystem ${UNDEFINITIONS} --file-list=./filelist.txt 2> chameleon-cppcheck.xml
+cppcheck -v -f --language=c --platform=unix64 --enable=all --xml --xml-version=2 --suppress=missingIncludeSystem ${UNDEFINITIONS} --file-list=./filelist.txt 2> chameleon_cppcheck.xml
 # run rats analysis
-rats -w 3 --xml  `cat filelist.txt` > chameleon-rats.xml
+rats -w 3 --xml  `cat filelist.txt` > chameleon_rats.xml
 
 # create the sonarqube config file
 cat > sonar-project.properties << EOF
@@ -35,10 +35,10 @@ sonar.sourceEncoding=UTF-8
 sonar.cxx.compiler.charset=UTF-8
 sonar.cxx.compiler.parser=GCC
 sonar.cxx.compiler.regex=^(.*):(\\d+):\\d+: warning: (.*)\\[(.*)\\]$
-sonar.cxx.compiler.reportPath=chameleon-build-starpu.log, chameleon-build-starpu-simgrid.log, chameleon-build-quark.log
-sonar.cxx.coverage.reportPath=chameleon-coverage.xml
-sonar.cxx.cppcheck.reportPath=chameleon-cppcheck.xml
-sonar.cxx.rats.reportPath=chameleon-rats.xml
+sonar.cxx.compiler.reportPath=chameleon_starpu.log, chameleon_starpu_simgrid.log, chameleon_quark.log
+sonar.cxx.coverage.reportPath=chameleon_coverage.xml
+sonar.cxx.cppcheck.reportPath=chameleon_cppcheck.xml
+sonar.cxx.rats.reportPath=chameleon_rats.xml
 EOF
 
 # run sonar analysis + publish on sonarqube-dev

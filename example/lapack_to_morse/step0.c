@@ -71,9 +71,10 @@ int main(int argc, char *argv[]) {
      *     - set of RHS vectors B       : size N x NRHS
      *     - set of solutions vectors X : size N x NRHS
      */
-    PASTE_CODE_ALLOCATE_MATRIX( A, double, N, N    );
-    PASTE_CODE_ALLOCATE_MATRIX( B, double, N, NRHS );
-    PASTE_CODE_ALLOCATE_MATRIX( X, double, N, NRHS );
+    double *A    = malloc( N * N    * sizeof(double) );
+    double *Acpy = malloc( N * N    * sizeof(double) );
+    double *B    = malloc( N * NRHS * sizeof(double) );
+    double *X    = malloc( N * NRHS * sizeof(double) );
 
     /* generate A matrix with random values such that it is spd */
     CORE_dplgsy( (double)N, N, N, A, N, N, N, N, 51 );
@@ -82,8 +83,7 @@ int main(int argc, char *argv[]) {
     CORE_dplrnt( N, NRHS, B, N, N, N, NRHS, 5673 );
 
     /* copy A before facto. in order to check the result */
-    PASTE_CODE_ALLOCATE_MATRIX( Acpy, double, N, N );
-    memcpy(Acpy, A, N*N*sizeof(double));
+    memcpy(Acpy, A, N * N * sizeof(double));
 
     /* copy B in X before solving */
     memcpy(X, B, N*NRHS*sizeof(double));

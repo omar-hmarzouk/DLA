@@ -143,8 +143,9 @@ int CORE_ztsmlq_hetra1( MORSE_enum side, MORSE_enum trans,
 
     /* in-place transposition of A1 */
     for (j = 0; j < n1; j++){
+#if defined(PRECISION_z) || defined(PRECISION_c)
         A1[j + j*lda1] = conj(A1[j + j*lda1]);
-
+#endif
         for (i = j+1; i < m1; i++){
             *WORK = *(A1 + i + j*lda1);
             *(A1 + i + j*lda1) = conj(*(A1 + j + i*lda1));
@@ -159,8 +160,9 @@ int CORE_ztsmlq_hetra1( MORSE_enum side, MORSE_enum trans,
 
     /* in-place transposition of A1 */
     for (j = 0; j < n1; j++){
+#if defined(PRECISION_z) || defined(PRECISION_c)
         A1[j + j*lda1] = conj(A1[j + j*lda1]);
-
+#endif
         for (i = j+1; i < m1; i++){
             *WORK = *(A1 + i + j*lda1);
             *(A1 + i + j*lda1) = conj(*(A1 + j + i*lda1));
