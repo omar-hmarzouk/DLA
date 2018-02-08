@@ -100,7 +100,7 @@ test_starpu_branches:
 test_starpu_master:
   <<: *test_script
   variables:
-    TESTS_RESTRICTION: "-R test_"
+    TESTS_RESTRICTION: "-R test_shm_|test_mpi_"
     VERSION: starpu
   dependencies:
     - build_starpu
