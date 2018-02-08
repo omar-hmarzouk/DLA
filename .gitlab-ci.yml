@@ -39,7 +39,7 @@ before_script:
              -D ExperimentalCoverage
              -D ExperimentalSubmit
              | tee -a ../chameleon_${VERSION}.log")
-    - lcov --directory build --capture --output-file ../chameleon_${VERSION}.lcov
+    - lcov --directory build --capture --output-file ./chameleon_${VERSION}.lcov
 
 build_starpu:
   <<: *build_script
