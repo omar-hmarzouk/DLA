@@ -41,7 +41,7 @@ CORE_zssssm_parsec( parsec_execution_stream_t *context,
     int *IPIV;
 
     parsec_dtd_unpack_args(
-        this_task,   &m1,   &n1,   &m2,   &n2,   &k,   &ib, &A1,   &lda1, &A2,   &lda2, &L1,   &ldl1, &L2,   &ldl2, &IPIV );
+        this_task, &m1, &n1, &m2, &n2, &k, &ib, &A1, &lda1, &A2, &lda2, &L1, &ldl1, &L2, &ldl2, &IPIV );
 
     CORE_zssssm( m1, n1, m2, n2, k, ib, A1, lda1, A2, lda2, L1, ldl1, L2, ldl2, IPIV );
 
@@ -75,6 +75,8 @@ void MORSE_TASK_zssssm(const MORSE_option_t *options,
         sizeof(int),           &ldl1,                              VALUE,
         PASSED_BY_REF,         RTBLKADDR( L2, MORSE_Complex64_t, L2m, L2n ),     INPUT,
         sizeof(int),           &ldl2,                              VALUE,
-        sizeof(int)*nb,        IPIV,                               SCRATCH,
+        sizeof(int*),          &IPIV,                              VALUE,
         PARSEC_DTD_ARG_END );
+
+    (void)nb;
 }
