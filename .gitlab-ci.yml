@@ -92,7 +92,7 @@ test_starpu_master:
 sonar:
   stage: analysis
   dependencies:
-    - test_starpu_master
+    - test_starpu_branches
   artifacts:
     name: chameleon_analysis
     expire_in: 1 week
