@@ -81,7 +81,7 @@ build_quark:
 test_starpu_branches:
   <<: *test_script
   variables:
-    TESTS_RESTRICTION: "-R \"test_shm_s|test_mpi_s\""
+    TESTS_RESTRICTION: "-R \"test_shm_|test_mpi_\""
     VERSION: starpu
   dependencies:
     - build_starpu
@@ -114,84 +114,10 @@ test_starpu_master:
   only:
     - master@solverstack/chameleon
 
-test_starpu_simgrid_branches:
-  <<: *test_script
-  variables:
-    TESTS_RESTRICTION: "-R \"test_shm_s|test_mpi_s\""
-    VERSION: starpu_simgrid
-  dependencies:
-    - build_starpu_simgrid
-  artifacts:
-    name: test_starpu_simgrid
-    expire_in: 48 hours
-    paths:
-      - build
-      - chameleon_starpu_simgrid.log
-      - chameleon_starpu_simgrid.lcov
-  only:
-    - branches
-  except:
-    - master
-
-test_starpu_simgrid_master:
-  <<: *test_script
-  variables:
-    TESTS_RESTRICTION: "-R \"test_shm_|test_mpi_\""
-    VERSION: starpu_simgrid
-  dependencies:
-    - build_starpu_simgrid
-  artifacts:
-    name: test_starpu_simgrid
-    expire_in: 48 hours
-    paths:
-      - build
-      - chameleon_starpu_simgrid.log
-      - chameleon_starpu_simgrid.lcov
-  only:
-    - master@solverstack/chameleon
-
-test_quark_branches:
-  <<: *test_script
-  variables:
-    TESTS_RESTRICTION: "-R \"test_shm_s|test_mpi_s\""
-    VERSION: quark
-  dependencies:
-    - build_quark
-  artifacts:
-    name: test_quark
-    expire_in: 48 hours
-    paths:
-      - build
-      - chameleon_quark.log
-      - chameleon_quark.lcov
-  only:
-    - branches
-  except:
-    - master
-
-test_quark_master:
-  <<: *test_script
-  variables:
-    TESTS_RESTRICTION: "-R \"test_shm_|test_mpi_\""
-    VERSION: quark
-  dependencies:
-    - build_quark
-  artifacts:
-    name: test_quark
-    expire_in: 48 hours
-    paths:
-      - build
-      - chameleon_quark.log
-      - chameleon_quark.lcov
-  only:
-    - master@solverstack/chameleon
-
 sonar:
   stage: analysis
   dependencies:
     - test_starpu_master
-    - test_starpu_simgrid_master
-    - test_quark_master
   artifacts:
     name: chameleon_analysis
     expire_in: 1 week
@@ -204,13 +130,9 @@ sonar:
   script:
     - cat *.log > chameleon_build.log
     - lcov -a $PWD/chameleon_starpu.lcov
-           -a $PWD/chameleon_starpu_simgrid.lcov
-           -a $PWD/chameleon_quark.lcov
            -o $PWD/chameleon.lcov
     - lcov_cobertura.py chameleon.lcov --output chameleon_coverage.xml
     - ./tools/analysis.sh
-  only:
-    - master@solverstack/chameleon
 
 doc:
   stage: doc
