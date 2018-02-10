@@ -21,7 +21,6 @@
 #include "chameleon_parsec.h"
 #include <parsec/data.h>
 #include <parsec/datatype.h>
-//#include <parsec/data_dist/matrix/matrix.h>
 #include <parsec/arena.h>
 
 static int parsec_global_arena_index = 0;
@@ -250,7 +249,7 @@ void RUNTIME_desc_create( MORSE_desc_t *mdesc )
     parsec_dtd_taskpool_new();
     /* Internal limitation of PaRSEC */
     assert(parsec_global_arena_index < 16);
-    pdesc->arena_index = parsec_global_arena_index++;
+    pdesc->arena_index = 0; /*parsec_global_arena_index++;*/
 
     parsec_datatype_t datatype;
     switch(mdesc->dtyp) {

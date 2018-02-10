@@ -22,6 +22,10 @@
 
 #include <parsec.h>
 #include <parsec/insert_function.h>
+#include <parsec/data_dist/matrix/matrix.h>
+
+/* Undefined PaRSEC definition of BLKLDD */
+#undef BLKLDD
 
 #include "control/common.h"
 
