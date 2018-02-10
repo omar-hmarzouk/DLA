@@ -82,7 +82,7 @@ void MORSE_TASK_zplssq( const MORSE_option_t *options,
     parsec_dtd_taskpool_insert_task(
         PARSEC_dtd_taskpool, CORE_zplssq_parsec, options->priority, "plssq",
         PASSED_BY_REF,         RTBLKADDR( SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn ),    INPUT,
-        PASSED_BY_REF,         RTBLKADDR( SCLSSQ, double, SCLSSQm, SCLSSQn ),                INOUT,
+        PASSED_BY_REF,         RTBLKADDR( SCLSSQ, double, SCLSSQm, SCLSSQn ),                INOUT | AFFINITY,
         PARSEC_DTD_ARG_END );
 }
 
@@ -108,6 +108,6 @@ void MORSE_TASK_zplssq2( const MORSE_option_t *options,
 
     parsec_dtd_taskpool_insert_task(
         PARSEC_dtd_taskpool, CORE_zplssq2_parsec, options->priority, "plssq2",
-        PASSED_BY_REF,         RTBLKADDR( RESULT, double, RESULTm, RESULTn ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( RESULT, double, RESULTm, RESULTn ),     INOUT | AFFINITY,
         PARSEC_DTD_ARG_END );
 }

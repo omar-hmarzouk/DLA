@@ -65,7 +65,7 @@ void MORSE_TASK_zlacpyx( const MORSE_option_t *options,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),   INPUT,
         sizeof(int),           &lda,                       VALUE,
         sizeof(int),           &displB,                    VALUE,
-        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),   OUTPUT,
+        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),   OUTPUT | AFFINITY,
         sizeof(int),           &ldb,                       VALUE,
         PARSEC_DTD_ARG_END );
     (void)nb;

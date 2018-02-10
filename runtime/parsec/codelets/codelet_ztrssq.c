@@ -57,6 +57,6 @@ void MORSE_TASK_ztrssq( const MORSE_option_t *options,
         sizeof(int),            &n,                     VALUE,
         PASSED_BY_REF,          RTBLKADDR( A, MORSE_Complex64_t, Am, An ),                    INPUT,
         sizeof(int),            &lda,                   VALUE,
-        PASSED_BY_REF,          RTBLKADDR( SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn ),    INOUT,
+        PASSED_BY_REF,          RTBLKADDR( SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn ),    INOUT | AFFINITY,
         PARSEC_DTD_ARG_END );
 }

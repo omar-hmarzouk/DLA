@@ -109,7 +109,7 @@ void MORSE_TASK_zgessm(const MORSE_option_t *options,
         sizeof(int),           &ldl,                              VALUE,
         PASSED_BY_REF,         RTBLKADDR( D, MORSE_Complex64_t, Dm, Dn ),     INPUT,
         sizeof(int),           &ldd,                              VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | AFFINITY,
         sizeof(int),           &lda,                              VALUE,
         PARSEC_DTD_ARG_END );
 

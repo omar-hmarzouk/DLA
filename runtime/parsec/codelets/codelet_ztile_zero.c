@@ -55,7 +55,7 @@ void MORSE_TASK_ztile_zero( const MORSE_option_t *options,
         sizeof(int),       &X2,                       VALUE,
         sizeof(int),       &Y1,                       VALUE,
         sizeof(int),       &Y2,                       VALUE,
-        PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT,
+        PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT | AFFINITY,
         sizeof(int),       &lda,                      VALUE,
         PARSEC_DTD_ARG_END );
 }

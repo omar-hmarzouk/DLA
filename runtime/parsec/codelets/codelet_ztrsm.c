@@ -60,7 +60,7 @@ void MORSE_TASK_ztrsm(const MORSE_option_t *options,
         sizeof(MORSE_Complex64_t),           &alpha,      VALUE,
         PASSED_BY_REF,     RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT | morse_parsec_get_arena_index(A),
         sizeof(int),           &lda,                      VALUE,
-        PASSED_BY_REF,     RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT | morse_parsec_get_arena_index(A) | AFFINITY,
+        PASSED_BY_REF,     RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT | AFFINITY | morse_parsec_get_arena_index(A),
         sizeof(int),           &ldb,                      VALUE,
         PARSEC_DTD_ARG_END );
 

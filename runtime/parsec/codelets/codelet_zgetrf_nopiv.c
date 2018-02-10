@@ -100,7 +100,7 @@ void MORSE_TASK_zgetrf_nopiv(const MORSE_option_t *options,
         sizeof(int),           &m,                          VALUE,
         sizeof(int),           &n,                          VALUE,
         sizeof(int),           &ib,                         VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | AFFINITY,
         sizeof(int),           &lda,                        VALUE,
         sizeof(int),           &iinfo,                      VALUE,
         PARSEC_DTD_ARG_END );

@@ -70,7 +70,7 @@ void MORSE_TASK_zsymm(const MORSE_option_t *options,
         PASSED_BY_REF,          RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INPUT,
         sizeof(int),            &ldb,               VALUE,
         sizeof(MORSE_Complex64_t),  &beta,          VALUE,
-        PASSED_BY_REF,          RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT,
+        PASSED_BY_REF,          RTBLKADDR( C, MORSE_Complex64_t, Cm, Cn ),     INOUT | AFFINITY,
         sizeof(int),            &ldc,               VALUE,
         PARSEC_DTD_ARG_END );
 

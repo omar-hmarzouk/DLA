@@ -37,7 +37,7 @@ CORE_zttqrt_parsec( parsec_execution_stream_t *context,
     MORSE_Complex64_t *WORK;
 
     parsec_dtd_unpack_args(
-        this_task,   &m,   &n,   &ib, &A1,   &lda1, &A2,   &lda2, &T,   &ldt, &TAU, &WORK );
+        this_task, &m, &n, &ib, &A1, &lda1, &A2, &lda2, &T, &ldt, &TAU, &WORK );
 
     CORE_zttqrt( m, n, ib, A1, lda1, A2, lda2, T, ldt, TAU, WORK );
 
@@ -60,7 +60,7 @@ void MORSE_TASK_zttqrt(const MORSE_option_t *options,
         sizeof(int),           &ib,                                VALUE,
         PASSED_BY_REF,         RTBLKADDR( A1, MORSE_Complex64_t, A1m, A1n ),     INOUT,
         sizeof(int),           &lda1,                              VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A2, MORSE_Complex64_t, A2m, A2n ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( A2, MORSE_Complex64_t, A2m, A2n ),     INOUT | AFFINITY,
         sizeof(int),           &lda2,                              VALUE,
         PASSED_BY_REF,         RTBLKADDR( T, MORSE_Complex64_t, Tm, Tn ),        OUTPUT,
         sizeof(int),           &ldt,                               VALUE,

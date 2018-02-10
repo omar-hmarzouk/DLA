@@ -58,7 +58,7 @@ void MORSE_TASK_zlag2c(const MORSE_option_t *options,
         sizeof(int),                        &n,         VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
         sizeof(int),                        &lda,       VALUE,
-        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex32_t, Bm, Bn ),     OUTPUT,
+        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex32_t, Bm, Bn ),     OUTPUT | AFFINITY,
         sizeof(int),                        &ldb,       VALUE,
         PARSEC_DTD_ARG_END );
 }
@@ -100,7 +100,7 @@ void MORSE_TASK_clag2z(const MORSE_option_t *options,
         sizeof(int),                        &n,         VALUE,
         PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex32_t, Am, An ),     INPUT,
         sizeof(int),                        &lda,       VALUE,
-        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     OUTPUT | AFFINITY,
         sizeof(int),                        &ldb,       VALUE,
         PARSEC_DTD_ARG_END );
 }

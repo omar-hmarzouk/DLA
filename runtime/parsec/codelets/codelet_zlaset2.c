@@ -85,7 +85,7 @@ void MORSE_TASK_zlaset2(const MORSE_option_t *options,
         sizeof(int),                       &M,         VALUE,
         sizeof(int),                       &N,         VALUE,
         sizeof(MORSE_enum),                &alpha,     VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     OUTPUT,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ), OUTPUT | AFFINITY,
         sizeof(int),                       &LDA,       VALUE,
         PARSEC_DTD_ARG_END );
 }

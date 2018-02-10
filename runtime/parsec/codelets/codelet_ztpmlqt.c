@@ -77,7 +77,7 @@ void MORSE_TASK_ztpmlqt( const MORSE_option_t *options,
         sizeof(int),        &ldt,   VALUE,
         PASSED_BY_REF,       RTBLKADDR( A, MORSE_Complex64_t, Am, An ), INOUT,
         sizeof(int),        &lda,   VALUE,
-        PASSED_BY_REF,       RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ), INOUT,
+        PASSED_BY_REF,       RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ), INOUT | AFFINITY,
         sizeof(int),        &ldb,   VALUE,
         sizeof(MORSE_Complex64_t)*ib*nb, NULL, SCRATCH,
         PARSEC_DTD_ARG_END );
