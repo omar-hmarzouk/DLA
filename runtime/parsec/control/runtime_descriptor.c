@@ -23,7 +23,18 @@
 #include <parsec/datatype.h>
 #include <parsec/arena.h>
 
-static int parsec_global_arena_index = 0;
+/* Variable parsec_dtd_no_of_arenas is private and cannot be changed */
+#define MORSE_PARSEC_DTD_NO_OF_ARENA 16 /**< Number of arenas available per DTD */
+
+typedef struct morse_parsec_arena_s {
+    /* int mb; */
+    /* int nb; */
+    /* MORSE_enum dtype; */
+    size_t size;
+} morse_parsec_arena_t;
+
+static int morse_parsec_nb_arenas = 0;
+static morse_parsec_arena_t morse_parsec_registered_arenas[MORSE_PARSEC_DTD_NO_OF_ARENA] = { { 0 } };
 
 void RUNTIME_comm_set_tag_sizes( int user_tag_width,
                                  int user_tag_sep )
@@ -42,18 +53,6 @@ void RUNTIME_free( void *ptr, size_t size )
     (void)size;
     free(ptr);
     return;
-}
-
-struct morse_parsec_desc_s {
-    parsec_data_collection_t  super;
-    MORSE_desc_t  *desc;
-    parsec_data_t **data_map;
-    int arena_index;
-};
-
-int
-morse_parsec_get_arena_index(const MORSE_desc_t *desc) {
-    return ((morse_parsec_desc_t *)desc->schedopt)->arena_index;
 }
 
 static inline void
@@ -246,23 +245,47 @@ void RUNTIME_desc_create( MORSE_desc_t *mdesc )
 
     /* taskpool init to bypass a requirement of PaRSEC  */
 #if defined(CHAMELEON_USE_MPI)
-    parsec_dtd_taskpool_new();
-    /* Internal limitation of PaRSEC */
-    assert(parsec_global_arena_index < 16);
-    pdesc->arena_index = 0; /*parsec_global_arena_index++;*/
+    /* Look if an arena already exists for this descriptor */
+    {
+        morse_parsec_arena_t *arena = morse_parsec_registered_arenas;
+        size_t size = mdesc->mb * mdesc->nb * MORSE_Element_Size(mdesc->dtyp);
+        int i;
 
-    parsec_datatype_t datatype;
-    switch(mdesc->dtyp) {
-    case MorseInteger:       datatype = parsec_datatype_int32_t; break;
-    case MorseRealFloat:     datatype = parsec_datatype_float_t; break;
-    case MorseRealDouble:    datatype = parsec_datatype_double_t; break;
-    case MorseComplexFloat:  datatype = parsec_datatype_complex_t; break;
-    case MorseComplexDouble: datatype = parsec_datatype_double_complex_t; break;
-    default: morse_fatal_error("MORSE_Element_Size", "undefined type"); break;
+        for(i=0; i<morse_parsec_nb_arenas; i++, arena++) {
+            if ( size == arena->size) {
+                pdesc->arena_index = i;
+                break;
+            }
+        }
+
+        if (i == morse_parsec_nb_arenas) {
+            parsec_datatype_t datatype;
+
+            /* Create a taskpool to make sur the system is initialized */
+            if ( i == 0 ) {
+                parsec_taskpool_t *tp = parsec_dtd_taskpool_new();
+                parsec_taskpool_free( tp );
+            }
+
+            /* Internal limitation of PaRSEC */
+            assert(morse_parsec_nb_arenas < MORSE_PARSEC_DTD_NO_OF_ARENA);
+
+            switch(mdesc->dtyp) {
+            case MorseInteger:       datatype = parsec_datatype_int32_t; break;
+            case MorseRealFloat:     datatype = parsec_datatype_float_t; break;
+            case MorseRealDouble:    datatype = parsec_datatype_double_t; break;
+            case MorseComplexFloat:  datatype = parsec_datatype_complex_t; break;
+            case MorseComplexDouble: datatype = parsec_datatype_double_complex_t; break;
+            default: morse_fatal_error("MORSE_Element_Size", "undefined type"); break;
+            }
+
+            /* Register the new arena */
+            parsec_matrix_add2arena_tile( parsec_dtd_arenas[i], datatype, size );
+            arena->size = size;
+            pdesc->arena_index = i;
+            morse_parsec_nb_arenas++;
+        }
     }
-
-    parsec_matrix_add2arena_tile( parsec_dtd_arenas[pdesc->arena_index], datatype,
-                                  mdesc->mb * mdesc->nb * MORSE_Element_Size(mdesc->dtyp) );
 #endif
     /* /\* Overwrite the leading dimensions to store the padding *\/ */
     /* mdesc->llm = mdesc->mb * mdesc->lmt; */

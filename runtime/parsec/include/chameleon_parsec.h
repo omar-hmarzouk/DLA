@@ -29,10 +29,19 @@
 
 #include "control/common.h"
 
-struct morse_parsec_desc_s;
+struct morse_parsec_desc_s {
+    parsec_data_collection_t super;
+    int                      arena_index;
+    MORSE_desc_t            *desc;
+    parsec_data_t          **data_map;
+};
+
 typedef struct morse_parsec_desc_s morse_parsec_desc_t;
 
-int morse_parsec_get_arena_index(const MORSE_desc_t *desc);
+static inline int
+morse_parsec_get_arena_index(const MORSE_desc_t *desc) {
+    return ((morse_parsec_desc_t *)desc->schedopt)->arena_index;
+}
 
 /*
  * Access to block pointer and leading dimension
