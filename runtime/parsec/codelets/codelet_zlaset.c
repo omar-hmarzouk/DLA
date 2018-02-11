@@ -90,7 +90,7 @@ void MORSE_TASK_zlaset(const MORSE_option_t *options,
         sizeof(int),                     &N,           VALUE,
         sizeof(MORSE_Complex64_t),       &alpha,       VALUE,
         sizeof(MORSE_Complex64_t),       &beta,        VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ), OUTPUT | AFFINITY,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ), morse_parsec_get_arena_index( A ) | OUTPUT | AFFINITY,
         sizeof(int),                     &LDA,         VALUE,
         PARSEC_DTD_ARG_END );
 }

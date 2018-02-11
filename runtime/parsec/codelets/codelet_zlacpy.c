@@ -62,10 +62,10 @@ void MORSE_TASK_zlacpyx( const MORSE_option_t *options,
         sizeof(int),           &m,                         VALUE,
         sizeof(int),           &n,                         VALUE,
         sizeof(int),           &displA,                    VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),   INPUT,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ), morse_parsec_get_arena_index( A ) | INPUT,
         sizeof(int),           &lda,                       VALUE,
         sizeof(int),           &displB,                    VALUE,
-        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),   OUTPUT | AFFINITY,
+        PASSED_BY_REF,         RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ), morse_parsec_get_arena_index( B ) | OUTPUT | AFFINITY,
         sizeof(int),           &ldb,                       VALUE,
         PARSEC_DTD_ARG_END );
     (void)nb;

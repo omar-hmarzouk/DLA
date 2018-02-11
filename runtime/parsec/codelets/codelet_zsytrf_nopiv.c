@@ -50,7 +50,7 @@ void MORSE_TASK_zsytrf_nopiv(const MORSE_option_t *options,
         PARSEC_dtd_taskpool, CORE_zsytrf_nopiv_parsec, options->priority, "sytrf_nopiv",
         sizeof(MORSE_enum),              &uplo,                VALUE,
         sizeof(int),                     &n,                   VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT | AFFINITY,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ), morse_parsec_get_arena_index( A ) | INOUT | AFFINITY,
         sizeof(int),                     &lda,                 VALUE,
         sizeof(int),                     &iinfo,               VALUE,
         PARSEC_DTD_ARG_END );
