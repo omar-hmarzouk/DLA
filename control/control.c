@@ -105,6 +105,10 @@ int MORSE_InitPar(int ncpus, int ncudas, int nthreads_per_worker)
 #  endif
 #endif
     RUNTIME_init( morse, ncpus, ncudas, nthreads_per_worker );
+
+    morse->my_mpi_rank   = RUNTIME_comm_rank( morse );
+    morse->mpi_comm_size = RUNTIME_comm_size( morse );
+
     return MORSE_SUCCESS;
 }
 
