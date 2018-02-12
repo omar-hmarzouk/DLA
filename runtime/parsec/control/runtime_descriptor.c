@@ -23,6 +23,8 @@
 #include <parsec/datatype.h>
 #include <parsec/arena.h>
 
+#if defined(CHAMELEON_USE_MPI)
+
 /* Variable parsec_dtd_no_of_arenas is private and cannot be changed */
 #define MORSE_PARSEC_DTD_NO_OF_ARENA 16 /**< Number of arenas available per DTD */
 
@@ -35,6 +37,8 @@ typedef struct morse_parsec_arena_s {
 
 static int morse_parsec_nb_arenas = 0;
 static morse_parsec_arena_t morse_parsec_registered_arenas[MORSE_PARSEC_DTD_NO_OF_ARENA] = { { 0 } };
+
+#endif
 
 void RUNTIME_comm_set_tag_sizes( int user_tag_width,
                                  int user_tag_sep )
