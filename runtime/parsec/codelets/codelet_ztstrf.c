@@ -43,7 +43,7 @@ CORE_ztstrf_parsec( parsec_execution_stream_t *context,
     int info;
 
     parsec_dtd_unpack_args(
-        this_task,   &m,   &n,   &ib,   &nb, &U,   &ldu, &A,   &lda, &L,   &ldl, &IPIV, &WORK,   &ldwork,   &check_info,   &iinfo );
+        this_task, &m, &n, &ib, &nb, &U, &ldu, &A, &lda, &L, &ldl, &IPIV, &WORK, &ldwork, &check_info, &iinfo );
 
     CORE_ztstrf( m, n, ib, nb, U, ldu, A, lda, L, ldl, IPIV, WORK, ldwork, &info );
 
@@ -67,16 +67,18 @@ void MORSE_TASK_ztstrf(const MORSE_option_t *options,
         sizeof(int),           &n,                                VALUE,
         sizeof(int),           &ib,                               VALUE,
         sizeof(int),           &nb,                               VALUE,
-        PASSED_BY_REF,         RTBLKADDR( U, MORSE_Complex64_t, Um, Un ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( U, MORSE_Complex64_t, Um, Un ), morse_parsec_get_arena_index( U ) | INOUT,
         sizeof(int),           &ldu,                              VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ), morse_parsec_get_arena_index( A ) | INOUT | AFFINITY,
         sizeof(int),           &lda,                              VALUE,
-        PASSED_BY_REF,         RTBLKADDR( L, MORSE_Complex64_t, Lm, Ln ),     OUTPUT,
+        PASSED_BY_REF,         RTBLKADDR( L, MORSE_Complex64_t, Lm, Ln ), morse_parsec_get_arena_index( L ) | OUTPUT,
         sizeof(int),           &ldl,                              VALUE,
-        sizeof(int)*nb,        IPIV,                              SCRATCH,
+        sizeof(int*),          &IPIV,                             VALUE,
         sizeof(MORSE_Complex64_t)*ib*nb,    NULL,                 SCRATCH,
         sizeof(int),           &nb,                               VALUE,
         sizeof(int),           &check_info,                       VALUE,
         sizeof(int),           &iinfo,                            VALUE,
         PARSEC_DTD_ARG_END );
+
+    (void)nb;
 }

@@ -112,9 +112,9 @@ void MORSE_TASK_zgetrf_incpiv( const MORSE_option_t *options,
         sizeof(int),           &m,                                VALUE,
         sizeof(int),           &n,                                VALUE,
         sizeof(int),           &ib,                               VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ), morse_parsec_get_arena_index( A ) | INOUT | AFFINITY,
         sizeof(int),           &lda,                              VALUE,
-        sizeof(int)*nb,        IPIV,                              SCRATCH,
+        sizeof(int*),          &IPIV,                             VALUE,
         sizeof(int),           &check_info,                       VALUE,
         sizeof(int),           &iinfo,                            VALUE,
         PARSEC_DTD_ARG_END );
@@ -123,4 +123,5 @@ void MORSE_TASK_zgetrf_incpiv( const MORSE_option_t *options,
     (void)Lm;
     (void)Ln;
     (void)ldl;
+    (void)nb;
 }

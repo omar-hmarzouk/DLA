@@ -121,10 +121,10 @@ void MORSE_TASK_ztradd(const MORSE_option_t *options,
         sizeof(int),               &m,     VALUE,
         sizeof(int),               &n,     VALUE,
         sizeof(MORSE_Complex64_t), &alpha, VALUE,
-        PASSED_BY_REF,              RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
+        PASSED_BY_REF,              RTBLKADDR( A, MORSE_Complex64_t, Am, An ), morse_parsec_get_arena_index( A ) | INPUT,
         sizeof(int),               &lda,   VALUE,
         sizeof(MORSE_Complex64_t), &beta,  VALUE,
-        PASSED_BY_REF,              RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ),     INOUT,
+        PASSED_BY_REF,              RTBLKADDR( B, MORSE_Complex64_t, Bm, Bn ), morse_parsec_get_arena_index( B ) | INOUT | AFFINITY,
         sizeof(int),               &ldb,   VALUE,
         PARSEC_DTD_ARG_END );
 

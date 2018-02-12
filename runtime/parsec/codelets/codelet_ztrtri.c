@@ -54,7 +54,7 @@ void MORSE_TASK_ztrtri( const MORSE_option_t *options,
         sizeof(MORSE_enum),         &uplo,                  VALUE,
         sizeof(MORSE_enum),         &diag,                  VALUE,
         sizeof(int),                &n,                     VALUE,
-        PASSED_BY_REF,              RTBLKADDR( A, MORSE_Complex64_t, Am, An ),   INOUT,
+        PASSED_BY_REF,              RTBLKADDR( A, MORSE_Complex64_t, Am, An ), morse_parsec_get_arena_index( A ) | INOUT | AFFINITY,
         sizeof(int),                &lda,                   VALUE,
         sizeof(int),                &iinfo,                 VALUE,
         PARSEC_DTD_ARG_END );

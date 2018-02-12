@@ -104,12 +104,14 @@ void MORSE_TASK_zgessm(const MORSE_option_t *options,
         sizeof(int),           &n,                                VALUE,
         sizeof(int),           &k,                                VALUE,
         sizeof(int),           &ib,                               VALUE,
-        sizeof(int)*nb,        IPIV,                              SCRATCH,
-        PASSED_BY_REF,         RTBLKADDR( L, MORSE_Complex64_t, Lm, Ln ),     INPUT,
+        sizeof(int*),          &IPIV,                             VALUE,
+        PASSED_BY_REF,         RTBLKADDR( L, MORSE_Complex64_t, Lm, Ln ), morse_parsec_get_arena_index( L ) | INPUT,
         sizeof(int),           &ldl,                              VALUE,
-        PASSED_BY_REF,         RTBLKADDR( D, MORSE_Complex64_t, Dm, Dn ),     INPUT,
+        PASSED_BY_REF,         RTBLKADDR( D, MORSE_Complex64_t, Dm, Dn ), morse_parsec_get_arena_index( D ) | INPUT,
         sizeof(int),           &ldd,                              VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INOUT,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ), morse_parsec_get_arena_index( A ) | INOUT | AFFINITY,
         sizeof(int),           &lda,                              VALUE,
         PARSEC_DTD_ARG_END );
+
+    (void)nb;
 }

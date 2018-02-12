@@ -61,7 +61,7 @@ void MORSE_TASK_zhe2ge(const MORSE_option_t *options,
         sizeof(int),        &n,      VALUE,
         PASSED_BY_REF,       RTBLKADDR(A, MORSE_Complex64_t, Am, An), INPUT ,
         sizeof(int),        &lda,    VALUE,
-        PASSED_BY_REF,       RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn), OUTPUT,
+        PASSED_BY_REF,       RTBLKADDR(B, MORSE_Complex64_t, Bm, Bn), OUTPUT | AFFINITY,
         sizeof(int),        &ldb,    VALUE,
         PARSEC_DTD_ARG_END );
 

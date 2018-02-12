@@ -50,8 +50,8 @@ void MORSE_TASK_zhessq( const MORSE_option_t *options,
         PARSEC_dtd_taskpool, CORE_zhessq_parsec, options->priority, "hessq",
         sizeof(int),           &uplo,               VALUE,
         sizeof(int),           &n,                  VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),                    INPUT,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ), morse_parsec_get_arena_index( A ) | INPUT,
         sizeof(int),           &lda,                VALUE,
-        PASSED_BY_REF,         RTBLKADDR( SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn ),    INOUT,
+        PASSED_BY_REF,         RTBLKADDR( SCALESUMSQ, double, SCALESUMSQm, SCALESUMSQn ),    INOUT | AFFINITY,
         PARSEC_DTD_ARG_END );
 }

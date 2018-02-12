@@ -55,10 +55,10 @@ void MORSE_TASK_zlanhe(const MORSE_option_t *options,
         sizeof(MORSE_enum),            &norm,          VALUE,
         sizeof(MORSE_enum),            &uplo,          VALUE,
         sizeof(int),                   &N,             VALUE,
-        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ),     INPUT,
+        PASSED_BY_REF,         RTBLKADDR( A, MORSE_Complex64_t, Am, An ), morse_parsec_get_arena_index( A ) | INPUT,
         sizeof(int),                   &LDA,           VALUE,
         sizeof(double)*szeW,           NULL,           SCRATCH,
-        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),     OUTPUT,
+        PASSED_BY_REF,         RTBLKADDR( B, double, Bm, Bn ),            OUTPUT | AFFINITY,
         PARSEC_DTD_ARG_END );
 
     (void)NB;

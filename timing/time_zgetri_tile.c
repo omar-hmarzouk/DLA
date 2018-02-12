@@ -179,8 +179,8 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 
             MORSE_zlaswpc_Tile_Async( descA, 1, descA->m, piv, -1,
                                       sequence, &request[3] );
-            MORSE_Sequence_Wait(sequence);
             MORSE_Desc_Flush( descA, sequence );
+            MORSE_Sequence_Wait(sequence);
             STOP_TIMING();
 
         } else {
@@ -196,8 +196,8 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
                                       sequence, &request[3] );
 
             /* Wait for everything */
-            MORSE_Sequence_Wait( sequence );
             MORSE_Desc_Flush( descA, sequence );
+            MORSE_Sequence_Wait( sequence );
             STOP_TIMING();
 
         }
@@ -229,8 +229,8 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
             START_TIMING();
             MORSE_zgetrf_Tile_Async(descA, piv, sequence, &request[0]);
             MORSE_zgetri_Tile_Async(descA, piv, &descW, sequence, &request[1]);
-            MORSE_Sequence_Wait(sequence);
             MORSE_Desc_Flush( descA, sequence );
+            MORSE_Sequence_Wait(sequence);
             STOP_TIMING();
 
             MORSE_Sequence_Destroy(sequence);

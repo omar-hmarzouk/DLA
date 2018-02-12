@@ -78,6 +78,18 @@ build_quark:
     BUILD_OPTIONS: "-DCHAMELEON_SCHED_QUARK=ON"
     VERSION: quark
 
+build_parsec:
+  <<: *build_script
+  artifacts:
+    name: build_parsec
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon_parsec.log
+  variables:
+    BUILD_OPTIONS: "-DCHAMELEON_SCHED_PARSEC=ON"
+    VERSION: parsec
+
 test_starpu_branches:
   <<: *test_script
   variables:
@@ -186,12 +198,49 @@ test_quark_master:
   only:
     - master@solverstack/chameleon
 
+test_parsec_branches:
+  <<: *test_script
+  variables:
+    TESTS_RESTRICTION: "-R \"test_shm_s|test_mpi_s\""
+    VERSION: parsec
+  dependencies:
+    - build_parsec
+  artifacts:
+    name: test_parsec
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon_parsec.log
+      - chameleon_parsec.lcov
+  only:
+    - branches
+  except:
+    - master
+
+test_parsec_master:
+  <<: *test_script
+  variables:
+    TESTS_RESTRICTION: "-R \"test_shm_|test_mpi_\""
+    VERSION: parsec
+  dependencies:
+    - build_parsec
+  artifacts:
+    name: test_parsec
+    expire_in: 48 hours
+    paths:
+      - build
+      - chameleon_parsec.log
+      - chameleon_parsec.lcov
+  only:
+    - master@solverstack/chameleon
+
 sonar:
   stage: analysis
   dependencies:
     - test_starpu_master
     - test_starpu_simgrid_master
     - test_quark_master
+    - test_parsec_master
   artifacts:
     name: chameleon_analysis
     expire_in: 1 week
@@ -206,6 +255,7 @@ sonar:
     - lcov -a $PWD/chameleon_starpu.lcov
            -a $PWD/chameleon_starpu_simgrid.lcov
            -a $PWD/chameleon_quark.lcov
+           -a $PWD/chameleon_parsec.lcov
            -o $PWD/chameleon.lcov
     - lcov_cobertura.py chameleon.lcov --output chameleon_coverage.xml
     - ./tools/analysis.sh

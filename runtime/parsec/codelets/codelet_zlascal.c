@@ -66,7 +66,7 @@ void MORSE_TASK_zlascal(const MORSE_option_t *options,
         sizeof(int),               &m,     VALUE,
         sizeof(int),               &n,     VALUE,
         sizeof(MORSE_Complex64_t), &alpha, VALUE,
-        PASSED_BY_REF,              RTBLKADDR(A, MORSE_Complex64_t, Am, An), INOUT,
+        PASSED_BY_REF,              RTBLKADDR(A, MORSE_Complex64_t, Am, An), INOUT | AFFINITY,
         sizeof(int),               &lda,   VALUE,
         PARSEC_DTD_ARG_END );
 
