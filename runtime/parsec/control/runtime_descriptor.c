@@ -280,7 +280,8 @@ void RUNTIME_desc_create( MORSE_desc_t *mdesc )
             }
 
             /* Register the new arena */
-            parsec_matrix_add2arena_tile( parsec_dtd_arenas[i], datatype, size );
+            parsec_matrix_add2arena( parsec_dtd_arenas[i], datatype, matrix_UpperLower, 1,
+                                     mdesc->mb, mdesc->nb, mdesc->mb, PARSEC_ARENA_ALIGNMENT_SSE, -1 );
             arena->size = size;
             pdesc->arena_index = i;
             morse_parsec_nb_arenas++;
