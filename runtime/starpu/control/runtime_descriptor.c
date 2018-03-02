@@ -39,23 +39,27 @@ chameleon_starpu_tag_init( int user_tag_width,
                            int user_tag_sep )
 {
     if (!_tag_mpi_initialized_) {
-        int *tag_ub = NULL;
         int ok = 0;
+        uintptr_t tag_ub;
 
         tag_width = user_tag_width;
         tag_sep   = user_tag_sep;
 
 #if defined(HAVE_STARPU_MPI_COMM_GET_ATTR)
-        starpu_mpi_comm_get_attr(MPI_COMM_WORLD, MPI_TAG_UB, &tag_ub, &ok);
+        int64_t *tag_ub_p = NULL;
+        starpu_mpi_comm_get_attr(MPI_COMM_WORLD, STARPU_MPI_TAG_UB, &tag_ub_p, &ok);
+        tag_ub = *tag_ub_p;
 #else
-        MPI_Comm_get_attr(MPI_COMM_WORLD, MPI_TAG_UB, &tag_ub, &ok);
+        int *tag_ub_p = NULL;
+        MPI_Comm_get_attr(MPI_COMM_WORLD, MPI_TAG_UB, &tag_ub_p, &ok);
+        tag_ub = *tag_ub_p;
 #endif
 
         if ( !ok ) {
             morse_error("RUNTIME_desc_create", "MPI_TAG_UB not known by StarPU");
         }
 
-        while ( ((uintptr_t)((1UL<<tag_width) - 1) > (uintptr_t)(*tag_ub) ) &&
+        while ( ((uintptr_t)((1UL<<tag_width) - 1) > tag_ub ) &&
                 (tag_width >= TAG_WIDTH_MIN) )
         {
             tag_width--;
