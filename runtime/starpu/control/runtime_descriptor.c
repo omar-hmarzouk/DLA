@@ -358,6 +358,7 @@ static inline void
 chameleon_starpu_data_wont_use( starpu_data_handle_t handle ) {
     starpu_data_acquire_cb( handle, STARPU_R,
                             (void (*)(void*))&starpu_data_release, handle );
+}
 
 #endif
 
