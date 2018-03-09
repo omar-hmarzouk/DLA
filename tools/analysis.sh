@@ -35,6 +35,7 @@ sonar.projectVersion=master
 sonar.language=c
 sonar.sources=build, compute, control, coreblas, example, include, runtime, testing, timing
 sonar.inclusions=`cat filelist.txt | xargs echo | sed 's/ /, /g'`
+sonar.c.includeDirectories=$(echo | gcc -E -Wp,-v - 2>&1 | grep "^ " | tr '\n' ',').,include,coreblas/include,runtime/parsec/include,runtime/quark/include,runtime/starpu/include,build/control,build/coreblas,build/include,build/runtime/parsec/include,build/runtime/quark/include,build/runtime/starpu/include,$PARSEC_DIR/include,$QUARK_DIR/include,$STARPU_DIR/include/starpu/1.2,$SIMGRID_DIR/include
 sonar.sourceEncoding=UTF-8
 sonar.c.compiler.charset=UTF-8
 sonar.c.compiler.parser=GCC
