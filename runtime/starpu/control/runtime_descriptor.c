@@ -4,7 +4,7 @@
  *
  * @copyright 2009-2014 The University of Tennessee and The University of
  *                      Tennessee Research Foundation. All rights reserved.
- * @copyright 2012-2017 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
+ * @copyright 2012-2018 Bordeaux INP, CNRS (LaBRI UMR 5800), Inria,
  *                      Univ. Bordeaux. All rights reserved.
  *
  ***
@@ -418,6 +418,7 @@ void RUNTIME_data_flush( const MORSE_sequence_t *sequence,
 void RUNTIME_data_migrate( const MORSE_sequence_t *sequence,
                            const MORSE_desc_t *A, int Am, int An, int new_rank )
 {
+#if defined(HAVE_STARPU_MPI_DATA_MIGRATE)
     starpu_data_handle_t *handle = (starpu_data_handle_t*)(A->schedopt);
     starpu_data_handle_t lhandle;
     handle += ((int64_t)(A->lmt) * (int64_t)An + (int64_t)Am);
@@ -431,6 +432,9 @@ void RUNTIME_data_migrate( const MORSE_sequence_t *sequence,
     starpu_mpi_data_migrate( MPI_COMM_WORLD, lhandle, new_rank );
 
     (void)sequence;
+#else
+    (void)sequence; (void)A; (void)Am; (void)An; (void)new_rank;
+#endif
 }
 #endif
 
