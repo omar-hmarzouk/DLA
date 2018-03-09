@@ -43,6 +43,7 @@ sonar.c.compiler.reportPath=chameleon_starpu.log, chameleon_starpu_simgrid.log, 
 sonar.c.coverage.reportPath=chameleon_coverage.xml
 sonar.c.cppcheck.reportPath=chameleon_cppcheck.xml
 sonar.c.rats.reportPath=chameleon_rats.xml
+sonar.c.clangsa.reportPath=build/analyzer_reports/*/*.plist
 EOF
 
 # run sonar analysis + publish on sonarqube-dev

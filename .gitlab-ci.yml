@@ -17,12 +17,8 @@ before_script:
     - echo BUILD_OPTIONS $BUILD_OPTIONS
     - echo VERSION $VERSION
     - (cd build &&
-       cmake -C ../cmake_modules/gitlab-ci-initial-cache.cmake ..
-             $BUILD_OPTIONS &&
-        ctest --no-compress-output -V -j 5
-             -D ExperimentalBuild
-             -D ExperimentalSubmit
-             | tee ../chameleon_${VERSION}.log)
+       cmake -C ../cmake_modules/gitlab-ci-initial-cache.cmake .. $BUILD_OPTIONS &&
+       scan-build -plist --intercept-first --analyze-headers -o analyzer_reports make -j5 | tee ../chameleon_${VERSION}.log)
     - (cd build &&
        make install | tee -a ../chameleon_${VERSION}.log &&
        rm install/ -r)
