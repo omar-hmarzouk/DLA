@@ -17,6 +17,7 @@ before_script:
     - echo BUILD_OPTIONS $BUILD_OPTIONS
     - echo VERSION $VERSION
     - (cd build &&
+       scan-build -plist --intercept-first --analyze-headers -o analyzer_reports
        cmake -C ../cmake_modules/gitlab-ci-initial-cache.cmake .. $BUILD_OPTIONS &&
        scan-build -plist --intercept-first --analyze-headers -o analyzer_reports
        ctest --no-compress-output -V -j 5
