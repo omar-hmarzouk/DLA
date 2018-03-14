@@ -35,14 +35,17 @@ sonar.projectVersion=master
 sonar.language=c
 sonar.sources=build, compute, control, coreblas, example, include, runtime, testing, timing
 sonar.inclusions=`cat filelist.txt | xargs echo | sed 's/ /, /g'`
+sonar.c.includeDirectories=$(echo | gcc -E -Wp,-v - 2>&1 | grep "^ " | tr '\n' ',').,include,coreblas/include,runtime/parsec/include,runtime/quark/include,runtime/starpu/include,build,build/control,build/coreblas,build/coreblas/include,build/include,build/runtime/parsec/include,build/runtime/quark/include,build/runtime/starpu/include,hqr/include,$PARSEC_DIR/include,$QUARK_DIR/include,$STARPU_DIR/include/starpu/1.2,$SIMGRID_DIR/include
 sonar.sourceEncoding=UTF-8
+sonar.c.errorRecoveryEnabled=true
 sonar.c.compiler.charset=UTF-8
 sonar.c.compiler.parser=GCC
-sonar.c.compiler.regex=^(.*):(\\d+):\\d+: warning: (.*)\\[(.*)\\]$
+sonar.c.compiler.regex=^(.*):(\\\d+):\\\d+: warning: (.*)\\\[(.*)\\\]$
 sonar.c.compiler.reportPath=chameleon_starpu.log, chameleon_starpu_simgrid.log, chameleon_quark.log, chameleon_parsec.log
 sonar.c.coverage.reportPath=chameleon_coverage.xml
 sonar.c.cppcheck.reportPath=chameleon_cppcheck.xml
 sonar.c.rats.reportPath=chameleon_rats.xml
+sonar.c.clangsa.reportPath=build/analyzer_reports/*/*.plist
 EOF
 
 # run sonar analysis + publish on sonarqube-dev
