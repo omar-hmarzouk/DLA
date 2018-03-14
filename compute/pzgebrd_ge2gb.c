@@ -28,78 +28,78 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
     MORSE_desc_t *A1, *A2, *T1, *D1 = NULL;
 
     if (A->m >= A->n){
-       for (k = 0; k < A->nt; k++) {
-           tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
-           tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
+        for (k = 0; k < A->nt; k++) {
+            tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
+            tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
 
-           A1 = morse_desc_submatrix(A, k*A->mb,     k*A->nb, A->m-k*A->mb, tempkn);
-           A2 = morse_desc_submatrix(A, k*A->mb, (k+1)*A->nb, A->m-k*A->mb, A->n-(k+1)*A->nb);
-           T1 = morse_desc_submatrix(T, k*T->mb,     k*T->nb, T->m-k*T->mb, tempkn);
-           if ( D != NULL ) {
-               D1 = morse_desc_submatrix(D, k*D->mb,     k*D->nb, D->m-k*D->mb, tempkn);
-           }
+            A1 = morse_desc_submatrix(A, k*A->mb,     k*A->nb, A->m-k*A->mb, tempkn);
+            A2 = morse_desc_submatrix(A, k*A->mb, (k+1)*A->nb, A->m-k*A->mb, A->n-(k+1)*A->nb);
+            T1 = morse_desc_submatrix(T, k*T->mb,     k*T->nb, T->m-k*T->mb, T->nb );
+            if ( D != NULL ) {
+                D1 = morse_desc_submatrix(D, k*D->mb, k*D->nb, D->m-k*D->mb, tempkn);
+            }
 
-           morse_pzgeqrf( A1, T1, D1,
-                          sequence, request);
+            morse_pzgeqrf( A1, T1, D1,
+                           sequence, request);
 
-           morse_pzunmqr( MorseLeft, MorseConjTrans,
-                          A1, A2, T1, D1,
-                          sequence, request);
+            morse_pzunmqr( MorseLeft, MorseConjTrans,
+                           A1, A2, T1, D1,
+                           sequence, request);
 
-           if (k+1 < A->nt){
-              tempkn = k+1 == A->nt-1 ? A->n-(k+1)*A->nb : A->nb;
+            if (k+1 < A->nt){
+                tempkn = k+1 == A->nt-1 ? A->n-(k+1)*A->nb : A->nb;
 
-              A1 = morse_desc_submatrix(A,     k*A->mb, (k+1)*A->nb, tempkm,           A->n-(k+1)*A->nb);
-              A2 = morse_desc_submatrix(A, (k+1)*A->mb, (k+1)*A->nb, A->m-(k+1)*A->mb, A->n-(k+1)*A->nb);
-              T1 = morse_desc_submatrix(T,     k*T->mb, (k+1)*T->nb, tempkm,           T->n-(k+1)*T->nb);
-              if ( D != NULL ) {
-                  D1 = morse_desc_submatrix(D, k*D->mb, (k+1)*D->nb, tempkm,           D->n-(k+1)*D->nb);
-              }
+                A1 = morse_desc_submatrix(A,     k*A->mb, (k+1)*A->nb, tempkm,           A->n-(k+1)*A->nb);
+                A2 = morse_desc_submatrix(A, (k+1)*A->mb, (k+1)*A->nb, A->m-(k+1)*A->mb, A->n-(k+1)*A->nb);
+                T1 = morse_desc_submatrix(T,     k*T->mb, (k+1)*T->nb, T->mb,            T->n-(k+1)*T->nb);
+                if ( D != NULL ) {
+                    D1 = morse_desc_submatrix(D, k*D->mb, (k+1)*D->nb, tempkm,           D->n-(k+1)*D->nb);
+                }
 
-              morse_pzgelqf( A1, T1, D1,
-                             sequence, request);
+                morse_pzgelqf( A1, T1, D1,
+                               sequence, request);
 
-              morse_pzunmlq( MorseRight, MorseConjTrans,
-                             A1, A2, T1, D1,
-                             sequence, request);
-           }
-       }
+                morse_pzunmlq( MorseRight, MorseConjTrans,
+                               A1, A2, T1, D1,
+                               sequence, request);
+            }
+        }
     }
     else{
-       for (k = 0; k < A->mt; k++) {
-           tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
-           tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
+        for (k = 0; k < A->mt; k++) {
+            tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
+            tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
 
-           A1 = morse_desc_submatrix(A,     k*A->mb, k*A->nb, tempkm,           A->n-k*A->nb);
-           A2 = morse_desc_submatrix(A, (k+1)*A->mb, k*A->nb, A->m-(k+1)*A->mb, A->n-k*A->nb);
-           T1 = morse_desc_submatrix(T,     k*T->mb, k*T->nb, tempkm,           T->n-k*T->nb);
-           if ( D != NULL ) {
-               D1 = morse_desc_submatrix(D, k*D->mb, k*D->nb, tempkm,           D->n-k*D->nb);
-           }
-           morse_pzgelqf( A1, T1, D1,
-                          sequence, request);
+            A1 = morse_desc_submatrix(A,     k*A->mb, k*A->nb, tempkm,           A->n-k*A->nb);
+            A2 = morse_desc_submatrix(A, (k+1)*A->mb, k*A->nb, A->m-(k+1)*A->mb, A->n-k*A->nb);
+            T1 = morse_desc_submatrix(T,     k*T->mb, k*T->nb, T->mb,            T->n-k*T->nb);
+            if ( D != NULL ) {
+                D1 = morse_desc_submatrix(D, k*D->mb, k*D->nb, tempkm,           D->n-k*D->nb);
+            }
+            morse_pzgelqf( A1, T1, D1,
+                           sequence, request);
 
-           morse_pzunmlq( MorseRight, MorseConjTrans,
-                          A1, A2, T1, D1,
-                          sequence, request);
+            morse_pzunmlq( MorseRight, MorseConjTrans,
+                           A1, A2, T1, D1,
+                           sequence, request);
 
-           if (k+1 < A->mt){
-              tempkm = k+1 == A->mt-1 ? A->m-(k+1)*A->mb : A->mb;
+            if (k+1 < A->mt){
+                tempkm = k+1 == A->mt-1 ? A->m-(k+1)*A->mb : A->mb;
 
-              A1 = morse_desc_submatrix(A, (k+1)*A->mb,     k*A->nb, A->m-(k+1)*A->mb, tempkn);
-              A2 = morse_desc_submatrix(A, (k+1)*A->mb, (k+1)*A->nb, A->m-(k+1)*A->mb, A->n-(k+1)*A->nb);
-              T1 = morse_desc_submatrix(T, (k+1)*T->mb,     k*T->nb, T->m-(k+1)*T->mb, tempkn);
-              if ( D != NULL ) {
-                  D1 = morse_desc_submatrix(D, (k+1)*D->mb, k*D->nb, D->m-(k+1)*D->mb, tempkn);
-              }
+                A1 = morse_desc_submatrix(A, (k+1)*A->mb,     k*A->nb, A->m-(k+1)*A->mb, tempkn);
+                A2 = morse_desc_submatrix(A, (k+1)*A->mb, (k+1)*A->nb, A->m-(k+1)*A->mb, A->n-(k+1)*A->nb);
+                T1 = morse_desc_submatrix(T, (k+1)*T->mb,     k*T->nb, T->m-(k+1)*T->mb, T->nb );
+                if ( D != NULL ) {
+                    D1 = morse_desc_submatrix(D, (k+1)*D->mb, k*D->nb, D->m-(k+1)*D->mb, tempkn);
+                }
 
-              morse_pzgeqrf( A1, T1, D1,
-                             sequence, request);
+                morse_pzgeqrf( A1, T1, D1,
+                               sequence, request);
 
-              morse_pzunmqr( MorseLeft, MorseConjTrans,
-                             A1, A2, T1, D1,
-                             sequence, request);
-           }
-       }
+                morse_pzunmqr( MorseLeft, MorseConjTrans,
+                               A1, A2, T1, D1,
+                               sequence, request);
+            }
+        }
     }
 }
