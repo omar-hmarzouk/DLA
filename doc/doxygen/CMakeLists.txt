@@ -40,7 +40,7 @@ if(DOXYGEN_EXECUTABLE)
     if(CHAMELEON_SCHED_STARPU)
 
         configure_file("conf-dev-starpu.dox.in"
-                       "chameleon-dev.dox"
+                       "${CMAKE_CURRENT_BINARY_DIR}/chameleon-dev.dox"
                        @ONLY)
 #        configure_file("conf-usr-starpu.dox.in"
 #                       "chameleon-usr.dox"
@@ -49,7 +49,7 @@ if(DOXYGEN_EXECUTABLE)
     elseif(CHAMELEON_SCHED_QUARK)
 
         configure_file("conf-dev-quark.dox.in"
-                       "chameleon-dev.dox"
+                       "${CMAKE_CURRENT_BINARY_DIR}/chameleon-dev.dox"
                         @ONLY)
 #        configure_file("conf-usr-quark.dox.in"
 #                       "chameleon-usr.dox"
