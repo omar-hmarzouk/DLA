@@ -475,7 +475,7 @@ int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
     }
 #endif
     /* Reduction to band */
-    morse_pzgebrd_ge2gb( descA, descT, Dptr,
+    morse_pzgebrd_ge2gb( &descA, &descT, Dptr,
                          sequence, request );
 
     /* Allocate band structure */
