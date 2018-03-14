@@ -525,7 +525,6 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
     /* Cleanup the temporary data */
     morse_desc_mat_free( &descV );
     free(V);
-
     free(E);
     if (Dptr != NULL) {
         morse_desc_mat_free( Dptr );

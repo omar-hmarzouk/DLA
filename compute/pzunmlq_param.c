@@ -299,7 +299,6 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                     p = qrtree->currpiv(qrtree, k, n);
 
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
-                    ldbp = BLKLDD(B, p);
 
                     if(qrtree->gettype(qrtree, k, n) == 0){
                         /* TS kernel */
@@ -393,7 +392,6 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
 
                     temppn = p == A->nt-1 ? A->n-p*A->nb : A->nb;
                     tempkmin = chameleon_min(tempkm, temppn);
-                    ldbp = BLKLDD(B, p);
 
 #if defined(CHAMELEON_COPY_DIAG)
                     MORSE_TASK_zlacpy(
@@ -433,7 +431,6 @@ void morse_pzunmlq_param(const libhqr_tree_t *qrtree,
                     p = qrtree->currpiv(qrtree, k, n);
 
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
-                    ldbp = BLKLDD(B, p);
 
                     if(qrtree->gettype(qrtree, k, n) == 0){
                         /* TS kernel */
