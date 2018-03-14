@@ -467,6 +467,7 @@ int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
     NB    = descA.mb;
     LDAB  = NB + 1;
     uplo  = M >= N ? MorseUpper : MorseLower;
+
 #if defined(CHAMELEON_COPY_DIAG)
     {
         morse_zdesc_alloc(D, A->mb, A->nb, A->m, A->n, 0, 0, A->m, A->n, );
@@ -474,7 +475,7 @@ int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
     }
 #endif
     /* Reduction to band */
-    morse_pzgebrd_ge2gb( descA, descT, D,
+    morse_pzgebrd_ge2gb( &descA, &descT, Dptr,
                          sequence, request );
 
     /* Allocate band structure */
@@ -498,6 +499,7 @@ int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
     }
     memset(E, 0, MINMN * sizeof(double) );
 
+#if !defined(CHAMELEON_SIMULATION)
     /* NCC = 0, C = NULL, we do not update any matrix with new singular vectors */
     /* On exit, AB = U (S +~ E) VT */
     if (uplo == MorseUpper){
@@ -535,7 +537,6 @@ int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
 
     morse_sequence_wait( morse, sequence );
 
-#if !defined(CHAMELEON_SIMULATION)
     info = LAPACKE_zgbbrd( LAPACK_COL_MAJOR,
                            gbbrd_vect,
                            M, N,
@@ -548,7 +549,10 @@ int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
     if (info != 0) {
         fprintf(stderr, "MORSE_zgesvd_Tile_Async: LAPACKE_zgbbrd = %d\n", info );
     }
+#else
+    morse_sequence_wait( morse, sequence );
 #endif /* !defined(CHAMELEON_SIMULATION) */
+
     morse_desc_mat_free( &descAB );
 
     /* Transform U and Vt into tile format */

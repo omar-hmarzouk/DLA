@@ -65,7 +65,7 @@ void morse_pzbarrier_row2tl(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_r
 void morse_pzbarrier_tl2pnl(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzbarrier_tl2row(MORSE_desc_t *A, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzgebrd_gb2bd(MORSE_enum uplo, MORSE_desc_t *A, double *D, double *E, MORSE_desc_t *T, MORSE_sequence_t *sequence, MORSE_request_t *request);
-void morse_pzgebrd_ge2gb(MORSE_desc_t A, MORSE_desc_t T, MORSE_desc_t D, MORSE_sequence_t *sequence, MORSE_request_t *request);
+void morse_pzgebrd_ge2gb(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzgelqf(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzgelqfrh(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D, int BS, MORSE_sequence_t *sequence, MORSE_request_t *request);
 void morse_pzgemm(MORSE_enum transA, MORSE_enum transB, MORSE_Complex64_t alpha, MORSE_desc_t *A, MORSE_desc_t *B, MORSE_Complex64_t beta, MORSE_desc_t *C, MORSE_sequence_t *sequence, MORSE_request_t *request);
