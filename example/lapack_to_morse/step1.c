@@ -38,7 +38,6 @@
  * The precision is: double
  */
 int main(int argc, char *argv[]) {
-
     size_t N;    // matrix order
     size_t NRHS; // number of RHS vectors
     int NCPU; // number of cores to use
@@ -66,8 +65,6 @@ int main(int argc, char *argv[]) {
     fadds = (double)( FADDS_POTRF(N) + 2 * FADDS_TRSM(N,NRHS) );
     fmuls = (double)( FMULS_POTRF(N) + 2 * FMULS_TRSM(N,NRHS) );
     flops = 1e-9 * (fmuls + fadds);
-    gflops = 0.0;
-    cpu_time = 0.0;
 
     /* initialize the number of thread if not given by the user in argv
      * It makes sense only if this program is linked with pthread and
@@ -88,7 +85,7 @@ int main(int argc, char *argv[]) {
     }
 
     /*
-     * allocate memory for our data using a C macro (see step1.h)
+     * Allocate memory for our data using a C macro (see step1.h)
      *     - matrix A                   : size N x N
      *     - set of RHS vectors B       : size N x NRHS
      *     - set of solutions vectors X : size N x NRHS
@@ -154,17 +151,18 @@ int main(int argc, char *argv[]) {
      * if hres = 0 then the test succeed
      * else the test failed
      */
-    hres = 0;
     hres = ( res / N / eps / (anorm * xnorm + bnorm ) > 100.0 );
     printf( "   ||Ax-b||       ||A||       ||x||       ||b|| ||Ax-b||/N/eps/(||A||||x||+||b||)  RETURN\n");
-    if (hres)
+    if (hres) {
         printf( "%8.5e %8.5e %8.5e %8.5e                       %8.5e FAILURE \n",
             res, anorm, xnorm, bnorm,
             res / N / eps / (anorm * xnorm + bnorm ));
-    else
+    }
+    else {
         printf( "%8.5e %8.5e %8.5e %8.5e                       %8.5e SUCCESS \n",
             res, anorm, xnorm, bnorm,
             res / N / eps / (anorm * xnorm + bnorm ));
+    }
 
     /* deallocate data */
     free(A);

@@ -29,7 +29,6 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
 
     if (A->m >= A->n){
         for (k = 0; k < A->nt; k++) {
-            tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
             tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
 
             A1 = morse_desc_submatrix(A, k*A->mb,     k*A->nb, A->m-k*A->mb, tempkn);
@@ -47,7 +46,7 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
                            sequence, request);
 
             if (k+1 < A->nt){
-                tempkn = k+1 == A->nt-1 ? A->n-(k+1)*A->nb : A->nb;
+                tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
 
                 A1 = morse_desc_submatrix(A,     k*A->mb, (k+1)*A->nb, tempkm,           A->n-(k+1)*A->nb);
                 A2 = morse_desc_submatrix(A, (k+1)*A->mb, (k+1)*A->nb, A->m-(k+1)*A->mb, A->n-(k+1)*A->nb);
@@ -68,7 +67,6 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
     else{
         for (k = 0; k < A->mt; k++) {
             tempkm = k == A->mt-1 ? A->m-k*A->mb : A->mb;
-            tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
 
             A1 = morse_desc_submatrix(A,     k*A->mb, k*A->nb, tempkm,           A->n-k*A->nb);
             A2 = morse_desc_submatrix(A, (k+1)*A->mb, k*A->nb, A->m-(k+1)*A->mb, A->n-k*A->nb);
@@ -84,7 +82,7 @@ void morse_pzgebrd_ge2gb(MORSE_desc_t *A, MORSE_desc_t *T, MORSE_desc_t *D,
                            sequence, request);
 
             if (k+1 < A->mt){
-                tempkm = k+1 == A->mt-1 ? A->m-(k+1)*A->mb : A->mb;
+                tempkn = k == A->nt-1 ? A->n-k*A->nb : A->nb;
 
                 A1 = morse_desc_submatrix(A, (k+1)*A->mb,     k*A->nb, A->m-(k+1)*A->mb, tempkn);
                 A2 = morse_desc_submatrix(A, (k+1)*A->mb, (k+1)*A->nb, A->m-(k+1)*A->mb, A->n-(k+1)*A->nb);

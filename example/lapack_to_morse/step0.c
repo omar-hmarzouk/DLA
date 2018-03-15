@@ -36,7 +36,8 @@ int main(int argc, char *argv[]) {
     size_t NRHS; // number of RHS vectors
 
     /* declarations to time the program and evaluate performances */
-    double fmuls, fadds, flops, gflops, cpu_time;
+    double fmuls, fadds, flops, gflops, cpu_time, eps, res;
+    int hres;
 
     /* initialize some parameters with default values */
     int iparam[IPARAM_SIZEOF];
@@ -52,8 +53,6 @@ int main(int argc, char *argv[]) {
     fadds = (double)( FADDS_POTRF(N) + 2 * FADDS_TRSM(N,NRHS) );
     fmuls = (double)( FMULS_POTRF(N) + 2 * FMULS_TRSM(N,NRHS) );
     flops = 1e-9 * (fmuls + fadds);
-    gflops = 0.0;
-    cpu_time = 0.0;
 
     /* initialize the number of thread if not given by the user in argv
      * It makes sense only if this program is linked with pthread and
@@ -137,26 +136,27 @@ int main(int argc, char *argv[]) {
     /* compute A*X-B, store the result in B */
     cblas_dgemm(CblasColMajor, CblasNoTrans, CblasNoTrans,
                 N, NRHS, N, 1.0, Acpy, N, X, N, -1.0, B, N);
-    double res = LAPACKE_dlange( LAPACK_COL_MAJOR, 'I', N, NRHS, B, N);
+    res = LAPACKE_dlange( LAPACK_COL_MAJOR, 'I', N, NRHS, B, N);
 
     /* check residual and print a message */
-    double    eps = LAPACKE_dlamch_work( 'e' );
+    eps = LAPACKE_dlamch_work( 'e' );
 
     /*
      * if hres = 0 then the test succeed
      * else the test failed
      */
-    int hres = 0;
     hres = ( res / N / eps / (anorm * xnorm + bnorm ) > 100.0 );
     printf( "   ||Ax-b||       ||A||       ||x||       ||b|| ||Ax-b||/N/eps/(||A||||x||+||b||)  RETURN\n");
-    if (hres)
+    if (hres) {
         printf( "%8.5e %8.5e %8.5e %8.5e                       %8.5e FAILURE \n",
             res, anorm, xnorm, bnorm,
             res / N / eps / (anorm * xnorm + bnorm ));
-    else
+    }
+    else {
         printf( "%8.5e %8.5e %8.5e %8.5e                       %8.5e SUCCESS \n",
             res, anorm, xnorm, bnorm,
             res / N / eps / (anorm * xnorm + bnorm ));
+    }
 
     /* deallocate data */
     free(A);

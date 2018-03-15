@@ -83,7 +83,7 @@ double MORSE_zlansy(MORSE_enum norm, MORSE_enum uplo, int N,
 {
     int NB;
     int status;
-    double value;
+    double value = -1.;
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
@@ -198,7 +198,7 @@ double MORSE_zlansy_Tile( MORSE_enum norm, MORSE_enum uplo, MORSE_desc_t *A )
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
     int status;
-    double value;
+    double value = -1.;
 
     morse = morse_context_self();
     if (morse == NULL) {

@@ -95,7 +95,7 @@ double MORSE_zlantr(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag,
 {
     int NB;
     int status;
-    double value;
+    double value = -1.;
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
@@ -220,7 +220,7 @@ double MORSE_zlantr_Tile(MORSE_enum norm, MORSE_enum uplo, MORSE_enum diag, MORS
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
     int status;
-    double value;
+    double value = -1.;
 
     morse = morse_context_self();
     if (morse == NULL) {
