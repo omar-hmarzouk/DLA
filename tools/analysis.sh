@@ -20,7 +20,7 @@ rats -w 3 --xml  `cat filelist.txt` > chameleon_rats.xml
 
 # create the sonarqube config file
 cat > sonar-project.properties << EOF
-sonar.host.url=https://sonarqube.bordeaux.inria.fr/
+sonar.host.url=https://sonarqube.bordeaux.inria.fr/sonarqube
 sonar.login=$SONARQUBE_LOGIN
 
 sonar.links.homepage=https://gitlab.inria.fr/solverstack/chameleon
