@@ -400,8 +400,8 @@ int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
 {
     MORSE_desc_t descA;
     MORSE_desc_t descT;
-    MORSE_desc_t descU;
-    MORSE_desc_t descVT;
+    MORSE_desc_t descUl, descUt;
+    MORSE_desc_t descVTl, descVTt;
     MORSE_desc_t descAB;
     MORSE_desc_t D, *Dptr = NULL;
     MORSE_desc_t *subA, *subT, *subUVT;
@@ -555,64 +555,60 @@ int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
 
     morse_desc_mat_free( &descAB );
 
-    /* Transform U and Vt into tile format */
-    if ( jobu != MorseNoVec ) {
-        //morse_zooplap2tile( descU, U, NB, NB, LDU, M, 0, 0, M, M, sequence, request, morse_desc_mat_free(&(descU)) );
-    }
-    if ( jobvt != MorseNoVec ) {
-        //morse_zooplap2tile( descVT, VT, NB, NB, LDVT, N, 0, 0, N, N, sequence, request, morse_desc_mat_free(&(descVT)) );
-    }
-
-    morse_sequence_wait( morse, sequence );
-
     subA = NULL;
     subT = NULL;
     subUVT = NULL;
+
     if ( jobu != MorseNoVec ) {
+        morse_zlap2tile( morse, &descUl, &descUt, MorseDescInout, MorseUpperLower,
+                         U, NB, NB, LDU, M, M, M, sequence, request );
+
         if ( M < N ){
-            subA   = morse_desc_submatrix(&descA, descA.mb, 0, descA.m-descA.mb, descA.n-descA.nb);
-            subUVT = morse_desc_submatrix(&descU, descU.mb, 0, descU.m-descU.mb, descU.n);
-            subT   = morse_desc_submatrix(&descT, descT.mb, 0, descT.m-descT.mb, descT.n-descT.nb);
+            subA   = morse_desc_submatrix(&descA,  descA.mb,  0, descA.m -descA.mb,  descA.n-descA.nb);
+            subUVT = morse_desc_submatrix(&descUt, descUt.mb, 0, descUt.m-descUt.mb, descUt.n);
+            subT   = morse_desc_submatrix(&descT,  descT.mb,  0, descT.m -descT.mb,  descT.n-descT.nb);
+
             morse_pzunmqr( MorseLeft, MorseNoTrans,
                            subA, subUVT, subT, Dptr,
                            sequence, request );
+
+            free(subA); free(subUVT); free(subT);
         }
         else {
             morse_pzunmqr( MorseLeft, MorseNoTrans,
-                           &descA, &descU, &descT, Dptr,
+                           &descA, &descUt, &descT, Dptr,
                            sequence, request );
         }
+
+        morse_ztile2lap( morse, &descUl, &descUt,
+                         MorseDescInout, MorseUpperLower, sequence, request );
     }
 
     if ( jobvt != MorseNoVec ) {
+        morse_zlap2tile( morse, &descVTl, &descVTt, MorseDescInout, MorseUpperLower,
+                         VT, NB, NB, LDVT, N, N, N, sequence, request );
+
         if ( M < N ){
             morse_pzunmlq( MorseRight, MorseNoTrans,
-                           &descA, &descVT, &descT, Dptr,
+                           &descA, &descVTt, &descT, Dptr,
                            sequence, request );
         }
         else {
-            subA   = morse_desc_submatrix(&descA,  0, descA.nb,  descA.m-descA.mb, descA.n -descA.nb);
-            subUVT = morse_desc_submatrix(&descVT, 0, descVT.nb, descVT.m,         descVT.n-descVT.nb);
-            subT   = morse_desc_submatrix(&descT,  0, descT.nb,  descT.m-descT.mb, descT.n -descT.nb);
+            subA   = morse_desc_submatrix(&descA,   0, descA.nb,   descA.m-descA.mb, descA.n  -descA.nb  );
+            subUVT = morse_desc_submatrix(&descVTt, 0, descVTt.nb, descVTt.m,        descVTt.n-descVTt.nb);
+            subT   = morse_desc_submatrix(&descT,   0, descT.nb,   descT.m-descT.mb, descT.n  -descT.nb  );
+
             morse_pzunmlq( MorseRight, MorseNoTrans,
                            subA, subUVT, subT, Dptr,
                            sequence, request );
+
+            free(subA); free(subUVT); free(subT);
         }
-    }
 
-    /* Transform U and VT into lapack layout */
-    if ( jobu != MorseNoVec ) {
-        //morse_zooptile2lap( descU,  U,  NB, NB, LDU,  M, sequence, request );
+        morse_ztile2lap( morse, &descVTl, &descVTt,
+                         MorseDescInout, MorseUpperLower, sequence, request );
     }
-    if ( jobvt != MorseNoVec ) {
-        //morse_zooptile2lap( descVT, VT, NB, NB, LDVT, N, sequence, request );
-    }
-
     morse_sequence_wait( morse, sequence );
-
-    if (subA) {
-        free(subA); free(subUVT); free(subT);
-    }
 
     /* Solve the bidiagonal SVD problem */
     /* On exit, U and VT are updated with bidiagonal matrix singular vectors */
@@ -626,12 +622,6 @@ int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
     }
 #endif /* !defined(CHAMELEON_SIMULATION) */
 
-    if (jobu != MorseNoVec) {
-        morse_desc_mat_free( &descU );
-    }
-    if (jobvt != MorseNoVec) {
-        morse_desc_mat_free( &descVT );
-    }
     free(E);
     if ( Dptr ) {
         morse_desc_mat_free( Dptr );

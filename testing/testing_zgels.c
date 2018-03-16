@@ -34,170 +34,6 @@
 #include <coreblas.h>
 #include "testing_zauxiliary.h"
 
-enum blas_order_type {
-            blas_rowmajor = 101,
-            blas_colmajor = 102 };
-
-enum blas_uplo_type  {
-            blas_upper = 121,
-            blas_lower = 122 };
-
-enum blas_cmach_type {
-            blas_base      = 151,
-            blas_t         = 152,
-            blas_rnd       = 153,
-            blas_ieee      = 154,
-            blas_emin      = 155,
-            blas_emax      = 156,
-            blas_eps       = 157,
-            blas_prec      = 158,
-            blas_underflow = 159,
-            blas_overflow  = 160,
-            blas_sfmin     = 161};
-
-enum blas_norm_type {
-            blas_one_norm       = 171,
-            blas_real_one_norm  = 172,
-            blas_two_norm       = 173,
-            blas_frobenius_norm = 174,
-            blas_inf_norm       = 175,
-            blas_real_inf_norm  = 176,
-            blas_max_norm       = 177,
-            blas_real_max_norm  = 178 };
-
-static void
-BLAS_error(char *rname, int err, int val, int x) {
-  fprintf( stderr, "%s %d %d %d\n", rname, err, val, x );
-  abort();
-}
-
-static
-void
-BLAS_zsy_norm(enum blas_order_type order, enum blas_norm_type norm,
-  enum blas_uplo_type uplo, int n, const MORSE_Complex64_t *a, int lda, double *res) {
-  int i, j; double anorm, v;
-  char rname[] = "BLAS_zsy_norm";
-
-  if (order != blas_colmajor) BLAS_error( rname, -1, order, 0 );
-
-  if (norm == blas_inf_norm) {
-    anorm = 0.0;
-    if (blas_upper == uplo) {
-      for (i = 0; i < n; ++i) {
-        v = 0.0;
-        for (j = 0; j < i; ++j) {
-          v += cabs( a[j + i * lda] );
-        }
-        for (j = i; j < n; ++j) {
-          v += cabs( a[i + j * lda] );
-        }
-        if (v > anorm)
-          anorm = v;
-      }
-    } else {
-      BLAS_error( rname, -3, norm, 0 );
-      return;
-    }
-  } else {
-    BLAS_error( rname, -2, norm, 0 );
-    return;
-  }
-
-  if (res) *res = anorm;
-}
-
-static
-void
-BLAS_zge_norm(enum blas_order_type order, enum blas_norm_type norm,
-  int m, int n, const MORSE_Complex64_t *a, int lda, double *res) {
-  int i, j; float anorm, v;
-  char rname[] = "BLAS_zge_norm";
-
-  if (order != blas_colmajor) BLAS_error( rname, -1, order, 0 );
-
-  if (norm == blas_frobenius_norm) {
-    anorm = 0.0f;
-    for (j = n; j; --j) {
-      for (i = m; i; --i) {
-        v = a[0];
-        anorm += v * v;
-        a++;
-      }
-      a += lda - m;
-    }
-    anorm = sqrt( anorm );
-  } else if (norm == blas_inf_norm) {
-    anorm = 0.0f;
-    for (i = 0; i < m; ++i) {
-      v = 0.0f;
-      for (j = 0; j < n; ++j) {
-        v += cabs( a[i + j * lda] );
-      }
-      if (v > anorm)
-        anorm = v;
-    }
-  } else {
-    BLAS_error( rname, -2, norm, 0 );
-    return;
-  }
-
-  if (res) *res = anorm;
-}
-
-static
-double
-BLAS_dpow_di(double x, int n) {
-  double rv = 1.0;
-
-  if (n < 0) {
-    n = -n;
-    x = 1.0 / x;
-  }
-
-  for (; n; n >>= 1, x *= x) {
-    if (n & 1)
-      rv *= x;
-  }
-
-  return rv;
-}
-
-static
-double
-BLAS_dfpinfo(enum blas_cmach_type cmach) {
-  double eps = 1.0, r = 1.0, o = 1.0, b = 2.0;
-  int t = 53, l = 1024, m = -1021;
-  char rname[] = "BLAS_dfpinfo";
-
-  if ((sizeof eps) == sizeof(float)) {
-    t = 24;
-    l = 128;
-    m = -125;
-  } else {
-    t = 53;
-    l = 1024;
-    m = -1021;
-  }
-
-  /* for (i = 0; i < t; ++i) eps *= half; */
-  eps = BLAS_dpow_di( b, -t );
-  /* for (i = 0; i >= m; --i) r *= half; */
-  r = BLAS_dpow_di( b, m-1 );
-
-  o -= eps;
-  /* for (i = 0; i < l; ++i) o *= b; */
-  o = (o * BLAS_dpow_di( b, l-1 )) * b;
-
-  switch (cmach) {
-    case blas_eps: return eps;
-    case blas_sfmin: return r;
-    default:
-      BLAS_error( rname, -1, cmach, 0 );
-      break;
-  }
-  return 0.0;
-}
-
 static int check_orthogonality(int, int, int, MORSE_Complex64_t*, double);
 static int check_factorization(int, int, MORSE_Complex64_t*, MORSE_Complex64_t*, int, MORSE_Complex64_t*, double);
 static int check_solution(int, int, int, MORSE_Complex64_t*, int, MORSE_Complex64_t*, MORSE_Complex64_t*, int, double);
@@ -268,7 +104,7 @@ int testing_zgels(int argc, char **argv)
 
     MORSE_Alloc_Workspace_zgels(M, N, &T, 1, 1);
     memset(T->mat, 0, (T->llm*T->lln)*sizeof(MORSE_Complex64_t));
-    eps = BLAS_dfpinfo( blas_eps );
+    eps = LAPACKE_dlamch_work('e');
 
     /*----------------------------------------------------------
     *  TESTING ZGELS
@@ -508,16 +344,18 @@ static int check_orthogonality(int M, int N, int LDQ, MORSE_Complex64_t *Q, doub
     /* Build the idendity matrix USE DLASET?*/
     MORSE_Complex64_t *Id = (MORSE_Complex64_t *) malloc(minMN*minMN*sizeof(MORSE_Complex64_t));
     memset((void*)Id, 0, minMN*minMN*sizeof(MORSE_Complex64_t));
-    for (i = 0; i < minMN; i++)
+    for (i = 0; i < minMN; i++) {
         Id[i*minMN+i] = (MORSE_Complex64_t)1.0;
+    }
 
     /* Perform Id - Q'Q */
-    if (M >= N)
+    if (M >= N) {
         cblas_zherk(CblasColMajor, CblasUpper, CblasConjTrans, N, M, alpha, Q, LDQ, beta, Id, N);
-    else
+    }
+    else {
         cblas_zherk(CblasColMajor, CblasUpper, CblasNoTrans, M, N, alpha, Q, LDQ, beta, Id, M);
-
-    BLAS_zsy_norm( blas_colmajor, blas_inf_norm, blas_upper, minMN, Id, minMN, &normQ );
+    }
+    normQ = LAPACKE_zlansy_work( LAPACK_COL_MAJOR, 'i', 'u', minMN, Id, minMN, work );
 
     printf("============\n");
     printf("Checking the orthogonality of Q \n");
@@ -583,8 +421,8 @@ static int check_factorization(int M, int N, MORSE_Complex64_t *A1, MORSE_Comple
         for (j = 0 ; j < N; j++)
             Residual[j*M+i] = A1[j*LDA+i]-Ql[j*M+i];
 
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, M, N, Residual, M, &Rnorm );
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, M, N, A2, LDA, &Anorm );
+    Rnorm = LAPACKE_zlange_work( LAPACK_COL_MAJOR, 'i', M, N, Residual, M, work );
+    Anorm = LAPACKE_zlange_work( LAPACK_COL_MAJOR, 'i', M, N, A2, LDA, work );
 
     if (M >= N) {
         printf("============\n");
@@ -626,9 +464,9 @@ static int check_solution(int M, int N, int NRHS, MORSE_Complex64_t *A, int LDA,
     alpha = 1.0;
     beta  = -1.0;
 
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, M, N,    A, LDA, &Anorm );
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, N, NRHS, B, LDB, &Bnorm );
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, M, NRHS, X, LDB, &Xnorm );
+    Anorm = LAPACKE_zlange_work( LAPACK_COL_MAJOR, 'i', M, N,    A, LDA, work );
+    Bnorm = LAPACKE_zlange_work( LAPACK_COL_MAJOR, 'i', N, NRHS, B, LDB, work );
+    Xnorm = LAPACKE_zlange_work( LAPACK_COL_MAJOR, 'i', M, NRHS, X, LDB, work );
 
     cblas_zgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, M, NRHS, N, CBLAS_SADDR(alpha), A, LDA, X, LDB, CBLAS_SADDR(beta), B, LDB);
 
@@ -636,14 +474,14 @@ static int check_solution(int M, int N, int NRHS, MORSE_Complex64_t *A, int LDA,
        MORSE_Complex64_t *Residual = (MORSE_Complex64_t *)malloc(M*NRHS*sizeof(MORSE_Complex64_t));
        memset((void*)Residual, 0, M*NRHS*sizeof(MORSE_Complex64_t));
        cblas_zgemm(CblasColMajor, CblasConjTrans, CblasNoTrans, N, NRHS, M, CBLAS_SADDR(alpha), A, LDA, B, LDB, CBLAS_SADDR(beta), Residual, M);
-       BLAS_zge_norm( blas_colmajor, blas_inf_norm, M, NRHS, Residual, M, &Rnorm );
+       Rnorm = LAPACKE_zlange_work( LAPACK_COL_MAJOR, 'i', M, NRHS, Residual, M, work );
        free(Residual);
     }
     else {
        MORSE_Complex64_t *Residual = (MORSE_Complex64_t *)malloc(N*NRHS*sizeof(MORSE_Complex64_t));
        memset((void*)Residual, 0, N*NRHS*sizeof(MORSE_Complex64_t));
        cblas_zgemm(CblasColMajor, CblasConjTrans, CblasNoTrans, N, NRHS, M, CBLAS_SADDR(alpha), A, LDA, B, LDB, CBLAS_SADDR(beta), Residual, N);
-       BLAS_zge_norm( blas_colmajor, blas_inf_norm, N, NRHS, Residual, N, &Rnorm );
+       Rnorm = LAPACKE_zlange_work( LAPACK_COL_MAJOR, 'i', N, NRHS, Residual, N, work );
        free(Residual);
     }
 

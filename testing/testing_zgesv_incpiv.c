@@ -33,131 +33,6 @@
 #include <coreblas.h>
 #include "testing_zauxiliary.h"
 
-enum blas_order_type {
-            blas_rowmajor = 101,
-            blas_colmajor = 102 };
-
-enum blas_cmach_type {
-            blas_base      = 151,
-            blas_t         = 152,
-            blas_rnd       = 153,
-            blas_ieee      = 154,
-            blas_emin      = 155,
-            blas_emax      = 156,
-            blas_eps       = 157,
-            blas_prec      = 158,
-            blas_underflow = 159,
-            blas_overflow  = 160,
-            blas_sfmin     = 161};
-
-enum blas_norm_type {
-            blas_one_norm       = 171,
-            blas_real_one_norm  = 172,
-            blas_two_norm       = 173,
-            blas_frobenius_norm = 174,
-            blas_inf_norm       = 175,
-            blas_real_inf_norm  = 176,
-            blas_max_norm       = 177,
-            blas_real_max_norm  = 178 };
-
-static void
-BLAS_error(char *rname, int err, int val, int x) {
-  fprintf( stderr, "%s %d %d %d\n", rname, err, val, x );
-  abort();
-}
-
-static
-void
-BLAS_zge_norm(enum blas_order_type order, enum blas_norm_type norm,
-  int m, int n, const MORSE_Complex64_t *a, int lda, double *res) {
-  int i, j; float anorm, v;
-  char rname[] = "BLAS_zge_norm";
-
-  if (order != blas_colmajor) BLAS_error( rname, -1, order, 0 );
-
-  if (norm == blas_frobenius_norm) {
-    anorm = 0.0f;
-    for (j = n; j; --j) {
-      for (i = m; i; --i) {
-        v = a[0];
-        anorm += v * v;
-        a++;
-      }
-      a += lda - m;
-    }
-    anorm = sqrt( anorm );
-  } else if (norm == blas_inf_norm) {
-    anorm = 0.0f;
-    for (i = 0; i < m; ++i) {
-      v = 0.0f;
-      for (j = 0; j < n; ++j) {
-        v += cabs( a[i + j * lda] );
-      }
-      if (v > anorm)
-        anorm = v;
-    }
-  } else {
-    BLAS_error( rname, -2, norm, 0 );
-    return;
-  }
-
-  if (res) *res = anorm;
-}
-
-static
-double
-BLAS_dpow_di(double x, int n) {
-  double rv = 1.0;
-
-  if (n < 0) {
-    n = -n;
-    x = 1.0 / x;
-  }
-
-  for (; n; n >>= 1, x *= x) {
-    if (n & 1)
-      rv *= x;
-  }
-
-  return rv;
-}
-
-static
-double
-BLAS_dfpinfo(enum blas_cmach_type cmach) {
-  double eps = 1.0, r = 1.0, o = 1.0, b = 2.0;
-  int t = 53, l = 1024, m = -1021;
-  char rname[] = "BLAS_dfpinfo";
-
-  if ((sizeof eps) == sizeof(float)) {
-    t = 24;
-    l = 128;
-    m = -125;
-  } else {
-    t = 53;
-    l = 1024;
-    m = -1021;
-  }
-
-  /* for (i = 0; i < t; ++i) eps *= half; */
-  eps = BLAS_dpow_di( b, -t );
-  /* for (i = 0; i >= m; --i) r *= half; */
-  r = BLAS_dpow_di( b, m-1 );
-
-  o -= eps;
-  /* for (i = 0; i < l; ++i) o *= b; */
-  o = (o * BLAS_dpow_di( b, l-1 )) * b;
-
-  switch (cmach) {
-    case blas_eps: return eps;
-    case blas_sfmin: return r;
-    default:
-      BLAS_error( rname, -1, cmach, 0 );
-      break;
-  }
-  return 0.0;
-}
-
 static int check_solution(int, int , MORSE_Complex64_t *, int, MORSE_Complex64_t *, MORSE_Complex64_t *, int, double);
 
 int testing_zgesv_incpiv(int argc, char **argv)
@@ -199,7 +74,7 @@ int testing_zgesv_incpiv(int argc, char **argv)
         return -2;
     }
 
-    eps = BLAS_dfpinfo(blas_eps);
+    eps = LAPACKE_dlamch_work( 'e' );
 
     /*----------------------------------------------------------
     *  TESTING ZGESV
@@ -352,12 +227,12 @@ static int check_solution(int N, int NRHS, MORSE_Complex64_t *A1, int LDA, MORSE
     alpha = 1.0;
     beta  = -1.0;
 
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, N, NRHS, B2, LDB, &Xnorm );
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, N, N,    A1, LDA, &Anorm );
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, N, NRHS, B1, LDB, &Bnorm );
+    Xnorm = LAPACKE_zlange( LAPACK_COL_MAJOR, 'i', N, NRHS, B2, LDB );
+    Anorm = LAPACKE_zlange( LAPACK_COL_MAJOR, 'i', N, N,    A1, LDA );
+    Bnorm = LAPACKE_zlange( LAPACK_COL_MAJOR, 'i', N, NRHS, B1, LDB );
 
     cblas_zgemm(CblasColMajor, CblasNoTrans, CblasNoTrans, N, NRHS, N, CBLAS_SADDR(alpha), A1, LDA, B2, LDB, CBLAS_SADDR(beta), B1, LDB);
-    BLAS_zge_norm( blas_colmajor, blas_inf_norm, N, NRHS, B1, LDB, &Rnorm );
+    Rnorm = LAPACKE_zlange( LAPACK_COL_MAJOR, 'i', N, NRHS, B1, LDB );
 
     if (getenv("MORSE_TESTING_VERBOSE"))
       printf( "||A||_oo=%f\n||X||_oo=%f\n||B||_oo=%f\n||A X - B||_oo=%e\n", Anorm, Xnorm, Bnorm, Rnorm );

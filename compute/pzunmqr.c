@@ -245,7 +245,6 @@ void morse_pzunmqr(MORSE_enum side, MORSE_enum trans,
                 tempkn   = k == B->nt - 1 ? B->n - k * B->nb : B->nb;
                 tempkmin = k == minMT - 1 ? minM - k * A->nb : A->nb;
                 ldak = BLKLDD(A, k);
-                ldbk = BLKLDD(B, k);
                 for (n = B->nt-1; n > k; n--) {
                     tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
                     ldan = BLKLDD(A, n);

@@ -172,7 +172,6 @@ void morse_pztradd(MORSE_enum uplo, MORSE_enum trans,
         else {
             for (m = 0; m < B->mt; m++) {
                 tempmm = m == B->mt-1 ? B->m-B->mb*m : B->nb;
-                ldam = BLKLDD(A, m);
                 ldbm = BLKLDD(B, m);
 
                 for (n = 0; n < B->nt; n++) {

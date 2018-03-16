@@ -193,7 +193,6 @@ void morse_pztrsm(MORSE_enum side, MORSE_enum uplo, MORSE_enum trans, MORSE_enum
                     }
                     RUNTIME_data_flush( sequence, A(B->mt-1-k, B->mt-1-k) );
                     for (m = k+1; m < B->mt; m++) {
-                        tempmm = m == B->mt-1 ? B->m-m*B->mb : B->mb;
                         ldbm = BLKLDD(B, B->mt-1-m);
                         for (n = 0; n < B->nt; n++) {
                             tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;

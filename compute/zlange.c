@@ -83,7 +83,7 @@ double MORSE_zlange(MORSE_enum norm, int M, int N,
 {
     int NB;
     int status;
-    double value;
+    double value = -1.;
     MORSE_context_t *morse;
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
@@ -125,7 +125,7 @@ double MORSE_zlange(MORSE_enum norm, int M, int N,
     }
 
     /* Set NT */
-    NB   = MORSE_NB;
+    NB = MORSE_NB;
 
     morse_sequence_create( morse, &sequence );
 
@@ -194,7 +194,7 @@ double MORSE_zlange_Tile(MORSE_enum norm, MORSE_desc_t *A )
     MORSE_sequence_t *sequence = NULL;
     MORSE_request_t request = MORSE_REQUEST_INITIALIZER;
     int status;
-    double value;
+    double value = -1.;
 
     morse = morse_context_self();
     if (morse == NULL) {

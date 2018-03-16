@@ -330,7 +330,6 @@ void morse_pzunmqrrh( MORSE_enum side, MORSE_enum trans,
                     tempMm   = M == A->mt-1 ? A->m-M*A->mb : A->mb;
                     tempkmin = chameleon_min(tempMm, tempkn);
                     ldaM = BLKLDD(A, M);
-                    ldbM = BLKLDD(B, M);
                     for (n = chameleon_min(M+BS, A->mt)-1; n > M; n--) {
                         ldan = BLKLDD(A, n);
                         tempnn = n == B->nt-1 ? B->n-n*B->nb : B->nb;
