@@ -265,6 +265,7 @@ sonar:
 
 doc:
   stage: doc
+  dependencies: []
   artifacts:
     name: chameleon_doc
     expire_in: 1 week
