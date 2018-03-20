@@ -36,7 +36,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     /* Allocate Data */
     PASTE_CODE_ALLOCATE_MATRIX_TILE( descA, 1, MORSE_Complex64_t, MorseComplexDouble, LDA, M, N );
     PASTE_CODE_ALLOCATE_MATRIX( VT, (jobvt == MorseVec), MORSE_Complex64_t, N, N );
-    PASTE_CODE_ALLOCATE_MATRIX( U, (jobu == MorseVec), MORSE_Complex64_t, M, M );
+    PASTE_CODE_ALLOCATE_MATRIX( U,  (jobu  == MorseVec), MORSE_Complex64_t, M, M );
     PASTE_CODE_ALLOCATE_MATRIX( S, 1, double, N, 1 );
 
     /* Initialiaze Data */
@@ -46,7 +46,7 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     MORSE_Alloc_Workspace_zgesvd(N, N, &descT, 1, 1);
 
     if ( jobu == MorseVec ) {
-        LAPACKE_zlaset_work(LAPACK_COL_MAJOR, 'A', M, M, 0., 1., U, M);
+        LAPACKE_zlaset_work(LAPACK_COL_MAJOR, 'A', M, M, 0., 1., U,  M);
     }
     if ( jobvt == MorseVec ) {
         LAPACKE_zlaset_work(LAPACK_COL_MAJOR, 'A', N, N, 0., 1., VT, N);
@@ -56,18 +56,18 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
     INFO = MORSE_zgesvd_Tile(jobu, jobvt, descA, S, descT, U, M, VT, N);
     STOP_TIMING();
 
-    if(INFO!=0){
-            printf(" ERROR OCCURED INFO %d\n",INFO);
+    if( INFO != 0 ) {
+        printf(" ERROR OCCURED INFO %d\n",INFO);
     }
 
     /* DeAllocate Workspace */
     MORSE_Dealloc_Workspace(&descT);
 
-    if (jobu == MorseVec) {
-      free( U );
+    if ( U != NULL ) {
+        free( U );
     }
-    if (jobvt == MorseVec) {
-      free( VT );
+    if ( VT != NULL) {
+        free( VT );
     }
     PASTE_CODE_FREE_MATRIX( descA );
     free( S );

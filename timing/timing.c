@@ -160,7 +160,6 @@ Test(int64_t n, int *iparam) {
     fadds = (double)(_FADDS);
     fmuls = (double)(_FMULS);
     flops = 1e-9 * (fmuls * fp_per_mul + fadds * fp_per_add);
-    gflops = 0.0;
 
     if ( iparam[IPARAM_WARMUP] ) {
       int status = RunTest( iparam, dparam, &(t[0]));

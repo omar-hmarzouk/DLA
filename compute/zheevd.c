@@ -335,12 +335,12 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
     MORSE_desc_t descA;
     MORSE_desc_t descT;
     MORSE_desc_t D, *Dptr = NULL;
-    MORSE_Complex64_t *Q2;
-    int N, status;
+    MORSE_Complex64_t *Q2 = NULL;
+    int N, NB, status;
     double *E;
     MORSE_Complex64_t *V;
-    MORSE_desc_t descQ2;
-    MORSE_desc_t descV;
+    MORSE_desc_t descQ2l, descQ2t;
+    MORSE_desc_t descVl, descVt;
     MORSE_desc_t *subA, *subQ, *subT;
 
     morse = morse_context_self();
@@ -395,7 +395,8 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
         return morse_request_fail(sequence, request, MORSE_ERR_ILLEGAL_VALUE);
     }
 
-    N = descA.m;
+    N  = descA.m;
+    NB = descA.mb;
 
     /* Allocate data structures for reduction to tridiagonal form */
     E = malloc( (N - 1) * sizeof(double) );
@@ -463,10 +464,12 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
     /* Q   from MORSE_zhetrd   refers to Q2 (lapack layout) */
     /* V   from LAPACKE_zstedc refers to V  (lapack layout) */
     /* The final eigenvectors are (Q1 Q2 V) or (Q1^h Q2 V)  */
-    /* morse_zooplap2tile( descQ2, Q2, NB, NB, N, N, 0, 0, N, N, sequence, request, */
-    /*                     morse_desc_mat_free( &descQ2 ) ); */
-    /* morse_zooplap2tile( descV,  V,  NB, NB, N, N, 0, 0, N, N, sequence, request, */
-    /*                     morse_desc_mat_free(&(descQ2)); morse_desc_mat_free(&(descV)) ); */
+    morse_zlap2tile( morse, &descQ2l, &descQ2t, MorseDescInput, MorseUpperLower,
+                     Q2, NB, NB, N, N, N, N, sequence, request );
+
+    morse_zlap2tile( morse, &descVl, &descVt, MorseDescInput, MorseUpperLower,
+                     V, NB, NB, N, N, N, N, sequence, request );
+
     if (uplo == MorseLower)
     {
 #if defined(CHAMELEON_COPY_DIAG)
@@ -476,9 +479,9 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
             Dptr = &D;
         }
 #endif
-        subA = morse_desc_submatrix(&descA,  descA.mb,  0, descA.m -descA.mb,  descA.n-descA.nb);
-        subQ = morse_desc_submatrix(&descQ2, descQ2.mb, 0, descQ2.m-descQ2.mb, descQ2.n );
-        subT = morse_desc_submatrix(&descT,  descT.mb,  0, descT.m -descT.mb,  descT.n-descT.nb);
+        subA = morse_desc_submatrix(&descA,   descA.mb,   0, descA.m  -descA.mb,   descA.n-descA.nb);
+        subQ = morse_desc_submatrix(&descQ2t, descQ2t.mb, 0, descQ2t.m-descQ2t.mb, descQ2t.n );
+        subT = morse_desc_submatrix(&descT,   descT.mb,   0, descT.m  -descT.mb,   descT.n-descT.nb);
 
         /* Compute Q2 = Q1 * Q2 */
         morse_pzunmqr( MorseLeft, MorseNoTrans,
@@ -487,7 +490,7 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
 
         /* Compute the final eigenvectors A = (Q1 * Q2) * V */
         morse_pzgemm( MorseNoTrans, MorseNoTrans,
-                      1.0, &descQ2, &descV,
+                      1.0, &descQ2t, &descVt,
                       0.0, &descA,
                       sequence, request );
 
@@ -500,9 +503,9 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
             Dptr = &D;
         }
 #endif
-        subA = morse_desc_submatrix(&descA,  0, descA.nb,  descA.m -descA.mb,  descA.n -descA.nb );
-        subQ = morse_desc_submatrix(&descQ2, descQ2.mb, 0, descQ2.m-descQ2.mb, descQ2.n );
-        subT = morse_desc_submatrix(&descT,  0, descT.nb,  descT.m -descT.mb,  descT.n -descT.nb );
+        subA = morse_desc_submatrix(&descA,   0,   descA.nb, descA.m  -descA.mb,   descA.n -descA.nb );
+        subQ = morse_desc_submatrix(&descQ2t, descQ2t.mb, 0, descQ2t.m-descQ2t.mb, descQ2t.n );
+        subT = morse_desc_submatrix(&descT,   0,   descT.nb, descT.m  -descT.mb,   descT.n -descT.nb );
 
         /* Compute Q2 = Q1^h * Q2 */
         morse_pzunmlq( MorseLeft, MorseConjTrans,
@@ -511,19 +514,24 @@ int MORSE_zheevd_Tile_Async( MORSE_enum jobz, MORSE_enum uplo,
 
         /* Compute the final eigenvectors A =  (Q1^h * Q2) * V */
         morse_pzgemm( MorseNoTrans, MorseNoTrans,
-                      1.0, &descQ2, &descV,
+                      1.0, &descQ2t, &descVt,
                       0.0, &descA,
                       sequence, request );
     }
 
+    morse_ztile2lap( morse, &descQ2l, &descQ2t,
+                     MorseDescInput, MorseUpperLower, sequence, request );
+    morse_ztile2lap( morse, &descVl, &descVt,
+                     MorseDescInput, MorseUpperLower, sequence, request );
+
     morse_sequence_wait( morse, sequence );
 
-    free(subA); free(subQ); free(subT);
-    morse_desc_mat_free( &descQ2 );
-    free(Q2);
-
     /* Cleanup the temporary data */
-    morse_desc_mat_free( &descV );
+    morse_ztile2lap_cleanup( morse, &descQ2l, &descQ2t );
+    morse_ztile2lap_cleanup( morse, &descVl, &descVt );
+
+    free(subA); free(subQ); free(subT);
+    free(Q2);
     free(V);
     free(E);
     if (Dptr != NULL) {

@@ -610,6 +610,14 @@ int MORSE_zgesvd_Tile_Async( MORSE_enum jobu, MORSE_enum jobvt,
     }
     morse_sequence_wait( morse, sequence );
 
+    /* Cleanup the temporary data */
+    if ( jobu != MorseNoVec ) {
+        morse_ztile2lap_cleanup( morse, &descUl,  &descUt  );
+    }
+    if ( jobvt != MorseNoVec ) {
+        morse_ztile2lap_cleanup( morse, &descVTl, &descVTt );
+    }
+
     /* Solve the bidiagonal SVD problem */
     /* On exit, U and VT are updated with bidiagonal matrix singular vectors */
 #if !defined(CHAMELEON_SIMULATION)

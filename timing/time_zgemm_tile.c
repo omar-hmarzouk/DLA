@@ -48,6 +48,9 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
 #if !defined(CHAMELEON_SIMULATION)
     LAPACKE_zlarnv_work(1, ISEED, 1, &alpha);
     LAPACKE_zlarnv_work(1, ISEED, 1, &beta);
+#else
+    alpha = 1.5;
+    beta = -2.3;
 #endif
 
     /* Save C for check */
