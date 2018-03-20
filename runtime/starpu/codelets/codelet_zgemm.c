@@ -41,35 +41,11 @@ void MORSE_TASK_zgemm(const MORSE_option_t *options,
     (void)nb;
     struct starpu_codelet *codelet = &cl_zgemm;
     void (*callback)(void*) = options->profiling ? cl_zgemm_callback : NULL;
-    int sizeA = lda*k;
-    int sizeB = ldb*n;
-    int sizeC = ldc*n;
-    int execution_rank = C->get_rankof( C, Cm, Cn );
-    int rank_changed=0;
-    (void)execution_rank;
-
-    /*  force execution on the rank owning the largest data (tile) */
-    int threshold;
-    char* env = getenv("MORSE_COMM_FACTOR_THRESHOLD");
-
-    if (env != NULL)
-        threshold = (unsigned)atoi(env);
-    else
-        threshold = 10;
-    if ( sizeA > threshold*sizeC ){
-        execution_rank = A->get_rankof( A, Am, An );
-        rank_changed = 1;
-    }else if( sizeB > threshold*sizeC ){
-        execution_rank = B->get_rankof( B, Bm, Bn );
-        rank_changed = 1;
-    }
 
     MORSE_BEGIN_ACCESS_DECLARATION;
     MORSE_ACCESS_R(A, Am, An);
     MORSE_ACCESS_R(B, Bm, Bn);
     MORSE_ACCESS_RW(C, Cm, Cn);
-    if (rank_changed)
-        MORSE_RANK_CHANGED(execution_rank);
     MORSE_END_ACCESS_DECLARATION;
 
     starpu_insert_task(
@@ -89,9 +65,6 @@ void MORSE_TASK_zgemm(const MORSE_option_t *options,
         STARPU_VALUE,    &ldc,               sizeof(int),
         STARPU_PRIORITY,  options->priority,
         STARPU_CALLBACK,  callback,
-#if defined(CHAMELEON_USE_MPI)
-        STARPU_EXECUTE_ON_NODE, execution_rank,
-#endif
 #if defined(CHAMELEON_CODELETS_HAVE_NAME)
         STARPU_NAME, "zgemm",
 #endif
