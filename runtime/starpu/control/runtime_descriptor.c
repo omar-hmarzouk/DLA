@@ -145,8 +145,6 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
 {
     int64_t lmt = desc->lmt;
     int64_t lnt = desc->lnt;
-    starpu_data_handle_t *tiles;
-    (void)tiles;
 
     desc->occurences = 1;
 
@@ -156,7 +154,6 @@ void RUNTIME_desc_create( MORSE_desc_t *desc )
      */
     desc->schedopt = (void*)calloc(lnt*lmt,sizeof(starpu_data_handle_t));
     assert(desc->schedopt);
-    tiles = (starpu_data_handle_t*)(desc->schedopt);
 
 #if defined(CHAMELEON_USE_CUDA) && !defined(CHAMELEON_SIMULATION)
     /*

@@ -39,9 +39,8 @@ void CORE_zhe2ge(MORSE_enum uplo, int M, int N,
     MORSE_Complex64_t *Bptr, *BTptr;
     int i, j;
 
-    Aptr  = A;
-    Bptr  = B;
-    BTptr = B;
+    Aptr = A;
+    Bptr = B;
 
     if (uplo == MorseLower){
         for (j = 0; j < N; j++){
@@ -57,23 +56,10 @@ void CORE_zhe2ge(MORSE_enum uplo, int M, int N,
             }
             Aptr += (LDA - i + j + 1);
             Bptr += (LDB - i + j + 1);
-
-            /* Bptr[ j * LDB + j ] = A[ j * LDA + j ]; */
-
-            /* for (i = j+1; i < M; i++) { */
-            /*     Bptr [ j * LDB + i ] = A[ j * LDA + i ]; */
-            /*     BTptr[ i * LDB + j ] = conj(A[ j * LDA + i ]); */
-            /* } */
         }
     }
     else{
         for (j = 0; j < N; j++){
-            /* for (i = 0; i < j; i++) { */
-            /*     Bptr [ j * LDB + i ] = A[ j * LDA + i ]; */
-            /*     BTptr[ i * LDB + j ] = conj(A[ j * LDA + i ]); */
-            /* } */
-            /* Bptr[ j * LDB + j ] = A[ j * LDA + j ]; */
-
             BTptr = B + j;
             for (i = 0; i < j; i++, Bptr++, Aptr++, BTptr += LDB) {
                 *Bptr  = *Aptr;
