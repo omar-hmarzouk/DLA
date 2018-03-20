@@ -77,7 +77,8 @@ RunTest(int *iparam, double *dparam, morse_time_t *t_)
         free( A );
     }
 #endif
-    PASTE_CODE_FREE_MATRIX( descA );
 
+    PASTE_CODE_FREE_MATRIX( descA );
+    (void)normmorse;
     return 0;
 }
