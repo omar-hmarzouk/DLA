@@ -5,9 +5,7 @@
 # these paths may depend on the runner used, please be careful and add
 # the necessary if blocks depending on the machine
 
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-export PATH=/builds/sonar/lcov-to-cobertura-xml-1.6/lcov_cobertura:$PATH
-export PATH=/builds/sonar/sonar-scanner-2.9.0.670/bin:$PATH
+. /etc/profile.d/spack.sh
 
 export QUARK_DIR=/builds/install/quark
 export PARSEC_DIR=/builds/install/parsec
