@@ -3,8 +3,7 @@ image: hpclib/hiepacs
 stages:
   - build
   - test
-  - analysis
-  - doc
+  - third
 
 before_script:
   - git submodule update --init --recursive
@@ -235,8 +234,30 @@ test_parsec_master:
   only:
     - master@solverstack/chameleon
 
-sonar:
-  stage: analysis
+coverity:
+  stage: third
+  dependencies: []
+  artifacts:
+    name: chameleon_coverity
+    expire_in: 1 week
+    paths:
+      - chameleon.tgz
+  script:
+    - (cd build &&
+       cmake -C ../cmake_modules/gitlab-ci-initial-cache.cmake .. -DCHAMELEON_USE_CUDA=ON -DCHAMELEON_USE_MPI=ON &&
+       cov-build --dir ../cov-int make -j 4)
+    - tar czvf chameleon.tgz cov-int
+    - curl --form token=$COVERITY_TOKEN
+           --form email=florent.pruvost@inria.fr
+           --form file=@chameleon.tgz
+           --form version="`git rev-parse --short HEAD`"
+           --form description=""
+           https://scan.coverity.com/builds?project=Chameleon
+  only:
+    - master@solverstack/chameleon
+
+sonarqube:
+  stage: third
   dependencies:
     - test_starpu_master
     - test_starpu_simgrid_master
@@ -264,7 +285,7 @@ sonar:
     - master@solverstack/chameleon
 
 doc:
-  stage: doc
+  stage: third
   dependencies: []
   artifacts:
     name: chameleon_doc
