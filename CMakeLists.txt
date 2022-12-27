@@ -101,6 +101,9 @@ set( RP_CHAMELEON_DICTIONNARY ${MORSE_CMAKE_MODULE_PATH}/precision_generator/sub
 set( RP_CHAMELEON_PRECISIONS  "s;d;c;z" )
 include(RulesPrecisions)
 
+file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/include)
+file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX}/include/control)
+
 option(CHAMELEON_USE_MIGRATE
   "This options enables the data migration in QR algorithms" ON)
 
@@ -1072,6 +1075,10 @@ endif(CHAMELEON_ENABLE_TIMING)
 # Define a target which gathers all targets of sources
 # useful for generating the doc without compiling the binaries (objects, libraries)
 add_custom_target(chameleon_all_sources ALL DEPENDS ${CHAMELEON_SOURCES_TARGETS})
+
+add_custom_command(TARGET chameleon_all_sources POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy
+                   ${CMAKE_CURRENT_BINARY_DIR}/control/*.h ${CMAKE_INSTALL_PREFIX}/include/control/)
 
 ###############################################################################
 # Documentation #
